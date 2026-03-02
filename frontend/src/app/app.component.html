@@ -5,12 +5,18 @@
   </header>
 
   <main class="app-main">
-    <!-- Components will be added in later tasks -->
-    <div class="glass-card-static placeholder">
-      <p>Placard &amp; Frigo — à venir</p>
-    </div>
-    <div class="glass-card-static placeholder">
-      <p>Résultats recettes — à venir</p>
-    </div>
+    <app-pantry (searchRecipes)="onSearch($event)"></app-pantry>
+
+    <app-recipe-results
+      [recipes]="recipes"
+      [loading]="loading"
+      (openRecipe)="onOpenRecipe($event)">
+    </app-recipe-results>
   </main>
+
+  <app-recipe-detail
+    *ngIf="selectedRecipe"
+    [recipe]="selectedRecipe"
+    (close)="onCloseRecipe()">
+  </app-recipe-detail>
 </div>
