@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: niam-bay-backend
+    runtime: node
+    buildCommand: npm ci && npm run build
+    startCommand: node dist/index.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: SPOONACULAR_API_KEY
+        sync: false
+      - key: EDAMAM_APP_ID
+        sync: false
+      - key: EDAMAM_APP_KEY
+        sync: false
