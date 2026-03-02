@@ -8,7 +8,13 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    'http://localhost:4200',
+    'https://frontend-lake-five-65.vercel.app',
+    /\.vercel\.app$/,
+  ],
+}));
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
