@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { searchByIngredients as spoonacularSearch } from '../services/spoonacular.service';
 import { searchByIngredients as edamamSearch } from '../services/edamam.service';
+import { searchSocial } from '../services/social-scraper.service';
 
 const router = Router();
 
@@ -13,11 +14,12 @@ router.post('/search', async (req: Request, res: Response) => {
   }
 
   try {
-    const [spoonacularResults, edamamResults] = await Promise.all([
+    const [spoonacularResults, edamamResults, socialResults] = await Promise.all([
       spoonacularSearch(ingredients),
       edamamSearch(ingredients),
+      searchSocial(ingredients),
     ]);
-    const recipes = [...spoonacularResults, ...edamamResults];
+    const recipes = [...spoonacularResults, ...edamamResults, ...socialResults];
     res.json({ recipes });
   } catch (error) {
     console.error('Recipe search error:', error);
