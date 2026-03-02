@@ -1,0 +1,80 @@
+<div class="results-container" *ngIf="recipes.length > 0 || loading">
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Recherche de recettes en cours...</p>
+  </div>
+
+  <div *ngIf="!loading && recipes.length > 0">
+    <!-- Tabs -->
+    <div class="tabs">
+      <button
+        *ngFor="let tab of tabs"
+        class="tab-btn"
+        [class.active]="activeTab === tab.key"
+        (click)="setTab(tab.key)"
+      >
+        <span class="tab-icon">{{ tab.icon }}</span>
+        <span class="tab-label">{{ tab.label }}</span>
+        <span class="tab-count">{{ getCountForTab(tab.key) }}</span>
+      </button>
+    </div>
+
+    <!-- Recipe Grid -->
+    <div class="recipe-grid">
+      <div
+        class="glass-card recipe-card"
+        *ngFor="let recipe of filteredRecipes"
+        (click)="onOpenRecipe(recipe)"
+      >
+        <div class="recipe-image" *ngIf="recipe.image">
+          <img [src]="recipe.image" [alt]="recipe.title" loading="lazy" />
+        </div>
+        <div class="recipe-image placeholder-img" *ngIf="!recipe.image">
+          🍽️
+        </div>
+        <div class="recipe-info">
+          <h3 class="recipe-title">{{ recipe.title }}</h3>
+          <div class="recipe-badges">
+            <span class="badge calories">{{ recipe.calories }} kcal</span>
+            <span class="badge time" *ngIf="recipe.totalTime > 0">{{ recipe.totalTime }} min</span>
+            <span class="badge cuisine">{{ recipe.cuisineType }}</span>
+          </div>
+          <div class="recipe-source">{{ getSourceBadge(recipe.source) }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-results" *ngIf="filteredRecipes.length === 0">
+      <p>Aucune recette {{ tabs[0].key === activeTab ? 'à la plaque' : activeTab === 'oven' ? 'au four' : 'à l\'air fryer' }} trouvée</p>
+    </div>
+
+    <!-- Other recipes section -->
+    <div *ngIf="otherRecipes.length > 0" class="other-section">
+      <h3 class="section-title">Autres recettes</h3>
+      <div class="recipe-grid">
+        <div
+          class="glass-card recipe-card"
+          *ngFor="let recipe of otherRecipes"
+          (click)="onOpenRecipe(recipe)"
+        >
+          <div class="recipe-image" *ngIf="recipe.image">
+            <img [src]="recipe.image" [alt]="recipe.title" loading="lazy" />
+          </div>
+          <div class="recipe-image placeholder-img" *ngIf="!recipe.image">
+            🍽️
+          </div>
+          <div class="recipe-info">
+            <h3 class="recipe-title">{{ recipe.title }}</h3>
+            <div class="recipe-badges">
+              <span class="badge calories">{{ recipe.calories }} kcal</span>
+              <span class="badge time" *ngIf="recipe.totalTime > 0">{{ recipe.totalTime }} min</span>
+              <span class="badge cuisine">{{ recipe.cuisineType }}</span>
+            </div>
+            <div class="recipe-source">{{ getSourceBadge(recipe.source) }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
