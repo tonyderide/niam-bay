@@ -42,7 +42,9 @@
       <ul class="ingredient-list">
         <li *ngFor="let ing of recipe.ingredients">
           <span *ngIf="ing.amount > 0">{{ ing.amount }} {{ ing.unit }}</span>
-          {{ ing.name }}
+          <a [href]="getAffiliateUrl(ing.name)" target="_blank" rel="noopener" class="ingredient-link">
+            {{ ing.name }} <span class="shop-icon">&#128722;</span>
+          </a>
         </li>
       </ul>
     </div>

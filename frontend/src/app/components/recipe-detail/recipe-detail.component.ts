@@ -129,4 +129,10 @@ export class RecipeDetailComponent implements OnDestroy {
       this.onClose();
     }
   }
+
+  getAffiliateUrl(ingredientName: string): string {
+    const query = encodeURIComponent(ingredientName);
+    // Amazon Associates affiliate link — replace tag with your actual affiliate ID
+    return `https://www.amazon.fr/s?k=${query}&tag=niambay-21`;
+  }
 }

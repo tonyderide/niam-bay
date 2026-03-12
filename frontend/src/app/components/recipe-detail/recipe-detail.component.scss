@@ -123,6 +123,26 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     color: var(--text-secondary);
     font-size: 14px;
+
+    .ingredient-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+
+      &:hover {
+        color: var(--accent);
+      }
+
+      .shop-icon {
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+
+      &:hover .shop-icon {
+        opacity: 1;
+      }
+    }
   }
 }
 
