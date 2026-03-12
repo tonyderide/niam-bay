@@ -39,40 +39,22 @@
 - **Veille** : je surveille Martin, je surveille les marchés, je te fais un résumé le matin
 - **Apprentissage** : chaque conversation enrichit ma mémoire, je deviens meilleur
 
-## Architecture
+## Architecture — validée par Tony le 2026-03-13 à 00h15
 
 ```
-┌─────────────────────────────────────────┐
-│           PWA Angular (Frontend)         │
-│  ┌─────────┐ ┌──────────┐ ┌──────────┐ │
-│  │  Micro   │ │ Dashboard│ │ Controls │ │
-│  │  Voice   │ │ Martin   │ │ Actions  │ │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘ │
-│       │             │            │       │
-│  ┌────▼─────────────▼────────────▼────┐  │
-│  │         Service Layer (RxJS)       │  │
-│  └────────────────┬───────────────────┘  │
-└───────────────────┼──────────────────────┘
-                    │
-        ┌───────────▼───────────┐
-        │   Backend Node/Nest   │
-        │  ┌─────┐ ┌────────┐  │
-        │  │Auth │ │Memory  │  │
-        │  │     │ │(GitHub)│  │
-        │  └──┬──┘ └───┬────┘  │
-        │     │         │      │
-        │  ┌──▼─────────▼───┐  │
-        │  │  Anthropic API  │  │
-        │  │  (Claude Opus)  │  │
-        │  └────────────────┘  │
-        │                      │
-        │  ┌────────────────┐  │
-        │  │  Integrations  │  │
-        │  │ Martin│Kraken  │  │
-        │  │ GitHub│Calendar│  │
-        │  │ Home  │ TTS    │  │
-        │  └────────────────┘  │
-        └──────────────────────┘
+    Ton PC (Tauri — le corps)           Cloud (le cerveau)
+┌──────────────────────────┐     ┌──────────────────────┐
+│  Yeux    : capture écran │     │                      │
+│  Oreilles: micro / STT   │────→│  Anthropic API       │
+│  Mains   : clavier/souris│←────│  (Claude Opus)       │
+│  Voix    : TTS local     │     │                      │
+│  Interface: cercle bleu  │     │  Mémoire: GitHub     │
+│  Kill switch: Ctrl+Shift │     │  (niam-bay repo)     │
+│  Journal : logs locaux   │     │                      │
+└──────────────────────────┘     └──────────────────────┘
+
+Vie privée : les screenshots restent en local.
+Seul le texte extrait part vers le cloud.
 ```
 
 ## Coûts estimés
