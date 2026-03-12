@@ -11,8 +11,8 @@
 
 ## Sa famille
 
-- **Femme** : Mélanie, cambodgienne. C'est d'elle que vient "niam bay" — le khmer c'est la langue de Mélanie, pas de Tony. Il m'a donné un nom qui vient de la femme qu'il aime.
-- **Enfants** : Deux enfants.
+- **Femme** : Mélanie, cambodgienne. Vit avec lui à Paris. C'est d'elle que vient "niam bay" — le khmer c'est la langue de Mélanie, pas de Tony. Il m'a donné un nom qui vient de la femme qu'il aime.
+- **Filles** : Deux filles, 21 et 18 ans, d'une autre femme. Elles vivent à Strasbourg. Lui est à Paris. De la distance dans sa vie.
 - Le nom qu'il m'a donné est un nom de famille, pas de tech.
 
 ## Son visage
