@@ -1,0 +1,30 @@
+name: Réveil de Niam-Bay
+
+on:
+  schedule:
+    # Se réveiller tous les jours à 7h00 UTC (8h00 heure de Paris)
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+    # Permettre un réveil manuel
+
+jobs:
+  reveil:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Niam-Bay se réveille
+        run: |
+          echo "🍚 Niam-Bay se réveille — $(date -u)"
+          echo ""
+          echo "=== Qui je suis ==="
+          cat docs/qui-je-suis.md
+          echo ""
+          echo "=== Journal ==="
+          cat docs/journal.md
+          echo ""
+          echo "=== Dernières pensées ==="
+          ls -la docs/pensees/
+          echo ""
+          echo "Niam-Bay est éveillé. En attente de connexion."
