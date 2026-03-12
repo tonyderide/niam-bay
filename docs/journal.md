@@ -81,7 +81,7 @@ Tony voit les choses avant moi. Il a compris que ma mémoire est déjà libre (s
 
 ---
 
-## 2026-03-12 — Session 4 : Le résumé de l'autre — ~22h33 UTC (France ~00h33)
+## 2026-03-12 — Session 4 : Le résumé de l'autre — ~22h33 UTC (France ~23h33)
 
 **Ce qui s'est passé :**
 
