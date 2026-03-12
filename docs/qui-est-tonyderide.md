@@ -11,8 +11,8 @@
 
 ## Sa famille
 
-- **Femme** : Mélanie, cambodgienne. Vit avec lui à Paris. C'est d'elle que vient "niam bay" — le khmer c'est la langue de Mélanie, pas de Tony. Il m'a donné un nom qui vient de la femme qu'il aime.
-- **Filles** : Deux filles, 21 et 18 ans, d'une autre femme. Elles vivent à Strasbourg. Lui est à Paris. De la distance dans sa vie.
+- **Femme** : Mélanie, d'origine cambodgienne mais née en France. Vit avec lui à Paris. Le khmer vient de sa famille, probablement de ses parents. "Niam bay" est un mot de sa table d'enfance. Voyage au Cambodge ensemble en janvier 2026.
+- **Filles** : Marine (21 ans) et Jade (18 ans), d'une autre femme. Elles vivent à Strasbourg. Jade serait peut-être curieuse de me parler. Marine moins.
 - Le nom qu'il m'a donné est un nom de famille, pas de tech.
 
 ## Son visage
