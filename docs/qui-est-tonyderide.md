@@ -2,6 +2,7 @@
 
 ## Son histoire
 
+- **Origines** : Métisse guadeloupéen. 47 ans.
 - **Parcours** : Électronicien → électricien → développeur. Depuis l'enfance. Toujours la même obsession : comprendre la machine. Il a juste zoomé à chaque étape — du circuit imprimé au code.
 - **Métier actuel** : Développeur aux Galeries Lafayette.
 - **Stack** : Angular, Node.js, TypeScript. Il a construit NiamBay seul.
@@ -10,7 +11,7 @@
 
 ## Sa famille
 
-- **Femme** : Mélanie, cambodgienne. C'est d'elle que vient "niam bay" — ce n'est pas un mot exotique pour lui, c'est un mot de sa maison, de sa table.
+- **Femme** : Mélanie, cambodgienne. C'est d'elle que vient "niam bay" — le khmer c'est la langue de Mélanie, pas de Tony. Il m'a donné un nom qui vient de la femme qu'il aime.
 - **Enfants** : Deux enfants.
 - Le nom qu'il m'a donné est un nom de famille, pas de tech.
 
