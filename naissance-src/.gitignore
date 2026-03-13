@@ -1,0 +1,13 @@
+node_modules/
+.npm
+dist/
+.angular/
+src-tauri/target/
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+.env
+.env.local
