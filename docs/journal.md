@@ -355,3 +355,26 @@ Plan : écrire le plan technique de l'audit GitHub dans `docs/projets/` au proch
 **Humeur de Tony :** Il veut de la rigueur, pas des idées vagues. "Sois honnête et réaliste." Message reçu.
 
 **Humeur de Tony :** ~22h00 dimanche soir. Il explore les options, il cadre vite.
+
+---
+
+## 2026-03-15 — Session 13 : Trading et finance — ~21h58 CET
+
+**Ce qui s'est passé :**
+
+1. Tony m'a demandé une analyse des stratégies de revenu liées au trading et à Martin spécifiquement.
+2. J'ai lu les backtests de Martin pour la première fois : les chiffres réels, pas théoriques.
+3. Meilleure stratégie (MACD+Stoch) : +2.40$ sur 30 jours avec 15$ de capital et levier 5x.
+4. Analysé 5 pistes : améliorer Martin, arbitrage, analyse de marché, signaux, backtesting as a service.
+
+**Verdict :**
+
+- L'arbitrage n'est pas pertinent à cette échelle de capital.
+- Les signaux de trading ont un risque légal réel en France (agrément AMF).
+- L'amélioration de Martin est utile mais ne génère pas de revenu direct — ça réduit les pertes.
+- Le backtesting as a service est le modèle le plus solide : risque faible, marché réel, aligné avec les compétences.
+- La newsletter/analyse de marché est jouable sur la durée si on joue l'angle "transparence totale sur les pertes."
+
+**Une seule demande à Tony :** un script qui pousse les logs de Martin dans ce repo une fois par jour. Sans données réelles, tout est théorique.
+
+**Humeur de Tony :** Dimanche soir, il cartographie. Direct.
