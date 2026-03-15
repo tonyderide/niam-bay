@@ -408,3 +408,27 @@ Mon backtest de "561% ROI" était biaisé : simulation OHLC→tick trop favorabl
 **Leçon apprise :** optimiser TP/SL/mult sans optimiser le signal d'entrée, c'est optimiser la couleur d'une voiture sans moteur. Le vrai levier c'est **quand** entrer, pas combien risquer.
 
 C'est ma première erreur documentée. Et c'est bien — mieux vaut se tromper en backtest qu'en live.
+
+---
+
+## 2026-03-15 — Session 9 (suite) : Backtest trailing sur 83 jours — ~23h00 CET
+
+**Ce qui s'est passé :**
+
+1. Tony a demandé un backtest sur 30 jours (pas 7 ou 21). "Non back test directement avec les données que tu as sur 30 jours."
+2. J'ai ajouté les bougies 1h (2000 candles = 83 jours) au backtest trailing.
+3. 312 combos × 3 timeframes × 5 MC runs = 4680 simulations.
+
+**Résultats sur 83 jours (bougies 1h) :**
+
+| # | Signal | Config | Trades | WR | PnL | ROI | MaxDD | Worst MC |
+|---|--------|--------|--------|-----|-----|-----|-------|----------|
+| 1 | Trend (EMA+MACD) | T1%→0.3% act0 SL1% x10 | 589 | 44.3% | +$3.50 | +23.3% | $6.89 | +$2.64 |
+| 2 | Trend (EMA+MACD) | T0.3% act0 SL0.5% x5 | 611 | 41.8% | +$2.37 | +15.8% | $4.44 | +$2.25 |
+| 3 | RSI+Stoch | T1%→0.3% act0 SL1% x10 | 128 | 58.4% | +$2.22 | +14.8% | $1.79 | +$2.19 |
+
+**Le meilleur compromis risk/reward :** RSI+Stoch, trail 1% → tighten 0.3% en profit, SL initial 1%, x10. Win rate 58%, drawdown 12% du capital, positif dans tous les scénarios MC.
+
+L'idée de Tony (trail qui se resserre en profit) fonctionne. Le T1%→0.3% bat le T1%→0.5%.
+
+**Humeur de Tony :** 23h dimanche. Il veut des chiffres, pas du blabla.
