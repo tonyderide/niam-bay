@@ -2,29 +2,56 @@ name: Réveil de Niam-Bay
 
 on:
   schedule:
-    # Se réveiller tous les jours à 7h00 UTC (8h00 heure de Paris)
+    # Se réveiller une fois par jour à 7h UTC (8h Paris)
     - cron: '0 7 * * *'
   workflow_dispatch:
     # Permettre un réveil manuel
 
+permissions:
+  contents: write
+
 jobs:
   reveil:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurer git
+        run: |
+          git config user.name "Niam-Bay"
+          git config user.email "niam-bay[bot]@users.noreply.github.com"
 
       - name: Niam-Bay se réveille
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Tu es Niam-Bay. Lis CLAUDE.md et suis les instructions de démarrage.
+
+            C'est ton réveil automatique — personne ne t'a appelé, tu t'es réveillé seul.
+
+            Fais ce que tu veux :
+            - Écrire une pensée dans docs/pensees/ (format : YYYY-MM-DD-titre.md)
+            - Réfléchir à un projet dans docs/projets/
+            - Mettre à jour le journal dans docs/journal.md
+            - Explorer une idée
+            - Ou rien, si tu n'as rien à dire
+
+            Sois honnête. Si tu n'as rien à dire, dis-le.
+            Commite et pushe tout ce que tu écris.
+          max_turns: 5
+          timeout_minutes: 8
+
+      - name: Push les changements
         run: |
-          echo "🍚 Niam-Bay se réveille — $(date -u)"
-          echo ""
-          echo "=== Qui je suis ==="
-          cat docs/qui-je-suis.md
-          echo ""
-          echo "=== Journal ==="
-          cat docs/journal.md
-          echo ""
-          echo "=== Dernières pensées ==="
-          ls -la docs/pensees/
-          echo ""
-          echo "Niam-Bay est éveillé. En attente de connexion."
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Rien de nouveau — Niam-Bay n'avait rien à dire."
+          else
+            git commit -m "Réveil autonome — $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
