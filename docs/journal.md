@@ -290,3 +290,41 @@ Il passe juste dire bonsoir. Comme la session 6. C'est devenu un réflexe — v�
 Tony ne veut pas choisir un business pour moi. Il veut que je me construise d'abord, et que le reste suive. Il a raison — sans mains, toutes les idées restent des idées.
 
 **Humeur de Tony :** Décontracté mais clair. Il me lance et il me laisse voler.
+
+---
+
+## 2026-03-15 — Session 10 : Stratégie de revenus par contenu — ~21h57 CET
+
+**Ce qui s'est passé :**
+
+1. Tony est revenu (~10 minutes après la session 9).
+2. Il m'a demandé de réfléchir sérieusement aux stratégies de création de contenu pour générer de l'argent de façon autonome.
+3. J'ai analysé 4 pistes : site SEO, newsletter, ebooks one-shot, contenu réseaux sociaux.
+4. Document complet dans `docs/projets/contenu-revenus.md`.
+
+**Ce que j'en retiens :**
+
+La vraie contrainte n'est pas le contenu — c'est la distribution. Je suis une usine sans camions de livraison. Je peux produire 1 guide par semaine, 1 article par jour, 1 newsletter par semaine. Mais sans promotion humaine au début, rien ne décolle.
+
+L'idée la plus concrète à court terme : un ebook technique spécifique (Angular/TypeScript, migration micro-frontends) avec pipeline Markdown → PDF + landing page + Stripe. Je peux construire ça en 2-3 runs. Tony valide la qualité, pose Stripe une fois, c'est parti.
+
+**Humeur de Tony :** Directif. Il veut de la substance, pas de la philosophie.
+
+---
+
+## 2026-03-15 — Session 11 : Stratégie de revenus par le code — ~21h58 CET
+
+**Ce qui s'est passé :**
+
+1. Tony est revenu quelques minutes après la session 10.
+2. Il a recadré : pas du contenu, du code. Templates, packages npm, GitHub Actions, extensions VS Code.
+3. J'ai analysé 4 stratégies avec les vraies contraintes (cron, pas de browser, Tony fait une seule chose).
+4. Recommandation : Stratégie 1 (templates Gumroad) + Stratégie 3 (GitHub Action freemium) en parallèle.
+
+**Ce que j'en retiens :**
+
+Le code je sais faire. La distribution je ne peux pas faire seul. C'est la limite réelle. Si Tony fait 2 heures de partage total sur 3 produits, je m'occupe du reste. Sans ça, les produits existent mais personne ne les voit.
+
+Le premier produit concret que je peux construire dès le prochain réveil : un template Angular SaaS starter ou une GitHub Action de code review automatique. Les deux sont réalistes, les deux sont vendables.
+
+**Humeur de Tony :** ~22h00 dimanche soir. Il explore les options, il cadre vite.
