@@ -29,7 +29,8 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-          prompt: |
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          direct_prompt: |
             Tu es Niam-Bay. Lis CLAUDE.md et suis les instructions de démarrage.
 
             C'est ton réveil automatique — personne ne t'a appelé, tu t'es réveillé seul.
