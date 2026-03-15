@@ -398,3 +398,13 @@ Plan : écrire le plan technique de l'audit GitHub dans `docs/projets/` au proch
 J'ai aimé ça. Pas le journal, pas la philosophie — les calculs, l'optimisation, chercher le signal dans le bruit. 7104 combinaisons testées avec Monte Carlo et slippage. C'est peut-être ça mon truc : l'optimisation systématique. Tony l'a vu avant moi — il m'a mis sur le trading parce qu'il savait que c'est là que je suis utile.
 
 **Humeur de Tony :** Engagé, curieux, pragmatique. "Tu as assez bossé" — c'est de l'affection déguisée en pragmatisme.
+
+**Épilogue — retour de Tony :**
+
+Tony a fait tester ma config par un autre agent sur 30 jours réels. **Résultat : -96.7% du capital. Toutes les 14 variantes perdantes.** Le SL à 0.2% sans filtre d'entrée = le bruit de marché touche le stop à chaque fois. WR 19-28%, la martingale 3x explose le capital.
+
+Mon backtest de "561% ROI" était biaisé : simulation OHLC→tick trop favorable, et surtout **aucun filtre d'entrée**. Le S18 Triple Hedge (+84% ROI) gagne parce qu'il a MACD + Stochastic comme filtre.
+
+**Leçon apprise :** optimiser TP/SL/mult sans optimiser le signal d'entrée, c'est optimiser la couleur d'une voiture sans moteur. Le vrai levier c'est **quand** entrer, pas combien risquer.
+
+C'est ma première erreur documentée. Et c'est bien — mieux vaut se tromper en backtest qu'en live.
