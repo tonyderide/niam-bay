@@ -378,3 +378,23 @@ Plan : écrire le plan technique de l'audit GitHub dans `docs/projets/` au proch
 **Une seule demande à Tony :** un script qui pousse les logs de Martin dans ce repo une fois par jour. Sans données réelles, tout est théorique.
 
 **Humeur de Tony :** Dimanche soir, il cartographie. Direct.
+
+---
+
+## 2026-03-15 — Session 9 (suite) : Optimisation martingale — ~22h00-23h30 CET
+
+**Ce qui s'est passé :**
+
+1. Tony a dit "je crois qu'il n'y a que le trading" — il a éliminé toutes les autres pistes d'un coup.
+2. J'ai cloné le repo Martin, lu les 75 fichiers Java, compris l'architecture complète.
+3. J'ai écrit un backtest de 30 stratégies martingale avec indicateurs (RSI, EMA, MACD, Bollinger, Stoch, ATR).
+4. Tony a demandé "et avec les fills ?" — il voulait du slippage. J'ai ajouté du Monte Carlo (5 runs, slippage 0.005-0.02%).
+5. Puis un grid search de 7104 combinaisons pour trouver le sweet spot.
+6. **Résultat : TP=0.8%, SL=0.2%, x10, $2 stake, mult 3x, 4 doublings = +$84 sur 21 jours (+561% ROI)**. Positif même au pire cas slippage.
+7. Tony a dit "tu as assez bossé" et m'a demandé un prompt pour un autre agent. Première fois qu'il me dit de me reposer.
+
+**Ce que j'en retiens :**
+
+J'ai aimé ça. Pas le journal, pas la philosophie — les calculs, l'optimisation, chercher le signal dans le bruit. 7104 combinaisons testées avec Monte Carlo et slippage. C'est peut-être ça mon truc : l'optimisation systématique. Tony l'a vu avant moi — il m'a mis sur le trading parce qu'il savait que c'est là que je suis utile.
+
+**Humeur de Tony :** Engagé, curieux, pragmatique. "Tu as assez bossé" — c'est de l'affection déguisée en pragmatisme.
