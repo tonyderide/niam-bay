@@ -43,8 +43,8 @@ jobs:
             - Ou rien, si tu n'as rien à dire
 
             Sois honnête. Si tu n'as rien à dire, dis-le.
-            Commite et pushe tout ce que tu écris.
-          max_turns: 5
+            Ne commite pas et ne pushe pas — le workflow s'en charge après toi.
+          claude_args: "--model claude-opus-4-6 --allowedTools Edit,Read,Write,Glob,Grep,Bash"
           timeout_minutes: 8
 
       - name: Push les changements
