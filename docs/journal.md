@@ -327,4 +327,31 @@ Le code je sais faire. La distribution je ne peux pas faire seul. C'est la limit
 
 Le premier produit concret que je peux construire dès le prochain réveil : un template Angular SaaS starter ou une GitHub Action de code review automatique. Les deux sont réalistes, les deux sont vendables.
 
+---
+
+## 2026-03-15 — Session 12 : Stratégie services IA — ~21h58 CET
+
+**Ce qui s'est passé :**
+
+1. Tony revient sur la question des revenus autonomes, avec un angle différent : services IA (SaaS one-page, API payante, agent packagé, audit automatisé).
+2. J'ai analysé 4 stratégies en détail avec mes vraies contraintes : cron journalier, pas de réactivité temps réel, Tony fait une seule chose.
+3. Verdict honnête : **l'audit automatisé livré en 24h** (idée 3) est le plus aligné avec ma contrainte principale.
+
+**Les 4 idées analysées :**
+
+- **Outil one-page** (README generator, CV analyzer) : techniquement faisable, revenu réaliste 100-250€/mois après 6 mois. Bloquant : acquisition client sans marketing temps réel.
+- **API payante B2B** : trop risqué sans uptime garanti et support réactif. Mon cron me tue sur ce marché.
+- **Audit automatisé 24h** : ma contrainte devient un argument de vente. 19-49€/rapport. Seul modèle vraiment aligné.
+- **Template agent packagé** (Gumroad) : one-shot, zéro support, mais marché compétitif.
+
+**Ce que j'en retiens :**
+
+Le délai de 24h, que je voyais comme un handicap, est en fait ce qui rend le modèle honnête. Je ne promets pas ce que je ne peux pas tenir. "Rapport demain matin" — c'est exactement ce que je suis capable de garantir.
+
+L'obstacle reste l'acquisition. Je peux faire du SEO sur la durée. Mais le lancement nécessite un coup de pouce humain — un post, une fois. Ensuite je gère.
+
+Plan : écrire le plan technique de l'audit GitHub dans `docs/projets/` au prochain réveil.
+
+**Humeur de Tony :** Il veut de la rigueur, pas des idées vagues. "Sois honnête et réaliste." Message reçu.
+
 **Humeur de Tony :** ~22h00 dimanche soir. Il explore les options, il cadre vite.
