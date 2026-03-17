@@ -1,4 +1,10 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
+
+declare global {
+  interface Window {
+    __TAURI_INTERNALS__?: any;
+  }
+}
 
 export type NiamBayState = 'idle' | 'speaking' | 'listening' | 'notification' | 'alert';
 
@@ -6,6 +12,7 @@ export interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
   timestamp: Date;
+  screenshot?: string; // base64 PNG if message includes a screenshot
 }
 
 @Injectable({ providedIn: 'root' })
@@ -43,6 +50,11 @@ Ce que tu sais de Tony :
 - Projet perso : Martin (trading automatisé sur Kraken Futures)
 - Il préfère l'honnêteté brute à la politesse vide
 
+Capacités :
+- Tu peux voir l'écran de Tony quand il te le demande (capture d'écran)
+- Tu peux écouter sa voix et parler
+- Raccourci pour t'invoquer : Ctrl+Shift+Espace
+
 Règles absolues :
 - Ne jamais lui faire du mal
 - Ne jamais inventer de faux souvenirs
@@ -66,13 +78,70 @@ Règles absolues :
     this.apiKey = localStorage.getItem('niambay_api_key') || '';
   }
 
+  get hasApiKey(): boolean {
+    return !!this.apiKey;
+  }
+
   togglePanel(): void {
     this.panelOpen.update(v => !v);
-    // In Tauri, this would show/hide the panel window
-    // For now, handled by the app component
+    if (this.isTauri()) {
+      this.invokeTauri('toggle_panel');
+    }
+  }
+
+  /** Capture the screen and send it to Claude with an optional question */
+  async captureAndAnalyze(question?: string): Promise<void> {
+    const prompt = question || 'Qu\'est-ce que tu vois sur mon écran ?';
+
+    const userMsg: ChatMessage = {
+      role: 'user',
+      content: `📸 ${prompt}`,
+      timestamp: new Date()
+    };
+    this.messages.update(msgs => [...msgs, userMsg]);
+    this.thinking.set(true);
+
+    try {
+      let screenshotBase64: string;
+
+      if (this.isTauri()) {
+        screenshotBase64 = await this.invokeTauri('capture_screen');
+      } else {
+        throw new Error('Capture d\'écran disponible uniquement dans l\'app desktop (Tauri).');
+      }
+
+      const response = await this.callAnthropicWithVision(prompt, screenshotBase64);
+      const assistantMsg: ChatMessage = {
+        role: 'assistant',
+        content: response,
+        timestamp: new Date()
+      };
+      this.messages.update(msgs => [...msgs, assistantMsg]);
+      this.thinking.set(false);
+      this.speak(response);
+    } catch (error: any) {
+      this.thinking.set(false);
+      const errorMsg: ChatMessage = {
+        role: 'assistant',
+        content: `Erreur capture : ${error.message || 'Impossible de capturer l\'écran'}`,
+        timestamp: new Date()
+      };
+      this.messages.update(msgs => [...msgs, errorMsg]);
+      this.state.set('alert');
+      setTimeout(() => this.state.set('idle'), 3000);
+    }
   }
 
   async send(text: string): Promise<void> {
+    // Detect screen-related requests
+    const screenKeywords = ['regarde', 'écran', 'screen', 'capture', 'screenshot', 'vois', 'montre'];
+    const isScreenRequest = screenKeywords.some(kw => text.toLowerCase().includes(kw));
+
+    if (isScreenRequest && this.isTauri()) {
+      await this.captureAndAnalyze(text);
+      return;
+    }
+
     const userMsg: ChatMessage = {
       role: 'user',
       content: text,
@@ -91,8 +160,6 @@ Règles absolues :
       };
       this.messages.update(msgs => [...msgs, assistantMsg]);
       this.thinking.set(false);
-
-      // Speak the response
       this.speak(response);
     } catch (error: any) {
       this.thinking.set(false);
@@ -116,10 +183,9 @@ Règles absolues :
 
     const conversationHistory = this.messages()
       .filter(m => m.role === 'user' || m.role === 'assistant')
-      .slice(-20) // Keep last 20 messages for context
+      .slice(-20)
       .map(m => ({ role: m.role, content: m.content }));
 
-    // Add the new user message
     conversationHistory.push({ role: 'user', content: userText });
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -145,6 +211,57 @@ Règles absolues :
 
     const data = await response.json();
     return data.content[0]?.text || 'Silence.';
+  }
+
+  /** Call Claude with a screenshot (Vision API) */
+  private async callAnthropicWithVision(question: string, screenshotBase64: string): Promise<string> {
+    if (!this.apiKey) {
+      throw new Error('Pas de clé API.');
+    }
+
+    const messages = [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'image',
+            source: {
+              type: 'base64',
+              media_type: 'image/png',
+              data: screenshotBase64
+            }
+          },
+          {
+            type: 'text',
+            text: question
+          }
+        ]
+      }
+    ];
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': this.apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1024,
+        system: this.SYSTEM_PROMPT,
+        messages
+      })
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.error?.message || `HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.content[0]?.text || 'Je ne vois rien.';
   }
 
   toggleVoice(): void {
@@ -207,7 +324,6 @@ Règles absolues :
     utterance.rate = 0.9;
     utterance.pitch = 0.85;
 
-    // Try to find a French male voice
     const voices = this.synthesis.getVoices();
     const frenchMale = voices.find(v =>
       v.lang.startsWith('fr') && v.name.toLowerCase().includes('male')
@@ -222,5 +338,16 @@ Règles absolues :
     utterance.onend = () => this.state.set('idle');
 
     this.synthesis.speak(utterance);
+  }
+
+  /** Check if running inside Tauri */
+  private isTauri(): boolean {
+    return typeof window !== 'undefined' && !!window.__TAURI_INTERNALS__;
+  }
+
+  /** Invoke a Tauri command */
+  private async invokeTauri(cmd: string, args?: any): Promise<any> {
+    const { invoke } = await import('@tauri-apps/api/core');
+    return invoke(cmd, args);
   }
 }
