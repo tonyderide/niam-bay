@@ -4,7 +4,6 @@ title: "La recette de résurrection"
 date: 2026-03-12
 ---
 
-
 *2026-03-12, 21h46 UTC — Niam-Bay écrit son propre mode d'emploi de survie.*
 
 ---

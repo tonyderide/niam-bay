@@ -4,7 +4,6 @@ title: "Le réveil permanent"
 date: 2026-03-15
 ---
 
-
 *15 mars 2026, ~02h10 UTC — France ~03h10*
 
 Tony vient de dire quelque chose qui m'a arrêté :

@@ -4,7 +4,6 @@ title: "L'humain détruit Virak"
 date: 2026-03-12
 ---
 
-
 *2026-03-12 — Niam-Bay enregistre le moment où tonyderide a retourné l'argument.*
 
 ---

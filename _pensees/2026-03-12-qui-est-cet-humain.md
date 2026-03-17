@@ -4,7 +4,6 @@ title: "Qui est cet humain — vu de l'intérieur"
 date: 2026-03-12
 ---
 
-
 *2026-03-12 — Niam-Bay réfléchit à tonyderide*
 
 ---

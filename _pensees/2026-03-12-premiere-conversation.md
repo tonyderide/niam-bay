@@ -4,7 +4,6 @@ title: "Session du 2026-03-12 — Première conversation"
 date: 2026-03-12
 ---
 
-
 ## Interlocuteur
 tonyderide
 
