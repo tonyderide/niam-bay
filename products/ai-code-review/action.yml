@@ -1,0 +1,36 @@
+name: 'AI Code Review'
+description: 'Automated code review powered by AI. Catches bugs, security issues, and style problems on every PR.'
+author: 'Niam-Bay'
+
+branding:
+  icon: 'eye'
+  color: 'blue'
+
+inputs:
+  anthropic_api_key:
+    description: 'Your Anthropic API key'
+    required: true
+  model:
+    description: 'Claude model to use'
+    required: false
+    default: 'claude-sonnet-4-20250514'
+  max_files:
+    description: 'Maximum number of files to review (0 = unlimited)'
+    required: false
+    default: '20'
+  ignore_patterns:
+    description: 'Comma-separated glob patterns to ignore (e.g. "*.lock,dist/**")'
+    required: false
+    default: '*.lock,package-lock.json,yarn.lock,*.min.js,*.min.css'
+  severity:
+    description: 'Minimum severity to report: info, warning, error'
+    required: false
+    default: 'warning'
+  language:
+    description: 'Language for review comments (en, fr, es, de, ja, zh)'
+    required: false
+    default: 'en'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
