@@ -1,7 +1,7 @@
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD as BASE64;
 use screenshots::Screen;
-use tauri::Emitter;
+use tauri::{Emitter, Manager};
 
 /// Capture the primary screen and return it as a base64-encoded PNG
 #[tauri::command]
@@ -9,7 +9,10 @@ fn capture_screen() -> Result<String, String> {
     let screens = Screen::all().map_err(|e| format!("Cannot list screens: {e}"))?;
     let screen = screens.into_iter().next().ok_or("No screen found")?;
     let image = screen.capture().map_err(|e| format!("Capture failed: {e}"))?;
-    let png_bytes = image.to_png(None).map_err(|e| format!("PNG encode failed: {e}"))?;
+    let mut png_bytes: Vec<u8> = Vec::new();
+    image::DynamicImage::ImageRgba8(image)
+        .write_to(&mut std::io::Cursor::new(&mut png_bytes), image::ImageFormat::Png)
+        .map_err(|e| format!("PNG encode failed: {e}"))?;
     Ok(BASE64.encode(&png_bytes))
 }
 
@@ -17,11 +20,11 @@ fn capture_screen() -> Result<String, String> {
 #[tauri::command]
 fn toggle_panel(app: tauri::AppHandle) -> Result<(), String> {
     if let Some(panel) = app.get_webview_window("panel") {
-        if panel.is_visible().unwrap_or(false) {
-            panel.hide().map_err(|e| e.to_string())?;
+        if panel.is_visible().map_err(|e: tauri::Error| e.to_string())? {
+            panel.hide().map_err(|e: tauri::Error| e.to_string())?;
         } else {
-            panel.show().map_err(|e| e.to_string())?;
-            panel.set_focus().map_err(|e| e.to_string())?;
+            panel.show().map_err(|e: tauri::Error| e.to_string())?;
+            panel.set_focus().map_err(|e: tauri::Error| e.to_string())?;
         }
     }
     Ok(())
