@@ -1,11 +1,12 @@
 import { Component, inject, signal, effect, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NiamBayService, ChatMessage } from '../services/niambay.service';
+import { DecimalPipe } from '@angular/common';
+import { NiamBayService, ChatMessage, MartinGrid } from '../services/niambay.service';
 
 @Component({
   selector: 'app-panel',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DecimalPipe],
   template: `
     <div class="panel">
       <div class="header">
@@ -15,6 +16,19 @@ import { NiamBayService, ChatMessage } from '../services/niambay.service';
         </div>
         <button class="close-btn" (click)="close()">&#x2715;</button>
       </div>
+
+      @if (martinGrid()) {
+        <div class="martin-bar" [class.active]="martinGrid()!.active">
+          <span class="martin-icon">⬡</span>
+          <span>ETH {{ martinGrid()!.center | number:'1.0-0' }}$</span>
+          <span class="martin-sep">·</span>
+          <span>{{ martinGrid()!.trips }} trips</span>
+          <span class="martin-sep">·</span>
+          <span [class.positive]="martinGrid()!.profit >= 0" [class.negative]="martinGrid()!.profit < 0">
+            {{ martinGrid()!.profit >= 0 ? '+' : '' }}{{ martinGrid()!.profit | number:'1.2-2' }}$
+          </span>
+        </div>
+      }
 
       <div class="messages" #messagesContainer>
         @for (msg of messages(); track $index) {
@@ -83,6 +97,24 @@ import { NiamBayService, ChatMessage } from '../services/niambay.service';
       font-family: 'Inter', system-ui, sans-serif;
       color: #e2e8f0;
     }
+
+    .martin-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 18px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      color: #475569;
+      border-bottom: 1px solid rgba(59, 130, 246, 0.08);
+      letter-spacing: 0.03em;
+    }
+
+    .martin-bar.active { color: #64748b; }
+    .martin-bar.active .martin-icon { color: #3b82f6; }
+    .martin-sep { opacity: 0.3; }
+    .positive { color: #34d399; }
+    .negative { color: #f87171; }
 
     .header {
       display: flex;
@@ -275,6 +307,7 @@ export class PanelComponent {
   protected readonly messages = this.niambay.messages;
   protected readonly thinking = this.niambay.thinking;
   protected readonly listening = this.niambay.listening;
+  protected readonly martinGrid = this.niambay.martinGrid;
 
   constructor() {
     effect(() => {

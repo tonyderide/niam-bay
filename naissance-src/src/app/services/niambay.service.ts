@@ -15,6 +15,13 @@ export interface ChatMessage {
   screenshot?: string; // base64 PNG if message includes a screenshot
 }
 
+export interface MartinGrid {
+  active: boolean;
+  trips: number;
+  profit: number;
+  center: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class NiamBayService {
   readonly state = signal<NiamBayState>('idle');
@@ -22,6 +29,7 @@ export class NiamBayService {
   readonly thinking = signal(false);
   readonly listening = signal(false);
   readonly panelOpen = signal(false);
+  readonly martinGrid = signal<MartinGrid | null>(null);
 
   private recognition: any = null;
   private synthesis = typeof window !== 'undefined' ? window.speechSynthesis : null;
@@ -60,6 +68,31 @@ JAMAIS : "Eh bien", "Ha !", "Je vais devoir te corriger", blabla Hollywood.`;
     if (this.isTauri()) {
       this.invokeTauri('load_history').then((h: string) => {
         this.historyContext = h;
+      }).catch(() => {});
+
+      // Listen to Martin grid updates
+      import('@tauri-apps/api/event').then(({ listen }) => {
+        listen<MartinGrid>('martin-update', (e) => {
+          this.martinGrid.set(e.payload);
+        });
+        listen<{ new_trips: number; total_trips: number; profit: number }>('martin-roundtrip', (e) => {
+          const p = e.payload;
+          const msg = `Round-trip ETH ${p.new_trips > 1 ? '×' + p.new_trips + ' ' : ''}— profit total : ${p.profit.toFixed(2)}$`;
+          this.messages.update(msgs => [...msgs, {
+            role: 'assistant', content: `⬡ ${msg}`, timestamp: new Date()
+          }]);
+          this.state.set('notification');
+          this.speak(msg);
+          setTimeout(() => this.state.set('idle'), 5000);
+        });
+      });
+
+      // Initial Martin check
+      this.invokeTauri('check_martin').then((json: string) => {
+        try {
+          const d = JSON.parse(json);
+          this.martinGrid.set({ active: d.active, trips: d.completedRoundTrips, profit: d.totalProfit, center: d.centerPrice });
+        } catch {}
       }).catch(() => {});
     }
   }

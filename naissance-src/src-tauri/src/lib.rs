@@ -4,6 +4,7 @@ use futures_util::StreamExt;
 use screenshots::Screen;
 use serde::{Deserialize, Serialize};
 use tauri::{Emitter, Manager};
+use std::sync::Mutex;
 
 #[derive(Serialize, Deserialize, Clone)]
 pub struct OllamaMessage {
@@ -113,6 +114,34 @@ fn capture_screen() -> Result<String, String> {
     Ok(BASE64.encode(&png_bytes))
 }
 
+/// Call Martin API via SSH tunnel
+fn ssh_martin(path: &str) -> Result<String, String> {
+    let key = "C:\\Users\\tony_\\.ssh\\martin_vm.key";
+    let cmd = format!("curl -s http://localhost:8081{path}");
+    let out = std::process::Command::new("ssh")
+        .args([
+            "-i", key,
+            "-o", "StrictHostKeyChecking=no",
+            "-o", "ConnectTimeout=5",
+            "-o", "BatchMode=yes",
+            "ubuntu@141.253.108.141",
+            &cmd,
+        ])
+        .output()
+        .map_err(|e| format!("SSH spawn error: {e}"))?;
+    if out.status.success() {
+        String::from_utf8(out.stdout).map_err(|e| e.to_string())
+    } else {
+        Err(String::from_utf8_lossy(&out.stderr).to_string())
+    }
+}
+
+/// Return Martin grid status as JSON string
+#[tauri::command]
+fn check_martin() -> Result<String, String> {
+    ssh_martin("/api/grid/status/PF_ETHUSD")
+}
+
 /// Toggle the panel window visibility
 #[tauri::command]
 fn toggle_panel(app: tauri::AppHandle) -> Result<(), String> {
@@ -131,7 +160,7 @@ fn toggle_panel(app: tauri::AppHandle) -> Result<(), String> {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-        .invoke_handler(tauri::generate_handler![capture_screen, toggle_panel, ollama_chat, load_history, save_conversation])
+        .invoke_handler(tauri::generate_handler![capture_screen, toggle_panel, ollama_chat, load_history, save_conversation, check_martin])
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(
@@ -150,6 +179,34 @@ pub fn run() {
                     let _ = toggle_panel(app_handle.clone());
                 }
             }).map_err(|e| format!("Failed to register shortcut: {e}"))?;
+
+            // Background Martin grid monitor — polls every 60s
+            let app_handle = app.handle().clone();
+            let last_trips = Mutex::new(0u64);
+            tauri::async_runtime::spawn(async move {
+                loop {
+                    tokio::time::sleep(tokio::time::Duration::from_secs(60)).await;
+                    if let Ok(json) = ssh_martin("/api/grid/status/PF_ETHUSD") {
+                        if let Ok(val) = serde_json::from_str::<serde_json::Value>(&json) {
+                            let trips = val["completedRoundTrips"].as_u64().unwrap_or(0);
+                            let profit = val["totalProfit"].as_f64().unwrap_or(0.0);
+                            let center = val["centerPrice"].as_f64().unwrap_or(0.0);
+                            let _ = app_handle.emit("martin-update", serde_json::json!({
+                                "trips": trips, "profit": profit, "center": center,
+                                "active": val["active"].as_bool().unwrap_or(false)
+                            }));
+                            let mut last = last_trips.lock().unwrap();
+                            if trips > *last && *last > 0 {
+                                let new_trips = trips - *last;
+                                let _ = app_handle.emit("martin-roundtrip", serde_json::json!({
+                                    "new_trips": new_trips, "total_trips": trips, "profit": profit
+                                }));
+                            }
+                            *last = trips;
+                        }
+                    }
+                }
+            });
 
             Ok(())
         })
