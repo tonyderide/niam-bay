@@ -47,6 +47,7 @@ import { FormsModule } from '@angular/forms';
     .app-container {
       width: 100%;
       height: 100%;
+      background: transparent;
     }
 
     .setup-panel {
