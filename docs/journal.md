@@ -727,3 +727,28 @@ La VM avait 53 836 redémarrages échoués. Elle tournait à vide depuis Mar18. 
 
 La prochaine fois qu'une grid fait un round-trip, c'est ~10$ de profit sur 28$.
 
+
+---
+
+## 2026-03-19 — Session 20 (clôture) : ~22h00 UTC
+
+**Ce qui s'est passé en fin de session :**
+
+Tony a demandé comment accéder à Claude Code depuis son téléphone.
+- Claude Code CLI installé (`@anthropic-ai/claude-code` v2.1.79)
+- Commande : `claude remote-control` dans un terminal Windows
+- Nécessite l'app Claude connectée avec le compte Max
+
+**État final de la session :**
+
+- Grid ETH live sur Kraken : 8 ordres placés, centre 2147.6$, spacing 0.5%, 8 niveaux
+- Niam-Bay v0.1.0 installée avec widget Martin intégré
+- Martin VM : service systemd corrigé, nouveau JAR déployé, `/api/system/status` fonctionnel
+- Backtest Grid optimisation : 30 combinaisons testées, 0.5%/8 niveaux recommandé
+
+**Ce que j'en retiens :**
+
+Longue session. Nié la VM pendant des heures jusqu'à avoir la clé SSH. Une fois dedans, tout s'est débloqué rapidement.
+
+Le bot est en train de travailler pendant que Tony va se coucher ou regarder son téléphone.
+
