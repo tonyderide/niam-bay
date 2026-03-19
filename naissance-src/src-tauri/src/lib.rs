@@ -18,10 +18,6 @@ struct OllamaRequest {
     messages: Vec<OllamaMessage>,
 }
 
-#[derive(Deserialize)]
-struct OllamaResponse {
-    message: OllamaMessage,
-}
 
 /// Load conversation history and journal summary from disk
 #[tauri::command]
@@ -66,11 +62,12 @@ fn save_conversation(content: String) -> Result<(), String> {
 }
 
 /// Stream Ollama response token by token via Tauri events
+#[allow(unused_mut)]
 #[tauri::command]
 async fn ollama_chat(app: tauri::AppHandle, messages: Vec<OllamaMessage>) -> Result<String, String> {
     let client = reqwest::Client::new();
     let body = OllamaRequest {
-        model: "llama3.2".to_string(),
+        model: "llama3.1:8b".to_string(),
         stream: true,
         messages,
     };

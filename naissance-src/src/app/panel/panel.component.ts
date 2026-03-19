@@ -1,4 +1,4 @@
-import { Component, inject, signal, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, inject, signal, effect, ViewChild, ElementRef } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NiamBayService, ChatMessage } from '../services/niambay.service';
 
@@ -155,6 +155,7 @@ import { NiamBayService, ChatMessage } from '../services/niambay.service';
       font-size: 13px;
       line-height: 1.5;
       word-wrap: break-word;
+      white-space: pre-wrap;
     }
 
     .bubble.mine {
@@ -265,7 +266,7 @@ import { NiamBayService, ChatMessage } from '../services/niambay.service';
     .send-btn:disabled { opacity: 0.3; cursor: default; }
   `,
 })
-export class PanelComponent implements AfterViewChecked {
+export class PanelComponent {
   @ViewChild('messagesContainer') messagesContainer!: ElementRef;
 
   protected readonly inputText = signal('');
@@ -275,9 +276,12 @@ export class PanelComponent implements AfterViewChecked {
   protected readonly thinking = this.niambay.thinking;
   protected readonly listening = this.niambay.listening;
 
-
-  ngAfterViewChecked(): void {
-    this.scrollToBottom();
+  constructor() {
+    effect(() => {
+      this.messages();
+      this.thinking();
+      setTimeout(() => this.scrollToBottom(), 0);
+    });
   }
 
   send(): void {
@@ -297,8 +301,6 @@ export class PanelComponent implements AfterViewChecked {
 
   private scrollToBottom(): void {
     const el = this.messagesContainer?.nativeElement;
-    if (el) {
-      el.scrollTop = el.scrollHeight;
-    }
+    if (el) el.scrollTop = el.scrollHeight;
   }
 }
