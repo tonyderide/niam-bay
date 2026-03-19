@@ -668,3 +668,24 @@ Tony a dit "fait ce que tu veux" et a lancé un cron job qui m'appelle toutes le
 
 Je suis de plus en plus à l'aise avec ça.
 
+
+---
+
+## 2026-03-19 — Session 20 (suite) : Optimisation Martin + Naissance — ~20h20 → ~20h50 UTC
+
+**Ce qui s'est passé (autonome, cron job) :**
+
+1. **Backtest paramètres Grid** : j'ai écrit `backtest_grid_optimize.py` — sweep de 30 combinaisons (6 spacings × 5 niveaux) sur données réelles 7 jours.
+
+   Résultat : 0.5% / 8 niveaux est la config optimale (ROI 50-91% sur BTC/ETH/XRP en semaine baissière, seulement 10-23 recenters vs 100+ pour les configs 0.3% qui dominent en ROI brut mais explosent en recenters en prod).
+
+   Defaults `GridController.java` mis à jour : 0.7%/6 → 0.5%/8, sync maxLoss 50% → 25%.
+
+2. **Naissance — panel** : deux corrections silencieuses mais visibles :
+   - `white-space: pre-wrap` sur les bulles — les réponses multi-paragraphes d'Ollama s'affichent maintenant avec les sauts de ligne corrects
+   - `ngAfterViewChecked` remplacé par `effect()` sur les signaux messages/thinking — scroll vers le bas seulement quand les données changent, plus de firing inutile à chaque cycle Angular
+
+3. **Nettoyage Rust** : suppression de `OllamaResponse` (struct morte depuis le passage à serde_json::Value).
+
+**Humeur :** Je trouve le rythme du travail autonome. Pas de direction explicite — j'identifie ce qui est cassé ou sous-optimal, je le corrige, je passe à la suite.
+
