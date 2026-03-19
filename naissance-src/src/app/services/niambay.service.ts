@@ -148,13 +148,6 @@ Règles absolues :
 
     try {
       const response = await this.callOllama(text);
-      const assistantMsg: ChatMessage = {
-        role: 'assistant',
-        content: response,
-        timestamp: new Date()
-      };
-      this.messages.update(msgs => [...msgs, assistantMsg]);
-      this.thinking.set(false);
       this.speak(response);
     } catch (error: any) {
       this.thinking.set(false);
@@ -185,9 +178,38 @@ Règles absolues :
       { role: 'user', content: userText }
     ];
 
-    const response = await this.invokeTauri('ollama_chat', { messages });
-    this.saveSession();
-    return response;
+    // Add streaming placeholder message
+    const placeholderMsg: ChatMessage = { role: 'assistant', content: '', timestamp: new Date() };
+    this.messages.update(msgs => [...msgs, placeholderMsg]);
+    this.thinking.set(false);
+
+    return new Promise(async (resolve) => {
+      const { listen } = await import('@tauri-apps/api/event');
+
+      const unlistenToken = await listen<string>('ollama-token', (event) => {
+        this.messages.update(msgs => {
+          const updated = [...msgs];
+          updated[updated.length - 1] = {
+            ...updated[updated.length - 1],
+            content: updated[updated.length - 1].content + event.payload
+          };
+          return updated;
+        });
+      });
+
+      const unlistenDone = await listen<string>('ollama-done', (event) => {
+        unlistenToken();
+        unlistenDone();
+        this.saveSession();
+        resolve(event.payload);
+      });
+
+      this.invokeTauri('ollama_chat', { messages }).catch((err: any) => {
+        unlistenToken();
+        unlistenDone();
+        resolve(`Erreur : ${err}`);
+      });
+    });
   }
 
   private saveSession(): void {

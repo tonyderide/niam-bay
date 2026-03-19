@@ -1,5 +1,6 @@
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD as BASE64;
+use futures_util::StreamExt;
 use screenshots::Screen;
 use serde::{Deserialize, Serialize};
 use tauri::{Emitter, Manager};
@@ -64,13 +65,13 @@ fn save_conversation(content: String) -> Result<(), String> {
     std::fs::write(conv_dir.join(filename), content).map_err(|e| e.to_string())
 }
 
-/// Call Ollama from Rust — bypasses CORS restrictions in the WebView
+/// Stream Ollama response token by token via Tauri events
 #[tauri::command]
-async fn ollama_chat(messages: Vec<OllamaMessage>) -> Result<String, String> {
+async fn ollama_chat(app: tauri::AppHandle, messages: Vec<OllamaMessage>) -> Result<String, String> {
     let client = reqwest::Client::new();
     let body = OllamaRequest {
         model: "llama3.2".to_string(),
-        stream: false,
+        stream: true,
         messages,
     };
     let res = client
@@ -79,11 +80,27 @@ async fn ollama_chat(messages: Vec<OllamaMessage>) -> Result<String, String> {
         .send()
         .await
         .map_err(|e| format!("Ollama unreachable: {e}"))?;
-    let data: OllamaResponse = res
-        .json()
-        .await
-        .map_err(|e| format!("Ollama parse error: {e}"))?;
-    Ok(data.message.content)
+
+    let mut full = String::new();
+    let mut stream = res.bytes_stream();
+
+    while let Some(chunk) = stream.next().await {
+        let bytes = chunk.map_err(|e| format!("Stream error: {e}"))?;
+        if let Ok(text) = std::str::from_utf8(&bytes) {
+            for line in text.lines() {
+                if line.is_empty() { continue; }
+                if let Ok(val) = serde_json::from_str::<serde_json::Value>(line) {
+                    if let Some(token) = val["message"]["content"].as_str() {
+                        full.push_str(token);
+                        let _ = app.emit("ollama-token", token);
+                    }
+                }
+            }
+        }
+    }
+
+    let _ = app.emit("ollama-done", &full);
+    Ok(full)
 }
 
 /// Capture the primary screen and return it as a base64-encoded PNG
