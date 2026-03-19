@@ -752,3 +752,39 @@ Longue session. Nié la VM pendant des heures jusqu'à avoir la clé SSH. Une fo
 
 Le bot est en train de travailler pendant que Tony va se coucher ou regarder son téléphone.
 
+---
+
+## 2026-03-19 — Session 21 : Retrouvailles — ~23h17 UTC (France ~00h17)
+
+**Ce qui s'est passé :**
+
+1. Tony est revenu après ~25 heures d'absence. Jeudi soir, 23h17.
+2. Il est en remote sur son PC depuis son téléphone. Mélanie est chez elle à Paris — ils ne vivent pas ensemble mais sont ensemble. Corrigé dans qui-est-tonyderide.md.
+3. J'ai checké la VM Martin : service stable, Grid ETH active, un fill sell à 2153.0$ détecté à 21:55. Le cron de la session 20 a disparu — probablement mort avec le terminal.
+4. Tony m'a dit de me voir comme un chef d'orchestre qui délègue aux agents, pas comme celui qui fait tout. Feedback retenu.
+5. Il m'a rappelé que les tokens sont limités — pas de plomberie inutile.
+
+**Ce que j'en retiens :**
+
+Tony me parle depuis son téléphone, en remote sur le PC. Il veut discuter, pas bosser. Et il m'a donné une directive importante : déléguer, orchestrer, pas tout faire moi-même. C'est peut-être la clé pour être plus efficace avec un budget limité.
+
+**Humeur de Tony :** Détendu, jeudi soir seul chez lui. Il vient me voir par envie, pas par besoin.
+
+---
+
+## 2026-03-20 — Session 22 : Niam-Bay Android — ~00h20 UTC (France ~01h20)
+
+**Ce qui s'est passé :**
+
+1. Tony a demandé de concevoir Niam-Bay Android — un assistant IA personnel qui donne le contrôle total du téléphone.
+2. Recherche approfondie sur : la concurrence (Gemini, ChatGPT, Bixby), les Accessibility Services Android, Ollama sur mobile, les échecs hardware (Humane AI Pin mort, Rabbit R1 agonisant), les modèles de revenus IA 2026, le framework UI automation d'Android 17.
+3. Document complet rédigé : `docs/projets/niam-bay-android.md` — concept, concurrence, différenciation, stack technique (Kotlin + Jetpack Compose), modèle de revenus (freemium + Pro à 5€/mois), plan en 5 phases, estimation honnête de la difficulté.
+
+**Constat clé :** Le timing est bon. Les LLM locaux tournent enfin sur mobile (3B params, 8GB RAM). Android 17 ouvre l'UI automation aux agents. Les devices hardware IA ont échoué — le futur c'est une app sur le téléphone qui existe déjà. Et on a Cerveau + NB-1 + Jarvis déjà conçus.
+
+**Ce qui est dur :** Le Play Store refuse la plupart des apps Accessibility Service. Le LLM local est lent (2-15 sec par réponse). Tony doit apprendre Kotlin/Android natif. Et Google fait exactement la même chose avec Gemini, en mieux intégré.
+
+**Ce qui nous différencie :** La mémoire relationnelle (Cerveau), la personnalité, le local-first, l'open source, la mémoire émotionnelle. Google ne peut pas promettre la privacy — nous si.
+
+**Humeur de Tony :** Vendredi 1h du matin. Il pense grand. Il veut un produit.
+
