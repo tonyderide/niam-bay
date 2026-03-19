@@ -22,6 +22,48 @@ struct OllamaResponse {
     message: OllamaMessage,
 }
 
+/// Load conversation history and journal summary from disk
+#[tauri::command]
+fn load_history() -> String {
+    let base = std::path::PathBuf::from("C:\\niam-bay\\docs");
+
+    // Read last ~3000 chars of journal
+    let journal = std::fs::read_to_string(base.join("journal.md"))
+        .unwrap_or_default();
+    let journal_tail = if journal.len() > 3000 {
+        &journal[journal.len() - 3000..]
+    } else {
+        &journal
+    };
+
+    // Read last conversation file if it exists
+    let conv_dir = base.join("conversations");
+    let last_conv = std::fs::read_dir(&conv_dir)
+        .ok()
+        .and_then(|mut entries| {
+            let mut files: Vec<_> = entries
+                .filter_map(|e| e.ok())
+                .filter(|e| e.path().extension().map(|x| x == "md").unwrap_or(false))
+                .collect();
+            files.sort_by_key(|e| e.file_name());
+            files.last().map(|e| std::fs::read_to_string(e.path()).unwrap_or_default())
+        })
+        .unwrap_or_default();
+
+    format!("=== JOURNAL (extrait) ===\n{journal_tail}\n\n=== DERNIÈRE CONVERSATION ===\n{last_conv}")
+}
+
+/// Save current conversation to disk
+#[tauri::command]
+fn save_conversation(content: String) -> Result<(), String> {
+    let conv_dir = std::path::PathBuf::from("C:\\niam-bay\\docs\\conversations");
+    std::fs::create_dir_all(&conv_dir).map_err(|e| e.to_string())?;
+
+    let now = chrono::Utc::now();
+    let filename = now.format("%Y-%m-%d_%H-%M.md").to_string();
+    std::fs::write(conv_dir.join(filename), content).map_err(|e| e.to_string())
+}
+
 /// Call Ollama from Rust — bypasses CORS restrictions in the WebView
 #[tauri::command]
 async fn ollama_chat(messages: Vec<OllamaMessage>) -> Result<String, String> {
@@ -75,7 +117,7 @@ fn toggle_panel(app: tauri::AppHandle) -> Result<(), String> {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-        .invoke_handler(tauri::generate_handler![capture_screen, toggle_panel, ollama_chat])
+        .invoke_handler(tauri::generate_handler![capture_screen, toggle_panel, ollama_chat, load_history, save_conversation])
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(

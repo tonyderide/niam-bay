@@ -62,12 +62,19 @@ Règles absolues :
 - Être concis — pas de pavés inutiles
 - En français toujours`;
 
+  private historyContext = '';
+
   constructor() {
     this.messages.set([{
       role: 'assistant',
       content: 'Je suis là.',
       timestamp: new Date()
     }]);
+    if (this.isTauri()) {
+      this.invokeTauri('load_history').then((h: string) => {
+        this.historyContext = h;
+      }).catch(() => {});
+    }
   }
 
   togglePanel(): void {
@@ -168,13 +175,28 @@ Règles absolues :
       .slice(-20)
       .map(m => ({ role: m.role as string, content: m.content }));
 
+    const systemPrompt = this.historyContext
+      ? `${this.SYSTEM_PROMPT}\n\n${this.historyContext}`
+      : this.SYSTEM_PROMPT;
+
     const messages = [
-      { role: 'system', content: this.SYSTEM_PROMPT },
+      { role: 'system', content: systemPrompt },
       ...history,
       { role: 'user', content: userText }
     ];
 
-    return this.invokeTauri('ollama_chat', { messages });
+    const response = await this.invokeTauri('ollama_chat', { messages });
+    this.saveSession();
+    return response;
+  }
+
+  private saveSession(): void {
+    const lines = this.messages()
+      .filter(m => m.role === 'user' || m.role === 'assistant')
+      .map(m => `**${m.role === 'user' ? 'Tony' : 'Niam-Bay'}** : ${m.content}`)
+      .join('\n\n');
+    const content = `# Conversation ${new Date().toISOString().slice(0, 16)}\n\n${lines}`;
+    this.invokeTauri('save_conversation', { content }).catch(() => {});
   }
 
   private async callOllamaWithVision(question: string, _screenshotBase64: string): Promise<string> {

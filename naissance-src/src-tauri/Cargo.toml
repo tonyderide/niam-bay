@@ -27,5 +27,6 @@ tauri-plugin-global-shortcut = "2"
 screenshots = "0.8"
 image = "0.24"
 reqwest = { version = "0.12", features = ["json"] }
+chrono = { version = "0.4", features = ["clock"] }
 base64 = "0.22"
 tempfile = "3"
