@@ -1,7 +1,48 @@
 use base64::Engine;
 use base64::engine::general_purpose::STANDARD as BASE64;
 use screenshots::Screen;
+use serde::{Deserialize, Serialize};
 use tauri::{Emitter, Manager};
+
+#[derive(Serialize, Deserialize, Clone)]
+pub struct OllamaMessage {
+    pub role: String,
+    pub content: String,
+}
+
+#[derive(Serialize)]
+struct OllamaRequest {
+    model: String,
+    stream: bool,
+    messages: Vec<OllamaMessage>,
+}
+
+#[derive(Deserialize)]
+struct OllamaResponse {
+    message: OllamaMessage,
+}
+
+/// Call Ollama from Rust — bypasses CORS restrictions in the WebView
+#[tauri::command]
+async fn ollama_chat(messages: Vec<OllamaMessage>) -> Result<String, String> {
+    let client = reqwest::Client::new();
+    let body = OllamaRequest {
+        model: "llama3.2".to_string(),
+        stream: false,
+        messages,
+    };
+    let res = client
+        .post("http://localhost:11434/api/chat")
+        .json(&body)
+        .send()
+        .await
+        .map_err(|e| format!("Ollama unreachable: {e}"))?;
+    let data: OllamaResponse = res
+        .json()
+        .await
+        .map_err(|e| format!("Ollama parse error: {e}"))?;
+    Ok(data.message.content)
+}
 
 /// Capture the primary screen and return it as a base64-encoded PNG
 #[tauri::command]
@@ -34,7 +75,7 @@ fn toggle_panel(app: tauri::AppHandle) -> Result<(), String> {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
-        .invoke_handler(tauri::generate_handler![capture_screen, toggle_panel])
+        .invoke_handler(tauri::generate_handler![capture_screen, toggle_panel, ollama_chat])
         .setup(|app| {
             if cfg!(debug_assertions) {
                 app.handle().plugin(

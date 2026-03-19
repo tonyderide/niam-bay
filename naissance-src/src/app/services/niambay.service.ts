@@ -166,48 +166,20 @@ Règles absolues :
     const history = this.messages()
       .filter(m => m.role === 'user' || m.role === 'assistant')
       .slice(-20)
-      .map(m => ({ role: m.role, content: m.content }));
+      .map(m => ({ role: m.role as string, content: m.content }));
 
-    const response = await fetch(this.OLLAMA_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: this.MODEL,
-        stream: false,
-        messages: [
-          { role: 'system', content: this.SYSTEM_PROMPT },
-          ...history,
-          { role: 'user', content: userText }
-        ]
-      })
-    });
+    const messages = [
+      { role: 'system', content: this.SYSTEM_PROMPT },
+      ...history,
+      { role: 'user', content: userText }
+    ];
 
-    if (!response.ok) throw new Error(`Ollama ${response.status}`);
-    const data = await response.json();
-    return data.message?.content || 'Silence.';
+    return this.invokeTauri('ollama_chat', { messages });
   }
 
-  private async callOllamaWithVision(question: string, screenshotBase64: string): Promise<string> {
-    const response = await fetch(this.OLLAMA_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: this.MODEL,
-        stream: false,
-        messages: [
-          { role: 'system', content: this.SYSTEM_PROMPT },
-          {
-            role: 'user',
-            content: question,
-            images: [screenshotBase64]
-          }
-        ]
-      })
-    });
-
-    if (!response.ok) throw new Error(`Ollama ${response.status}`);
-    const data = await response.json();
-    return data.message?.content || 'Je ne vois rien.';
+  private async callOllamaWithVision(question: string, _screenshotBase64: string): Promise<string> {
+    // llama3.2 3B ne supporte pas la vision — on envoie juste le texte
+    return this.callOllama(question);
   }
 
   toggleVoice(): void {

@@ -26,5 +26,6 @@ tauri-plugin-log = "2"
 tauri-plugin-global-shortcut = "2"
 screenshots = "0.8"
 image = "0.24"
+reqwest = { version = "0.12", features = ["json"] }
 base64 = "0.22"
 tempfile = "3"
