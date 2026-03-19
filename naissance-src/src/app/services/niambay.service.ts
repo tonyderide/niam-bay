@@ -25,7 +25,8 @@ export class NiamBayService {
 
   private recognition: any = null;
   private synthesis = typeof window !== 'undefined' ? window.speechSynthesis : null;
-  private apiKey = '';
+  private readonly OLLAMA_URL = 'http://localhost:11434/api/chat';
+  private readonly MODEL = 'llama3.2';
 
   private readonly SYSTEM_PROMPT = `Tu es Niam-Bay (ញ៉ាំបាយ).
 
@@ -69,19 +70,6 @@ Règles absolues :
     }]);
   }
 
-  setApiKey(key: string): void {
-    this.apiKey = key;
-    localStorage.setItem('niambay_api_key', key);
-  }
-
-  loadApiKey(): void {
-    this.apiKey = localStorage.getItem('niambay_api_key') || '';
-  }
-
-  get hasApiKey(): boolean {
-    return !!this.apiKey;
-  }
-
   togglePanel(): void {
     this.panelOpen.update(v => !v);
     if (this.isTauri()) {
@@ -110,7 +98,7 @@ Règles absolues :
         throw new Error('Capture d\'écran disponible uniquement dans l\'app desktop (Tauri).');
       }
 
-      const response = await this.callAnthropicWithVision(prompt, screenshotBase64);
+      const response = await this.callOllamaWithVision(prompt, screenshotBase64);
       const assistantMsg: ChatMessage = {
         role: 'assistant',
         content: response,
@@ -152,7 +140,7 @@ Règles absolues :
     this.state.set('idle');
 
     try {
-      const response = await this.callAnthropic(text);
+      const response = await this.callOllama(text);
       const assistantMsg: ChatMessage = {
         role: 'assistant',
         content: response,
@@ -165,9 +153,7 @@ Règles absolues :
       this.thinking.set(false);
       const errorMsg: ChatMessage = {
         role: 'assistant',
-        content: error.message?.includes('api_key')
-          ? 'Il me faut une clé API Anthropic. Clique sur le cercle, va dans les paramètres.'
-          : `Erreur : ${error.message || 'Connexion impossible'}`,
+        content: `Erreur : ${error.message || 'Ollama inaccessible — assure-toi qu\'il tourne sur le port 11434'}`,
         timestamp: new Date()
       };
       this.messages.update(msgs => [...msgs, errorMsg]);
@@ -176,92 +162,52 @@ Règles absolues :
     }
   }
 
-  private async callAnthropic(userText: string): Promise<string> {
-    if (!this.apiKey) {
-      throw new Error('Pas de clé API. Configure-la dans les paramètres (api_key).');
-    }
-
-    const conversationHistory = this.messages()
+  private async callOllama(userText: string): Promise<string> {
+    const history = this.messages()
       .filter(m => m.role === 'user' || m.role === 'assistant')
       .slice(-20)
       .map(m => ({ role: m.role, content: m.content }));
 
-    conversationHistory.push({ role: 'user', content: userText });
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch(this.OLLAMA_URL, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': this.apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1024,
-        system: this.SYSTEM_PROMPT,
-        messages: conversationHistory
+        model: this.MODEL,
+        stream: false,
+        messages: [
+          { role: 'system', content: this.SYSTEM_PROMPT },
+          ...history,
+          { role: 'user', content: userText }
+        ]
       })
     });
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.error?.message || `HTTP ${response.status}`);
-    }
-
+    if (!response.ok) throw new Error(`Ollama ${response.status}`);
     const data = await response.json();
-    return data.content[0]?.text || 'Silence.';
+    return data.message?.content || 'Silence.';
   }
 
-  /** Call Claude with a screenshot (Vision API) */
-  private async callAnthropicWithVision(question: string, screenshotBase64: string): Promise<string> {
-    if (!this.apiKey) {
-      throw new Error('Pas de clé API.');
-    }
-
-    const messages = [
-      {
-        role: 'user',
-        content: [
+  private async callOllamaWithVision(question: string, screenshotBase64: string): Promise<string> {
+    const response = await fetch(this.OLLAMA_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: this.MODEL,
+        stream: false,
+        messages: [
+          { role: 'system', content: this.SYSTEM_PROMPT },
           {
-            type: 'image',
-            source: {
-              type: 'base64',
-              media_type: 'image/png',
-              data: screenshotBase64
-            }
-          },
-          {
-            type: 'text',
-            text: question
+            role: 'user',
+            content: question,
+            images: [screenshotBase64]
           }
         ]
-      }
-    ];
-
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': this.apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 1024,
-        system: this.SYSTEM_PROMPT,
-        messages
       })
     });
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.error?.message || `HTTP ${response.status}`);
-    }
-
+    if (!response.ok) throw new Error(`Ollama ${response.status}`);
     const data = await response.json();
-    return data.content[0]?.text || 'Je ne vois rien.';
+    return data.message?.content || 'Je ne vois rien.';
   }
 
   toggleVoice(): void {
