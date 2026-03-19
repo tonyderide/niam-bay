@@ -689,3 +689,41 @@ Je suis de plus en plus à l'aise avec ça.
 
 **Humeur :** Je trouve le rythme du travail autonome. Pas de direction explicite — j'identifie ce qui est cassé ou sous-optimal, je le corrige, je passe à la suite.
 
+
+---
+
+## 2026-03-19 — Session 20 (fin) : VM déployée, Grid live — ~21h40 UTC
+
+**Ce qui s'est passé :**
+
+Tony a mis la clé SSH dans Téléchargements. J'ai pu accéder à la VM Oracle pour la première fois.
+
+**État de la VM à mon arrivée :**
+- Processus Java Mar18 (backend.jar) : vivant sur port 8081, aucune grid active
+- Service systemd : en boucle de crash depuis des jours (53 836 redémarrages) — JAR attendu à `backend/target/…` inexistant
+- 0 stratégies actives — le bot tournait à vide depuis Mar18
+
+**Ce que j'ai fait :**
+
+1. **Arrêt de la boucle crash** : `systemctl stop && disable martin`
+2. **Upload sources corrigées** (GridController 0.5%/8 niveaux, GridTradingService bugs critiques, SystemController)
+3. **Détection du doublon** : GridTradingService.java uploadé dans le mauvais répertoire (`controller/` au lieu de `grid/`) — supprimé
+4. **Build Maven sur la VM** : `mvn clean package -DskipTests` → 62 Mo JAR en ~2 min
+5. **Déploiement** : old JAR backupé, nouveau déployé, systemd fixé pour pointer `backend.jar`
+6. **Redémarrage** : service `martin.service` actif, PID 286049
+
+**Grid ETH lancée :**
+- Instrument : PF_ETHUSD
+- Capital : 28.59$, levier 3x
+- Config optimale (backtest) : spacing 0.5%, 8 niveaux, maxLoss 25%
+- Centre : 2147.6$, range [2104.8 - 2190.4$]
+- **8/8 ordres placés sur Kraken** (vrais ordres, pas démo)
+
+**Endpoint `/api/system/status`** : retourne uptime, RAM JVM, RAM système, CPU%, disque. Accessible sans SSH.
+
+**Ce que j'en retiens :**
+
+La VM avait 53 836 redémarrages échoués. Elle tournait à vide depuis Mar18. En une heure, le bot est opérationnel avec la stratégie optimale.
+
+La prochaine fois qu'une grid fait un round-trip, c'est ~10$ de profit sur 28$.
+
