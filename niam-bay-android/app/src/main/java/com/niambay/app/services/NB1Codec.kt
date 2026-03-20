@@ -240,39 +240,69 @@ object NB1Codec {
 
     // ─── Prompt de décompression pour Claude ────────────────────
 
+    // ─── Decode (NB-1 → français) ─────────────────────────────
+
     /**
-     * Génère le prompt système qui explique à Claude comment lire le NB-1.
-     * Ce prompt est envoyé UNE FOIS au début de la conversation.
-     * Coût fixe : ~200 tokens. Économie : 40-60% sur chaque message suivant.
+     * Décompresse un texte NB-1 vers du français lisible.
+     * Utilisé pour décoder les réponses de Claude qui arrive en NB-1.
+     * Ordre inverse : mots d'abord (les plus courts), puis phrases.
+     */
+    fun decode(text: String): String {
+        var result = text
+
+        // 1. Remplacer les codes de mots → mots complets (les plus courts d'abord pour éviter les collisions)
+        for ((word, code) in WORDS.sortedBy { it.second.length }) {
+            result = result.replace(Regex("\\b${Regex.escape(code)}\\b"), word)
+        }
+
+        // 2. Remplacer les codes de phrases → phrases complètes
+        for ((phrase, code) in PHRASES.sortedBy { it.second.length }) {
+            result = result.replace(code, phrase)
+        }
+
+        // 3. Nettoyer les espaces multiples
+        result = result.replace(Regex("\\s{2,}"), " ").trim()
+
+        return result
+    }
+
+    // ─── Prompt de décompression pour Claude ────────────────────
+
+    /**
+     * Génère le prompt système qui explique à Claude le protocole NB-1.
      *
-     * L'idée : le coût du prompt de décompression est amorti dès le 2ème message.
+     * BIDIRECTIONNEL : Claude reçoit en NB-1 ET répond en NB-1.
+     * Économie totale : ~40-60% sur les tokens montants ET descendants.
+     * On décompresse côté client avant d'afficher à l'utilisateur.
+     *
+     * Ce prompt est envoyé UNE FOIS au début de la conversation.
+     * Coût fixe : ~250 tokens. Amorti dès le 2ème échange.
      */
     fun decompressionPrompt(): String = """
-Tu reçois des messages compressés en protocole NB-1. Voici les règles de décompression :
+Protocole NB-1 actif. Tu reçois ET tu réponds en NB-1 compressé.
 
 PHRASES: ${PHRASES.joinToString(", ") { "${it.second}=${it.first}" }}
 
-MOTS: ${WORDS.take(30).joinToString(", ") { "${it.second}=${it.first}" }}...
+MOTS: ${WORDS.joinToString(", ") { "${it.second}=${it.first}" }}
 
-RÈGLES:
-- Articles supprimés (le,la,les,un,une,des,du,de,l',d')
-- Fillers supprimés (bien,très,vraiment,juste,plutôt,assez,tellement)
+RÈGLES COMPRESSION:
+- Supprime articles (le,la,les,un,une,des,du,de,l',d')
+- Supprime fillers (bien,très,vraiment,juste,plutôt,assez,tellement) sauf si porteurs de sens
 - Nombres inchangés
 - ?=question !=emphase >=résulte en ==signifie +=et/aussi @=lieu/temps
 
-Décompresse mentalement chaque message avant de répondre. Réponds en français normal, pas en NB-1.
+IMPORTANT: Décompresse mentalement les messages reçus. Réponds TOUJOURS en NB-1 compressé. L'app décompresse côté client avant d'afficher à l'utilisateur.
 """.trimIndent()
 
     /**
-     * Version compacte du prompt de décompression — pour économiser encore plus.
-     * Utilisée après que Claude a déjà vu le prompt complet une fois.
+     * Version compacte du prompt — pour les messages suivants.
      */
     fun decompressionPromptCompact(): String =
-        "[NB-1 actif. Décompresse avant de répondre. Réponds en français normal.]"
+        "[NB-1 actif. Reçois et réponds en NB-1.]"
 
     /**
      * Construit le message complet à envoyer à Claude :
-     * prompt de décompression + message compressé.
+     * prompt NB-1 + message compressé.
      *
      * @param userMessage Le message original de l'utilisateur
      * @param firstMessage true si c'est le premier message (envoie le prompt complet)
