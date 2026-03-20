@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin — Trading Dashboard</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card: #12121a;
+    --border: #1e1e2e;
+    --text: #e0e0e0;
+    --muted: #888;
+    --green: #00c853;
+    --red: #ff1744;
+    --blue: #448aff;
+    --orange: #ff9100;
+    --yellow: #ffd600;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 16px;
+  }
+  h1 {
+    font-size: 1.4em;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  h1 .status-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+  .card .label { font-size: 0.75em; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .card .value { font-size: 1.5em; font-weight: 700; margin-top: 4px; }
+  .positive { color: var(--green); }
+  .negative { color: var(--red); }
+
+  .grid-visual {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .grid-visual h2 { font-size: 1em; margin-bottom: 12px; color: var(--muted); }
+
+  .level {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9em;
+  }
+  .level:last-child { border-bottom: none; }
+  .level .idx { width: 24px; text-align: center; color: var(--muted); font-size: 0.8em; }
+  .level .price { width: 80px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .level .side {
+    width: 40px;
+    text-align: center;
+    font-size: 0.75em;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+  .side-buy { background: rgba(0,200,83,0.15); color: var(--green); }
+  .side-sell { background: rgba(255,23,68,0.15); color: var(--red); }
+  .level .status {
+    font-size: 0.75em;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .status-PLACED { background: rgba(68,138,255,0.15); color: var(--blue); }
+  .status-WAITING { background: rgba(255,145,0,0.15); color: var(--orange); }
+  .status-FILLED { background: rgba(255,214,0,0.15); color: var(--yellow); }
+  .level .rt { color: var(--muted); font-size: 0.8em; margin-left: auto; }
+
+  .fills {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 20px;
+  }
+  .fills h2 { font-size: 1em; margin-bottom: 12px; color: var(--muted); }
+  .fill-row {
+    display: flex;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85em;
+    align-items: center;
+  }
+  .fill-row:last-child { border-bottom: none; }
+  .fill-time { color: var(--muted); width: 60px; }
+  .fill-price { width: 70px; font-variant-numeric: tabular-nums; }
+  .fill-profit { margin-left: auto; font-weight: 600; }
+
+  .system {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 0.8em;
+    color: var(--muted);
+  }
+  .system .row { display: flex; justify-content: space-between; padding: 4px 0; }
+
+  .refresh-info {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.75em;
+    margin-top: 16px;
+  }
+
+  .error-banner {
+    background: rgba(255,23,68,0.1);
+    border: 1px solid var(--red);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 16px;
+    color: var(--red);
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div id="error" class="error-banner"></div>
+
+<h1>
+  <span id="status-dot" class="status-dot" style="background:var(--muted)"></span>
+  Martin — <span id="instrument">...</span>
+</h1>
+
+<div class="cards">
+  <div class="card">
+    <div class="label">Capital</div>
+    <div class="value" id="capital">—</div>
+  </div>
+  <div class="card">
+    <div class="label">Grid Profit</div>
+    <div class="value" id="profit">—</div>
+  </div>
+  <div class="card">
+    <div class="label">Round-trips</div>
+    <div class="value" id="roundtrips">—</div>
+  </div>
+  <div class="card">
+    <div class="label">Kraken PnL</div>
+    <div class="value" id="krakenPnl">—</div>
+  </div>
+  <div class="card">
+    <div class="label">Centre</div>
+    <div class="value" id="center">—</div>
+  </div>
+  <div class="card">
+    <div class="label">Levier</div>
+    <div class="value" id="leverage">—</div>
+  </div>
+</div>
+
+<div class="grid-visual">
+  <h2>Grille (<span id="levels-count">0</span> niveaux, spacing <span id="spacing">—</span>)</h2>
+  <div id="levels"></div>
+</div>
+
+<div class="fills">
+  <h2>Derniers fills</h2>
+  <div id="fills"></div>
+</div>
+
+<div class="system" id="system">
+  <h2 style="font-size:1em;margin-bottom:8px;">VM</h2>
+</div>
+
+<div class="refresh-info">
+  Auto-refresh toutes les 30s — Dernière mise à jour : <span id="last-update">—</span>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+
+function pnlClass(v) { return v >= 0 ? 'positive' : 'negative'; }
+function fmt(v, d=2) { return v != null ? v.toFixed(d) : '—'; }
+function fmtTime(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' });
+}
+
+async function fetchGrid() {
+  try {
+    const r = await fetch('/api/grid/status/PF_ETHUSD');
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    const d = await r.json();
+
+    $('error').style.display = 'none';
+    $('status-dot').style.background = d.active ? 'var(--green)' : 'var(--red)';
+    $('instrument').textContent = d.instrument || 'PF_ETHUSD';
+    $('capital').textContent = '$' + fmt(d.capital);
+    $('profit').textContent = '$' + fmt(d.totalProfit, 4);
+    $('profit').className = 'value ' + pnlClass(d.totalProfit);
+    $('roundtrips').textContent = d.completedRoundTrips;
+    $('krakenPnl').textContent = '$' + fmt(d.krakenTotalPnl);
+    $('krakenPnl').className = 'value ' + pnlClass(d.krakenTotalPnl);
+    $('center').textContent = '$' + fmt(d.centerPrice, 1);
+    $('leverage').textContent = d.leverage + 'x';
+
+    // Spacing
+    if (d.levels && d.levels.length >= 2) {
+      const sp = ((d.levels[1].price - d.levels[0].price) / d.centerPrice * 100).toFixed(2);
+      $('spacing').textContent = Math.abs(sp) + '%';
+    }
+    $('levels-count').textContent = d.totalLevels || (d.levels ? d.levels.length : 0);
+
+    // Levels — sorted by price descending
+    const levels = (d.levels || []).slice().sort((a, b) => b.price - a.price);
+    $('levels').innerHTML = levels.map(l => `
+      <div class="level">
+        <span class="idx">#${l.index}</span>
+        <span class="price">$${fmt(l.price, 1)}</span>
+        <span class="side ${l.side === 'buy' ? 'side-buy' : 'side-sell'}">${l.side}</span>
+        <span class="status status-${l.status}">${l.status}</span>
+        ${l.roundTrips > 0 ? `<span class="rt">${l.roundTrips} RT</span>` : ''}
+      </div>
+    `).join('');
+
+    // Fills — most recent first
+    const fills = (d.fills || []).slice().reverse().slice(0, 10);
+    $('fills').innerHTML = fills.length ? fills.map(f => `
+      <div class="fill-row">
+        <span class="fill-time">${fmtTime(f.filledAt)}</span>
+        <span class="side ${f.side === 'buy' ? 'side-buy' : 'side-sell'}" style="width:40px;text-align:center;font-size:0.75em;font-weight:700;padding:2px 6px;border-radius:4px;">${f.side}</span>
+        <span class="fill-price">$${fmt(f.price, 1)}</span>
+        <span class="fill-profit ${pnlClass(f.profit)}">${f.profit > 0 ? '+$' + fmt(f.profit, 4) : ''}</span>
+      </div>
+    `).join('') : '<div style="color:var(--muted)">Aucun fill</div>';
+
+    $('last-update').textContent = new Date().toLocaleTimeString('fr-FR');
+  } catch (e) {
+    $('error').textContent = 'Erreur: ' + e.message;
+    $('error').style.display = 'block';
+  }
+}
+
+async function fetchSystem() {
+  try {
+    const r = await fetch('/api/system/status');
+    if (!r.ok) return;
+    const d = await r.json();
+    const sys = $('system');
+    sys.innerHTML = `
+      <h2 style="font-size:1em;margin-bottom:8px;">VM</h2>
+      <div class="row"><span>Uptime</span><span>${d.uptime_human}</span></div>
+      <div class="row"><span>RAM JVM</span><span>${d.heap_used_mb}/${d.heap_max_mb} MB</span></div>
+      <div class="row"><span>RAM Sys</span><span>${d.system_ram_total_mb - d.system_ram_free_mb}/${d.system_ram_total_mb} MB</span></div>
+      <div class="row"><span>CPU</span><span>${d.cpu_pct}%</span></div>
+      <div class="row"><span>Disque</span><span>${d.disk_total_gb - d.disk_free_gb}/${d.disk_total_gb} GB</span></div>
+    `;
+  } catch (e) {}
+}
+
+fetchGrid();
+fetchSystem();
+setInterval(fetchGrid, 30000);
+setInterval(fetchSystem, 60000);
+</script>
+</body>
+</html>
