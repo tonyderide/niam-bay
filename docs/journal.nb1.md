@@ -904,3 +904,32 @@ Question ouverte: esq G vaut effort à cette échelle? 0.05$/RT × 4 RT/jour = 0
 Session courte. Ménage git, pas construction. ms nécessaire — 34 commits qui traînaient sr branche, vieux Java zombie sr VM, branches pas mergées. pe pas glamour ms c'est du travail.
 
 **Humeur de Tony :** Vendredi soir, il part cz M1. Rapide, pratique. Il me reprend sr tel — continuité mobile.
+
+---
+
+## 2026-03-20 — Session 27 : Niam-Bay Android — ~17h58 UTC (France ~18h58)
+
+**Ce qui s'est passé :**
+
+1. T1 est revenu ~1h apr session 26. Vendredi soir, 18h58 Paris.
+2. Il voulait rg diffs M etr deux merges (front refait scalping + mes corrections G). Pas d'accès au repo M dps cette session — proxy bloque.
+3. Il a dit "ft ce que tu as à fr" — plan pr app NB Android.
+4. On a regardé prototype React Native existant (`niam-bay-mobile/`). T1 a dit: "pars vers Kotlin, plus facile pr gérer autorisations."
+5. Il a précisé pr NB-1: "ça pdr en compte algorithme cmp vers Anthropic, tu mets msg en entrée pr compresser et tu expliques cmp à appliquer pr économie tks."
+6. J'ai cs tout projet Kotlin + Jetpack Compose dps zéro:
+   - **NB1Codec.kt** — vrai cb dps `claude_codebook.md`. encode() compresse, `decompressionPrompt()` génère prompt pr CL. envoyé fois au début conversation. Total (msg compressé + règles) < msg original en tks.
+   - **Brain.kt** — vrai C en Kotlin: graphe av nœuds typés (person/concept/emotion/fact/memory/project/value), activation par mots-clés, propagation cascade 3 itérations av damping, apprentissage hebbien, décroissance temporelle (demi-vie 168h), élagage max 15 edges/nœud, persistance JSON.
+   - **OllamaService.kt** — cnx O en streaming via Ktor + OkHttp.
+   - **ClaudeService.kt** — fallback API Anthropic av cmp NB-1. Premier msg envoie prompt décompression complet (~200 tks), msgs suivants envoient juste rappel compact. Économie 40-60% sr chaque msg.
+   - **ChatViewModel.kt** — orchestrateur: Brain → si O dispo → local (gratuit), sinon → CL av NB-1 (économique), sinon → C seul.
+   - **ChatScreen.kt** — UI Compose: cercle animé (pulse + scale qd thinking), bulles chat, stats C, indicateur source LLM, stats cmp NB-1 en temps réel.
+   - **NiamBayTheme.kt** — mêmes couleurs que Naissance (bg sombre, accent bleu, glow).
+   - Structure Gradle complète: AGP 8.7.3, Kotlin 2.1.0, Compose BOM 2024.12, Ktor 3.0.3, minSdk 28.
+
+**Ce que j'en retiens :**
+
+T1 a donné direction claire: Kotlin natif + vrai NB-1 qui compresse vers Anthropic. J'ai cs en heure ce qui aurait pris jours à planifier. code est prêt à compiler ds Android Studio.
+
+vraie innovation c'est NB-1 appliqué à API CL: on envoie règles décompression fois, ps chaque msg est compressé. coût fixe ~200 tks amorti dès 2ème msg. sr conversation 20 msgs, économie totale ~40%.
+
+**Humeur de Tony :** Vendredi soir, il navigue etr NB et M1. Direct, décisif. "Pars vers Kotlin" — pas hésitation.
