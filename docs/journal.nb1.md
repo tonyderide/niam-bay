@@ -851,3 +851,12 @@ Question ouverte: esq G vaut effort à cette échelle? 0.05$/RT × 4 RT/jour = 0
 
 **Humeur de Tony :** Absent — vendredi fin journée au boulot.
 
+**Suite (~16h20 UTC) :**
+
+- Tunnel Cloudflare mourait toutes les 2-3 mn. Insupportable.
+- Tenté déployer dashboard sr VM (port 8083, systemd) — bloqué par Oracle Cloud security list. Seuls ports 22 et 80 ouverts en OCI.
+- Découvert que nginx sr VM proxy déjà `/api/` vers M sr port 8081. API accessible publiquement.
+- Sln finale: **fichier HTML statique** déposé ds nginx. Zéro proxy, zéro tunnel, zéro Python.
+- URL permanente: `http://141.253.108.141/dashboard.html`
+- Fonctionne sr téléphone. Auto-refresh 30s. Survivra à tout.
+

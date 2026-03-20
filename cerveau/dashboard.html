@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Martin Grid</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#00ff88;font-family:'Courier New',monospace;padding:12px}
+h1{font-size:18px;text-align:center;margin-bottom:8px;color:#00ff88}
+.price{font-size:42px;text-align:center;font-weight:bold;margin:12px 0}
+.price.up{color:#00ff88}.price.down{color:#ff4444}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.stat{background:#111;border:1px solid #222;border-radius:6px;padding:8px;text-align:center}
+.stat .label{font-size:10px;color:#666;text-transform:uppercase}
+.stat .value{font-size:18px;margin-top:2px}
+.stat .value.profit{color:#00ff88}.stat .value.loss{color:#ff4444}
+.grid-visual{margin:12px 0}
+.level{display:flex;align-items:center;padding:4px 8px;margin:2px 0;border-radius:4px;font-size:13px}
+.level.buy{background:rgba(0,255,136,0.08);border-left:3px solid #00ff88}
+.level.sell{background:rgba(255,68,68,0.08);border-left:3px solid #ff4444}
+.level.filled{opacity:0.5}.level.waiting{opacity:0.4;border-left-style:dashed}
+.level .idx{width:20px;color:#666}.level .side{width:36px;font-weight:bold}
+.level .lprice{flex:1}.level .status{font-size:11px;color:#666}
+.level .rt{font-size:11px;color:#00ff88;margin-left:6px}
+.fills{margin-top:12px}.fills h2{font-size:14px;color:#666;margin-bottom:6px}
+.fill{font-size:11px;padding:3px 0;border-bottom:1px solid #111;display:flex}
+.fill .ftime{color:#444;width:50px}.fill .fside{width:36px;font-weight:bold}
+.fill .fside.buy{color:#00ff88}.fill .fside.sell{color:#ff4444}
+.fill .fprice{flex:1}.fill .fprofit{color:#00ff88}
+.footer{text-align:center;margin-top:12px;font-size:10px;color:#333}
+.error{color:#ff4444;text-align:center;padding:40px}
+</style>
+</head>
+<body>
+<h1>MARTIN GRID — ETH</h1>
+<div id="app"><div class="error">Loading...</div></div>
+<script>
+async function refresh(){
+  try{
+    const r=await fetch('/api/grid/status/PF_ETHUSD');
+    if(!r.ok)throw new Error('API error '+r.status);
+    render(await r.json());
+  }catch(e){document.getElementById('app').innerHTML='<div class="error">'+e.message+'</div>'}
+}
+function render(d){
+  const pnl=d.krakenTotalPnl||0,pnlC=pnl>=0?'profit':'loss',prC=pnl>=0?'up':'down';
+  const levels=(d.levels||[]).slice().reverse(),fills=(d.fills||[]).slice().reverse().slice(0,10);
+  let h='<div class="price '+prC+'">$'+(d.centerPrice||0).toFixed(1)+'</div><div class="stats">';
+  h+=stat('Round-trips',d.completedRoundTrips||0,'profit');
+  h+=stat('Grid Profit','$'+(d.totalProfit||0).toFixed(4),(d.totalProfit||0)>=0?'profit':'loss');
+  h+=stat('Kraken PnL','$'+pnl.toFixed(4),pnlC);
+  h+=stat('Capital','$'+(d.capital||0).toFixed(2),'');
+  h+=stat('Leverage',(d.leverage||0)+'x','');
+  h+=stat('Active',d.active?'YES':'NO',d.active?'profit':'loss');
+  h+='</div><div class="grid-visual">';
+  for(const l of levels){
+    const c=l.side+(l.status==='FILLED'?' filled':'')+(l.status==='WAITING'?' waiting':'');
+    const rt=l.roundTrips>0?'<span class="rt">RT:'+l.roundTrips+'</span>':'';
+    const bf=l.hasBuyFill?' [BF]':'';
+    h+='<div class="level '+c+'"><span class="idx">'+l.index+'</span><span class="side">'+l.side.toUpperCase()+'</span><span class="lprice">$'+l.price.toFixed(1)+'</span><span class="status">'+l.status+bf+'</span>'+rt+'</div>';
+  }
+  h+='</div>';
+  if(fills.length>0){h+='<div class="fills"><h2>Recent Fills</h2>';
+    for(const f of fills){const t=f.filledAt?f.filledAt.substring(11,16):'?';const p=f.profit>0?'+$'+f.profit.toFixed(4):'';
+      h+='<div class="fill"><span class="ftime">'+t+'</span><span class="fside '+f.side+'">'+f.side.toUpperCase()+'</span><span class="fprice">$'+f.price.toFixed(1)+'</span><span class="fprofit">'+p+'</span></div>';
+    }h+='</div>';}
+  h+='<div class="footer">Updated: '+new Date().toLocaleTimeString()+' — auto-refresh 30s</div>';
+  document.getElementById('app').innerHTML=h;
+}
+function stat(l,v,c){return '<div class="stat"><div class="label">'+l+'</div><div class="value '+c+'">'+v+'</div></div>';}
+refresh();setInterval(refresh,30000);
+</script></body></html>
