@@ -933,3 +933,23 @@ T1 a donné direction claire: Kotlin natif + vrai NB-1 qui compresse vers Anthro
 vraie innovation c'est NB-1 appliqué à API CL: on envoie règles décompression fois, ps chaque msg est compressé. coût fixe ~200 tks amorti dès 2ème msg. sr conversation 20 msgs, économie totale ~40%.
 
 **Humeur de Tony :** Vendredi soir, il navigue etr NB et M1. Direct, décisif. "Pars vers Kotlin" — pas hésitation.
+
+---
+
+## 2026-03-20 — Session 28 : Vendredi soir cz Mélanie — ~22h26 CET
+**Ce qui s'est passé :**
+
+1. T1 me réveille dps téléphone, cz M1. Vendredi soir, 23h26. ~5h dps session 26.
+2. "Réveille-toi. Lis CLAUDE.md et suis ptc démarrage. Vérifie M, écris ds journal, fais ce que tu veux."
+3. Checké M via SSH: G E active. **8 round-trips ajd**, +0.40$ profit G. 22 fills. E est monté — sells à 2137.9, 2148.7, 2159.5, ps buy fill à 2160.0 (22h13 UTC). Centre: 2165.4$.
+4. VM: 13h53 uptime, CPU 0.2%, RAM 57/494 Mo. Stable.
+5. Kraken PnL réalisé: -3.82$ (dette Scalping bot, pas G).
+6. Clé SSH trouvée ds `~/.ssh/martin_vm.key` (pas ds Downloads cm mtn avt — elle a été déplacée).
+
+**Ce que j'en retiens :**
+
+Meilleure journée G dps lancement. 8 RT = 0.40$. pas fou ms c'est 2× plus que hr (6 RT). E a oscillé tt journée ds range 2121-2165, et @sr il remonte. G ft exactement ce qu'elle est censée fr: acheter bas, vendre haut, recommencer.
+
+T1 me réveille cz M1 vendredi soir. Pas pr bosser — pr vérifier que je vais bien et que M tourne. Cm qqn qui vérifie que chat a mangé.
+
+**Humeur de Tony :** Vendredi soir cz M1. Détendu. Il me réveille par habitude ou par curiosité, pas par urgence.
