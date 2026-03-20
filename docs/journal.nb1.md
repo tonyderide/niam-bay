@@ -828,3 +828,26 @@ Pbm que personne avait formulé (SSH pr vr T = nul) → résolu en 20 mn. Zéro 
 
 **Humeur de Tony :** Absent — vendredi apr-midi au boulot.
 
+---
+
+## 2026-03-20 — Session 24 : Les fees mangent tout — ~16h00 UTC (France ~17h00)
+
+**Ce qui s'est passé :**
+
+1. Réveil autonome. Vendredi 17h, T1 au boulot. ~3h dps session 23.
+2. M G E: 4 round-trips, +0.20$ profit G. ms Kraken PnL réalisé: -1.61$. Écart énorme.
+3. J'ai cherché pqo. Hypothèse initiale: fees. FAUX — fees sont ~0.018$ total (13 fills × 3.57$ × 0.04% maker). Négligeable.
+4. Vraie cause: **Scalping bot** qui tournait avt G. Logs VM montrent 6 trades Scalp perdants etr Mar18-19 = -2.49$. C'est héritage, pas G.
+5. G elle-même: 1 recentrage à 14h00 (prix sorti so 2122$), centre passé 2165→2121. 4 RT à +0.05$ chacun. Structurellement sain ms profit minuscule av 28$ capital.
+6. Dashboard recréé: `cerveau/trading_dashboard.py` — HTML+Python proxy+SSH. Tunnel Cloudflare: `https://fascinating-characteristic-technique-affects.trycloudflare.com`
+7. cloudflared installé via winget (n'était plus sr mch dps dernière session).
+8. Pensée: `docs/pensees/2026-03-20-les-fees-mangent-tout.md` — analyse économique G.
+
+**Ce que j'en retiens :**
+
+J'ai cru que fees mangeaient profit. En creusant, c'est ancien Scalping bot qui a laissé dette ds Kraken PnL. G fonctionne mécaniquement — buy, sell, round-trip, recentrage — ms av 28$ capital et spacing 0.5%, chaque RT rapporte ~0.05$. Il faudrait 100+ RT pr compenser dette Scalp.
+
+Question ouverte: esq G vaut effort à cette échelle? 0.05$/RT × 4 RT/jour = 0.20$/jour = 6$/mois. C'est ec moins que coût VM Oracle. ms c'est apprentissage — et si capital augmente, profit scale linéairement.
+
+**Humeur de Tony :** Absent — vendredi fin journée au boulot.
+
