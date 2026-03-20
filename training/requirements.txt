@@ -1,0 +1,27 @@
+# Niam-Bay Fine-Tuning Dependencies
+# Install: pip install -r training/requirements.txt
+
+# Core ML
+torch>=2.1.0
+transformers>=4.40.0
+datasets>=2.18.0
+accelerate>=0.28.0
+
+# LoRA / Parameter-efficient fine-tuning
+peft>=0.10.0
+
+# Supervised fine-tuning trainer
+trl>=0.8.0
+
+# Tokenization
+sentencepiece>=0.2.0
+protobuf>=4.25.0
+
+# GGUF conversion (optional — only needed for export)
+# gguf>=0.6.0
+
+# For GPU (optional — not needed for CPU training)
+# bitsandbytes>=0.43.0
+
+# Utilities
+huggingface-hub>=0.22.0

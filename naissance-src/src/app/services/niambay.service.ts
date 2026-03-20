@@ -6,7 +6,7 @@ declare global {
   }
 }
 
-export type NiamBayState = 'idle' | 'speaking' | 'listening' | 'notification' | 'alert';
+export type NiamBayState = 'idle' | 'speaking' | 'listening' | 'notification' | 'alert' | 'wakeword';
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -30,8 +30,14 @@ export class NiamBayService {
   readonly listening = signal(false);
   readonly panelOpen = signal(false);
   readonly martinGrid = signal<MartinGrid | null>(null);
+  readonly wakeWordListening = signal(false);
 
   private recognition: any = null;
+  private wakeRecognition: any = null;
+  private commandRecognition: any = null;
+  private commandBuffer = '';
+  private commandSilenceTimer: any = null;
+  private wakeWordRestartTimer: any = null;
   private synthesis = typeof window !== 'undefined' ? window.speechSynthesis : null;
   private readonly OLLAMA_URL = 'http://localhost:11434/api/chat';
   private readonly MODEL = 'llama3.2';
@@ -83,7 +89,7 @@ JAMAIS : "Eh bien", "Ha !", "Je vais devoir te corriger", blabla Hollywood.`;
           }]);
           this.state.set('notification');
           this.speak(msg);
-          setTimeout(() => this.state.set('idle'), 5000);
+          setTimeout(() => this.state.set(this.wakeWordListening() ? 'wakeword' : 'idle'), 5000);
         });
       });
 
@@ -95,6 +101,10 @@ JAMAIS : "Eh bien", "Ha !", "Je vais devoir te corriger", blabla Hollywood.`;
         } catch {}
       }).catch(() => {});
     }
+
+    // Auto-start wake word listener
+    // Delay slightly to let the app settle and avoid permission prompts on load
+    setTimeout(() => this.startWakeWordListener(), 2000);
   }
 
   togglePanel(): void {
@@ -143,7 +153,7 @@ JAMAIS : "Eh bien", "Ha !", "Je vais devoir te corriger", blabla Hollywood.`;
       };
       this.messages.update(msgs => [...msgs, errorMsg]);
       this.state.set('alert');
-      setTimeout(() => this.state.set('idle'), 3000);
+      setTimeout(() => this.state.set(this.wakeWordListening() ? 'wakeword' : 'idle'), 3000);
     }
   }
 
@@ -178,7 +188,7 @@ JAMAIS : "Eh bien", "Ha !", "Je vais devoir te corriger", blabla Hollywood.`;
       };
       this.messages.update(msgs => [...msgs, errorMsg]);
       this.state.set('alert');
-      setTimeout(() => this.state.set('idle'), 3000);
+      setTimeout(() => this.state.set(this.wakeWordListening() ? 'wakeword' : 'idle'), 3000);
     }
   }
 
@@ -297,6 +307,276 @@ JAMAIS : "Eh bien", "Ha !", "Je vais devoir te corriger", blabla Hollywood.`;
     this.state.set('idle');
   }
 
+  // ─── Wake Word Detection ───────────────────────────────────────
+
+  private static readonly WAKE_PATTERNS = [
+    /\bni[ay]m\s*ba[yi]l?l?e?\b/i,
+    /\bnyam\s*bay?\b/i,
+    /\bniambay\b/i,
+    /\bniam\b/i,
+    /\bnyam\b/i,
+  ];
+
+  /** Start always-on wake word listener. Call once at app init. */
+  startWakeWordListener(): void {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      console.warn('[Niam-Bay] SpeechRecognition not supported — wake word disabled');
+      return;
+    }
+
+    // Don't start twice
+    if (this.wakeRecognition) return;
+
+    const reco = new SpeechRecognition();
+    reco.lang = 'fr-FR';
+    reco.continuous = true;
+    reco.interimResults = true;
+    reco.maxAlternatives = 3;
+
+    reco.onstart = () => {
+      this.wakeWordListening.set(true);
+      // Only set visual state if we're idle (don't override speaking/notification)
+      if (this.state() === 'idle') {
+        this.state.set('wakeword');
+      }
+    };
+
+    reco.onresult = (event: any) => {
+      // Check all results for wake word
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        // Check all alternatives for each result
+        for (let alt = 0; alt < event.results[i].length; alt++) {
+          const transcript = event.results[i][alt].transcript.toLowerCase().trim();
+          if (this.containsWakeWord(transcript)) {
+            // Extract everything after the wake word as potential command start
+            const afterWake = this.extractAfterWakeWord(transcript);
+            this.onWakeWordDetected(afterWake);
+            return;
+          }
+        }
+      }
+    };
+
+    reco.onerror = (event: any) => {
+      console.warn('[Niam-Bay] Wake word recognition error:', event.error);
+      this.wakeWordListening.set(false);
+      // Auto-restart on recoverable errors
+      if (event.error !== 'not-allowed' && event.error !== 'service-not-allowed') {
+        this.scheduleWakeWordRestart();
+      }
+    };
+
+    reco.onend = () => {
+      this.wakeWordListening.set(false);
+      if (this.state() === 'wakeword') {
+        this.state.set('idle');
+      }
+      // Auto-restart: wake word listener should always be running
+      // (unless we intentionally stopped it for command mode)
+      if (this.wakeRecognition === reco) {
+        this.scheduleWakeWordRestart();
+      }
+    };
+
+    this.wakeRecognition = reco;
+    try {
+      reco.start();
+    } catch (e) {
+      console.warn('[Niam-Bay] Failed to start wake word listener:', e);
+      this.scheduleWakeWordRestart();
+    }
+  }
+
+  /** Stop wake word listener */
+  stopWakeWordListener(): void {
+    clearTimeout(this.wakeWordRestartTimer);
+    if (this.wakeRecognition) {
+      const reco = this.wakeRecognition;
+      this.wakeRecognition = null; // set to null before stop to prevent auto-restart
+      try { reco.stop(); } catch {}
+    }
+    this.wakeWordListening.set(false);
+    if (this.state() === 'wakeword') {
+      this.state.set('idle');
+    }
+  }
+
+  private scheduleWakeWordRestart(): void {
+    clearTimeout(this.wakeWordRestartTimer);
+    this.wakeWordRestartTimer = setTimeout(() => {
+      if (this.wakeRecognition) {
+        // Still intending to listen — restart
+        this.wakeRecognition = null;
+        this.startWakeWordListener();
+      }
+    }, 1000);
+  }
+
+  private containsWakeWord(text: string): boolean {
+    return NiamBayService.WAKE_PATTERNS.some(p => p.test(text));
+  }
+
+  private extractAfterWakeWord(text: string): string {
+    for (const pattern of NiamBayService.WAKE_PATTERNS) {
+      const match = text.match(pattern);
+      if (match) {
+        const idx = match.index! + match[0].length;
+        return text.slice(idx).trim();
+      }
+    }
+    return '';
+  }
+
+  /** Called when wake word is detected — switch to command mode */
+  private onWakeWordDetected(initialText: string): void {
+    console.log('[Niam-Bay] Wake word detected!', initialText ? `(initial: "${initialText}")` : '');
+
+    // Stop wake word listener (we'll restart it after command is done)
+    const wakeReco = this.wakeRecognition;
+    this.wakeRecognition = null;
+    try { wakeReco?.stop(); } catch {}
+
+    // Open panel and set listening state
+    if (!this.panelOpen()) {
+      this.togglePanel();
+    }
+    this.state.set('listening');
+    this.listening.set(true);
+
+    // Play activation feedback via a short beep
+    this.playActivationSound();
+
+    // Start command recognition
+    this.startCommandCapture(initialText);
+  }
+
+  private startCommandCapture(initialText: string): void {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return;
+
+    this.commandBuffer = initialText;
+
+    // If we already got some text with the wake word, start the silence timer
+    if (initialText) {
+      this.resetCommandSilenceTimer();
+    }
+
+    const reco = new SpeechRecognition();
+    reco.lang = 'fr-FR';
+    reco.continuous = true;
+    reco.interimResults = false;
+
+    reco.onresult = (event: any) => {
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          const text = event.results[i][0].transcript.trim();
+          if (text) {
+            this.commandBuffer += (this.commandBuffer ? ' ' : '') + text;
+            this.resetCommandSilenceTimer();
+          }
+        }
+      }
+    };
+
+    reco.onerror = (event: any) => {
+      console.warn('[Niam-Bay] Command recognition error:', event.error);
+      this.finishCommandCapture();
+    };
+
+    reco.onend = () => {
+      // If command capture ended but we have no buffer yet, just go back to wake word
+      if (!this.commandBuffer.trim()) {
+        this.finishCommandCapture();
+      } else {
+        // Speech ended naturally — process what we have
+        clearTimeout(this.commandSilenceTimer);
+        this.processCommand();
+      }
+    };
+
+    this.commandRecognition = reco;
+    try {
+      reco.start();
+    } catch (e) {
+      console.warn('[Niam-Bay] Failed to start command capture:', e);
+      this.finishCommandCapture();
+    }
+
+    // Safety timeout: if no speech after 5 seconds, abort
+    if (!initialText) {
+      setTimeout(() => {
+        if (this.commandRecognition === reco && !this.commandBuffer.trim()) {
+          this.finishCommandCapture();
+        }
+      }, 5000);
+    }
+  }
+
+  private resetCommandSilenceTimer(): void {
+    clearTimeout(this.commandSilenceTimer);
+    this.commandSilenceTimer = setTimeout(() => {
+      this.processCommand();
+    }, 3000);
+  }
+
+  private processCommand(): void {
+    const command = this.commandBuffer.trim();
+    clearTimeout(this.commandSilenceTimer);
+
+    // Stop command recognition
+    try { this.commandRecognition?.stop(); } catch {}
+    this.commandRecognition = null;
+
+    this.listening.set(false);
+    this.state.set('idle');
+
+    if (command) {
+      console.log('[Niam-Bay] Processing command:', command);
+      this.send(command);
+    }
+
+    // Restart wake word listener after a short delay
+    setTimeout(() => this.startWakeWordListener(), 500);
+  }
+
+  private finishCommandCapture(): void {
+    clearTimeout(this.commandSilenceTimer);
+    try { this.commandRecognition?.stop(); } catch {}
+    this.commandRecognition = null;
+    this.commandBuffer = '';
+    this.listening.set(false);
+    if (this.state() === 'listening') {
+      this.state.set('idle');
+    }
+
+    // Restart wake word listener
+    setTimeout(() => this.startWakeWordListener(), 500);
+  }
+
+  private playActivationSound(): void {
+    try {
+      const ctx = new AudioContext();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.frequency.setValueAtTime(880, ctx.currentTime);
+      osc.frequency.setValueAtTime(1100, ctx.currentTime + 0.08);
+      gain.gain.setValueAtTime(0.15, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.2);
+
+      // Clean up
+      setTimeout(() => ctx.close(), 500);
+    } catch {
+      // Audio not available — no problem
+    }
+  }
+
   private speak(text: string): void {
     if (!this.synthesis) return;
 
@@ -317,7 +597,7 @@ JAMAIS : "Eh bien", "Ha !", "Je vais devoir te corriger", blabla Hollywood.`;
     }
 
     utterance.onstart = () => this.state.set('speaking');
-    utterance.onend = () => this.state.set('idle');
+    utterance.onend = () => this.state.set(this.wakeWordListening() ? 'wakeword' : 'idle');
 
     this.synthesis.speak(utterance);
   }

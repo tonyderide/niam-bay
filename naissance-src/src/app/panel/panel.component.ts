@@ -145,6 +145,8 @@ import { NiamBayService, ChatMessage, MartinGrid } from '../services/niambay.ser
     .dot.listening { background: #7c3aed; box-shadow: 0 0 8px #7c3aed; }
     .dot.notification { background: #f97316; box-shadow: 0 0 8px #f97316; }
     .dot.alert { background: #ef4444; box-shadow: 0 0 8px #ef4444; }
+    .dot.wakeword { background: #3b82f6; box-shadow: 0 0 4px #3b82f6; animation: dotPulse 4s ease-in-out infinite; }
+    @keyframes dotPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
 
     .close-btn {
       background: none;

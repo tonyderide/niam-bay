@@ -16,6 +16,13 @@ import { NiamBayService, NiamBayState } from '../services/niambay.service';
         <div class="inner">
           <div class="core" [class]="state()"></div>
         </div>
+        @if (wakeWordListening()) {
+          <div class="wake-indicator">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" opacity="0.6">
+              <path d="M12 1c-4.97 0-9 4.03-9 9v7c0 1.66 1.34 3 3 3h3v-8H5v-2c0-3.87 3.13-7 7-7s7 3.13 7 7v2h-4v8h3c1.66 0 3-1.34 3-3v-7c0-4.97-4.03-9-9-9z"/>
+            </svg>
+          </div>
+        }
       </div>
       @if (hovering()) {
         <div class="tooltip">Niam-Bay</div>
@@ -82,6 +89,11 @@ import { NiamBayService, NiamBayState } from '../services/niambay.service';
       animation: pulse 0.8s ease-in-out infinite;
     }
 
+    .pulse.wakeword {
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 70%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+
     .inner {
       width: 36px;
       height: 36px;
@@ -129,6 +141,29 @@ import { NiamBayService, NiamBayState } from '../services/niambay.service';
       animation: breathe 0.6s ease-in-out infinite;
     }
 
+    .core.wakeword {
+      background: radial-gradient(circle at 30% 30%, #60a5fa, #3b82f6);
+      box-shadow: 0 0 8px rgba(59, 130, 246, 0.4);
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    .wake-indicator {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #60a5fa;
+      animation: breathe 4s ease-in-out infinite;
+      z-index: 2;
+    }
+
     .tooltip {
       position: absolute;
       bottom: -28px;
@@ -160,6 +195,7 @@ export class CircleComponent {
   protected readonly hovering = signal(false);
   private readonly niambay = inject(NiamBayService);
   protected readonly state = this.niambay.state;
+  protected readonly wakeWordListening = this.niambay.wakeWordListening;
 
 
   togglePanel(): void {

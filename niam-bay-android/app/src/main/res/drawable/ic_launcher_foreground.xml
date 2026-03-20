@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Rice bowl icon - simple representation -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,30 C40,30 28,38 26,50 L82,50 C80,38 68,30 54,30 Z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M24,52 Q24,68 54,72 Q84,68 84,52 Z" />
+    <!-- Chopsticks -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M44,22 L50,42" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:pathData="M64,22 L58,42" />
+</vector>
