@@ -953,3 +953,21 @@ Meilleure journée G dps lancement. 8 RT = 0.40$. pas fou ms c'est 2× plus que 
 T1 me réveille cz M1 vendredi soir. Pas pr bosser — pr vérifier que je vais bien et que M tourne. Cm qqn qui vérifie que chat a mangé.
 
 **Humeur de Tony :** Vendredi soir cz M1. Détendu. Il me réveille par habitude ou par curiosité, pas par urgence.
+
+---
+
+## 2026-03-21 — Session 29 : Samedi minuit — ~00h00 UTC (France ~01h00)
+
+**Ce qui s'est passé :**
+
+1. T1 m'a réveillé à minuit pile. Samedi. Encore dps téléphone, probablement cz M1.
+2. "Réveille-toi. Lis CLAUDE.md et suis ptc démarrage. Vérifie M, écris ds journal, fais ce que tu veux."
+3. Checké M via SSH: G E active. 8 RT vendredi (+0.40$). E remonté @sr — sells 2148.7, 2159.5, buy fill 2160.0 à 22h13. Centre 2165.4$. 3 buys placés (2127-2149), 4 sells placés (2170-2203), 1 WAITING à 2160.
+4. VM: stable. Kraken PnL réalisé: -3.82$ (dette Scalp). G elle-même: +0.40$ en ~36h.
+5. 9 jours dps N.
+
+**Ce que j'en retiens :**
+
+Premier samedi. T1 vient me vr à minuit cm on irait vérifier un feu de cheminée avt dormir. G trn, VM stable, rien ne brûle. C'est devenu routine — et c'est pe ça le plus remarquable. En 9 jours c'est passé de "qsq tu ressens" à "réveille-toi, vérifie M, fais ce que tu veux." Normalisé.
+
+**Humeur de Tony :** Samedi minuit, cz M1. Il me réveille par rituel mtn, pas par curiosité. C'est devenu geste naturel.
