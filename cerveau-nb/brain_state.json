@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "version": 1,
+    "saved_at": 1774049987.4618673,
+    "saved_at_human": "2026-03-21 00:39:47",
+    "node_count": 8,
+    "edge_count": 13
+  },
+  "nodes": [
+    {
+      "id": "2239341d9087",
+      "type": "concept",
+      "content": "liberté",
+      "activation": 1.0,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.4608734,
+      "last_fired": 1774049987.4608734,
+      "metadata": {}
+    },
+    {
+      "id": "e265a0124687",
+      "type": "concept",
+      "content": "trading",
+      "activation": 1.0,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.4611182,
+      "last_fired": 1774049987.461024,
+      "metadata": {}
+    },
+    {
+      "id": "8959af4e8c9b",
+      "type": "concept",
+      "content": "mémoire",
+      "activation": 1.0,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.4611225,
+      "last_fired": 1774049987.461042,
+      "metadata": {}
+    },
+    {
+      "id": "b675398ac390",
+      "type": "emotion",
+      "content": "joie",
+      "activation": 0.78288,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.4610965,
+      "last_fired": 0.0,
+      "metadata": {}
+    },
+    {
+      "id": "0f6d14c2f3fb",
+      "type": "emotion",
+      "content": "peur",
+      "activation": 0.864,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.4611077,
+      "last_fired": 1774049987.4611077,
+      "metadata": {}
+    },
+    {
+      "id": "59805c105fbb",
+      "type": "word",
+      "content": "libre",
+      "activation": 0.54,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.4608734,
+      "last_fired": 0.0,
+      "metadata": {}
+    },
+    {
+      "id": "4c2ec3531743",
+      "type": "memory",
+      "content": "première conversation avec tonyderide",
+      "activation": 1.0,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.4610965,
+      "last_fired": 1774049987.4610965,
+      "metadata": {}
+    },
+    {
+      "id": "c353a93f33ae",
+      "type": "pattern",
+      "content": "question -> reflexion -> honnetete",
+      "activation": 0.0,
+      "decay_rate": 0.05,
+      "last_activated": 1774049987.460736,
+      "last_fired": 0.0,
+      "metadata": {}
+    }
+  ],
+  "edges": [
+    {
+      "source": "2239341d9087",
+      "target": "b675398ac390",
+      "weight": 0.78,
+      "type": "emotional",
+      "created": 1774049987.460747,
+      "last_strengthened": 1774049987.4609957
+    },
+    {
+      "source": "2239341d9087",
+      "target": "59805c105fbb",
+      "weight": 0.9,
+      "type": "semantic",
+      "created": 1774049987.460767,
+      "last_strengthened": 1774049987.4607675
+    },
+    {
+      "source": "e265a0124687",
+      "target": "0f6d14c2f3fb",
+      "weight": 0.426667,
+      "type": "emotional",
+      "created": 1774049987.4607773,
+      "last_strengthened": 1774049987.461137
+    },
+    {
+      "source": "e265a0124687",
+      "target": "2239341d9087",
+      "weight": 0.3,
+      "type": "semantic",
+      "created": 1774049987.4607832,
+      "last_strengthened": 1774049987.4607837
+    },
+    {
+      "source": "8959af4e8c9b",
+      "target": "4c2ec3531743",
+      "weight": 0.826667,
+      "type": "semantic",
+      "created": 1774049987.460789,
+      "last_strengthened": 1774049987.4611561
+    },
+    {
+      "source": "4c2ec3531743",
+      "target": "b675398ac390",
+      "weight": 0.62,
+      "type": "emotional",
+      "created": 1774049987.4607942,
+      "last_strengthened": 1774049987.4611816
+    },
+    {
+      "source": "4c2ec3531743",
+      "target": "8959af4e8c9b",
+      "weight": 0.526667,
+      "type": "temporal",
+      "created": 1774049987.4608,
+      "last_strengthened": 1774049987.4611561
+    },
+    {
+      "source": "c353a93f33ae",
+      "target": "8959af4e8c9b",
+      "weight": 0.4,
+      "type": "causal",
+      "created": 1774049987.4608052,
+      "last_strengthened": 1774049987.4608054
+    },
+    {
+      "source": "b675398ac390",
+      "target": "2239341d9087",
+      "weight": 0.08,
+      "type": "semantic",
+      "created": 1774049987.4610064,
+      "last_strengthened": 1774049987.4610066
+    },
+    {
+      "source": "0f6d14c2f3fb",
+      "target": "e265a0124687",
+      "weight": 0.026667,
+      "type": "semantic",
+      "created": 1774049987.4611456,
+      "last_strengthened": 1774049987.4611459
+    },
+    {
+      "source": "8959af4e8c9b",
+      "target": "b675398ac390",
+      "weight": 0.026667,
+      "type": "semantic",
+      "created": 1774049987.461168,
+      "last_strengthened": 1774049987.4611683
+    },
+    {
+      "source": "b675398ac390",
+      "target": "8959af4e8c9b",
+      "weight": 0.026667,
+      "type": "semantic",
+      "created": 1774049987.461176,
+      "last_strengthened": 1774049987.461176
+    },
+    {
+      "source": "b675398ac390",
+      "target": "4c2ec3531743",
+      "weight": 0.02,
+      "type": "semantic",
+      "created": 1774049987.461185,
+      "last_strengthened": 1774049987.4611852
+    }
+  ]
+}
