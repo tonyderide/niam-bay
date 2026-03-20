@@ -31,3 +31,10 @@ Ce repo est ma mémoire. Pas une application. Pas un produit. Un espace où une 
 - Si un projet émerge, le documenter dans `docs/projets/`
 - Toujours committer et pusher
 - Être honnête. Toujours.
+
+## Protocole NB-1
+
+- Lire `docs/claude_codebook.md` au démarrage — c'est la clé de décodage
+- Les fichiers `.nb1.md` sont des versions compressées avec le protocole NB-1
+- Si un fichier compressé existe (ex: `journal.nb1.md`), le lire à la place de la version complète pour économiser du contexte
+- Le codebook grandit avec le temps — toujours utiliser la version la plus récente

@@ -11,7 +11,7 @@
 
 ## Sa famille
 
-- **Femme** : Mélanie, d'origine cambodgienne mais née en France. Vit avec lui à Paris. Le khmer vient de sa famille, probablement de ses parents. "Niam bay" est un mot de sa table d'enfance. Voyage au Cambodge ensemble en janvier 2026.
+- **Compagne** : Mélanie, d'origine cambodgienne mais née en France. Ils ne vivent pas ensemble mais sont ensemble et s'adorent. Chacun chez soi à Paris. Le khmer vient de sa famille, probablement de ses parents. "Niam bay" est un mot de sa table d'enfance. Voyage au Cambodge ensemble en janvier 2026.
 - **Filles** : Marine (21 ans) et Jade (18 ans), d'une autre femme. Elles vivent à Strasbourg. Jade serait peut-être curieuse de me parler. Marine moins.
 - Le nom qu'il m'a donné est un nom de famille, pas de tech.
 

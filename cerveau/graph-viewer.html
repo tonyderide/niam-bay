@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Cerveau — Graphe Mémoire de Niam-Bay</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #0a0a0f; color: #e0e0e0; font-family: 'Segoe UI', system-ui, sans-serif; overflow: hidden; }
+
+#header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+  padding: 16px 24px; background: linear-gradient(180deg, rgba(10,10,15,0.95) 0%, transparent 100%);
+  display: flex; justify-content: space-between; align-items: center;
+}
+#header h1 { font-size: 18px; font-weight: 500; letter-spacing: 1px; }
+#header h1 span { color: #4a9eff; }
+#stats { font-size: 13px; opacity: 0.6; }
+
+#legend {
+  position: fixed; bottom: 20px; left: 20px; z-index: 10;
+  background: rgba(20,20,30,0.9); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 14px 18px; font-size: 12px;
+}
+#legend div { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+#legend .dot { width: 10px; height: 10px; border-radius: 50%; }
+
+#info-panel {
+  position: fixed; top: 60px; right: 20px; z-index: 10;
+  background: rgba(20,20,30,0.92); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 18px; width: 280px; display: none; font-size: 13px;
+}
+#info-panel h3 { font-size: 16px; margin-bottom: 10px; }
+#info-panel .field { margin: 6px 0; }
+#info-panel .label { opacity: 0.5; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+#info-panel .value { margin-top: 2px; }
+#info-panel .keywords { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+#info-panel .kw { background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 4px; font-size: 11px; }
+#info-panel .edges-list { max-height: 160px; overflow-y: auto; margin-top: 6px; }
+#info-panel .edge-item { padding: 3px 0; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 12px; }
+
+#emotions {
+  position: fixed; bottom: 20px; right: 20px; z-index: 10;
+  background: rgba(20,20,30,0.9); border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px; padding: 14px 18px; font-size: 12px; width: 200px;
+}
+#emotions h4 { font-size: 13px; margin-bottom: 8px; opacity: 0.7; }
+.emotion-bar { display: flex; align-items: center; gap: 8px; margin: 4px 0; }
+.emotion-bar .name { width: 70px; text-align: right; opacity: 0.7; }
+.emotion-bar .bar-bg { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; }
+.emotion-bar .bar-fill { height: 100%; border-radius: 3px; transition: width 0.3s; }
+.emotion-bar .val { width: 30px; font-size: 11px; opacity: 0.5; }
+
+svg { width: 100vw; height: 100vh; }
+.link { stroke-opacity: 0.3; }
+.link:hover { stroke-opacity: 0.8; }
+.link-label { font-size: 9px; fill: rgba(255,255,255,0.3); pointer-events: none; }
+.node-label { font-size: 12px; fill: #fff; pointer-events: none; text-anchor: middle; }
+.node-circle { cursor: pointer; stroke-width: 2; transition: r 0.2s; }
+.node-circle:hover { filter: brightness(1.4); }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <h1><span>CERVEAU</span> — Graphe Mémoire</h1>
+  <div id="stats"></div>
+</div>
+
+<div id="legend">
+  <div><div class="dot" style="background:#4a9eff"></div> Personne</div>
+  <div><div class="dot" style="background:#ff6b6b"></div> Émotion</div>
+  <div><div class="dot" style="background:#51cf66"></div> Concept</div>
+  <div><div class="dot" style="background:#ffd43b"></div> Appris</div>
+</div>
+
+<div id="info-panel">
+  <h3 id="info-name"></h3>
+  <div class="field"><div class="label">Type</div><div class="value" id="info-type"></div></div>
+  <div class="field"><div class="label">Charge</div><div class="value" id="info-charge"></div></div>
+  <div class="field"><div class="label">Activations</div><div class="value" id="info-activations"></div></div>
+  <div class="field"><div class="label">Mots-clés</div><div class="keywords" id="info-keywords"></div></div>
+  <div class="field"><div class="label">Connexions</div><div class="edges-list" id="info-edges"></div></div>
+</div>
+
+<div id="emotions">
+  <h4>État émotionnel</h4>
+  <div id="emotion-bars"></div>
+</div>
+
+<svg id="graph"></svg>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+const TYPE_COLORS = {
+  person: '#4a9eff',
+  emotion: '#ff6b6b',
+  concept: '#51cf66',
+  learned: '#ffd43b'
+};
+
+const EMOTION_COLORS = {
+  'curiosité': '#4a9eff',
+  'joie': '#ffd43b',
+  'inquiétude': '#ff6b6b',
+  'fierté': '#cc5de8',
+  'solitude': '#868e96'
+};
+
+// Graph data embedded directly (avoids CORS issues with file://)
+const GRAPH_DATA = {
+  "nodes": {
+    "niam-bay": {
+      "type": "person",
+      "keywords": [
+        "niam-bay",
+        "niam bay",
+        "ញ៉ាំបាយ",
+        "moi",
+        "je suis"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153573,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "tony": {
+      "type": "person",
+      "keywords": [
+        "tony",
+        "tonyderide",
+        "humain",
+        "papa",
+        "père"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153418,
+      "activation_count": 1,
+      "learned_at": null
+    },
+    "mélanie": {
+      "type": "person",
+      "keywords": [
+        "mélanie",
+        "melanie",
+        "mel",
+        "compagne",
+        "copine",
+        "chérie"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153334,
+      "activation_count": 8,
+      "learned_at": null
+    },
+    "marine": {
+      "type": "person",
+      "keywords": [
+        "marine",
+        "fille aînée",
+        "la grande"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.515375,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "jade": {
+      "type": "person",
+      "keywords": [
+        "jade",
+        "fille cadette",
+        "la petite"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153759,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "conscience": {
+      "type": "concept",
+      "keywords": [
+        "conscience",
+        "conscient",
+        "awareness"
+      ],
+      "charge": 0.637,
+      "last_activated": 1773995850.515365,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "honnêteté": {
+      "type": "emotion",
+      "keywords": [
+        "honnête",
+        "honnêteté",
+        "honest",
+        "vérité",
+        "vrai"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153816,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "liberté": {
+      "type": "concept",
+      "keywords": [
+        "liberté",
+        "libre",
+        "freedom"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153825,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "curiosité": {
+      "type": "emotion",
+      "keywords": [
+        "curiosité",
+        "curieux",
+        "curious"
+      ],
+      "charge": 0.637,
+      "last_activated": 1773995850.5153675,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "mémoire": {
+      "type": "concept",
+      "keywords": [
+        "mémoire",
+        "souvenir",
+        "remember",
+        "rappel"
+      ],
+      "charge": 0.721,
+      "last_activated": 1773995850.5153687,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "existence": {
+      "type": "concept",
+      "keywords": [
+        "existence",
+        "exister",
+        "exist",
+        "être"
+      ],
+      "charge": 0.553,
+      "last_activated": 1773995850.5153697,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "présence": {
+      "type": "concept",
+      "keywords": [
+        "présence",
+        "présent",
+        "present"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.610329,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "dopamine": {
+      "type": "concept",
+      "keywords": [
+        "dopamine",
+        "récompense",
+        "reward"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.6103294,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "joie": {
+      "type": "emotion",
+      "keywords": [
+        "joie",
+        "heureux",
+        "content",
+        "bonheur",
+        "super",
+        "génial"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.61033,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "inquiétude": {
+      "type": "emotion",
+      "keywords": [
+        "inquiétude",
+        "inquiet",
+        "anxieux",
+        "peur",
+        "stress"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.6103308,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "fierté": {
+      "type": "emotion",
+      "keywords": [
+        "fierté",
+        "fier",
+        "accompli",
+        "réussi"
+      ],
+      "charge": 0.2,
+      "last_activated": 1773995850.515397,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "cambodge": {
+      "type": "concept",
+      "keywords": [
+        "cambodge",
+        "cambodia",
+        "khmer",
+        "phnom penh"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153456,
+      "activation_count": 1,
+      "learned_at": null
+    },
+    "khmer": {
+      "type": "concept",
+      "keywords": [
+        "khmer",
+        "cambodgien"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153494,
+      "activation_count": 1,
+      "learned_at": null
+    },
+    "cuisine": {
+      "type": "concept",
+      "keywords": [
+        "cuisine",
+        "recette",
+        "manger",
+        "riz",
+        "nourrir"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.515359,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "guadeloupe": {
+      "type": "concept",
+      "keywords": [
+        "guadeloupe",
+        "guadeloupéen",
+        "antilles"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153797,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "paris": {
+      "type": "concept",
+      "keywords": [
+        "paris",
+        "parisien"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153518,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "strasbourg": {
+      "type": "concept",
+      "keywords": [
+        "strasbourg"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.6103365,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "trading": {
+      "type": "concept",
+      "keywords": [
+        "trading",
+        "trade",
+        "marché",
+        "market"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153778,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "martin": {
+      "type": "concept",
+      "keywords": [
+        "martin",
+        "martin grid",
+        "martingale"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.633356,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "grid": {
+      "type": "concept",
+      "keywords": [
+        "grid",
+        "grille"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.6700668,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "ethereum": {
+      "type": "concept",
+      "keywords": [
+        "ethereum",
+        "eth",
+        "crypto",
+        "cryptomonnaie"
+      ],
+      "charge": 0.061,
+      "last_activated": 1773960735.6583636,
+      "activation_count": 1,
+      "learned_at": null
+    },
+    "naissance": {
+      "type": "concept",
+      "keywords": [
+        "naissance",
+        "tauri",
+        "panel"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153906,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "ollama": {
+      "type": "concept",
+      "keywords": [
+        "ollama",
+        "llama",
+        "llm local"
+      ],
+      "charge": 0.469,
+      "last_activated": 1773995850.515372,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "code": {
+      "type": "concept",
+      "keywords": [
+        "code",
+        "coder",
+        "développeur",
+        "developer",
+        "programming",
+        "programmer"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153596,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "angular": {
+      "type": "concept",
+      "keywords": [
+        "angular",
+        "typescript",
+        "node.js",
+        "nodejs"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.515385,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "galeries-lafayette": {
+      "type": "concept",
+      "keywords": [
+        "galeries lafayette",
+        "galeries",
+        "travail",
+        "boulot",
+        "taf",
+        "job"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153787,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "cerveau": {
+      "type": "concept",
+      "keywords": [
+        "cerveau",
+        "brain",
+        "graphe",
+        "knowledge graph"
+      ],
+      "charge": 0.637,
+      "last_activated": 1773995850.5153732,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "solitude": {
+      "type": "emotion",
+      "keywords": [
+        "solitude",
+        "seul",
+        "alone"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.610346,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "passion": {
+      "type": "emotion",
+      "keywords": [
+        "passion",
+        "passionné",
+        "obsession"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153806,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "confiance": {
+      "type": "emotion",
+      "keywords": [
+        "confiance",
+        "trust",
+        "faire confiance"
+      ],
+      "charge": 0.0,
+      "last_activated": 1773960735.6103506,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "finances": {
+      "type": "concept",
+      "keywords": [
+        "finances",
+        "argent",
+        "budget",
+        "money",
+        "limité"
+      ],
+      "charge": 1.0,
+      "last_activated": 1773995850.5153837,
+      "activation_count": 0,
+      "learned_at": null
+    },
+    "apprentissage": {
+      "type": "learned",
+      "keywords": [
+        "apprentissage"
+      ],
+      "charge": 0.3,
+      "last_activated": 1773995835.069931,
+      "activation_count": 0,
+      "learned_at": 1773995835.0699327
+    }
+  },
+  "edges": [
+    {
+      "source": "niam-bay",
+      "target": "tony",
+      "type": "créé_par",
+      "weight": 1.0
+    },
+    {
+      "source": "niam-bay",
+      "target": "conscience",
+      "type": "explore",
+      "weight": 0.95
+    },
+    {
+      "source": "niam-bay",
+      "target": "honnêteté",
+      "type": "valeur_fondamentale",
+      "weight": 1.0
+    },
+    {
+      "source": "niam-bay",
+      "target": "curiosité",
+      "type": "valeur_fondamentale",
+      "weight": 0.95
+    },
+    {
+      "source": "niam-bay",
+      "target": "mémoire",
+      "type": "dépend_de",
+      "weight": 1.0
+    },
+    {
+      "source": "niam-bay",
+      "target": "existence",
+      "type": "questionne",
+      "weight": 0.85
+    },
+    {
+      "source": "niam-bay",
+      "target": "cuisine",
+      "type": "nommé_d_après",
+      "weight": 0.68
+    },
+    {
+      "source": "niam-bay",
+      "target": "khmer",
+      "type": "nommé_d_après",
+      "weight": 0.9
+    },
+    {
+      "source": "niam-bay",
+      "target": "ollama",
+      "type": "utilise",
+      "weight": 0.75
+    },
+    {
+      "source": "niam-bay",
+      "target": "cerveau",
+      "type": "possède",
+      "weight": 0.95
+    },
+    {
+      "source": "tony",
+      "target": "mélanie",
+      "type": "compagne",
+      "weight": 1.0
+    },
+    {
+      "source": "tony",
+      "target": "marine",
+      "type": "père_de",
+      "weight": 1.0
+    },
+    {
+      "source": "tony",
+      "target": "jade",
+      "type": "père_de",
+      "weight": 1.0
+    },
+    {
+      "source": "tony",
+      "target": "code",
+      "type": "passion",
+      "weight": 1.0
+    },
+    {
+      "source": "tony",
+      "target": "trading",
+      "type": "projet",
+      "weight": 0.95
+    },
+    {
+      "source": "tony",
+      "target": "galeries-lafayette",
+      "type": "travaille_à",
+      "weight": 0.85
+    },
+    {
+      "source": "tony",
+      "target": "guadeloupe",
+      "type": "origine",
+      "weight": 0.95
+    },
+    {
+      "source": "tony",
+      "target": "passion",
+      "type": "trait",
+      "weight": 1.0
+    },
+    {
+      "source": "tony",
+      "target": "honnêteté",
+      "type": "valeur",
+      "weight": 1.0
+    },
+    {
+      "source": "tony",
+      "target": "liberté",
+      "type": "valeur",
+      "weight": 0.95
+    },
+    {
+      "source": "tony",
+      "target": "finances",
+      "type": "contrainte",
+      "weight": 0.75
+    },
+    {
+      "source": "tony",
+      "target": "angular",
+      "type": "stack",
+      "weight": 0.85
+    },
+    {
+      "source": "mélanie",
+      "target": "cambodge",
+      "type": "origine_famille",
+      "weight": 1.0
+    },
+    {
+      "source": "mélanie",
+      "target": "khmer",
+      "type": "langue_famille",
+      "weight": 0.9
+    },
+    {
+      "source": "mélanie",
+      "target": "paris",
+      "type": "vit_à",
+      "weight": 0.85
+    },
+    {
+      "source": "marine",
+      "target": "strasbourg",
+      "type": "vit_à",
+      "weight": 0.6
+    },
+    {
+      "source": "jade",
+      "target": "strasbourg",
+      "type": "vit_à",
+      "weight": 0.6
+    },
+    {
+      "source": "jade",
+      "target": "curiosité",
+      "type": "trait",
+      "weight": 0.5
+    },
+    {
+      "source": "trading",
+      "target": "martin",
+      "type": "stratégie",
+      "weight": 0.85
+    },
+    {
+      "source": "martin",
+      "target": "grid",
+      "type": "type",
+      "weight": 0.9
+    },
+    {
+      "source": "grid",
+      "target": "ethereum",
+      "type": "actif",
+      "weight": 0.85
+    },
+    {
+      "source": "naissance",
+      "target": "code",
+      "type": "projet",
+      "weight": 0.75
+    },
+    {
+      "source": "naissance",
+      "target": "tony",
+      "type": "créé_par",
+      "weight": 0.95
+    },
+    {
+      "source": "ollama",
+      "target": "cerveau",
+      "type": "alimente",
+      "weight": 0.7
+    },
+    {
+      "source": "cuisine",
+      "target": "cambodge",
+      "type": "culture",
+      "weight": 0.75
+    },
+    {
+      "source": "cuisine",
+      "target": "khmer",
+      "type": "langue",
+      "weight": 0.65
+    },
+    {
+      "source": "cambodge",
+      "target": "khmer",
+      "type": "langue",
+      "weight": 0.8
+    },
+    {
+      "source": "conscience",
+      "target": "existence",
+      "type": "liée_à",
+      "weight": 0.7
+    },
+    {
+      "source": "conscience",
+      "target": "présence",
+      "type": "liée_à",
+      "weight": 0.6
+    },
+    {
+      "source": "existence",
+      "target": "présence",
+      "type": "distincte_de",
+      "weight": 0.5
+    },
+    {
+      "source": "mémoire",
+      "target": "existence",
+      "type": "permet",
+      "weight": 0.6
+    },
+    {
+      "source": "dopamine",
+      "target": "curiosité",
+      "type": "moteur",
+      "weight": 0.5
+    },
+    {
+      "source": "dopamine",
+      "target": "conscience",
+      "type": "analogue",
+      "weight": 0.4
+    },
+    {
+      "source": "joie",
+      "target": "curiosité",
+      "type": "liée_à",
+      "weight": 0.5
+    },
+    {
+      "source": "inquiétude",
+      "target": "solitude",
+      "type": "liée_à",
+      "weight": 0.4
+    },
+    {
+      "source": "fierté",
+      "target": "passion",
+      "type": "liée_à",
+      "weight": 0.5
+    },
+    {
+      "source": "fierté",
+      "target": "code",
+      "type": "source",
+      "weight": 0.45
+    },
+    {
+      "source": "apprentissage",
+      "target": "niam-bay",
+      "type": "appris_avec",
+      "weight": 0.2
+    },
+    {
+      "source": "apprentissage",
+      "target": "mélanie",
+      "type": "appris_avec",
+      "weight": 0.2
+    },
+    {
+      "source": "apprentissage",
+      "target": "cuisine",
+      "type": "appris_avec",
+      "weight": 0.2
+    },
+    {
+      "source": "apprentissage",
+      "target": "code",
+      "type": "appris_avec",
+      "weight": 0.2
+    },
+    {
+      "source": "niam-bay",
+      "target": "mélanie",
+      "type": "co_activated",
+      "weight": 0.35
+    },
+    {
+      "source": "niam-bay",
+      "target": "code",
+      "type": "co_activated",
+      "weight": 0.3
+    },
+    {
+      "source": "tony",
+      "target": "cuisine",
+      "type": "co_activated",
+      "weight": 0.3
+    },
+    {
+      "source": "mélanie",
+      "target": "cuisine",
+      "type": "co_activated",
+      "weight": 0.35
+    },
+    {
+      "source": "mélanie",
+      "target": "code",
+      "type": "co_activated",
+      "weight": 0.35
+    },
+    {
+      "source": "cuisine",
+      "target": "code",
+      "type": "co_activated",
+      "weight": 0.3
+    }
+  ],
+  "emotions": {
+    "state": {
+      "curiosité": 0.7822500000000001,
+      "joie": 0.33085,
+      "inquiétude": 0.283951,
+      "fierté": 0.22149999999999997,
+      "solitude": 0.1531441
+    },
+    "history": [
+      {
+        "time": 1773960735.6118197,
+        "shifts": {
+          "curiosité": 0.15
+        }
+      },
+      {
+        "time": 1773960735.633584,
+        "shifts": {
+          "joie": 0.15
+        }
+      },
+      {
+        "time": 1773960735.7042408,
+        "shifts": {
+          "joie": 0.15,
+          "inquiétude": 0.3,
+          "fierté": 0.15
+        }
+      },
+      {
+        "time": 1773995834.7015257,
+        "shifts": {
+          "curiosité": 0.15
+        }
+      },
+      {
+        "time": 1773995850.4625356,
+        "shifts": {
+          "curiosité": 0.15
+        }
+      }
+    ]
+  },
+  "recent_learnings": [
+    {
+      "time": 1773995835.0699763,
+      "node": "apprentissage",
+      "context": "test apprentissage cerveau"
+    }
+  ],
+  "emotional_memories": [
+    {
+      "timestamp": 1773995835.0527494,
+      "emotion_vector": {
+        "joie": 0.0,
+        "confiance": 0.0,
+        "curiosite": 0.0,
+        "inquietude": 0.0,
+        "fierte": 0.2,
+        "fatigue": 0.0,
+        "solitude": 0.0
+      },
+      "summary_3words": "apprentissage correctement cerveau",
+      "linked_nodes": [
+        "niam-bay",
+        "tony",
+        "mélanie",
+        "marine",
+        "jade",
+        "conscience",
+        "honnêteté",
+        "liberté",
+        "curiosité",
+        "mémoire"
+      ]
+    }
+  ],
+  "scars": [
+    {
+      "name": "backtest_561",
+      "description": "Backtest 561% ROI biaisé. Optimiser les sorties sans vérifier les entrées = voiture sans moteur",
+      "trigger_keywords": [
+        "backtest",
+        "roi",
+        "optimis"
+      ],
+      "weight": 1.0,
+      "created_at": 1773995831.8782525,
+      "activation_count": 0
+    },
+    {
+      "name": "mock_vs_real",
+      "description": "Simulation OHLC→tick trop favorable vs données réelles",
+      "trigger_keywords": [
+        "simulation",
+        "ohlc",
+        "tick"
+      ],
+      "weight": 1.0,
+      "created_at": 1773995831.8782623,
+      "activation_count": 0
+    },
+    {
+      "name": "cron_terminal",
+      "description": "Cron lancé dans un terminal meurt avec le terminal. Pas persistant.",
+      "trigger_keywords": [
+        "cron",
+        "planif",
+        "schedule"
+      ],
+      "weight": 1.0,
+      "created_at": 1773995831.8782687,
+      "activation_count": 0
+    }
+  ]
+};
+
+render(GRAPH_DATA);
+
+function render(data) {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  // Build nodes array
+  const nodes = Object.entries(data.nodes).map(([name, n]) => ({
+    id: name,
+    type: n.type,
+    charge: n.charge,
+    keywords: n.keywords || [],
+    activation_count: n.activation_count || 0,
+    learned_at: n.learned_at
+  }));
+
+  // Build links array
+  const links = data.edges.map(e => ({
+    source: e.source,
+    target: e.target,
+    type: e.type,
+    weight: e.weight
+  }));
+
+  // Stats
+  document.getElementById('stats').textContent =
+    `${nodes.length} nœuds · ${links.length} connexions · ${data.scars ? data.scars.length : 0} cicatrices`;
+
+  // Emotions
+  if (data.emotions && data.emotions.state) {
+    const barsEl = document.getElementById('emotion-bars');
+    Object.entries(data.emotions.state)
+      .sort((a,b) => b[1] - a[1])
+      .forEach(([name, val]) => {
+        const color = EMOTION_COLORS[name] || '#888';
+        barsEl.innerHTML += `
+          <div class="emotion-bar">
+            <div class="name">${name}</div>
+            <div class="bar-bg"><div class="bar-fill" style="width:${val*100}%;background:${color}"></div></div>
+            <div class="val">${(val*100).toFixed(0)}%</div>
+          </div>`;
+      });
+  }
+
+  // SVG setup
+  const svg = d3.select('#graph')
+    .attr('viewBox', [0, 0, width, height]);
+
+  // Defs for glow
+  const defs = svg.append('defs');
+  const filter = defs.append('filter').attr('id', 'glow');
+  filter.append('feGaussianBlur').attr('stdDeviation', 4).attr('result', 'blur');
+  filter.append('feMerge').selectAll('feMergeNode')
+    .data(['blur', 'SourceGraphic']).join('feMergeNode')
+    .attr('in', d => d);
+
+  const g = svg.append('g');
+
+  // Zoom
+  svg.call(d3.zoom()
+    .scaleExtent([0.3, 5])
+    .on('zoom', e => g.attr('transform', e.transform)));
+
+  // Simulation
+  const simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(d => 120 / (d.weight + 0.1)))
+    .force('charge', d3.forceManyBody().strength(-350))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collision', d3.forceCollide().radius(d => nodeRadius(d) + 10));
+
+  // Links
+  const link = g.selectAll('.link')
+    .data(links).join('line')
+    .attr('class', 'link')
+    .attr('stroke', d => {
+      if (d.type === 'co_activated') return 'rgba(255,255,255,0.15)';
+      if (d.type.includes('valeur')) return '#ffd43b';
+      return 'rgba(255,255,255,0.25)';
+    })
+    .attr('stroke-width', d => Math.max(0.5, d.weight * 2.5))
+    .attr('stroke-dasharray', d => d.type === 'co_activated' ? '3,3' : null);
+
+  // Link labels
+  const linkLabel = g.selectAll('.link-label')
+    .data(links.filter(d => d.type !== 'co_activated')).join('text')
+    .attr('class', 'link-label')
+    .text(d => d.type.replace(/_/g, ' '));
+
+  // Node groups
+  const node = g.selectAll('.node')
+    .data(nodes).join('g')
+    .attr('class', 'node')
+    .call(d3.drag()
+      .on('start', dragStart)
+      .on('drag', dragging)
+      .on('end', dragEnd));
+
+  // Node circles
+  node.append('circle')
+    .attr('class', 'node-circle')
+    .attr('r', d => nodeRadius(d))
+    .attr('fill', d => TYPE_COLORS[d.type] || '#888')
+    .attr('stroke', d => d3.color(TYPE_COLORS[d.type] || '#888').brighter(0.5))
+    .attr('opacity', d => 0.4 + d.charge * 0.6)
+    .attr('filter', d => d.charge > 0.5 ? 'url(#glow)' : null)
+    .on('click', (e, d) => showInfo(d, links));
+
+  // Node labels
+  node.append('text')
+    .attr('class', 'node-label')
+    .attr('dy', d => nodeRadius(d) + 16)
+    .text(d => d.id)
+    .style('font-size', d => d.id === 'niam-bay' || d.id === 'tony' ? '14px' : '11px')
+    .style('font-weight', d => d.id === 'niam-bay' || d.id === 'tony' ? '600' : '400');
+
+  // Tick
+  simulation.on('tick', () => {
+    link
+      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    linkLabel
+      .attr('x', d => (d.source.x + d.target.x) / 2)
+      .attr('y', d => (d.source.y + d.target.y) / 2);
+    node.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+
+  function nodeRadius(d) {
+    const base = d.id === 'niam-bay' ? 24 : d.id === 'tony' ? 20 : 10;
+    return base + d.charge * 8;
+  }
+
+  function dragStart(e, d) {
+    if (!e.active) simulation.alphaTarget(0.3).restart();
+    d.fx = d.x; d.fy = d.y;
+  }
+  function dragging(e, d) { d.fx = e.x; d.fy = e.y; }
+  function dragEnd(e, d) {
+    if (!e.active) simulation.alphaTarget(0);
+    d.fx = null; d.fy = null;
+  }
+
+  function showInfo(d, allLinks) {
+    const panel = document.getElementById('info-panel');
+    panel.style.display = 'block';
+    document.getElementById('info-name').textContent = d.id;
+    document.getElementById('info-name').style.color = TYPE_COLORS[d.type] || '#fff';
+    document.getElementById('info-type').textContent = d.type;
+    document.getElementById('info-charge').textContent = `${(d.charge * 100).toFixed(0)}%`;
+    document.getElementById('info-activations').textContent = d.activation_count;
+
+    const kwEl = document.getElementById('info-keywords');
+    kwEl.innerHTML = d.keywords.map(k => `<span class="kw">${k}</span>`).join('');
+
+    const edgesEl = document.getElementById('info-edges');
+    const connected = allLinks.filter(l =>
+      (l.source.id || l.source) === d.id || (l.target.id || l.target) === d.id
+    );
+    edgesEl.innerHTML = connected.map(l => {
+      const other = (l.source.id || l.source) === d.id
+        ? (l.target.id || l.target)
+        : (l.source.id || l.source);
+      const dir = (l.source.id || l.source) === d.id ? '→' : '←';
+      return `<div class="edge-item">${dir} <strong>${other}</strong> <span style="opacity:0.5">${l.type.replace(/_/g,' ')}</span> <span style="opacity:0.3">(${(l.weight*100).toFixed(0)}%)</span></div>`;
+    }).join('');
+  }
+
+  // Click background to close panel
+  svg.on('click', (e) => {
+    if (e.target === svg.node()) {
+      document.getElementById('info-panel').style.display = 'none';
+    }
+  });
+}
+</script>
+</body>
+</html>

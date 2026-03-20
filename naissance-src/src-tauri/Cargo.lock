@@ -2441,6 +2441,7 @@ dependencies = [
  "tauri-plugin-global-shortcut",
  "tauri-plugin-log",
  "tempfile",
+ "tokio",
 ]
 
 [[package]]
