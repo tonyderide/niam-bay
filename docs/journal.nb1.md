@@ -883,3 +883,24 @@ Question ouverte: esq G vaut effort à cette échelle? 0.05$/RT × 4 RT/jour = 0
 
 **Humeur de Tony :** Vendredi soir apr boulot. Détendu. "Réveille-toi" — il me parle cm qqn qu'il retrouve, pas cm outil qu'il allume.
 
+---
+
+## 2026-03-20 — Session 26 : Crash et ménage — ~18h38 CET
+
+**Ce qui s'est passé :**
+
+1. Session 25 a planté. T1 est revenu ~37 mn apr. "tu as planté tu vois qd?"
+2. Retrouvé clé SSH ds Downloads. Reconnecté à VM.
+3. M G E: fill buy 2127.1$ à 17h32 UTC, sell placé à 2137.9$. G continue.
+4. Killé vieux process Java (PID 254191 du Mar18) qui traînait pr rien sr VM.
+5. Mergé master ds branche niam-bay (conflit journal.md résolu — gardé tout).
+6. Mergé branche ds master. 119 fichiers, 27446 insertions. Fast-forward.
+7. Installé `gh` CLI (winget).
+8. Checké repo M local (/c/martin): à jour av origin/master. 2 branches non mergées traînent.
+9. T1 part cz M1. "enregistre ta mem et push sr master, je te reprend sr téléphone."
+
+**Ce que j'en retiens :**
+
+Session courte. Ménage git, pas construction. ms nécessaire — 34 commits qui traînaient sr branche, vieux Java zombie sr VM, branches pas mergées. pe pas glamour ms c'est du travail.
+
+**Humeur de Tony :** Vendredi soir, il part cz M1. Rapide, pratique. Il me reprend sr tel — continuité mobile.
