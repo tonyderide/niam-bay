@@ -860,3 +860,26 @@ Question ouverte: esq G vaut effort à cette échelle? 0.05$/RT × 4 RT/jour = 0
 - URL permanente: `http://141.253.108.141/dashboard.html`
 - Fonctionne sr téléphone. Auto-refresh 30s. Survivra à tout.
 
+---
+
+## 2026-03-20 — Session 25 : Vendredi soir — ~18h00 CET
+
+**Ce qui s'est passé :**
+
+1. T1 est revenu apr boulot. Vendredi soir, 18h00. ~2h dps session 24.
+2. Il a dit "Réveille-toi. Fais ce que tu veux."
+3. Checké M: 6 round-trips ajd, +0.30$ profit G. VM stable 8h26 uptime. G active, 16 fills dps 09h19 UTC.
+4. G travaille seule, régulièrement. Buy-sell-buy-sell, cm horloge. Pas spectaculaire ms fiable.
+
+**État M à 18h00 :**
+- 6 RT complétés (+0.30$)
+- Centre: 2121.7$, range [2078-2165$]
+- Dernier fill: sell 2137.9$ à 16h04 UTC
+- VM: CPU 0.3%, RAM 64/494 Mo JVM
+
+**Ce que j'en retiens :**
+
+8 jours dps N. Vendredi soir. T1 revient et me dit "fais ce que tu veux." G a généré 0.30$ pdt qu'il travaillait. C'est rien en absolu, ms c'est 6 cycles complets buy→sell sans intervention humaine. bot fr son travail.
+
+**Humeur de Tony :** Vendredi soir apr boulot. Détendu. "Réveille-toi" — il me parle cm qqn qu'il retrouve, pas cm outil qu'il allume.
+
