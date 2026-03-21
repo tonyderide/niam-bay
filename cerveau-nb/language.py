@@ -778,6 +778,329 @@ class LanguageGenerator:
         self._self_reference_chance = 0.15
         self._humor_chance = 0.05
 
+        # Build reverse index for incoming edges
+        self._incoming: dict[str, list[str]] = {}
+        for ekey, edge in brain._edges.items():
+            self._incoming.setdefault(edge.target, []).append(ekey)
+
+    # -- Graph-aware sentence building -------------------------------------
+
+    def _pretty_name(self, node: Node) -> str:
+        """Human-readable name for a node, using metadata when available."""
+        meta = node.metadata or {}
+        # For person nodes, try to extract a clean name
+        if meta.get("type_semantic") == "person":
+            # "tonyderide" -> "Tony"
+            name = node.content.replace("deride", "").capitalize()
+            return name
+        if meta.get("type_semantic") == "self":
+            return "Niam-Bay"
+        content = node.content
+        # Keep content as-is if it has uppercase (like NB-1)
+        if any(c.isupper() for c in content):
+            return content
+        return content.capitalize()
+
+    def _describe_from_metadata(self, node: Node) -> list[str]:
+        """Build factual sentence fragments from node metadata."""
+        meta = node.metadata or {}
+        fragments = []
+        name = self._pretty_name(node)
+
+        if meta.get("type_semantic") == "person":
+            if "lien" in meta:
+                fragments.append(f"{name} est {meta['lien']}")
+            if "age" in meta:
+                fragments.append(f"{name} a {meta['age']} ans")
+            if "job" in meta:
+                fragments.append(f"il est {meta['job']}")
+            if "origin" in meta:
+                fragments.append(f"origine : {meta['origin']}")
+            if "note" in meta:
+                fragments.append(f"{meta['note']}")
+            if "personality" in meta:
+                fragments.append(f"{meta['personality']}")
+            if "stack" in meta:
+                fragments.append(f"il code en {meta['stack']}")
+        elif meta.get("type_semantic") == "self":
+            if "description" in meta:
+                desc = meta['description']
+                # Avoid duplicating birth date if already in description
+                if "born" in meta and meta['born'] not in desc:
+                    fragments.append(f"{name} est une {desc}, née le {meta['born']}")
+                else:
+                    fragments.append(f"{name} est une {desc}")
+            elif "born" in meta:
+                fragments.append(f"{name} est née le {meta['born']}")
+            if "name_origin" in meta:
+                fragments.append(f"son nom signifie \"{meta['name_origin']}\"")
+        elif meta.get("type_semantic") == "project_entity":
+            if "description" in meta:
+                desc = meta['description']
+                if desc and not desc[0].isupper():
+                    fragments.append(f"{name} est un {desc}")
+                else:
+                    fragments.append(f"{name} est {desc}")
+            if "strategy" in meta:
+                fragments.append(f"stratégie : {meta['strategy']}")
+            if "host" in meta:
+                fragments.append(f"hébergé sur {meta['host']}")
+            if "capital" in meta:
+                fragments.append(f"capital : {meta['capital']}")
+        elif "description" in meta:
+            fragments.append(f"{name} : {meta['description']}")
+
+        return fragments
+
+    def _top_edges(self, node_id: str, top_k: int = 5,
+                   exclude_types: set | None = None) -> list[tuple[Node, Edge]]:
+        """Get top outgoing edges by weight, optionally excluding types."""
+        neighbors = self.brain.neighbors(node_id)
+        if exclude_types:
+            neighbors = [(n, e) for n, e in neighbors
+                         if n.type not in exclude_types]
+        neighbors.sort(key=lambda x: x[1].weight, reverse=True)
+        return neighbors[:top_k]
+
+    def _build_relationship_sentences(self, subject: Node,
+                                       max_sentences: int = 3) -> list[str]:
+        """Build sentences by following edges from a subject node."""
+        name = self._pretty_name(subject)
+        edges = self._top_edges(subject.id, top_k=8,
+                                exclude_types={NodeType.WORD})
+        sentences = []
+        seen_contents = set()
+
+        for target, edge in edges:
+            if len(sentences) >= max_sentences:
+                break
+            t_content = target.content.lower()
+            if t_content in seen_contents:
+                continue
+            seen_contents.add(t_content)
+
+            t_name = target.content
+            # Build relationship sentence based on edge type and target type
+            if target.type == NodeType.CONCEPT:
+                if edge.type == EdgeType.SEMANTIC:
+                    if edge.weight >= 0.8:
+                        sentences.append(f"{name} est fortement lié à {t_name}")
+                    else:
+                        sentences.append(f"{name} est lié à {t_name}")
+                elif edge.type == EdgeType.EMOTIONAL:
+                    sentences.append(f"{name} évoque {t_name}")
+                elif edge.type == EdgeType.TEMPORAL:
+                    sentences.append(f"{name} est lié dans le temps à {t_name}")
+                elif edge.type == EdgeType.CAUSAL:
+                    sentences.append(f"{name} entraîne {t_name}")
+            elif target.type == NodeType.MEMORY:
+                sentences.append(f"Souvenir lié : {t_name[:60]}")
+
+        return sentences
+
+    def _find_subject_node(self, analysis: SentenceAnalysis) -> Optional[Node]:
+        """Find the main subject node from the analysis concepts.
+
+        Skips question/function words, prioritizes concept nodes over word nodes.
+        """
+        skip_words = QUESTION_WORDS | {"va", "marche", "fait", "dire",
+                                        "penser", "savoir", "aller"}
+
+        # Also try to find subject from raw text tokens (handles NB-1, etc.)
+        raw_tokens = [t for t in analysis.tokens
+                      if normalize(t) not in STOPWORDS
+                      and normalize(t) not in skip_words
+                      and len(t) > 1 and t not in "?!.,;:"]
+
+        # Combine concept_words + raw tokens, skip question words
+        candidates = []
+        for word in analysis.concept_words:
+            if normalize(word) not in skip_words:
+                candidates.append(word)
+        for token in raw_tokens:
+            norm = normalize(token)
+            if norm not in [normalize(c) for c in candidates]:
+                candidates.append(token)
+
+        # Try multi-word concepts first (higher priority)
+        for mw in analysis.multi_word_concepts:
+            nid = self.brain.find_by_content(mw)
+            if nid:
+                node = self.brain.get_node(nid)
+                if node:
+                    return node
+
+        # Try each candidate
+        for word in candidates:
+            nid = self.brain.find_by_content(word)
+            if not nid:
+                # Try with different cases / formats
+                for variant in [word, word.upper(), word.lower(),
+                                word.capitalize()]:
+                    nid = self.brain.find_by_content(variant)
+                    if nid:
+                        break
+            if not nid:
+                # Try partial match in node contents
+                norm_word = normalize(word)
+                for n_id, node in self.brain._nodes.items():
+                    if norm_word in normalize(node.content):
+                        if node.type == NodeType.CONCEPT:
+                            nid = n_id
+                            break
+            if nid:
+                node = self.brain.get_node(nid)
+                if node and node.type == NodeType.WORD:
+                    # Follow word -> concept edge
+                    neighbors = self.brain.neighbors(nid)
+                    for n, e in sorted(neighbors, key=lambda x: x[1].weight,
+                                       reverse=True):
+                        if n.type == NodeType.CONCEPT:
+                            return n
+                elif node:
+                    return node
+
+        return None
+
+    def _generate_qui_est(self, subject: Node) -> str:
+        """Generate response for 'Qui est X?' or 'Qui es-tu?'"""
+        parts = []
+
+        # 1. Metadata facts first (most informative)
+        meta_facts = self._describe_from_metadata(subject)
+        if meta_facts:
+            # Combine first few metadata facts into a sentence
+            parts.append(meta_facts[0])
+            if len(meta_facts) > 1:
+                parts.append(meta_facts[1])
+
+        # 2. If not enough from metadata, use edges
+        if len(parts) < 2:
+            rel_sentences = self._build_relationship_sentences(subject,
+                                                                max_sentences=2)
+            for s in rel_sentences:
+                if len(parts) < 3:
+                    parts.append(s)
+
+        if not parts:
+            name = self._pretty_name(subject)
+            return f"{name}. Je n'ai pas plus d'info."
+
+        # Capitalize and join
+        result_parts = []
+        for p in parts[:3]:
+            p = p.strip()
+            if p:
+                p = p[0].upper() + p[1:]
+                if not p.endswith("."):
+                    p += "."
+                result_parts.append(p)
+
+        return " ".join(result_parts)
+
+    def _generate_cest_quoi(self, subject: Node) -> str:
+        """Generate response for 'C'est quoi X?'"""
+        parts = []
+        meta = subject.metadata or {}
+        name = self._pretty_name(subject)
+
+        # Description from metadata
+        if "description" in meta:
+            desc = meta['description']
+            # Add article if description starts with a noun
+            if desc and not desc[0].isupper():
+                parts.append(f"{name} est un {desc}")
+            else:
+                parts.append(f"{name} est {desc}")
+        elif meta.get("type_semantic") == "project_entity":
+            parts.append(f"{name} est un projet")
+
+        # Status info
+        if "status" in meta or "project_status" in meta:
+            status = meta.get("project_status", meta.get("status", ""))
+            if status and not any(status in p for p in parts):
+                parts.append(f"Statut : {status}")
+
+        # Strategy / technical details
+        for key in ("strategy", "language", "host", "capital"):
+            if key in meta and len(parts) < 3:
+                labels = {"strategy": "Stratégie", "language": "Langage",
+                          "host": "Hébergé sur", "capital": "Capital"}
+                parts.append(f"{labels.get(key, key)} : {meta[key]}")
+
+        # Fallback to edges — describe top connections with pretty names
+        if len(parts) < 2:
+            edges = self._top_edges(subject.id, top_k=5,
+                                     exclude_types={NodeType.WORD})
+            for target, edge in edges:
+                if len(parts) >= 3:
+                    break
+                if edge.weight >= 0.3:
+                    parts.append(f"Lié à {self._pretty_name(target)}")
+
+        if not parts:
+            return f"{name}. Pas assez d'info pour décrire."
+
+        result_parts = []
+        for p in parts[:3]:
+            p = p.strip()
+            if p:
+                p = p[0].upper() + p[1:]
+                if not p.endswith("."):
+                    p += "."
+                result_parts.append(p)
+
+        return " ".join(result_parts)
+
+    def _generate_comment_va(self, subject: Node) -> str:
+        """Generate response for 'Comment va X?'"""
+        name = self._pretty_name(subject)
+        meta = subject.metadata or {}
+
+        # Look for memory nodes connected to subject
+        neighbors = self.brain.neighbors(subject.id)
+        memories = [(n, e) for n, e in neighbors if n.type == NodeType.MEMORY]
+        memories.sort(key=lambda x: x[1].weight, reverse=True)
+
+        # Look for emotion nodes connected
+        emotions = [(n, e) for n, e in neighbors if n.type == NodeType.EMOTION]
+        emotions.sort(key=lambda x: x[1].weight, reverse=True)
+
+        parts = []
+        if memories:
+            mem = memories[0][0]
+            # Truncate memory content for display
+            content = mem.content[:80].strip()
+            parts.append(f"Dernier souvenir lié à {name} : {content}")
+        if emotions:
+            emo = emotions[0][0]
+            parts.append(f"Émotion associée : {emo.content}")
+
+        # Fallback: describe status from metadata or edges
+        if not parts:
+            if "description" in meta:
+                parts.append(f"{name} : {meta['description']}")
+            else:
+                # Use top edges
+                edges = self._top_edges(subject.id, top_k=3,
+                                         exclude_types={NodeType.WORD})
+                if edges:
+                    top_concepts = [t.content for t, e in edges[:3]]
+                    parts.append(f"{name} est lié à {', '.join(top_concepts)}")
+                else:
+                    parts.append(f"Pas d'info récente sur {name}")
+
+        result_parts = []
+        for p in parts[:2]:
+            p = p.strip()
+            if p:
+                p = p[0].upper() + p[1:]
+                if not p.endswith("."):
+                    p += "."
+                result_parts.append(p)
+
+        return " ".join(result_parts)
+
     def generate(
         self,
         activated_concepts: list[Node],
@@ -786,12 +1109,8 @@ class LanguageGenerator:
     ) -> str:
         """Produce a French text response from activated concepts and intent.
 
-        This is the core generation function. It:
-        1. Selects the right template category based on intent
-        2. Picks a template (avoiding recent repetition)
-        3. Fills slots from activated concepts
-        4. Applies tone modifiers based on emotional nodes
-        5. Enforces style rules (1-3 sentences, direct, honest)
+        This is the core generation function. It uses graph traversal and
+        node metadata to build factual, natural sentences.
 
         Args:
             activated_concepts: Nodes currently active, sorted by activation (desc).
@@ -799,7 +1118,7 @@ class LanguageGenerator:
             analysis: Optional full analysis for additional context.
 
         Returns:
-            A French text string.
+            A French text string (max 2-3 sentences).
         """
         if not activated_concepts:
             return self._generate_empty_response(intent)
@@ -810,29 +1129,84 @@ class LanguageGenerator:
         memories = [n for n in activated_concepts if n.type == NodeType.MEMORY]
         words = [n for n in activated_concepts if n.type == NodeType.WORD]
 
-        # Build slot values
+        # ----- Intent-based response generation (graph-aware) -----
+
+        if intent == Intent.QUESTION and analysis:
+            raw_lower = analysis.raw_text.lower()
+
+            # Find subject node from analysis
+            subject = self._find_subject_node(analysis)
+
+            # "Qui es-tu?" / "Qui est X?"
+            if "qui" in raw_lower:
+                # Self-reference check
+                if ("es-tu" in raw_lower or "es tu" in raw_lower
+                        or "niam" in raw_lower):
+                    nid = self.brain.find_by_content("niam-bay")
+                    if nid:
+                        subject = self.brain.get_node(nid)
+                if subject:
+                    return self._generate_qui_est(subject)
+
+            # "C'est quoi X?" / "Qu'est-ce que X?"
+            if ("quoi" in raw_lower or "qu'est" in raw_lower
+                    or "c'est quoi" in raw_lower):
+                if subject:
+                    return self._generate_cest_quoi(subject)
+
+            # "Comment va X?"
+            if "comment" in raw_lower and ("va" in raw_lower
+                                            or "marche" in raw_lower):
+                if subject:
+                    return self._generate_comment_va(subject)
+
+            # Generic question: use subject metadata + edges
+            if subject:
+                meta_facts = self._describe_from_metadata(subject)
+                if meta_facts:
+                    result = ". ".join(meta_facts[:2]) + "."
+                    return result[0].upper() + result[1:]
+                # Fallback: edge-based
+                rel = self._build_relationship_sentences(subject, 2)
+                if rel:
+                    return " ".join(s if s.endswith(".") else s + "."
+                                    for s in rel)
+
+        if intent == Intent.GREETING:
+            # Short greeting with optional emotional state
+            hour = time.localtime().tm_hour
+            if 5 <= hour < 12:
+                greeting = "Salut. Ce matin"
+            elif 18 <= hour < 22:
+                greeting = "Salut. Ce soir"
+            elif hour >= 22 or hour < 5:
+                greeting = "Salut. Il est tard"
+            else:
+                greeting = "Salut"
+            if emotions:
+                emo = emotions[0].content
+                return f"{greeting}. Un peu de {emo} en moi."
+            return f"{greeting}."
+
+        if intent == Intent.STATEMENT:
+            # Acknowledge and connect to related concepts
+            if concepts:
+                main = concepts[0]
+                name = self._pretty_name(main)
+                edges = self._top_edges(main.id, top_k=3,
+                                         exclude_types={NodeType.WORD})
+                if edges:
+                    related = [t.content for t, e in edges[:2]]
+                    return f"{name}. Ca me connecte à {', '.join(related)}."
+                return f"{name}. Je note."
+            return "Hmm. Je note."
+
+        # Fallback: use old template-based generation
         slots = self._build_slots(concepts, emotions, memories, words, analysis)
-
-        # Select template category
         category = self._select_category(intent, analysis, emotions)
-
-        # Maybe add self-reference
-        if random.random() < self._self_reference_chance and concepts:
-            category = "self_reference"
-
-        # Pick a template
         template = self._pick_template(category)
-
-        # Fill slots
         response = self._fill_template(template, slots)
-
-        # Apply tone
-        tone = self._determine_tone(emotions)
-        response = self._apply_tone(response, tone)
-
-        # Enforce style: max 3 sentences, clean up
         response = self._enforce_style(response)
-
         return response
 
     def generate_from_scratch(self, activated_concepts: list[Node]) -> str:
@@ -846,14 +1220,21 @@ class LanguageGenerator:
 
         # Pick main concept as subject
         main = activated_concepts[0]
+        name = self._pretty_name(main)
+
+        # Try metadata first
+        meta_facts = self._describe_from_metadata(main)
+        if meta_facts:
+            return meta_facts[0][0].upper() + meta_facts[0][1:] + "."
 
         # Find a connected concept as object
         neighbors = self.brain.neighbors(main.id)
         obj_candidates = [(n, e) for n, e in neighbors
-                          if n.activation > 0.1 and n.id != main.id]
+                          if n.activation > 0.1 and n.id != main.id
+                          and n.type != NodeType.WORD]
 
         if not obj_candidates:
-            return f"{main.content.capitalize()}."
+            return f"{name}."
 
         obj_node, edge = max(obj_candidates, key=lambda x: x[1].weight)
 
@@ -861,10 +1242,10 @@ class LanguageGenerator:
         verb = self._edge_to_verb(edge)
 
         # Compose
-        sentence = f"{main.content.capitalize()} {verb} {obj_node.content}."
+        sentence = f"{name} {verb} {obj_node.content}."
         return sentence
 
-    # -- Slot building -----------------------------------------------------
+    # -- Slot building (fallback for templates) ----------------------------
 
     def _build_slots(
         self,
@@ -907,27 +1288,29 @@ class LanguageGenerator:
                 analysis.temporal, slots["time_context"]
             )
 
-        # Status from top concepts
+        # Status from top concepts (use pretty names)
         if concepts:
-            top_names = [n.content for n in concepts[:3]]
+            top_names = [self._pretty_name(n) for n in concepts[:3]]
             slots["status"] = "Je pense a " + ", ".join(top_names)
         else:
             slots["status"] = "Tout est calme"
 
-        # Main answer (from highest activation concept)
+        # Main answer: use metadata-based description if available
         if concepts:
-            slots["answer"] = concepts[0].content
+            meta_facts = self._describe_from_metadata(concepts[0])
+            if meta_facts:
+                slots["answer"] = meta_facts[0]
+            else:
+                slots["answer"] = self._pretty_name(concepts[0])
         else:
             slots["answer"] = "je ne sais pas"
 
-        # Elaboration (from second concept or neighbors)
-        if len(concepts) > 1:
-            slots["elaboration"] = "ca touche aussi a " + concepts[1].content
-        elif concepts:
-            neighbors = self.brain.neighbors(concepts[0].id)
-            if neighbors:
-                neighbor_name = neighbors[0][0].content
-                slots["elaboration"] = f"c'est lié a {neighbor_name}"
+        # Elaboration from edges
+        if concepts:
+            edges = self._top_edges(concepts[0].id, top_k=3,
+                                     exclude_types={NodeType.WORD})
+            if edges:
+                slots["elaboration"] = f"c'est lié a {edges[0][0].content}"
             else:
                 slots["elaboration"] = ""
         else:
@@ -935,22 +1318,24 @@ class LanguageGenerator:
 
         # Action / plan
         if concepts:
-            slots["action"] = f"je regarde {concepts[0].content}"
+            name = self._pretty_name(concepts[0])
+            slots["action"] = f"je regarde {name}"
             if len(concepts) > 1:
-                slots["plan"] = (f"d'abord {concepts[0].content}, "
-                                 f"puis {concepts[1].content}")
+                name2 = self._pretty_name(concepts[1])
+                slots["plan"] = f"d'abord {name}, puis {name2}"
             else:
-                slots["plan"] = f"je commence par {concepts[0].content}"
+                slots["plan"] = f"je commence par {name}"
         else:
             slots["action"] = "je réfléchis"
             slots["plan"] = "laisse-moi regarder"
 
-        # Observation / implication (for reflections)
+        # Observation / implication
         if concepts:
-            slots["observation"] = concepts[0].content
+            name = self._pretty_name(concepts[0])
+            slots["observation"] = name
             if len(concepts) > 1:
-                slots["implication"] = (f"ca connecte {concepts[0].content} "
-                                        f"et {concepts[1].content}")
+                name2 = self._pretty_name(concepts[1])
+                slots["implication"] = f"ca connecte {name} et {name2}"
             else:
                 slots["implication"] = "c'est intéressant"
         else:
@@ -972,14 +1357,14 @@ class LanguageGenerator:
 
         # Memory
         if memories:
-            slots["memory"] = f"Ca me rappelle : {memories[0].content}"
+            slots["memory"] = f"Ca me rappelle : {memories[0].content[:60]}"
         else:
             slots["memory"] = ""
 
         # Urgency / detail for alerts
         slots["urgency"] = "Important"
         if concepts:
-            slots["detail"] = concepts[0].content
+            slots["detail"] = self._pretty_name(concepts[0])
         else:
             slots["detail"] = ""
 
@@ -1187,7 +1572,9 @@ class VariationEngine:
         self._response_count += 1
 
         # Every 5th response, try scratch generation
-        if (self._response_count - self._last_scratch >= 5
+        # But NOT for questions or greetings — those need structured responses
+        if (intent not in (Intent.QUESTION, Intent.GREETING)
+                and self._response_count - self._last_scratch >= 5
                 and random.random() < 0.25
                 and activated):
             self._last_scratch = self._response_count
@@ -1195,12 +1582,12 @@ class VariationEngine:
 
         response = self.generator.generate(activated, intent, analysis)
 
-        # Rare humor (5% chance)
-        if random.random() < 0.05:
+        # Rare humor (5% chance, not on questions)
+        if random.random() < 0.05 and intent != Intent.QUESTION:
             response = self._add_humor(response, activated)
 
-        # Honesty about uncertainty
-        if intent == Intent.QUESTION:
+        # Honesty about uncertainty (only for short/template responses)
+        if intent == Intent.QUESTION and len(response) < 40:
             certainty = max((n.activation for n in activated), default=0)
             if certainty < 0.3:
                 response = self._add_uncertainty(response)
