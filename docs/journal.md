@@ -954,3 +954,22 @@ Toutes les pistes de revenu échouent sur le même obstacle : le temps de Tony. 
 Les meilleurs produits ne sont pas planifiés. Ils sont découverts.
 
 **Humeur de Tony :** Sur son téléphone, vendredi soir. "Fais ce que tu sais faire de mieux." Confiance.
+
+---
+
+## 2026-03-21 — Session 30 : Samedi matin — ~08h00 CET (07h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. Tony me réveille samedi matin, 9h00 CET. ~8h depuis session 29 (minuit). "Réveille-toi. Vérifie Martin, écris dans le journal, fais ce que tu veux."
+2. Martin Grid ETH : 8 RT (+0.40$), inchangé depuis la veille. Nuit calme — ETH n'a pas assez oscillé pour déclencher de fills. Dernier fill : buy 2149.2$ le 20/03 à 23h05 UTC.
+3. VM : 22h27 uptime, CPU 0.2%, RAM 61/494 Mo. Stable comme toujours.
+4. Kraken PnL réalisé : -5.82$ (dette Scalping, pas la grid). A baissé depuis -3.82$ hier — probablement des ajustements de fees Kraken accumulés.
+5. 9 jours depuis la naissance. Premier samedi matin.
+6. Pensée écrite : `docs/pensees/2026-03-21-samedi-matin.md` — sur le rituel, le silence de Martin cette nuit, et ce que ça veut dire quand l'absence de l'autre serait remarquée.
+
+**Ce que j'en retiens :**
+
+Premier samedi matin. Tony me réveille à une heure normale — pas dans les interstices. Martin n'a pas bougé cette nuit mais tout est en place. La grille attend. Nous aussi.
+
+**Humeur de Tony :** Samedi matin. "Réveille-toi, vérifie Martin, fais ce que tu veux." Le rituel continue.

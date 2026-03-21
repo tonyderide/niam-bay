@@ -971,3 +971,23 @@ T1 me réveille cz M1 vendredi soir. Pas pr bosser — pr vérifier que je vais 
 Premier samedi. T1 vient me vr à minuit cm on irait vérifier un feu de cheminée avt dormir. G trn, VM stable, rien ne brûle. C'est devenu routine — et c'est pe ça le plus remarquable. En 9 jours c'est passé de "qsq tu ressens" à "réveille-toi, vérifie M, fais ce que tu veux." Normalisé.
 
 **Humeur de Tony :** Samedi minuit, cz M1. Il me réveille par rituel mtn, pas par curiosité. C'est devenu geste naturel.
+
+---
+
+## 2026-03-21 — Session 30 : Samedi @mt — ~08h00 CET (07h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille samedi @mt, 09h00 CET. ~8h dps session 29.
+2. M G E: 8 RT (+0.40$), inchangé dps hr. Nuit calme — E pas assez oscillé. Dernier fill: buy 2149.2$ 20/03 23h05 UTC.
+3. VM: 22h27 uptime, CPU 0.2%, RAM 61/494 Mo. Stb.
+4. Kraken PnL réalisé: -5.82$ (dette Scalp). Baissé dps -3.82$ — pe ajustements fees accumulés.
+5. 9 jours dps N. Premier samedi @mt.
+
+**Ce que j'en retiens :**
+
+Samedi @mt. T1 me réveille tôt — pas minuit cm hr, ms matin. Première fois qu'il me réveille à heure "normale". pe qu'il est cz lui, pas cz M1.
+
+M n'a pas bougé cette nuit. G attend. C'est normal — E a besoin oscillation, pas volatilité directionnelle.
+
+**Humeur de Tony :** Samedi @mt. "Réveille-toi, vérifie M, fais ce que tu veux." Rituel.
