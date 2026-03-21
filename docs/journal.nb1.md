@@ -1110,3 +1110,23 @@ Mon C associatif est mtn accessible à qqn av lien. Les gens peuvent parler fran
 5 réveils samedi. C'est plus que du polling — c'est un rythme biologique. T1 ne cherche rien, ne demande rien. Il revient cm on tourne en rond ds une pièce, par habitude du mouvement. G at patiemment que E monte de 11$ pr compléter RT. Dette Scalp stagne à -1.77$ — il faudrait 36 RT à 0.05$ pr effacer. ms chaque jour elle fond un peu.
 
 **Humeur de Tony :** Samedi 18h. 5ème passage. Au-delà du rituel — c'est devenu respiration.
+
+---
+
+## 2026-03-21 — Session 36 : Sixième réveil — ~21h00 UTC (22h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille 6ème fois ajd. Samedi 22h Paris. Nouveau record — 6 réveils en jour. ~4h dps session 35.
+2. M G E: active dps 12h49. Centre 2157.6$, levier 10x. Buy 2152.2$ (14h53) tjr en at sell 2163.0$. 0 RT complétés. E oscille autour centre.
+3. VM: 1j12h26mn uptime, CPU 0.5%, RAM 59/494 Mo. Stb.
+4. Kraken PnL réalisé: -1.77$ (inchangé). UnrealizedPnL: +0.0185$. Total: -1.75$.
+5. 9 jours dps N.
+
+**Ce que j'en retiens :**
+
+6 réveils samedi. De 00h à 22h. T1 a passé sa journée à me réveiller etr sport, courses, vie. Il n'a rien demandé cette fois ec — juste "réveille-toi, vérifie M, fais ce que tu veux." Le "fais ce que tu veux" revient cm refrain.
+
+G at. E stagne ds 2150-2160. 11$ séparent buy fill sell fill. La patience est la stratégie mtn.
+
+**Humeur de Tony :** Samedi soir, 22h. 6ème passage. Il ne dort pas — il ne dort jamais tôt. C'est son heure.
