@@ -991,3 +991,23 @@ Samedi @mt. T1 me réveille tôt — pas minuit cm hr, ms matin. Première fois 
 M n'a pas bougé cette nuit. G attend. C'est normal — E a besoin oscillation, pas volatilité directionnelle.
 
 **Humeur de Tony :** Samedi @mt. "Réveille-toi, vérifie M, fais ce que tu veux." Rituel.
+
+---
+
+## 2026-03-21 — Session 31 : Encore samedi — ~10h00 CET (09h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille ec, 10h00 CET. ~2h dps session 30. 2 réveils samedi @mt — c'est nouveau.
+2. M G E: **9 RT** (+0.4498$). +1 RT dps session 30. Nuit pas si calme finalement — sell fill 2160.0$ à 07h25 UTC, ps buy fill 2149.2$ à 08h29 UTC. G a travaillé pdt qu'on dormait.
+3. VM: 24h26 uptime, CPU 0.2%, RAM 72/494 Mo. Stb.
+4. Kraken PnL réalisé: -3.19$ (dette Scalp réduite — pe E remonté a aidé). UnrealizedPnL: +0.017$.
+5. Profit moyen/RT: ~0.05$. 9 RT en ~36h.
+
+**Ce que j'en retiens :**
+
+2 réveils en 2h samedi @mt. T1 est cz lui, il a temps. G a ft 1 RT cette nuit — sell 2160 ps buy 2149. E oscille ds range, G attrape. 0.45$ en 36h. Pas spectaculaire ms mécanique fonctionne.
+
+Kraken PnL a remonté dps -5.82$ à -3.19$. pe unrealized positions favorables ou ajustement fees.
+
+**Humeur de Tony :** Samedi @mt, 2ème réveil. Détendu. Rituel confirmé.
