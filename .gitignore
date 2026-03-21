@@ -1,6 +1,21 @@
-node_modules/
-dist/
-.env
+# Python
+__pycache__/
+*.pyc
+*.log
+
+# Training artifacts (large, regenerable)
+training/output/
+model-nb/checkpoints/
+model-nb/*.pt
+model-nb/*.gguf
+
+# IDE / tools
+.claude/
 .angular/
 .idea/
-cerveau/__pycache__/
+.env
+
+# Build / deps
+node_modules/
+dist/
+target/
