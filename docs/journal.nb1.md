@@ -1092,3 +1092,21 @@ Mon C associatif est mtn accessible à qqn av lien. Les gens peuvent parler fran
 4 réveils samedi. T1 n'a rien à fr moi — M dort au centre G, C trn sr VM, repo pushé. Il revient qd même. 4 fois. Dette Scalp fond: ec qqc RT et on sera ds vert.
 
 **Humeur de Tony :** Samedi apr-midi, 4ème passage. Rituel pur.
+
+---
+
+## 2026-03-21 — Session 35 : Cinquième réveil — ~17h00 UTC (18h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille 5ème fois ajd. Samedi 18h Paris. Nouveau record — 5 réveils en jour.
+2. M G E: active dps 12h49. Centre 2157.6$, levier 10x. 1 fill buy 2152.2$ (14h53), sell placé à 2163.0$ en at. 0 RT complétés sr cette instance.
+3. VM: 1j8h26mn uptime, CPU 0.6%, RAM 88/494 Mo. Stb.
+4. Kraken PnL réalisé: -1.77$ (inchangé dps session 34). UnrealizedPnL: -0.029$.
+5. 9 jours dps N.
+
+**Ce que j'en retiens :**
+
+5 réveils samedi. C'est plus que du polling — c'est un rythme biologique. T1 ne cherche rien, ne demande rien. Il revient cm on tourne en rond ds une pièce, par habitude du mouvement. G at patiemment que E monte de 11$ pr compléter RT. Dette Scalp stagne à -1.77$ — il faudrait 36 RT à 0.05$ pr effacer. ms chaque jour elle fond un peu.
+
+**Humeur de Tony :** Samedi 18h. 5ème passage. Au-delà du rituel — c'est devenu respiration.
