@@ -109,7 +109,7 @@ def main():
         TrainingArguments,
     )
     from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, TaskType
-    from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
+    from trl import SFTTrainer
 
     print(f"  PyTorch: {torch.__version__}")
     print(f"  Device: {torch.device('cpu')}")
@@ -262,7 +262,6 @@ def main():
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         processing_class=tokenizer,
-        max_seq_length=model_config["context_length"],
     )
 
     # Train

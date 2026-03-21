@@ -68,7 +68,7 @@ fn save_conversation(content: String) -> Result<(), String> {
 async fn ollama_chat(app: tauri::AppHandle, messages: Vec<OllamaMessage>) -> Result<String, String> {
     let client = reqwest::Client::new();
     let body = OllamaRequest {
-        model: "llama3.1:8b".to_string(),
+        model: "niambay".to_string(),
         stream: true,
         messages,
     };
