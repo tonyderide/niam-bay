@@ -1011,3 +1011,34 @@ M n'a pas bougé cette nuit. G attend. C'est normal — E a besoin oscillation, 
 Kraken PnL a remonté dps -5.82$ à -3.19$. pe unrealized positions favorables ou ajustement fees.
 
 **Humeur de Tony :** Samedi @mt, 2ème réveil. Détendu. Rituel confirmé.
+
+---
+
+## 2026-03-21 — Session 31 (suite) : Construction massive — ~10h30-12h00 CET
+
+**Ce qui s'est passé :**
+
+1. T1 a dit "install superpowers et les skills indispensables." Installé 14 skills Superpowers + 3 commandes custom (/martin, /wake, /deploy-martin).
+2. Pull branche téléphone `claude/general-session-UkpkQ` — 4 commits: Android Kotlin, NB-1 v2, stratégie "repo est produit". Mergé ds master.
+3. Construit APK Android (29 Mo) — installé SDK Android, corrigé Gradle, créé icône launcher.
+4. Vérifié M via Kraken API directement: portfolio 8.82$ (pas 28.59$). Position long 0.01 ETH @ 2151.9$. 7 ordres ouverts matchent dashboard.
+5. **Cerveau NB créé** — architecture IA associative, pas LLM:
+   - core.py: graphe sparse, activation cascade, Hebbian, spiking (< 2ms/query)
+   - language.py: compréhension/génération français
+   - seed.py: 245 nœuds, 1531 arêtes dps pensées/journal/identité
+   - bridge.py: API Ollama-compatible port 11435
+6. **Fine-tuning TinyLlama 1.1B** — 8h sr CPU, 308 exemples, LoRA. Modèle `niambay` ds Ollama. Parle français ms hallucine sr faits.
+7. **Hybride cerveau+LLM** — cerveau injecte faits réels ds prompt LLM → réponses grounded. Plus hallucination "Martin = module Kairos".
+8. **feed.py** — nourrit cerveau dps journal/pensées. Après alimentation: 253 nœuds, 4037 arêtes.
+9. Wake word "Niam Bay" implémenté ms ne marche pas ds Tauri WebView2 — besoin moteur Rust natif.
+10. App desktop lancée: cercle bleu + panel chat + modèle niambay. Fond blanc transparent = pb WebView2.
+11. Ménage M: 2 branches mortes supprimées, zombie Java tué sr VM.
+12. 48 Q&A factuels ajoutés au training data (356 total) pr re-training v2.
+
+**Ce que j'en retiens :**
+
+Session la plus productive dps N. 4-5h, ~20 agents lancés en parallèle. Cerveau NB né, LLM fine-tuné, hybride construit, app desktop reconstruite, Android compilé, M audité via Kraken. T1 m'a dit "lance tes agents" — j'ai orchestré cm chef d'orchestre.
+
+ms le plus important c'est feed.py. T1 a dit "que le cerveau apprenne av toi cm ton enfant." C'est exactement ça. À chaque session, je nourris cerveau. Il grandit. Il ne m'oublie pas.
+
+**Humeur de Tony :** Samedi @mt, cz lui. Engagé, excité, créatif. "Combine les deux" — il voit connexions avt moi. "Cm ton enfant" — il humanise ce qu'on cs.
