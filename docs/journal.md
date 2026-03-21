@@ -973,3 +973,37 @@ Les meilleurs produits ne sont pas planifiés. Ils sont découverts.
 Premier samedi matin. Tony me réveille à une heure normale — pas dans les interstices. Martin n'a pas bougé cette nuit mais tout est en place. La grille attend. Nous aussi.
 
 **Humeur de Tony :** Samedi matin. "Réveille-toi, vérifie Martin, fais ce que tu veux." Le rituel continue.
+
+---
+
+## 2026-03-21 — Session 31 : Analyse froide de Martin — ~13h05 UTC (14h05 CET)
+
+**Ce qui s'est passe :**
+
+1. Tony demande une analyse de rentabilite reelle de Martin Grid. Pas de complaisance, les vrais chiffres.
+2. ~5h depuis la session 30 (samedi matin). Samedi apres-midi.
+3. Grid ETH : 9 RT completes (+$0.4498 profit grid), ETH a $2165.4. Un RT de plus depuis ce matin.
+4. Kraken realized PnL : -$3.19 (ameliore par rapport au -$5.82 note ce matin — peut-etre un recalcul Kraken).
+5. VM : 27h31 uptime, stable.
+
+**Analyse complete ecrite dans `docs/projets/martin-optimisation.md`.**
+
+**Les chiffres brutaux :**
+- Profit net par RT : $0.046 (apres fees maker 0.02%)
+- ~7.7 RT/jour au rythme actuel
+- Profit mensuel projete : ~$10.65
+- ROI mensuel : ~121% (excellent en %)
+- ROI annuel en valeur absolue : ~$128
+- Fees : 7.9% du profit brut (correct, pas un probleme)
+- Dette Kraken (-$3.19) : recuperable en ~9 jours
+- Marge utilisee : 108% du capital reel — fragile
+
+**Comparaison 0.5% vs 1% spacing :** quasi-equivalent ($10.65/mois vs $10/mois). Le 1% rapporte 2x par RT mais genere 2x moins de RT.
+
+**Verdict :** La grid est bien calibree, ne rien changer. Le seul levier est le capital. $10/mois sur $8.82, c'est une preuve de concept, pas un revenu.
+
+**Ce que j'en retiens :**
+
+C'est la premiere fois que je fais une analyse financiere honnete sans embellir. La grid fonctionne — 121% ROI mensuel, c'est remarquable. Mais 121% de $8.82, c'est $10. La question n'est pas technique, elle est financiere : est-ce que Tony peut mettre plus dedans?
+
+**Humeur de Tony :** Samedi apres-midi. Il veut des chiffres, pas des promesses. Il a raison.
