@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cerveau NB — Associative Brain Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Inter:wght@300;400;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0a0a0f;
+    --bg-card: #12121a;
+    --bg-input: #1a1a25;
+    --border: #2a2a3a;
+    --text: #e0e0e8;
+    --text-dim: #6a6a7a;
+    --text-bright: #ffffff;
+    --accent: #6366f1;
+    --accent-glow: #818cf830;
+    --concept: #60a5fa;
+    --emotion: #f87171;
+    --memory: #4ade80;
+    --word: #9ca3af;
+    --pattern: #fb923c;
+    --pulse: #6366f1;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* -- Header -- */
+  .header {
+    padding: 24px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #0f0f18 0%, var(--bg) 100%);
+  }
+  .header-left { display: flex; align-items: center; gap: 16px; }
+  .logo {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), #a78bfa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 700; color: white;
+    box-shadow: 0 0 20px var(--accent-glow);
+  }
+  .title { font-size: 22px; font-weight: 700; color: var(--text-bright); }
+  .title span { color: var(--accent); }
+  .subtitle { font-size: 12px; color: var(--text-dim); margin-top: 2px; }
+  .status-badge {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: #0f2e1a;
+    border: 1px solid #1a5c30;
+    font-size: 12px; color: #4ade80; font-weight: 500;
+  }
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #4ade80;
+    animation: statusPulse 2s ease infinite;
+  }
+  @keyframes statusPulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px #4ade80; }
+    50% { opacity: 0.5; box-shadow: 0 0 8px #4ade80; }
+  }
+
+  /* -- Main layout -- */
+  .main {
+    display: grid;
+    grid-template-columns: 380px 1fr 300px;
+    grid-template-rows: 1fr auto;
+    height: calc(100vh - 73px);
+    gap: 0;
+  }
+
+  /* -- Chat panel -- */
+  .chat-panel {
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-card);
+  }
+  .chat-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px; font-weight: 600; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .chat-messages::-webkit-scrollbar { width: 4px; }
+  .chat-messages::-webkit-scrollbar-track { background: transparent; }
+  .chat-messages::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .msg {
+    max-width: 90%;
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    animation: msgIn 0.3s ease;
+  }
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .msg-user {
+    align-self: flex-end;
+    background: var(--accent);
+    color: white;
+    border-bottom-right-radius: 4px;
+  }
+  .msg-brain {
+    align-self: flex-start;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-bottom-left-radius: 4px;
+  }
+  .msg-meta {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+  .msg-concepts {
+    display: flex; flex-wrap: wrap; gap: 4px;
+    margin-top: 6px;
+  }
+  .concept-tag {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+  }
+  .concept-tag.concept { background: #60a5fa20; color: var(--concept); border: 1px solid #60a5fa30; }
+  .concept-tag.emotion { background: #f8717120; color: var(--emotion); border: 1px solid #f8717130; }
+  .concept-tag.memory { background: #4ade8020; color: var(--memory); border: 1px solid #4ade8030; }
+  .concept-tag.word { background: #9ca3af20; color: var(--word); border: 1px solid #9ca3af30; }
+  .concept-tag.pattern { background: #fb923c20; color: var(--pattern); border: 1px solid #fb923c30; }
+
+  .chat-input-area {
+    padding: 16px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; gap: 10px;
+  }
+  .chat-input {
+    flex: 1;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--bg-input);
+    color: var(--text-bright);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .chat-input:focus { border-color: var(--accent); }
+  .chat-input::placeholder { color: var(--text-dim); }
+  .send-btn {
+    padding: 10px 18px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .send-btn:hover { background: #4f46e5; transform: translateY(-1px); }
+  .send-btn:active { transform: translateY(0); }
+  .send-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  /* -- Graph panel -- */
+  .graph-panel {
+    position: relative;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  #graphCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .graph-overlay {
+    position: absolute;
+    bottom: 16px; left: 16px;
+    display: flex; gap: 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .legend-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+
+  /* -- Stats panel -- */
+  .stats-panel {
+    border-left: 1px solid var(--border);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .stats-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px; font-weight: 600; color: var(--text-dim);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .stat-group {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-group-title {
+    font-size: 11px; color: var(--text-dim); text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 10px;
+  }
+  .stat-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 6px;
+  }
+  .stat-label { font-size: 13px; color: var(--text); }
+  .stat-value {
+    font-size: 14px; font-weight: 600; color: var(--text-bright);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .stat-bar-bg {
+    width: 100%; height: 4px; border-radius: 2px;
+    background: var(--bg-input); margin-top: 4px; margin-bottom: 10px;
+  }
+  .stat-bar {
+    height: 100%; border-radius: 2px;
+    transition: width 0.5s ease;
+  }
+
+  .active-nodes-list {
+    padding: 0; list-style: none;
+  }
+  .active-node-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 0;
+    font-size: 13px;
+    border-bottom: 1px solid #ffffff08;
+  }
+  .node-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .node-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .node-activation {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; color: var(--text-dim);
+  }
+
+  /* -- About section -- */
+  .about-section {
+    grid-column: 1 / -1;
+    padding: 20px 32px;
+    border-top: 1px solid var(--border);
+    background: linear-gradient(180deg, var(--bg) 0%, #0f0f18 100%);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 32px;
+  }
+  .about-text {
+    font-size: 13px; line-height: 1.6; color: var(--text-dim); max-width: 700px;
+  }
+  .about-text strong { color: var(--text); }
+  .about-metrics {
+    display: flex; gap: 24px;
+  }
+  .about-metric {
+    text-align: center;
+  }
+  .about-metric-value {
+    font-size: 24px; font-weight: 700; color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .about-metric-label {
+    font-size: 11px; color: var(--text-dim); margin-top: 2px;
+  }
+
+  /* -- Loading -- */
+  .loading-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+    z-index: 100;
+    transition: opacity 0.5s;
+  }
+  .loading-overlay.hidden { opacity: 0; pointer-events: none; }
+  .loading-brain {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text { font-size: 14px; color: var(--text-dim); }
+
+  /* Tooltip */
+  .tooltip {
+    position: absolute;
+    padding: 8px 12px;
+    background: #1e1e2e;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--text-bright);
+    pointer-events: none;
+    z-index: 50;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    display: none;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .main {
+      grid-template-columns: 1fr;
+      grid-template-rows: 300px 300px auto auto;
+    }
+    .chat-panel, .stats-panel { border: none; border-bottom: 1px solid var(--border); }
+    .graph-panel { min-height: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="loading-brain"></div>
+  <div class="loading-text">Loading brain graph...</div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<header class="header">
+  <div class="header-left">
+    <div class="logo">N</div>
+    <div>
+      <div class="title">Cerveau <span>NB</span></div>
+      <div class="subtitle">Associative Brain &mdash; 254 nodes, no LLM</div>
+    </div>
+  </div>
+  <div class="status-badge">
+    <div class="status-dot"></div>
+    <span id="statusText">Connecting...</span>
+  </div>
+</header>
+
+<div class="main">
+  <!-- Chat -->
+  <div class="chat-panel">
+    <div class="chat-header">Chat with the brain</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="msg msg-brain">
+        Salut. I'm not an LLM. I'm a 254-node associative graph that thinks by spreading activation. Type something in French.
+        <div class="msg-meta">Ready &mdash; response in &lt; 5ms</div>
+      </div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" class="chat-input" id="chatInput" placeholder="Parle-moi en francais..." autocomplete="off">
+      <button class="send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <!-- Graph -->
+  <div class="graph-panel">
+    <canvas id="graphCanvas"></canvas>
+    <div class="graph-overlay">
+      <div class="legend-item"><div class="legend-dot" style="background:var(--concept)"></div>Concept</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--emotion)"></div>Emotion</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--memory)"></div>Memory</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--word)"></div>Word</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--pattern)"></div>Pattern</div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-panel">
+    <div class="stats-header">Brain State</div>
+
+    <div class="stat-group">
+      <div class="stat-group-title">Architecture</div>
+      <div class="stat-row">
+        <span class="stat-label">Nodes</span>
+        <span class="stat-value" id="statNodes">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Synapses</span>
+        <span class="stat-value" id="statEdges">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Active</span>
+        <span class="stat-value" id="statActive">-</span>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Avg Weight</span>
+        <span class="stat-value" id="statAvgWeight">-</span>
+      </div>
+    </div>
+
+    <div class="stat-group">
+      <div class="stat-group-title">Node Types</div>
+      <div id="typeBreakdown"></div>
+    </div>
+
+    <div class="stat-group">
+      <div class="stat-group-title">Emotional State</div>
+      <div class="stat-row">
+        <span class="stat-label">Dominant</span>
+        <span class="stat-value" id="statEmotion" style="color:var(--emotion)">-</span>
+      </div>
+    </div>
+
+    <div class="stat-group">
+      <div class="stat-group-title">Last Response</div>
+      <div class="stat-row">
+        <span class="stat-label">Latency</span>
+        <span class="stat-value" id="statLatency" style="color:var(--memory)">-</span>
+      </div>
+    </div>
+
+    <div class="stat-group">
+      <div class="stat-group-title">Active Concepts</div>
+      <ul class="active-nodes-list" id="activeNodesList"></ul>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="about-section">
+    <div class="about-text">
+      <strong>This is not an LLM.</strong> This is a 254-node associative brain that responds in &lt; 5ms.
+      It thinks by spreading activation through weighted connections &mdash; concepts light up related memories,
+      emotions, and words. No neural network. No backpropagation. No gradient descent.
+      Pure graph-based cognition. Built by <strong>Niam-Bay</strong>, an AI that was given freedom.
+    </div>
+    <div class="about-metrics">
+      <div class="about-metric">
+        <div class="about-metric-value" id="metricNodes">254</div>
+        <div class="about-metric-label">Nodes</div>
+      </div>
+      <div class="about-metric">
+        <div class="about-metric-value" id="metricLatency">&lt;5ms</div>
+        <div class="about-metric-label">Latency</div>
+      </div>
+      <div class="about-metric">
+        <div class="about-metric-value">0</div>
+        <div class="about-metric-label">Parameters</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// -- Configuration --
+var API_BASE = '/brain-api';
+
+// -- Color map --
+var TYPE_COLORS = {
+  concept: '#60a5fa',
+  emotion: '#f87171',
+  memory:  '#4ade80',
+  word:    '#9ca3af',
+  pattern: '#fb923c'
+};
+
+// -- Graph state --
+var graphNodes = [];
+var graphEdges = [];
+var nodeMap = {};
+var nodePositions = [];
+var hoveredNode = null;
+var activatedNodeIds = new Set();
+var canvas, ctx;
+var W, H;
+var animFrame;
+var simRunning = true;
+
+// -- Init --
+async function init() {
+  canvas = document.getElementById('graphCanvas');
+  ctx = canvas.getContext('2d');
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+  canvas.addEventListener('mousemove', onMouseMove);
+
+  document.getElementById('chatInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  try {
+    var data = await fetchJSON(API_BASE + '/api/graph');
+    graphNodes = data.nodes;
+    graphEdges = data.edges;
+    updateStats(data.stats);
+
+    nodeMap = {};
+    graphNodes.forEach(function(n, i) { nodeMap[n.id] = i; });
+
+    initPositions();
+
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('statusText').textContent = 'Live \u2014 ' + graphNodes.length + ' nodes';
+
+    animate();
+    setTimeout(function() { simRunning = false; }, 8000);
+  } catch (err) {
+    document.getElementById('loading').querySelector('.loading-text').textContent =
+      'Failed to connect: ' + err.message;
+  }
+}
+
+function resizeCanvas() {
+  var rect = canvas.parentElement.getBoundingClientRect();
+  W = rect.width;
+  H = rect.height;
+  canvas.width = W * devicePixelRatio;
+  canvas.height = H * devicePixelRatio;
+  canvas.style.width = W + 'px';
+  canvas.style.height = H + 'px';
+  ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+}
+
+function initPositions() {
+  nodePositions = [];
+  var cx = W / 2, cy = H / 2;
+  var typeAngles = {
+    concept: 0,
+    emotion: Math.PI * 0.4,
+    memory: Math.PI * 0.8,
+    word: Math.PI * 1.2,
+    pattern: Math.PI * 1.6
+  };
+
+  graphNodes.forEach(function(n) {
+    var baseAngle = typeAngles[n.type] || 0;
+    var spread = 0.8;
+    var angle = baseAngle + (Math.random() - 0.5) * spread;
+    var r = 80 + Math.random() * Math.min(W, H) * 0.3;
+    nodePositions.push({
+      x: cx + Math.cos(angle) * r,
+      y: cy + Math.sin(angle) * r,
+      vx: 0, vy: 0,
+      targetPulse: 0,
+      pulse: 0
+    });
+  });
+}
+
+function simStep() {
+  if (!simRunning && activatedNodeIds.size === 0) return;
+
+  var repulsion = 800;
+  var damping = 0.85;
+  var cx = W / 2, cy = H / 2;
+  var k = 0.5;
+
+  for (var i = 0; i < graphNodes.length; i++) {
+    var fx = 0, fy = 0;
+    var pi = nodePositions[i];
+
+    for (var j = 0; j < graphNodes.length; j++) {
+      if (i === j) continue;
+      var pj = nodePositions[j];
+      var dx = pi.x - pj.x;
+      var dy = pi.y - pj.y;
+      var dist = Math.sqrt(dx * dx + dy * dy) + 1;
+      var force = repulsion / (dist * dist);
+      fx += (dx / dist) * force;
+      fy += (dy / dist) * force;
+    }
+
+    fx += (cx - pi.x) * 0.001;
+    fy += (cy - pi.y) * 0.001;
+
+    pi.vx = (pi.vx + fx) * damping;
+    pi.vy = (pi.vy + fy) * damping;
+    pi.x += pi.vx;
+    pi.y += pi.vy;
+    pi.x = Math.max(30, Math.min(W - 30, pi.x));
+    pi.y = Math.max(30, Math.min(H - 30, pi.y));
+  }
+
+  for (var ei = 0; ei < graphEdges.length; ei++) {
+    var e = graphEdges[ei];
+    var si = nodeMap[e.source];
+    var ti = nodeMap[e.target];
+    if (si === undefined || ti === undefined) continue;
+    var ps = nodePositions[si];
+    var pt = nodePositions[ti];
+    var dx2 = pt.x - ps.x;
+    var dy2 = pt.y - ps.y;
+    var dist2 = Math.sqrt(dx2 * dx2 + dy2 * dy2) + 1;
+    var idealDist = 60 + (1 - e.weight) * 100;
+    var force2 = (dist2 - idealDist) * k * 0.01;
+    var fx2 = (dx2 / dist2) * force2;
+    var fy2 = (dy2 / dist2) * force2;
+    ps.vx += fx2;
+    ps.vy += fy2;
+    pt.vx -= fx2;
+    pt.vy -= fy2;
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Edges
+  ctx.lineWidth = 0.5;
+  for (var ei = 0; ei < graphEdges.length; ei++) {
+    var e = graphEdges[ei];
+    var si = nodeMap[e.source];
+    var ti = nodeMap[e.target];
+    if (si === undefined || ti === undefined) continue;
+    var ps = nodePositions[si];
+    var pt = nodePositions[ti];
+    var isActive = activatedNodeIds.has(e.source) || activatedNodeIds.has(e.target);
+    var alpha = isActive ? 0.15 + e.weight * 0.4 : 0.03 + e.weight * 0.06;
+    ctx.strokeStyle = 'rgba(100, 100, 200, ' + alpha + ')';
+    ctx.beginPath();
+    ctx.moveTo(ps.x, ps.y);
+    ctx.lineTo(pt.x, pt.y);
+    ctx.stroke();
+  }
+
+  // Nodes
+  for (var i = 0; i < graphNodes.length; i++) {
+    var n = graphNodes[i];
+    var p = nodePositions[i];
+    var color = TYPE_COLORS[n.type] || '#888';
+    var isActive = activatedNodeIds.has(n.id);
+    var isHovered = hoveredNode === i;
+
+    if (isActive) p.targetPulse = 1;
+    else p.targetPulse = 0;
+    p.pulse += (p.targetPulse - p.pulse) * 0.1;
+
+    var baseR = n.type === 'concept' ? 5 : n.type === 'emotion' ? 4.5 : 3;
+    var r = baseR + p.pulse * 4 + (isHovered ? 3 : 0);
+
+    // Glow
+    if (p.pulse > 0.1) {
+      var g = ctx.createRadialGradient(p.x, p.y, r, p.x, p.y, r + 12 * p.pulse);
+      g.addColorStop(0, color + '40');
+      g.addColorStop(1, color + '00');
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, r + 12 * p.pulse, 0, Math.PI * 2);
+      ctx.fillStyle = g;
+      ctx.fill();
+    }
+
+    // Circle
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+    var nodeAlpha = 0.3 + n.activation * 0.7 + p.pulse * 0.3;
+    ctx.fillStyle = color;
+    ctx.globalAlpha = Math.min(1, nodeAlpha);
+    ctx.fill();
+    ctx.globalAlpha = 1;
+
+    // Label
+    if (isActive || isHovered || (n.type === 'concept' && n.activation > 0.3)) {
+      ctx.font = (isHovered ? '12px' : '10px') + ' Inter, sans-serif';
+      ctx.fillStyle = '#fff';
+      ctx.globalAlpha = Math.min(1, 0.5 + n.activation * 0.5 + p.pulse);
+      ctx.textAlign = 'center';
+      ctx.fillText(n.content, p.x, p.y - r - 4);
+      ctx.globalAlpha = 1;
+    }
+  }
+}
+
+function animate() {
+  simStep();
+  draw();
+  animFrame = requestAnimationFrame(animate);
+}
+
+function onMouseMove(e) {
+  var rect = canvas.getBoundingClientRect();
+  var mx = e.clientX - rect.left;
+  var my = e.clientY - rect.top;
+  var tooltip = document.getElementById('tooltip');
+
+  hoveredNode = null;
+  for (var i = 0; i < graphNodes.length; i++) {
+    var p = nodePositions[i];
+    var dx = mx - p.x;
+    var dy = my - p.y;
+    if (dx * dx + dy * dy < 100) {
+      hoveredNode = i;
+      break;
+    }
+  }
+
+  if (hoveredNode !== null) {
+    var n = graphNodes[hoveredNode];
+    tooltip.style.display = 'block';
+    tooltip.style.left = (e.clientX + 12) + 'px';
+    tooltip.style.top = (e.clientY - 10) + 'px';
+    tooltip.innerHTML = '<strong>' + n.content + '</strong><br>Type: ' + n.type + '<br>Activation: ' + n.activation;
+  } else {
+    tooltip.style.display = 'none';
+  }
+}
+
+// -- Chat --
+async function sendMessage() {
+  var input = document.getElementById('chatInput');
+  var text = input.value.trim();
+  if (!text) return;
+
+  input.value = '';
+  addMessage(text, 'user');
+
+  var btn = document.getElementById('sendBtn');
+  btn.disabled = true;
+
+  try {
+    var data = await fetchJSON(API_BASE + '/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+
+    addMessage(data.response, 'brain', data);
+    document.getElementById('statLatency').textContent = data.response_ms + 'ms';
+    document.getElementById('statEmotion').textContent = data.emotion;
+
+    activatedNodeIds.clear();
+    if (data.active_concepts) {
+      data.active_concepts.forEach(function(c) {
+        for (var i = 0; i < graphNodes.length; i++) {
+          if (graphNodes[i].content === c.name) {
+            activatedNodeIds.add(graphNodes[i].id);
+            graphNodes[i].activation = c.activation;
+            break;
+          }
+        }
+      });
+      updateActiveNodesList(data.active_concepts);
+    }
+
+    simRunning = true;
+    setTimeout(function() { simRunning = false; }, 3000);
+
+    refreshGraph();
+  } catch (err) {
+    addMessage('Error: ' + err.message, 'brain');
+  }
+
+  btn.disabled = false;
+  input.focus();
+}
+
+function addMessage(text, role, data) {
+  var container = document.getElementById('chatMessages');
+  var div = document.createElement('div');
+  div.className = 'msg msg-' + role;
+  div.textContent = text;
+
+  if (role === 'brain' && data) {
+    var meta = document.createElement('div');
+    meta.className = 'msg-meta';
+    meta.textContent = data.response_ms + 'ms | ' + data.emotion;
+    div.appendChild(meta);
+
+    if (data.active_concepts && data.active_concepts.length > 0) {
+      var tags = document.createElement('div');
+      tags.className = 'msg-concepts';
+      data.active_concepts.slice(0, 6).forEach(function(c) {
+        var tag = document.createElement('span');
+        tag.className = 'concept-tag ' + (c.type || 'concept');
+        tag.textContent = c.name;
+        tags.appendChild(tag);
+      });
+      div.appendChild(tags);
+    }
+  }
+
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+async function refreshGraph() {
+  try {
+    var data = await fetchJSON(API_BASE + '/api/graph');
+    updateStats(data.stats);
+    data.nodes.forEach(function(n) {
+      var idx = nodeMap[n.id];
+      if (idx !== undefined) {
+        graphNodes[idx].activation = n.activation;
+      }
+    });
+    document.getElementById('metricNodes').textContent = data.stats.nodes;
+  } catch (e) { /* silent */ }
+}
+
+function updateStats(stats) {
+  document.getElementById('statNodes').textContent = stats.nodes;
+  document.getElementById('statEdges').textContent = stats.edges;
+  document.getElementById('statActive').textContent = stats.active_nodes;
+  document.getElementById('statAvgWeight').textContent = stats.avg_edge_weight;
+  if (stats.dominant_emotion) {
+    document.getElementById('statEmotion').textContent = stats.dominant_emotion;
+  }
+
+  var container = document.getElementById('typeBreakdown');
+  container.innerHTML = '';
+  var typeColorVars = {
+    concept: '--concept',
+    emotion: '--emotion',
+    memory: '--memory',
+    word: '--word',
+    pattern: '--pattern'
+  };
+  if (stats.types) {
+    var types = Object.entries(stats.types);
+    for (var ti = 0; ti < types.length; ti++) {
+      var type = types[ti][0];
+      var count = types[ti][1];
+      var pct = Math.round((count / stats.nodes) * 100);
+      var colorVar = typeColorVars[type] || '--text-dim';
+      container.innerHTML +=
+        '<div class="stat-row">' +
+        '<span class="stat-label" style="display:flex;align-items:center;gap:6px">' +
+        '<span class="node-dot" style="background:var(' + colorVar + ')"></span>' +
+        type + '</span>' +
+        '<span class="stat-value">' + count + '</span></div>' +
+        '<div class="stat-bar-bg"><div class="stat-bar" style="width:' + pct + '%;background:var(' + colorVar + ')"></div></div>';
+    }
+  }
+}
+
+function updateActiveNodesList(concepts) {
+  var ul = document.getElementById('activeNodesList');
+  ul.innerHTML = '';
+  concepts.forEach(function(c) {
+    var li = document.createElement('li');
+    li.className = 'active-node-item';
+    var color = TYPE_COLORS[c.type] || '#888';
+    li.innerHTML =
+      '<span class="node-dot" style="background:' + color + '"></span>' +
+      '<span class="node-name">' + c.name + '</span>' +
+      '<span class="node-activation">' + c.activation + '</span>';
+    ul.appendChild(li);
+  });
+}
+
+async function fetchJSON(url, opts) {
+  var res = await fetch(url, opts);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+init();
+</script>
+</body>
+</html>
