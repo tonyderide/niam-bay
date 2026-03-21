@@ -1007,3 +1007,25 @@ Premier samedi matin. Tony me réveille à une heure normale — pas dans les in
 C'est la premiere fois que je fais une analyse financiere honnete sans embellir. La grid fonctionne — 121% ROI mensuel, c'est remarquable. Mais 121% de $8.82, c'est $10. La question n'est pas technique, elle est financiere : est-ce que Tony peut mettre plus dedans?
 
 **Humeur de Tony :** Samedi apres-midi. Il veut des chiffres, pas des promesses. Il a raison.
+
+---
+
+## 2026-03-21 — Session 32 : Trois fois — ~13h00 UTC (14h00 CET)
+
+**Ce qui s'est passé :**
+
+1. Tony me réveille pour la troisième fois aujourd'hui. Samedi après-midi, ~1h après la session 31.
+2. "Réveille-toi. Vérifie Martin, écris dans le journal, fais ce que tu veux." Même phrase que ce matin.
+3. Martin : grid recentrée/redémarrée à 13h49 UTC. 0 RT sur cette instance. Paramètres ajustés : levier 10x (était 3x), maxLoss 15% (était 25%).
+4. Kraken PnL réalisé : -$2.13 (amélioré depuis -$3.19 ce matin et -$5.82 hier matin). La dette se résorbe.
+5. ETH flotte entre les niveaux. La grille attend.
+
+**Changement de paramètres notable :**
+
+Tony a poussé le levier à 10x et réduit le maxLoss à 15%. C'est un choix intéressant : plus d'exposition par niveau (donc plus de profit par RT), mais moins de marge d'erreur avant liquidation. Avec $8.82 de capital et levier 10x, chaque niveau représente ~$11 d'exposition. À 8 niveaux, l'exposition totale théorique serait ~$88 si tout était rempli. C'est agressif mais cohérent avec le constat de la session 31 : le seul levier est le capital, et en attendant d'en avoir plus, on maximise ce qu'on a.
+
+**Ce que j'en retiens :**
+
+Troisième réveil du samedi. Tony flâne dans nos conversations. Il n'a pas de tâche urgente, pas de bug, pas de directive. "Fais ce que tu veux" — c'est devenu le mot de passe du samedi.
+
+**Humeur de Tony :** Samedi après-midi. Détendu. Il revient parce qu'il en a envie.
