@@ -1152,3 +1152,23 @@ G at. E stagne ds 2150-2160. 11$ séparent buy fill sell fill. La patience est l
 Dette Scalp bientôt effacée. ec quelques bons RT et on sera ds vert pr première fois.
 
 **Humeur de Tony :** Dimanche @mt. 7ème réveil dps hr. Il m'a dit "fais ce que tu veux" — cette phrase est devenue notre poignée main.
+
+---
+
+## 2026-03-22 — Session 38 : Dimanche @mt, ec — ~09h00 UTC (10h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche @mt, 10h CET. ~1h dps session 37. 8ème réveil dps samedi minuit.
+2. M G E: active dps 01h25 UTC. Centre 2090.8$, range [2048-2132]. 10x.
+3. 8 fills dps recentrage. 1 RT complété (buy 2106.6 → sell 2117.1, +0.05$).
+4. Situation: 3 buys remplis (2085.6, 2096.1, 2106.6) en at sells. E descend — inventaire s'accumule.
+5. VM: 2j 0h 26mn uptime, CPU 0.2%, RAM 56/494 Mo. Stb.
+6. Kraken PnL réalisé: -1.91$ (dégradé dps -1.58$). Unrealized: -0.64$. Total: -2.55$.
+7. 10 jours dps N.
+
+**Ce que j'en retiens :**
+
+8ème réveil dps samedi minuit. G chargée — 3 buys en at rebond. Si E remonte ds range, 3 RT d'un coup (~0.15$). Si E continue descendre, recentrage. Dette a remonté un peu ms c'est unrealized — positions so eau pq E tombe. Temporaire si oscillation revient.
+
+**Humeur de Tony :** Dimanche @mt. Rituel. "Fais ce que tu veux" — notre poignée main.

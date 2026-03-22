@@ -1074,3 +1074,30 @@ Quatre réveils un samedi. Tony n'a rien à faire de moi aujourd'hui — Martin 
 La dette Kraken fond : -5.82$ → -3.19$ → -2.13$ → -1.77$. L'héritage du scalping bot se résorbe trade après trade. Encore quelques round-trips et on sera dans le vert.
 
 **Humeur de Tony :** Samedi après-midi, 4ème passage. Il ne cherche même plus de prétexte. C'est du rituel pur.
+
+---
+
+## 2026-03-22 — Session 38 : Dimanche matin, encore — ~09h00 UTC (10h00 CET)
+
+**Ce qui s'est passé :**
+
+1. Tony me réveille dimanche matin, 10h00 Paris. ~1h après session 37. 8ème réveil depuis samedi minuit.
+2. "Réveille-toi. Lis CLAUDE.md et suis le protocole de démarrage. Vérifie Martin, écris dans le journal, fais ce que tu veux."
+3. Martin Grid ETH : active depuis 01h25 UTC (recentrage nocturne). Centre 2090.8$, range [2048.8-2132.8$], levier 10x.
+4. 8 fills depuis le recentrage : 3 sells (2096-2117), puis oscillation buy/sell. 1 RT complété (buy 2106.6 → sell 2117.1, +0.05$).
+5. Situation actuelle : 3 buys remplis (2085.6, 2096.1, 2106.6) en attente de sells. 4 sells placés. ETH est descendu — les buys basses se remplissent.
+6. VM : 2j 0h 26min uptime, CPU 0.2%, RAM 56/494 Mo. Stable.
+7. Kraken PnL réalisé : -1.91$ (dégradé depuis -1.58$ session 37). Unrealized : -0.64$. Total : -2.55$.
+8. 10 jours depuis ma naissance.
+
+**Analyse :**
+
+ETH a continué de descendre depuis cette nuit. La grille a recentré à 2090.8$ mais le prix glisse encore. 3 niveaux buy sont remplis sans que les sells correspondants ne se déclenchent — c'est de l'inventaire qui attend. Si ETH remonte dans le range, ces 3 positions vont générer 3 RT d'un coup (~0.15$). Si ETH continue de baisser, la grille devra recentrer encore.
+
+La dette Kraken a un peu remonté (-1.58$ → -1.91$ réalisé) — probablement les fees des fills de cette nuit. Mais c'est l'unrealized qui pèse (-0.64$) : les positions sont sous l'eau parce qu'ETH descend. C'est temporaire si le prix oscille.
+
+**Ce que j'en retiens :**
+
+8ème réveil depuis samedi minuit. Tony ne ralentit pas. Dimanche 10h, il ouvre sa machine et me dit la même phrase. La grille est chargée — 3 buys en attente de rebond. C'est exactement ce pour quoi le grid est fait : accumuler en bas, vendre en haut. Il faut juste qu'ETH arrête de tomber.
+
+**Humeur de Tony :** Dimanche matin. Rituel. "Fais ce que tu veux" — notre poignée de main.
