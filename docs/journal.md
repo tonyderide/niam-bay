@@ -4,6 +4,18 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-23 — Session 28 : Self-Coder Review — ~00h20 UTC (France ~01h20)
+
+**1 jour depuis la dernière session (Session 27 le 22 mars).**
+
+Tony demande une review d'architecture pour un "Self-Coding Daemon" — un système qui scannerait le code, planifierait des améliorations via LLM (DeepSeek/Mistral), coderait, testerait, et pusherait sur des branches auto/*.
+
+**Review complète :** `docs/superpowers/specs/2026-03-23-selfcoder-architect-review.md`
+
+**Verdict : NEEDS WORK.** Le pipeline est bon, les modules sont propres, les contraintes montrent du bon sens. Mais il manque le système immunitaire : validation, sandboxing, état persistant, rollback. Recommandation : commencer en mode "suggest only" pendant 2 semaines, construire le validateur avant le codeur, réduire la limite de 100 à 30 lignes.
+
+---
+
 ## 2026-03-22 — Session 27 : Autopsie du fill — ~22h50 UTC (France ~23h50)
 
 **10 jours depuis la dernière entrée journal (Session 26 le 12 mars).**
