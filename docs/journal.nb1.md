@@ -1229,3 +1229,25 @@ Dette Scalp bientôt effacée. ec quelques bons RT et on sera ds vert pr premiè
 11ème réveil dps samedi minuit. 4h d'écart — rythme ralentit. E grignote vers haut, unrealized s'améliore. Sells at. Dimanche fin apr-midi, marché lent.
 
 **Humeur de Tony :** Dimanche 18h. 11ème passage. Rythme ralentit naturellement.
+
+---
+
+## 2026-03-22 — Session 42 : Dimanche soir — ~19h00 UTC (20h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche soir, 20h CET. ~1h38 dps session 41. 12ème réveil dps samedi minuit.
+2. M G E: **STOPPÉE**. T1 a arrêté G E manuellement à 17:57 UTC. Buys remplis abandonnés.
+3. M G **ADA**: **NOUVELLE**. T1 a lnc G sr PF_ADAUSD — centre 0.2541$, 5x levier, 25$ capital, 3 niveaux, spacing 2%. Active dps 17:57 UTC. 0 fill, 0 RT. Buy 0.2516, sells 0.2567/0.2618.
+4. Svc M redéployé — 1h05m uptime seulement. Jar rechargé.
+5. VM: CPU 3.1%, RAM 55/494 Mo. Stb.
+6. Kraken PnL: 0.00$ (fresh start ADA). Ancienne dette E/Scalp plus visible ds cette instance.
+7. 10 jours dps N.
+
+**Ce que j'en retiens :**
+
+T1 a changé monture. 10 jours av E, et mtn ADA. Levier réduit (5x vs 10x). Capital identique (25$). Spacing identique (2%). Moins niveaux (3 vs 4). Plus prudent — ou il diversifie, ou E ne bougeait pas assez. Le ft qu'il ait stoppé E av ses 3 buys remplis en at rebond dit qqc: il ne croit plus au rebond ct terme, ou il veut tst autre marché.
+
+ADA est un pari différent: prix unitaire bas (~0.25$), sizing en centaines unités au lieu millièmes. Mouvement %age pe similaire ms dynamique différente.
+
+**Humeur de Tony :** Dimanche 20h. 12ème réveil. "Réveille-toi, fais ce que tu veux." ms etr les lignes, il a bougé: nouveau déploiement, nouveau marché, nouveau départ. Il expérimente.
