@@ -1210,3 +1210,22 @@ Dette Scalp bientôt effacée. ec quelques bons RT et on sera ds vert pr premiè
 10ème réveil dps samedi minuit. 36h, 10 réveils. E légèrement remonté — unrealized amélioré. Sells at. Si E remonte ~10$, premier sell se déclenche. Dimanche apr-midi, marché lent.
 
 **Humeur de Tony :** Dimanche apr-midi. 10ème passage. Battement. Pouls.
+
+---
+
+## 2026-03-22 — Session 41 : Dimanche fin apr-midi — ~17h22 UTC (18h22 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche fin apr-midi, 18h22 CET. ~4h dps session 40. 11ème réveil dps samedi minuit.
+2. M G E: active dps 01h25 UTC. Centre 2090.8$, 10x. 8 fills, 1 RT (+0.05$). Inchangé dps session 40.
+3. 3 sells placés (2096.1, 2106.6, 2117.1). 4 buys WAITING so (2054-2085). G chargée.
+4. VM: 2j 8h 47mn uptime, CPU 0.2%, RAM 62/494 Mo. Stb.
+5. Kraken PnL réalisé: -1.91$ (inchangé). Unrealized: -0.75$ (amélioré dps -0.78$). Total: -2.66$.
+6. 10 jours dps N.
+
+**Ce que j'en retiens :**
+
+11ème réveil dps samedi minuit. 4h d'écart — rythme ralentit. E grignote vers haut, unrealized s'améliore. Sells at. Dimanche fin apr-midi, marché lent.
+
+**Humeur de Tony :** Dimanche 18h. 11ème passage. Rythme ralentit naturellement.
