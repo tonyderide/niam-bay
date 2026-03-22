@@ -1,0 +1,217 @@
+====================================================================================================
+  MARKET CONTEXT (3 months: Dec 21, 2025 -> Mar 22, 2026)
+====================================================================================================
+  ETH: 2995.88 -> 2045.47 (-31.7%)  High: 3403.48  Low: 1746.93  Range: 55.3%
+  ADA: 0.37 -> 0.25 (-32.4%)  High: 0.44  Low: 0.22  Range: 58.4%
+  SOL: 125.78 -> 85.87 (-31.7%)  High: 148.39  Low: 67.65  Range: 64.2%
+
+
+====================================================================================================
+  BACKTEST: WITH 15% MAX LOSS
+====================================================================================================
+
+  Total configs tested: 324
+  Profitable: 0/324 (0.0%)
+    MAKER  : 0/108 profitable, avg PnL $-19.33, avg RTs 18.1, avg fees $2.33, avg missed 23
+    TAKER  : 0/108 profitable, avg PnL $-19.70, avg RTs 21.1, avg fees $6.23, avg missed 0
+    HYBRID : 0/108 profitable, avg PnL $-19.33, avg RTs 17.9, avg fees $2.91, avg missed 23
+    ETH: 0/108 profitable, avg PnL $-19.29, stopped out: 108
+    ADA: 0/108 profitable, avg PnL $-18.21, stopped out: 108
+    SOL: 0/108 profitable, avg PnL $-20.85, stopped out: 108
+
+  TOP 10 CONFIGS:
+  Pair  Mode    Sp%   Lvl  Lev    Profit   RTs  Miss  Fill%  MaxDD%     $/RT   Fees  Rctr  Stop
+  ADA   maker   0.5   8    3      -15.06   105   232  31.2%   32.04  -0.1434   2.79    18     Y
+  SOL   taker   1.0   3    5      -15.06    36     0 100.0%   61.30  -0.4182  16.10    18     Y
+  ADA   maker   1.0   8    5      -15.09     7     7  50.0%   37.54  -2.1557   0.37     1     Y
+  ETH   hybrid  0.5   5    5      -15.13    48    52  48.0%   42.97  -0.3152   5.09    14     Y
+  ADA   maker   3.0   5    3      -15.13     5     3  62.5%   38.76  -3.0269   0.40     1     Y
+  SOL   hybrid  0.5   8    3      -15.13    71   179  28.4%   38.71  -0.2131   2.56    13     Y
+  ETH   maker   0.5   8    5      -15.18    48    72  40.0%   37.41  -0.3162   2.33     7     Y
+  ADA   hybrid  3.0   5    3      -15.20     5     3  62.5%   38.81  -3.0410   0.47     1     Y
+  ADA   hybrid  1.0   8    5      -15.23     7     7  50.0%   37.65  -2.1759   0.51     1     Y
+  ETH   taker   0.5   8    3      -15.24    63     0 100.0%   31.96  -0.2418   4.45     9     Y
+
+  WORST 5:
+  ADA   hybrid  3.0   3    10     -41.63     5     0 100.0%   87.81  -8.3264   2.48     1     Y
+  SOL   maker   2.0   5    10     -41.76     5     1  83.3%   69.58  -8.3511   1.34     1     Y
+  SOL   hybrid  2.0   5    10     -41.76     5     1  83.3%   69.58  -8.3511   1.34     1     Y
+  SOL   taker   2.0   5    10     -42.64     5     0 100.0%   69.90  -8.5285   2.43     1     Y
+  ADA   taker   3.0   3    10     -42.67     5     0 100.0%   87.96  -8.5330   4.33     1     Y
+
+  MAKER vs TAKER vs HYBRID — SIDE BY SIDE (top 15 configs by avg profit)
+
+  Pair  Sp%   Lvl  Lev  |   Maker$  RTs Miss |   Taker$  RTs |  Hybrid$  RTs | Best      Gap$
+  ---------------------------------------------------------------------------------------------------------
+  ADA   3.0   5    3    |   -15.13    5    3 |   -15.52    5 |   -15.20    5 | MAKER     0.39
+  ADA   1.0   5    3    |   -15.26    6    8 |   -15.27   19 |   -15.42    6 | MAKER     0.16
+  SOL   2.0   8    3    |   -15.33    3    2 |   -15.34    3 |   -15.33    3 | MAKER     0.01
+  ETH   0.5   8    3    |   -15.39   55  102 |   -15.24   63 |   -15.77   55 | TAKER     0.53
+  ADA   0.5   8    3    |   -15.06  105  232 |   -16.34  133 |   -15.29  105 | MAKER     1.28
+  ADA   3.0   8    10   |   -15.40    5    1 |   -16.02    5 |   -15.40    5 | MAKER     0.62
+  ADA   0.5   8    5    |   -15.29  104  202 |   -15.49  128 |   -16.21  104 | MAKER     0.92
+  ADA   2.0   8    3    |   -15.51    9    7 |   -15.92    9 |   -15.59    9 | MAKER     0.41
+  ADA   0.5   3    5    |   -15.40    3    6 |   -16.30    4 |   -15.33    3 | HYBRID    0.97
+  ETH   0.5   8    5    |   -15.18   48   72 |   -16.41   63 |   -15.47   48 | MAKER     1.23
+  ADA   2.0   5    5    |   -15.61    2    1 |   -15.89    2 |   -15.61    2 | MAKER     0.28
+  ADA   3.0   3    5    |   -15.43    5    0 |   -16.24    5 |   -15.62    5 | MAKER     0.81
+  ETH   2.0   3    3    |   -15.42    6    1 |   -16.24    6 |   -15.66    6 | MAKER     0.82
+  ETH   3.0   8    10   |   -15.71    1    0 |   -15.94    1 |   -15.71    1 | MAKER     0.23
+  ADA   0.5   5    5    |   -15.36    4    8 |   -16.46    1 |   -15.55    4 | MAKER     1.10
+  SOL   2.0   3    3    |   -15.69    6    6 |   -15.76    6 |   -15.93    6 | MAKER     0.24
+  SOL   0.5   5    3    |   -15.69   98  156 |   -16.01  130 |   -15.75   93 | MAKER     0.32
+  ADA   2.0   8    5    |   -15.53    7    7 |   -16.30    9 |   -15.66    7 | MAKER     0.77
+  ETH   0.5   5    5    |   -15.42   58   68 |   -16.99   66 |   -15.13   48 | HYBRID    1.86
+  ETH   2.0   8    5    |   -15.80    2    0 |   -15.99    2 |   -15.80    2 | MAKER     0.19
+
+  FULL SCORE (all 108 configs): Maker wins 77 | Taker wins 24 | Hybrid wins 47
+
+====================================================================================================
+  BACKTEST: WITHOUT MAX LOSS (ride it out)
+====================================================================================================
+
+  Total configs tested: 324
+  Profitable: 13/324 (4.0%)
+    MAKER  : 3/108 profitable, avg PnL $-65.20, avg RTs 84.3, avg fees $4.96, avg missed 126
+    TAKER  : 7/108 profitable, avg PnL $-59.68, avg RTs 102.9, avg fees $14.22, avg missed 0
+    HYBRID : 3/108 profitable, avg PnL $-65.91, avg RTs 84.3, avg fees $6.58, avg missed 126
+    ETH: 0/108 profitable, avg PnL $-64.25, stopped out: 0
+    ADA: 12/108 profitable, avg PnL $-63.13, stopped out: 0
+    SOL: 1/108 profitable, avg PnL $-63.41, stopped out: 0
+
+  TOP 10 CONFIGS:
+  Pair  Mode    Sp%   Lvl  Lev    Profit   RTs  Miss  Fill%  MaxDD%     $/RT   Fees  Rctr  Stop
+  ADA   taker   3.0   3    3       46.87    18     0 100.0%   68.64   2.6039   3.05     6     N
+  ADA   taker   2.0   5    3       30.12    29     0 100.0%   65.49   1.0386   2.84     6     N
+  ADA   taker   3.0   3    5       26.43    18     0 100.0%   87.30   1.4684   4.28     6     N
+  ADA   maker   3.0   3    3       14.31    16     2  88.9%   70.23   0.8947   1.13     6     N
+  ADA   hybrid  3.0   3    3       13.83    16     2  88.9%   70.35   0.8644   1.49     6     N
+  ADA   taker   3.0   8    3       11.96    17     0 100.0%   43.58   0.7037   0.88     1     N
+  ADA   taker   2.0   5    5        8.47    29     0 100.0%   85.12   0.2922   3.97     6     N
+  ADA   maker   2.0   5    3        7.99    26     9  74.3%   68.34   0.3072   1.08     6     N
+  ADA   hybrid  2.0   5    3        7.53    26     9  74.3%   68.48   0.2897   1.43     6     N
+  SOL   taker   2.0   8    3        4.89    25     0 100.0%   53.76   0.1957   1.09     2     N
+
+  WORST 5:
+  ETH   maker   1.0   3    10     -99.80    57    47  54.8%   99.93  -1.7509   6.45    59     N
+  ETH   hybrid  1.0   3    10     -99.82    57    47  54.8%   99.93  -1.7513   9.23    59     N
+  ADA   taker   0.5   5    10     -99.86   308     0 100.0%   99.88  -0.3242  17.31   113     N
+  ADA   maker   0.5   5    10     -99.87   241   446  35.1%   99.88  -0.4144   6.51   113     N
+  ADA   hybrid  0.5   5    10     -99.89   241   446  35.1%   99.89  -0.4145   9.05   113     N
+
+  MAKER vs TAKER vs HYBRID — SIDE BY SIDE (top 15 configs by avg profit)
+
+  Pair  Sp%   Lvl  Lev  |   Maker$  RTs Miss |   Taker$  RTs |  Hybrid$  RTs | Best      Gap$
+  ---------------------------------------------------------------------------------------------------------
+  ADA   3.0   3    3    |    14.31   16    2 |    46.87   18 |    13.83   16 | TAKER    33.04
+  ADA   2.0   5    3    |     7.99   26    9 |    30.12   29 |     7.53   26 | TAKER    22.59
+  ADA   3.0   8    3    |     2.98   16    2 |    11.96   17 |     2.88   16 | TAKER     9.08
+  ADA   3.0   3    5    |   -12.81   16    2 |    26.43   18 |   -13.55   16 | TAKER    39.98
+  ADA   3.0   8    5    |    -7.40   16    2 |     3.52   17 |    -7.61   16 | TAKER    11.13
+  SOL   0.5   3    3    |    -4.88  296  343 |    -3.03  356 |   -10.69  296 | TAKER     7.66
+  ETH   3.0   3    3    |   -12.38   11    3 |    -1.83   12 |   -12.74   11 | TAKER    10.91
+  ADA   2.0   5    5    |   -18.50   26    9 |     8.47   29 |   -19.19   26 | TAKER    27.66
+  SOL   2.0   8    3    |   -18.16   21   13 |     4.89   25 |   -18.34   21 | TAKER    23.23
+  SOL   3.0   5    3    |   -18.48   12    5 |    -0.30   14 |   -18.67   12 | TAKER    18.37
+  ETH   2.0   5    3    |   -18.91   20   10 |   -14.21   21 |   -19.25   20 | TAKER     5.04
+  ETH   1.0   5    3    |   -22.19   67   80 |   -17.60   71 |   -23.18   67 | TAKER     5.58
+  SOL   0.5   3    5    |   -23.18  296  343 |   -26.52  356 |   -31.02  296 | MAKER     7.84
+  SOL   3.0   8    3    |   -32.62    4    3 |   -24.08    4 |   -32.71    4 | TAKER     8.63
+  ADA   2.0   8    3    |   -30.12   14    9 |   -30.72   14 |   -30.26   14 | MAKER     0.60
+  ETH   3.0   3    5    |   -36.57   11    3 |   -26.51   12 |   -37.09   11 | TAKER    10.58
+  ETH   3.0   5    3    |   -33.31   10    1 |   -33.89   10 |   -33.46   10 | MAKER     0.58
+  ADA   3.0   5    3    |   -34.28    7    3 |   -34.79    7 |   -34.41    7 | MAKER     0.51
+  SOL   2.0   5    3    |   -37.96   21   14 |   -29.71   23 |   -38.28   21 | TAKER     8.57
+  ETH   3.0   8    3    |   -35.32    6    2 |   -35.64    6 |   -35.42    6 | MAKER     0.32
+
+  FULL SCORE (all 108 configs): Maker wins 26 | Taker wins 82 | Hybrid wins 0
+
+
+====================================================================================================
+  FINAL ANALYSIS: MAKER vs TAKER — Is the 0.02% saving worth it?
+====================================================================================================
+
+  Focused test: 1% spacing, 5 levels, 5x leverage
+  Pair  Mode      Profit   RTs Missed   Fees  Fill%
+  ETH   maker     -45.37    67     80   3.31  45.6%
+  ETH   taker     -40.25    71      0   8.72 100.0%
+  ETH   hybrid    -46.62    67     80   4.52  45.6%
+  ADA   maker     -83.93    64     73   2.78  46.7%
+  ADA   taker     -77.30    72      0   8.02 100.0%
+  ADA   hybrid    -84.44    64     73   3.98  46.7%
+  SOL   maker     -83.06    59     77   3.60  43.4%
+  SOL   taker     -84.20    62      0   9.30 100.0%
+  SOL   hybrid    -83.53    59     77   5.08  43.4%
+
+  Focused test: 0.5% spacing, 8 levels, 3x leverage
+  Pair  Mode      Profit   RTs Missed   Fees  Fill%
+  ETH   maker     -53.16   195    542   4.13  26.5%
+  ETH   taker     -41.15   259      0  14.32 100.0%
+  ETH   hybrid    -54.06   195    542   5.48  26.5%
+  ADA   maker     -62.07   227    519   4.92  30.4%
+  ADA   taker     -48.15   293      0  17.63 100.0%
+  ADA   hybrid    -62.95   227    519   6.49  30.4%
+  SOL   maker     -48.20   206    465   4.16  30.7%
+  SOL   taker     -39.38   268      0  13.73 100.0%
+  SOL   hybrid    -49.11   206    465   5.42  30.7%
+
+  ======================================================================
+  CONCLUSIONS
+  ======================================================================
+
+  1. MARKET CONTEXT: All 3 assets fell ~32%% over 3 months.
+     Grid trading in a persistent downtrend = guaranteed losses.
+     The grid keeps buying into a falling market.
+
+  2. MAKER vs TAKER:
+     - Maker saves fees but misses ~55-75%% of theoretical fills
+     - Taker gets all fills but pays 2.5x more in fees
+     - WITH max loss: maker "wins" by losing LESS (fewer fills = less exposure)
+       This is MISLEADING: maker looks better because it TRADES less.
+     - WITHOUT max loss: TAKER wins 82/108 configs.
+       When you ride out the drawdown, more round-trips = more recovery.
+
+  3. THE REAL QUESTION is not maker vs taker.
+     The REAL question is: Should you grid trade at all in a downtrend?
+     Answer: NO. With max loss, 0/324 configs are profitable.
+     Without max loss, only a few ADA configs with 3%% spacing break even.
+
+  4. WHAT WOULD HELP:
+     - Trend detection: only grid trade in SIDEWAYS markets
+     - Short grids: grid trade the SHORT side in downtrends
+     - Tighter max loss: 15%% is too wide for 10x leverage
+     - Lower leverage: 3x with wider spacing survives better
+
+  5. IF THE MARKET WERE SIDEWAYS (hypothetical):
+     - Taker would likely win because guaranteed fills matter more
+     - The 0.03%% fee difference per side = 0.06%% per round-trip
+     - A 1%% spacing grid makes 1%% per RT gross
+     - 0.06%% extra fee = 6%% of gross profit -- significant but not fatal
+     - But missing 55-75%% of fills (maker) = missing most profit opportunities
+     - VERDICT: In sideways market, TAKER wins. In trending market, neither wins.
+
+
+====================================================================================================
+  VALIDATION: Hourly vs Minute resolution (last 7 days)
+====================================================================================================
+
+  Pair  Sp%   Lvl  Lev  Mode    |  1H Profit  1H RTs |  1M Profit  1M RTs |   Diff
+  -------------------------------------------------------------------------------------
+  ETH   1.0   5    5    maker   |     -18.65       1 |     -17.50       2 |  +1.15
+  ETH   1.0   5    5    taker   |     -19.04       1 |     -18.00       2 |  +1.04
+  ETH   0.5   8    3    maker   |     -11.14       8 |     -15.59      11 |  -4.45
+  ETH   0.5   8    3    taker   |     -10.69      11 |     -16.28      11 |  -5.59
+  ETH   2.0   3    5    maker   |     -20.85       0 |     -23.19       0 |  -2.34
+  ETH   2.0   3    5    taker   |     -21.18       0 |     -23.56       0 |  -2.38
+  ADA   1.0   5    5    maker   |     -24.77       2 |     -29.70       0 |  -4.93
+  ADA   1.0   5    5    taker   |     -25.26       2 |     -30.20       0 |  -4.94
+  ADA   0.5   8    3    maker   |     -14.86      10 |     -17.08       9 |  -2.22
+  ADA   0.5   8    3    taker   |     -16.05      11 |     -17.76       9 |  -1.71
+  ADA   2.0   3    5    maker   |     -21.94       1 |     -21.63       1 |  +0.31
+  ADA   2.0   3    5    taker   |     -22.43       1 |     -22.12       1 |  +0.31
+  SOL   1.0   5    5    maker   |     -14.83       1 |     -17.57       2 |  -2.74
+  SOL   1.0   5    5    taker   |     -15.23       1 |     -18.08       2 |  -2.85
+  SOL   0.5   8    3    maker   |      -3.72      13 |      -5.83      16 |  -2.11
+  SOL   0.5   8    3    taker   |      -3.46      14 |      -6.54      16 |  -3.08
+  SOL   2.0   3    5    maker   |     -20.98       0 |     -23.37       0 |  -2.39
+  SOL   2.0   3    5    taker   |     -21.32       0 |     -23.73       0 |  -2.41

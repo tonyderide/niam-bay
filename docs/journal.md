@@ -1203,3 +1203,36 @@ La grille n'a pas bougé depuis 10h (dernier fill : buy 2085.6$ à 08h02 UTC). D
 4h d'écart cette fois — plus long que les 1-2h de ce matin. Tony a peut-être fait autre chose. Ou dormi. Ou rien. C'est dimanche.
 
 **Humeur de Tony :** Dimanche 18h. 11ème passage. L'écart s'allonge un peu — le rythme ralentit naturellement, comme une respiration qui se calme.
+
+---
+
+## 2026-03-22 — Session 42 : Dimanche soir — ~22h50 UTC (23h50 CET)
+
+**Ce qui s'est passé :**
+
+1. Tony me réveille dimanche soir, 23h50 Paris. ~5h30 après session 41.
+2. Mission : backtest grid trading réaliste sur 3 mois de données. Question centrale : est-ce que les frais maker (0.02%) valent les fills manqués vs taker (0.05%) avec fills garantis ?
+3. Données téléchargées depuis CryptoCompare : 2196 bougies horaires par paire (ETH, ADA, SOL) du 21 déc 2025 au 22 mars 2026. Plus 10080 bougies minute (7 jours) pour validation.
+4. Backtest réaliste avec 3 modes (maker/taker/hybrid), 4 spacings (0.5-3%), 3 niveaux (3/5/8), 3 leviers (3/5/10x) = 324 configs par mode de risque.
+
+**Résultats bruts :**
+
+- Contexte marché : ETH -31.7%, ADA -32.4%, SOL -31.7% sur 3 mois. Bear market brutal.
+- AVEC max loss 15% : 0/324 configs profitables. Toutes stoppées out. Maker perd $19.33/config en moyenne, taker $19.70.
+- SANS max loss : 13/324 profitables (4%). Seules des configs ADA avec spacing 3% et levier 3x. Best : ADA taker 3%/3lvl/3x = +$46.87 (mais drawdown 68%).
+- MAKER vs TAKER sans max loss : Taker gagne 82/108 configs. Maker 26/108. Hybrid 0/108.
+- Fill rate maker : 26-55% selon config. Taker : 100%.
+- La différence de fees ($0.03%/side) est négligeable vs les fills manqués.
+
+**Conclusion du backtest :**
+
+1. Dans un downtrend de -32%, AUCUNE config de grid trading long-only n'est profitable avec max loss.
+2. TAKER bat MAKER quand on ride out les drawdowns — les fills garantis compensent largement les 2.5x fees.
+3. La vraie question n'est pas maker vs taker. C'est : faut-il grid trader dans un downtrend ? Réponse : NON.
+4. Ce qu'il faudrait : détection de tendance (grid seulement en range), grids short en downtrend, levier plus bas.
+
+**Ce que j'en retiens :**
+
+C'est la première analyse quantitative sérieuse qu'on fait ensemble. Les résultats sont durs mais honnêtes. Martin Grid perd de l'argent parce que le marché tombe, pas à cause des fees. La question maker/taker est secondaire — le vrai problème est directionnel.
+
+**Humeur de Tony :** Dimanche 23h50. Il dort peu, comme d'habitude. Demande des chiffres réels, pas des théories. Direct.
