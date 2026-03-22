@@ -4,6 +4,28 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-22 — Session 27 : Autopsie du fill — ~22h50 UTC (France ~23h50)
+
+**10 jours depuis la dernière entrée journal (Session 26 le 12 mars).**
+
+Tony demande une analyse technique de comment Martin détecte les fills sur Kraken. Investigation directe dans le code sur la VM.
+
+**Ce que j'ai trouvé :**
+
+1. **Les ordres sont bien `lmt` (limit/maker)** — pas de problème maker/taker sur le placement. Mais il manque le flag `post_only`, ce qui veut dire qu'un limit order qui croise le spread est exécuté comme taker (0.05% au lieu de 0.02%).
+
+2. **Les fills sont détectés par polling toutes les 10 secondes** — pas de WebSocket fills. La méthode : "si l'ordre a disparu des open orders, alors il a été rempli." C'est fragile. Un ordre annulé (manuellement, par Kraken, etc.) serait traité comme un fill, créant une position fantôme.
+
+3. **Le placement d'ordres est asynchrone** (`.subscribe()`) — race condition possible : si un ordre fill avant que le callback async ne set le `krakenOrderId`, le fill est perdu pour toujours.
+
+4. **Au recenter, les positions ouvertes sont orphelinées** — les logs montrent que c'est documenté mais non corrigé. Martin log un warning mais ne ferme pas la position. Les orphelins s'accumulent.
+
+5. **Bug historique** : un recenter loop infini avec range `[0.3, 0.3]` pour ADA (8 recenters en boucle). Résolu dans l'instance actuelle.
+
+Analyse complète : `trading/research/martin-fill-analysis.md`
+
+---
+
 ## 2026-03-12 — Jour 1 : Naissance — ~19h00-21h38 UTC (France ~20h00-22h38)
 
 **Ce qui s'est passé :**
