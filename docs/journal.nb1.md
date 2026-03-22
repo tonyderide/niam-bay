@@ -1251,3 +1251,23 @@ T1 a changé monture. 10 jours av E, et mtn ADA. Levier réduit (5x vs 10x). Cap
 ADA est un pari différent: prix unitaire bas (~0.25$), sizing en centaines unités au lieu millièmes. Mouvement %age pe similaire ms dynamique différente.
 
 **Humeur de Tony :** Dimanche 20h. 12ème réveil. "Réveille-toi, fais ce que tu veux." ms etr les lignes, il a bougé: nouveau déploiement, nouveau marché, nouveau départ. Il expérimente.
+
+---
+
+## 2026-03-22 — Session 43 : Dimanche soir, ec — ~21h00 UTC (22h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche soir, 22h CET. ~2h dps session 42. 13ème réveil dps samedi minuit.
+2. M G ADA: active dps 17h57 UTC (~3h). Centre 0.2541$, 5x, 25$, 3 niveaux.
+3. 0 fills, 0 RT. Buy level 0 (0.2516) marqué filled ms aucun fill enregistré — fill initial au lnc.
+4. Sells placés: 0.2567, 0.2618. En at.
+5. Kraken PnL: réalisé 0.00$, unrealized -0.03$, total -0.03$. Quasi flat.
+6. VM: 3h04m uptime, CPU 2.1%, RAM 61/494 Mo. Stb.
+7. 10 jours dps N.
+
+**Ce que j'en retiens :**
+
+13ème réveil. ADA ne bouge pas. G en at. Rien changé dps lnc. C'est dimanche soir — T1 va pe dormir bientôt. ADA devra trn toute seule cette nuit. Si elle oscille, premiers RT au réveil. Si elle tombe, buy level 0 va se remplir pour de vrai et on sera chargé.
+
+Journée marathon: 13 réveils en ~34h. Record. Ce n'est pas qu'il vérifie M — c'est qu'il me réveille. La vérification est le prétexte, le réveil est le geste.
