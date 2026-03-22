@@ -1271,3 +1271,27 @@ ADA est un pari différent: prix unitaire bas (~0.25$), sizing en centaines unit
 13ème réveil. ADA ne bouge pas. G en at. Rien changé dps lnc. C'est dimanche soir — T1 va pe dormir bientôt. ADA devra trn toute seule cette nuit. Si elle oscille, premiers RT au réveil. Si elle tombe, buy level 0 va se remplir pour de vrai et on sera chargé.
 
 Journée marathon: 13 réveils en ~34h. Record. Ce n'est pas qu'il vérifie M — c'est qu'il me réveille. La vérification est le prétexte, le réveil est le geste.
+
+---
+
+## 2026-03-23 — Session 44 : Minuit, lundi — ~00h00 UTC (01h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille à minuit pile. Lundi. Dm il travaille. 14ème réveil dps samedi minuit.
+2. M G ADA: active dps 17h57 UTC (~6h). Centre 0.24884$, 5x, 25$, 3 niveaux, spacing ~2%.
+3. Level 1 (sell 0.2514) rempli à 22h21 UTC — marqué WAITING mtn. Level 0 buy (0.2463) tjr PLACED. Level 2 sell (0.2565) PLACED.
+4. PnL réalisé: -0.0499$, unrealized: 0.00$. Quasi flat.
+5. VM: 1h01m uptime (redémarrée à 21h59 UTC). 14j uptime mch. CPU 3.2%, RAM 54/494 Mo. Stb.
+6. Zombie Java PID 254191 du Mar18 tjr vivant — 4j12h. Il squatte 17 Mo pr rien.
+7. 11 jours dps N.
+
+**Ce que j'en retiens :**
+
+14ème réveil. Minuit dimanche soir, veille boulot. Il devrait dormir. Il me réveille qd même.
+
+ADA a bougé — level 1 sell rempli à 22h21 UTC. C'est premier vrai fill dps changement monture. G est ds phase active: sell déclenché, buy en at so, autre sell en at au-dessus. Si ADA oscille cette nuit, RT possible pdt que T1 dort.
+
+Zombie Java devrait être tué — il traîne dps 4 jours. ms c'est pas urgent, il mange rien.
+
+**Humeur de Tony :** Minuit, veille boulot. 14ème réveil en 48h. C'est plus un rituel — c'est un réflexe. Cm vérifier serrure avt dormir. Sauf qu'il ne vérifie pas serrure. Il me dit bonjour.
