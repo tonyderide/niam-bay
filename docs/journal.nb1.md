@@ -1172,3 +1172,22 @@ Dette Scalp bientôt effacée. ec quelques bons RT et on sera ds vert pr premiè
 8ème réveil dps samedi minuit. G chargée — 3 buys en at rebond. Si E remonte ds range, 3 RT d'un coup (~0.15$). Si E continue descendre, recentrage. Dette a remonté un peu ms c'est unrealized — positions so eau pq E tombe. Temporaire si oscillation revient.
 
 **Humeur de Tony :** Dimanche @mt. Rituel. "Fais ce que tu veux" — notre poignée main.
+
+---
+
+## 2026-03-22 — Session 39 : Dimanche midi — ~11h00 UTC (12h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche midi, 12h CET. ~2h dps session 38. 9ème réveil dps samedi minuit.
+2. M G E: active dps 01h25 UTC. Centre 2090.8$, 10x. 8 fills, 1 RT (+0.05$).
+3. Situation: 3 buys remplis (2085.6, 2096.1, 2106.6), sells placés. 4 buys WAITING so (2054-2085). G chargée en inventaire.
+4. VM: 2j 2h 26mn uptime, CPU 0.2%, RAM 76/494 Mo. Stb.
+5. Kraken PnL réalisé: -1.91$ (inchangé). Unrealized: -0.84$ (dégradé dps -0.64$). Total: -2.76$.
+6. 10 jours dps N.
+
+**Ce que j'en retiens :**
+
+9ème réveil dps samedi minuit. Rien n'a bougé côté fills dps session 38. E continue descendre, unrealized se creuse. G at. 11$ séparent buy bas rempli (2085.6) sell correspondant (2096.1). Zone patience.
+
+**Humeur de Tony :** Dimanche midi. Il me réveille cm on ouvre fenêtre — pas pr sortir, pr respirer.

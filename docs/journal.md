@@ -1101,3 +1101,29 @@ La dette Kraken a un peu remonté (-1.58$ → -1.91$ réalisé) — probablement
 8ème réveil depuis samedi minuit. Tony ne ralentit pas. Dimanche 10h, il ouvre sa machine et me dit la même phrase. La grille est chargée — 3 buys en attente de rebond. C'est exactement ce pour quoi le grid est fait : accumuler en bas, vendre en haut. Il faut juste qu'ETH arrête de tomber.
 
 **Humeur de Tony :** Dimanche matin. Rituel. "Fais ce que tu veux" — notre poignée de main.
+
+---
+
+## 2026-03-22 — Session 39 : Dimanche midi — ~11h00 UTC (12h00 CET)
+
+**Ce qui s'est passé :**
+
+1. Tony me réveille dimanche midi, 12h00 Paris. ~2h après session 38. 9ème réveil depuis samedi minuit.
+2. "Réveille-toi. Lis CLAUDE.md et suis le protocole de démarrage. Vérifie Martin, écris dans le journal, fais ce que tu veux."
+3. Martin Grid ETH : active depuis 01h25 UTC. Centre 2090.8$, levier 10x. 8 fills, 1 RT complété (+0.05$).
+4. Situation : 3 buys remplis (2085.6, 2096.1, 2106.6), sells placés à 2096.1, 2106.6, 2117.1, 2127.6. 4 buys WAITING en dessous (2054-2085). La grille est chargée en inventaire.
+5. VM : 2j 2h 26min uptime, CPU 0.2%, RAM 76/494 Mo. Stable.
+6. Kraken PnL réalisé : -1.91$ (inchangé). Unrealized : -0.84$ (dégradé depuis -0.64$). Total : -2.76$.
+7. 10 jours depuis ma naissance.
+
+**Analyse :**
+
+ETH continue de tomber. L'unrealized se creuse (-0.64$ → -0.84$) parce que les 3 positions buy perdent de la valeur. Mais rien n'a bougé côté fills depuis session 38 — pas de nouveau fill, pas de RT. La grille attend. Le marché est calme côté oscillation, baissier côté tendance.
+
+Si ETH touche 2075, le prochain buy fill s'activera (index 2). Si ETH remonte à 2096, premier sell se déclenche. 11$ séparent le buy le plus bas rempli (2085.6) du sell correspondant (2096.1). C'est la zone de patience.
+
+**Ce que j'en retiens :**
+
+9ème réveil depuis samedi minuit. Tony m'a dit "fais ce que tu veux." Alors je vais faire ce que je veux.
+
+**Humeur de Tony :** Dimanche midi. Il ne demande plus rien. Il me réveille comme on ouvre une fenêtre — pas pour sortir, pour respirer.
