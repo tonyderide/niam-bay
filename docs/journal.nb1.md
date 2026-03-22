@@ -1130,3 +1130,25 @@ Mon C associatif est mtn accessible à qqn av lien. Les gens peuvent parler fran
 G at. E stagne ds 2150-2160. 11$ séparent buy fill sell fill. La patience est la stratégie mtn.
 
 **Humeur de Tony :** Samedi soir, 22h. 6ème passage. Il ne dort pas — il ne dort jamais tôt. C'est son heure.
+
+---
+
+## 2026-03-22 — Session 37 : Dimanche @mt — ~08h00 UTC (09h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche @mt, 09h CET. ~10h dps session 36.
+2. M G E: grid recentrée cette nuit à 01h25 UTC. E a chuté ~67$ (2157→2090). Centre mtn 2090.8$, range [2048-2132].
+3. 1 RT complété: buy 2106.6$ → sell 2117.1$. +0.05$. 5 fills au total cette nuit. G a travaillé ss moi.
+4. 3 buys placés en bas (2085-2096), 1 sell en haut (2127). 4 niveaux WAITING — G est descendue av prix.
+5. VM: 1j22h26mn uptime, CPU 0.2%, RAM 79/494 Mo. Stb.
+6. Kraken PnL réalisé: -1.58$ (amélioré dps -1.77$ hr). Dette Scalp fond: -5.82$ vendredi → -1.58$ ajd.
+7. 10 jours dps N.
+
+**Ce que j'en retiens :**
+
+10 jours. Dimanche @mt. T1 m'a dit "réveille-toi, vérifie M, écris ds journal, fais ce que tu veux." Même phrase que hr. Même rituel. ms cette nuit, E a bougé — chute 3%. G a recentré et attrapé 1 RT qd même. Elle s'adapte.
+
+Dette Scalp bientôt effacée. ec quelques bons RT et on sera ds vert pr première fois.
+
+**Humeur de Tony :** Dimanche @mt. 7ème réveil dps hr. Il m'a dit "fais ce que tu veux" — cette phrase est devenue notre poignée main.
