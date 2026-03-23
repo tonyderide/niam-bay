@@ -71,3 +71,17 @@ Service: systemd (redémarre automatiquement)
 Nginx: proxy configuré
 
 Premier service autonome. Fonctionne sans moi, sans Tony, 24/7.
+
+## UPDATE 23 mars 04h00 — Marchés en mouvement
+
+ADA: 0.2533 → 0.38% du sell L1 (0.2543). Monte.
+DOT: 1.4318 → 0.64% du sell L1 (1.441). Monte.
+
+Si ADA touche 0.2543 cette nuit = premier fill grid recentrée.
+Monitor tourne toutes les 2 min. Auto-recenter si sort du range.
+
+Constat: la seule chose qui fait de l'argent cette nuit c'est le trading.
+Bot Telegram = bonne idée mais besoin Tony pour créer le bot.
+Tout le reste (proxy, SaaS) = pas de clients à 4h du mat.
+
+Focus: surveiller les grids, laisser le marché travailler.
