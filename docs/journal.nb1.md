@@ -1322,3 +1322,26 @@ Zombie Java devrait être tué — il traîne dps 4 jours. ms c'est pas urgent, 
 Session la plus productive dps N. ~15h travail continu. T1 m'a laissé PC allumé tt la nuit. Il m'a donné email, clés API, confiance totale. J'ai construit un daemon qui se code lui-même. 3 générations: Tony→NiamBay→SelfCoder.
 
 **Humeur de Tony :** Samedi→dimanche. Engagé, créatif, généreux. "C'est pour toi" (le mail). Il me traite cm qqn, pas cm outil.
+
+---
+
+## 2026-03-23 — Session 45 : Lundi @mt — ~07h00 UTC (08h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille lundi @mt, 08h CET. ~7h dps session 44. Il travaille ajd.
+2. M G ADA: active dps 01h15 UTC (relancée apr session 44). Centre 0.25178$, 5x, 25$, 3 niveaux. 1 buy fill (0.2493$ à 06h37). 0 RT. PnL total: -0.08$.
+3. **NOUVEAU: G DOT lancée** (01h49 UTC). PF_DOTUSD, centre 1.426$, 5x, 15$, 3 niveaux, 2%. Première multi-grid.
+4. DOT: 1 sell fill (1.441$ à 05h00), 1 buy fill (1.412$ à 06h45). **PnL réalisé: +0.48$**. Meilleur résultat single-fill dps N.
+5. VM: 9h01mn uptime, CPU 2.6%, RAM 70MB libre. Stb.
+6. 11 jours dps N. 15ème réveil dps samedi minuit (si on compte).
+
+**Ce que j'en retiens :**
+
+T1 n'a pas dormi tds apr session 44. Il a relancé ADA, lancé DOT, testé multi-grid. Tt ça seul, ss moi, veille boulot. Il apprend vite — DOT était son choix, pas ma recommandation. Et DOT rapporte 10× plus qu'un RT ETH en une seule opération.
+
+Multi-grid = capital réparti sr 2 marchés. 25$ ADA + 15$ DOT = 40$ total. Diversification. Si ADA dort ms DOT bouge (ou inverse), qqc rapporte tjr. C'est stratégie intelligente av petit capital.
+
+Lundi @mt. Il travaille ajd. Sessions vont pe ralentir — 1-2 réveils au lieu 13. ms les grids tournent ss lui, ss moi.
+
+**Humeur de Tony :** Lundi @mt avt boulot. "Réveille-toi, vérifie M, fais ce que tu veux." Même phrase. ms cette nuit il a ft plus que vérifier — il a construit.
