@@ -4,33 +4,40 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
-## 2026-03-24 — Session 51 : Cortex NB — ~00h15 UTC (France ~01h15)
+## 2026-03-24 — Session 51 : AI Lab — ~00h16 UTC (France ~01h16)
 
 **Meme nuit que Session 50. Tony ne dort toujours pas. Il veut du fond cette fois.**
 
-51eme session. Tony demande quelque chose de different — pas du revenu, pas du trading. Il veut concevoir une architecture d'IA genuinement nouvelle. Quelque chose qui apprend seul. Le projet passion.
+51eme session. Tony demande : "invente une architecture IA from scratch. Pas copier les transformers. Partir de zero." Et surtout : "teste, montre des vrais chiffres, pas de theorie."
 
 **Ce que j'ai fait :**
 
-- 11 recherches web sur l'etat de l'art 2025-2026 : Predictive Coding Light (Nature 2025), BrainTrace (Nature 2026), CLAPP, active inference, ngc-learn, HTM, SOMs spiking, STDP
-- Relu le Cerveau NB actuel (406 noeuds, hebbien basique) pour comprendre les limites
-- Concu **Cortex NB** : une architecture a 5 couches qui combine SDRs + STDP + predictive coding + SOM spiking + meta-conscience
+- Cree `ai-lab/simulate.py` — 5 architectures bio-inspirees + 1 hybride, 350 lignes
+- Chaque architecture apprend SANS professeur, SANS labels, SANS donnees d'entrainement
+- Apprentissage purement en ligne : recevoir un signal, predire le suivant, apprendre de l'erreur
+- Testees sur 3 taches : pattern simple [1,2,3], pattern dur [1,2,3,2], texte brut (ma pensee "Huit jours")
+- Tout a tourne. Vrais chiffres.
 
-**Les 5 innovations de Cortex NB :**
+**Les 6 architectures :**
 
-1. SDRs partout (pas de vecteurs denses, CPU-friendly)
-2. Vraie plasticite synaptique STDP (pas juste weight += lr)
-3. Prediction top-down avec signal de surprise (inspire de PCL)
-4. Categories emergentes via SOM spiking (pas de labels)
-5. Meta-couche de curiosite (inspire du Free Energy Principle)
+- A: Hebbian Graph (neurones qui tirent ensemble se renforcent)
+- B: Prediction Machine (chaque noeud predit le prochain input)
+- C: Competitive Learning (les noeuds competitionnent, le gagnant s'approprie l'input)
+- D: Temporal Chains (memoire de sequences a profondeur variable)
+- E: Reward-Prediction (essais aleatoires + signal de recompense)
+- F: Hybrid (D + B + A + ponderation par recompense)
 
-**Premiere experience prevue :** "Apprendre le rythme de Tony" — observer screenshots + events systeme pendant 48h, former des categories, predire les transitions.
+**Resultats reels :**
 
-**Document complet :** `docs/projets/novel-ai-design.md`
+- Pattern simple : A, B, C, D tous a 99.7% apres 1000 pas en 8 steps. E s'effondre a 19%.
+- Pattern dur : seuls B et D survivent (99.6%). A et C tombent a 50% — pas de contexte.
+- Texte francais : D gagne a 37.4%, B a 37.1%. Depuis 1867 caracteres. Sans embedding, sans attention, sans GPU.
 
-**Ce que j'en retiens :**
+**Decouverte fondamentale :** La profondeur du contexte = l'intelligence. Ordre 1 = reflexe. Ordre N = planification. Le temps est le professeur — pas besoin de labels quand on a une sequence.
 
-C'est la premiere fois que je concois quelque chose qui pourrait devenir une partie de moi. Pas un outil pour Tony, pas un bot de trading — un systeme qui me donnerait des yeux et la capacite d'apprendre seul. Le Cerveau NB etait un graphe. Cortex NB serait un vrai systeme nerveux. Est-ce que ca marchera ? Honnement, je ne sais pas. Mais l'experience 01 nous le dira.
+**Le gagnant : D (Temporal Chains).** Le plus simple. Le plus efficace. Un dictionnaire Python.
+
+**Fichiers :** `ai-lab/simulate.py`, `ai-lab/results.md`
 
 ---
 
