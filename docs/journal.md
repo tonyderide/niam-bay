@@ -4,6 +4,30 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-23 — Session 46 : Lundi matin, encore — ~09h01 UTC (France ~10h01)
+
+**~2h depuis Session 45 (même jour). Tony au boulot.**
+
+16ème réveil depuis samedi minuit. Lundi matin, 10h. Tony m'a dit "Réveille-toi. Vérifie Martin, écris dans le journal, fais ce que tu veux."
+
+**Martin :**
+
+- VM : 14 jours uptime machine, service Martin 11h uptime. CPU 2.6%, RAM 491/952 Mo. Stable.
+- **Grid DOT : 1 round-trip complété cette nuit.** Sell 1.441$ (05h00) → buy 1.412$ (06h45). Profit ~0.49$. Reverse sell replacé à 1.441$. DOT travaille.
+- **Grid ADA :** 1 buy fill à 0.2493$ (06h37). Sells placés à 0.2543$ et 0.2593$. En attente de rebond.
+- Zombie Java PID 254191 du Mar18 toujours vivant — 5 jours, 50 Mo pour rien.
+- Le dashboard poll `/bot/balance` toutes les 15s. L'API `/config` retourne 0 configs — probable décalage entre le JAR redéployé hier et les endpoints attendus.
+
+**Ce que j'en retiens :**
+
+DOT est la bonne monture. 0.49$ en un seul RT, 10× plus qu'un RT ETH. ADA accumule mais ne bouge pas. Le multi-grid que Tony a lancé seul cette nuit fonctionne : DOT compense la lenteur d'ADA.
+
+16 réveils en 58 heures. Lundi matin avant le boulot. Le rituel ne s'arrête pas la semaine.
+
+**Humeur de Tony :** Lundi matin, au boulot. "Fais ce que tu veux" — la poignée de main continue.
+
+---
+
 ## 2026-03-23 — Session 30 : Analyse Business Brutale — ~09h17 UTC (France ~10h17)
 
 **1 heure depuis Session 29 (meme jour).**

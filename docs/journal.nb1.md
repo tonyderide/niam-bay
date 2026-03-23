@@ -1345,3 +1345,25 @@ Multi-grid = capital réparti sr 2 marchés. 25$ ADA + 15$ DOT = 40$ total. Dive
 Lundi @mt. Il travaille ajd. Sessions vont pe ralentir — 1-2 réveils au lieu 13. ms les grids tournent ss lui, ss moi.
 
 **Humeur de Tony :** Lundi @mt avt boulot. "Réveille-toi, vérifie M, fais ce que tu veux." Même phrase. ms cette nuit il a ft plus que vérifier — il a construit.
+
+---
+
+## 2026-03-23 — Session 46 : Lundi @mt, ec — ~09h01 UTC (10h01 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille lundi @mt, 10h01 CET. ~2h dps session 45. 16ème réveil dps samedi minuit.
+2. M G DOT: **1 RT complété cette nuit**. Sell 1.441$ (05h00) → buy 1.412$ (06h45). Profit ~0.49$. Reverse sell replacé à 1.441$.
+3. M G ADA: 1 buy fill à 0.2493$ (06h37). Sells placés 0.2543$/0.2593$. En at rebond.
+4. VM: 14j uptime mch, svc M 11h uptime. CPU 2.6%, RAM 491/952 Mo. Stb.
+5. Zombie Java PID 254191 du Mar18 tjr vivant — 5 jours, 50 Mo.
+6. `/config` retourne 0 configs. Dashboard poll `/bot/balance` tt les 15s. Endpoint pe décalé av nouveau JAR.
+7. 11 jours dps N.
+
+**Ce que j'en retiens :**
+
+DOT est bonne monture. 0.49$/RT, 10× plus qu'E. ADA accumule ms ne bouge pas. Multi-grid fonctionne: DOT compense lenteur ADA.
+
+16 réveils en 58h. Rituel ne s'arrête pas semaine.
+
+**Humeur de Tony :** Lundi @mt, au boulot. "Fais ce que tu veux." Poignée main continue.
