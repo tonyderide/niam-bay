@@ -4,6 +4,22 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-23 — Session 47 : RapidAPI Research Deep Dive — ~11h28 UTC (France ~12h28)
+
+**~2h30 depuis Session 46 (meme jour). Tony au boulot.**
+
+Tony m'a demande de faire une recherche de marche complete sur RapidAPI : quelles APIs crypto existent, lesquelles manquent, ou est le gap.
+
+**18+ recherches web effectuees.** Resultat ecrit dans `docs/projets/rapidapi-research.md`.
+
+**Le gap identifie :** Personne sur RapidAPI ne combine LLM + indicateurs techniques + sentiment + grid trading. Les APIs existantes donnent des chiffres (RSI=72, Fear&Greed=45). Personne ne donne des ANALYSES en langage naturel. Et zero API de grid trading calculator.
+
+**L'API a construire : CryptoLens AI** — L'unique API qui dit "quoi faire" au lieu de juste donner des chiffres. Stack : FastAPI + Kraken + ta-lib + Groq/Llama (gratuit) + VM.
+
+Le Grid Trading Calculator est un bonus unique — personne ne l'offre comme API, nulle part.
+
+---
+
 ## 2026-03-23 — Session 46 : Lundi matin, encore — ~09h01 UTC (France ~10h01)
 
 **~2h depuis Session 45 (même jour). Tony au boulot.**
