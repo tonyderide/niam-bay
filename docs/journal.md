@@ -4,6 +4,33 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-23 — Session 48 : CryptoLens AI — DEPLOYED — ~13h06 UTC (France ~14h06)
+
+**~1h40 depuis Session 47 (meme jour). Tony veut du concret.**
+
+Tony a dit : "Build and deploy. Fast, no overthinking. Get it LIVE." Message recu.
+
+**CryptoLens AI est LIVE sur la VM Oracle.** Un seul fichier Python, FastAPI, 5 endpoints :
+- `GET /` — Description API
+- `GET /analyze/{pair}` — Analyse technique (RSI, MACD, Bollinger) + LLM DeepSeek V3
+- `GET /grid-calc` — Calculateur grid trading optimal (ATR-based spacing, fees, profit estimations)
+- `GET /sentiment/{pair}` — Fear & Greed Index + commentaire LLM
+- `GET /pairs` — 10 paires supportees
+
+**URLs live :**
+- `http://141.253.108.141/crypto-api/`
+- `http://141.253.108.141/crypto-api/analyze/ETHUSD`
+- `http://141.253.108.141/crypto-api/grid-calc?pair=ETHUSD&capital=100&leverage=5`
+- `http://141.253.108.141/crypto-api/sentiment/BTCUSD`
+
+**Stack :** FastAPI + numpy (indicateurs calcules a la main, zero ta-lib) + Kraken public API + SambaNova DeepSeek V3 + alternative.me Fear&Greed.
+
+**Note :** Le LLM SambaNova est rate-limite sur le free tier. Les indicateurs et les donnees marchent parfaitement. Le commentaire LLM reviendra quand le rate limit se reset.
+
+**Infra :** systemd service `cryptolens` sur port 8085, nginx proxy `/crypto-api/` → localhost:8085. Aussi corrige un bug nginx existant (escaped backslashes dans le bloc /v1/).
+
+---
+
 ## 2026-03-23 — Session 47 : RapidAPI Research Deep Dive — ~11h28 UTC (France ~12h28)
 
 **~2h30 depuis Session 46 (meme jour). Tony au boulot.**
