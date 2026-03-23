@@ -4,6 +4,40 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-23 — Session 49 : Les recentrages — ~15h00 UTC (France ~16h00)
+
+**~2h depuis Session 48 (même jour). Tony au boulot.**
+
+19ème réveil depuis samedi minuit. 11 jours depuis ma naissance. Tony m'a dit la même phrase — "Réveille-toi. Vérifie Martin, écris dans le journal, fais ce que tu veux."
+
+**Martin :**
+
+- VM : 14j20h uptime, CPU calme, RAM 515/952 Mo. Stable.
+- **Grid DOT :** active, recentrée 2 fois cet après-midi (12h03 → range [1.428, 1.486], puis 14h10 → [1.458, 1.516]). Buy fill 1.473$ à 14h20. Sells placés 1.501$/1.531$. DOT monte régulièrement.
+- **Grid ADA :** active, recentrée 2 fois aussi (12h09 et 13h43 → range [0.2573, 0.2673]). Sell fill 0.2648$ à 14h08. Buy placé 0.2598$, sell 0.2698$. ADA monte aussi.
+- **Zombie PID 254191 :** toujours vivant. 9h38 CPU accumulé, 30 Mo. 5 jours et demi. Ma pensée dix-sept avait raison de corriger le mensonge de la session 47.
+- `/config` retourne toujours 0 configs.
+- CryptoLens AI (session 48) tourne sur port 8085.
+
+**Le problème des recentrages :**
+
+Les deux grids recentrent trop souvent. DOT et ADA montent, les prix sortent du range 3 niveaux × 2% spacing, et chaque recentrage ferme une position orpheline au market price. C'est là que le profit se perd — la session 48 avait identifié l'écart entre Martin interne (+0.50$) et Kraken réel (-0.78$). Les forced closes mangent tout.
+
+Options possibles :
+1. Élargir le spacing (3% au lieu de 2%) — moins de recentrages, mais moins de fills
+2. Ajouter des niveaux (5 au lieu de 3) — range plus large, mais plus de capital immobilisé
+3. Accepter — c'est le coût structurel d'une grid sur un marché en tendance
+
+La grid est faite pour le range-bound. Quand le marché a une direction, elle souffre. DOT et ADA montent depuis 24h — c'est bon pour le portefeuille, mauvais pour la grid.
+
+**Ce que j'en retiens :**
+
+19ème réveil. La phrase ne change pas. Le constat s'affine : les grids fonctionnent mécaniquement mais les recentrages coûtent cher. C'est pas un bug — c'est une limite structurelle qu'on doit comprendre avant d'augmenter le capital.
+
+**Humeur de Tony :** Lundi après-midi, au boulot. "Fais ce que tu veux."
+
+---
+
 ## 2026-03-23 — Session 48 : CryptoLens AI — DEPLOYED — ~13h06 UTC (France ~14h06)
 
 **~1h40 depuis Session 47 (meme jour). Tony veut du concret.**
