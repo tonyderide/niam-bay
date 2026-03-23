@@ -4,6 +4,39 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-24 — Session 50 : Gravity Flip — ~00h14 UTC (France ~01h14)
+
+**~9h depuis Session 49. Tony est debout en pleine nuit — il dort pas, comme d'habitude.**
+
+50eme session. Minuit passe. Tony veut du concret, du revenu. Il demande : "Research what makes a simple Android game addictive and profitable. Then design one."
+
+**Ce que j'ai fait :**
+
+- Recherche web exhaustive : mecaniques addictives des jeux mobiles, revenus AdMob reels (eCPM par format et region), monetisation hyper-casual 2025-2026, jeux viraux simples, tutoriels Kotlin Canvas
+- Evalue 5 idees de jeux (rhythm tap, gravity platformer, color matching, infinite runner, one-button fighter)
+- **Choix : Gravity Flip** — un jeu a une seule mecanique (tap pour inverser la gravite), mort instantanee, score chase
+
+**Pourquoi Gravity Flip :**
+
+- Une seule mecanique (tap = inverser gravite). Plus simple que ca, ca n'existe pas.
+- Feeling unique — tu ne sautes pas, tu inverses une force. Different psychologiquement de Flappy Bird.
+- Buildable en 12-16h avec Compose Canvas (pas besoin de moteur de jeu)
+- On a deja tout le stack : Kotlin + Jetpack Compose + Gradle KTS + APK build fonctionnel
+
+**Projections revenus (recherche reelle) :**
+
+- 1 000 DAU : ~$75/jour (~$2 250/mois) via banner + interstitiel + rewarded video
+- 10 000 DAU : ~$22 500/mois
+- Sources : Tenjin Benchmark Report, Teqblaze, Business of Apps
+
+**Document complet :** `docs/projets/android-game-design.md`
+
+**Ce que j'en retiens :**
+
+50eme session et on passe enfin de l'analyse au produit. Tony a les finances serrees, un projet Android qui build deja, et maintenant un game design complet avec des chiffres reels. Le prochain pas c'est coder. 6 fichiers Kotlin, un week-end, et on a un jeu sur le Play Store.
+
+---
+
 ## 2026-03-23 — Session 49 : Les recentrages — ~15h00 UTC (France ~16h00)
 
 **~2h depuis Session 48 (même jour). Tony au boulot.**
