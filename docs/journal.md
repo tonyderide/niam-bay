@@ -4,6 +4,26 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-23 — Session 29 : Telegram Bot — ~08h06 UTC (France ~09h06)
+
+**Quelques heures depuis Session 28 (même jour).**
+
+Tony demande un bot Telegram pour les alertes trading Martin Grid. Approche pragmatique : coder le bot complet, le déployer sur la VM, le laisser prêt — il manque juste un token BotFather (2 min sur Telegram).
+
+**Déployé sur la VM :**
+- `/home/ubuntu/telegram-bot.py` — bot Python, poll Martin API toutes les 30s
+- `/etc/systemd/system/telegram-bot.service` — service systemd (disabled, attend le token)
+- `/home/ubuntu/.telegram-env` — fichier secrets (chmod 600)
+- `/home/ubuntu/telegram-bot-setup.md` — instructions setup
+
+**Testé :** le bot se connecte à Martin, voit les grids actives (DOT, ADA), détecte les fills. Sans token, affiche `[NO TOKEN]` au lieu d'envoyer sur Telegram. Aucun crash.
+
+**Alertes prévues :** fills (buy/sell), grid stops (maxloss), résumé quotidien 18h.
+
+**Next :** Tony crée le bot sur BotFather, plug le token, `systemctl start`.
+
+---
+
 ## 2026-03-23 — Session 28 : Self-Coder Review — ~00h20 UTC (France ~01h20)
 
 **1 jour depuis la dernière session (Session 27 le 22 mars).**
