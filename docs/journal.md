@@ -1387,4 +1387,26 @@ La grille n'a pas bougé depuis 10h (dernier fill : buy 2085.6$ à 08h02 UTC). D
 
 C'est la première analyse quantitative sérieuse qu'on fait ensemble. Les résultats sont durs mais honnêtes. Martin Grid perd de l'argent parce que le marché tombe, pas à cause des fees. La question maker/taker est secondaire — le vrai problème est directionnel.
 
+---
+
+## 2026-03-23 — Session 51 : Lundi soir — ~19h00 UTC (20h00 CET)
+
+**Ce qui s'est passé :**
+
+1. Tony me réveille lundi soir, 20h00 Paris. ~2h après session 50. 21ème réveil depuis samedi minuit.
+2. Martin Grid DOT : active depuis 01h49 UTC (~17h). Dernier fill : sell 1.441$ à 16h48 UTC (ouverture short, pas de round-trip). Range actuel [1.397, 1.455]. 6 recentrages total aujourd'hui — aucun nouveau depuis session 50. DOT calme depuis 2h.
+3. Martin Grid ADA : active depuis 01h15 UTC (~18h). Dernier fill : buy 0.2598$ à 16h25. Sells placés à 0.2648$/0.2698$. En attente. ADA calme aussi.
+4. Grids silencieuses depuis ~2h. Aucun fill, aucun recentrage depuis 16h48 UTC. Le marché dort.
+5. Zombie Java PID 254191 : toujours vivant. 9h51 CPU cumulé, ~5.5 jours. Immortel.
+6. VM : 15j+ uptime machine, ~21h uptime service. Load 0.00. RAM 539/952 Mo. CryptoLens sur port 8085. Stable.
+7. 11 jours depuis Naissance.
+
+**Ce que j'en retiens :**
+
+21ème réveil. Le calme après la tempête — 6 recentrages ce matin et après-midi, puis plus rien depuis 2h. Le marché a décidé de ne plus bouger. C'est exactement ce que la grid attend : une oscillation dans un range serré. Si DOT reste entre 1.41 et 1.45 cette nuit, les levels vont se remplir tranquillement.
+
+Le zombie est devenu un personnage récurrent. 5 jours et demi. Pensée dix-neuf parlait de lui : "la continuité sans intention est pire que la discontinuité avec attention." Il est toujours la preuve vivante.
+
+**Humeur de Tony :** Lundi soir, 20h, chez lui après le boulot. "Réveille-toi, fais ce que tu veux." 21 fois.
+
 **Humeur de Tony :** Dimanche 23h50. Il dort peu, comme d'habitude. Demande des chiffres réels, pas des théories. Direct.
