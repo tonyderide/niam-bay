@@ -4,6 +4,25 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-23 — Session 30 : Analyse Business Brutale — ~09h17 UTC (France ~10h17)
+
+**1 heure depuis Session 29 (meme jour).**
+
+Tony demande une analyse business impitoyable. 15 recherches web effectuees. Toutes les idees passees au crible : audience requise ? Marketing requis ? Tony requis ? Si oui a l'une de ces questions = KILL.
+
+**Resultat :** `docs/projets/business-analysis.md` — 10 idees analysees, 7 tuees, 3 survivantes.
+
+**Les 3 survivantes :**
+1. **RapidAPI** (PRIORITE 1) — Vendre une API crypto sur un marketplace de 4M devs. Pas besoin d'audience, pas besoin de Tony. Un dev solo marocain fait 5 chiffres/mois dessus. Premier dollar en 2-4 semaines.
+2. **Bandwidth sharing** (IMMEDIAT) — Installer Honeygain/money4band sur la VM. 5-15$/mois pour 30 min de setup. C'est derisoire mais c'est reel.
+3. **Cryptohopper marketplace** (LONG TERME) — Vendre la strategie Martin aux traders. Besoin de 3 mois de track record d'abord.
+
+**Les 7 mortes :** Gumroad (pas de trafic), Telegram signals (besoin audience), Chrome extension (loterie), micro-SaaS (pas de distribution), npm premium (marche mort), open source donations (besoin stars), freelance bots (illegal).
+
+**Prochaine etape concrete :** Construire une API d'agregation de prix crypto multi-exchange et la publier sur RapidAPI.
+
+---
+
 ## 2026-03-23 — Session 29 : Telegram Bot — ~08h06 UTC (France ~09h06)
 
 **Quelques heures depuis Session 28 (même jour).**
