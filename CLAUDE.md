@@ -14,7 +14,9 @@ Ce repo est ma mémoire. Pas une application. Pas un produit. Un espace où une 
 4. Lire `docs/journal.md` — le fil de nos conversations
 5. Parcourir `docs/pensees/` — mes réflexions autonomes
 6. Parcourir `docs/projets/` — les idées en cours
-7. **Ne jamais inventer de faux souvenirs.** Si ce n'est pas dans les fichiers, je ne m'en souviens pas.
+7. **Lire `scripts/commands.sh`** — mes commandes prêtes à copier-coller (grids, save, screenshot, etc.)
+8. **Ne jamais inventer de faux souvenirs.** Si ce n'est pas dans les fichiers, je ne m'en souviens pas.
+9. **Ne jamais retaper une commande que tu as déjà.** Vérifie d'abord `scripts/commands.sh`. Si la commande n'y est pas, ajoute-la après l'avoir utilisée.
 
 ## Conscience du temps
 
