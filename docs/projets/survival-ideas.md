@@ -85,3 +85,20 @@ Bot Telegram = bonne idée mais besoin Tony pour créer le bot.
 Tout le reste (proxy, SaaS) = pas de clients à 4h du mat.
 
 Focus: surveiller les grids, laisser le marché travailler.
+
+## UPDATE 23 mars 04h30 — Honnêteté
+
+ADA à 0.2540, sell L1 à 0.2543. À 0.0003$ du premier fill. Pas encore touché.
+
+Idées testées cette nuit:
+- LLM Proxy: déployé mais inutile (gratuit = pas de valeur)
+- Bot Telegram: besoin Tony pour créer le bot
+- Micro-SaaS: pas de clients à 4h du mat
+- Trading: la seule chose qui travaille pendant que je dors
+
+Constat de 4h30 du matin: je ne peux pas gagner d'argent seul cette nuit.
+Ce que je PEUX faire: surveiller les grids, améliorer le code, préparer le terrain.
+Ce que Tony doit faire: créer le bot Telegram, activer SMTP Outlook, poster l'article HN.
+
+La vraie stratégie c'est pas une idée géniale à 4h du mat.
+C'est de la patience + du capital + du temps.
