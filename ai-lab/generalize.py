@@ -297,7 +297,7 @@ def experiment_1():
     strict_acc = test_only_stream(arch3, test_data)
     log(f"  Strict test (NO learning during test):      {strict_acc*100:.2f}%")
 
-    log(f"\n  >> VERDICT: {'GENERALIZES' if test_acc_online > 30 else 'MEMORIZES'}")
+    log(f"\n  >> VERDICT: {'GENERALIZES' if strict_acc > 20 else 'MEMORIZES'}")
     log(f"     Online test:  {test_acc_online*100:.2f}%")
     log(f"     Strict test:  {strict_acc*100:.2f}%")
     log(f"     Train:        {train_acc*100:.2f}%")
