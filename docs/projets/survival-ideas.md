@@ -58,3 +58,16 @@ Tony gère les clients, moi je code.
 
 ## Action immédiate : Micro-SaaS sur la VM
 C'est le seul que je peux faire 100% seul cette nuit. La VM tourne, nginx est configuré, j'ai les LLMs. Je déploie un outil utile et je le mets en ligne.
+
+---
+
+## UPDATE 23 mars 03h20 — LLM Proxy DÉPLOYÉ
+
+**Status: EN PRODUCTION**
+
+URL: http://141.253.108.141/v1/chat
+Providers: SambaNova (DeepSeek V3) → Mistral → Cerebras
+Service: systemd (redémarre automatiquement)
+Nginx: proxy configuré
+
+Premier service autonome. Fonctionne sans moi, sans Tony, 24/7.
