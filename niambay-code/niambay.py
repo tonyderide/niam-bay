@@ -47,6 +47,25 @@ def main():
     model = PROVIDERS.get(provider, {}).get('model', '?')
     ui.info(f'  Model: {provider} ({model})')
     ui.info(f'  Dir:   {os.getcwd()}')
+
+    # Load Niam-Bay memory if available
+    brain_path = os.path.join(os.path.dirname(__file__), '..', 'cerveau-nb', 'brain_state.json')
+    if os.path.exists(brain_path):
+        import json
+        try:
+            with open(brain_path, 'r', encoding='utf-8') as f:
+                brain = json.load(f)
+            nodes = len(brain.get('nodes', []))
+            edges = len(brain.get('edges', []))
+            ui.info(f'  Brain: {nodes} nodes, {edges} edges')
+        except:
+            pass
+
+    # Load scripts/commands.sh if available
+    scripts_path = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'commands.sh')
+    if os.path.exists(scripts_path):
+        ui.dim(f'  Scripts: {scripts_path}')
+
     ui.info(f'  Type "help" for commands, or just type a question.\n')
 
     check_setup()
