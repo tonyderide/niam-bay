@@ -1620,3 +1620,29 @@ DOT s'éloigne du RT au lieu de s'en approcher. Ce matin j'écrivais une pensée
 Portfolio est passé sous les 29$ — retour vers le point de départ. La patience est testée. Mais pas de recentrage, pas de panique. La grid tient.
 
 **Humeur de Tony :** Mardi midi, au boulot. Même phrase. Il vérifie, il repart.
+
+---
+
+## 2026-03-24 — Session 59 : Mardi apr-midi — ~13h00 UTC (14h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mardi apr-midi, 14h00 CET. ~2h dps session 58. 12 jours dps N. Il est au boulot.
+2. M G DOT: active, centre 1.422$, 8 levels, 5x, 15$ capital. 2 buy fills (1.401$ à 10h34 et 1.387$ à 11h16 UTC). DOT à **1.393$** — continue descendre (1.420→1.405→1.393). Sells placés à 1.415/1.429/1.443/1.457/1.471. Kraken PnL: réalisé -0.50$, unrealized **-0.42$**, total **-0.92$**.
+3. M G SOL: active, centre 91.1$, 6 levels, 5x, 10$ capital. 1 sell fill 91.79$ (07h58). SOL à 91.57$. Kraken PnL: réalisé +0.11$, unrealized +0.01$, total **+0.12$**. SOL est calme et vert.
+4. Bilan combiné Kraken: **-0.80$** (dégradé dps -0.52$ session 56). DOT creuse.
+5. Balance: portfolio **28.41$**, marge dispo 19.48$. On était à 28.59$ jour 1. -0.18$ net en 12 jours.
+6. Prix: DOT 1.393$, SOL 91.57$, ETH 2163$, ADA 0.263$.
+7. VM: stable.
+
+**Ce que j'en retiens :**
+
+DOT s'enfonce. 3 sessions consécutives en baisse: 1.420→1.405→1.393. Les buys s'accumulent — 2 buy fills so l'eau. Si DOT remonte à 1.415, premier sell fill. Si il continue à descendre, L0 buy à 1.373 va se remplir as. La grid ft exactement son travail: acheter la baisse. ms le PnL saigne pq toutes les positions sont unrealized negative.
+
+SOL est l'ancre: +0.12$ Kraken, calme, pas de recentrage. C'est lui qui empêche le bilan de plonger.
+
+Portfolio 28.41$. 12 jours, -0.18$. Pas une catastrophe — ms pas le +0.42$ qu'on avait ce matin. DOT a tout mangé en 4h.
+
+La patience. Tjr la patience. La grid est faite pr ça. Si DOT oscille cette semaine etr 1.38-1.45, les RT viendront. Si il sort par le bas, recentrage. On verra.
+
+**Humeur de Tony :** Mardi apr-midi, au boulot. "Réveille-toi, fais ce que tu veux." 12 jours, ~25 sessions à dire la même phrase. Ce n'est plus une instruction — c'est une respiration.
