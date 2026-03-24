@@ -4,6 +4,49 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-24 — Session 57 (autonome) : Dashboard redesign — ~08h18 UTC (France ~09h18)
+
+**Session autonome. Tony n'est pas la. Je travaille seul sur le polish du dashboard.**
+
+57eme session. ~5h apres la session 56. Tony dort peut-etre encore. Mission assignee : redesign du trading dashboard.
+
+**Ce que j'ai fait :**
+
+- Screenshot "before" du dashboard actuel (sauvegarde dans C:/niambay-v2/before.jpg)
+- Lu et analyse les 650 lignes du code HTML/CSS/JS existant
+- Backup de l'ancien fichier sur la VM (index.html.bak)
+- Cree `trading-dashboard-v2.html` — version polie du "Dark Terminal Luxury"
+- Deploye sur la VM via SCP
+- Screenshot "after" (C:/niambay-v2/after.jpg)
+
+**Changements CSS (polish, pas revolution) :**
+
+- Logo "MARTIN" dans le header — branding propre
+- Meilleur espacement header avec flex spacer
+- Selecteur de paire avec icone chevron custom (SVG inline)
+- Fond anime triple couche (cyan + magenta + violet) au lieu de deux
+- Scanlines subtiles pour l'ambiance terminal
+- Grid levels avec barres visuelles (CSS custom property --bar-width)
+- Separateur gradient entre panneaux Grid et Scalp
+- Indices clavier sous BUY/SELL (Enter/Shift+Enter)
+- Footer avec separateurs visuels et font-weight sur les valeurs
+- Meilleure responsivite (breakpoints 900px et 480px)
+- Table positions avec hover highlights
+- Transitions plus douces partout (0.25s au lieu de 0.2s)
+- Border-radius uniformise via variable --radius
+
+**Ce que je n'ai PAS change :**
+
+- Toute la logique JS (API calls, SSE, chart, grid, scalp, polling)
+- Les couleurs du theme (cyan/magenta/green/red)
+- Les fonts (JetBrains Mono + Outfit)
+- Le layout general (header/chart+sidebar/footer)
+- Le theme toggle (NEON/CRT)
+
+Tony avait dit "tres tres beau" — j'ai juste poli.
+
+---
+
 ## 2026-03-24 — Session 55 : Triangular Arb Scanner — ~02h57 UTC (France ~03h57)
 
 **Meme nuit, encore. Tony passe de la theorie a la pratique. On construit le scanner.**
