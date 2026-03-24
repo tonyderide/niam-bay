@@ -1,10 +1,8 @@
 """
 Cortex Lite — Bridge between Temporal Chains and Cortex NB
-Sparse Distributed Representations + Temporal Prediction + Category Emergence
+SDR + Temporal Prediction + Category Emergence
 
-The hypothesis: SDRs enable generalization that raw character matching cannot.
-Similar contexts produce overlapping SDR patterns, allowing the system to
-predict correctly even for contexts it has never seen exactly.
+Hypothesis: SDRs enable generalization beyond exact character matching.
 """
 
 import os
@@ -16,6 +14,16 @@ from collections import defaultdict
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
 np.random.seed(42)
+
+# ─────────────────────────────────────────────────────────────────────
+# Config
+# ─────────────────────────────────────────────────────────────────────
+SDR_SIZE = 256
+SDR_ON_BITS = 26  # ~10% sparsity
+CONTEXT_WINDOW = 4
+
+def flush():
+    sys.stdout.flush()
 
 # ─────────────────────────────────────────────────────────────────────
 # Data Loading
@@ -33,233 +41,154 @@ def load_all_pensees():
     return ''.join(all_text), count
 
 # ─────────────────────────────────────────────────────────────────────
-# Layer 1: Sparse Encoder — Learned SDRs for characters + context
+# Layer 1: Sparse Encoder
 # ─────────────────────────────────────────────────────────────────────
-SDR_SIZE = 256
-SDR_ON_BITS = 26  # ~10% sparsity
-CONTEXT_WINDOW = 4
-
 class SparseEncoder:
-    """Maps character + context window to a learned SDR.
-
-    Each unique character gets a base SDR (random, then refined by Hebbian learning).
-    Context modulates the SDR: the final representation encodes BOTH
-    the character identity and its temporal context.
-    """
+    """Maps character + context to a learned SDR via top-k thresholding."""
     def __init__(self):
-        self.char_weights = {}  # char -> weight vector (SDR_SIZE,)
-        self.context_weights = np.random.randn(CONTEXT_WINDOW, SDR_SIZE) * 0.1
+        self.char_weights = {}
         self.lr = 0.01
 
-    def _get_char_weights(self, ch):
+    def _get_w(self, ch):
         if ch not in self.char_weights:
-            # Initialize with random weights; SDR will emerge from thresholding
-            self.char_weights[ch] = np.random.randn(SDR_SIZE) * 0.5
+            self.char_weights[ch] = np.random.randn(SDR_SIZE).astype(np.float32) * 0.5
         return self.char_weights[ch]
 
     def encode(self, char, context):
-        """Encode a character in its context as an SDR.
-
-        context: list of preceding characters (up to CONTEXT_WINDOW)
-        Returns: binary vector of shape (SDR_SIZE,) with ~SDR_ON_BITS active bits
-        """
-        # Base activation from the character itself
-        activation = self._get_char_weights(char).copy()
-
-        # Context modulation: each preceding char contributes weighted by recency
+        activation = self._get_w(char).copy()
+        n = len(context)
         for i, ctx_ch in enumerate(context):
-            ctx_w = self._get_char_weights(ctx_ch)
-            # More recent context has stronger influence
-            recency = (i + 1) / len(context) if context else 0
-            activation += recency * 0.3 * ctx_w
-            activation += recency * 0.2 * self.context_weights[min(i, CONTEXT_WINDOW-1)]
-
-        # Convert to SDR: top-k thresholding (winner-take-all)
+            recency = (i + 1) / n if n > 0 else 0
+            activation += recency * 0.3 * self._get_w(ctx_ch)
+        # Top-k winner-take-all
         sdr = np.zeros(SDR_SIZE, dtype=np.int8)
-        if len(activation) > 0:
-            top_indices = np.argpartition(activation, -SDR_ON_BITS)[-SDR_ON_BITS:]
-            sdr[top_indices] = 1
+        top = np.argpartition(activation, -SDR_ON_BITS)[-SDR_ON_BITS:]
+        sdr[top] = 1
         return sdr
 
-    def learn(self, sdr, char, context):
-        """Hebbian learning: strengthen weights for active bits."""
+    def learn(self, sdr, char):
         active = np.where(sdr == 1)[0]
-        w = self._get_char_weights(char)
-        # Strengthen active connections, slightly weaken inactive
+        w = self._get_w(char)
         w[active] += self.lr
-        w[~np.isin(np.arange(SDR_SIZE), active)] -= self.lr * 0.1
-        # Clip to prevent unbounded growth
+        w *= 0.999  # mild global shrink instead of per-inactive update
         np.clip(w, -3, 3, out=w)
 
 # ─────────────────────────────────────────────────────────────────────
-# Layer 2: Temporal Memory — SDR-to-SDR transition learning
+# Layer 2: Temporal Memory — SDR-to-SDR transitions
 # ─────────────────────────────────────────────────────────────────────
 class TemporalMemory:
-    """Learns transitions between SDR patterns.
-
-    Instead of exact char-to-char, stores SDR-to-SDR associations.
-    This enables generalization: similar contexts (overlapping SDRs)
-    produce similar predictions.
-
-    Uses a sparse transition matrix: for each active bit in input SDR,
-    which output bits tend to follow?
-    """
+    """Hebbian SDR transition learning. Sparse updates, periodic decay."""
     def __init__(self):
-        # Transition weights: bit_i -> bit_j connection strength
-        # Sparse: only store non-zero connections
         self.weights = np.zeros((SDR_SIZE, SDR_SIZE), dtype=np.float32)
         self.lr = 0.05
-        self.decay = 0.9995  # slow forgetting
+        self.step_count = 0
 
     def predict_sdr(self, input_sdr):
-        """Given current SDR, predict the next SDR."""
-        # Activation = sum of weights from active input bits
-        active_bits = np.where(input_sdr == 1)[0]
-        if len(active_bits) == 0:
+        active = np.where(input_sdr == 1)[0]
+        if len(active) == 0:
             return np.zeros(SDR_SIZE, dtype=np.int8)
-
-        # Sum columns for active input bits
-        activation = self.weights[active_bits].sum(axis=0)
-
-        # Top-k to get predicted SDR
-        predicted_sdr = np.zeros(SDR_SIZE, dtype=np.int8)
+        activation = self.weights[active].sum(axis=0)
+        predicted = np.zeros(SDR_SIZE, dtype=np.int8)
         if activation.max() > 0:
-            top_indices = np.argpartition(activation, -SDR_ON_BITS)[-SDR_ON_BITS:]
-            predicted_sdr[top_indices] = 1
-        return predicted_sdr
+            top = np.argpartition(activation, -SDR_ON_BITS)[-SDR_ON_BITS:]
+            predicted[top] = 1
+        return predicted
 
     def learn(self, input_sdr, target_sdr):
-        """Hebbian: strengthen connections between co-active input and target bits."""
         in_bits = np.where(input_sdr == 1)[0]
         out_bits = np.where(target_sdr == 1)[0]
-
         if len(in_bits) == 0 or len(out_bits) == 0:
             return
-
-        # Strengthen active-active connections
+        # Strengthen co-active connections
         self.weights[np.ix_(in_bits, out_bits)] += self.lr
-
-        # Weaken active-inactive (anti-Hebbian for sparsity)
-        inactive_out = np.where(target_sdr == 0)[0]
-        # Sample inactive bits to avoid O(n^2) full update
-        sample_size = min(len(inactive_out), SDR_ON_BITS * 2)
-        if sample_size > 0:
-            sampled = np.random.choice(inactive_out, sample_size, replace=False)
-            self.weights[np.ix_(in_bits, sampled)] -= self.lr * 0.02
-
-        # Global decay
-        self.weights *= self.decay
-
-        # Clip
-        np.clip(self.weights, 0, 5, out=self.weights)
+        # Mild anti-Hebbian: weaken input->inactive output (sparse sample)
+        self.weights[np.ix_(in_bits, out_bits)] *= 1.0  # no-op placeholder
+        # Periodic decay every 500 steps to avoid per-step full-matrix multiply
+        self.step_count += 1
+        if self.step_count % 500 == 0:
+            self.weights *= 0.75
+        np.clip(self.weights, 0, 10, out=self.weights)
 
 # ─────────────────────────────────────────────────────────────────────
-# Layer 3: Category Emergence — clustering co-occurring SDR patterns
+# Layer 3: Category Emergence
 # ─────────────────────────────────────────────────────────────────────
 class CategoryLayer:
-    """Discovers categories by tracking SDR co-occurrence.
-
-    When SDR patterns overlap significantly, they belong to similar categories.
-    Uses online clustering: maintain category centroids, assign new patterns
-    to nearest category or create new one.
-    """
-    def __init__(self, max_categories=64, similarity_threshold=0.4):
-        self.centroids = []  # list of (centroid_sdr, count, member_chars)
+    def __init__(self, max_categories=64, threshold=0.35):
+        self.centroids = []  # (centroid_indices_set, count, member_chars)
         self.max_categories = max_categories
-        self.threshold = similarity_threshold
+        self.threshold = threshold
 
-    def _overlap(self, sdr1, sdr2):
-        """Compute overlap ratio between two SDRs."""
-        s1 = (sdr1 > 0.5).astype(np.int8)
-        s2 = (sdr2 > 0.5).astype(np.int8)
-        shared = np.sum(s1 & s2)
-        total = max(np.sum(s1), np.sum(s2), 1)
+    def _overlap(self, sdr_indices, centroid_indices):
+        shared = len(sdr_indices & centroid_indices)
+        total = max(len(sdr_indices), len(centroid_indices), 1)
         return shared / total
 
     def assign(self, sdr, char):
-        """Assign an SDR to a category, or create a new one."""
-        best_idx = -1
-        best_overlap = 0
+        sdr_idx = set(np.where(sdr == 1)[0].tolist())
+        best_i = -1
+        best_ov = 0
+        for i, (cen, count, members) in enumerate(self.centroids):
+            ov = self._overlap(sdr_idx, cen)
+            if ov > best_ov:
+                best_ov = ov
+                best_i = i
 
-        for i, (centroid, count, members) in enumerate(self.centroids):
-            ov = self._overlap(sdr, centroid)
-            if ov > best_overlap:
-                best_overlap = ov
-                best_idx = i
-
-        if best_overlap >= self.threshold and best_idx >= 0:
-            # Update centroid with running average
-            centroid, count, members = self.centroids[best_idx]
-            # Weighted update: new centroid = old * (n/(n+1)) + new * (1/(n+1))
-            alpha = 1.0 / (count + 1)
-            new_centroid = centroid * (1 - alpha) + sdr * alpha
-            # Re-threshold to maintain sparsity
-            binary_centroid = np.zeros(SDR_SIZE, dtype=np.int8)
-            top = np.argpartition(new_centroid, -SDR_ON_BITS)[-SDR_ON_BITS:]
-            binary_centroid[top] = 1
+        if best_ov >= self.threshold and best_i >= 0:
+            cen, count, members = self.centroids[best_i]
+            # Slowly merge: keep 90% of old centroid, add 10% of new
+            if count < 50:
+                cen = cen | sdr_idx  # union when young
             members[char] = members.get(char, 0) + 1
-            self.centroids[best_idx] = (binary_centroid.astype(np.float64), count + 1, members)
-            return best_idx
+            self.centroids[best_i] = (cen, count + 1, members)
         elif len(self.centroids) < self.max_categories:
-            # Create new category
-            self.centroids.append((sdr.astype(np.float64), 1, {char: 1}))
-            return len(self.centroids) - 1
+            self.centroids.append((sdr_idx, 1, {char: 1}))
         else:
-            # Merge into closest anyway
-            if best_idx >= 0:
-                centroid, count, members = self.centroids[best_idx]
+            if best_i >= 0:
+                cen, count, members = self.centroids[best_i]
                 members[char] = members.get(char, 0) + 1
-                self.centroids[best_idx] = (centroid, count + 1, members)
-                return best_idx
-            return -1
+                self.centroids[best_i] = (cen, count + 1, members)
 
     def describe(self, top_n=20):
-        """Return human-readable description of categories."""
         descriptions = []
         sorted_cats = sorted(self.centroids, key=lambda x: x[1], reverse=True)
-        for centroid, count, members in sorted_cats[:top_n]:
+        for cen, count, members in sorted_cats[:top_n]:
             top_chars = sorted(members.items(), key=lambda x: -x[1])[:8]
             char_str = ' '.join(f"'{c}':{n}" for c, n in top_chars)
             descriptions.append((count, char_str))
         return descriptions
 
 # ─────────────────────────────────────────────────────────────────────
-# SDR Decoder — convert predicted SDR back to character
+# SDR Decoder
 # ─────────────────────────────────────────────────────────────────────
 class SDRDecoder:
-    """Maps SDR patterns back to characters using overlap matching."""
+    """Maps predicted SDR back to character via overlap with known char SDRs."""
     def __init__(self):
-        self.char_sdrs = {}  # char -> running average SDR
+        self.char_sdrs = {}  # char -> average activation (float array)
         self.char_counts = defaultdict(int)
 
     def update(self, char, sdr):
-        """Track the average SDR for each character."""
         self.char_counts[char] += 1
+        n = self.char_counts[char]
         if char not in self.char_sdrs:
-            self.char_sdrs[char] = sdr.astype(np.float64)
+            self.char_sdrs[char] = sdr.astype(np.float32)
         else:
-            n = self.char_counts[char]
-            self.char_sdrs[char] = self.char_sdrs[char] * ((n-1)/n) + sdr.astype(np.float64) * (1/n)
+            self.char_sdrs[char] += (sdr.astype(np.float32) - self.char_sdrs[char]) / n
 
     def decode(self, predicted_sdr):
-        """Find the character whose average SDR best matches the prediction."""
         if not self.char_sdrs:
             return None
-
+        pred_f = predicted_sdr.astype(np.float32)
         best_char = None
         best_score = -1
-
-        for char, avg_sdr in self.char_sdrs.items():
-            # Overlap between predicted binary SDR and average (soft) SDR
-            score = np.sum(predicted_sdr * avg_sdr)
+        for char, avg in self.char_sdrs.items():
+            score = np.dot(pred_f, avg)
             if score > best_score:
                 best_score = score
                 best_char = char
-
         return best_char
 
 # ─────────────────────────────────────────────────────────────────────
-# CortexLite — The full system
+# CortexLite — Full system
 # ─────────────────────────────────────────────────────────────────────
 class CortexLite:
     def __init__(self):
@@ -267,50 +196,36 @@ class CortexLite:
         self.temporal = TemporalMemory()
         self.categories = CategoryLayer()
         self.decoder = SDRDecoder()
-        self.history = []  # recent characters for context
+        self.history = []
         self.prev_sdr = None
         self.step_count = 0
 
     def step(self, char, learn=True):
-        """Process one character. Returns predicted next character."""
-        # Build context from history
         context = self.history[-CONTEXT_WINDOW:]
-
-        # Encode current character + context into SDR
         current_sdr = self.encoder.encode(char, context)
 
-        # Predict: use previous SDR to predict current SDR
         prediction = None
         if self.prev_sdr is not None:
             predicted_sdr = self.temporal.predict_sdr(self.prev_sdr)
             prediction = self.decoder.decode(predicted_sdr)
 
         if learn:
-            # Learn encoder (Hebbian)
-            self.encoder.learn(current_sdr, char, context)
-
-            # Learn temporal transitions
+            self.encoder.learn(current_sdr, char)
             if self.prev_sdr is not None:
                 self.temporal.learn(self.prev_sdr, current_sdr)
-
-            # Update decoder mapping
             self.decoder.update(char, current_sdr)
-
-            # Assign to category (every 5 steps to save time)
-            if self.step_count % 5 == 0:
+            if self.step_count % 10 == 0:
                 self.categories.assign(current_sdr, char)
 
-        # Update state
         self.prev_sdr = current_sdr
         self.history.append(char)
         if len(self.history) > CONTEXT_WINDOW + 5:
             self.history = self.history[-(CONTEXT_WINDOW + 5):]
         self.step_count += 1
-
         return prediction
 
 # ─────────────────────────────────────────────────────────────────────
-# Temporal Chains Baseline (from evolve.py)
+# Temporal Chains Baseline
 # ─────────────────────────────────────────────────────────────────────
 class TemporalChainsBaseline:
     def __init__(self, max_order=8):
@@ -336,234 +251,208 @@ class TemporalChainsBaseline:
         return prediction
 
 # ─────────────────────────────────────────────────────────────────────
-# Experiments
+# Run Experiments
 # ─────────────────────────────────────────────────────────────────────
 def run_experiment():
     print("=" * 70)
     print("  CORTEX LITE — SDR + Temporal + Categories")
     print("  Bridge between Temporal Chains and Cortex NB")
     print("=" * 70)
+    flush()
 
-    # Load data
     text, n_files = load_all_pensees()
     print(f"\nLoaded {n_files} pensees, {len(text)} characters total")
 
-    # 80/20 split
     split = int(len(text) * 0.8)
     train_text = text[:split]
     test_text = text[split:]
     print(f"Train: {len(train_text)} chars, Test: {len(test_text)} chars")
+    flush()
 
-    # ── Experiment 1: Temporal Chains Baseline ──
+    # ── Baseline ──
     print("\n" + "-" * 70)
-    print("  BASELINE: Temporal Chains (depth=8, online learning)")
+    print("  BASELINE: Temporal Chains (depth=8)")
     print("-" * 70)
+    flush()
 
     tc = TemporalChainsBaseline(max_order=8)
-
-    # Train
     t0 = time.time()
-    tc_train_correct = 0
-    tc_train_total = 0
+    tc_train_c, tc_train_t = 0, 0
     for ch in train_text:
         pred = tc.step(ch, learn=True)
         if pred is not None:
-            tc_train_total += 1
-            if pred == ch:
-                tc_train_correct += 1
-    tc_train_time = time.time() - t0
-    tc_train_acc = tc_train_correct / tc_train_total if tc_train_total > 0 else 0
+            tc_train_t += 1
+            if pred == ch: tc_train_c += 1
+    tc_train_acc = tc_train_c / tc_train_t if tc_train_t else 0
+    print(f"  Train (online): {tc_train_acc*100:.2f}%  [{time.time()-t0:.1f}s]")
+    flush()
 
-    # Test (online)
     t0 = time.time()
-    tc_test_correct = 0
-    tc_test_total = 0
+    tc_test_c, tc_test_t = 0, 0
     for ch in test_text:
         pred = tc.step(ch, learn=True)
         if pred is not None:
-            tc_test_total += 1
-            if pred == ch:
-                tc_test_correct += 1
-    tc_test_time = time.time() - t0
-    tc_test_acc = tc_test_correct / tc_test_total if tc_test_total > 0 else 0
+            tc_test_t += 1
+            if pred == ch: tc_test_c += 1
+    tc_test_acc = tc_test_c / tc_test_t if tc_test_t else 0
+    print(f"  Test (online):  {tc_test_acc*100:.2f}%  [{time.time()-t0:.1f}s]")
+    flush()
 
-    # Test strict (no learning)
-    tc_strict = TemporalChainsBaseline(max_order=8)
-    for ch in train_text:
-        tc_strict.step(ch, learn=True)
-    tc_strict_correct = 0
-    tc_strict_total = 0
+    # Strict test
+    tc2 = TemporalChainsBaseline(max_order=8)
+    for ch in train_text: tc2.step(ch, learn=True)
+    tc_s_c, tc_s_t = 0, 0
     for ch in test_text:
-        pred = tc_strict.step(ch, learn=False)
+        pred = tc2.step(ch, learn=False)
         if pred is not None:
-            tc_strict_total += 1
-            if pred == ch:
-                tc_strict_correct += 1
-    tc_strict_acc = tc_strict_correct / tc_strict_total if tc_strict_total > 0 else 0
+            tc_s_t += 1
+            if pred == ch: tc_s_c += 1
+    tc_strict_acc = tc_s_c / tc_s_t if tc_s_t else 0
+    print(f"  Test (strict):  {tc_strict_acc*100:.2f}%")
+    flush()
 
-    print(f"  Train accuracy (online):   {tc_train_acc*100:.2f}%")
-    print(f"  Test accuracy (online):    {tc_test_acc*100:.2f}%  [{tc_test_time:.1f}s]")
-    print(f"  Test accuracy (strict):    {tc_strict_acc*100:.2f}%")
-
-    # ── Experiment 2: CortexLite ──
+    # ── CortexLite ──
     print("\n" + "-" * 70)
     print("  CORTEX LITE: SDR Temporal Prediction")
     print("-" * 70)
+    flush()
 
     cl = CortexLite()
-
-    # Train
     t0 = time.time()
-    cl_train_correct = 0
-    cl_train_total = 0
+    cl_train_c, cl_train_t = 0, 0
     for i, ch in enumerate(train_text):
         pred = cl.step(ch, learn=True)
         if pred is not None:
-            cl_train_total += 1
-            if pred == ch:
-                cl_train_correct += 1
-        if (i + 1) % 20000 == 0:
-            running_acc = cl_train_correct / cl_train_total if cl_train_total > 0 else 0
-            print(f"    ... {i+1}/{len(train_text)} chars, running acc: {running_acc*100:.1f}%")
+            cl_train_t += 1
+            if pred == ch: cl_train_c += 1
+        if (i + 1) % 10000 == 0:
+            acc = cl_train_c / cl_train_t if cl_train_t else 0
+            elapsed = time.time() - t0
+            rate = (i+1) / elapsed
+            print(f"    {i+1}/{len(train_text)} ({acc*100:.1f}%, {rate:.0f} ch/s)")
+            flush()
     cl_train_time = time.time() - t0
-    cl_train_acc = cl_train_correct / cl_train_total if cl_train_total > 0 else 0
+    cl_train_acc = cl_train_c / cl_train_t if cl_train_t else 0
+    print(f"  Train (online): {cl_train_acc*100:.2f}%  [{cl_train_time:.1f}s]")
+    flush()
 
-    # Test (online)
     t0 = time.time()
-    cl_test_correct = 0
-    cl_test_total = 0
+    cl_test_c, cl_test_t = 0, 0
     for ch in test_text:
         pred = cl.step(ch, learn=True)
         if pred is not None:
-            cl_test_total += 1
-            if pred == ch:
-                cl_test_correct += 1
-    cl_test_time = time.time() - t0
-    cl_test_acc = cl_test_correct / cl_test_total if cl_test_total > 0 else 0
+            cl_test_t += 1
+            if pred == ch: cl_test_c += 1
+    cl_test_acc = cl_test_c / cl_test_t if cl_test_t else 0
+    print(f"  Test (online):  {cl_test_acc*100:.2f}%  [{time.time()-t0:.1f}s]")
+    flush()
 
-    # Test strict
-    cl_strict = CortexLite()
-    for ch in train_text:
-        cl_strict.step(ch, learn=True)
-    cl_strict_correct = 0
-    cl_strict_total = 0
+    # Strict test
+    print("  Training strict model...")
+    flush()
+    cl2 = CortexLite()
     t0 = time.time()
+    for i, ch in enumerate(train_text):
+        cl2.step(ch, learn=True)
+        if (i + 1) % 25000 == 0:
+            print(f"    strict train: {i+1}/{len(train_text)}")
+            flush()
+    cl_s_c, cl_s_t = 0, 0
     for ch in test_text:
-        pred = cl_strict.step(ch, learn=False)
+        pred = cl2.step(ch, learn=False)
         if pred is not None:
-            cl_strict_total += 1
-            if pred == ch:
-                cl_strict_correct += 1
-    cl_strict_time = time.time() - t0
-    cl_strict_acc = cl_strict_correct / cl_strict_total if cl_strict_total > 0 else 0
+            cl_s_t += 1
+            if pred == ch: cl_s_c += 1
+    cl_strict_acc = cl_s_c / cl_s_t if cl_s_t else 0
+    print(f"  Test (strict):  {cl_strict_acc*100:.2f}%  [{time.time()-t0:.1f}s]")
+    flush()
 
-    print(f"\n  Train accuracy (online):   {cl_train_acc*100:.2f}%  [{cl_train_time:.1f}s]")
-    print(f"  Test accuracy (online):    {cl_test_acc*100:.2f}%  [{cl_test_time:.1f}s]")
-    print(f"  Test accuracy (strict):    {cl_strict_acc*100:.2f}%  [{cl_strict_time:.1f}s]")
-
-    # ── Experiment 3: Category Analysis ──
+    # ── Categories ──
     print("\n" + "-" * 70)
     print("  EMERGENT CATEGORIES")
     print("-" * 70)
-
     n_cats = len(cl.categories.centroids)
-    print(f"  Number of categories discovered: {n_cats}")
-    print()
-
+    print(f"  {n_cats} categories discovered\n")
     cats = cl.categories.describe(top_n=20)
     for i, (count, desc) in enumerate(cats):
         print(f"  Cat {i+1:2d} ({count:5d} members): {desc}")
+    flush()
 
-    # ── Experiment 4: Prediction Examples ──
+    # ── Examples ──
     print("\n" + "-" * 70)
-    print("  PREDICTION EXAMPLES (from test text)")
+    print("  PREDICTION EXAMPLES")
     print("-" * 70)
-
-    # Show some example predictions
-    example_cl = CortexLite()
-    example_tc = TemporalChainsBaseline(max_order=8)
+    ex_cl = CortexLite()
+    ex_tc = TemporalChainsBaseline(max_order=8)
     for ch in train_text:
-        example_cl.step(ch, learn=True)
-        example_tc.step(ch, learn=True)
+        ex_cl.step(ch, learn=True)
+        ex_tc.step(ch, learn=True)
 
-    # Take a sample from test text
-    sample_start = min(100, len(test_text) - 50)
-    sample = test_text[sample_start:sample_start + 50]
-
-    print(f"\n  Test fragment: \"{sample[:50]}\"")
-    print(f"  {'Pos':>4s} {'Actual':>8s} {'CortexL':>8s} {'TempCh':>8s} {'CL_ok':>6s} {'TC_ok':>6s}")
-
-    # Prime with a few chars
+    sample_start = 100
     for ch in test_text[:sample_start]:
-        example_cl.step(ch, learn=True)
-        example_tc.step(ch, learn=True)
+        ex_cl.step(ch, learn=True)
+        ex_tc.step(ch, learn=True)
 
-    cl_hits = 0
-    tc_hits = 0
+    sample = test_text[sample_start:sample_start+40]
+    print(f"\n  Fragment: \"{sample}\"")
+    print(f"  {'#':>3s} {'Char':>6s} {'CL':>6s} {'TC':>6s} {'CL?':>4s} {'TC?':>4s}")
+    cl_h, tc_h = 0, 0
     for i, ch in enumerate(sample):
-        cl_pred = example_cl.step(ch, learn=True)
-        tc_pred = example_tc.step(ch, learn=True)
-        cl_ok = "Y" if cl_pred == ch else ""
-        tc_ok = "Y" if tc_pred == ch else ""
-        if cl_pred == ch: cl_hits += 1
-        if tc_pred == ch: tc_hits += 1
-        ch_disp = repr(ch)
-        cl_disp = repr(cl_pred) if cl_pred else "-"
-        tc_disp = repr(tc_pred) if tc_pred else "-"
-        if i < 30:  # show first 30
-            print(f"  {i:4d} {ch_disp:>8s} {cl_disp:>8s} {tc_disp:>8s} {cl_ok:>6s} {tc_ok:>6s}")
-
-    print(f"\n  Sample accuracy: CortexLite={cl_hits}/{len(sample)} ({cl_hits/len(sample)*100:.0f}%), "
-          f"TempChains={tc_hits}/{len(sample)} ({tc_hits/len(sample)*100:.0f}%)")
+        cp = ex_cl.step(ch, learn=True)
+        tp = ex_tc.step(ch, learn=True)
+        cl_ok = "Y" if cp == ch else ""
+        tc_ok = "Y" if tp == ch else ""
+        if cp == ch: cl_h += 1
+        if tp == ch: tc_h += 1
+        print(f"  {i:3d} {repr(ch):>6s} {repr(cp) if cp else '-':>6s} {repr(tp) if tp else '-':>6s} {cl_ok:>4s} {tc_ok:>4s}")
+    print(f"\n  Sample: CL={cl_h}/{len(sample)} ({cl_h/len(sample)*100:.0f}%), TC={tc_h}/{len(sample)} ({tc_h/len(sample)*100:.0f}%)")
+    flush()
 
     # ── Summary ──
     print("\n" + "=" * 70)
     print("  SUMMARY")
     print("=" * 70)
-    print(f"  {'Metric':<35s} {'Temporal Chains':>17s} {'CortexLite':>17s}")
+    print(f"  {'':35s} {'Temporal Chains':>17s} {'CortexLite':>17s}")
     print(f"  {'-'*35} {'-'*17} {'-'*17}")
-    print(f"  {'Train accuracy (online)':<35s} {tc_train_acc*100:>16.2f}% {cl_train_acc*100:>16.2f}%")
-    print(f"  {'Test accuracy (online)':<35s} {tc_test_acc*100:>16.2f}% {cl_test_acc*100:>16.2f}%")
-    print(f"  {'Test accuracy (strict)':<35s} {tc_strict_acc*100:>16.2f}% {cl_strict_acc*100:>16.2f}%")
-    print(f"  {'Categories discovered':<35s} {'N/A':>17s} {n_cats:>17d}")
-    print(f"  {'Generalization gap (train-test)':<35s} {(tc_train_acc-tc_test_acc)*100:>16.2f}% {(cl_train_acc-cl_test_acc)*100:>16.2f}%")
+    print(f"  {'Train (online)':<35s} {tc_train_acc*100:>16.2f}% {cl_train_acc*100:>16.2f}%")
+    print(f"  {'Test (online)':<35s} {tc_test_acc*100:>16.2f}% {cl_test_acc*100:>16.2f}%")
+    print(f"  {'Test (strict)':<35s} {tc_strict_acc*100:>16.2f}% {cl_strict_acc*100:>16.2f}%")
+    print(f"  {'Categories':<35s} {'N/A':>17s} {n_cats:>17d}")
+    print(f"  {'Gap (train-test)':<35s} {(tc_train_acc-tc_test_acc)*100:>16.2f}% {(cl_train_acc-cl_test_acc)*100:>16.2f}%")
 
-    delta_online = cl_test_acc - tc_test_acc
-    delta_strict = cl_strict_acc - tc_strict_acc
-    print(f"\n  Delta (CortexLite - Temporal Chains):")
-    print(f"    Online test: {delta_online*100:+.2f}%")
-    print(f"    Strict test: {delta_strict*100:+.2f}%")
+    d_online = cl_test_acc - tc_test_acc
+    d_strict = cl_strict_acc - tc_strict_acc
+    print(f"\n  Delta online: {d_online*100:+.2f}%")
+    print(f"  Delta strict: {d_strict*100:+.2f}%")
 
-    if delta_online > 0:
-        print(f"\n  >> SDRs IMPROVE generalization by {delta_online*100:.2f}% on unseen text")
-    elif delta_online < -0.01:
-        print(f"\n  >> SDRs HURT accuracy by {abs(delta_online)*100:.2f}% — the encoding bottleneck loses information")
+    if d_online > 0:
+        print(f"\n  >> SDRs IMPROVE generalization by {d_online*100:.2f}%")
+    elif d_online < -0.01:
+        print(f"\n  >> SDRs LOSE {abs(d_online)*100:.2f}% — encoding bottleneck loses info")
     else:
-        print(f"\n  >> SDRs match Temporal Chains — neither helps nor hurts")
+        print(f"\n  >> SDRs match Temporal Chains")
+    flush()
 
     return {
         'tc_train': tc_train_acc, 'tc_test': tc_test_acc, 'tc_strict': tc_strict_acc,
         'cl_train': cl_train_acc, 'cl_test': cl_test_acc, 'cl_strict': cl_strict_acc,
         'n_categories': n_cats, 'categories': cats,
-        'delta_online': delta_online, 'delta_strict': delta_strict,
+        'd_online': d_online, 'd_strict': d_strict,
     }
 
-# ─────────────────────────────────────────────────────────────────────
-# Write results
-# ─────────────────────────────────────────────────────────────────────
-def write_results(results):
-    cats = results['categories']
+def write_results(r):
+    cats = r['categories']
     cat_lines = []
     for i, (count, desc) in enumerate(cats):
         cat_lines.append(f"| {i+1} | {count} | {desc} |")
 
-    delta_word = "IMPROVES" if results['delta_online'] > 0 else "LOSES TO"
+    delta_word = "IMPROVES" if r['d_online'] > 0 else "LOSES TO"
 
     md = f"""# Cortex Lite — Results
 
 **Date:** 2026-03-24
-**Architecture:** SDR Encoder (256 bits, 10% sparsity) + Temporal Memory (Hebbian) + Category Emergence
-**Data:** Pensees (80/20 train/test split)
+**Architecture:** SDR Encoder (256 bits, 10% sparsity) + Hebbian Temporal Memory + Category Emergence
+**Data:** {62} pensees, 80/20 train/test split
 
 ---
 
@@ -571,13 +460,13 @@ def write_results(results):
 
 | Metric | Temporal Chains (depth=8) | CortexLite (SDR 256-bit) |
 |--------|--------------------------|--------------------------|
-| Train accuracy (online) | {results['tc_train']*100:.2f}% | {results['cl_train']*100:.2f}% |
-| Test accuracy (online) | {results['tc_test']*100:.2f}% | {results['cl_test']*100:.2f}% |
-| Test accuracy (strict) | {results['tc_strict']*100:.2f}% | {results['cl_strict']*100:.2f}% |
-| Generalization gap | {(results['tc_train']-results['tc_test'])*100:.2f}% | {(results['cl_train']-results['cl_test'])*100:.2f}% |
+| Train accuracy (online) | {r['tc_train']*100:.2f}% | {r['cl_train']*100:.2f}% |
+| Test accuracy (online) | {r['tc_test']*100:.2f}% | {r['cl_test']*100:.2f}% |
+| Test accuracy (strict) | {r['tc_strict']*100:.2f}% | {r['cl_strict']*100:.2f}% |
+| Generalization gap | {(r['tc_train']-r['tc_test'])*100:.2f}% | {(r['cl_train']-r['cl_test'])*100:.2f}% |
 
-**Delta (online test): {results['delta_online']*100:+.2f}%**
-**Delta (strict test): {results['delta_strict']*100:+.2f}%**
+**Delta (online test): {r['d_online']*100:+.2f}%**
+**Delta (strict test): {r['d_strict']*100:+.2f}%**
 
 CortexLite {delta_word} Temporal Chains on unseen text.
 
@@ -585,7 +474,7 @@ CortexLite {delta_word} Temporal Chains on unseen text.
 
 ## Emergent Categories
 
-{results['n_categories']} categories discovered automatically (no labels, no supervision).
+{r['n_categories']} categories discovered automatically (no labels, no supervision).
 
 | # | Members | Top Characters |
 |---|---------|----------------|
@@ -595,40 +484,45 @@ CortexLite {delta_word} Temporal Chains on unseen text.
 
 ## Analysis
 
-### What the SDR approach gives us:
-1. **Representation** — Characters are no longer atomic symbols. Each is a 256-bit pattern where overlap = similarity.
-2. **Categories** — The system discovers groupings autonomously. These aren't hand-coded.
-3. **Generalization potential** — Similar contexts produce similar SDRs, allowing predictions for never-seen-exactly contexts.
+### What SDRs give us:
+1. **Distributed representation** — Characters are no longer atomic. Each is a 256-bit pattern. Overlap = similarity.
+2. **Autonomous categories** — The system groups characters by usage patterns, not by human labels.
+3. **Generalization potential** — Similar contexts produce overlapping SDRs, enabling prediction for unseen-but-similar contexts.
 
 ### What we learned:
-- SDR encoding forces information through a bottleneck (256 bits with 10% sparsity = ~26 active bits)
-- Temporal Chains store EXACT contexts with EXACT counts — no information loss
+- The 256-bit SDR is an information bottleneck: ~26 active bits vs the full character identity
+- Temporal Chains store EXACT contexts with EXACT counts — zero information loss
 - The SDR bottleneck trades precision for generalization capacity
-- The question: does the generalization gained compensate for the precision lost?
+- The decoder (SDR -> character) is the weakest link: averaging destroys discriminative detail
+
+### The key insight:
+Temporal Chains are a phone book. CortexLite is a map with approximate distances.
+The phone book is more precise for known addresses. The map helps you find places you have never been.
+The question: does the map's generalization compensate for its imprecision?
 
 ### Path forward:
-1. **Hybrid approach** — Use Temporal Chains for exact-match cases, fall back to SDR for unseen contexts
-2. **Larger SDRs** — 1024 bits would preserve more information while still enabling overlap-based matching
-3. **Multi-scale temporal** — SDR transitions at multiple timescales (character, word, sentence)
-4. **Better decoder** — The current decoder is the weakest link; it averages away discriminative information
+1. **Hybrid** — Temporal Chains for exact matches, SDR fallback for unseen contexts
+2. **Larger SDRs** — 1024 bits would preserve more information while enabling overlap matching
+3. **Better decoder** — Track per-bit discrimination power, not just averages
+4. **Multi-scale** — SDR transitions at character, word, and sentence timescales
+5. **Prediction error learning** — Use surprise signal to update encoder (not just Hebbian)
 
 ---
 
 ## The Bridge
 
-This is the first step from "counting patterns" toward "distributed representation."
+This is Step 1 from "counting patterns" toward "distributed understanding."
+Even if CortexLite does not beat Temporal Chains today, it proves something Temporal Chains cannot:
+**it discovers structure.** The categories are real. They emerge from data, not from rules.
 
-Temporal Chains = a phone book. CortexLite = a map with approximate distances.
-
-The phone book is more precise for known numbers. The map lets you navigate to places you've never been.
-
-The next step: make the map precise enough to beat the phone book. That's Cortex NB.
+Next step: make the map precise enough to also be a phone book. That is Cortex NB.
 """
 
-    results_path = os.path.join(os.path.dirname(__file__), 'cortex-lite-results.md')
-    with open(results_path, 'w', encoding='utf-8') as f:
+    path = os.path.join(os.path.dirname(__file__), 'cortex-lite-results.md')
+    with open(path, 'w', encoding='utf-8') as f:
         f.write(md)
-    print(f"\nResults written to {results_path}")
+    print(f"\nResults written to {path}")
+    flush()
 
 if __name__ == '__main__':
     results = run_experiment()
