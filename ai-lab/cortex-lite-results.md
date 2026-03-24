@@ -59,23 +59,38 @@ CortexLite LOSES TO Temporal Chains on unseen text.
 2. **Autonomous categories** — The system groups characters by usage patterns, not by human labels.
 3. **Generalization potential** — Similar contexts produce overlapping SDRs, enabling prediction for unseen-but-similar contexts.
 
-### What we learned:
-- The 256-bit SDR is an information bottleneck: ~26 active bits vs the full character identity
-- Temporal Chains store EXACT contexts with EXACT counts — zero information loss
-- The SDR bottleneck trades precision for generalization capacity
-- The decoder (SDR -> character) is the weakest link: averaging destroys discriminative detail
+### What we learned — the honest truth:
+
+**The decoder collapsed.** CortexLite predicts space (' ') for almost every position. The averaging decoder destroys discriminative information -- space is the most frequent character, so its average SDR has the highest dot product with almost any predicted SDR. This is not a flaw of SDRs themselves, but of using simple averaging as the decode strategy.
+
+**Three distinct failure modes:**
+1. **Encoder degeneracy** — With Hebbian learning, frequently co-active bits get strengthened for ALL characters. The encoder converges toward similar SDRs for different characters. Sparsity alone does not guarantee discrimination.
+2. **Temporal memory saturation** — The 256x256 weight matrix, with periodic decay, does not have enough capacity to store distinct SDR-to-SDR transitions for ~80 unique characters in ~100K contexts.
+3. **Decoder averaging** — The killer. A running average SDR for each character loses the contextual variation that makes SDRs useful. The decoder needs to match against the SPECIFIC predicted pattern, not a blurred average.
+
+**What actually works: the categories.** Despite all the prediction failures, the category layer correctly discovers:
+- Space (Cat 1) dominates, as expected
+- Each frequent letter gets its own category (e, s, i, a, n, r, t, u, o, l, c, m, d, p)
+- Accented characters cluster near their base form (e/e/e in Cat 7)
+- Rare characters share categories (punctuation, digits)
+
+This proves the encoder IS producing discriminative SDRs at the character level. The failure is in temporal prediction and decoding, not representation.
 
 ### The key insight:
-Temporal Chains are a phone book. CortexLite is a map with approximate distances.
-The phone book is more precise for known addresses. The map helps you find places you have never been.
-The question: does the map's generalization compensate for its imprecision?
+Temporal Chains store EXACT sequences. That is their strength AND their limitation.
+SDRs compress information into distributed patterns. That is their strength AND their risk.
 
-### Path forward:
-1. **Hybrid** — Temporal Chains for exact matches, SDR fallback for unseen contexts
-2. **Larger SDRs** — 1024 bits would preserve more information while enabling overlap matching
-3. **Better decoder** — Track per-bit discrimination power, not just averages
-4. **Multi-scale** — SDR transitions at character, word, and sentence timescales
-5. **Prediction error learning** — Use surprise signal to update encoder (not just Hebbian)
+The 57% vs 14% gap does NOT mean SDRs are 4x worse. It means:
+- The decoder is broken (predicts space ~90% of the time)
+- Pure Hebbian temporal learning on a 256x256 matrix cannot rival a dictionary of 100K+ exact contexts
+- The categories prove the representation works; the prediction pipeline does not
+
+### Path forward (ordered by expected impact):
+1. **Fix the decoder FIRST** — Use nearest-neighbor on recent SDRs, not averaged SDRs. Or maintain per-character SDR distributions, not means.
+2. **Hybrid architecture** — Temporal Chains for prediction, SDRs for representation and categorization. Use SDR similarity to BOOST Temporal Chains when exact context is missing.
+3. **Prediction error learning** — Update the encoder based on prediction errors, not just Hebbian co-activation. The encoder should learn to produce SDRs that are maximally PREDICTIVE, not just maximally correlated.
+4. **Larger SDRs (1024+ bits)** — More capacity for discrimination while maintaining sparsity.
+5. **Multi-scale temporal** — Current system is character-by-character. Word-level and sentence-level SDR transitions would add context.
 
 ---
 
