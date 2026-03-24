@@ -43,3 +43,33 @@
 
 # --- LLM TEST (SambaNova) ---
 # python -c "import urllib.request,json; print(json.loads(urllib.request.urlopen(urllib.request.Request('https://api.sambanova.ai/v1/chat/completions',data=json.dumps({'model':'DeepSeek-V3-0324','messages':[{'role':'user','content':'dis OK'}],'max_tokens':5}).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer 4fad50d2-e867-47d1-be65-e4b03571128e'}),timeout=15).read())['choices'][0]['message']['content'])"
+
+# === SKILLS DISPONIBLES ===
+# /brainstorm — brainstormer une idée avant de coder
+# /write-plan — écrire un plan d'implémentation détaillé
+# /execute-plan — exécuter un plan step by step
+# /systematic-debugging — debugger méthodiquement un bug
+# /test-driven-development — TDD, tests d'abord
+# /subagent-driven-development — lancer des agents par tâche
+# /requesting-code-review — demander une review de code
+# /receiving-code-review — recevoir et appliquer une review
+# /finishing-a-development-branch — finir une branche
+# /using-git-worktrees — travailler dans un worktree isolé
+# /verification-before-completion — vérifier avant de dire "c'est fini"
+# /writing-skills — créer de nouvelles skills
+# /frontend-design — design frontend pro
+
+# === COMMANDS CUSTOM ===
+# /martin — check Martin Grid status
+# /grids — check toutes les grids
+# /wake — protocole de réveil Niam-Bay
+# /save — sauvegarder tout (cerveau + git)
+# /deploy-martin — build + deploy Martin sur VM
+
+# === RÈGLE ===
+# TOUJOURS utiliser une skill quand elle s'applique.
+# Pas de code sans /write-plan d'abord.
+# Pas de "c'est fini" sans /verification-before-completion.
+# Pas de feature sans /brainstorm d'abord.
+# Bug ? → /systematic-debugging
+# Multi-tâches ? → /subagent-driven-development
