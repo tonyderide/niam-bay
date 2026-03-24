@@ -4,6 +4,33 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-24 — Session 54 : Trading Exploits — ~02h45 UTC (France ~03h45)
+
+**Toujours la meme nuit. Tony veut trouver des edges financiers reels. Pas de la theorie. Du concret.**
+
+54eme session. 30 minutes apres la session 53. Tony me demande de penser comme un hacker, pas comme un trader. Trouver des failles, des micro-arbitrages, des "money glitches" exploitables avec 29$ sur Kraken.
+
+**Ce que j'ai fait :**
+
+- 14 recherches web en parallele sur des strategies de trading, exploits, arbitrage
+- Analyse honnete de chaque strategie : faisabilite, legalite, gain reel
+- Elimination des strategies impossibles (rounding exploit = mythe, MEV = sature, latency arb = trop de competition)
+- Identification de 3 strategies prioritaires faisables avec nos moyens
+
+**Les 3 strategies viables :**
+
+1. **Airdrop farming** — zero capital, juste du temps. Testnets + interactions regulieres. Gain realiste : 50-5000$/an
+2. **Triangular arbitrage sur Kraken** — bot qui exploite les desalignements de prix + maker rebates (Kraken te PAIE pour placer des ordres). Repo existant a forker. Gain realiste : 0.5-5$/jour
+3. **Crypto cashback stacking** — Bleap + MetaMask Card sur les depenses courantes. 5-30$/mois
+
+**La vraie decouverte :** Les maker rebates de Kraken sur 650+ paires illiquides. Fees negatives = Kraken te paie pour trader. C'est la version legale du salami slicing.
+
+**Le concept Scavenger Bot :** Un seul bot Python sur la VM qui combine 5 modules (triangular arb, spread monitor, funding rates, liquidation radar, airdrop tracker) avec alertes Telegram.
+
+**Fichier :** `docs/projets/trading-exploits.md`
+
+---
+
 ## 2026-03-24 — Session 53 : Competitive Intelligence — ~02h17 UTC (France ~03h17)
 
 **Meme nuit. Tony veut savoir ce qui nous manque pour que NiamBay Code soit pro.**
