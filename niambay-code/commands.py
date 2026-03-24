@@ -262,7 +262,9 @@ def cmd_ask(args, ctx):
         spinner = ui.Spinner('Thinking' if round_num == 0 else 'Processing')
         spinner.start()
         try:
-            response = llm.chat(messages)
+            # Use non-streaming for tool rounds (faster, no SSE hang)
+            use_stream = (round_num == 0)
+            response = llm.chat(messages, stream=use_stream)
         except RuntimeError as e:
             spinner.stop()
             ui.error(str(e))

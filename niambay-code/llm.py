@@ -41,7 +41,7 @@ def _call_openai_compat(url, api_key, model, messages, max_tokens=4096, stream=T
     req = urllib.request.Request(url, data=data, headers=headers, method='POST')
 
     try:
-        resp = urllib.request.urlopen(req, context=_ctx, timeout=120)
+        resp = urllib.request.urlopen(req, context=_ctx, timeout=30)
     except urllib.error.HTTPError as e:
         body = e.read().decode('utf-8', errors='replace')
         raise RuntimeError(f'LLM API error {e.code}: {body}')
