@@ -262,6 +262,47 @@ def test_imports():
         test(f'config imports: {e}', False)
 
 
+def test_os_detection():
+    """Test OS detection and cross-platform support."""
+    print('\n== OS Detection ==')
+    import platform
+    import commands
+
+    # Test 1: OS_NAME is set correctly
+    expected_os = platform.system()
+    test('OS_NAME matches platform.system()', commands.OS_NAME == expected_os)
+    test('OS_NAME is a known value', commands.OS_NAME in ('Windows', 'Linux', 'Darwin'))
+
+    # Test 2: SYSTEM_PROMPT contains detected OS
+    test('SYSTEM_PROMPT contains OS name', commands.OS_NAME in commands.SYSTEM_PROMPT)
+
+    # Test 3: SYSTEM_PROMPT does NOT contain hardcoded "Windows" if on Linux (or vice versa)
+    if commands.OS_NAME == 'Linux':
+        test('no hardcoded Windows in prompt on Linux',
+             'commandes Windows' not in commands.SYSTEM_PROMPT)
+    elif commands.OS_NAME == 'Windows':
+        test('no hardcoded Linux in prompt on Windows',
+             'commandes Linux' not in commands.SYSTEM_PROMPT)
+
+    # Test 4: ANSI support detection
+    import ui
+    test('_ANSI_SUPPORTED is bool', isinstance(ui._ANSI_SUPPORTED, bool))
+    test('_ansi returns string', isinstance(ui._ansi('\033[0m'), str))
+    # If ANSI is supported, codes should be non-empty; if not, empty
+    if ui._ANSI_SUPPORTED:
+        test('ANSI codes non-empty when supported', ui.RESET != '')
+    else:
+        test('ANSI codes empty when not supported', ui.RESET == '')
+
+    # Test 5: os.path.join works for cross-platform paths
+    import config
+    test('CONFIG_DIR uses os.path.join',
+         os.sep in config.CONFIG_DIR or '/' in config.CONFIG_DIR)
+
+    # Test 6: _OS_COMMANDS_HINT is set for current OS
+    test('_OS_COMMANDS_HINT is non-empty', len(commands._OS_COMMANDS_HINT) > 0)
+
+
 def test_tool_parsing():
     """Test tool call parsing from LLM responses."""
     print('\n== Tool Parsing ==')
@@ -357,6 +398,7 @@ if __name__ == '__main__':
     print('=' * 40)
 
     test_imports()
+    test_os_detection()
     test_autocontext()
     test_undo()
     test_project_scan()

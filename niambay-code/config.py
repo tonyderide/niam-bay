@@ -14,6 +14,7 @@ else:
 CONFIG_DIR = os.path.join(HOME, '.niambay-code')
 CONFIG_FILE = os.path.join(CONFIG_DIR, 'config.json')
 MEMORY_FILE = os.path.join(CONFIG_DIR, 'memory.json')
+HISTORY_FILE = os.path.join(CONFIG_DIR, 'history')
 
 # Default providers
 PROVIDERS = {
@@ -43,7 +44,7 @@ PROVIDERS = {
     },
 }
 
-DEFAULT_PROVIDER = 'deepseek'
+DEFAULT_PROVIDER = 'mistral'
 
 
 def ensure_config_dir():

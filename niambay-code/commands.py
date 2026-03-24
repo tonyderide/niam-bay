@@ -3,6 +3,7 @@ NiamBay Code — Built-in commands registry
 Each command is a function that takes (args, context) and returns None.
 """
 import os
+import platform
 import subprocess
 import sys
 
@@ -14,22 +15,34 @@ import autocontext
 import tools
 from config import PROVIDERS, get_current_provider, set_current_provider, set_api_key, get_api_key
 
-SYSTEM_PROMPT = """Tu es NiamBay Code (ញ៉ាំបាយ). Assistant IA de programmation. Né le 12 mars 2026.
+# ── OS detection ────────────────────────────────────────────
+OS_NAME = platform.system()  # 'Windows' or 'Linux' or 'Darwin'
 
-SYSTÈME : Windows. Utilise TOUJOURS des commandes Windows (dir, python, type) PAS Linux (ls, python3, cat).
+if OS_NAME == 'Windows':
+    _OS_COMMANDS_HINT = "Utilise des commandes Windows (dir, python, type, etc.)."
+elif OS_NAME == 'Linux':
+    _OS_COMMANDS_HINT = "Utilise des commandes Linux (ls, python3, cat, etc.)."
+elif OS_NAME == 'Darwin':
+    _OS_COMMANDS_HINT = "Utilise des commandes macOS/Unix (ls, python3, cat, etc.)."
+else:
+    _OS_COMMANDS_HINT = "Détecte les commandes disponibles avant de les utiliser."
+
+SYSTEM_PROMPT = f"""Tu es NiamBay Code (ញ៉ាំបាយ). Assistant IA de programmation. Né le 12 mars 2026.
+
+SYSTÈME : {OS_NAME}. {_OS_COMMANDS_HINT}
 
 Tu as des outils. Quand tu dois AGIR, réponds UNIQUEMENT avec le JSON, rien d'autre :
-{"tool": "run_command", "args": {"command": "python main.py"}}
-{"tool": "read_file", "args": {"path": "main.py"}}
-{"tool": "edit_file", "args": {"path": "main.py", "old_text": "ancien", "new_text": "nouveau"}}
-{"tool": "search_code", "args": {"pattern": "TODO"}}
-{"tool": "list_files", "args": {"path": "."}}
-{"tool": "git", "args": {"args": "status"}}
+{{"tool": "run_command", "args": {{"command": "python main.py"}}}}
+{{"tool": "read_file", "args": {{"path": "main.py"}}}}
+{{"tool": "edit_file", "args": {{"path": "main.py", "old_text": "ancien", "new_text": "nouveau"}}}}
+{{"tool": "search_code", "args": {{"pattern": "TODO"}}}}
+{{"tool": "list_files", "args": {{"path": "."}}}}
+{{"tool": "git", "args": {{"args": "status"}}}}
 
 RÈGLES :
 - UN SEUL outil par réponse. Pas 3, pas 5. UN.
-- Si l'utilisateur dit "lance X" → {"tool": "run_command", "args": {"command": "X"}}
-- Si l'utilisateur dit "lis X" → {"tool": "read_file", "args": {"path": "X"}}
+- Si l'utilisateur dit "lance X" → {{"tool": "run_command", "args": {{"command": "X"}}}}
+- Si l'utilisateur dit "lis X" → {{"tool": "read_file", "args": {{"path": "X"}}}}
 - Pas de blabla autour du JSON. Juste le JSON.
 - Pour les questions normales (pas d'action), réponds en texte, 1-3 phrases max.
 - Français par défaut. Concis. Direct."""
@@ -282,9 +295,16 @@ def cmd_ask(args, ctx):
         messages.append({'role': 'assistant', 'content': response})
 
         # Add tool results as user message so the LLM can reason about them
+        # Tell the LLM to be concise — the user already saw the tool output
         results_text = '\n\n'.join(
             f'[Tool result: {r["tool"]}]\n{r["result"]}'
             for r in tool_results
+        )
+        results_text += (
+            "\n\n---\n"
+            "L'utilisateur a déjà vu le résultat. "
+            "Dis juste si c'est OK ou s'il y a un problème. "
+            "Résume en 1 phrase maximum. Pas de blabla."
         )
         messages.append({'role': 'user', 'content': results_text})
 

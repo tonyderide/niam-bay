@@ -9,42 +9,69 @@ import threading
 import time
 import re
 
-# Enable ANSI and UTF-8 on Windows 10+
+# -- ANSI support detection ---------------------------------------------
+_ANSI_SUPPORTED = True
+
 if platform.system() == 'Windows':
+    # Try to enable ANSI on Windows 10+ (build 10586+)
     try:
         import ctypes
         kernel32 = ctypes.windll.kernel32
-        kernel32.SetConsoleMode(kernel32.GetStdHandle(-11), 7)
+        # GetStdHandle(-11) = STD_OUTPUT_HANDLE
+        handle = kernel32.GetStdHandle(-11)
+        # Get current mode
+        mode = ctypes.c_ulong()
+        kernel32.GetConsoleMode(handle, ctypes.byref(mode))
+        # ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004
+        if not kernel32.SetConsoleMode(handle, mode.value | 0x0004):
+            _ANSI_SUPPORTED = False
+    except Exception:
+        _ANSI_SUPPORTED = False
+
+    # Force UTF-8 output
+    try:
+        if sys.stdout.encoding != 'utf-8':
+            sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+        if sys.stderr.encoding != 'utf-8':
+            sys.stderr.reconfigure(encoding='utf-8', errors='replace')
     except Exception:
         pass
-    # Force UTF-8 output
-    if sys.stdout.encoding != 'utf-8':
-        sys.stdout.reconfigure(encoding='utf-8', errors='replace')
-    if sys.stderr.encoding != 'utf-8':
-        sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+else:
+    # Linux/macOS: ANSI is supported if stdout is a terminal
+    _ANSI_SUPPORTED = hasattr(sys.stdout, 'isatty') and sys.stdout.isatty()
+
+# Also disable colors if NO_COLOR env var is set (https://no-color.org/)
+if os.environ.get('NO_COLOR') is not None:
+    _ANSI_SUPPORTED = False
+
+
+def _ansi(code):
+    """Return ANSI escape code if supported, empty string otherwise."""
+    return code if _ANSI_SUPPORTED else ''
+
 
 # -- ANSI codes --------------------------------------------------------
-RESET   = '\033[0m'
-BOLD    = '\033[1m'
-DIM     = '\033[2m'
-ITALIC  = '\033[3m'
-UNDER   = '\033[4m'
+RESET   = _ansi('\033[0m')
+BOLD    = _ansi('\033[1m')
+DIM     = _ansi('\033[2m')
+ITALIC  = _ansi('\033[3m')
+UNDER   = _ansi('\033[4m')
 
-RED     = '\033[31m'
-GREEN   = '\033[32m'
-YELLOW  = '\033[33m'
-BLUE    = '\033[34m'
-MAGENTA = '\033[35m'
-CYAN    = '\033[36m'
-WHITE   = '\033[37m'
+RED     = _ansi('\033[31m')
+GREEN   = _ansi('\033[32m')
+YELLOW  = _ansi('\033[33m')
+BLUE    = _ansi('\033[34m')
+MAGENTA = _ansi('\033[35m')
+CYAN    = _ansi('\033[36m')
+WHITE   = _ansi('\033[37m')
 
-BG_RED    = '\033[41m'
-BG_GREEN  = '\033[42m'
-BG_YELLOW = '\033[43m'
-BG_BLUE   = '\033[44m'
+BG_RED    = _ansi('\033[41m')
+BG_GREEN  = _ansi('\033[42m')
+BG_YELLOW = _ansi('\033[43m')
+BG_BLUE   = _ansi('\033[44m')
 
 # Bright variants
-BR_BLACK  = '\033[90m'  # bright black = gray
+BR_BLACK  = _ansi('\033[90m')  # bright black = gray
 
 
 def color(text, *codes):

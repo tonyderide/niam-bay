@@ -4,11 +4,17 @@ Supports: SambaNova (DeepSeek), Mistral, Cerebras, Ollama
 Uses only stdlib (urllib) — no pip install needed.
 """
 import json
+import time
 import urllib.request
 import urllib.error
 import ssl
 import sys
 from config import PROVIDERS, get_api_key, get_current_provider
+
+# Cooldown tracker: provider_name -> timestamp when cooldown expires
+# After a 429, don't retry that provider for COOLDOWN_SECONDS
+COOLDOWN_SECONDS = 60
+_provider_cooldowns = {}
 
 # Skip SSL verification for some providers that cause issues
 _ctx = ssl.create_default_context()
@@ -71,10 +77,24 @@ def _call_openai_compat(url, api_key, model, messages, max_tokens=4096, stream=T
     return ''.join(full_text)
 
 
+def _is_on_cooldown(name):
+    """Check if a provider is on cooldown after a 429."""
+    expires = _provider_cooldowns.get(name, 0)
+    if time.time() < expires:
+        return True
+    return False
+
+
+def _set_cooldown(name):
+    """Put a provider on cooldown for COOLDOWN_SECONDS."""
+    _provider_cooldowns[name] = time.time() + COOLDOWN_SECONDS
+
+
 def chat(messages, provider_name=None, stream=True):
     """
     Send messages to the current LLM provider with CASCADE fallback.
     If the current provider fails (rate limit, error), tries the next one.
+    After a 429, the provider is put on cooldown for 60s.
     """
     if provider_name is None:
         provider_name = get_current_provider()
@@ -92,6 +112,13 @@ def chat(messages, provider_name=None, stream=True):
         if not api_key and name != 'ollama':
             continue
 
+        # Skip providers on cooldown (rate-limited recently)
+        if _is_on_cooldown(name):
+            import ui
+            remaining = int(_provider_cooldowns[name] - time.time())
+            ui.dim(f'  [{name} on cooldown ({remaining}s left), skipping...]')
+            continue
+
         try:
             return _call_openai_compat(
                 url=provider['url'],
@@ -103,8 +130,14 @@ def chat(messages, provider_name=None, stream=True):
             )
         except RuntimeError as e:
             last_error = e
-            import ui
-            ui.dim(f'  [{name} failed, trying next...]')
+            # If it's a 429 rate limit, put provider on cooldown
+            if 'API error 429' in str(e):
+                _set_cooldown(name)
+                import ui
+                ui.dim(f'  [{name} rate-limited (429), cooldown {COOLDOWN_SECONDS}s, trying next...]')
+            else:
+                import ui
+                ui.dim(f'  [{name} failed, trying next...]')
             continue
 
     raise RuntimeError(f'All providers failed. Last error: {last_error}')
