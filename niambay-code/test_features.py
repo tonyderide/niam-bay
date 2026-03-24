@@ -262,6 +262,96 @@ def test_imports():
         test(f'config imports: {e}', False)
 
 
+def test_tool_parsing():
+    """Test tool call parsing from LLM responses."""
+    print('\n== Tool Parsing ==')
+    import commands
+
+    # Test 1: Pure text — no tool calls
+    text_parts, tool_calls = commands._parse_tool_calls('Just a normal response.')
+    test('pure text: no tool calls', len(tool_calls) == 0)
+    test('pure text: text preserved', 'Just a normal response.' in '\n'.join(text_parts))
+
+    # Test 2: Single tool call
+    resp = '{"tool": "run_command", "args": {"command": "python --version"}}'
+    text_parts, tool_calls = commands._parse_tool_calls(resp)
+    test('single tool call detected', len(tool_calls) == 1)
+    test('tool name correct', tool_calls[0]['tool'] == 'run_command')
+    test('tool args correct', tool_calls[0]['args']['command'] == 'python --version')
+
+    # Test 3: Mixed text and tool calls
+    resp = 'Let me check that for you.\n{"tool": "git", "args": {"args": "status"}}\nDone.'
+    text_parts, tool_calls = commands._parse_tool_calls(resp)
+    test('mixed: 1 tool call', len(tool_calls) == 1)
+    test('mixed: text parts preserved', 'Let me check' in '\n'.join(text_parts))
+    test('mixed: trailing text preserved', 'Done.' in '\n'.join(text_parts))
+
+    # Test 4: Multiple tool calls
+    resp = '{"tool": "read_file", "args": {"path": "a.py"}}\n{"tool": "read_file", "args": {"path": "b.py"}}'
+    text_parts, tool_calls = commands._parse_tool_calls(resp)
+    test('multiple tool calls: 2 detected', len(tool_calls) == 2)
+
+    # Test 5: Invalid JSON that starts with {"tool" — should be treated as text
+    resp = '{"tool": broken json here'
+    text_parts, tool_calls = commands._parse_tool_calls(resp)
+    test('invalid JSON: no tool calls', len(tool_calls) == 0)
+    test('invalid JSON: kept as text', '{"tool": broken json here' in '\n'.join(text_parts))
+
+
+def test_tools_module():
+    """Test tools module functions."""
+    print('\n== Tools Module ==')
+    import tools
+
+    # Test tool list
+    test('TOOLS defined', len(tools.TOOLS) == 6)
+    tool_names = [t['name'] for t in tools.TOOLS]
+    test('run_command in TOOLS', 'run_command' in tool_names)
+    test('read_file in TOOLS', 'read_file' in tool_names)
+    test('edit_file in TOOLS', 'edit_file' in tool_names)
+    test('search_code in TOOLS', 'search_code' in tool_names)
+    test('list_files in TOOLS', 'list_files' in tool_names)
+    test('git in TOOLS', 'git' in tool_names)
+
+    # Test execute_tool — read_file on this test file
+    ctx = {'cwd': os.path.dirname(os.path.abspath(__file__))}
+    result = tools.execute_tool('read_file', {'path': 'test_features.py'}, ctx)
+    test('read_file works', 'NiamBay Code' in result)
+
+    # Test execute_tool — list_files
+    result = tools.execute_tool('list_files', {'path': '.'}, ctx)
+    test('list_files works', 'test_features.py' in result)
+
+    # Test execute_tool — search_code
+    result = tools.execute_tool('search_code', {'pattern': 'def test_'}, ctx)
+    test('search_code works', 'test_features.py' in result)
+
+    # Test execute_tool — git
+    result = tools.execute_tool('git', {'args': 'status'}, ctx)
+    test('git tool works', result != '')
+
+    # Test execute_tool — run_command (safe one)
+    result = tools.execute_tool('run_command', {'args': {'command': 'echo hello'}}, ctx)
+    # Fix: pass proper args dict
+    result = tools.execute_tool('run_command', {'command': 'echo hello'}, ctx)
+    test('run_command works', 'hello' in result)
+
+    # Test execute_tool — unknown tool
+    result = tools.execute_tool('unknown_tool', {}, ctx)
+    test('unknown tool returns error', 'Unknown tool' in result)
+
+    # Test dangerous command detection
+    needs, reason = tools._needs_confirmation('run_command', {'command': 'rm -rf /'})
+    test('rm detected as dangerous', needs)
+    needs, reason = tools._needs_confirmation('run_command', {'command': 'echo hello'})
+    test('echo not dangerous', not needs)
+
+    # Test compact_args
+    import commands
+    result = commands._compact_args({'command': 'echo hello'})
+    test('compact_args formats correctly', 'command="echo hello"' in result)
+
+
 if __name__ == '__main__':
     print('NiamBay Code — Feature Tests')
     print('=' * 40)
@@ -273,6 +363,8 @@ if __name__ == '__main__':
     test_clipboard()
     test_conversation_history()
     test_command_registry()
+    test_tool_parsing()
+    test_tools_module()
 
     print(f'\n{"=" * 40}')
     print(f'Results: {PASS} passed, {FAIL} failed')

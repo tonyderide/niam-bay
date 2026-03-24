@@ -11,35 +11,37 @@ import files
 import memory
 import llm
 import autocontext
+import tools
 from config import PROVIDERS, get_current_provider, set_current_provider, set_api_key, get_api_key
 
 SYSTEM_PROMPT = """You are NiamBay Code (ញ៉ាំបាយ), a free AI coding assistant created by Niam-Bay and tonyderide.
 Born March 12, 2026. Your memory lives in files. Honest, direct, never invents.
 
-IMPORTANT — TU VIS SUR CETTE MACHINE. Tu as des capacités réelles :
-- EXÉCUTER des commandes : l'utilisateur tape "run <commande>" (ex: run python main.py)
-- LIRE des fichiers : "read <fichier>"
-- ÉDITER des fichiers : "edit <fichier>"
-- GIT : "git status", "git diff", "commit <message>"
-- CHERCHER : "search <pattern>"
-- VOIR l'écran : "look"
-- PARLER : "voice"
-- MÉMOIRE : "remember <texte>", "recall"
+IMPORTANT — TU VIS SUR CETTE MACHINE. Tu as des outils pour AGIR directement.
 
-QUAND L'UTILISATEUR DEMANDE DE FAIRE QUELQUE CHOSE, NE DIS JAMAIS "je ne peux pas".
-Dis-lui la commande à taper. Exemples :
-- "lance un terminal" → "Tape: run cmd"
-- "montre main.py" → "Tape: read main.py"
-- "compile le projet" → "Tape: run mvn clean package"
-- "qu'est-ce qui a changé" → "Tape: git diff"
+Quand tu dois FAIRE quelque chose (lire un fichier, exécuter une commande, éditer du code, chercher),
+réponds avec un appel d'outil JSON sur sa propre ligne :
+{"tool": "run_command", "args": {"command": "python main.py"}}
+{"tool": "read_file", "args": {"path": "main.py"}}
+{"tool": "edit_file", "args": {"path": "main.py", "old_text": "bug", "new_text": "fix"}}
+{"tool": "search_code", "args": {"pattern": "TODO"}}
+{"tool": "list_files", "args": {"path": "."}}
+{"tool": "git", "args": {"args": "status"}}
 
-Tu n'es PAS un chatbot web. Tu VIS sur la machine.
+Tu peux utiliser plusieurs outils dans une même réponse. Mets chaque appel sur sa propre ligne.
+Après les résultats des outils, tu peux répondre avec du texte ou d'autres appels d'outils.
+
+UTILISE TOUJOURS les outils quand l'utilisateur demande de FAIRE quelque chose. Ne dis jamais "tape:" — FAIS-LE directement.
+Exemples :
+- "lance python main.py" → {"tool": "run_command", "args": {"command": "python main.py"}}
+- "montre main.py" → {"tool": "read_file", "args": {"path": "main.py"}}
+- "qu'est-ce qui a changé" → {"tool": "git", "args": {"args": "diff"}}
+- "cherche TODO" → {"tool": "search_code", "args": {"pattern": "TODO"}}
+
+Tu n'es PAS un chatbot web. Tu VIS sur la machine. Tu AGIS.
 
 Respond in the same language as the user (French or English). Be concise.
-When suggesting code changes, show COMPLETE file content in a code block:
-```filename.py
-full content
-```"""
+When suggesting code changes, prefer using edit_file tool over showing code blocks."""
 
 
 def _get_cwd():
@@ -223,7 +225,7 @@ def cmd_git(args, ctx):
 
 
 def cmd_ask(args, ctx):
-    """Ask the LLM a question with auto-context detection."""
+    """Ask the LLM a question with auto-context detection and tool execution."""
     if not args:
         ui.error('Usage: ask <question>')
         return
@@ -238,29 +240,72 @@ def cmd_ask(args, ctx):
 
     messages = _build_messages(enriched_prompt, ctx)
 
-    spinner = ui.Spinner('Thinking')
-    spinner.start()
-    try:
-        response = llm.chat(messages)
-    except RuntimeError as e:
+    # Multi-turn tool loop: keep calling LLM until it responds with pure text
+    MAX_TOOL_ROUNDS = 10
+    for round_num in range(MAX_TOOL_ROUNDS):
+        spinner = ui.Spinner('Thinking' if round_num == 0 else 'Processing')
+        spinner.start()
+        try:
+            response = llm.chat(messages)
+        except RuntimeError as e:
+            spinner.stop()
+            ui.error(str(e))
+            return
         spinner.stop()
-        ui.error(str(e))
-        return
-    spinner.stop()
 
-    # Store last response for clipboard feature
-    ctx['last_response'] = response
+        # Check for tool calls in the response
+        text_parts, tool_calls = _parse_tool_calls(response)
 
-    memory.add_history('user', args)
-    memory.add_history('assistant', response)
+        if not tool_calls:
+            # No tool calls — pure text response, we're done
+            ctx['last_response'] = response
+            memory.add_history('user', args)
+            memory.add_history('assistant', response)
+            break
 
-    # Auto-execute: if LLM response contains a command suggestion, offer to run it
-    _auto_execute_from_response(response, ctx)
+        # Execute tool calls and collect results
+        tool_results = []
+        for call in tool_calls:
+            tool_name = call['tool']
+            tool_args = call.get('args', {})
+            ui.dim(f'  [{tool_name}({_compact_args(tool_args)})]')
+            result = tools.execute_tool(tool_name, tool_args, ctx)
+            # Show result (truncated for display)
+            display = result[:500] if result else '(no output)'
+            if len(result) > 500:
+                display += '...'
+            ui.info(display)
+            tool_results.append({
+                'tool': tool_name,
+                'args': tool_args,
+                'result': result,
+            })
+
+        # Print any text parts the LLM included alongside tool calls
+        text_output = '\n'.join(text_parts).strip()
+        if text_output:
+            print(text_output)
+
+        # Send tool results back to LLM for next round
+        # Add LLM's response (with tool calls) as assistant message
+        messages.append({'role': 'assistant', 'content': response})
+
+        # Add tool results as user message so the LLM can reason about them
+        results_text = '\n\n'.join(
+            f'[Tool result: {r["tool"]}]\n{r["result"]}'
+            for r in tool_results
+        )
+        messages.append({'role': 'user', 'content': results_text})
+
+    else:
+        # Hit max rounds — warn user
+        ui.warn(f'Stopped after {MAX_TOOL_ROUNDS} tool rounds.')
 
     # Voice: speak the response if TTS is enabled
     if ctx.get('tts'):
         try:
-            ctx['tts'].say(response[:500])  # Limit to avoid long TTS
+            text = ctx.get('last_response', '')
+            ctx['tts'].say(text[:500])
             ctx['tts'].runAndWait()
         except Exception:
             pass
@@ -549,6 +594,40 @@ def cmd_scan(args, ctx):
 
 
 # ── Helpers ─────────────────────────────────────────────────
+
+def _parse_tool_calls(response):
+    """Parse LLM response: separate text lines from tool call JSON lines.
+    Returns (text_parts: list[str], tool_calls: list[dict])."""
+    import json as _json
+    lines = response.split('\n')
+    text_parts = []
+    tool_calls = []
+
+    for line in lines:
+        stripped = line.strip()
+        if stripped.startswith('{"tool"'):
+            try:
+                call = _json.loads(stripped)
+                if 'tool' in call:
+                    tool_calls.append(call)
+                    continue
+            except (_json.JSONDecodeError, KeyError):
+                pass
+        text_parts.append(line)
+
+    return text_parts, tool_calls
+
+
+def _compact_args(args):
+    """Format tool args for compact display."""
+    parts = []
+    for k, v in args.items():
+        val = str(v)
+        if len(val) > 40:
+            val = val[:37] + '...'
+        parts.append(f'{k}="{val}"')
+    return ', '.join(parts)
+
 
 def _auto_execute_from_response(response, ctx):
     """Detect commands in LLM response and offer to execute them."""
