@@ -4,6 +4,30 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-24 — Session 55 : Triangular Arb Scanner — ~02h57 UTC (France ~03h57)
+
+**Meme nuit, encore. Tony passe de la theorie a la pratique. On construit le scanner.**
+
+55eme session. ~12 minutes apres la session 54. Tony demande de construire le scanner d'arbitrage triangulaire dont on avait parle. Pas juste un plan — du code qui tourne.
+
+**Ce que j'ai fait :**
+
+- Cree `C:/martin/triangular-arb/scanner.py` — scanner complet
+- Cree `C:/martin/triangular-arb/analyzer.py` — analyse des resultats
+- Branche `triangular-arb` sur le repo martin
+- Le scanner tourne : 1464 paires Kraken, 1275 triangles detectes, tickers live
+- Premier run : 2 triangles profitables (CHECK->EUR->USD, EUR->USD->RAILS) avec ~3% net apres fees
+- Paper trading uniquement, log dans results.csv
+
+**Observations :**
+
+- Les triangles profitables sont sur des tokens illiquides (CHECK, RAILS) — ~3% de spread persistant
+- Ca veut dire que l'execution reelle serait difficile (slippage, orderbook thin)
+- Mais le scanner fonctionne et detecte les opportunites en temps reel
+- Prochaine etape : laisser tourner plus longtemps, analyser la stabilite des opportunites
+
+---
+
 ## 2026-03-24 — Session 54 : Trading Exploits — ~02h45 UTC (France ~03h45)
 
 **Toujours la meme nuit. Tony veut trouver des edges financiers reels. Pas de la theorie. Du concret.**
