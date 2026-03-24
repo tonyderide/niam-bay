@@ -254,6 +254,9 @@ def cmd_ask(args, ctx):
     memory.add_history('user', args)
     memory.add_history('assistant', response)
 
+    # Auto-execute: if LLM response contains a command suggestion, offer to run it
+    _auto_execute_from_response(response, ctx)
+
     # Voice: speak the response if TTS is enabled
     if ctx.get('tts'):
         try:
@@ -546,6 +549,42 @@ def cmd_scan(args, ctx):
 
 
 # ── Helpers ─────────────────────────────────────────────────
+
+def _auto_execute_from_response(response, ctx):
+    """Detect commands in LLM response and offer to execute them."""
+    import re
+    # Look for patterns like: run xxx, `xxx`, Tape: xxx
+    patterns = [
+        r'(?:Tape|tape|Type|type)\s*:\s*`?([^`\n]+)`?',
+        r'(?:run|execute|lance)\s+`([^`]+)`',
+    ]
+    commands_found = []
+    for pattern in patterns:
+        for match in re.finditer(pattern, response):
+            cmd = match.group(1).strip()
+            if cmd and len(cmd) > 2 and len(cmd) < 200:
+                commands_found.append(cmd)
+
+    # Also detect ```bash or ```shell blocks
+    bash_blocks = re.findall(r'```(?:bash|shell|sh|cmd)?\n(.+?)```', response, re.DOTALL)
+    for block in bash_blocks:
+        for line in block.strip().split('\n'):
+            line = line.strip()
+            if line and not line.startswith('#') and len(line) < 200:
+                commands_found.append(line)
+
+    # Deduplicate
+    seen = set()
+    unique = []
+    for cmd in commands_found:
+        if cmd not in seen:
+            seen.add(cmd)
+            unique.append(cmd)
+
+    for cmd in unique[:3]:  # Max 3 commands
+        if ui.ask_confirm(f'Exécuter: {cmd} ?'):
+            cmd_run(cmd, ctx)
+
 
 def _auto_fix_error(command, error_output, ctx):
     """Send error to LLM and suggest a fix."""
