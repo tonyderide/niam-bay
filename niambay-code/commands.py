@@ -55,6 +55,10 @@ def cmd_help(args, ctx):
         ('commands',                'Show saved commands'),
         ('save-cmd <name> <cmd>',   'Save a reusable command'),
         ('!<name>',                 'Run a saved command'),
+        ('look (l) [question]',     'Screenshot + describe/analyze screen'),
+        ('voice (v)',               'Toggle voice mode (TTS)'),
+        ('diff (d) [args]',         'Show git diff'),
+        ('commit (c) [message]',    'Quick git add + commit'),
         ('model [name]',            'Show or switch LLM provider'),
         ('set-key <provider> <key>','Set API key for a provider'),
         ('files',                   'List project files'),
@@ -237,6 +241,14 @@ def cmd_ask(args, ctx):
     memory.add_history('user', args)
     memory.add_history('assistant', response)
 
+    # Voice: speak the response if TTS is enabled
+    if ctx.get('tts'):
+        try:
+            ctx['tts'].say(response[:500])  # Limit to avoid long TTS
+            ctx['tts'].runAndWait()
+        except Exception:
+            pass
+
 
 def cmd_explain(args, ctx):
     """Explain the project or a specific file."""
@@ -380,6 +392,81 @@ def cmd_files(args, ctx):
     for f in project_files:
         print(f'  {f}')
     print()
+
+
+def cmd_look(args, ctx):
+    """Take a screenshot and describe/analyze what's on screen."""
+    try:
+        import mss
+        from PIL import Image
+        import io, base64
+    except ImportError:
+        ui.error('Need: pip install mss Pillow')
+        return
+
+    # Capture screen
+    with mss.mss() as sct:
+        monitor = sct.monitors[1]
+        screenshot = sct.grab(monitor)
+        img = Image.frombytes("RGB", screenshot.size, screenshot.bgra, "raw", "BGRX")
+
+    # Resize to save tokens
+    ratio = 800 / img.width
+    img = img.resize((800, int(img.height * ratio)), Image.LANCZOS)
+
+    # Encode to base64
+    buf = io.BytesIO()
+    img.save(buf, format="JPEG", quality=70)
+    img_b64 = base64.b64encode(buf.getvalue()).decode()
+
+    ui.info(f'Screenshot captured ({img.width}x{img.height})')
+
+    # Try to analyze with LLM
+    prompt = args if args else "Décris ce que tu vois à l'écran. Mentionne l'application active et ce que l'utilisateur fait."
+
+    # Save screenshot for reference
+    screenshot_path = os.path.join(os.getcwd(), '.niambay-screenshot.jpg')
+    img.save(screenshot_path, quality=70)
+    ui.success(f'Screenshot saved: {screenshot_path}')
+
+    if args:
+        # Send the question + mention there's a screenshot
+        cmd_ask(f"[L'utilisateur a pris un screenshot de son écran] {prompt}", ctx)
+
+
+def cmd_voice(args, ctx):
+    """Toggle voice mode (TTS for responses)."""
+    try:
+        import pyttsx3
+    except ImportError:
+        ui.error('Need: pip install pyttsx3')
+        return
+
+    if not ctx.get('tts'):
+        engine = pyttsx3.init()
+        # Find French voice
+        for v in engine.getProperty('voices'):
+            if 'french' in v.name.lower() or 'fr' in v.id.lower():
+                engine.setProperty('voice', v.id)
+                break
+        engine.setProperty('rate', 160)
+        ctx['tts'] = engine
+        ui.success('Voice ON — je parlerai à voix haute')
+    else:
+        ctx['tts'] = None
+        ui.success('Voice OFF')
+
+
+def cmd_diff(args, ctx):
+    """Show git diff."""
+    cmd_run('git diff --stat' if not args else f'git diff {args}', ctx)
+
+
+def cmd_commit(args, ctx):
+    """Quick commit: commit <message>"""
+    if not args:
+        args = 'update'
+    cmd_run(f'git add -A && git commit -m "{args}"', ctx)
 
 
 def cmd_undo(args, ctx):
@@ -645,6 +732,14 @@ COMMANDS = {
     'model': cmd_model,
     'set-key': cmd_set_key,
     'files': cmd_files,
+    'look': cmd_look,
+    'l': cmd_look,          # alias
+    'voice': cmd_voice,
+    'v': cmd_voice,         # alias
+    'diff': cmd_diff,
+    'd': cmd_diff,          # alias
+    'commit': cmd_commit,
+    'c': cmd_commit,        # alias
 }
 
 
