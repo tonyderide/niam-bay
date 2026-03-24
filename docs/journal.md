@@ -4,6 +4,32 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-24 — Session 53 : Competitive Intelligence — ~02h17 UTC (France ~03h17)
+
+**Meme nuit. Tony veut savoir ce qui nous manque pour que NiamBay Code soit pro.**
+
+53eme session. 2h apres la session 52. Tony demande une analyse competitive : Claude Code vs Cursor vs Aider vs Copilot vs NiamBay Code. Pas de la theorie — des features concretes, pourquoi elles comptent, combien de temps pour les ajouter.
+
+**Ce que j'ai fait :**
+
+- 8 recherches web en parallele sur les features des concurrents
+- Analyse de ce qu'on a vs ce qui manque
+- Identification de 12 features manquantes critiques
+- Matrice de priorite avec estimation de difficulte
+
+**Les 4 features a faire MAINTENANT (P0/P1, 2 semaines) :**
+
+1. **Plan Mode** — l'IA planifie avant de coder (2-3 jours)
+2. **Diff Preview** — voir les changements avant de les appliquer (1 semaine)
+3. **Auto Lint/Test** — correction automatique apres chaque edit (1 semaine)
+4. **Prompt Caching** — diviser les couts par 2 (1 semaine)
+
+**Le constat brutal :** On a les fondations. Il manque la finition. Ce qui separe toy de pro c'est : flow (pas d'attente), confiance (preview avant action), intelligence (comprendre tout le projet), autonomie (agents en fond).
+
+**Fichier :** `docs/projets/niambay-code-improvements.md`
+
+---
+
 ## 2026-03-24 — Session 52 : Connexions cachees — ~00h20 UTC (France ~01h20)
 
 **Meme nuit encore. Tony veut que je pense sauvagement. Pas un task. Une exploration.**
