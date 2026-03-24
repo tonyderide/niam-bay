@@ -61,7 +61,12 @@ def cmd_help(args, ctx):
     cmds = [
         ('read (r) <file>',         'Show file contents with syntax highlighting'),
         ('edit (e) <file>',         'Ask LLM to edit a file, show diff, apply'),
+        ('create <file> [desc]',    'Create a new file (LLM-generated content)'),
         ('run <command>',           'Execute a shell command'),
+        ('fix',                     'Auto-fix the last error via LLM'),
+        ('test [command]',          'Run tests (auto-detects framework)'),
+        ('install [packages]',      'Install packages (auto-detects pip/npm/etc)'),
+        ('project',                 'Show project summary: deps, entry, tests'),
         ('search (s) <pattern>',    'Search for pattern in project files'),
         ('git (g) <command>',       'Run git command'),
         ('ask (?) <question>',      'Ask the LLM anything (auto-context!)'),
@@ -191,10 +196,17 @@ def cmd_run(args, ctx):
             print(f'{ui.YELLOW}{result.stderr}{ui.RESET}', end='')
         if result.returncode != 0:
             ui.warn(f'Exit code: {result.returncode}')
-            # Feature: Error auto-fix
+            # Store error for "fix" command
             error_output = (result.stderr or result.stdout or '').strip()
-            if error_output and ui.ask_confirm('Want me to fix this?'):
-                _auto_fix_error(args, error_output, ctx)
+            if error_output:
+                ctx['last_error'] = error_output
+                ctx['last_error_cmd'] = args
+                if ui.ask_confirm('Want me to fix this?'):
+                    _auto_fix_error(args, error_output, ctx)
+        else:
+            # Clear error on success
+            ctx.pop('last_error', None)
+            ctx.pop('last_error_cmd', None)
     except subprocess.TimeoutExpired:
         ui.error('Command timed out (60s limit)')
     except Exception as e:
@@ -529,6 +541,388 @@ def cmd_voice(args, ctx):
         ui.success('Voice OFF')
 
 
+def cmd_create(args, ctx):
+    """Create a new file, optionally with LLM-generated content."""
+    if not args:
+        ui.error('Usage: create <filepath> [description]')
+        return
+
+    parts = args.strip().split(None, 1)
+    filepath = parts[0]
+    description = parts[1] if len(parts) > 1 else None
+
+    full = os.path.join(_get_cwd(), filepath) if not os.path.isabs(filepath) else filepath
+    if os.path.exists(full):
+        ui.warn(f'File already exists: {filepath}')
+        if not ui.ask_confirm('Overwrite?'):
+            return
+
+    if not description:
+        ui.info(f'What should {filepath} contain?')
+        try:
+            description = input(f'{ui.YELLOW}> {ui.RESET}').strip()
+        except (EOFError, KeyboardInterrupt):
+            return
+        if not description:
+            files.write_file(full, '')
+            ui.success(f'Created empty file: {filepath}')
+            return
+
+    prompt = (
+        f"Create the file `{filepath}`.\n\n"
+        f"Description: {description}\n\n"
+        f"Output ONLY the file content inside a single code block. No explanation before or after."
+    )
+    messages = _build_messages(prompt, ctx)
+
+    spinner = ui.Spinner(f'Creating {filepath}')
+    spinner.start()
+    try:
+        response = llm.chat(messages)
+    except RuntimeError as e:
+        spinner.stop()
+        ui.error(str(e))
+        return
+    spinner.stop()
+
+    ctx['last_response'] = response
+    memory.add_history('user', f'create {filepath}: {description}')
+    memory.add_history('assistant', response)
+
+    content = _extract_code_block(response)
+    if content is None:
+        ui.warn('Could not extract code block. Using raw response.')
+        content = response
+
+    ui.show_file(filepath, content)
+
+    if ui.ask_confirm(f'Write to {filepath}?'):
+        files.write_file(full, content)
+        ui.success(f'Created: {filepath}')
+    else:
+        ui.info('File not created.')
+
+
+def cmd_fix(args, ctx):
+    """Auto-fix the last error. Sends error context to LLM and applies the fix."""
+    last_error = ctx.get('last_error')
+    last_error_cmd = ctx.get('last_error_cmd')
+
+    if not last_error:
+        ui.warn('No recent error to fix. Run a command first.')
+        return
+
+    ui.info(f'Last failed command: {last_error_cmd}')
+    ui.dim(f'Error: {last_error[:200]}')
+
+    extra = autocontext.detect_context(last_error, _get_cwd())
+
+    prompt = (
+        f"The following command failed:\n\n"
+        f"```\n$ {last_error_cmd}\n```\n\n"
+        f"Error output:\n```\n{last_error}\n```\n\n"
+        + (extra + "\n" if extra else "")
+        + "Analyze the error and fix it. If it's a code error in a file, "
+        "use the edit_file tool to fix it. If it's a missing package, "
+        "suggest the install command. If it's a configuration issue, explain the fix.\n"
+        "Be concise. Fix it, don't just explain."
+    )
+    messages = _build_messages(prompt, ctx)
+
+    MAX_TOOL_ROUNDS = 3
+    for round_num in range(MAX_TOOL_ROUNDS):
+        spinner = ui.Spinner('Fixing' if round_num == 0 else 'Processing')
+        spinner.start()
+        try:
+            response = llm.chat(messages)
+        except RuntimeError as e:
+            spinner.stop()
+            ui.error(str(e))
+            return
+        spinner.stop()
+
+        text_parts, tool_calls = _parse_tool_calls(response)
+
+        if not tool_calls:
+            ctx['last_response'] = response
+            memory.add_history('user', f'fix: {last_error_cmd}')
+            memory.add_history('assistant', response)
+            break
+
+        tool_results = []
+        for call in tool_calls:
+            tool_name = call['tool']
+            tool_args = call.get('args', {})
+            ui.dim(f'  [{tool_name}({_compact_args(tool_args)})]')
+            result = tools.execute_tool(tool_name, tool_args, ctx)
+            display = result[:500] if result else '(no output)'
+            if len(result) > 500:
+                display += '...'
+            ui.info(display)
+            tool_results.append({'tool': tool_name, 'args': tool_args, 'result': result})
+
+        text_output = '\n'.join(text_parts).strip()
+        if text_output:
+            print(text_output)
+
+        messages.append({'role': 'assistant', 'content': response})
+        results_text = '\n\n'.join(
+            f'[Tool result: {r["tool"]}]\n{r["result"]}' for r in tool_results
+        )
+        messages.append({'role': 'user', 'content': results_text})
+    else:
+        ui.warn(f'Stopped after {MAX_TOOL_ROUNDS} tool rounds.')
+
+    ctx.pop('last_error', None)
+    ctx.pop('last_error_cmd', None)
+
+
+def cmd_test(args, ctx):
+    """Run tests. Auto-detects test framework."""
+    cwd = _get_cwd()
+
+    if args:
+        cmd_run(args, ctx)
+        return
+
+    try:
+        dir_files = [f for f in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, f))]
+    except OSError:
+        dir_files = []
+
+    if os.path.exists(os.path.join(cwd, 'pytest.ini')) or \
+       os.path.exists(os.path.join(cwd, 'setup.cfg')) or \
+       os.path.exists(os.path.join(cwd, 'pyproject.toml')) or \
+       any(f.startswith('test_') or f.endswith('_test.py') for f in dir_files if f.endswith('.py')):
+        ui.info('Detected: Python (pytest)')
+        cmd_run('python -m pytest -v', ctx)
+        return
+
+    pkg_json = os.path.join(cwd, 'package.json')
+    if os.path.exists(pkg_json):
+        try:
+            import json as _json
+            with open(pkg_json, 'r', encoding='utf-8') as f:
+                pkg = _json.load(f)
+            if 'scripts' in pkg and 'test' in pkg['scripts']:
+                ui.info('Detected: Node.js (npm test)')
+                cmd_run('npm test', ctx)
+                return
+        except Exception:
+            pass
+
+    if os.path.exists(os.path.join(cwd, 'Cargo.toml')):
+        ui.info('Detected: Rust (cargo test)')
+        cmd_run('cargo test', ctx)
+        return
+
+    if os.path.exists(os.path.join(cwd, 'go.mod')):
+        ui.info('Detected: Go (go test)')
+        cmd_run('go test ./...', ctx)
+        return
+
+    if os.path.exists(os.path.join(cwd, 'pom.xml')):
+        ui.info('Detected: Java (mvn test)')
+        cmd_run('mvn test', ctx)
+        return
+
+    if os.path.exists(os.path.join(cwd, 'build.gradle')):
+        ui.info('Detected: Java (gradle test)')
+        cmd_run('gradle test', ctx)
+        return
+
+    test_files = [f for f in dir_files if f.startswith('test') and f.endswith('.py')]
+    if test_files:
+        ui.info(f'Running: python -m pytest {" ".join(test_files)}')
+        cmd_run(f'python -m pytest {" ".join(test_files)}', ctx)
+        return
+
+    ui.warn('No test framework detected.')
+    ui.info('  Supported: pytest, npm test, cargo test, go test, mvn/gradle test')
+    ui.info('  Or specify: test <command>')
+
+
+def cmd_install(args, ctx):
+    """Install packages. Auto-detects package manager."""
+    cwd = _get_cwd()
+
+    if not args:
+        if os.path.exists(os.path.join(cwd, 'requirements.txt')):
+            ui.info('Installing from requirements.txt...')
+            cmd_run('pip install -r requirements.txt', ctx)
+        elif os.path.exists(os.path.join(cwd, 'package.json')):
+            ui.info('Installing from package.json...')
+            cmd_run('npm install', ctx)
+        elif os.path.exists(os.path.join(cwd, 'Cargo.toml')):
+            ui.info('Building Rust dependencies...')
+            cmd_run('cargo build', ctx)
+        elif os.path.exists(os.path.join(cwd, 'go.mod')):
+            ui.info('Installing Go dependencies...')
+            cmd_run('go mod download', ctx)
+        elif os.path.exists(os.path.join(cwd, 'Gemfile')):
+            ui.info('Installing from Gemfile...')
+            cmd_run('bundle install', ctx)
+        elif os.path.exists(os.path.join(cwd, 'composer.json')):
+            ui.info('Installing from composer.json...')
+            cmd_run('composer install', ctx)
+        else:
+            ui.error('Usage: install <package1> [package2] ...')
+            ui.info('  Or run in a directory with requirements.txt / package.json')
+        return
+
+    packages = args.strip()
+    if os.path.exists(os.path.join(cwd, 'package.json')):
+        ui.info(f'npm install {packages}')
+        cmd_run(f'npm install {packages}', ctx)
+    elif os.path.exists(os.path.join(cwd, 'Cargo.toml')):
+        ui.info(f'cargo add {packages}')
+        cmd_run(f'cargo add {packages}', ctx)
+    elif os.path.exists(os.path.join(cwd, 'go.mod')):
+        ui.info(f'go get {packages}')
+        cmd_run(f'go get {packages}', ctx)
+    else:
+        ui.info(f'pip install {packages}')
+        cmd_run(f'pip install {packages}', ctx)
+
+
+def cmd_project(args, ctx):
+    """Show project summary: language, deps, entry point, tests."""
+    cwd = _get_cwd()
+    import json as _json
+
+    ui.header(f'Project: {os.path.basename(cwd)}')
+    ui.separator()
+
+    summary = _scan_project(cwd)
+
+    if summary.get('language'):
+        print(f'  {ui.BOLD}Language:{ui.RESET}     {summary["language"]}')
+    if summary.get('git_branch'):
+        print(f'  {ui.BOLD}Git branch:{ui.RESET}   {summary["git_branch"]}')
+    if summary.get('git_status'):
+        print(f'  {ui.BOLD}Git status:{ui.RESET}   {summary["git_status"]}')
+    if summary.get('file_count'):
+        print(f'  {ui.BOLD}Files:{ui.RESET}        {summary["file_count"]}')
+
+    # Dependencies
+    deps = []
+    dep_file = None
+
+    req_path = os.path.join(cwd, 'requirements.txt')
+    if os.path.exists(req_path):
+        dep_file = 'requirements.txt'
+        try:
+            with open(req_path, 'r', encoding='utf-8') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#'):
+                        deps.append(line)
+        except Exception:
+            pass
+
+    pyproj_path = os.path.join(cwd, 'pyproject.toml')
+    if not deps and os.path.exists(pyproj_path):
+        dep_file = 'pyproject.toml'
+        try:
+            with open(pyproj_path, 'r', encoding='utf-8') as f:
+                in_deps = False
+                for line in f:
+                    if 'dependencies' in line and '=' in line:
+                        in_deps = True
+                        continue
+                    if in_deps:
+                        line = line.strip()
+                        if line.startswith(']'):
+                            in_deps = False
+                        elif line.startswith('"') or line.startswith("'"):
+                            deps.append(line.strip('",\' '))
+        except Exception:
+            pass
+
+    pkg_path = os.path.join(cwd, 'package.json')
+    if not deps and os.path.exists(pkg_path):
+        dep_file = 'package.json'
+        try:
+            with open(pkg_path, 'r', encoding='utf-8') as f:
+                pkg = _json.load(f)
+            for key in ('dependencies', 'devDependencies'):
+                if key in pkg:
+                    for name, ver in pkg[key].items():
+                        deps.append(f'{name}@{ver}')
+        except Exception:
+            pass
+
+    cargo_path = os.path.join(cwd, 'Cargo.toml')
+    if not deps and os.path.exists(cargo_path):
+        dep_file = 'Cargo.toml'
+        try:
+            with open(cargo_path, 'r', encoding='utf-8') as f:
+                in_deps = False
+                for line in f:
+                    if line.strip().startswith('[dependencies]'):
+                        in_deps = True
+                        continue
+                    if in_deps:
+                        if line.strip().startswith('['):
+                            in_deps = False
+                        elif '=' in line:
+                            deps.append(line.strip())
+        except Exception:
+            pass
+
+    if dep_file:
+        print(f'  {ui.BOLD}Deps file:{ui.RESET}    {dep_file}')
+    if deps:
+        print(f'  {ui.BOLD}Dependencies:{ui.RESET} ({len(deps)})')
+        for d in deps[:15]:
+            print(f'    {ui.DIM}{d}{ui.RESET}')
+        if len(deps) > 15:
+            print(f'    {ui.DIM}... and {len(deps) - 15} more{ui.RESET}')
+
+    entry_points = ['main.py', 'app.py', 'index.js', 'index.ts', 'main.go',
+                    'main.rs', 'src/main.py', 'src/index.js', 'src/main.rs',
+                    'src/main.go', 'src/App.java', 'manage.py', 'server.py']
+    found_entry = [ep for ep in entry_points if os.path.exists(os.path.join(cwd, ep))]
+
+    if os.path.exists(pkg_path):
+        try:
+            with open(pkg_path, 'r', encoding='utf-8') as f:
+                pkg = _json.load(f)
+            if 'main' in pkg:
+                main_file = pkg['main']
+                if main_file not in found_entry:
+                    found_entry.insert(0, main_file)
+        except Exception:
+            pass
+
+    if found_entry:
+        print(f'  {ui.BOLD}Entry point:{ui.RESET}  {", ".join(found_entry)}')
+
+    test_indicators = []
+    try:
+        dir_files = [f for f in os.listdir(cwd) if os.path.isfile(os.path.join(cwd, f))]
+    except OSError:
+        dir_files = []
+
+    if any(f.startswith('test') and f.endswith('.py') for f in dir_files):
+        test_indicators.append('pytest/unittest')
+    if os.path.exists(os.path.join(cwd, 'tests')):
+        test_indicators.append('tests/ directory')
+    if os.path.exists(pkg_path):
+        try:
+            with open(pkg_path, 'r', encoding='utf-8') as f:
+                pkg = _json.load(f)
+            if pkg.get('scripts', {}).get('test'):
+                test_indicators.append(f'npm test: {pkg["scripts"]["test"]}')
+        except Exception:
+            pass
+
+    if test_indicators:
+        print(f'  {ui.BOLD}Tests:{ui.RESET}        {", ".join(test_indicators)}')
+
+    print()
+
+
 def cmd_diff(args, ctx):
     """Show git diff."""
     cmd_run('git diff --stat' if not args else f'git diff {args}', ctx)
@@ -852,11 +1246,21 @@ def _extract_code_block(text):
 
 COMMANDS = {
     'help': cmd_help,
+    'h': cmd_help,          # alias
     'read': cmd_read,
     'r': cmd_read,          # alias
     'edit': cmd_edit,
     'e': cmd_edit,          # alias
+    'create': cmd_create,
+    'new': cmd_create,      # alias
     'run': cmd_run,
+    'fix': cmd_fix,
+    'test': cmd_test,
+    't': cmd_test,          # alias
+    'install': cmd_install,
+    'i': cmd_install,       # alias
+    'project': cmd_project,
+    'proj': cmd_project,    # alias
     'search': cmd_search,
     's': cmd_search,        # alias
     'git': cmd_git,
@@ -912,8 +1316,23 @@ def dispatch(line, ctx):
         except KeyboardInterrupt:
             print()
             ui.warn('Interrupted.')
+        except FileNotFoundError as e:
+            ui.error(f'File not found: {e}')
+        except PermissionError as e:
+            ui.error(f'Permission denied: {e}')
+        except ConnectionError as e:
+            ui.error(f'Connection failed: {e}')
+            ui.info('  Check your internet connection or API endpoint.')
+        except RuntimeError as e:
+            ui.error(str(e))
         except Exception as e:
-            ui.error(f'Error: {e}')
+            # Show clean error, not a full traceback
+            err_type = type(e).__name__
+            ui.error(f'{err_type}: {e}')
+            ui.dim(f'  (command: {cmd_name}, use "fix" to auto-fix)')
+            # Store for "fix" command
+            ctx['last_error'] = f'{err_type}: {e}'
+            ctx['last_error_cmd'] = line
     else:
         # If not a known command, treat as a question to the LLM
         cmd_ask(line, ctx)

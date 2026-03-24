@@ -17,7 +17,7 @@ import ui
 import commands
 import files
 import memory
-from config import get_current_provider, PROVIDERS, get_api_key
+from config import get_current_provider, PROVIDERS, get_api_key, HISTORY_FILE, ensure_config_dir
 
 
 def check_setup():
@@ -34,7 +34,7 @@ def check_setup():
 
 
 def setup_tab_completion():
-    """Set up tab completion for the REPL (filenames + commands)."""
+    """Set up tab completion and persistent command history for the REPL."""
     try:
         import readline
     except ImportError:
@@ -54,7 +54,7 @@ def setup_tab_completion():
         if ' ' not in line:
             # Complete command names
             options = [c + ' ' for c in command_names if c.startswith(text.lower())]
-        elif cmd in ('read', 'r', 'edit', 'e', 'explain'):
+        elif cmd in ('read', 'r', 'edit', 'e', 'explain', 'create', 'new'):
             # Complete filenames for file commands
             partial = parts[1] if len(parts) > 1 else ''
             options = _complete_path(partial)
@@ -82,6 +82,27 @@ def setup_tab_completion():
     readline.set_completer(completer)
     readline.set_completer_delims(' \t\n')
     readline.parse_and_bind('tab: complete')
+
+    # Load persistent command history
+    ensure_config_dir()
+    try:
+        if os.path.exists(HISTORY_FILE):
+            readline.read_history_file(HISTORY_FILE)
+        readline.set_history_length(500)
+    except Exception:
+        pass
+
+    # Save history on exit
+    import atexit
+    atexit.register(_save_history, readline)
+
+
+def _save_history(readline):
+    """Save command history to disk."""
+    try:
+        readline.write_history_file(HISTORY_FILE)
+    except Exception:
+        pass
 
 
 def _complete_path(partial):
