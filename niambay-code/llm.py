@@ -73,34 +73,41 @@ def _call_openai_compat(url, api_key, model, messages, max_tokens=4096, stream=T
 
 def chat(messages, provider_name=None, stream=True):
     """
-    Send messages to the current LLM provider.
-    messages: list of {'role': 'user'|'assistant'|'system', 'content': '...'}
-    Returns: assistant response text.
+    Send messages to the current LLM provider with CASCADE fallback.
+    If the current provider fails (rate limit, error), tries the next one.
     """
     if provider_name is None:
         provider_name = get_current_provider()
 
-    provider = PROVIDERS.get(provider_name)
-    if not provider:
-        raise RuntimeError(f'Unknown provider: {provider_name}')
+    # Build cascade order: current provider first, then others
+    order = [provider_name] + [p for p in PROVIDERS if p != provider_name]
 
-    api_key = get_api_key(provider_name)
+    last_error = None
+    for name in order:
+        provider = PROVIDERS.get(name)
+        if not provider:
+            continue
 
-    # Ollama doesn't need a key
-    if not api_key and provider_name != 'ollama':
-        raise RuntimeError(
-            f'No API key for {provider_name}. '
-            f'Set {provider["env_key"]} env var or run: nb> set-key {provider_name} <key>'
-        )
+        api_key = get_api_key(name)
+        if not api_key and name != 'ollama':
+            continue
 
-    return _call_openai_compat(
-        url=provider['url'],
-        api_key=api_key,
-        model=provider['model'],
-        messages=messages,
-        max_tokens=provider.get('max_tokens', 4096),
-        stream=stream,
-    )
+        try:
+            return _call_openai_compat(
+                url=provider['url'],
+                api_key=api_key,
+                model=provider['model'],
+                messages=messages,
+                max_tokens=provider.get('max_tokens', 4096),
+                stream=stream,
+            )
+        except RuntimeError as e:
+            last_error = e
+            import ui
+            ui.dim(f'  [{name} failed, trying next...]')
+            continue
+
+    raise RuntimeError(f'All providers failed. Last error: {last_error}')
 
 
 def quick_ask(prompt_text, system=None, provider_name=None):
