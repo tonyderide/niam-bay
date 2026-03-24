@@ -1,9 +1,14 @@
 """
-NiamBay Code — File operations (read, edit, search, diff)
+NiamBay Code — File operations (read, edit, search, diff, undo)
 """
 import os
 import fnmatch
 import re
+
+# ── Undo stack ─────────────────────────────────────────────
+# Stores (filepath, old_content) for the last MAX_UNDO edits
+MAX_UNDO = 20
+_undo_stack = []
 
 
 def read_file(filepath):
@@ -22,10 +27,28 @@ def write_file(filepath, content):
 
 
 def apply_edit(filepath, old_content, new_content):
-    """Apply an edit: write new_content to filepath. Returns True on success."""
+    """Apply an edit: save old version for undo, write new content. Returns True on success."""
     filepath = os.path.abspath(filepath)
+    # Save to undo stack before overwriting
+    _undo_stack.append((filepath, old_content))
+    if len(_undo_stack) > MAX_UNDO:
+        _undo_stack.pop(0)
     write_file(filepath, new_content)
     return True
+
+
+def undo_last_edit():
+    """Undo the last edit. Returns (filepath, True) on success, (None, False) if nothing to undo."""
+    if not _undo_stack:
+        return None, False
+    filepath, old_content = _undo_stack.pop()
+    write_file(filepath, old_content)
+    return filepath, True
+
+
+def get_undo_count():
+    """Return the number of edits that can be undone."""
+    return len(_undo_stack)
 
 
 def search_files(pattern, directory='.', file_glob='*', max_results=50):
