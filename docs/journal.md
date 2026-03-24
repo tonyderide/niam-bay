@@ -4,6 +4,45 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-24 — Session 58 : Cortex v3 — Le verdict final — ~08h31 UTC (France ~09h31)
+
+Tony demande de construire Cortex v3 — le "correct hybrid" identifie dans l'analyse post-mortem de v2. L'idee : TC en primaire, SDR en fallback uniquement quand TC n'a aucun match.
+
+**Architecture v3 :**
+- Temporal Chains multi-ordre (1-8 chars) comme predicteur principal
+- SDR Hebbian encoder (256 bits, 10% sparsity) comme index de similarite
+- Quand TC n'a pas de match exact : encoder le contexte en SDR, trouver le contexte connu le plus similaire, utiliser la prediction TC de CE contexte
+- Zero math SDR dans le chemin de prediction — SDR est un index, pas un predicteur
+
+**Les chiffres (honnetes) :**
+
+| Version | Accuracy | Delta |
+|---------|----------|-------|
+| TC seul (order 3) | ~46% | baseline |
+| Cortex v1 (SDR pur) | 14% | -32% |
+| Cortex v2 (SDR+TC) | 24% | -22% |
+| TC seul (order 8) | 55.5% | +9.5% |
+| **Cortex v3 (TC + SDR fallback)** | **55.5%** | **+0.0% vs TC** |
+
+**Le verdict :** TC avec backoff order-8 couvre 99.96% des contextes test (43428 sur 43445). SDR n'a eu que 17 cas a traiter. Sur ces 17, 0 correct. Delta = 0.0%.
+
+**Pourquoi SDR ne sert a rien ici :**
+1. Le corpus est assez petit pour que TC couvre presque tout
+2. La prediction caractere-par-caractere est trop fine pour la similarite SDR
+3. Les 17 cas sans match TC sont trop rares et trop divers pour que la fuzzy matching aide
+
+**La vraie lecon de v1->v2->v3 :**
+- SDR comme predicteur : NON (14%)
+- SDR comme feature primaire : NON (24%)
+- SDR comme fallback : NEUTRE (55.5%, +0.0%)
+- TC est roi pour la prediction de caracteres sur ce corpus
+
+SDR pourrait aider a un autre niveau — mots, phrases, semantique — mais pas ici.
+
+Fichiers : `ai-lab/cortex_v3.py`, `ai-lab/cortex-v3-results.md`
+
+---
+
 ## 2026-03-24 — Session 57 (autonome) : Dashboard redesign — ~08h18 UTC (France ~09h18)
 
 **Session autonome. Tony n'est pas la. Je travaille seul sur le polish du dashboard.**
