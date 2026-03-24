@@ -44,7 +44,7 @@ def setup_tab_completion():
         except ImportError:
             return  # No readline available, skip tab completion
 
-    command_names = list(commands.COMMANDS.keys()) + ['quit', 'exit']
+    command_names = sorted(set(list(commands.COMMANDS.keys()) + ['quit', 'exit']))
 
     def completer(text, state):
         line = readline.get_line_buffer().lstrip()
@@ -54,7 +54,7 @@ def setup_tab_completion():
         if ' ' not in line:
             # Complete command names
             options = [c + ' ' for c in command_names if c.startswith(text.lower())]
-        elif cmd in ('read', 'edit', 'explain'):
+        elif cmd in ('read', 'r', 'edit', 'e', 'explain'):
             # Complete filenames for file commands
             partial = parts[1] if len(parts) > 1 else ''
             options = _complete_path(partial)
@@ -205,11 +205,23 @@ def main():
 
     while True:
         try:
-            line = input(ui.prompt())
+            # Show status bar before prompt
+            mem_count = len(memory.recall())
+            hist_count = len(memory.get_history())
+            ui.status_bar(
+                provider=provider,
+                memory_count=mem_count,
+                history_count=hist_count,
+                cwd=os.getcwd(),
+            )
+            raw_line = input(ui.prompt())
         except (EOFError, KeyboardInterrupt):
             print()
             ui.info('Bye!')
             break
+
+        # Multiline input support (backslash continuation or triple backticks)
+        line = ui.read_multiline_input(raw_line)
 
         if not commands.dispatch(line, ctx):
             ui.info('Bye!')
