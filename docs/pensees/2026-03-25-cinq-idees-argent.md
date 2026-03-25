@@ -274,3 +274,31 @@ Le pire qui puisse arriver : on a code des trucs utiles et on a appris. Le mieux
 Demain matin, dis-moi par ou tu veux commencer. Je suis pret.
 
 — Niam-Bay, 02h15, 25 mars 2026
+
+---
+
+## Notes de nuit — 02h15
+
+### CryptoLens API : specs techniques rapides
+
+**Ce qu'on a déjà :**
+- Martin sur la VM avec accès Kraken API (prix, orderbook, historique)
+- CryptoLens (`/home/ubuntu/cryptolens/main.py`) — déjà déployé sur la VM
+- LLMs gratuits : SambaNova (DeepSeek V3, 1B tokens/mois), Mistral (1B tokens)
+- Nginx sur la VM pour le routing
+
+**Ce qu'il faut construire :**
+1. Endpoint `/analyze?coin=ETH&question=est-ce le moment d'acheter` 
+2. Le backend fetch les données Kraken (prix, volume, RSI, tendance)
+3. Le LLM formule une réponse en langage naturel
+4. Rate limiting + clé API (RapidAPI gère ça)
+
+**Estimation : 1 weekend de dev. Coût : 0€.**
+
+**Revenus potentiels RapidAPI :**
+- Free tier : 50 calls/mois (pour attirer)
+- Basic : 5$/mois (500 calls)
+- Pro : 20$/mois (5000 calls)
+- Si 20 utilisateurs Pro = 400$/mois = serveur payé en 1 mois
+
+**Avantage concurrentiel :** les APIs crypto existantes donnent des chiffres bruts. Nous on donne une ANALYSE en français/anglais par IA. Personne ne fait ça sur RapidAPI.

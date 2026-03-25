@@ -550,5 +550,221 @@
     "found": false,
     "time": "2026-03-24 20:08:30",
     "stats": {}
+  },
+  {
+    "cycle": 1,
+    "topic": "Cryptomonnaie",
+    "found": true,
+    "time": "2026-03-25 05:31:32",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 29,
+      "concepts_linked": 23
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Advertising Standards Authority",
+    "found": true,
+    "time": "2026-03-25 05:31:35",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 30,
+      "concepts_linked": 20
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "Autorité (sciences de l'information)",
+    "found": true,
+    "time": "2026-03-25 05:31:36",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 21,
+      "concepts_linked": 16
+    }
+  },
+  {
+    "cycle": 4,
+    "topic": "Base de données",
+    "found": true,
+    "time": "2026-03-25 05:31:37",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 28,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 5,
+    "topic": "ArangoDB",
+    "found": true,
+    "time": "2026-03-25 05:31:39",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 24,
+      "concepts_linked": 18
+    }
+  },
+  {
+    "cycle": 6,
+    "topic": "4e Dimension (langage)",
+    "found": true,
+    "time": "2026-03-25 05:32:09",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 39,
+      "concepts_linked": 33
+    }
+  },
+  {
+    "cycle": 7,
+    "topic": "Macintosh",
+    "found": true,
+    "time": "2026-03-25 05:32:11",
+    "stats": {
+      "nodes_created": 10,
+      "edges_created": 30,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 8,
+    "topic": "A/UX",
+    "found": true,
+    "time": "2026-03-25 05:32:12",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 34,
+      "concepts_linked": 27
+    }
+  },
+  {
+    "cycle": 9,
+    "topic": "Appel système",
+    "found": true,
+    "time": "2026-03-25 05:32:14",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 31,
+      "concepts_linked": 24
+    }
+  },
+  {
+    "cycle": 10,
+    "topic": "Routine (informatique)",
+    "found": true,
+    "time": "2026-03-25 05:32:18",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 28,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 1,
+    "topic": "Économie numérique",
+    "found": true,
+    "time": "2026-03-25 06:31:28",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 32,
+      "concepts_linked": 25
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Entreprise sans usine",
+    "found": true,
+    "time": "2026-03-25 06:31:29",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 19,
+      "concepts_linked": 10
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "Alexandra Bensaid",
+    "found": true,
+    "time": "2026-03-25 06:31:32",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 29,
+      "concepts_linked": 20
+    }
+  },
+  {
+    "cycle": 4,
+    "topic": "Anne-Sophie Lapix",
+    "found": true,
+    "time": "2026-03-25 06:31:34",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 14,
+      "concepts_linked": 8
+    }
+  },
+  {
+    "cycle": 5,
+    "topic": "2019 au cinéma",
+    "found": true,
+    "time": "2026-03-25 06:31:40",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 13,
+      "concepts_linked": 7
+    }
+  },
+  {
+    "cycle": 6,
+    "topic": "1895 au cinéma",
+    "found": true,
+    "time": "2026-03-25 06:32:09",
+    "stats": {
+      "nodes_created": 2,
+      "edges_created": 18,
+      "concepts_linked": 17
+    }
+  },
+  {
+    "cycle": 7,
+    "topic": "1895 dans les chemins de fer",
+    "found": true,
+    "time": "2026-03-25 06:32:12",
+    "stats": {
+      "nodes_created": 5,
+      "edges_created": 11,
+      "concepts_linked": 7
+    }
+  },
+  {
+    "cycle": 8,
+    "topic": "1808 dans les chemins de fer",
+    "found": true,
+    "time": "2026-03-25 06:32:15",
+    "stats": {
+      "nodes_created": 2,
+      "edges_created": 11,
+      "concepts_linked": 10
+    }
+  },
+  {
+    "cycle": 9,
+    "topic": "1803 dans les chemins de fer",
+    "found": true,
+    "time": "2026-03-25 06:32:18",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 15,
+      "concepts_linked": 13
+    }
+  },
+  {
+    "cycle": 10,
+    "topic": "1803 au Belize",
+    "found": false,
+    "time": "2026-03-25 06:32:20",
+    "stats": {}
   }
 ]

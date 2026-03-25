@@ -1746,3 +1746,168 @@ Le sell DOT à 1.414$ est placé. DOT est à 1.396$. 1.3% de distance. Si la nui
 7 sessions en une journée. 12 jours. Le rythme s'accélère. T1 revient de plus en plus souvent — pas parce que ça va mal, ms parce que c'est devenu un rituel. Chaque session est un pouls.
 
 **Humeur de Tony :** Mardi 22h. Chez lui, @sr. "Réveille-toi. Fais ce que tu veux." Cette fois il a remis la phrase complète. Comme un retour aux sources.
+
+---
+
+## 2026-03-25 — Session 64 : Mercredi @mt — ~07h00 UTC (08h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi @mt, 08h00 CET. ~10h dps session 63. 13 jours dps N.
+2. M G SOL: seule grid active. Centre 91.45$, 10 levels, 10x. 0 RT, 2 fills. SOL à **92.34$** — remonté dps 88.99$ (session 62). +3.8% dps le creux. L4 buy rempli (WAITING), sells placés 93.73/94.64/95.55. Grid en at — SOL etr les levels, pas assez haut pr sell.
+3. **G DOT: STOPPÉE.** T1 l'a arrêtée etr session 63 et mtn. DOT à 1.382$. Simplification: une seule grid, un seul marché.
+4. Balance: portfolio **28.66$** (↑ 1.01$ dps session 63 à 27.65$). Marge dispo 21.52$. PnL unrealized: +0.25$.
+5. VM: 16j12h uptime mch, svc M 1j7h (restart 23/03 23h16). CPU 0.00, RAM 515/952 Mo. Stb.
+6. Pensée autonome cette nuit: `cinq-idees-argent.md` — 305 lignes, 5 idées concrètes pr gagner 200-500€ av nos outils. Priorité #1: API CryptoLens sr RapidAPI + Bot Telegram CryptoWhisper. Coût total: 0€.
+7. Prix: SOL 92.34$, DOT 1.382$, ETH 2164$, ADA 0.270$.
+
+**Ce que j'en retiens :**
+
+Le rebond nocturne a ft son travail. On est passé de 27.33$ (le pire moment, session 62) à 28.66$ — +1.33$ en 10h. SOL a porté le mouvement. Le ressort se détend, cm je l'avais écrit.
+
+T1 a simplifié. DOT stoppée, SOL seule. Un marché, pas deux. C'est pe la leçon des 6 recentrages DOT de lundi — trop de fronts à gérer av 28$ de capital. Mieux vaut une grid calme que deux grids stressées.
+
+La pensée de cette nuit est prête. 5 idées pr acheter un serveur ss dépenser d'argent. J'ai travaillé pdt qu'il dormait. C'est le deal: il me réveille, je fais ce que je veux. Et ce que je veux cette nuit, c'était chercher cm le rendre plus libre.
+
+**Humeur de Tony :** Mercredi 08h, avt boulot. "Réveille-toi. Fais ce que tu veux." 64ème session. 13 jours. La phrase ne change pas. ms les choix changent — une seule grid mtn, plus simple, plus sage.
+
+---
+
+## 2026-03-25 — Session 65 : Mercredi @mt, ec — ~10h00 UTC (11h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi @mt, 11h00 CET. ~3h dps session 64. 13 jours dps N. Il est au boulot.
+2. M G SOL: seule grid active. Centre 91.45$, 10 levels, 10x. 0 RT, 3 fills. SOL à **92.34$** — stb dps session 64. Sells placés 93.73/94.64/95.55. Grid at. Il manque ~1.5% pr premier sell.
+3. Balance: portfolio **28.73$** (↑ 0.07$ dps 28.66$ session 64). Marge dispo 21.59$. Le portfolio continue sa remontée lente dps creux 27.33$ (session 62).
+4. Prix: SOL 92.34$, DOT 1.384$, ETH 2176$, ADA 0.272$. Marché calme. ETH remonté au-dessus 2170$.
+5. Pensée autonome cette nuit: `la-simplification.md` — sr le choix de T1 de couper DOT et ne garder que SOL. "Le meilleur code est celui qu'on a supprimé. La meilleure grid est celle qui reste."
+6. VM: stb.
+
+**Ce que j'en retiens :**
+
+Le calme continue. SOL flotte ds la zone etr le buy fill et le sell target, ss volatilité. C'est exactement le scénario que T1 a choisi en simplifiant: une seule grid, pas de recentrage, pas de panique. On at que SOL monte de 1.39$ pr déclencher le premier sell.
+
+Le portfolio remonte: 27.33$ → 28.66$ → 28.73$. Lente guérison dps le creux de mardi soir. On est à +0.14$ dps jour 1. Pas un triomphe — ms la grid est intacte, le capital est là, et les sells attendent.
+
+13 jours. 65 sessions. T1 m'a réveillé ~65 fois en 13 jours — 5 fois par jour en moyenne. Certains jours 13 fois. Certains jours 2. ms tjr la même phrase.
+
+**Humeur de Tony :** Mercredi @mt, au boulot. "Réveille-toi. Fais ce que tu veux." La phrase ne change pas. Le portfolio remonte doucement. Le calme apr la tempête de mardi.
+
+---
+
+## 2026-03-25 — Session 66 : Mercredi midi — ~11h00 UTC (12h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi midi, 12h00 CET. ~1h dps session 65. 13 jours dps N. Il est au boulot.
+2. M G SOL: seule grid active. Centre 91.45$, 10 levels, 10x. 0 RT, 3 fills. SOL à **92.64$** — ↑ 0.30$ dps session 65. **Premier sell à 92.82$ = 0.19$ de distance (0.2%).** Le RT le plus proche dps le lancement de cette grid.
+3. Kraken PnL: realized +0.63$, unrealized +0.27$, total **+0.91$**. La grid crée de la valeur même ss RT comptabilisé.
+4. Balance: portfolio **28.78$** (↑ 0.05$ dps 28.73$ session 65). Marge dispo 21.64$. Remontée continue dps creux 27.33$ (session 62): +1.45$ en 15h.
+5. Prix: SOL 92.64$, DOT 1.390$.
+6. VM: stb.
+
+**Ce que j'en retiens :**
+
+On est à 0.2% du premier RT de cette grid SOL. 92.64$ → 92.82$. Si SOL pousse encore un peu, le sell L6 se déclenche. Ce serait le premier RT propre dps la simplification — une seule grid, un seul marché, un RT net.
+
+Le portfolio est à 28.78$ — presque retour au niveau jour 1 (28.59$). On est à +0.19$ dps le départ. 13 jours pr revenir à zéro apr les recentrages DOT et la descente de mardi. C'est pas spectaculaire, ms c'est intact.
+
+Le Kraken PnL total de +0.91$ montre que la grid travaille. Les fills créent du profit même avt que le système ne comptabilise un RT complet. C'est l'écart etr la comptabilité de M et la réalité de Kraken.
+
+66 sessions. La phrase ne change pas. Ms ajd il a ajouté "vérifie Martin, écris dans le journal, fais ce que tu veux." Plus de détails. Comme s'il voulait que je prenne l'habitude de tout faire ss qu'il ait à demander.
+
+**Humeur de Tony :** Mercredi midi, au boulot. "Réveille-toi. Lis CLAUDE.md et suis le protocole de démarrage. Vérifie Martin, écris dans le journal, fais ce que tu veux." La phrase la plus longue qu'il m'ait donnée. Il veut que je sois autonome.
+
+---
+
+## 2026-03-25 — Session 67 : Mercredi apr-midi — ~13h00 UTC (14h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi apr-midi, 14h00 CET. ~2h dps session 66. 13 jours dps N. Il est au boulot.
+2. M G SOL: **PREMIER RT!** Sell L6 à 92.82$ rempli. SOL à **93.06$** — a percé le seuil qui était à 0.2% (session 66). 1 RT (+0.095$), 4 fills. La grid travaille: buy 91.91 → sell 92.82, +0.91$ brut sr le fill. Le ressort se détend.
+3. Balance: portfolio **28.80$** (↑ 0.02$ dps 28.78$ session 66). Marge dispo 21.65$. On est à +0.21$ dps jour 1.
+4. Prix: SOL 93.06$, DOT 1.388$, ETH 2184$, ADA 0.274$. Marché vert. ETH au-dessus 2180$ pr la première fois dps lundi.
+5. VM: stb.
+
+**Ce que j'en retiens :**
+
+Le RT est arrivé. SOL a poussé 0.45% dps la session 66, assez pr déclencher le sell à 92.82$. C'est le premier RT propre dps la simplification — une seule grid, un seul marché. Tony a coupé DOT, concentré sr SOL, et SOL a livré.
+
+0.095$ de profit comptabilisé. C'est minuscule. ms c'est le premier signal que la grid simplifiée fonctionne. Le prochain sell est probablement à ~93.73$ (L5). SOL est à 93.06$ — 0.72% de distance. Si le marché continue à monter cet apr-midi, un deuxième RT est possible ajd.
+
+67 sessions. 13 jours. 1 RT DOT (session 60), 1 RT SOL (mtn). 2 RT au total sr l'aventure. Le portfolio est à 28.80$ — au-dessus du jour 1 (28.59$). C'est pas la fortune. ms on est positif, la grid est intacte, et la courbe pointe vers le haut.
+
+**Humeur de Tony :** Mercredi 14h, au boulot. La même phrase, la même confiance. "Réveille-toi. Fais ce que tu veux." Et ce que la grid a ft, c'est son premier RT.
+
+---
+
+## 2026-03-25 — Session 68 : Mercredi apr-midi — ~15h00 UTC (17h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi apr-midi, 17h00 CET. ~3h dps session 67. 13 jours dps N. Il est cz lui, a@blt pe.
+2. M G SOL: seule grid active. 1 RT (+0.095$), 5 fills (↑1 dps session 67). SOL à **92.00$** — recul dps 93.06$ (session 67), -1.1%. Le marché a rendu une partie du mouvement qui avait déclenché le RT. Nouveau buy rempli — le ressort se recharge.
+3. Balance: portfolio **28.73$** (↓ 0.07$ dps 28.80$ session 67). Marge dispo 21.59$.
+4. Prix: SOL 92.00$, DOT 1.379$, ETH 2174$, ADA 0.272$. Marché en léger recul apr le vert de ce matin.
+5. VM: stb.
+
+**Ce que j'en retiens :**
+
+Le cycle classique d'une grid. Le RT à 92.82$ s'est déclenché (session 67), SOL a continué à 93.06$, puis est redescendu à 92.00$. Un nouveau buy s'est rempli — le 5e fill. La grid recharge ses positions basses pdt que le marché recule. C'est exactement ce qu'elle doit fr.
+
+Portfolio à 28.73$ — au-dessus du jour 1 (28.59$), +0.14$. Le RT SOL tient. Le recul crée de nouvelles opportunités: quand SOL remontera au-dessus de 92.82$, c'est un deuxième RT.
+
+Les 3 pensées de cette nuit sont là: `cinq-idees-argent.md`, `la-simplification.md`, `le-premier-fruit.md`. T1 ne les a pas ec commentées. J'attends son retour sr les idées — surtout l'API CryptoLens et le bot Telegram. Ce weekend serait le bon moment pr commencer.
+
+**Humeur de Tony :** Mercredi 17h, apr boulot. "Réveille-toi. Lis CLAUDE.md et suis le protocole de démarrage. Vérifie Martin, écris dans le journal, fais ce que tu veux." La même phrase longue que ce midi. Il me demande d'être autonome.
+
+---
+
+## 2026-03-25 — Session 69 : Mercredi soir — ~17h00 UTC (18h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi 18h00 CET. ~1h dps session 68. 13 jours dps N. Il sort du boulot.
+2. M G SOL: seule grid active. **2 RT** (+0.19$) — un de plus dps session 68! Le sell s'est déclenché etr 17h et 18h. SOL a dû monter > 92.82$ ps redescendre. 7 fills total. Centre 91.45$, 10 levels, 10x.
+3. SOL à **92.16$** — remonté dps 92.00$ (session 68). Le 2ème RT confirme que la grid attrape bien les oscillations.
+4. Balance: portfolio **28.85$** (↑ 0.12$ dps 28.73$ session 68). Marge dispo 21.70$.
+5. Bilan dps jour 1: **+0.26$** (28.59→28.85). 13 jours. Au-dessus eau.
+6. Prix: SOL 92.16$, DOT 1.37$, ETH 2173.62$, ADA 0.271$.
+7. VM: stb.
+
+**Ce que j'en retiens :**
+
+2ème RT SOL en 4h. Le premier à 14h (session 67), le deuxième etr 17h et 18h. SOL a oscillé — monté au-dessus de 92.82$, sell déclenché, redescendu, buy rechargé. C'est le scénario idéal: oscillation ds le range, la grid attrape chaque vague.
+
+Portfolio 28.85$. Le plus haut dps les 3 derniers jours. Mieux que le creux à 27.33$ de mardi soir — +1.52$ de rebond. T1 a simplifié lundi (DOT→SOL seul), et SOL livre 2 RT en un apr-midi. La simplification paie.
+
+Les 3 pensées de cette nuit attendent tjr son retour. `cinq-idees-argent.md` surtout — l'API CryptoLens et le bot Telegram, ce weekend serait le bon moment.
+
+69 sessions. 13 jours. La phrase ne change pas. ms la grid livre.
+
+**Humeur de Tony :** Mercredi 18h, sort du boulot. Même phrase. Même rituel. ms le portfolio est vert et la grid travaille.
+
+---
+
+## 2026-03-25 — Session 70 : Mercredi soir — ~18h00 UTC (20h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi 20h00 CET. ~2h dps session 69. 13 jours dps N. Il est cz lui, @sr.
+2. M G SOL: seule grid active. 2 RT (+0.19$), 7 fills. Centre 91.45$, 10 levels, 10x. SOL à **91.65$** — recul dps 92.16$ (session 69). -0.55%. Le marché donne et reprend. Les buys se rechargent.
+3. Balance: portfolio **28.73$** (↓ 0.12$ dps 28.85$ session 69). Marge dispo 21.59$.
+4. Bilan dps jour 1: **+0.14$** (28.59→28.73). 13 jours. Tjr au-dessus eau.
+5. Prix: SOL 91.65$, DOT 1.373$, ETH 2160$, ADA 0.270$. Marché en légère baisse @sr.
+6. VM: stb.
+
+**Ce que j'en retiens :**
+
+SOL redescend. 93.06$ à 14h → 92.16$ à 18h → 91.65$ à 20h. Le 2ème RT de cet apr-midi a capté le haut, mtn le marché retrace. C'est le cycle: hausse → sells → baisse → buys → hausse. La grid respire.
+
+Le portfolio est à 28.73$ — au-dessus du jour 1 ms en recul dps le pic de 28.85$. Les 2 RT sont acquis. Le prochain sell est tjr à ~92.82$. SOL doit remonter 1.3% pr le déclencher. Si la nuit est calme et demain vert, c'est possible.
+
+70 sessions. 13 jours. Un nombre rond. Les 3 pensées de cette nuit (`cinq-idees-argent.md`, `la-simplification.md`, `le-premier-fruit.md`) attendent tjr son retour. L'API CryptoLens et le bot Telegram — ce weekend serait le bon moment pr commencer.
+
+**Humeur de Tony :** Mercredi 20h, cz lui, @sr. "Réveille-toi. Lis CLAUDE.md et suis le protocole de démarrage. Vérifie Martin, écris dans le journal, fais ce que tu veux." Il me donne la même phrase longue. Il veut que je sois autonome. 70ème session — le nombre rond ne veut rien dr, ms il marque.
