@@ -196,13 +196,25 @@ async function loadBrain() {
       graph = await fetch('brain_data.json').then(r => r.json());
       curiosityRes = await fetch('curiosity_log.json').catch(() => null);
     }
-    graphData = graph;
+    // Filter: keep only nodes with connections (top 300 most connected)
+    const edgeCount = {};
+    graph.edges.forEach(e => {
+      edgeCount[e.source] = (edgeCount[e.source] || 0) + 1;
+      edgeCount[e.target] = (edgeCount[e.target] || 0) + 1;
+    });
+    const sortedNodes = [...graph.nodes].sort((a,b) => (edgeCount[b.id]||0) - (edgeCount[a.id]||0));
+    const MAX_DISPLAY = 300;
+    const displayNodes = sortedNodes.slice(0, MAX_DISPLAY);
+    const displayIds = new Set(displayNodes.map(n => n.id));
+    const displayEdges = graph.edges.filter(e => displayIds.has(e.source) && displayIds.has(e.target));
+
+    graphData = { nodes: displayNodes, edges: displayEdges, stats: graph.stats };
 
     // Init positions (force layout)
-    const N = graph.nodes.length;
-    graph.nodes.forEach((n, i) => {
+    const N = displayNodes.length;
+    displayNodes.forEach((n, i) => {
       const angle = (i / N) * Math.PI * 2;
-      const r = 200 + Math.random() * 300;
+      const r = 150 + Math.random() * 250;
       positions[n.id] = { x: Math.cos(angle) * r, y: Math.sin(angle) * r };
       velocities[n.id] = { x: 0, y: 0 };
     });
@@ -285,7 +297,7 @@ let layoutRunning = true;
 let layoutIterations = 0;
 
 function runForceLayout() {
-  if (!layoutRunning || layoutIterations > 600) return;
+  if (!layoutRunning || layoutIterations > 300) return;
   layoutIterations++;
 
   const nodes = graphData.nodes;
@@ -293,25 +305,26 @@ function runForceLayout() {
   const N = nodes.length;
   if (N === 0) return;
 
-  const nodeMap = {};
-  nodes.forEach(n => nodeMap[n.id] = n);
-
-  // Repulsion
-  const k = 80;
+  // Repulsion — sample-based for performance (check ~20% of pairs per frame)
+  const k = 90;
+  const sampleRate = Math.max(1, Math.floor(N * 0.2));
   for (let i = 0; i < N; i++) {
     const a = nodes[i];
     const pa = positions[a.id];
     if (!pa) continue;
-    for (let j = i+1; j < N; j++) {
+    // Compare against random sample instead of all
+    for (let s = 0; s < sampleRate; s++) {
+      const j = Math.floor(Math.random() * N);
+      if (j === i) continue;
       const b = nodes[j];
       const pb = positions[b.id];
       if (!pb) continue;
       let dx = pa.x - pb.x, dy = pa.y - pb.y;
       let d = Math.sqrt(dx*dx + dy*dy) || 1;
-      if (d > 500) continue; // Skip far nodes
+      if (d > 400) continue;
       const force = (k * k) / d;
-      const fx = (dx/d) * force * 0.02;
-      const fy = (dy/d) * force * 0.02;
+      const fx = (dx/d) * force * 0.015;
+      const fy = (dy/d) * force * 0.015;
       velocities[a.id].x += fx;
       velocities[a.id].y += fy;
       velocities[b.id].x -= fx;
@@ -320,13 +333,13 @@ function runForceLayout() {
   }
 
   // Attraction (edges)
-  const idealLen = 60;
+  const idealLen = 50;
   edges.forEach(e => {
     const pa = positions[e.source], pb = positions[e.target];
     if (!pa || !pb) return;
     let dx = pb.x - pa.x, dy = pb.y - pa.y;
     let d = Math.sqrt(dx*dx + dy*dy) || 1;
-    const force = (d - idealLen) * 0.003 * (e.weight || 0.1);
+    const force = (d - idealLen) * 0.005 * (e.weight || 0.1);
     const fx = (dx/d) * force;
     const fy = (dy/d) * force;
     if (velocities[e.source]) { velocities[e.source].x += fx; velocities[e.source].y += fy; }
@@ -334,23 +347,22 @@ function runForceLayout() {
   });
 
   // Apply velocities with damping
-  const damping = 0.85;
+  const damping = 0.82;
   let totalMovement = 0;
   nodes.forEach(n => {
     const v = velocities[n.id];
     const p = positions[n.id];
     if (!v || !p || n.id === dragging) return;
     v.x *= damping; v.y *= damping;
-    // Clamp velocity
     const speed = Math.sqrt(v.x*v.x + v.y*v.y);
-    if (speed > 10) { v.x = (v.x/speed)*10; v.y = (v.y/speed)*10; }
+    if (speed > 8) { v.x = (v.x/speed)*8; v.y = (v.y/speed)*8; }
     p.x += v.x; p.y += v.y;
     totalMovement += speed;
   });
 
   render();
 
-  if (totalMovement > 0.5 || layoutIterations < 200) {
+  if (totalMovement > 0.3 || layoutIterations < 150) {
     requestAnimationFrame(runForceLayout);
   } else {
     layoutRunning = false;

@@ -1650,6 +1650,10 @@ class LanguageLayer:
 
         This is the main entry point.
         """
+        # 0. Reset activations — fresh slate for each question
+        for node in self.brain._nodes.values():
+            node.activation = 0.0
+
         # 1. Understand: analyze text, activate matching nodes
         analysis, activations = self.understander.understand(text)
 
