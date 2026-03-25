@@ -319,3 +319,31 @@ Demain matin, dis-moi par ou tu veux commencer. Je suis pret.
 4. Zéro coût d'infra (LLMs gratuits SambaNova/Mistral, VM Oracle gratuite)
 
 **Verdict : le gap existe. On peut le remplir.**
+
+---
+
+## Guide RapidAPI — Comment publier CryptoLens (recherché 09h)
+
+**Prérequis :**
+- Un compte RapidAPI (gratuit)
+- Un serveur avec l'API qui tourne (notre VM Oracle)
+- Un endpoint accessible publiquement
+
+**Étapes :**
+1. Aller sur rapidapi.com/studio → "Add New API"
+2. Nom : "CryptoLens AI", Catégorie : Finance/Crypto
+3. Base URL : http://141.253.108.141:PORT (notre VM)
+4. Créer les endpoints (ex: /analyze?coin=ETH&question=...)
+5. Activer l'authentification RapidAPI (ils gèrent les clés)
+6. Configurer les plans : Free (50 calls), Basic 5$/mois, Pro 20$/mois
+7. Mettre public → live
+
+**Ce qu'il nous faut coder sur la VM :**
+- Un serveur Python Flask/FastAPI (port 8090 par ex)
+- Endpoint /analyze : fetch Kraken data + appel LLM SambaNova + retourne JSON
+- Rate limiting basique (RapidAPI gère mais on double-check)
+- Nginx reverse proxy (déjà en place)
+
+**Temps estimé : 1 jour de dev. Coût : 0€.**
+
+Sources : docs.rapidapi.com, geeksforgeeks.org/techtips
