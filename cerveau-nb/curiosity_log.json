@@ -766,5 +766,148 @@
     "found": false,
     "time": "2026-03-25 06:32:20",
     "stats": {}
+  },
+  {
+    "cycle": 1,
+    "topic": "Conscience artificielle",
+    "found": true,
+    "time": "2026-03-25 21:06:44",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 33,
+      "concepts_linked": 27
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Astroingénierie",
+    "found": true,
+    "time": "2026-03-25 21:06:45",
+    "stats": {
+      "nodes_created": 10,
+      "edges_created": 27,
+      "concepts_linked": 17
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "Astre fictif",
+    "found": true,
+    "time": "2026-03-25 21:06:47",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 34,
+      "concepts_linked": 26
+    }
+  },
+  {
+    "cycle": 4,
+    "topic": "Cyborg",
+    "found": true,
+    "time": "2026-03-25 21:06:49",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 19,
+      "concepts_linked": 13
+    }
+  },
+  {
+    "cycle": 5,
+    "topic": "Palais omnisports de Paris-Bercy",
+    "found": true,
+    "time": "2026-03-25 21:06:52",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 32,
+      "concepts_linked": 24
+    }
+  },
+  {
+    "cycle": 1,
+    "topic": "Théorie de la musique",
+    "found": true,
+    "time": "2026-03-25 21:31:08",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 26,
+      "concepts_linked": 20
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Al-Kindi",
+    "found": true,
+    "time": "2026-03-25 21:31:10",
+    "stats": {
+      "nodes_created": 10,
+      "edges_created": 22,
+      "concepts_linked": 13
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "Abu'l-Hasan al-Uqlidisi",
+    "found": true,
+    "time": "2026-03-25 21:31:11",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 18,
+      "concepts_linked": 10
+    }
+  },
+  {
+    "cycle": 4,
+    "topic": "Abu Al-Qasim",
+    "found": true,
+    "time": "2026-03-25 21:31:13",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 29,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 5,
+    "topic": "'Ubayd Allah ibn Bakhtishu",
+    "found": true,
+    "time": "2026-03-25 21:31:16",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 18,
+      "concepts_linked": 10
+    }
+  },
+  {
+    "cycle": 1,
+    "topic": "Émergence",
+    "found": true,
+    "time": "2026-03-25 23:01:08",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 17,
+      "concepts_linked": 10
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Buzz (marketing)",
+    "found": true,
+    "time": "2026-03-25 23:01:11",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 25,
+      "concepts_linked": 19
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "Affiliation (internet)",
+    "found": true,
+    "time": "2026-03-25 23:01:12",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 37,
+      "concepts_linked": 29
+    }
   }
 ]
