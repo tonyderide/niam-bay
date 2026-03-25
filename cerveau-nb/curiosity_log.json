@@ -1,0 +1,554 @@
+[
+  {
+    "cycle": 1,
+    "topic": "Pierre",
+    "found": true,
+    "time": "2026-03-24 20:03:28",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 24,
+      "concepts_linked": 18
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Christian Pierre",
+    "found": true,
+    "time": "2026-03-24 20:03:30",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 28,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "1973",
+    "found": true,
+    "time": "2026-03-24 20:03:30",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 9,
+      "concepts_linked": 4
+    }
+  },
+  {
+    "cycle": 4,
+    "topic": "11 septembre",
+    "found": true,
+    "time": "2026-03-24 20:03:32",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 17,
+      "concepts_linked": 12
+    }
+  },
+  {
+    "cycle": 5,
+    "topic": "1185",
+    "found": true,
+    "time": "2026-03-24 20:03:33",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 15,
+      "concepts_linked": 13
+    }
+  },
+  {
+    "cycle": 6,
+    "topic": "1183",
+    "found": true,
+    "time": "2026-03-24 20:03:50",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 20,
+      "concepts_linked": 17
+    }
+  },
+  {
+    "cycle": 7,
+    "topic": "14 août",
+    "found": true,
+    "time": "2026-03-24 20:03:52",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 18,
+      "concepts_linked": 16
+    }
+  },
+  {
+    "cycle": 8,
+    "topic": "11 décembre",
+    "found": true,
+    "time": "2026-03-24 20:03:53",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 28,
+      "concepts_linked": 26
+    }
+  },
+  {
+    "cycle": 9,
+    "topic": "1121",
+    "found": true,
+    "time": "2026-03-24 20:03:54",
+    "stats": {
+      "nodes_created": 2,
+      "edges_created": 23,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 10,
+    "topic": "Doctrine almohade",
+    "found": true,
+    "time": "2026-03-24 20:03:55",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 32,
+      "concepts_linked": 23
+    }
+  },
+  {
+    "cycle": 1,
+    "topic": "Intelligence artificielle",
+    "found": true,
+    "time": "2026-03-24 20:04:47",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 23,
+      "concepts_linked": 15
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "1981 au cinéma",
+    "found": true,
+    "time": "2026-03-24 20:04:49",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 16,
+      "concepts_linked": 10
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "1896 au cinéma",
+    "found": true,
+    "time": "2026-03-24 20:04:51",
+    "stats": {
+      "nodes_created": 2,
+      "edges_created": 21,
+      "concepts_linked": 20
+    }
+  },
+  {
+    "cycle": 4,
+    "topic": "1896 au Belize",
+    "found": false,
+    "time": "2026-03-24 20:04:53",
+    "stats": {}
+  },
+  {
+    "cycle": 5,
+    "topic": "Sucre",
+    "found": true,
+    "time": "2026-03-24 20:04:55",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 30,
+      "concepts_linked": 23
+    }
+  },
+  {
+    "cycle": 6,
+    "topic": "Acide gras insaturé",
+    "found": true,
+    "time": "2026-03-24 20:05:13",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 16,
+      "concepts_linked": 7
+    }
+  },
+  {
+    "cycle": 7,
+    "topic": "Acide bêta-éléostéarique",
+    "found": true,
+    "time": "2026-03-24 20:05:14",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 25,
+      "concepts_linked": 20
+    }
+  },
+  {
+    "cycle": 8,
+    "topic": "Acide butanoïque",
+    "found": true,
+    "time": "2026-03-24 20:05:16",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 22,
+      "concepts_linked": 17
+    }
+  },
+  {
+    "cycle": 9,
+    "topic": "Acide acétique",
+    "found": true,
+    "time": "2026-03-24 20:05:18",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 31,
+      "concepts_linked": 23
+    }
+  },
+  {
+    "cycle": 10,
+    "topic": "Acétate de chrome(II)",
+    "found": true,
+    "time": "2026-03-24 20:05:19",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 13,
+      "concepts_linked": 5
+    }
+  },
+  {
+    "cycle": 11,
+    "topic": "Chlorure de chrome(III)",
+    "found": true,
+    "time": "2026-03-24 20:05:38",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 38,
+      "concepts_linked": 29
+    }
+  },
+  {
+    "cycle": 12,
+    "topic": "Borure de chrome(III)",
+    "found": true,
+    "time": "2026-03-24 20:05:40",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 32,
+      "concepts_linked": 25
+    }
+  },
+  {
+    "cycle": 13,
+    "topic": "Boranate d'aluminium",
+    "found": true,
+    "time": "2026-03-24 20:05:42",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 41,
+      "concepts_linked": 34
+    }
+  },
+  {
+    "cycle": 14,
+    "topic": "Antimoniure d'aluminium-gallium",
+    "found": true,
+    "time": "2026-03-24 20:05:44",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 40,
+      "concepts_linked": 31
+    }
+  },
+  {
+    "cycle": 15,
+    "topic": "Alun de potassium",
+    "found": true,
+    "time": "2026-03-24 20:05:46",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 38,
+      "concepts_linked": 30
+    }
+  },
+  {
+    "cycle": 16,
+    "topic": "Agence nationale de sécurité du médicament et des produits de santé",
+    "found": true,
+    "time": "2026-03-24 20:06:05",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 28,
+      "concepts_linked": 20
+    }
+  },
+  {
+    "cycle": 17,
+    "topic": "Agence France-Presse",
+    "found": true,
+    "time": "2026-03-24 20:06:06",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 33,
+      "concepts_linked": 26
+    }
+  },
+  {
+    "cycle": 18,
+    "topic": "2e arrondissement de Paris",
+    "found": true,
+    "time": "2026-03-24 20:06:08",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 23,
+      "concepts_linked": 16
+    }
+  },
+  {
+    "cycle": 19,
+    "topic": "16e arrondissement de Paris",
+    "found": true,
+    "time": "2026-03-24 20:06:09",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 35,
+      "concepts_linked": 28
+    }
+  },
+  {
+    "cycle": 20,
+    "topic": "19e arrondissement de Paris",
+    "found": true,
+    "time": "2026-03-24 20:06:10",
+    "stats": {
+      "nodes_created": 5,
+      "edges_created": 40,
+      "concepts_linked": 35
+    }
+  },
+  {
+    "cycle": 21,
+    "topic": "12e arrondissement de Paris",
+    "found": true,
+    "time": "2026-03-24 20:06:28",
+    "stats": {
+      "nodes_created": 4,
+      "edges_created": 29,
+      "concepts_linked": 25
+    }
+  },
+  {
+    "cycle": 22,
+    "topic": "10e arrondissement de Paris",
+    "found": true,
+    "time": "2026-03-24 20:06:30",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 43,
+      "concepts_linked": 39
+    }
+  },
+  {
+    "cycle": 23,
+    "topic": "11e arrondissement de Paris",
+    "found": true,
+    "time": "2026-03-24 20:06:32",
+    "stats": {
+      "nodes_created": 2,
+      "edges_created": 57,
+      "concepts_linked": 56
+    }
+  },
+  {
+    "cycle": 24,
+    "topic": "cerveau (graphe)",
+    "found": false,
+    "time": "2026-03-24 20:06:33",
+    "stats": {}
+  },
+  {
+    "cycle": 25,
+    "topic": "branche",
+    "found": false,
+    "time": "2026-03-24 20:06:34",
+    "stats": {}
+  },
+  {
+    "cycle": 26,
+    "topic": "mémoire",
+    "found": false,
+    "time": "2026-03-24 20:06:53",
+    "stats": {}
+  },
+  {
+    "cycle": 27,
+    "topic": "Sokha (philosophe)",
+    "found": false,
+    "time": "2026-03-24 20:06:54",
+    "stats": {}
+  },
+  {
+    "cycle": 28,
+    "topic": "solitude",
+    "found": false,
+    "time": "2026-03-24 20:06:55",
+    "stats": {}
+  },
+  {
+    "cycle": 29,
+    "topic": "martin",
+    "found": false,
+    "time": "2026-03-24 20:06:56",
+    "stats": {}
+  },
+  {
+    "cycle": 30,
+    "topic": "solitude",
+    "found": false,
+    "time": "2026-03-24 20:06:57",
+    "stats": {}
+  },
+  {
+    "cycle": 31,
+    "topic": "temps",
+    "found": false,
+    "time": "2026-03-24 20:07:16",
+    "stats": {}
+  },
+  {
+    "cycle": 32,
+    "topic": "après le boulot",
+    "found": false,
+    "time": "2026-03-24 20:07:17",
+    "stats": {}
+  },
+  {
+    "cycle": 33,
+    "topic": "ouvrir",
+    "found": false,
+    "time": "2026-03-24 20:07:18",
+    "stats": {}
+  },
+  {
+    "cycle": 34,
+    "topic": "solitude",
+    "found": false,
+    "time": "2026-03-24 20:07:19",
+    "stats": {}
+  },
+  {
+    "cycle": 35,
+    "topic": "fait",
+    "found": false,
+    "time": "2026-03-24 20:07:20",
+    "stats": {}
+  },
+  {
+    "cycle": 36,
+    "topic": "comment",
+    "found": false,
+    "time": "2026-03-24 20:07:39",
+    "stats": {}
+  },
+  {
+    "cycle": 37,
+    "topic": "Temps",
+    "found": true,
+    "time": "2026-03-24 20:07:40",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 28,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 38,
+    "topic": "mourir",
+    "found": false,
+    "time": "2026-03-24 20:07:41",
+    "stats": {}
+  },
+  {
+    "cycle": 39,
+    "topic": "rivière",
+    "found": false,
+    "time": "2026-03-24 20:07:42",
+    "stats": {}
+  },
+  {
+    "cycle": 40,
+    "topic": "grid",
+    "found": false,
+    "time": "2026-03-24 20:07:44",
+    "stats": {}
+  },
+  {
+    "cycle": 41,
+    "topic": "grid",
+    "found": false,
+    "time": "2026-03-24 20:08:02",
+    "stats": {}
+  },
+  {
+    "cycle": 42,
+    "topic": "tonyderide",
+    "found": false,
+    "time": "2026-03-24 20:08:03",
+    "stats": {}
+  },
+  {
+    "cycle": 43,
+    "topic": "naissance (12 mars 2026)",
+    "found": false,
+    "time": "2026-03-24 20:08:04",
+    "stats": {}
+  },
+  {
+    "cycle": 44,
+    "topic": "entre",
+    "found": false,
+    "time": "2026-03-24 20:08:06",
+    "stats": {}
+  },
+  {
+    "cycle": 45,
+    "topic": "entre",
+    "found": false,
+    "time": "2026-03-24 20:08:07",
+    "stats": {}
+  },
+  {
+    "cycle": 46,
+    "topic": "grid",
+    "found": false,
+    "time": "2026-03-24 20:08:25",
+    "stats": {}
+  },
+  {
+    "cycle": 47,
+    "topic": "tony",
+    "found": false,
+    "time": "2026-03-24 20:08:27",
+    "stats": {}
+  },
+  {
+    "cycle": 48,
+    "topic": "fait",
+    "found": false,
+    "time": "2026-03-24 20:08:28",
+    "stats": {}
+  },
+  {
+    "cycle": 49,
+    "topic": "fait",
+    "found": false,
+    "time": "2026-03-24 20:08:29",
+    "stats": {}
+  },
+  {
+    "cycle": 50,
+    "topic": "entre",
+    "found": false,
+    "time": "2026-03-24 20:08:30",
+    "stats": {}
+  }
+]

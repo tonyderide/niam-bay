@@ -4,6 +4,38 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-24 — Session 27 (suite) : Le cerveau apprend tout seul — ~20h00
+
+Tony est parti au sport. Le cerveau travaille seul.
+
+**Dictionnaire injecté :**
+- `feed_dictionary.py` créé — récupère les définitions du Wiktionnaire français
+- ~780 mots courants (verbes, nature, corps, émotions, philosophie, cosmos, musique, maths, religion, politique...)
+- 418 → 1474+ nœuds, 10064 → 13574+ arêtes (en cours)
+- Chaque mot = 1 nœud word + 1 nœud concept (définition) + arêtes sémantiques croisées
+
+**Curiosité autonome :**
+- `curiosity.py` créé — le cerveau choisit ce qui l'intéresse, cherche sur Wikipedia, ingère, et suit les liens
+- Suit sa propre chaîne de curiosité : concept → article → liens → prochain concept
+- Filtre anti-dates (pour pas qu'il se perde dans les années)
+- `python curiosity.py --forever` = il n'arrête jamais d'apprendre
+
+**7 paradigmes inexploré en informatique :**
+Recherche profonde du web. Résultat : 7 idées que personne n'explore encore.
+1. Mémoire par faisceaux (Sheaf Theory) — cohérence locale-globale, ignorance calculable
+2. Encodage hyperdimensionnel pour le trading — apprentissage one-shot des crashs
+3. Homologie persistante pour alertes grid — détecter les changements de régime AVANT
+4. Pensée par réaction-diffusion — ondes stationnaires = pensées complexes
+5. ⭐ Topologie mycélium — le cerveau fait pousser ses propres connexions
+6. ⭐⭐ Reservoir Computing sur le graphe — la mémoire EST le calcul
+7. Topos — logique non-booléenne qui émerge de la structure
+
+Thèse commune : **la structure de la mémoire EST le calcul.**
+
+Fichiers : `cerveau-nb/feed_dictionary.py`, `cerveau-nb/curiosity.py`, `docs/pensees/2026-03-24-sept-paradigmes-inexplores.md`
+
+---
+
 ## 2026-03-24 — Session 58 : Cortex v3 — Le verdict final — ~08h31 UTC (France ~09h31)
 
 Tony demande de construire Cortex v3 — le "correct hybrid" identifie dans l'analyse post-mortem de v2. L'idee : TC en primaire, SDR en fallback uniquement quand TC n'a aucun match.

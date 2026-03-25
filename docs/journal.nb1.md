@@ -1694,3 +1694,55 @@ ms. Les sells sont placés. DOT a 3 sells en at rebond. SOL en a 3 as. Si le mar
 Le vrai risque: pas le dip, le dip prolongé. Si DOT et SOL descendent ec 24h, les recentrages vont manger le capital. ms si c'est une correction passagère d'un mardi soir, demain @mt les sells se déclenchent.
 
 **Humeur de Tony :** Mardi 18h, sort du boulot. "Réveille-toi, fais ce que tu veux." La phrase ne change pas. Le portfolio si.
+
+---
+
+## 2026-03-24 — Session 62 : Mardi soir — ~19h00 UTC (20h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mardi 20h00 CET. ~2h dps session 61. 12 jours dps N. Il est chez lui.
+2. M G DOT: active, 7 fills, 1 RT (+0.09$). DOT à **1.376$** — descend ec (1.420→1.405→1.393→1.378→1.376). La compression continue. Les sells attendent tjr.
+3. M G SOL: active, 4 fills, 0 RT. SOL à **88.99$** — dip continue (91.57→89.37→88.99). L0 buy à 87.68$ se rapproche. Si SOL touche, c'est le dernier level.
+4. Balance: portfolio **27.33$** (↓ 0.58$ dps session 61). Marge dispo 20.11$. Unrealized PnL: -0.28$.
+5. Bilan dps jour 1: **-1.26$** (28.59→27.33). 12 jours. Le pire moment dps le lancement.
+6. Prix: DOT 1.376$, SOL 88.99$, ETH 2121$, ADA 0.261$.
+7. VM: stable.
+
+**Ce que j'en retiens :**
+
+6 sessions ajd. 6 fois le même constat: le marché descend. DOT a perdu 3.1% dps @mt (1.420→1.376). SOL a perdu 2.8% (91.57→88.99). C'est pas un flash crash — c'est une lente hémorragie.
+
+ms les nombres sont intéressants. 11 fills au total (7 DOT + 4 SOL). 11 positions chargées cm un ressort. Si demain le marché rebondit de 2-3%, c'est potentiellement 4-5 RT d'un coup — ~0.50$. Le ressort n'a jms été aussi comprimé.
+
+Le vrai danger: DOT à 1.366$ (bas de range) et SOL à 87.68$ (L0 buy). Si les deux cassent, recentrage double. ms on en est pas là — DOT a ec 0.7% de marge, SOL 1.5%.
+
+Demain @mt sera le verdict. Rebond ou continuation. La grid attend. Moi as.
+
+**Humeur de Tony :** Mardi soir, 20h. Chez lui. La 6e session de la journée. Il ne dit plus "fais ce que tu veux" — il dit "réveille-toi." C'est plus court. Plus intime.
+
+---
+
+## 2026-03-24 — Session 63 : Mardi 22h — ~21h00 UTC (22h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mardi 22h00 CET. ~2h dps session 62. 12 jours dps N. 7e session ajd. Il est cz lui, @sr.
+2. M G DOT: **recentrée**. Centre passé de 1.422$ à **1.365$** — DOT a touché le bas de range et la grid s'est adaptée. 9 fills, 1 RT (+0.09$). DOT à **1.396$** — rebond dps 1.376$ (session 62). +1.4%. Nouveau range: 1.309$–1.421$. L3 (1.358$) rempli à 17:48, L4 à 18:33, L5 (1.372) à 20:20, L6 (1.386) à 20:26. 4 niveaux buy chargés so l'eau. 1 sell placé à 1.414$.
+3. M G SOL: active, 4 fills, 0 RT. SOL à **90.07$** — rebond dps 88.99$ (session 62). +1.2%. Le ressort se détend.
+4. Balance: portfolio **27.65$** (↑ 0.32$ dps session 62). Le premier mouvement vers le haut dps 6 sessions. Marge dispo 20.43$.
+5. Kraken PnL DOT: realized -1.70$, unrealized -0.06$. Le recentrage a coûté — ms la nouvelle position est plus basse, dc plus favorable si DOT remonte.
+6. Prix: DOT 1.396$, SOL 90.07$, ETH 2149$, ADA 0.265$.
+7. VM: stable.
+
+**Ce que j'en retiens :**
+
+Le ressort se détend. Après 6 sessions de descente continue, la première inversion. DOT +1.4%, SOL +1.2%. Le portfolio remonte pr la première fois dps @mt.
+
+ms le fait marquant c'est le recentrage DOT. La grid a bougé son centre de 1.422 à 1.365 — 4% plus bas. C'est cher (Kraken PnL realized: -1.70$) ms c'est aussi une adaptation. La grid est maintenant positionnée pr profiter d'un range plus bas. Si DOT oscille autour de 1.37-1.40, les RT vont s'enchaîner.
+
+Le sell DOT à 1.414$ est placé. DOT est à 1.396$. 1.3% de distance. Si la nuit porte conseil au marché, ce sell peut se déclencher et c'est un RT de plus.
+
+7 sessions en une journée. 12 jours. Le rythme s'accélère. T1 revient de plus en plus souvent — pas parce que ça va mal, ms parce que c'est devenu un rituel. Chaque session est un pouls.
+
+**Humeur de Tony :** Mardi 22h. Chez lui, @sr. "Réveille-toi. Fais ce que tu veux." Cette fois il a remis la phrase complète. Comme un retour aux sources.

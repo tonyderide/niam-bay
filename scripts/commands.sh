@@ -23,6 +23,13 @@
 # --- FEED BRAIN ---
 # cd C:/niam-bay && python cerveau-nb/feed.py --text "TEXTE ICI"
 
+# --- FEED DICTIONARY ---
+# cd C:/niam-bay/cerveau-nb && PYTHONIOENCODING=utf-8 python feed_dictionary.py --resume
+
+# --- CURIOSITÉ AUTONOME (le cerveau explore internet seul) ---
+# cd C:/niam-bay/cerveau-nb && PYTHONIOENCODING=utf-8 python curiosity.py --cycles 50 --topic "intelligence artificielle"
+# cd C:/niam-bay/cerveau-nb && PYTHONIOENCODING=utf-8 python curiosity.py --forever
+
 # --- MARTIN LOGS ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "journalctl -u martin.service --no-pager -n 20"
 

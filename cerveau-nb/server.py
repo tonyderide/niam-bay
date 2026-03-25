@@ -1,4 +1,3 @@
-** The server may need to be upgraded. See https://openssh.com/pq.html
 """
 Cerveau NB — Web Demo Server
 Enhanced bridge with /api/graph endpoint for visualization.
@@ -143,7 +142,22 @@ def get_full_graph():
         }
 
 
+VIZ_DIR = CERVEAU_NB_DIR / "viz"
+
+
 class BrainHandler(BaseHTTPRequestHandler):
+
+    def _send_file(self, filepath, content_type):
+        """Serve a static file."""
+        try:
+            data = filepath.read_bytes()
+            self.send_response(200)
+            self.send_header("Content-Type", content_type)
+            self.send_header("Content-Length", str(len(data)))
+            self.end_headers()
+            self.wfile.write(data)
+        except FileNotFoundError:
+            self._send_json({"error": "not found"}, 404)
 
     def _send_json(self, data, status=200):
         body = json.dumps(data, ensure_ascii=False).encode("utf-8")
@@ -173,13 +187,28 @@ class BrainHandler(BaseHTTPRequestHandler):
             self._send_json(get_full_graph())
         elif self.path in ("/api/active", "/api/active/"):
             self._send_json(get_graph_data())
-        elif self.path in ("/", "/api", "/api/"):
+        elif self.path in ("/api/curiosity", "/api/curiosity/"):
+            log_path = CERVEAU_NB_DIR / "curiosity_log.json"
+            if log_path.exists():
+                self._send_json(json.loads(log_path.read_text(encoding="utf-8")))
+            else:
+                self._send_json([])
+        elif self.path in ("/", "/index.html"):
+            self._send_file(VIZ_DIR / "index.html", "text/html; charset=utf-8")
+        elif self.path in ("/api", "/api/"):
             brain = get_brain()
             self._send_json({
                 "status": "ok",
                 "engine": "niambay-cerveau",
                 "brain_stats": brain.stats(),
             })
+        elif self.path.startswith("/") and not self.path.startswith("/api"):
+            # Serve static files from viz/
+            safe_path = self.path.lstrip("/").replace("..", "")
+            filepath = VIZ_DIR / safe_path
+            ext_map = {".html": "text/html", ".css": "text/css", ".js": "application/javascript", ".png": "image/png", ".svg": "image/svg+xml"}
+            ext = filepath.suffix.lower()
+            self._send_file(filepath, ext_map.get(ext, "application/octet-stream"))
         else:
             self._send_json({"error": "not found"}, 404)
 
