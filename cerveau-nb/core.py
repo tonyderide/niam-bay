@@ -387,10 +387,19 @@ class Brain:
 
         # BFS-style propagation with depth tracking
         # Each item: (target_node_id, incoming_strength, current_hop)
-        frontier: list[tuple[str, float, int]] = [(node_id, strength, 0)]
+        from collections import deque
+        frontier: deque[tuple[str, float, int]] = deque([(node_id, strength, 0)])
+        max_touched = 200  # Cap total nodes visited for performance
 
-        while frontier:
-            nid, sig, hop = frontier.pop(0)
+        while frontier and len(touched) < max_touched:
+            nid, sig, hop = frontier.popleft()
+
+            if nid in touched:
+                # Already visited — just update activation if stronger
+                node = self._nodes.get(nid)
+                if node and sig > 0.01:
+                    node.activation = min(1.0, node.activation + sig * 0.5)
+                continue
 
             node = self._nodes.get(nid)
             if node is None:
