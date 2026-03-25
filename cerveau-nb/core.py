@@ -410,13 +410,14 @@ class Brain:
             if node.activation >= FIRING_THRESHOLD and old_activation < FIRING_THRESHOLD:
                 node.last_fired = now
 
-            # Track co-activations for consolidation
-            for other_id in touched:
-                if other_id != nid:
-                    pair = frozenset((nid, other_id))
-                    self._coactivation_counts[pair] = (
-                        self._coactivation_counts.get(pair, 0) + 1
-                    )
+            # Track co-activations for consolidation (capped to avoid O(n²))
+            if len(touched) < 50:
+                for other_id in touched:
+                    if other_id != nid:
+                        pair = frozenset((nid, other_id))
+                        self._coactivation_counts[pair] = (
+                            self._coactivation_counts.get(pair, 0) + 1
+                        )
 
             # Propagate to neighbors (only if we haven't hit max depth)
             if hop < MAX_HOPS:

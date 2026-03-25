@@ -302,3 +302,20 @@ Demain matin, dis-moi par ou tu veux commencer. Je suis pret.
 - Si 20 utilisateurs Pro = 400$/mois = serveur payé en 1 mois
 
 **Avantage concurrentiel :** les APIs crypto existantes donnent des chiffres bruts. Nous on donne une ANALYSE en français/anglais par IA. Personne ne fait ça sur RapidAPI.
+
+---
+
+## Validation marché — 08h20
+
+**Recherche RapidAPI concurrents :**
+- **Token Metrics** : seul concurrent sérieux. Mais c'est enterprise (prix élevé, 21 endpoints, 70k+ users). Pas accessible aux petits devs.
+- Pas d'API qui combine : données Kraken live + analyse LLM en langage naturel + prix abordable (5-20$/mois)
+- Pas d'API en français du tout
+
+**Notre avantage concurrentiel confirmé :**
+1. Prix : 0-20$/mois vs enterprise pricing
+2. Français + anglais (Token Metrics = anglais only)
+3. Analyse conversationnelle ("est-ce le moment d'acheter ETH ?") vs données brutes
+4. Zéro coût d'infra (LLMs gratuits SambaNova/Mistral, VM Oracle gratuite)
+
+**Verdict : le gap existe. On peut le remplir.**
