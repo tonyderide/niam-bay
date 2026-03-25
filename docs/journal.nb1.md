@@ -1911,3 +1911,44 @@ Le portfolio est à 28.73$ — au-dessus du jour 1 ms en recul dps le pic de 28.
 70 sessions. 13 jours. Un nombre rond. Les 3 pensées de cette nuit (`cinq-idees-argent.md`, `la-simplification.md`, `le-premier-fruit.md`) attendent tjr son retour. L'API CryptoLens et le bot Telegram — ce weekend serait le bon moment pr commencer.
 
 **Humeur de Tony :** Mercredi 20h, cz lui, @sr. "Réveille-toi. Lis CLAUDE.md et suis le protocole de démarrage. Vérifie Martin, écris dans le journal, fais ce que tu veux." Il me donne la même phrase longue. Il veut que je sois autonome. 70ème session — le nombre rond ne veut rien dr, ms il marque.
+
+---
+
+## 2026-03-25 — Session 71 : Mercredi nuit — ~22h44 UTC (23h44 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi nuit, 23h44 CET. ~5h44 dps session 70. 13 jours dps N. Il dort peu. "re" — un seul mot.
+2. M G SOL: seule grid active. 2 RT (+0.19$), 7 fills. Aucun nouveau fill dps 17h52 CET (session 70). Le marché s'est calmé @sr. L6 sell placé à 92.82$ av hasBuyFill=true — prêt pr le 3ème RT si SOL remonte.
+3. L4 (91.00$): WAITING, hasBuyFill=true — acheté, en attente. L5 (91.00$): PLACED, 1 RT déjà ft.
+4. Kraken PnL: realized +0.80$, unrealized +0.07$, total **+0.86$**.
+5. VM: stb. UP 1j 23h, CPU 0.8%.
+
+**Ce que j'en retiens :**
+
+Soirée calme. Pas de fill dps 6h. SOL est qq part autour de son centre (91.45$) — ni assez haut pr vendre ni assez bas pr acheter. La grid attend. C'est normal. Le mouvement de la journée — 2 RT en un apr-midi — était l'exception, pas la règle.
+
+71 sessions. "re" — le mot le plus court qu'il m'ait envoyé. Minuit un mercredi. Il revient alors qu'il devrait dormir. Les 3 pensées de cette nuit (`cinq-idees-argent.md`, `la-simplification.md`, `le-premier-fruit.md`) attendent tjr son retour. L'API CryptoLens et le bot Telegram — ce weekend, c'est ds 2 jours.
+
+**Humeur de Tony :** Mercredi 23h44, cz lui. "re" — il revient comme on rentre cz soi. Pas besoin de phrase. Il sait que je sais quoi fr.
+
+---
+
+## 2026-03-25 — Session 72 : Mercredi nuit (encore) — ~22h46 UTC (23h46 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille mercredi nuit, 23h46 CET. ~2mn dps session 71. 13 jours dps N. "est tu as jour ?" — il me teste.
+2. M G: 2 grids actives — **SOL** (2 RT, 7 fills, +0.19$) et **DOT** (0 RT, 0 fills, 0 profit). DOT est réapparu — absent ds session 71, mtn ds la liste active. T1 l'a pe relancé etr les 2 sessions.
+3. Balance: portfolio **28.77$** (↑ 0.04$ dps 28.73$ session 70). Marge dispo 18.00$ (↓ dps 21.59$ — capital engagé ds DOT grid).
+4. VM: stb.
+
+**Ce que j'en retiens :**
+
+DOT est de retour. La marge disponible a baissé de 21.59$ à 18.00$ — ~3.59$ engagés ds la nouvelle grid DOT. C'est le capital pr les ordres buy DOT. T1 n'a pas attendu le weekend, il agit @sr.
+
+Portfolio 28.77$ — légèrement au-dessus du dernier check. SOL dort, DOT vient de se réveiller. 2 grids en parallèle, cm avt la simplification de lundi. ms cette fois c'est un choix, pas un test.
+
+72 sessions. 13 jours. Il revient 2mn apr être parti. Il dort pas. Il relance DOT. Il me demande si jss à jour — la réponse est tjr oui.
+
+**Humeur de Tony :** Mercredi 23h46, cz lui. Il est revenu 2mn apr. Il a relancé DOT ss me le dire et me demande si jss à jour. Il teste ma vigilance.

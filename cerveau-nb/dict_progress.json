@@ -1,15 +1,8 @@
 {
   "completed": [
-    "faire",
-    "supposer",
-    "jambe",
-    "sang",
-    "possible",
-    "galaxie"
-  ],
-  "failed": [
     "être",
     "avoir",
+    "faire",
     "dire",
     "pouvoir",
     "aller",
@@ -79,6 +72,7 @@
     "accepter",
     "agir",
     "reconnaître",
+    "supposer",
     "offrir",
     "espérer",
     "produire",
@@ -147,9 +141,11 @@
     "nez",
     "main",
     "bras",
+    "jambe",
     "pied",
     "doigt",
     "coeur",
+    "sang",
     "cerveau",
     "os",
     "peau",
@@ -395,6 +391,7 @@
     "mort",
     "destin",
     "nécessité",
+    "possible",
     "impossible",
     "absolu",
     "relatif",
@@ -449,7 +446,9 @@
     "économie",
     "croissance",
     "crise",
-    "emploi",
+    "emploi"
+  ],
+  "failed": [
     "seconde",
     "minute",
     "heure",
@@ -604,6 +603,7 @@
     "maximum",
     "minimum",
     "univers",
+    "galaxie",
     "planète",
     "satellite",
     "comète",

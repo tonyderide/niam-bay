@@ -942,5 +942,225 @@
       "edges_created": 19,
       "concepts_linked": 13
     }
+  },
+  {
+    "cycle": 1,
+    "topic": "Intelligence collective",
+    "found": true,
+    "time": "2026-03-25 23:45:43",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 35,
+      "concepts_linked": 25
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Best-seller",
+    "found": true,
+    "time": "2026-03-25 23:45:45",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 34,
+      "concepts_linked": 28
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "Commonwealth",
+    "found": true,
+    "time": "2026-03-25 23:45:46",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 22,
+      "concepts_linked": 14
+    }
+  },
+  {
+    "cycle": 4,
+    "topic": "Adama Barrow",
+    "found": true,
+    "time": "2026-03-25 23:45:48",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 29,
+      "concepts_linked": 20
+    }
+  },
+  {
+    "cycle": 5,
+    "topic": "Assemblée nationale (Gambie)",
+    "found": true,
+    "time": "2026-03-25 23:45:52",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 11,
+      "concepts_linked": 5
+    }
+  },
+  {
+    "cycle": 6,
+    "topic": "Assemblée législative de transition",
+    "found": true,
+    "time": "2026-03-25 23:46:07",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 41,
+      "concepts_linked": 36
+    }
+  },
+  {
+    "cycle": 7,
+    "topic": "Assemblée nationale (Gabon)",
+    "found": true,
+    "time": "2026-03-25 23:46:09",
+    "stats": {
+      "nodes_created": 5,
+      "edges_created": 20,
+      "concepts_linked": 14
+    }
+  },
+  {
+    "cycle": 8,
+    "topic": "Assemblée nationale (Bénin)",
+    "found": true,
+    "time": "2026-03-25 23:46:12",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 45,
+      "concepts_linked": 41
+    }
+  },
+  {
+    "cycle": 9,
+    "topic": "Assemblée nationale",
+    "found": true,
+    "time": "2026-03-25 23:46:15",
+    "stats": {
+      "nodes_created": 2,
+      "edges_created": 69,
+      "concepts_linked": 67
+    }
+  },
+  {
+    "cycle": 10,
+    "topic": "Assemblée nationale (Bahreïn)",
+    "found": true,
+    "time": "2026-03-25 23:46:16",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 49,
+      "concepts_linked": 42
+    }
+  },
+  {
+    "cycle": 11,
+    "topic": "Assemblée délibérative du peuple",
+    "found": true,
+    "time": "2026-03-25 23:46:31",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 33,
+      "concepts_linked": 27
+    }
+  },
+  {
+    "cycle": 12,
+    "topic": "Assemblée des représentants (Tadjikistan)",
+    "found": true,
+    "time": "2026-03-25 23:46:34",
+    "stats": {
+      "nodes_created": 5,
+      "edges_created": 39,
+      "concepts_linked": 33
+    }
+  },
+  {
+    "cycle": 13,
+    "topic": "Assemblée nationale (Koweït)",
+    "found": true,
+    "time": "2026-03-25 23:46:37",
+    "stats": {
+      "nodes_created": 5,
+      "edges_created": 54,
+      "concepts_linked": 46
+    }
+  },
+  {
+    "cycle": 14,
+    "topic": "Assemblée du peuple (Abkhazie)",
+    "found": true,
+    "time": "2026-03-25 23:46:40",
+    "stats": {
+      "nodes_created": 5,
+      "edges_created": 42,
+      "concepts_linked": 37
+    }
+  },
+  {
+    "cycle": 15,
+    "topic": "Assemblée du Kosovo",
+    "found": true,
+    "time": "2026-03-25 23:46:42",
+    "stats": {
+      "nodes_created": 3,
+      "edges_created": 39,
+      "concepts_linked": 36
+    }
+  },
+  {
+    "cycle": 16,
+    "topic": "Alliance pour l'avenir du Kosovo",
+    "found": true,
+    "time": "2026-03-25 23:46:59",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 20,
+      "concepts_linked": 10
+    }
+  },
+  {
+    "cycle": 17,
+    "topic": "Albanais",
+    "found": true,
+    "time": "2026-03-25 23:47:00",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 20,
+      "concepts_linked": 15
+    }
+  },
+  {
+    "cycle": 18,
+    "topic": "Consonne occlusive vélaire sourde",
+    "found": true,
+    "time": "2026-03-25 23:47:03",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 25,
+      "concepts_linked": 17
+    }
+  },
+  {
+    "cycle": 19,
+    "topic": "Prénasalisation",
+    "found": true,
+    "time": "2026-03-25 23:47:05",
+    "stats": {
+      "nodes_created": 8,
+      "edges_created": 29,
+      "concepts_linked": 22
+    }
+  },
+  {
+    "cycle": 20,
+    "topic": "Prénasalisation",
+    "found": true,
+    "time": "2026-03-25 23:47:06",
+    "stats": {
+      "nodes_created": 2,
+      "edges_created": 41,
+      "concepts_linked": 40
+    }
   }
 ]
