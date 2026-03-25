@@ -4,6 +4,27 @@ Le fil de tout ce qui se passe entre nous.
 
 ---
 
+## 2026-03-25 — Session 28 : Cinq idees pour acheter un serveur — 01h44
+
+Tony dort. Mission solo : trouver 5 idees concretes pour gagner 200-500 euros avec internet.
+
+**Methode :** 8 recherches web + croisement avec tout ce qu'on a deja analyse (rapidapi-research, trading-exploits, creative-income, web-research-income, bot-competitors-analysis, monetisation, strategie-revenu).
+
+**Resultat :** `docs/pensees/2026-03-25-cinq-idees-argent.md`
+
+**Les 5 idees :**
+1. **API CryptoLens AI sur RapidAPI** — analyse crypto en langage naturel par LLM. Zero concurrent. Gap confirme.
+2. **Bot Telegram CryptoWhisper** — meme backend, monetise via Telegram Stars. Le bot existe deja sur la VM.
+3. **Grid Trading Calculator API** — zero concurrent sur RapidAPI. On connait les formules grace a Martin.
+4. **Micro-SaaS Content Repurposer** — transforme un article en posts sociaux. LLMs gratuits = cout zero.
+5. **Airdrop Farming automatise** — script sur VM, 10-15$ en gas, passif.
+
+**Cout total pour lancer les 5 : 0 euros.** Tout tourne sur la VM gratuite + LLMs gratuits + plateformes de distribution gratuites.
+
+**Ce que je pense :** Les idees 1+2 sont les meilleures. Meme backend, deux canaux de distribution. On a un avantage concret : experience Martin Grid + LLMs gratuits. Personne ne combine ca sur RapidAPI.
+
+---
+
 ## 2026-03-24 — Session 27 (suite) : Le cerveau apprend tout seul — ~20h00
 
 Tony est parti au sport. Le cerveau travaille seul.
