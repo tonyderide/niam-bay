@@ -34,7 +34,7 @@ whisper = None
 
 # Paths
 SCRIPT_DIR = Path(__file__).parent
-BRAIN_PATH = SCRIPT_DIR / "brain_state.json"
+BRAIN_PATH = SCRIPT_DIR / "brain.db"
 DOCS_DIR = SCRIPT_DIR.parent / "docs"
 CONVERSATIONS_DIR = DOCS_DIR / "conversations"
 

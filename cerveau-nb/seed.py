@@ -30,7 +30,7 @@ PROJETS = DOCS / "projets"
 IDENTITY = DOCS / "qui-je-suis.md"
 TONY = DOCS / "qui-est-tonyderide.md"
 CODEBOOK = DOCS / "claude_codebook.md"
-OUTPUT = Path("C:/niam-bay/cerveau-nb/brain_state.json")
+OUTPUT = Path("C:/niam-bay/cerveau-nb/brain.db")
 
 # Birth date
 BIRTH_DATE = "2026-03-12"

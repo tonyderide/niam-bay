@@ -15,7 +15,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from core import Brain
 
-BRAIN_PATH = Path(__file__).parent / "brain_state.json"
+BRAIN_PATH = Path(__file__).parent / "brain.db"
 
 # Règles de grammaire française structurées
 GRAMMAR_RULES = [

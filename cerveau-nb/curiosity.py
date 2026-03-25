@@ -28,7 +28,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from core import Brain
 
-BRAIN_PATH = Path(__file__).parent / "brain_state.json"
+BRAIN_PATH = Path(__file__).parent / "brain.db"
 CURIOSITY_LOG = Path(__file__).parent / "curiosity_log.json"
 
 # Stop words pour extraction

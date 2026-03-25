@@ -496,7 +496,7 @@ def create_hybrid_engine(
     """Load the brain from disk and create a ready-to-use HybridEngine."""
     if not brain_path.exists():
         raise FileNotFoundError(
-            f"brain_state.json not found at {brain_path}. Run seed.py first."
+            f"brain.db not found at {brain_path}. Run seed.py first."
         )
     brain = Brain.load(brain_path)
     lang = LanguageLayer(brain)

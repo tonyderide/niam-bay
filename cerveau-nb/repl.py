@@ -139,18 +139,18 @@ def main():
     """Main REPL loop."""
     brain_path = BRAIN_STATE_PATH
 
-    # If brain_state.json doesn't exist, try running seed.py
+    # If brain.db doesn't exist, try running seed.py
     if not brain_path.exists():
-        print(f"{YELLOW}brain_state.json introuvable. Lancement de seed.py...{RESET}")
+        print(f"{YELLOW}brain.db introuvable. Lancement de seed.py...{RESET}")
         seed_path = CERVEAU_NB_DIR / "seed.py"
         if seed_path.exists():
             os.system(f'python "{seed_path}"')
         else:
-            print(f"{RED}Erreur: ni brain_state.json ni seed.py trouve{RESET}")
+            print(f"{RED}Erreur: ni brain.db ni seed.py trouve{RESET}")
             sys.exit(1)
 
     if not brain_path.exists():
-        print(f"{RED}Erreur: brain_state.json toujours introuvable apres seed.{RESET}")
+        print(f"{RED}Erreur: brain.db toujours introuvable apres seed.{RESET}")
         sys.exit(1)
 
     # Load brain and language layer
@@ -254,7 +254,7 @@ def test_non_interactive():
     brain_path = BRAIN_STATE_PATH
 
     if not brain_path.exists():
-        print("brain_state.json not found. Run seed.py first.")
+        print("brain.db not found. Run seed.py first.")
         return False
 
     brain = Brain.load(brain_path)

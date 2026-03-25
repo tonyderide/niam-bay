@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 
 from core import Brain
 
-BRAIN_PATH = Path(__file__).parent / "brain_state.json"
+BRAIN_PATH = Path(__file__).parent / "brain.db"
 DOCS_DIR = Path(__file__).parent.parent / "docs"
 
 

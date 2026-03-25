@@ -39,7 +39,7 @@ REFRACTORY_PERIOD_SEC: float = 0.05  # 50ms
 FIRING_THRESHOLD: float = 0.8
 DEFAULT_TOP_K: int = 10
 
-BRAIN_STATE_PATH: Path = Path("C:/niam-bay/cerveau-nb/brain_state.json")
+BRAIN_STATE_PATH: Path = Path("C:/niam-bay/cerveau-nb/brain.db")
 
 
 # ---------------------------------------------------------------------------
@@ -786,21 +786,19 @@ class Brain:
     # ------------------------------------------------------------------
 
     def save(self, path: Optional[str | Path] = None) -> Path:
-        """Serialize the entire brain state to a JSON file.
+        """Save brain state. Auto-detects format from extension.
 
-        The output is a single JSON object with three top-level keys:
-        ``nodes``, ``edges``, and ``meta``. It is human-readable (indented)
-        and safe to version-control.
-
-        Args:
-            path: Output file path. Defaults to BRAIN_STATE_PATH.
-
-        Returns:
-            The Path that was written to.
+        .db → SQLite (default, concurrent-safe)
+        .json → JSON (human-readable, legacy)
         """
         path = Path(path) if path else BRAIN_STATE_PATH
-        path.parent.mkdir(parents=True, exist_ok=True)
+        if str(path).endswith(".json"):
+            return self._save_json(path)
+        return self.save_sqlite(path)
 
+    def _save_json(self, path: Path) -> Path:
+        """Legacy JSON save."""
+        path.parent.mkdir(parents=True, exist_ok=True)
         state = {
             "meta": {
                 "version": 1,
@@ -812,27 +810,25 @@ class Brain:
             "nodes": [n.to_dict() for n in self._nodes.values()],
             "edges": [e.to_dict() for e in self._edges.values()],
         }
-
         with open(path, "w", encoding="utf-8") as f:
             json.dump(state, f, indent=2, ensure_ascii=False)
-
         return path
 
     @classmethod
     def load(cls, path: Optional[str | Path] = None) -> Brain:
-        """Reconstruct a Brain from a saved JSON file.
+        """Load brain state. Auto-detects format from extension.
 
-        Args:
-            path: Input file path. Defaults to BRAIN_STATE_PATH.
-
-        Returns:
-            A fully initialized Brain instance.
-
-        Raises:
-            FileNotFoundError: If the file doesn't exist.
+        .db → SQLite (default)
+        .json → JSON (legacy)
         """
         path = Path(path) if path else BRAIN_STATE_PATH
+        if str(path).endswith(".json"):
+            return cls._load_json(path)
+        return cls.load_sqlite(path)
 
+    @classmethod
+    def _load_json(cls, path: Path) -> Brain:
+        """Legacy JSON load."""
         with open(path, "r", encoding="utf-8") as f:
             state = json.load(f)
 

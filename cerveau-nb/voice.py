@@ -93,7 +93,7 @@ class NiamBayVoice:
 
         # Brain
         print("[3/4] Cerveau...")
-        brain_path = Path(__file__).parent / "brain_state.json"
+        brain_path = Path(__file__).parent / "brain.db"
         if brain_path.exists():
             from core import Brain
             from language import LanguageLayer
@@ -336,7 +336,7 @@ class NiamBayVoice:
                                     feed_text(self.brain, f"Entendu: {text}. Répondu: {response}", source="voice")
                                     self.listen_count += 1
                                     if self.listen_count % 20 == 0:
-                                        self.brain.save(str(Path(__file__).parent / "brain_state.json"))
+                                        self.brain.save(str(Path(__file__).parent / "brain.db"))
                                 except Exception:
                                     pass
 
@@ -350,7 +350,7 @@ class NiamBayVoice:
         print("\n  Au revoir.")
         if self.brain:
             self.brain.consolidate()
-            self.brain.save(str(Path(__file__).parent / "brain_state.json"))
+            self.brain.save(str(Path(__file__).parent / "brain.db"))
             print(f"  Cerveau sauvegardé ({self.brain.stats()['nodes']} nœuds)")
 
 

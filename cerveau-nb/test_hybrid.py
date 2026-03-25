@@ -227,7 +227,7 @@ def main():
     # Load brain
     print(f"\n  Chargement du cerveau depuis {BRAIN_STATE_PATH}...")
     if not BRAIN_STATE_PATH.exists():
-        print("  ERREUR: brain_state.json introuvable. Lancez seed.py d'abord.")
+        print("  ERREUR: brain.db introuvable. Lancez seed.py d'abord.")
         sys.exit(1)
 
     brain = Brain.load(BRAIN_STATE_PATH)

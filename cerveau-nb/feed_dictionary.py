@@ -22,7 +22,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent))
 from core import Brain
 
-BRAIN_PATH = Path(__file__).parent / "brain_state.json"
+BRAIN_PATH = Path(__file__).parent / "brain.db"
 PROGRESS_PATH = Path(__file__).parent / "dict_progress.json"
 
 # ~1000 most common French words (curated for maximum brain value)

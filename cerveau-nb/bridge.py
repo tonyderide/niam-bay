@@ -61,11 +61,11 @@ def get_brain():
             # Try running seed.py
             seed_path = CERVEAU_NB_DIR / "seed.py"
             if seed_path.exists():
-                print(f"[bridge] brain_state.json introuvable, lancement de seed.py...")
+                print(f"[bridge] brain.db introuvable, lancement de seed.py...")
                 os.system(f'python "{seed_path}"')
 
         if not brain_path.exists():
-            print(f"[bridge] ERREUR: brain_state.json introuvable")
+            print(f"[bridge] ERREUR: brain.db introuvable")
             sys.exit(1)
 
         _brain = Brain.load(brain_path)

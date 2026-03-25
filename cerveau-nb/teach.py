@@ -19,7 +19,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from core import Brain
 from language import LanguageLayer
 
-BRAIN_PATH = Path(__file__).parent / "brain_state.json"
+BRAIN_PATH = Path(__file__).parent / "brain.db"
 
 # Curriculum — organisé par thème, du plus important au moins
 CURRICULUM = {
