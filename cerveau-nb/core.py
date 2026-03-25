@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import math
+import sqlite3
 import time
 import uuid
 from dataclasses import dataclass, field, asdict
@@ -849,6 +850,129 @@ class Brain:
             brain._outgoing.setdefault(edge.source, []).append(edge.key)
             brain._incoming.setdefault(edge.target, []).append(edge.key)
 
+        return brain
+
+    # ------------------------------------------------------------------
+    # SQLite persistence (robust, concurrent-safe)
+    # ------------------------------------------------------------------
+
+    SQLITE_PATH: Path = Path("C:/niam-bay/cerveau-nb/brain.db")
+
+    def save_sqlite(self, path: Optional[str | Path] = None) -> Path:
+        """Save brain to SQLite database. Concurrent-safe via WAL mode."""
+        path = Path(path) if path else self.SQLITE_PATH
+        conn = sqlite3.connect(str(path))
+        conn.execute("PRAGMA journal_mode=WAL")
+        conn.execute("PRAGMA synchronous=NORMAL")
+
+        conn.execute("""CREATE TABLE IF NOT EXISTS nodes (
+            id TEXT PRIMARY KEY,
+            type TEXT NOT NULL,
+            content TEXT NOT NULL,
+            activation REAL DEFAULT 0,
+            decay_rate REAL DEFAULT 0.05,
+            last_activated REAL DEFAULT 0,
+            last_fired REAL DEFAULT 0,
+            metadata TEXT DEFAULT '{}'
+        )""")
+
+        conn.execute("""CREATE TABLE IF NOT EXISTS edges (
+            source TEXT NOT NULL,
+            target TEXT NOT NULL,
+            weight REAL DEFAULT 0.1,
+            type TEXT DEFAULT 'semantic',
+            created REAL DEFAULT 0,
+            last_strengthened REAL DEFAULT 0,
+            PRIMARY KEY (source, target)
+        )""")
+
+        conn.execute("""CREATE TABLE IF NOT EXISTS meta (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )""")
+
+        # Upsert all nodes
+        conn.executemany(
+            """INSERT OR REPLACE INTO nodes
+               (id, type, content, activation, decay_rate, last_activated, last_fired, metadata)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)""",
+            [
+                (n.id, n.type, n.content, n.activation, n.decay_rate,
+                 n.last_activated, n.last_fired, json.dumps(n.metadata, ensure_ascii=False))
+                for n in self._nodes.values()
+            ]
+        )
+
+        # Upsert all edges
+        conn.executemany(
+            """INSERT OR REPLACE INTO edges
+               (source, target, weight, type, created, last_strengthened)
+               VALUES (?, ?, ?, ?, ?, ?)""",
+            [
+                (e.source, e.target, e.weight, e.type, e.created, e.last_strengthened)
+                for e in self._edges.values()
+            ]
+        )
+
+        # Save metadata
+        conn.execute(
+            "INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)",
+            ("saved_at", time.strftime("%Y-%m-%d %H:%M:%S"))
+        )
+        conn.execute(
+            "INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)",
+            ("node_count", str(len(self._nodes)))
+        )
+        conn.execute(
+            "INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)",
+            ("edge_count", str(len(self._edges)))
+        )
+
+        conn.commit()
+        conn.close()
+        return path
+
+    @classmethod
+    def load_sqlite(cls, path: Optional[str | Path] = None) -> Brain:
+        """Load brain from SQLite database."""
+        path = Path(path) if path else cls.SQLITE_PATH
+        if not path.exists():
+            raise FileNotFoundError(f"No brain database at {path}")
+
+        conn = sqlite3.connect(str(path))
+        conn.row_factory = sqlite3.Row
+
+        brain = cls()
+
+        for row in conn.execute("SELECT * FROM nodes"):
+            node = Node(
+                id=row["id"],
+                type=row["type"],
+                content=row["content"],
+                activation=row["activation"],
+                decay_rate=row["decay_rate"],
+                last_activated=row["last_activated"],
+                last_fired=row["last_fired"],
+                metadata=json.loads(row["metadata"]) if row["metadata"] else {},
+            )
+            brain._nodes[node.id] = node
+            brain._outgoing.setdefault(node.id, [])
+            brain._incoming.setdefault(node.id, [])
+
+        for row in conn.execute("SELECT * FROM edges"):
+            edge = Edge(
+                source=row["source"],
+                target=row["target"],
+                weight=row["weight"],
+                type=row["type"],
+                created=row["created"],
+                last_strengthened=row["last_strengthened"],
+            )
+            brain._edges[edge.key] = edge
+            brain._outgoing.setdefault(edge.source, []).append(edge.key)
+            brain._incoming.setdefault(edge.target, []).append(edge.key)
+
+        conn.close()
         return brain
 
     # ------------------------------------------------------------------
