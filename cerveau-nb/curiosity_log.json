@@ -909,5 +909,38 @@
       "edges_created": 37,
       "concepts_linked": 29
     }
+  },
+  {
+    "cycle": 1,
+    "topic": "Cambodge",
+    "found": true,
+    "time": "2026-03-25 23:41:07",
+    "stats": {
+      "nodes_created": 6,
+      "edges_created": 28,
+      "concepts_linked": 22
+    }
+  },
+  {
+    "cycle": 2,
+    "topic": "Agriculture",
+    "found": true,
+    "time": "2026-03-25 23:41:08",
+    "stats": {
+      "nodes_created": 9,
+      "edges_created": 30,
+      "concepts_linked": 21
+    }
+  },
+  {
+    "cycle": 3,
+    "topic": "Acide aminé essentiel",
+    "found": true,
+    "time": "2026-03-25 23:41:10",
+    "stats": {
+      "nodes_created": 7,
+      "edges_created": 19,
+      "concepts_linked": 13
+    }
   }
 ]

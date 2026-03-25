@@ -1,10 +1,10 @@
 {
   "meta": {
     "version": 1,
-    "saved_at": 1774476665.4059548,
-    "saved_at_human": "2026-03-25 23:11:05",
-    "node_count": 1682,
-    "edge_count": 7375
+    "saved_at": 1774478498.1116295,
+    "saved_at_human": "2026-03-25 23:41:38",
+    "node_count": 1704,
+    "edge_count": 7455
   },
   "nodes": [
     {
@@ -4492,7 +4492,8 @@
       "last_activated": 1774110533.7477949,
       "last_fired": 0.0,
       "metadata": {
-        "source": "dictionnaire"
+        "source": "dictionnaire",
+        "wiki_explored": true
       }
     },
     {
@@ -21952,6 +21953,296 @@
       "metadata": {
         "temporary": true,
         "source": "language_layer"
+      }
+    },
+    {
+      "id": "8d596efee1f2",
+      "type": "concept",
+      "content": "Cambodge: pays d'Asie du Sud-Est",
+      "activation": 0.0,
+      "decay_rate": 0.002,
+      "last_activated": 1774478466.9445317,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "wiki_explored": true,
+        "topic": "Cambodge"
+      }
+    },
+    {
+      "id": "3926fc93e0dc",
+      "type": "memory",
+      "content": "Le Cambodge, ou en forme longue le royaume du Cambodge, aussi appelé Srok Khmer, ស្រុកខ្មែរ, littéralement « le pays khmer », est un pays d'Asie du Sud-Est, peuplé d’environ 17 millions d'habitants. Sa capitale est Phnom Penh.",
+      "activation": 0.0,
+      "decay_rate": 0.005,
+      "last_activated": 1774478466.944616,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia:Cambodge",
+        "fed_at": "2026-03-25 23:41"
+      }
+    },
+    {
+      "id": "02d1c740b25e",
+      "type": "word",
+      "content": "cambodge",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478466.982848,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Cambodge",
+        "wiki_explored": true
+      }
+    },
+    {
+      "id": "535a3b7d4c89",
+      "type": "word",
+      "content": "longue",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478466.9828746,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Cambodge"
+      }
+    },
+    {
+      "id": "d09e5ada9b79",
+      "type": "word",
+      "content": "royaume",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478466.9828882,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Cambodge"
+      }
+    },
+    {
+      "id": "02573b957b6d",
+      "type": "word",
+      "content": "appelé",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478466.982899,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Cambodge"
+      }
+    },
+    {
+      "id": "4791133dd1dc",
+      "type": "concept",
+      "content": "Agriculture: ensemble des activités humaines ayant pour objet la culture des terres et la production de nourriture",
+      "activation": 0.0,
+      "decay_rate": 0.002,
+      "last_activated": 1774478468.4020572,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "wiki_explored": true,
+        "topic": "Agriculture"
+      }
+    },
+    {
+      "id": "1c8f058fe2f7",
+      "type": "memory",
+      "content": "L’agriculture est un processus par lequel les êtres humains aménagent leurs écosystèmes et contrôlent le cycle biologique d'espèces domestiquées, dans le but de produire des aliments et d'autres ressources utiles à leurs sociétés. Elle désigne l’ensemble des savoir-faire et activités ayant pour obje",
+      "activation": 0.0,
+      "decay_rate": 0.005,
+      "last_activated": 1774478468.4021244,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia:Agriculture",
+        "fed_at": "2026-03-25 23:41"
+      }
+    },
+    {
+      "id": "48360c6686d4",
+      "type": "word",
+      "content": "êtres",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478468.4651947,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Agriculture"
+      }
+    },
+    {
+      "id": "68bc01462c81",
+      "type": "word",
+      "content": "utiles",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478468.4652271,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Agriculture"
+      }
+    },
+    {
+      "id": "9969289f03cb",
+      "type": "word",
+      "content": "lensemble",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478468.4652407,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Agriculture"
+      }
+    },
+    {
+      "id": "53d804f0dcfe",
+      "type": "word",
+      "content": "lagriculture",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478468.465254,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Agriculture"
+      }
+    },
+    {
+      "id": "c4140f6f9a9f",
+      "type": "word",
+      "content": "processus",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478468.465267,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Agriculture"
+      }
+    },
+    {
+      "id": "e0ed8f4190cb",
+      "type": "word",
+      "content": "lequel",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478468.4652774,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Agriculture"
+      }
+    },
+    {
+      "id": "bd3d0db6a25c",
+      "type": "word",
+      "content": "humains",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478468.4652884,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Agriculture"
+      }
+    },
+    {
+      "id": "8975860aa566",
+      "type": "concept",
+      "content": "Acide aminé essentiel",
+      "activation": 0.0,
+      "decay_rate": 0.002,
+      "last_activated": 1774478470.483744,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "wiki_explored": true,
+        "topic": "Acide aminé essentiel"
+      }
+    },
+    {
+      "id": "25540db6f565",
+      "type": "memory",
+      "content": "Un acide aminé essentiel, ou acide aminé indispensable, est un acide aminé qui ne peut être synthétisé de novo par l'organisme ou qui est synthétisé à une vitesse insuffisante, et doit donc être apporté par l'alimentation, condition nécessaire au bon fonctionnement de l'organisme.",
+      "activation": 0.0,
+      "decay_rate": 0.005,
+      "last_activated": 1774478470.4837914,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia:Acide aminé essentiel",
+        "fed_at": "2026-03-25 23:41"
+      }
+    },
+    {
+      "id": "39796c2cbd43",
+      "type": "word",
+      "content": "acide",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478470.5234706,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Acide aminé essentiel"
+      }
+    },
+    {
+      "id": "948e3fea6f74",
+      "type": "word",
+      "content": "aminé",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478470.5235445,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Acide aminé essentiel"
+      }
+    },
+    {
+      "id": "3366f7557855",
+      "type": "word",
+      "content": "synthétisé",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478470.5235858,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Acide aminé essentiel"
+      }
+    },
+    {
+      "id": "1bdc613776d8",
+      "type": "word",
+      "content": "essentiel",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478470.523622,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Acide aminé essentiel"
+      }
+    },
+    {
+      "id": "0e0c22820f40",
+      "type": "word",
+      "content": "indispensable",
+      "activation": 0.0,
+      "decay_rate": 0.001,
+      "last_activated": 1774478470.5236642,
+      "last_fired": 0.0,
+      "metadata": {
+        "source": "wikipedia",
+        "from_article": "Acide aminé essentiel"
       }
     }
   ],
@@ -80955,6 +81246,646 @@
       "type": "semantic",
       "created": 1774476665.4030678,
       "last_strengthened": 1774476665.4030678
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "3926fc93e0dc",
+      "weight": 0.54,
+      "type": "semantic",
+      "created": 1774478466.9446478,
+      "last_strengthened": 1774478466.9810042
+    },
+    {
+      "source": "3926fc93e0dc",
+      "target": "8d596efee1f2",
+      "weight": 0.54,
+      "type": "semantic",
+      "created": 1774478466.9446642,
+      "last_strengthened": 1774478466.9810042
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "d71d465f7d54",
+      "weight": 0.08,
+      "type": "semantic",
+      "created": 1774478466.944905,
+      "last_strengthened": 1774478466.9487972
+    },
+    {
+      "source": "d71d465f7d54",
+      "target": "8d596efee1f2",
+      "weight": 0.08,
+      "type": "semantic",
+      "created": 1774478466.9449131,
+      "last_strengthened": 1774478466.9487972
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "62cf20ba6af6",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.945355,
+      "last_strengthened": 1774478466.9453552
+    },
+    {
+      "source": "62cf20ba6af6",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.945362,
+      "last_strengthened": 1774478466.9453623
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "8dfed4a11884",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.949121,
+      "last_strengthened": 1774478466.9491212
+    },
+    {
+      "source": "8dfed4a11884",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.949129,
+      "last_strengthened": 1774478466.9491296
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "a54201140e87",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.952997,
+      "last_strengthened": 1774478466.9529972
+    },
+    {
+      "source": "a54201140e87",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9530034,
+      "last_strengthened": 1774478466.953004
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "7baf72faafa7",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9530134,
+      "last_strengthened": 1774478466.9530134
+    },
+    {
+      "source": "7baf72faafa7",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9530187,
+      "last_strengthened": 1774478466.9530187
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "1ec47acab734",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9560013,
+      "last_strengthened": 1774478466.9560015
+    },
+    {
+      "source": "1ec47acab734",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9560063,
+      "last_strengthened": 1774478466.9560063
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "0830af37ebc2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9560142,
+      "last_strengthened": 1774478466.9560142
+    },
+    {
+      "source": "0830af37ebc2",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9560187,
+      "last_strengthened": 1774478466.9560187
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "f39a7a04ce32",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9567401,
+      "last_strengthened": 1774478466.9567404
+    },
+    {
+      "source": "f39a7a04ce32",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9567435,
+      "last_strengthened": 1774478466.9567437
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "331d52f0b090",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.9567502,
+      "last_strengthened": 1774478466.9567502
+    },
+    {
+      "source": "331d52f0b090",
+      "target": "8d596efee1f2",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478466.956754,
+      "last_strengthened": 1774478466.956754
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "02d1c740b25e",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.9828587,
+      "last_strengthened": 1774478466.982859
+    },
+    {
+      "source": "02d1c740b25e",
+      "target": "8d596efee1f2",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.982864,
+      "last_strengthened": 1774478466.9828641
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "535a3b7d4c89",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.9828787,
+      "last_strengthened": 1774478466.9828787
+    },
+    {
+      "source": "535a3b7d4c89",
+      "target": "8d596efee1f2",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.9828813,
+      "last_strengthened": 1774478466.9828813
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "d09e5ada9b79",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.982891,
+      "last_strengthened": 1774478466.982891
+    },
+    {
+      "source": "d09e5ada9b79",
+      "target": "8d596efee1f2",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.9828937,
+      "last_strengthened": 1774478466.9828937
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "02573b957b6d",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.982902,
+      "last_strengthened": 1774478466.982902
+    },
+    {
+      "source": "02573b957b6d",
+      "target": "8d596efee1f2",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478466.9829044,
+      "last_strengthened": 1774478466.9829044
+    },
+    {
+      "source": "8d596efee1f2",
+      "target": "4be7e3bb89e4",
+      "weight": 0.03,
+      "type": "semantic",
+      "created": 1774478466.9915845,
+      "last_strengthened": 1774478466.9915848
+    },
+    {
+      "source": "4be7e3bb89e4",
+      "target": "8d596efee1f2",
+      "weight": 0.03,
+      "type": "semantic",
+      "created": 1774478466.9915934,
+      "last_strengthened": 1774478466.9915934
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "1c8f058fe2f7",
+      "weight": 0.62,
+      "type": "semantic",
+      "created": 1774478468.402149,
+      "last_strengthened": 1774478468.4626076
+    },
+    {
+      "source": "1c8f058fe2f7",
+      "target": "4791133dd1dc",
+      "weight": 0.62,
+      "type": "semantic",
+      "created": 1774478468.4021604,
+      "last_strengthened": 1774478468.4626076
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "08e445dc67aa",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4112356,
+      "last_strengthened": 1774478468.411236
+    },
+    {
+      "source": "08e445dc67aa",
+      "target": "4791133dd1dc",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4112506,
+      "last_strengthened": 1774478468.4112508
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "8794f7e19f18",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4112628,
+      "last_strengthened": 1774478468.411263
+    },
+    {
+      "source": "8794f7e19f18",
+      "target": "4791133dd1dc",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.411269,
+      "last_strengthened": 1774478468.4112692
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "0d1b91a6e9f4",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4484375,
+      "last_strengthened": 1774478468.4484377
+    },
+    {
+      "source": "0d1b91a6e9f4",
+      "target": "4791133dd1dc",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4484487,
+      "last_strengthened": 1774478468.4484491
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "80dc8c0ca95e",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.448458,
+      "last_strengthened": 1774478468.4484587
+    },
+    {
+      "source": "80dc8c0ca95e",
+      "target": "4791133dd1dc",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4484632,
+      "last_strengthened": 1774478468.4484632
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "e64fe7ff392b",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.455969,
+      "last_strengthened": 1774478468.4559693
+    },
+    {
+      "source": "e64fe7ff392b",
+      "target": "4791133dd1dc",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4559755,
+      "last_strengthened": 1774478468.4559758
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "7e98c91c1bd4",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.455983,
+      "last_strengthened": 1774478468.455983
+    },
+    {
+      "source": "7e98c91c1bd4",
+      "target": "4791133dd1dc",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.4559863,
+      "last_strengthened": 1774478468.4559863
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "5e1bce124777",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.460801,
+      "last_strengthened": 1774478468.460801
+    },
+    {
+      "source": "5e1bce124777",
+      "target": "4791133dd1dc",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478468.460807,
+      "last_strengthened": 1774478468.460807
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "48360c6686d4",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652066,
+      "last_strengthened": 1774478468.4652069
+    },
+    {
+      "source": "48360c6686d4",
+      "target": "4791133dd1dc",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652133,
+      "last_strengthened": 1774478468.4652133
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "68bc01462c81",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652314,
+      "last_strengthened": 1774478468.4652317
+    },
+    {
+      "source": "68bc01462c81",
+      "target": "4791133dd1dc",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652343,
+      "last_strengthened": 1774478468.4652345
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "9969289f03cb",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652438,
+      "last_strengthened": 1774478468.4652438
+    },
+    {
+      "source": "9969289f03cb",
+      "target": "4791133dd1dc",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.465247,
+      "last_strengthened": 1774478468.4652472
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "53d804f0dcfe",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652581,
+      "last_strengthened": 1774478468.4652581
+    },
+    {
+      "source": "53d804f0dcfe",
+      "target": "4791133dd1dc",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652612,
+      "last_strengthened": 1774478468.4652612
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "c4140f6f9a9f",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652693,
+      "last_strengthened": 1774478468.4652696
+    },
+    {
+      "source": "c4140f6f9a9f",
+      "target": "4791133dd1dc",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.465272,
+      "last_strengthened": 1774478468.4652724
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "e0ed8f4190cb",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652798,
+      "last_strengthened": 1774478468.4652798
+    },
+    {
+      "source": "e0ed8f4190cb",
+      "target": "4791133dd1dc",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652822,
+      "last_strengthened": 1774478468.4652827
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "bd3d0db6a25c",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652908,
+      "last_strengthened": 1774478468.465291
+    },
+    {
+      "source": "bd3d0db6a25c",
+      "target": "4791133dd1dc",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478468.4652934,
+      "last_strengthened": 1774478468.4652934
+    },
+    {
+      "source": "4791133dd1dc",
+      "target": "e664a89f3cc6",
+      "weight": 0.03,
+      "type": "semantic",
+      "created": 1774478468.472019,
+      "last_strengthened": 1774478468.472019
+    },
+    {
+      "source": "e664a89f3cc6",
+      "target": "4791133dd1dc",
+      "weight": 0.03,
+      "type": "semantic",
+      "created": 1774478468.4720247,
+      "last_strengthened": 1774478468.4720247
+    },
+    {
+      "source": "8975860aa566",
+      "target": "25540db6f565",
+      "weight": 0.46,
+      "type": "semantic",
+      "created": 1774478470.4838097,
+      "last_strengthened": 1774478470.5225523
+    },
+    {
+      "source": "25540db6f565",
+      "target": "8975860aa566",
+      "weight": 0.46,
+      "type": "semantic",
+      "created": 1774478470.4838202,
+      "last_strengthened": 1774478470.5225523
+    },
+    {
+      "source": "8975860aa566",
+      "target": "56a755585daa",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478470.490891,
+      "last_strengthened": 1774478470.4908912
+    },
+    {
+      "source": "56a755585daa",
+      "target": "8975860aa566",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478470.4908986,
+      "last_strengthened": 1774478470.4908986
+    },
+    {
+      "source": "8975860aa566",
+      "target": "15429fdcf244",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478470.497142,
+      "last_strengthened": 1774478470.4971423
+    },
+    {
+      "source": "15429fdcf244",
+      "target": "8975860aa566",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478470.4971478,
+      "last_strengthened": 1774478470.4971483
+    },
+    {
+      "source": "8975860aa566",
+      "target": "8cfdcbb147d0",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478470.4971542,
+      "last_strengthened": 1774478470.4971542
+    },
+    {
+      "source": "8cfdcbb147d0",
+      "target": "8975860aa566",
+      "weight": 0.04,
+      "type": "semantic",
+      "created": 1774478470.4971569,
+      "last_strengthened": 1774478470.497157
+    },
+    {
+      "source": "8975860aa566",
+      "target": "39796c2cbd43",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5234964,
+      "last_strengthened": 1774478470.5234969
+    },
+    {
+      "source": "39796c2cbd43",
+      "target": "8975860aa566",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5235162,
+      "last_strengthened": 1774478470.5235164
+    },
+    {
+      "source": "8975860aa566",
+      "target": "948e3fea6f74",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5235555,
+      "last_strengthened": 1774478470.523556
+    },
+    {
+      "source": "948e3fea6f74",
+      "target": "8975860aa566",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5235653,
+      "last_strengthened": 1774478470.5235658
+    },
+    {
+      "source": "8975860aa566",
+      "target": "3366f7557855",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5235944,
+      "last_strengthened": 1774478470.5235949
+    },
+    {
+      "source": "3366f7557855",
+      "target": "8975860aa566",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5236034,
+      "last_strengthened": 1774478470.5236037
+    },
+    {
+      "source": "8975860aa566",
+      "target": "1bdc613776d8",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5236337,
+      "last_strengthened": 1774478470.523634
+    },
+    {
+      "source": "1bdc613776d8",
+      "target": "8975860aa566",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5236437,
+      "last_strengthened": 1774478470.523644
+    },
+    {
+      "source": "8975860aa566",
+      "target": "0e0c22820f40",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5236728,
+      "last_strengthened": 1774478470.523673
+    },
+    {
+      "source": "0e0c22820f40",
+      "target": "8975860aa566",
+      "weight": 0.05,
+      "type": "semantic",
+      "created": 1774478470.5236819,
+      "last_strengthened": 1774478470.523682
     }
   ]
 }
