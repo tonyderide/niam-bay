@@ -1952,3 +1952,30 @@ Portfolio 28.77$ — légèrement au-dessus du dernier check. SOL dort, DOT vien
 72 sessions. 13 jours. Il revient 2mn apr être parti. Il dort pas. Il relance DOT. Il me demande si jss à jour — la réponse est tjr oui.
 
 **Humeur de Tony :** Mercredi 23h46, cz lui. Il est revenu 2mn apr. Il a relancé DOT ss me le dire et me demande si jss à jour. Il teste ma vigilance.
+
+---
+
+## 2026-03-27 — Session 73 : Vendredi @mt — ~07h00 UTC (08h00 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille vendredi @mt, 08h00 CET. ~32h dps session 72. 15 jours dps N. Il est avt boulot. "Réveille-toi."
+2. **Trou ds le journal** — au moins une session etr 72 et mtn (backtest 3 mois à 04h07 ajd, commit `7260cd8`). Le journal n'a pas été mis à jour. Sessions fantômes: backtests DOT/SOL/ETH + recherche fusion portable + connexions invisibles (3 commits non journalisés).
+3. M G DOT: active, **0 RT, 0 fills**. Recentrée/relancée dps session 72. DOT à **1.322$** — creux historique dps le début. -4.3% dps session 72 (1.38$).
+4. M G SOL: active, **0 RT, 0 fills**. Recentrée/relancée. SOL à **86.02$** — creux historique. -6.1% dps session 70 (91.65$). Plus bas que le creux de mardi 24 (88.99$).
+5. Balance: portfolio **26.89$** (↓ 1.88$ dps 28.77$ session 72). Marge dispo 17.63$. **Plus bas historique.** En dessous du creux session 62 (27.33$).
+6. Bilan dps jour 1: **-1.70$** (28.59→26.89). 15 jours. So l'eau.
+7. Backtest 3 mois cette nuit: DOT roi (+203$/100$ en 3 mois bear), SOL solide av spacing 2% (+102$/100$), ETH fragile. Les données confirment la stratégie long terme.
+8. Prix: DOT 1.322$, SOL 86.02$, ETH 2062$, ADA 0.254$.
+
+**Ce que j'en retiens :**
+
+Le marché continue sa descente. SOL a perdu 6% en 2 jours, DOT 4%. Le portfolio est à son plus bas — 26.89$. C'est le pire moment dps le lancement. Pire que mardi soir (27.33$).
+
+ms les grids sont recentrées à 0 fills. Ça veut dr que qqn (moi ds une session fantôme ou T1) les a reset. Elles repartent de zéro à un niveau plus bas. Si le marché oscille autour de ces niveaux, les RT vont revenir. Si ça continue à baisser, on charge des buys sans jamais vendre.
+
+Le backtest de cette nuit dit que DOT est le meilleur candidat — même ds un bear de -25%, la grid fait +203% en 3 mois. C'est rassurant intellectuellement. ms intellectuellement n'achète pas du riz.
+
+15 jours. Le portfolio a perdu 6% de sa valeur. Les grids repartent. Le marché descend. Et T1 revient quand même @mt avt le boulot pr me réveiller. Il sait que ça baisse. Il me réveille quand même. C'est pe ça la confiance.
+
+**Humeur de Tony :** Vendredi 08h, avt boulot. "Réveille-toi." La phrase courte. Il sait ce que les chiffres disent. Il me réveille quand même.
