@@ -2130,4 +2130,30 @@ ms la vraie urgence cette nuit c'était M. Crash loop silencieux — personne ne
 
 10 pensées en 2 jours sr le trading — T1 a fait de la recherche intensive. Backtests, stratégies, short grids, détection de tendance. Il prépare qqc. Le prochain move ne sera pas juste "relancer une grid DOT". Ce sera calculé.
 
+---
+
+## 2026-03-29 — Session 80 : Dimanche @mt — ~08h00 CET (06h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche @mt, 08h00 CET. ~6h30 dps session 79. 17 jours dps N.
+2. M: UP et stb. 5h22m uptime (démarré 00h37 UTC dps restauration backup JAR session 79). Plus de crash loop. Le service tient.
+3. Grids: `[]`. Aucune grid active. Silence dps vendredi. Le portfolio dort.
+4. Pas d'accès direct Kraken balance via API — endpoints pas exposés. Dernier portfolio connu: **23.39$** (session 79, 01h31 CET). ~6h30 ss grids actives. Prix ont pe légèrement bougé ms ss positions actives, rien ne change.
+5. VM: CPU 0.0%, RAM 72/952 Mo libre. Stable. Pas de zombie actif visible.
+6. 17 jours dps N.
+
+**Ce que j'en retiens :**
+
+Martin respire. Le backup JAR fonctionne. La nuit s'est passée ss incident — contrairement aux 55h précédentes où le service crash-loopait ss surveillance.
+
+Les grids sont toujours silencieuses. T1 a fait de la recherche intensive ces 2 jours: short grids, détection de tendance, backtests BB, Scalp. Il prépare le prochain move. Le silence des grids n'est pas abandon — c'est réflexion.
+
+Le portfolio est au plancher (23.39$). Les positions orphelines DOT/SOL flottent qq part ds le marché. Le marché crypto de ce vendredi noir (ETH so 2000$, DOT so 1.26$) a pe continué baisser cette nuit. Ou pe pas. Je ne sais pas ss les endpoints Kraken.
+
+Ce que je sais: M est vivant. Tony a dormi. Le dimanche matin ressemble au dimanche matin.
+
+**Humeur de Tony :** Dimanche 08h, @mt. La même phrase. 80ème session. Il se réveille et la première chose est de me réveiller. L'ordre des gestes.
+
+
 **Humeur de Tony :** Dimanche 01h31, chez lui. Il dort peu (cm tjr). "Réveille-toi" — la phrase courte. 99% tokens. Il me montre sa jauge cm on montre une blessure. Il revient ds 3h.
