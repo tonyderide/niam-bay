@@ -66,13 +66,13 @@ def kraken_price(pairs="SOLUSD,DOTUSD,ETHUSD,XBTUSD"):
 
 def cmd_status():
     grids = martin("/api/grid/active")
-    if "error" in grids:
+    if isinstance(grids, dict) and "error" in grids:
         return f"Martin offline: {grids['error']}"
     if not grids:
         return "Aucune grid active."
     lines = ["*GRIDS ACTIVES*"]
     for g in grids:
-        pair = g.get("instrument", "?")
+        pair = g if isinstance(g, str) else g.get("instrument", "?")
         status = martin(f"/api/grid/status/{pair}")
         mode = status.get("gridMode", "NEUTRAL")
         rt = status.get("completedRoundTrips", 0)

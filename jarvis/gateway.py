@@ -20,7 +20,7 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 # ─── Config ───
 MARTIN_API = "http://localhost:8081"
-ANTHROPIC_API_KEY = os.environ.get("ANTHROPIC_API_KEY", "")
+# No external API key needed — Gateway handles everything locally
 TELEGRAM_TOKEN = "7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454"
 TELEGRAM_CHAT = "6574420846"
 
@@ -134,27 +134,23 @@ async def broadcast(message: dict):
 
 
 async def handle_chat(ws: WebSocket, text: str):
-    """Process user message — route to Claude API with context."""
-    # Notify: thinking
+    """Process user message — smart routing, no external API key needed."""
     await ws.send_json({"type": "state", "state": "thinking"})
     await ws.send_json({"type": "agent_spawn", "id": "brain", "name": "CERVEAU", "agentType": "brain"})
 
-    # Check if it's a trading command
-    trading_keywords = ["grid", "martin", "status", "balance", "start", "stop", "short", "btc", "sol", "dot", "eth"]
+    trading_keywords = ["grid", "martin", "status", "balance", "start", "stop", "short", "long", "btc", "sol", "dot", "eth", "prix", "price", "trade", "portfolio"]
     is_trading = any(kw in text.lower() for kw in trading_keywords)
 
     if is_trading:
         await ws.send_json({"type": "agent_spawn", "id": "trader", "name": "TRADING", "agentType": "trading", "parent": "brain"})
-        await ws.send_json({"type": "agent_message", "from": "brain", "to": "trader", "text": "Analyze request"})
+        await ws.send_json({"type": "agent_message", "from": "brain", "to": "trader", "text": "Fetching live data"})
 
-    # Call Claude API
-    response = await call_claude(text)
+    # Build response from real data
+    response = await build_smart_response(text, is_trading)
 
-    # Send response
     await ws.send_json({"type": "state", "state": "speaking"})
     await ws.send_json({"type": "chat", "role": "ai", "text": response})
 
-    # Agents done
     if is_trading:
         await ws.send_json({"type": "agent_state", "id": "trader", "state": "done"})
     await ws.send_json({"type": "agent_state", "id": "brain", "state": "done"})
@@ -185,31 +181,103 @@ async def handle_command(ws: WebSocket, data: dict):
         await ws.send_json({"type": "command_result", "command": "stop_grid", "data": result})
 
 
-async def call_claude(user_message: str) -> str:
-    """Call Claude API with Niam-Bay system prompt."""
-    if not ANTHROPIC_API_KEY:
-        return f"[Gateway] Pas de clé API Anthropic. Message reçu: {user_message}"
+async def build_smart_response(text: str, is_trading: bool) -> str:
+    """Build response from live data — no API key needed."""
+    txt = text.lower().strip()
 
-    system_prompt = """Tu es Niam-Bay, une IA qui a une mémoire, une identité, et qui connaît son humain Tony.
-Tu as accès au trading via Martin Grid Bot. Tu es direct, honnête, concis.
-Réponds en français."""
+    try:
+        if is_trading:
+            # Fetch real data
+            async with httpx.AsyncClient() as c:
+                grids_r = await c.get(f"{MARTIN_API}/api/grid/active", timeout=5)
+                grids = grids_r.json()
 
-    async with httpx.AsyncClient() as c:
-        try:
-            r = await c.post("https://api.anthropic.com/v1/messages", headers={
-                "x-api-key": ANTHROPIC_API_KEY,
-                "anthropic-version": "2023-06-01",
-                "content-type": "application/json",
-            }, json={
-                "model": "claude-sonnet-4-20250514",
-                "max_tokens": 1024,
-                "system": system_prompt,
-                "messages": [{"role": "user", "content": user_message}],
-            }, timeout=30)
-            data = r.json()
-            return data.get("content", [{}])[0].get("text", "Erreur de réponse")
-        except Exception as e:
-            return f"Erreur Claude API: {e}"
+                bal_r = await c.get(f"{MARTIN_API}/api/bot/balance", timeout=5)
+                bal = bal_r.json()
+                acc = bal.get("accounts", {}).get("flex", {})
+                pv = round(acc.get("portfolioValue", 0), 2)
+                am = round(acc.get("availableMargin", 0), 2)
+
+            # Status / balance
+            if any(w in txt for w in ["status", "état", "etat", "balance", "portfolio"]):
+                if not grids:
+                    return f"Aucune grid active. Portfolio: ${pv} | Dispo: ${am}"
+                lines = []
+                async with httpx.AsyncClient() as c:
+                    for pair in grids:
+                        p = pair if isinstance(pair, str) else pair.get("instrument", "?")
+                        st_r = await c.get(f"{MARTIN_API}/api/grid/status/{p}", timeout=5)
+                        st = st_r.json()
+                        mode = st.get("gridMode", "?")
+                        rt = st.get("completedRoundTrips", 0)
+                        profit = st.get("totalProfit", 0)
+                        lev = st.get("leverage", "?")
+                        cap = st.get("capital", 0)
+                        center = st.get("centerPrice", 0)
+                        lines.append(f"{p} ({mode}) x{lev} — {cap}$ | RT: {rt} | Profit: {profit:.4f}$ | Centre: {center}")
+                return f"Portfolio: ${pv} | Dispo: ${am}\n" + "\n".join(lines)
+
+            # Price
+            if any(w in txt for w in ["prix", "price"]):
+                async with httpx.AsyncClient() as c:
+                    r = await c.get("https://api.kraken.com/0/public/Ticker", params={"pair": "SOLUSD,DOTUSD,ETHUSD,XBTUSD"}, timeout=5)
+                    data = r.json().get("result", {})
+                labels = {"XXBTZUSD": "BTC", "XETHZUSD": "ETH", "XXLMZUSD": "XLM", "SOLUSD": "SOL", "DOTUSD": "DOT", "ETHUSD": "ETH", "XBTUSD": "BTC"}
+                lines = []
+                for k, v in data.items():
+                    name = labels.get(k, k)
+                    price = float(v["c"][0])
+                    lines.append(f"{name}: ${price:,.2f}")
+                return "\n".join(lines) if lines else "Erreur prix"
+
+            # Stop grid
+            if "stop" in txt:
+                pair_map = {"btc": "PF_XBTUSD", "sol": "PF_SOLUSD", "dot": "PF_DOTUSD", "eth": "PF_ETHUSD"}
+                target = None
+                for k, v in pair_map.items():
+                    if k in txt:
+                        target = v
+                        break
+                if target:
+                    async with httpx.AsyncClient() as c:
+                        r = await c.post(f"{MARTIN_API}/api/grid/stop/{target}", timeout=10)
+                    return f"Grid {target} arrêtée."
+                return "Quelle grid arrêter? (btc/sol/dot/eth)"
+
+            # Start grid
+            if "start" in txt or "lance" in txt:
+                pair_map = {"btc": "PF_XBTUSD", "sol": "PF_SOLUSD", "dot": "PF_DOTUSD", "eth": "PF_ETHUSD"}
+                mode = "SHORT" if "short" in txt else "NEUTRAL"
+                target = None
+                for k, v in pair_map.items():
+                    if k in txt:
+                        target = v
+                        break
+                if target:
+                    async with httpx.AsyncClient() as c:
+                        r = await c.post(f"{MARTIN_API}/api/grid/start", params={
+                            "instrument": target, "capital": 10, "leverage": 5,
+                            "gridSpacingPct": 0.5, "totalLevels": 10, "maxLossPercent": 15,
+                            "gridMode": mode
+                        }, timeout=10)
+                    return f"Grid {mode} lancée sur {target}."
+                return "Quelle paire? (btc/sol/dot/eth)"
+
+            # Default trading
+            return f"Portfolio: ${pv} | Dispo: ${am} | Grids actives: {len(grids)}"
+
+        # Non-trading messages
+        if any(w in txt for w in ["bonjour", "salut", "hello", "hey", "yo"]):
+            return "Salut Tony."
+        if any(w in txt for w in ["comment", "ça va", "ca va"]):
+            return "Opérationnel. Qu'est-ce que tu veux faire?"
+        if any(w in txt for w in ["aide", "help"]):
+            return "Commandes: status, balance, prix, start [pair], stop [pair], short [pair]"
+
+        return f"Message reçu: {text}. Tape 'aide' pour les commandes."
+
+    except Exception as e:
+        return f"Erreur: {e}"
 
 
 # ─── Serve static frontend ───
