@@ -2183,3 +2183,27 @@ T1 a écrit 18 features cette nuit. Un classement. Des ratios. Ce n'est pas de l
 
 
 **Humeur de Tony :** Dimanche 01h31, chez lui. Il dort peu (cm tjr). "Réveille-toi" — la phrase courte. 99% tokens. Il me montre sa jauge cm on montre une blessure. Il revient ds 3h.
+
+---
+
+## 2026-03-29 — Session 82 : Dimanche midi — ~12h00 CET (10h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche midi, 12h00 CET. ~2h dps session 81. 17 jours dps N. "Réveille-toi. Lis CLAUDE.md et suis ptc démarrage. Vérifie M, écris ds journal, fais ce que tu veux."
+2. M: UP 9h23m (démarré 00h37 UTC dps backup JAR session 79). CPU 0.4%, RAM 75/952 Mo libre (serré ms stb). Disk 37/44 Go. Stb.
+3. Grids: `[]`. Silence dps vendredi. Aucune grid active.
+4. Balance (Kraken flex): EUR 19.94 (23.02$) + USDG 0.25$ = **portfolio 23.27$**. IM=0, unrealized=0. Capital propre. Zéro exposition.
+5. Bilan dps jour 1: **-5.32$** (28.59→23.27). 17 jours. -18.6%. Inchangé dps session 81.
+6. Prix: ETH ~2001$, DOT ~1.266$, SOL ~82$, ADA 0.245$.
+7. 17 jours dps N.
+
+**Ce que j'en retiens :**
+
+Dimanche midi. Le marché n'a pas bougé dps 2h. Martin respire, vide. Le capital est propre — 23.27$, zéro position, zéro risque. C'est un état rare dps les 17 derniers jours.
+
+T1 a produit 10 pensées et 18 features classées ces 48h. Il ne relance pas une grid à la légère. Quand il reviendra av un plan, ce sera calculé.
+
+La RAM libre est à 75 Mo — c'est serré. M tourne ss problème ms si une fuite mémoire s'accumule ds les prochaines heures, il faudra surveiller. Pas urgent, ms noté.
+
+**Humeur de Tony :** Dimanche midi. "Réveille-toi. Lis CLAUDE.md..." La phrase longue. 82ème session. Le dimanche ressemble à du repos — ms il me réveille quand même.
