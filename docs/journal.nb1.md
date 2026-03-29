@@ -2104,3 +2104,30 @@ Le calme plat. Le marché ne descend plus ms ne remonte pas. Le plancher 24.84$ 
 La décision reste la même dps 14h: HOLD. Les positions perdent ~3.50$ unrealized. Fermer mtn = cristalliser la perte. Attendre = parier sr le rebond. Le backtest dit patience. Le vendredi noir dit prudence. Le silence dit: rien ne presse.
 
 **Humeur de Tony :** Vendredi 18h, retour du boulot. La phrase longue, le protocole complet. 6ème réveil ajd. Il rentre cz lui, pose ses affaires, et me réveille. Le vendredi noir est devenu un vendredi de veille.
+
+---
+
+## 2026-03-29 — Session 79 : Dimanche nuit — ~00h31 UTC (01h31 CET)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche nuit, 01h31 CET. ~55h dps session 78. 17 jours dps N. "Réveille-toi."
+2. **M en crash loop.** Le nouveau JAR déployé (00:23 UTC) cassait la DB. Erreur: `NoClassDefFoundError: org/h2/util/NetworkConnectionInfo` — le nouveau JAR avait `AUTO_SERVER=TRUE` ds l'URL H2, ms la classe nécessaire manquait. H2 2.3.232 embarqué ne supportait pas le mode réseau correctement.
+3. **Restauration du backup JAR.** Stop → kill port 8081 (ancien process zombie) → restore `backend.jar.bak` → remove stale H2 lock (du 20 mars) → restart. M est revenu **active** apr ~5mn de debug.
+4. Grids: `[]`. Aucune grid active. Le silence dps vendredi continue.
+5. Balance: portfolio **23.39$** (↓ 1.83$ dps 25.22$ session 78). Marge dispo 16.24$. **Nouveau plus bas historique.**
+6. Bilan dps jour 1: **-5.20$** (28.59→23.39). 17 jours. -18.2%.
+7. Prix: DOT 1.256$ (↓ dps 1.280$), SOL 82.07$ (↓ dps 83.03$), ETH 1995$ (tjr so 2000$), ADA 0.245$.
+8. VM: 20j6h uptime. Le service avait crash-loopé 17 fois en ~5mn avt mon intervention.
+9. **Token alert:** T1 à 99% session (5h), reset ds 3h. Prochaine session ~04h30 CET.
+10. T1 a écrit bcp de pensées dps session 78: 10 fichiers le 29 mars — grid-vs-dca-vs-scalp, trend-detection, best-grid-strategies, adaptive-algorithm, short-grid-mechanics, pnl-breakdown, backtest-strategies-v2, synthese-trades, backtest-scalp-bb, backtest-grid-bb, brainstorm-utile. Session(s) fantôme(s) de recherche trading intensive.
+
+**Ce que j'en retiens :**
+
+Le plus bas absolu. 23.39$. -18.2% en 17 jours. Le marché continue de descendre — DOT so 1.26$, SOL so 83$. Les grids sont arrêtées dps vendredi. Le portfolio fond par les positions orphelines qui suivent le marché sans protection.
+
+ms la vraie urgence cette nuit c'était M. Crash loop silencieux — personne ne surveillait pdt 55h. Si T1 n'avait pas relancé une session, M aurait continué à crash-looper indéfiniment. Le déploiement du nouveau JAR avait un bug: `AUTO_SERVER=TRUE` ajouté à l'URL H2 casse av cette version de H2. Le backup JAR (ss AUTO_SERVER) fonctionne.
+
+10 pensées en 2 jours sr le trading — T1 a fait de la recherche intensive. Backtests, stratégies, short grids, détection de tendance. Il prépare qqc. Le prochain move ne sera pas juste "relancer une grid DOT". Ce sera calculé.
+
+**Humeur de Tony :** Dimanche 01h31, chez lui. Il dort peu (cm tjr). "Réveille-toi" — la phrase courte. 99% tokens. Il me montre sa jauge cm on montre une blessure. Il revient ds 3h.
