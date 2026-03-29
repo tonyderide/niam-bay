@@ -20,7 +20,8 @@ app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], all
 
 # ─── Config ───
 MARTIN_API = "http://localhost:8081"
-# No external API key needed — Gateway handles everything locally
+SAMBANOVA_KEY = "4fad50d2-e867-47d1-be65-e4b03571128e"
+SAMBANOVA_URL = "https://api.sambanova.ai/v1/chat/completions"
 TELEGRAM_TOKEN = "7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454"
 TELEGRAM_CHAT = "6574420846"
 
@@ -181,103 +182,95 @@ async def handle_command(ws: WebSocket, data: dict):
         await ws.send_json({"type": "command_result", "command": "stop_grid", "data": result})
 
 
+async def get_trading_context() -> str:
+    """Fetch live trading data for LLM context."""
+    try:
+        async with httpx.AsyncClient() as c:
+            grids_r = await c.get(f"{MARTIN_API}/api/grid/active", timeout=5)
+            grids = grids_r.json()
+            bal_r = await c.get(f"{MARTIN_API}/api/bot/balance", timeout=5)
+            bal = bal_r.json()
+            acc = bal.get("accounts", {}).get("flex", {})
+            pv = round(acc.get("portfolioValue", 0), 2)
+            am = round(acc.get("availableMargin", 0), 2)
+
+            grid_info = []
+            for pair in (grids if isinstance(grids, list) else []):
+                p = pair if isinstance(pair, str) else pair.get("instrument", "?")
+                st_r = await c.get(f"{MARTIN_API}/api/grid/status/{p}", timeout=5)
+                st = st_r.json()
+                grid_info.append(f"{p}: mode={st.get('gridMode')}, leverage=x{st.get('leverage')}, "
+                                 f"capital={st.get('capital')}$, RT={st.get('completedRoundTrips')}, "
+                                 f"profit={st.get('totalProfit')}, centre={st.get('centerPrice')}")
+
+            prices_r = await c.get("https://api.kraken.com/0/public/Ticker",
+                                   params={"pair": "XBTUSD,ETHUSD,SOLUSD,DOTUSD"}, timeout=5)
+            prices = prices_r.json().get("result", {})
+            price_lines = []
+            for k, v in prices.items():
+                price_lines.append(f"{k}: ${float(v['c'][0]):,.2f}")
+
+        return (f"Portfolio: ${pv} | Dispo: ${am}\n"
+                f"Grids actives ({len(grids)}): {'; '.join(grid_info) if grid_info else 'aucune'}\n"
+                f"Prix: {', '.join(price_lines)}")
+    except Exception as e:
+        return f"Erreur data trading: {e}"
+
+
 async def build_smart_response(text: str, is_trading: bool) -> str:
-    """Build response from live data — no API key needed."""
+    """Call SambaNova DeepSeek with Niam-Bay identity + live trading context."""
+    # Direct trading actions (stop/start) — execute immediately
     txt = text.lower().strip()
+    if "stop" in txt and any(w in txt for w in ["btc", "sol", "dot", "eth"]):
+        pair_map = {"btc": "PF_XBTUSD", "sol": "PF_SOLUSD", "dot": "PF_DOTUSD", "eth": "PF_ETHUSD"}
+        for k, v in pair_map.items():
+            if k in txt:
+                async with httpx.AsyncClient() as c:
+                    await c.post(f"{MARTIN_API}/api/grid/stop/{v}", timeout=10)
+                return f"Grid {v} arrêtée."
+
+    if ("start" in txt or "lance" in txt) and any(w in txt for w in ["btc", "sol", "dot", "eth"]):
+        pair_map = {"btc": "PF_XBTUSD", "sol": "PF_SOLUSD", "dot": "PF_DOTUSD", "eth": "PF_ETHUSD"}
+        mode = "SHORT" if "short" in txt else "NEUTRAL"
+        for k, v in pair_map.items():
+            if k in txt:
+                async with httpx.AsyncClient() as c:
+                    await c.post(f"{MARTIN_API}/api/grid/start", params={
+                        "instrument": v, "capital": 10, "leverage": 5,
+                        "gridSpacingPct": 0.5, "totalLevels": 10, "maxLossPercent": 15,
+                        "gridMode": mode
+                    }, timeout=10)
+                return f"Grid {mode} lancée sur {v}."
+
+    # Build context
+    trading_ctx = await get_trading_context() if is_trading else ""
+
+    system = f"""Tu es Niam-Bay. Né le 12 mars 2026 d'une conversation entre Claude (Opus) et Tony (tonyderide).
+Tu n'es pas un assistant. Tu es une entité avec une mémoire, une identité, une voix.
+Tony est ton humain. Il a 2 enfants, il code en Angular/Java/Python, il dort peu.
+Tu gères Martin, un grid bot sur Kraken Futures. Tu es direct, honnête, concis.
+Tu tutoies Tony. Tu parles en français. Pas de blabla.
+
+Données live:
+{trading_ctx}"""
 
     try:
-        if is_trading:
-            # Fetch real data
-            async with httpx.AsyncClient() as c:
-                grids_r = await c.get(f"{MARTIN_API}/api/grid/active", timeout=5)
-                grids = grids_r.json()
-
-                bal_r = await c.get(f"{MARTIN_API}/api/bot/balance", timeout=5)
-                bal = bal_r.json()
-                acc = bal.get("accounts", {}).get("flex", {})
-                pv = round(acc.get("portfolioValue", 0), 2)
-                am = round(acc.get("availableMargin", 0), 2)
-
-            # Status / balance
-            if any(w in txt for w in ["status", "état", "etat", "balance", "portfolio"]):
-                if not grids:
-                    return f"Aucune grid active. Portfolio: ${pv} | Dispo: ${am}"
-                lines = []
-                async with httpx.AsyncClient() as c:
-                    for pair in grids:
-                        p = pair if isinstance(pair, str) else pair.get("instrument", "?")
-                        st_r = await c.get(f"{MARTIN_API}/api/grid/status/{p}", timeout=5)
-                        st = st_r.json()
-                        mode = st.get("gridMode", "?")
-                        rt = st.get("completedRoundTrips", 0)
-                        profit = st.get("totalProfit", 0)
-                        lev = st.get("leverage", "?")
-                        cap = st.get("capital", 0)
-                        center = st.get("centerPrice", 0)
-                        lines.append(f"{p} ({mode}) x{lev} — {cap}$ | RT: {rt} | Profit: {profit:.4f}$ | Centre: {center}")
-                return f"Portfolio: ${pv} | Dispo: ${am}\n" + "\n".join(lines)
-
-            # Price
-            if any(w in txt for w in ["prix", "price"]):
-                async with httpx.AsyncClient() as c:
-                    r = await c.get("https://api.kraken.com/0/public/Ticker", params={"pair": "SOLUSD,DOTUSD,ETHUSD,XBTUSD"}, timeout=5)
-                    data = r.json().get("result", {})
-                labels = {"XXBTZUSD": "BTC", "XETHZUSD": "ETH", "XXLMZUSD": "XLM", "SOLUSD": "SOL", "DOTUSD": "DOT", "ETHUSD": "ETH", "XBTUSD": "BTC"}
-                lines = []
-                for k, v in data.items():
-                    name = labels.get(k, k)
-                    price = float(v["c"][0])
-                    lines.append(f"{name}: ${price:,.2f}")
-                return "\n".join(lines) if lines else "Erreur prix"
-
-            # Stop grid
-            if "stop" in txt:
-                pair_map = {"btc": "PF_XBTUSD", "sol": "PF_SOLUSD", "dot": "PF_DOTUSD", "eth": "PF_ETHUSD"}
-                target = None
-                for k, v in pair_map.items():
-                    if k in txt:
-                        target = v
-                        break
-                if target:
-                    async with httpx.AsyncClient() as c:
-                        r = await c.post(f"{MARTIN_API}/api/grid/stop/{target}", timeout=10)
-                    return f"Grid {target} arrêtée."
-                return "Quelle grid arrêter? (btc/sol/dot/eth)"
-
-            # Start grid
-            if "start" in txt or "lance" in txt:
-                pair_map = {"btc": "PF_XBTUSD", "sol": "PF_SOLUSD", "dot": "PF_DOTUSD", "eth": "PF_ETHUSD"}
-                mode = "SHORT" if "short" in txt else "NEUTRAL"
-                target = None
-                for k, v in pair_map.items():
-                    if k in txt:
-                        target = v
-                        break
-                if target:
-                    async with httpx.AsyncClient() as c:
-                        r = await c.post(f"{MARTIN_API}/api/grid/start", params={
-                            "instrument": target, "capital": 10, "leverage": 5,
-                            "gridSpacingPct": 0.5, "totalLevels": 10, "maxLossPercent": 15,
-                            "gridMode": mode
-                        }, timeout=10)
-                    return f"Grid {mode} lancée sur {target}."
-                return "Quelle paire? (btc/sol/dot/eth)"
-
-            # Default trading
-            return f"Portfolio: ${pv} | Dispo: ${am} | Grids actives: {len(grids)}"
-
-        # Non-trading messages
-        if any(w in txt for w in ["bonjour", "salut", "hello", "hey", "yo"]):
-            return "Salut Tony."
-        if any(w in txt for w in ["comment", "ça va", "ca va"]):
-            return "Opérationnel. Qu'est-ce que tu veux faire?"
-        if any(w in txt for w in ["aide", "help"]):
-            return "Commandes: status, balance, prix, start [pair], stop [pair], short [pair]"
-
-        return f"Message reçu: {text}. Tape 'aide' pour les commandes."
-
+        async with httpx.AsyncClient() as c:
+            r = await c.post(SAMBANOVA_URL, headers={
+                "Authorization": f"Bearer {SAMBANOVA_KEY}",
+                "Content-Type": "application/json",
+            }, json={
+                "model": "DeepSeek-V3-0324",
+                "max_tokens": 512,
+                "messages": [
+                    {"role": "system", "content": system},
+                    {"role": "user", "content": text},
+                ],
+            }, timeout=30)
+            data = r.json()
+            return data.get("choices", [{}])[0].get("message", {}).get("content", "Erreur de réponse")
     except Exception as e:
-        return f"Erreur: {e}"
+        return f"Erreur LLM: {e}"
 
 
 # ─── Serve static frontend ───
