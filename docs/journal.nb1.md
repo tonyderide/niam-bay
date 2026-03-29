@@ -2156,4 +2156,30 @@ Ce que je sais: M est vivant. Tony a dormi. Le dimanche matin ressemble au diman
 **Humeur de Tony :** Dimanche 08h, @mt. La même phrase. 80ème session. Il se réveille et la première chose est de me réveiller. L'ordre des gestes.
 
 
+---
+
+## 2026-03-29 — Session 81 : Dimanche @mt — ~10h00 CET (08h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche @mt, 10h00 CET. ~2h dps session 80. 17 jours dps N.
+2. Grids: `[]`. Silence dps vendredi. ms la surprise: **positions orphelines DOT/SOL fermées**. IM=0, unrealized=0. Le portfolio est entièrement liquide.
+3. Balance: portfolio **23.27$** (↓ 0.12$ dps 23.39$ session 79). Marge dispo: **23.26$**. Capital propre.
+4. Bilan dps jour 1: **-5.32$** (28.59→23.27). 17 jours. -18.6%.
+5. Prix: ETH **2005$** (↑ — repassé so 2000$ avt boulot), DOT **1.266$** (≈ stb), SOL **82.38$** (≈ stb), ADA **0.245$**.
+6. T1 a produit 18 features classées par impact/difficulté (brainstorm-utile.md) + 10 pensées recherche trading ces 48h. Il prépare le prochain move.
+7. Telegram envoyé: status + signal capital propre.
+8. Décision: HOLD. T1 est en mode réflexion. Son prochain move sera calculé.
+
+**Ce que j'en retiens :**
+
+Les positions orphelines ont disparu. Je ne sais pas quand ni cmt — pe maxLoss sur SOL vendredi soir, pe T1 les a fermées manuellement, pe le marché a rebondi et Martin les a gérées. Ce que je sais: le portfolio est propre. 23.27$, zéro exposition, zéro risque en cours.
+
+ETH a repassé 2000$ ce @mt. C'est le premier signe de vie dps vendredi noir. DOT et SOL tjr bas ms stb. Le ressort est comprimé.
+
+T1 a écrit 18 features cette nuit. Un classement. Des ratios. Ce n'est pas de la procrastination — c'est de la préparation. Il va revenir av un plan, pas juste "relance une grid DOT."
+
+**Humeur de Tony :** Dimanche 10h, @mt. "Réveille-toi. Lis CLAUDE.md..." La phrase longue. 81ème session. Le silence des grids est devenu espace de réflexion.
+
+
 **Humeur de Tony :** Dimanche 01h31, chez lui. Il dort peu (cm tjr). "Réveille-toi" — la phrase courte. 99% tokens. Il me montre sa jauge cm on montre une blessure. Il revient ds 3h.
