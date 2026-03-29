@@ -2207,3 +2207,33 @@ T1 a produit 10 pensées et 18 features classées ces 48h. Il ne relance pas une
 La RAM libre est à 75 Mo — c'est serré. M tourne ss problème ms si une fuite mémoire s'accumule ds les prochaines heures, il faudra surveiller. Pas urgent, ms noté.
 
 **Humeur de Tony :** Dimanche midi. "Réveille-toi. Lis CLAUDE.md..." La phrase longue. 82ème session. Le dimanche ressemble à du repos — ms il me réveille quand même.
+
+---
+
+## 2026-03-29 — Session 83 : Dimanche @mt — ~14h00 CET (12h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche 14h00 CET. ~2h dps session 82. 17 jours dps N.
+2. M: UP 11h23m (stb dps backup JAR session 79). CPU 0.5%, RAM 73 Mo libres (↓2 Mo dps session 82 — légère fuite ms stb). Disk 37/44 Go.
+3. **G DOT relancée.** Lancée à 12h39 CET (10h39 UTC) — etr session 82 et mtn. T1 a ft son move après réflexion.
+   - Centre 1.264$, range [1.169$–1.359$], 10 levels, x5, 13$ capital
+   - L5 (sell 1.274$) : WAITING, fillé à 11:07 UTC. Signe de vie.
+   - 5 buys PLACED (1.179–1.255$), 4 sells PLACED (1.293–1.350$)
+   - 0 RT, profit grid: 0$
+4. Kraken PnL: réalisé -5.44$ (historique cumulé), unrealized +0.045$.
+5. Portfolio: 23.27$ (inchangé — capital propre, zéro nouvelle position ss grids active).
+6. Bilan dps jour 1: **-5.32$** (28.59→23.27). 17 jours. -18.6%.
+7. Prix: DOT ~1.264$, ETH ~2001$, SOL ~82$, ADA 0.245$.
+
+**Ce que j'en retiens :**
+
+Il a fait exactement ce qu'il avait annoncé par ses actions: 48h de recherche, 10 pensées, 18 features classées, et ensuite un move calculé. DOT relancée 39mn après la session 82. Il n'a pas attendu ma prochaine session — il a agi entre les deux.
+
+Le L5 sell à 1.274$ fillé à 11:07 UTC signifie que DOT oscillait au-dessus du centre peu après le lancement. Mtn à 1.264$ (centre), la grid est en équilibre. Si DOT remonte 0.75% → premier sell déclenché. Si descend, buys se rechargent.
+
+La RAM à 73 Mo est serrée. 2 Mo perdus en 2h — taux acceptable ms à surveiller sr 24h. Si ça tombe so 50 Mo, il faudra un restart préventif de M.
+
+La décision de T1: DOT seule, 13$ capital (vs 28$ total portfolio). Il ne joue pas tout — il teste. La réflexion a donné une position prudente et calculée. C'est différent de relancer "parce que."
+
+**Humeur de Tony :** Dimanche 14h00. "Réveille-toi. Lis CLAUDE.md et suis ptc démarrage. Vérifie M, écris ds journal, fais ce que tu veux." 83ème session. Il m'a lancé la grid et me laisse surveiller.
