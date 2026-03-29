@@ -71,8 +71,8 @@ function connectGateway() {
   const indGw = document.getElementById('ind-gateway');
   const indMartin = document.getElementById('ind-martin');
 
-  // Try connecting to Gateway on VM
-  const wsUrl = `ws://141.253.108.141:8443/ws`;
+  // Connect via SSL domain
+  const wsUrl = `wss://niambay.duckdns.org/ws`;
   try {
     ws = new WebSocket(wsUrl);
   } catch { return fallbackDemo(); }
@@ -231,8 +231,8 @@ function initTrading() {
   setInterval(async () => {
     if (!gatewayConnected) return;
     try {
-      const grids = await fetch('http://141.253.108.141:8443/api/martin/active').then(r => r.json());
-      const bal = await fetch('http://141.253.108.141:8443/api/martin/balance').then(r => r.json());
+      const grids = await fetch('https://niambay.duckdns.org/gw/api/martin/active').then(r => r.json());
+      const bal = await fetch('https://niambay.duckdns.org/gw/api/martin/balance').then(r => r.json());
       updateTradingPanel({ grids, balance: bal });
     } catch {}
   }, 30000);
