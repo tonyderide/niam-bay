@@ -1,0 +1,18 @@
+{
+  "name": "niam-bay-jarvis",
+  "version": "0.1.0",
+  "description": "Niam-Bay JARVIS — AI Assistant Interface",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "gsap": "^3.14.2",
+    "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "vite": "^8.0.3"
+  }
+}
