@@ -1,0 +1,28 @@
+[Unit]
+Description=Auto Scalp BB — Bollinger Band scalping bot
+After=network.target martin.service
+Wants=martin.service
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu
+ExecStart=/usr/bin/python3 /home/ubuntu/auto_scalp.py
+Restart=on-failure
+RestartSec=10
+Environment=SCALP_INSTRUMENT=PF_ETHUSD
+Environment=SCALP_CAPITAL=16
+Environment=SCALP_LEVERAGE=2
+Environment=SCALP_TP_PCT=0.5
+Environment=SCALP_SL_PCT=0.5
+Environment=SCALP_POLL=30
+Environment=SCALP_DEMO=false
+Environment=SCALP_LOG=/home/ubuntu/scalp.log
+
+# Sécurité
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/home/ubuntu
+
+[Install]
+WantedBy=multi-user.target

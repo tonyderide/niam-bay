@@ -522,6 +522,67 @@ input[type=range]::-webkit-slider-thumb {
   border-radius:6px;
 }
 @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
+
+/* ---- Scalp panel ---- */
+.scalp-dir-btn {
+  flex:1; display:flex; align-items:center; justify-content:center; gap:8px;
+  padding:18px 20px; border:2px solid var(--border); border-radius:var(--radius-sm);
+  background:rgba(12,12,18,0.6); color:var(--muted);
+  font-family:var(--font-data); font-weight:800; font-size:1.1rem;
+  cursor:pointer; transition:all 0.3s var(--ease);
+}
+.scalp-dir-btn:hover { border-color:var(--border-hover); }
+.scalp-dir-btn.scalp-long.active {
+  background:rgba(0,255,136,0.12); border-color:var(--profit);
+  color:var(--profit); box-shadow:0 0 30px rgba(0,255,136,0.15);
+}
+.scalp-dir-btn.scalp-short.active {
+  background:rgba(255,51,102,0.12); border-color:var(--loss);
+  color:var(--loss); box-shadow:0 0 30px rgba(255,51,102,0.15);
+}
+
+.scalp-pills {
+  display:flex; gap:6px; flex-wrap:wrap;
+}
+.scalp-pill {
+  flex:1; min-width:50px; padding:10px 12px;
+  background:rgba(12,12,18,0.6); border:1px solid var(--border);
+  border-radius:8px; color:var(--muted);
+  font-family:var(--font-data); font-weight:600; font-size:0.8rem;
+  cursor:pointer; transition:all 0.3s var(--ease); text-align:center;
+}
+.scalp-pill:hover { border-color:var(--border-hover); color:var(--text); }
+.scalp-pill.active {
+  background:var(--accent); border-color:var(--accent); color:#fff;
+  box-shadow:0 4px 16px var(--accent-glow);
+}
+
+.scalp-execute-btn {
+  display:flex; align-items:center; justify-content:center; gap:10px;
+  width:100%; padding:20px 28px; border:none; border-radius:var(--radius-sm);
+  background:linear-gradient(135deg, var(--accent), #7c3aed);
+  color:#fff; font-family:var(--font-data); font-weight:800; font-size:1rem;
+  letter-spacing:1px; cursor:pointer;
+  transition:all 0.3s var(--ease);
+  box-shadow:0 6px 30px rgba(94,106,210,0.4);
+}
+.scalp-execute-btn:hover {
+  transform:translateY(-3px);
+  box-shadow:0 10px 40px rgba(94,106,210,0.5);
+}
+.scalp-execute-btn:active {
+  transform:translateY(0px);
+}
+.scalp-execute-btn.long-mode {
+  background:linear-gradient(135deg, #00cc6a, #00ff88);
+  color:#000;
+  box-shadow:0 6px 30px rgba(0,255,136,0.3);
+}
+.scalp-execute-btn.short-mode {
+  background:linear-gradient(135deg, #cc2244, #ff3366);
+  color:#fff;
+  box-shadow:0 6px 30px rgba(255,51,102,0.3);
+}
 </style>
 </head>
 <body>
@@ -578,6 +639,10 @@ input[type=range]::-webkit-slider-thumb {
     <button class="nav-btn" data-tab="strategy">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       Strategy
+    </button>
+    <button class="nav-btn" data-tab="scalp">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Scalp
     </button>
     <button class="nav-btn" data-tab="ai">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
@@ -828,6 +893,181 @@ input[type=range]::-webkit-slider-thumb {
           <div style="margin-top:12px;color:var(--muted);font-size:0.85rem;">
             <p>Run backtests with your current parameters against historical data.</p>
             <button class="btn btn-ghost btn-sm" style="margin-top:12px;" disabled>Run Backtest</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== PANEL: SCALP ======== -->
+  <div class="panel" id="panel-scalp">
+
+    <!-- Direction + Pair + Amount + Leverage -->
+    <div class="row" style="align-items:stretch;">
+      <div class="col">
+        <div class="card mb" style="height:100%;">
+          <div class="card-title">Direction</div>
+          <div style="display:flex;gap:12px;margin-top:14px;">
+            <button class="scalp-dir-btn scalp-long active" id="scalpBtnLong" onclick="setScalpDir('long')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><polyline points="17 11 12 6 7 11"/><line x1="12" y1="6" x2="12" y2="18"/></svg>
+              LONG
+            </button>
+            <button class="scalp-dir-btn scalp-short" id="scalpBtnShort" onclick="setScalpDir('short')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20"><polyline points="7 13 12 18 17 13"/><line x1="12" y1="18" x2="12" y2="6"/></svg>
+              SHORT
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb" style="height:100%;">
+          <div class="card-title">Pair</div>
+          <div class="scalp-pills" style="margin-top:14px;" id="scalpPairGroup">
+            <button class="scalp-pill active" data-pair="PF_ETHUSD" onclick="setScalpPair(this)">ETH</button>
+            <button class="scalp-pill" data-pair="PF_DOTUSD" onclick="setScalpPair(this)">DOT</button>
+            <button class="scalp-pill" data-pair="PF_SOLUSD" onclick="setScalpPair(this)">SOL</button>
+            <button class="scalp-pill" data-pair="PF_ADAUSD" onclick="setScalpPair(this)">ADA</button>
+            <button class="scalp-pill" data-pair="PF_XRPUSD" onclick="setScalpPair(this)">XRP</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb" style="height:100%;">
+          <div class="card-title">Amount</div>
+          <div class="scalp-pills" style="margin-top:14px;" id="scalpAmountGroup">
+            <button class="scalp-pill" data-amount="5" onclick="setScalpAmount(this)">$5</button>
+            <button class="scalp-pill active" data-amount="10" onclick="setScalpAmount(this)">$10</button>
+            <button class="scalp-pill" data-amount="15" onclick="setScalpAmount(this)">$15</button>
+            <button class="scalp-pill" data-amount="0" onclick="setScalpAmount(this)">ALL</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb" style="height:100%;">
+          <div class="card-title">Leverage</div>
+          <div class="scalp-pills" style="margin-top:14px;" id="scalpLevGroup">
+            <button class="scalp-pill active" data-lev="2" onclick="setScalpLev(this)">x2</button>
+            <button class="scalp-pill" data-lev="3" onclick="setScalpLev(this)">x3</button>
+            <button class="scalp-pill" data-lev="5" onclick="setScalpLev(this)">x5</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BB Signal -->
+    <div class="card mb">
+      <div class="card-header">
+        <div class="card-title">Bollinger Band Signal</div>
+        <div class="signal wait" id="scalpSignal" style="padding:8px 14px;font-size:0.85rem;">
+          <div class="signal-dot"></div>
+          <span>LOADING...</span>
+        </div>
+      </div>
+      <div class="ind-row" id="scalpIndicators">
+        <div class="ind-pill"><span class="ind-name">Price</span><span class="ind-val cyan" id="scalpPrice">--</span></div>
+        <div class="ind-pill"><span class="ind-name">BB Upper</span><span class="ind-val" id="scalpBBU">--</span></div>
+        <div class="ind-pill"><span class="ind-name">BB Mid</span><span class="ind-val" id="scalpBBM">--</span></div>
+        <div class="ind-pill"><span class="ind-name">BB Lower</span><span class="ind-val" id="scalpBBL">--</span></div>
+        <div class="ind-pill"><span class="ind-name">BB %</span><span class="ind-val" id="scalpBBPct">--</span></div>
+        <div class="ind-pill"><span class="ind-name">RSI</span><span class="ind-val" id="scalpRSI">--</span></div>
+      </div>
+    </div>
+
+    <!-- Price Chart with BB -->
+    <div class="card mb">
+      <div class="card-header">
+        <div class="card-title">Price & Bollinger Bands (20, 2)</div>
+        <div class="period-sel" id="scalpChartPeriod">
+          <button class="per-btn" data-tf="5">5M</button>
+          <button class="per-btn active" data-tf="15">15M</button>
+          <button class="per-btn" data-tf="60">1H</button>
+        </div>
+      </div>
+      <div class="chart-container price-chart" id="scalpChart"></div>
+    </div>
+
+    <!-- TP / SL + Execute -->
+    <div class="row">
+      <div class="col">
+        <div class="card" style="height:100%;">
+          <div class="card-title">Take Profit</div>
+          <div class="scalp-pills" style="margin-top:14px;" id="scalpTPGroup">
+            <button class="scalp-pill active" data-tp="0.5" onclick="setScalpTP(this)">+0.5%</button>
+            <button class="scalp-pill" data-tp="1" onclick="setScalpTP(this)">+1%</button>
+            <button class="scalp-pill" data-tp="2" onclick="setScalpTP(this)">+2%</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="height:100%;">
+          <div class="card-title">Stop Loss</div>
+          <div class="scalp-pills" style="margin-top:14px;" id="scalpSLGroup">
+            <button class="scalp-pill active" data-sl="0.5" onclick="setScalpSL(this)">-0.5%</button>
+            <button class="scalp-pill" data-sl="1" onclick="setScalpSL(this)">-1%</button>
+            <button class="scalp-pill" data-sl="2" onclick="setScalpSL(this)">-2%</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="height:100%;display:flex;flex-direction:column;justify-content:center;align-items:center;">
+          <button class="scalp-execute-btn" id="scalpExecuteBtn" onclick="executeScalp()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            EXECUTE SCALP
+          </button>
+          <div style="font-family:var(--font-data);font-size:0.7rem;color:var(--muted);margin-top:8px;" id="scalpSummary">
+            LONG ETH $10 x2 | TP +0.5% SL -0.5%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Session history + stats -->
+    <div class="row" style="margin-top:16px;">
+      <div class="col-2">
+        <div class="card" style="height:100%;">
+          <div class="card-header">
+            <div class="card-title">Session Scalps</div>
+            <span style="font-family:var(--font-data);font-size:0.7rem;color:var(--muted);" id="scalpSessionCount">0 trades</span>
+          </div>
+          <div class="table-wrap" style="max-height:250px;">
+            <table>
+              <thead><tr><th>Time</th><th>Pair</th><th>Dir</th><th>Amount</th><th>Lev</th><th>Entry</th><th>Exit</th><th>PnL</th></tr></thead>
+              <tbody id="scalpHistBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb">
+          <div class="card-title">Session Stats</div>
+          <div style="margin-top:12px;">
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:var(--muted);font-size:0.8rem;">Win Rate</span>
+              <span style="font-family:var(--font-data);font-weight:700;" id="scalpWR">--%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:var(--muted);font-size:0.8rem;">Session PnL</span>
+              <span style="font-family:var(--font-data);font-weight:700;" id="scalpSessionPnL">$0.00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:var(--muted);font-size:0.8rem;">Trades</span>
+              <span style="font-family:var(--font-data);font-weight:700;" id="scalpTradeCount">0</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="color:var(--muted);font-size:0.8rem;">Best</span>
+              <span style="font-family:var(--font-data);font-weight:700;color:var(--profit);" id="scalpBest">--</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding:8px 0;">
+              <span style="color:var(--muted);font-size:0.8rem;">Worst</span>
+              <span style="font-family:var(--font-data);font-weight:700;color:var(--loss);" id="scalpWorst">--</span>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Quick Note</div>
+          <div style="margin-top:10px;color:var(--muted);font-size:0.78rem;line-height:1.5;">
+            Scalp BB : LONG quand prix touche lower BB, SHORT quand prix touche upper BB.
+            TP rapide, SL serre. Leverage x2 max x3.
           </div>
         </div>
       </div>
@@ -1789,6 +2029,303 @@ async function fetchJSON(url) {
 // Filter event listeners
 document.getElementById('histPairFilter').addEventListener('change', updateHistory);
 document.getElementById('histSideFilter').addEventListener('change', updateHistory);
+
+// ============================================================
+// SCALP TAB
+// ============================================================
+let scalpState = {
+  direction: 'long',
+  pair: 'PF_ETHUSD',
+  amount: 10,
+  leverage: 2,
+  tp: 0.5,
+  sl: 0.5,
+  session: [],   // trades this session
+  chartInited: false,
+};
+
+let scalpCharts = {};
+let scalpRefreshInterval = null;
+
+function setScalpDir(dir) {
+  scalpState.direction = dir;
+  document.getElementById('scalpBtnLong').classList.toggle('active', dir === 'long');
+  document.getElementById('scalpBtnShort').classList.toggle('active', dir === 'short');
+  // Update execute button color
+  const btn = document.getElementById('scalpExecuteBtn');
+  btn.classList.remove('long-mode', 'short-mode');
+  btn.classList.add(dir === 'long' ? 'long-mode' : 'short-mode');
+  updateScalpSummary();
+}
+
+function setScalpPair(el) {
+  document.querySelectorAll('#scalpPairGroup .scalp-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  scalpState.pair = el.dataset.pair;
+  updateScalpSummary();
+  loadScalpPriceData();
+}
+
+function setScalpAmount(el) {
+  document.querySelectorAll('#scalpAmountGroup .scalp-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  scalpState.amount = parseInt(el.dataset.amount);
+  updateScalpSummary();
+}
+
+function setScalpLev(el) {
+  document.querySelectorAll('#scalpLevGroup .scalp-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  scalpState.leverage = parseInt(el.dataset.lev);
+  updateScalpSummary();
+}
+
+function setScalpTP(el) {
+  document.querySelectorAll('#scalpTPGroup .scalp-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  scalpState.tp = parseFloat(el.dataset.tp);
+  updateScalpSummary();
+}
+
+function setScalpSL(el) {
+  document.querySelectorAll('#scalpSLGroup .scalp-pill').forEach(b => b.classList.remove('active'));
+  el.classList.add('active');
+  scalpState.sl = parseFloat(el.dataset.sl);
+  updateScalpSummary();
+}
+
+function updateScalpSummary() {
+  const dir = scalpState.direction.toUpperCase();
+  const pair = scalpState.pair.replace('PF_','').replace('USD','');
+  const amt = scalpState.amount === 0 ? 'ALL' : '$' + scalpState.amount;
+  document.getElementById('scalpSummary').textContent =
+    `${dir} ${pair} ${amt} x${scalpState.leverage} | TP +${scalpState.tp}% SL -${scalpState.sl}%`;
+}
+
+function initScalpChart() {
+  if (scalpState.chartInited) return;
+  const container = document.getElementById('scalpChart');
+
+  scalpCharts.chart = LightweightCharts.createChart(container, {
+    layout: { background: { type: 'solid', color: 'transparent' }, textColor: '#6b6b80', fontFamily: "'JetBrains Mono', monospace", fontSize: 10 },
+    grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } },
+    timeScale: { borderColor: 'rgba(255,255,255,0.06)', timeVisible: true, secondsVisible: true },
+    rightPriceScale: { borderColor: 'rgba(255,255,255,0.06)' },
+    crosshair: { mode: 0 },
+  });
+
+  scalpCharts.candles = scalpCharts.chart.addCandlestickSeries({
+    upColor: '#00ff88', downColor: '#ff3366',
+    borderUpColor: '#00ff88', borderDownColor: '#ff3366',
+    wickUpColor: '#00ff88', wickDownColor: '#ff3366',
+  });
+
+  // Bollinger Bands
+  scalpCharts.bbUpper = scalpCharts.chart.addLineSeries({ color: 'rgba(255,170,0,0.6)', lineWidth: 1, lineStyle: 2, title: 'BB Upper' });
+  scalpCharts.bbMid = scalpCharts.chart.addLineSeries({ color: 'rgba(255,170,0,0.3)', lineWidth: 1, lineStyle: 1, title: 'BB Mid' });
+  scalpCharts.bbLower = scalpCharts.chart.addLineSeries({ color: 'rgba(255,170,0,0.6)', lineWidth: 1, lineStyle: 2, title: 'BB Lower' });
+
+  new ResizeObserver(() => {
+    scalpCharts.chart.applyOptions({ width: container.clientWidth, height: container.clientHeight });
+  }).observe(container);
+
+  // Period buttons
+  document.querySelectorAll('#scalpChartPeriod .per-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#scalpChartPeriod .per-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      loadScalpPriceData();
+    });
+  });
+
+  scalpState.chartInited = true;
+  loadScalpPriceData();
+
+  // Auto-refresh every 15s
+  if (scalpRefreshInterval) clearInterval(scalpRefreshInterval);
+  scalpRefreshInterval = setInterval(loadScalpPriceData, 15000);
+}
+
+async function loadScalpPriceData() {
+  const pair = scalpState.pair;
+  const krakenPair = pair.replace('PF_','').replace('USD','') + 'USD';
+  const tf = document.querySelector('#scalpChartPeriod .per-btn.active')?.dataset.tf || '15';
+
+  try {
+    const data = await fetchJSON(`${KRAKEN_API}/OHLC?pair=${krakenPair}&interval=${tf}`);
+    if (!data || data.error?.length) return;
+
+    const result = data.result;
+    const key = Object.keys(result).find(k => k !== 'last');
+    if (!key) return;
+
+    const ohlc = result[key];
+    const candles = ohlc.map(c => ({
+      time: c[0],
+      open: parseFloat(c[1]),
+      high: parseFloat(c[2]),
+      low: parseFloat(c[3]),
+      close: parseFloat(c[4]),
+    }));
+
+    scalpCharts.candles.setData(candles);
+
+    // Calculate BB (20, 2)
+    const closes = candles.map(c => c.close);
+    const bb = calcBollinger(closes, 20, 2);
+
+    scalpCharts.bbUpper.setData(candles.slice(19).map((c, i) => ({ time: c.time, value: bb.upper[i] })));
+    scalpCharts.bbMid.setData(candles.slice(19).map((c, i) => ({ time: c.time, value: bb.mid[i] })));
+    scalpCharts.bbLower.setData(candles.slice(19).map((c, i) => ({ time: c.time, value: bb.lower[i] })));
+
+    // Update indicators
+    const lastClose = closes[closes.length - 1];
+    const lastBBU = bb.upper[bb.upper.length - 1];
+    const lastBBM = bb.mid[bb.mid.length - 1];
+    const lastBBL = bb.lower[bb.lower.length - 1];
+    const bbPct = ((lastClose - lastBBL) / (lastBBU - lastBBL) * 100);
+    const rsi = calcRSI(closes, 14);
+    const lastRSI = rsi[rsi.length - 1];
+
+    document.getElementById('scalpPrice').textContent = '$' + lastClose.toFixed(4);
+    document.getElementById('scalpBBU').textContent = lastBBU.toFixed(4);
+    document.getElementById('scalpBBM').textContent = lastBBM.toFixed(4);
+    document.getElementById('scalpBBL').textContent = lastBBL.toFixed(4);
+    document.getElementById('scalpBBPct').textContent = bbPct.toFixed(1) + '%';
+    document.getElementById('scalpBBPct').style.color = bbPct < 20 ? 'var(--profit)' : bbPct > 80 ? 'var(--loss)' : 'var(--text)';
+    document.getElementById('scalpRSI').textContent = lastRSI ? lastRSI.toFixed(1) : '--';
+    document.getElementById('scalpRSI').style.color = lastRSI > 70 ? 'var(--loss)' : lastRSI < 30 ? 'var(--profit)' : 'var(--text)';
+
+    // Update signal
+    updateScalpSignal(lastClose, lastBBU, lastBBL, lastRSI);
+
+  } catch (e) {
+    console.error('Scalp price data error:', e);
+  }
+}
+
+function updateScalpSignal(price, bbU, bbL, rsi) {
+  const el = document.getElementById('scalpSignal');
+  const bandwidth = bbU - bbL;
+  const distLower = (price - bbL) / bandwidth;
+  const distUpper = (bbU - price) / bandwidth;
+
+  let signal = 'wait';
+  let text = 'NEUTRAL — Wait for BB touch';
+
+  if (distLower < 0.05) {
+    signal = 'trade';
+    text = 'LONG SIGNAL — Price at lower BB';
+  } else if (distLower < 0.15 && rsi < 35) {
+    signal = 'trade';
+    text = 'LONG SIGNAL — Near lower BB + RSI oversold';
+  } else if (distUpper < 0.05) {
+    signal = 'trade';
+    text = 'SHORT SIGNAL — Price at upper BB';
+  } else if (distUpper < 0.15 && rsi > 65) {
+    signal = 'trade';
+    text = 'SHORT SIGNAL — Near upper BB + RSI overbought';
+  } else if (distLower < 0.25) {
+    signal = 'wait';
+    text = 'APPROACHING lower BB — Prepare LONG';
+  } else if (distUpper < 0.25) {
+    signal = 'wait';
+    text = 'APPROACHING upper BB — Prepare SHORT';
+  } else {
+    signal = 'no-trade';
+    text = 'NO SIGNAL — Price in mid-band';
+  }
+
+  el.className = 'signal ' + signal;
+  el.style.padding = '8px 14px';
+  el.style.fontSize = '0.85rem';
+  el.innerHTML = `<div class="signal-dot"></div><span>${text}</span>`;
+}
+
+async function executeScalp() {
+  const dir = scalpState.direction;
+  const pair = scalpState.pair;
+  const amount = scalpState.amount === 0 ? (state.balance ? state.balance.availableMargin : 0) : scalpState.amount;
+  const lev = scalpState.leverage;
+  const pairDisplay = pair.replace('PF_','').replace('USD','/USD');
+
+  if (!confirm(`Execute SCALP ${dir.toUpperCase()} on ${pairDisplay}?\nAmount: $${amount}, Leverage: x${lev}\nTP: +${scalpState.tp}% / SL: -${scalpState.sl}%`)) return;
+
+  try {
+    // Use Martin grid API with 1 level for a single scalp position
+    const url = `${MARTIN_API}/grid/start?instrument=${pair}&capital=${amount}&leverage=${lev}&gridSpacingPct=${scalpState.tp}&totalLevels=1&maxLossPercent=${scalpState.sl}`;
+    const resp = await fetch(url, { method: 'POST' });
+    const data = await resp.json();
+
+    // Record in session
+    const trade = {
+      time: new Date().toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit', second:'2-digit'}),
+      pair: pairDisplay,
+      direction: dir.toUpperCase(),
+      amount: '$' + amount,
+      leverage: 'x' + lev,
+      entry: document.getElementById('scalpPrice').textContent,
+      exit: '--',
+      pnl: '--',
+      status: 'OPEN',
+    };
+    scalpState.session.unshift(trade);
+    updateScalpHistory();
+
+    // Flash the button
+    const btn = document.getElementById('scalpExecuteBtn');
+    btn.textContent = 'EXECUTED!';
+    setTimeout(() => {
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="24" height="24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> EXECUTE SCALP';
+    }, 2000);
+
+  } catch (e) {
+    alert('Error executing scalp: ' + e.message);
+  }
+}
+
+function updateScalpHistory() {
+  const tbody = document.getElementById('scalpHistBody');
+  const trades = scalpState.session;
+
+  document.getElementById('scalpSessionCount').textContent = trades.length + ' trades';
+
+  tbody.innerHTML = trades.map(t => {
+    const dirClass = t.direction === 'LONG' ? 'side-buy' : 'side-sell';
+    const pnlClass = t.pnl === '--' ? '' : (parseFloat(t.pnl) >= 0 ? 'green' : 'red');
+    return `<tr>
+      <td>${t.time}</td>
+      <td>${t.pair}</td>
+      <td class="${dirClass}">${t.direction}</td>
+      <td>${t.amount}</td>
+      <td>${t.leverage}</td>
+      <td>${t.entry}</td>
+      <td>${t.exit}</td>
+      <td class="${pnlClass}">${t.pnl}</td>
+    </tr>`;
+  }).join('');
+
+  // Update stats
+  const closed = trades.filter(t => t.pnl !== '--');
+  const wins = closed.filter(t => parseFloat(t.pnl) > 0);
+  const pnls = closed.map(t => parseFloat(t.pnl));
+  const totalPnl = pnls.reduce((s, v) => s + v, 0);
+
+  document.getElementById('scalpWR').textContent = closed.length > 0 ? (wins.length / closed.length * 100).toFixed(0) + '%' : '--%';
+  document.getElementById('scalpSessionPnL').textContent = '$' + totalPnl.toFixed(2);
+  document.getElementById('scalpSessionPnL').style.color = totalPnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+  document.getElementById('scalpTradeCount').textContent = trades.length;
+  document.getElementById('scalpBest').textContent = pnls.length > 0 ? '+$' + Math.max(...pnls).toFixed(2) : '--';
+  document.getElementById('scalpWorst').textContent = pnls.length > 0 ? '-$' + Math.abs(Math.min(...pnls)).toFixed(2) : '--';
+}
+
+// Init scalp chart when tab is shown
+document.querySelector('.nav-btn[data-tab="scalp"]').addEventListener('click', () => {
+  initScalpChart();
+});
+
+// Set initial execute button style
+setScalpDir('long');
 </script>
 </body>
 </html>
