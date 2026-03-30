@@ -1,59 +1,83 @@
 /**
- * NIAM-BAY — Digital Face (Lawnmower Man style)
- * Low-poly metallic face with glowing edges and flat shading
+ * NIAM-BAY — Energy Core (Arc Reactor style)
+ * Abstract energy orb: pulsing core, concentric rings, particle cloud
+ * No face. Pure energy. Reacts to states.
  */
 import * as THREE from 'three';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 const STATES = {
   idle: {
-    faceColor: 0x0a1828,
-    edgeColor: new THREE.Color(0x2288cc),
-    emissive: 0x050a12,
-    bloom: 0.35,
-    dotOpacity: 0.8,
+    coreHex: 0x0066aa,
+    ringHex: 0x0088cc,
+    particleHex: 0x0099dd,
+    bloom: 0.4,
+    ringSpeed: 0.3,
+    coreScale: 1.0,
+    particleOpacity: 0.55,
+    ringOpacity: 0.5,
   },
   listening: {
-    faceColor: 0x0c1e30,
-    edgeColor: new THREE.Color(0x33cccc),
-    emissive: 0x081018,
-    bloom: 0.45,
-    dotOpacity: 0.9,
+    coreHex: 0x00aabb,
+    ringHex: 0x00ccdd,
+    particleHex: 0x00eeff,
+    bloom: 0.55,
+    ringSpeed: 0.5,
+    coreScale: 1.12,
+    particleOpacity: 0.75,
+    ringOpacity: 0.65,
   },
   thinking: {
-    faceColor: 0x140e28,
-    edgeColor: new THREE.Color(0x8866ee),
-    emissive: 0x0a0818,
-    bloom: 0.55,
-    dotOpacity: 1.0,
+    coreHex: 0x5522cc,
+    ringHex: 0x7744ee,
+    particleHex: 0x9966ff,
+    bloom: 0.85,
+    ringSpeed: 2.2,
+    coreScale: 0.88,
+    particleOpacity: 1.0,
+    ringOpacity: 0.9,
   },
   speaking: {
-    faceColor: 0x0a1e1a,
-    edgeColor: new THREE.Color(0x22cc88),
-    emissive: 0x060f0c,
-    bloom: 0.45,
-    dotOpacity: 0.9,
+    coreHex: 0x009944,
+    ringHex: 0x00cc66,
+    particleHex: 0x00ff88,
+    bloom: 0.6,
+    ringSpeed: 0.9,
+    coreScale: 1.15,
+    particleOpacity: 0.85,
+    ringOpacity: 0.7,
   },
   alert: {
-    faceColor: 0x280a0a,
-    edgeColor: new THREE.Color(0xee4444),
-    emissive: 0x180505,
-    bloom: 0.65,
-    dotOpacity: 1.0,
+    coreHex: 0xcc1111,
+    ringHex: 0xff2233,
+    particleHex: 0xff4455,
+    bloom: 1.1,
+    ringSpeed: 3.5,
+    coreScale: 1.25,
+    particleOpacity: 1.0,
+    ringOpacity: 1.0,
   },
 };
+
+const _tmpColor = new THREE.Color();
 
 export class Orb {
   constructor(canvas) {
     this.canvas = canvas;
     this.state = 'idle';
     this.target = STATES.idle;
+    this._cur = {
+      ringSpeed: STATES.idle.ringSpeed,
+      bloom: STATES.idle.bloom,
+      coreScale: STATES.idle.coreScale,
+      particleOpacity: STATES.idle.particleOpacity,
+      ringOpacity: STATES.idle.ringOpacity,
+    };
 
     this._initScene();
-    this._loadHead();
+    this._buildOrb();
     this._initPost();
     this._animate();
   }
@@ -62,34 +86,15 @@ export class Orb {
     this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.setClearColor(0x060a10, 1);
+    this.renderer.setClearColor(0x060810, 1);
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.2;
 
     this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 100);
+    this.camera.position.set(0, 0, 3.8);
 
-    // Camera — framed on face
-    this.camera = new THREE.PerspectiveCamera(30, window.innerWidth / window.innerHeight, 0.1, 50);
-    this.camera.position.set(0, 0.05, 2.6);
-
-    // Lighting — dramatic, cinematic
-    this.scene.add(new THREE.AmbientLight(0x111822, 0.8));
-
-    const key = new THREE.DirectionalLight(0x6688bb, 1.5);
-    key.position.set(2, 2, 4);
-    this.scene.add(key);
-
-    const fill = new THREE.DirectionalLight(0x334466, 0.6);
-    fill.position.set(-3, 0, 2);
-    this.scene.add(fill);
-
-    const rim = new THREE.DirectionalLight(0x4466aa, 0.8);
-    rim.position.set(0, 1, -3);
-    this.scene.add(rim);
-
-    const bottom = new THREE.DirectionalLight(0x223344, 0.3);
-    bottom.position.set(0, -2, 1);
-    this.scene.add(bottom);
+    this.scene.add(new THREE.AmbientLight(0x111122, 0.4));
 
     window.addEventListener('resize', () => {
       this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -99,171 +104,91 @@ export class Orb {
     });
   }
 
-  _loadHead() {
-    this.headGroup = new THREE.Group();
-    this.scene.add(this.headGroup);
+  _buildOrb() {
+    this.group = new THREE.Group();
+    this.scene.add(this.group);
 
-    const loader = new GLTFLoader();
-    loader.load(
-      'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r158/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb',
-      (gltf) => this._buildFace(gltf),
-      undefined,
-      (err) => {
-        console.error('Model load failed:', err);
-        // Fallback: icosahedron
-        this._buildFace(null);
-      }
-    );
-  }
-
-  _buildFace(gltf) {
-    let geo;
-    if (gltf) {
-      geo = gltf.scene.children[0].geometry;
-      geo.computeBoundingBox();
-      const center = new THREE.Vector3();
-      geo.boundingBox.getCenter(center);
-      geo.translate(-center.x, -center.y, -center.z);
-      const h = geo.boundingBox.max.y - geo.boundingBox.min.y;
-      geo.scale(1.5 / h, 1.5 / h, 1.5 / h);
-    } else {
-      geo = new THREE.IcosahedronGeometry(0.8, 4);
-    }
-
-    // Face center (nose area) — fade is relative to this point
-    const faceCenter = new THREE.Vector3(0, 0, 0.35);
-    const fadeRadius = 0.55; // distance from center where face fully fades
-
-    // ── Fade mask shader: face emerges from black ──
-    const fadeVertex = `
-      varying vec3 vPos;
-      varying vec3 vNormal;
-      varying vec3 vWorldNormal;
-      varying vec3 vWorldPos;
-      void main() {
-        vPos = position;
-        vNormal = normal;
-        vWorldNormal = normalize((modelMatrix * vec4(normal, 0.0)).xyz);
-        vWorldPos = (modelMatrix * vec4(position, 1.0)).xyz;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `;
-
-    const fadeFrag = `
-      uniform vec3 uColor;
-      uniform vec3 uEmissive;
-      uniform vec3 uFaceCenter;
-      uniform float uFadeRadius;
-      uniform vec3 uLightDir;
-      varying vec3 vPos;
-      varying vec3 vNormal;
-      varying vec3 vWorldNormal;
-      varying vec3 vWorldPos;
-      void main() {
-        // Distance fade from face center
-        float d = distance(vPos, uFaceCenter);
-        float fade = 1.0 - smoothstep(uFadeRadius * 0.5, uFadeRadius, d);
-        if (fade < 0.01) discard;
-
-        // Simple lighting
-        float diff = max(dot(vWorldNormal, normalize(uLightDir)), 0.0);
-        float ambient = 0.15;
-        vec3 col = uColor * (ambient + diff * 0.85) + uEmissive;
-
-        gl_FragColor = vec4(col, fade);
-      }
-    `;
-
-    // ── 1. Solid face with fade ──
-    this.faceUniforms = {
-      uColor: { value: new THREE.Color(0x0e1e30) },
-      uEmissive: { value: new THREE.Color(0x050a12) },
-      uFaceCenter: { value: faceCenter },
-      uFadeRadius: { value: fadeRadius },
-      uLightDir: { value: new THREE.Vector3(1, 1.5, 3).normalize() },
-    };
-    this.faceMat = new THREE.ShaderMaterial({
-      vertexShader: fadeVertex,
-      fragmentShader: fadeFrag,
-      uniforms: this.faceUniforms,
-      transparent: true,
-      side: THREE.FrontSide,
-      flatShading: true,
+    // ── 1. Core sphere ──
+    this.coreMat = new THREE.MeshStandardMaterial({
+      color: new THREE.Color(0x0066aa),
+      emissive: new THREE.Color(0x0066aa),
+      emissiveIntensity: 2.5,
+      roughness: 0.15,
+      metalness: 0.9,
     });
-    // Force flat shading by computing flat normals
-    const faceGeo = geo.toNonIndexed();
-    faceGeo.computeVertexNormals();
-    this.headGroup.add(new THREE.Mesh(faceGeo, this.faceMat));
+    this.core = new THREE.Mesh(new THREE.SphereGeometry(0.2, 32, 32), this.coreMat);
+    this.group.add(this.core);
 
-    // ── 2. Glowing edges with distance fade ──
-    const edgeFrag = `
-      uniform vec3 uColor;
-      uniform vec3 uFaceCenter;
-      uniform float uFadeRadius;
-      varying vec3 vPos;
-      void main() {
-        float d = distance(vPos, uFaceCenter);
-        float fade = 1.0 - smoothstep(uFadeRadius * 0.5, uFadeRadius, d);
-        if (fade < 0.01) discard;
-        gl_FragColor = vec4(uColor, fade * 0.7);
-      }
-    `;
-    const edgeVertex = `
-      varying vec3 vPos;
-      void main() {
-        vPos = position;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    `;
-
-    const edges = new THREE.EdgesGeometry(geo, 8);
-    this.edgeUniforms = {
-      uColor: { value: new THREE.Color(0x2288cc) },
-      uFaceCenter: { value: faceCenter },
-      uFadeRadius: { value: fadeRadius },
-    };
-    this.edgeMat = new THREE.ShaderMaterial({
-      vertexShader: edgeVertex,
-      fragmentShader: edgeFrag,
-      uniforms: this.edgeUniforms,
+    // ── 2. Inner soft glow ──
+    this.innerMat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(0x0066aa),
       transparent: true,
+      opacity: 0.12,
+      side: THREE.BackSide,
     });
-    this.headGroup.add(new THREE.LineSegments(edges, this.edgeMat));
+    this.inner = new THREE.Mesh(new THREE.SphereGeometry(0.32, 24, 24), this.innerMat);
+    this.group.add(this.inner);
 
-    // ── 3. Vertex dots with fade ──
-    const pos = geo.attributes.position;
-    const seen = new Set();
-    const dots = [];
-    const dotFades = [];
-    const usedVerts = new Set();
-    if (geo.index) {
-      for (let i = 0; i < geo.index.count; i++) usedVerts.add(geo.index.getX(i));
-    } else {
-      for (let i = 0; i < pos.count; i++) usedVerts.add(i);
+    // ── 3. Concentric rings ──
+    this.rings = [];
+    const ringDefs = [
+      { r: 0.52, tube: 0.007, rx: 0,           ry: 0,            rz: 0 },
+      { r: 0.68, tube: 0.006, rx: Math.PI / 3, ry: 0.4,          rz: 0.2 },
+      { r: 0.84, tube: 0.005, rx: Math.PI / 5, ry: Math.PI / 4,  rz: -0.3 },
+    ];
+
+    for (const d of ringDefs) {
+      const mat = new THREE.MeshBasicMaterial({
+        color: new THREE.Color(0x0088cc),
+        transparent: true,
+        opacity: 0.55,
+      });
+      const mesh = new THREE.Mesh(new THREE.TorusGeometry(d.r, d.tube, 6, 96), mat);
+      mesh.rotation.set(d.rx, d.ry, d.rz);
+      this.group.add(mesh);
+      this.rings.push({ mesh, mat, base: { rx: d.rx, ry: d.ry, rz: d.rz } });
     }
-    for (const vi of usedVerts) {
-      const x = pos.getX(vi), y = pos.getY(vi), z = pos.getZ(vi);
-      const k = `${x.toFixed(3)},${y.toFixed(3)},${z.toFixed(3)}`;
-      if (!seen.has(k)) {
-        seen.add(k);
-        const dist = Math.sqrt((x - faceCenter.x) ** 2 + (y - faceCenter.y) ** 2 + (z - faceCenter.z) ** 2);
-        const f = 1.0 - Math.min(1, Math.max(0, (dist - fadeRadius * 0.5) / (fadeRadius * 0.5)));
-        if (f > 0.02) {
-          dots.push(x, y, z);
-          dotFades.push(f);
-        }
-      }
+
+    // ── 4. Particle cloud ──
+    const N = 220;
+    this._N = N;
+    this._pTheta     = new Float32Array(N);
+    this._pPhi       = new Float32Array(N);
+    this._pR         = new Float32Array(N);
+    this._pSpeed     = new Float32Array(N);
+    this._pPhiOffset = new Float32Array(N);
+
+    for (let i = 0; i < N; i++) {
+      this._pTheta[i]     = Math.random() * Math.PI * 2;
+      this._pPhi[i]       = Math.acos(2 * Math.random() - 1);
+      this._pR[i]         = 0.58 + Math.random() * 0.52;
+      this._pSpeed[i]     = 0.15 + Math.random() * 0.5;
+      this._pPhiOffset[i] = Math.random() * Math.PI * 2;
     }
-    const dotGeo = new THREE.BufferGeometry();
-    dotGeo.setAttribute('position', new THREE.Float32BufferAttribute(dots, 3));
-    this.dotMat = new THREE.PointsMaterial({
-      color: 0x44aaee,
-      size: 0.006,
+
+    const pPositions = new Float32Array(N * 3);
+    const pGeo = new THREE.BufferGeometry();
+    pGeo.setAttribute('position', new THREE.BufferAttribute(pPositions, 3));
+
+    this.particleMat = new THREE.PointsMaterial({
+      color: new THREE.Color(0x0099dd),
+      size: 0.013,
       transparent: true,
-      opacity: 0.85,
+      opacity: 0.55,
       sizeAttenuation: true,
     });
-    this.headGroup.add(new THREE.Points(dotGeo, this.dotMat));
+    this.particles = new THREE.Points(pGeo, this.particleMat);
+    this.group.add(this.particles);
+
+    // ── 5. Outer haze ──
+    this.hazeMat = new THREE.MeshBasicMaterial({
+      color: new THREE.Color(0x0066aa),
+      transparent: true,
+      opacity: 0.025,
+      side: THREE.BackSide,
+    });
+    this.haze = new THREE.Mesh(new THREE.SphereGeometry(1.15, 16, 16), this.hazeMat);
+    this.group.add(this.haze);
   }
 
   _initPost() {
@@ -271,7 +196,7 @@ export class Orb {
     this.composer.addPass(new RenderPass(this.scene, this.camera));
     this.bloomPass = new UnrealBloomPass(
       new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.35, 0.4, 0.85
+      0.4, 0.3, 0.7
     );
     this.composer.addPass(this.bloomPass);
   }
@@ -281,50 +206,93 @@ export class Orb {
   }
 
   _lerp(a, b, t) { return a + (b - a) * t; }
+  _lerpColor(c, hex, t) { c.lerp(_tmpColor.setHex(hex), t); }
 
   _animate() {
     const clock = new THREE.Clock();
-    const _c = new THREE.Color();
+    const T = 0.045;
 
     const tick = () => {
       requestAnimationFrame(tick);
-      const el = clock.getElapsedTime();
-      const t = 0.03;
+      const el  = clock.getElapsedTime();
       const tgt = this.target;
+      const cur = this._cur;
 
-      // ── Materials ──
-      if (this.faceUniforms) {
-        _c.set(tgt.faceColor);
-        this.faceUniforms.uColor.value.lerp(_c, t);
-        _c.set(tgt.emissive);
-        this.faceUniforms.uEmissive.value.lerp(_c, t);
-      }
-      if (this.edgeUniforms) {
-        this.edgeUniforms.uColor.value.lerp(tgt.edgeColor, t);
-      }
-      if (this.dotMat) {
-        this.dotMat.color.lerp(tgt.edgeColor, t);
-        this.dotMat.opacity = this._lerp(this.dotMat.opacity, tgt.dotOpacity, t);
-      }
-      this.bloomPass.strength = this._lerp(this.bloomPass.strength, tgt.bloom, t);
+      // ── Lerp scalars ──
+      cur.ringSpeed       = this._lerp(cur.ringSpeed,       tgt.ringSpeed,       T);
+      cur.bloom           = this._lerp(cur.bloom,           tgt.bloom,           T);
+      cur.coreScale       = this._lerp(cur.coreScale,       tgt.coreScale,       T);
+      cur.particleOpacity = this._lerp(cur.particleOpacity, tgt.particleOpacity, T);
+      cur.ringOpacity     = this._lerp(cur.ringOpacity,     tgt.ringOpacity,     T);
 
-      // ── Head: gentle movement ──
-      this.headGroup.position.y = Math.sin(el * 0.3) * 0.01;
-      this.headGroup.rotation.y = Math.sin(el * 0.15) * 0.08;
-      this.headGroup.rotation.x = Math.sin(el * 0.12) * 0.025;
-      this.headGroup.rotation.z = Math.sin(el * 0.09) * 0.01;
-
-      // State behavior
-      if (this.state === 'speaking') {
-        this.headGroup.rotation.x += Math.sin(el * 3) * 0.012;
-      } else if (this.state === 'thinking') {
-        this.headGroup.rotation.y += Math.sin(el * 0.5) * 0.04;
-      } else if (this.state === 'listening') {
-        this.headGroup.rotation.x -= 0.015;
+      // ── Lerp colors ──
+      this._lerpColor(this.coreMat.color,    tgt.coreHex, T);
+      this._lerpColor(this.coreMat.emissive, tgt.coreHex, T);
+      this._lerpColor(this.innerMat.color,   tgt.coreHex, T);
+      this._lerpColor(this.hazeMat.color,    tgt.coreHex, T);
+      for (const ring of this.rings) {
+        this._lerpColor(ring.mat.color, tgt.ringHex, T);
+        ring.mat.opacity = this._lerp(ring.mat.opacity, cur.ringOpacity, T);
       }
+      this._lerpColor(this.particleMat.color, tgt.particleHex, T);
+      this.particleMat.opacity = cur.particleOpacity;
+
+      // ── Bloom ──
+      this.bloomPass.strength = cur.bloom;
+
+      // ── Core pulse ──
+      let cs = cur.coreScale + Math.sin(el * 2.2) * 0.035;
+      if (this.state === 'speaking') cs *= 1 + Math.abs(Math.sin(el * 5)) * 0.12;
+      this.core.scale.setScalar(cs);
+      this.inner.scale.setScalar(cs * 1.3 + Math.sin(el * 1.6) * 0.04);
+      this.haze.scale.setScalar(cs * 0.95 + Math.sin(el * 0.7) * 0.04);
+
+      // ── Ring rotation ──
+      const spd = cur.ringSpeed;
+      if (this.rings[0]) {
+        this.rings[0].mesh.rotation.y = el * spd * 0.65;
+        this.rings[0].mesh.rotation.x = this.rings[0].base.rx + el * spd * 0.25;
+      }
+      if (this.rings[1]) {
+        this.rings[1].mesh.rotation.y = this.rings[1].base.ry + el * spd * -0.45;
+        this.rings[1].mesh.rotation.z = this.rings[1].base.rz + el * spd * 0.35;
+      }
+      if (this.rings[2]) {
+        this.rings[2].mesh.rotation.x = this.rings[2].base.rx + el * spd * 0.55;
+        this.rings[2].mesh.rotation.z = el * spd * -0.28;
+      }
+
+      // ── Listening: rings breathe ──
+      if (this.state === 'listening') {
+        const breathe = 1 + Math.sin(el * 1.8) * 0.07;
+        this.rings.forEach(r => r.mesh.scale.setScalar(breathe));
+      } else {
+        this.rings.forEach(r => r.mesh.scale.setScalar(1));
+      }
+
+      // ── Particle orbital motion ──
+      const pPos = this.particles.geometry.attributes.position;
+      const pSpeedMul = 0.25 + spd * 0.18;
+      for (let i = 0; i < this._N; i++) {
+        this._pTheta[i] += pSpeedMul * this._pSpeed[i] * 0.012;
+        const r   = this._pR[i] + Math.sin(el * 0.6 + i * 0.3) * 0.04;
+        const phi = this._pPhi[i] + Math.sin(el * 0.25 + this._pPhiOffset[i]) * 0.08;
+        pPos.setXYZ(
+          i,
+          r * Math.sin(phi) * Math.cos(this._pTheta[i]),
+          r * Math.sin(phi) * Math.sin(this._pTheta[i]),
+          r * Math.cos(phi)
+        );
+      }
+      pPos.needsUpdate = true;
+
+      // ── Group gentle float & slow spin ──
+      this.group.position.y = Math.sin(el * 0.35) * 0.04;
+      this.group.rotation.y = el * 0.04;
 
       this.composer.render();
     };
     tick();
   }
 }
+
