@@ -650,7 +650,7 @@ async function simulateDemo(text) {
     const parts = text.trim().split(/\s+/).slice(1);
     const params = parts.length >= 2 ? `?a=${encodeURIComponent(parts[0])}&b=${encodeURIComponent(parts[1])}` : '';
     try {
-      const gwBase = window.location.hostname === 'localhost' ? 'http://localhost:8000' : `https://${window.location.hostname}`;
+      const gwBase = window.location.hostname === 'localhost' ? 'http://localhost:8000' : `https://${window.location.hostname}/gw`;
       const res = await fetch(`${gwBase}/api/oracle${params}`);
       const data = await res.json();
       if (data.error) {
@@ -671,7 +671,7 @@ async function simulateDemo(text) {
     agentManager.setState(brainId, 'thinking');
     orb.setState('thinking');
     try {
-      const gwBase = window.location.hostname === 'localhost' ? 'http://localhost:8000' : `https://${window.location.hostname}`;
+      const gwBase = window.location.hostname === 'localhost' ? 'http://localhost:8000' : `https://${window.location.hostname}/gw`;
       const res = await fetch(`${gwBase}/api/signal`);
       const d = await res.json();
       if (d.error) {
