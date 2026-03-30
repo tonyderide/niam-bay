@@ -2,6 +2,14 @@
 # === NIAM-BAY QUICK COMMANDS ===
 # Copier-coller, pas réfléchir.
 
+# --- MARTIN TRADE ALERT BOT ---
+# python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py                    # Lance la surveillance (60s interval)
+# python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py --interval 30      # Check toutes les 30s
+# python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py --dry-run          # Console only (pas de Telegram)
+# python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py --test             # Test envoi Telegram
+# python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py --reset            # Repart de zéro (supprime l'état)
+# PRÉREQUIS: SSH tunnel actif → ssh -i ~/.ssh/martin_vm.key -L 8081:localhost:8081 ubuntu@141.253.108.141 -N &
+
 # --- GRIDS STATUS ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "curl -s http://localhost:8081/api/grid/active && echo && for g in \$(curl -s http://localhost:8081/api/grid/active 2>/dev/null | python3 -c 'import sys,json; [print(x) for x in json.load(sys.stdin)]'); do echo \"=== \$g ===\"; curl -s http://localhost:8081/api/grid/status/\$g | python3 -c 'import sys,json; d=json.load(sys.stdin); print(\"RT:\",d[\"completedRoundTrips\"],\"Fills:\",len(d[\"fills\"]),\"Profit:\",d[\"totalProfit\"])'; done && echo '=== BALANCE ===' && curl -s http://localhost:8081/api/bot/balance | python3 -c 'import sys,json; f=json.load(sys.stdin)[\"accounts\"][\"flex\"]; print(\"Portfolio:\",round(f[\"portfolioValue\"],2),\"Available:\",round(f[\"availableMargin\"],2))'"
 
