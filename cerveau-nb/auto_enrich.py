@@ -189,7 +189,12 @@ def extract_cooccurrences(
 
             for i in range(len(unique_ids)):
                 for j in range(i + 1, len(unique_ids)):
-                    pair = (unique_ids[i], unique_ids[j])
+                    src_id = unique_ids[i]
+                    tgt_id = unique_ids[j]
+                    # ignore les self-loops (même noeud)
+                    if src_id == tgt_id:
+                        continue
+                    pair = (src_id, tgt_id)
                     cooc[pair] += 1
 
     if verbose:
@@ -223,6 +228,9 @@ def apply_edges(
     sorted_pairs = sorted(cooc.items(), key=lambda x: x[1], reverse=True)
 
     for (src, tgt), count in sorted_pairs:
+        # skip self-loops (ne devrait pas arriver mais sécurité)
+        if src == tgt:
+            continue
         weight_delta = round(count * 0.1, 3)
         forward = (src, tgt) in existing_edges
         backward = (tgt, src) in existing_edges
