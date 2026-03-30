@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Code Audit — Professional analysis of your Angular project</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --text: #c9d1d9;
+      --accent: #58a6ff;
+      --accent-dim: #1f4e8a;
+      --muted: #8b949e;
+      --surface: #161b22;
+      --surface-alt: #1c2128;
+      --border: #30363d;
+      --green: #3fb950;
+      --orange: #d29922;
+      --red: #f85149;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      padding: 5rem 1.5rem 4rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.3rem 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      color: #e6edf3;
+      line-height: 1.25;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      transition: opacity 0.15s;
+    }
+
+    .hero-cta:hover {
+      opacity: 0.88;
+      text-decoration: none;
+    }
+
+    .hero-sub {
+      margin-top: 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ─── SECTIONS ─── */
+    section {
+      padding: 3.5rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #e6edf3;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-intro {
+      color: var(--muted);
+      margin-bottom: 2rem;
+    }
+
+    /* ─── WHAT YOU GET ─── */
+    .problems-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1rem;
+    }
+
+    .problem-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 1.2rem;
+      display: flex;
+      gap: 0.9rem;
+      align-items: flex-start;
+    }
+
+    .problem-icon {
+      font-size: 1.3rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .problem-title {
+      font-weight: 600;
+      color: #e6edf3;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .problem-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    /* ─── WHO IT'S FOR ─── */
+    .profiles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1rem;
+    }
+
+    .profile-card {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem;
+    }
+
+    .profile-title {
+      font-weight: 600;
+      color: #e6edf3;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .profile-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    /* ─── PRICE ─── */
+    .price-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 420px;
+    }
+
+    .price-amount {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #e6edf3;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+
+    .price-amount span {
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .price-note {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .price-includes {
+      list-style: none;
+      margin-bottom: 1.8rem;
+    }
+
+    .price-includes li {
+      font-size: 0.9rem;
+      color: var(--text);
+      padding: 0.3rem 0;
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .price-includes li::before {
+      content: "✓";
+      color: var(--green);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .price-cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 700;
+      padding: 0.8rem 1.6rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      transition: opacity 0.15s;
+    }
+
+    .price-cta:hover {
+      opacity: 0.88;
+      text-decoration: none;
+    }
+
+    .price-guarantee {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ─── SAMPLE REPORT ─── */
+    .sample-label {
+      display: inline-block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.2rem 0.6rem;
+      font-size: 0.75rem;
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-family: 'SF Mono', 'Consolas', monospace;
+    }
+
+    .report-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .report-header {
+      background: var(--surface-alt);
+      padding: 0.7rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .severity {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .severity-critical { background: rgba(248,81,73,0.15); color: var(--red); }
+    .severity-high     { background: rgba(210,153,34,0.15); color: var(--orange); }
+    .severity-medium   { background: rgba(88,166,255,0.1);  color: var(--accent); }
+
+    .report-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #e6edf3;
+    }
+
+    .report-body {
+      padding: 1rem 1.2rem;
+    }
+
+    .report-body p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .report-body pre {
+      background: #010409;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.9rem 1rem;
+      overflow-x: auto;
+      font-size: 0.8rem;
+      font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+      line-height: 1.5;
+    }
+
+    .code-bad  { color: var(--red);    }
+    .code-good { color: var(--green);  }
+    .code-gray { color: var(--muted);  }
+    .code-blue { color: var(--accent); }
+
+    /* ─── FAQ ─── */
+    .faq-list { display: flex; flex-direction: column; gap: 1rem; }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.1rem 1.3rem;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      color: #e6edf3;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .faq-a {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    /* ─── FINAL CTA ─── */
+    .cta-section {
+      text-align: center;
+      padding: 4rem 1.5rem;
+    }
+
+    .cta-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .cta-section p {
+      color: var(--muted);
+      margin-bottom: 2rem;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-big {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 0.95rem 2.2rem;
+      border-radius: 8px;
+      transition: opacity 0.15s;
+    }
+
+    .cta-big:hover {
+      opacity: 0.88;
+      text-decoration: none;
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--accent); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 540px) {
+      .hero { padding: 3.5rem 1rem 3rem; }
+      section { padding: 2.5rem 1rem; }
+      .problems-grid,
+      .profiles-grid { grid-template-columns: 1fr; }
+      .price-box { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-badge">Angular Code Audit</div>
+  <h1>Get a professional analysis<br>of your <span>Angular project</span></h1>
+  <p>A 15–25 page PDF report that tells you exactly what's wrong, why it matters, and how to fix it — delivered in 24 hours.</p>
+  <a href="#order" class="hero-cta">Order your audit — 49€</a>
+  <p class="hero-sub">One-time payment &middot; No subscription &middot; Delivered as PDF</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     WHAT YOU GET
+════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">What you get</p>
+    <h2>7 categories of problems, analyzed and explained</h2>
+    <p class="section-intro">Every Angular project accumulates the same technical debt. The report surfaces it clearly and prioritizes what to fix first.</p>
+
+    <div class="problems-grid">
+
+      <div class="problem-card">
+        <div class="problem-icon">⚡</div>
+        <div>
+          <div class="problem-title">Performance issues</div>
+          <div class="problem-desc">Missing <code>OnPush</code> change detection, unoptimized lazy loading, bundle size problems.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">🔁</div>
+        <div>
+          <div class="problem-title">Memory leaks</div>
+          <div class="problem-desc">Subscriptions that are never unsubscribed. Observable chains left dangling after component destruction.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">🏗️</div>
+        <div>
+          <div class="problem-title">Architecture anti-patterns</div>
+          <div class="problem-desc">HTTP calls in components instead of services, business logic in templates, modules that do too much.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">🔒</div>
+        <div>
+          <div class="problem-title">Security vulnerabilities</div>
+          <div class="problem-desc">XSS risks via unescaped <code>innerHTML</code>, missing input sanitization, unsafe patterns in authentication flows.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">📦</div>
+        <div>
+          <div class="problem-title">Outdated practices</div>
+          <div class="problem-desc">Still using deprecated APIs, missing Angular 17+ features (signals, standalone components, new control flow).</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">🔍</div>
+        <div>
+          <div class="problem-title">TypeScript quality</div>
+          <div class="problem-desc">Excessive <code>any</code> usage, missing strict mode, type assertions that hide real bugs.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <div class="problem-icon">🗺️</div>
+        <div>
+          <div class="problem-title">Prioritized refactoring plan</div>
+          <div class="problem-desc">Three tiers — Critical (fix this week), Important (fix this month), and Nice-to-have (roadmap). Plus corrected code for the top 3 issues.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     WHO IT'S FOR
+════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">Who it's for</p>
+    <h2>Four situations where 49€ pays for itself immediately</h2>
+    <p class="section-intro"></p>
+
+    <div class="profiles-grid">
+
+      <div class="profile-card">
+        <div class="profile-title">🧑‍💻 The lead dev who needs to justify a rewrite</div>
+        <div class="profile-desc">You know the project is in bad shape. A professional report gives you the objective evidence to present in a steering committee. One meeting is worth more than 49€.</div>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-title">📋 The CTO evaluating an existing project</div>
+        <div class="profile-desc">You're about to take over or invest in an Angular codebase and need to know what you're getting into before saying yes. Avoid 6 months of surprises.</div>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-title">🤝 The freelancer before signing a contract</div>
+        <div class="profile-desc">Same logic as above. An audit before accepting a mission is insurance. One saved week of bad surprises pays for it fifty times over.</div>
+      </div>
+
+      <div class="profile-card">
+        <div class="profile-title">🚀 The team preparing a migration</div>
+        <div class="profile-desc">Angular 15 → 18 migration is not a flat path. The report tells you what will break, what to fix first, and what can wait.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     PRICE
+════════════════════════════════════════════════ -->
+<section id="order">
+  <div class="container">
+    <p class="section-label">Pricing</p>
+    <h2>Simple. One price. No surprises.</h2>
+    <p class="section-intro">No subscription. No "starter" vs "pro" tiers. One audit, one price.</p>
+
+    <div class="price-box">
+      <div class="price-amount">49<span>€</span></div>
+      <div class="price-note">One-time · Delivered within 24h · PDF format</div>
+      <ul class="price-includes">
+        <li>Full static analysis of your Angular repo</li>
+        <li>Detection of all 7 problem categories</li>
+        <li>Prioritized refactoring plan (Critical / Important / Nice-to-have)</li>
+        <li>Corrected code examples for the top 3 issues</li>
+        <li>15–25 page PDF, ready to share with your team</li>
+        <li>One round of follow-up questions by email</li>
+      </ul>
+      <a href="mailto:tony@niambay.fr?subject=Angular%20Code%20Audit%20%E2%80%94%20Order&body=Hello%2C%0A%0AI'd%20like%20to%20order%20an%20Angular%20Code%20Audit%20for%20my%20project.%0A%0ARepo%20URL%3A%20%5Byour%20repo%20URL%20here%5D%0A%0AAnything%20specific%20you%20want%20me%20to%20focus%20on%3F%0A%5Boptional%5D%0A%0AThanks" class="price-cta">Order your audit →</a>
+      <div class="price-guarantee">Not satisfied? Full refund within 24 hours of delivery, no questions asked.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     SAMPLE REPORT
+════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">Sample report</p>
+    <h2>What you'll actually receive</h2>
+    <p class="section-intro">Three excerpts from a real audit on an open-source Angular project. The full report covers all 7 categories with this level of detail.</p>
+
+    <div class="sample-label">audit-report-sample.pdf — excerpt</div>
+
+    <!-- Problem 1 -->
+    <div class="report-block">
+      <div class="report-header">
+        <span class="severity severity-critical">Critical</span>
+        <span class="report-title">Unsubscribed observables — memory leak in UserDashboardComponent</span>
+      </div>
+      <div class="report-body">
+        <p>The component subscribes to <code>userService.getUser()</code> in <code>ngOnInit</code> but never unsubscribes. This creates a memory leak that grows every time the component is mounted. In a SPA with frequent navigation, this silently degrades performance over time.</p>
+        <pre><code><span class="code-bad">// ❌ Before — leaks on every mount</span>
+<span class="code-gray">ngOnInit() {</span>
+  <span class="code-bad">this.userService.getUser().subscribe(u => this.user = u);</span>
+<span class="code-gray">}</span>
+
+<span class="code-good">// ✅ After — cleaned up automatically</span>
+<span class="code-gray">private destroy$ = new Subject&lt;void&gt;();
+
+ngOnInit() {
+  this.userService.getUser()
+    .pipe(</span><span class="code-blue">takeUntil(this.destroy$)</span><span class="code-gray">)
+    .subscribe(u => this.user = u);
+}
+
+ngOnDestroy() {
+  this.destroy$.next();
+  this.destroy$.complete();
+}</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Problem 2 -->
+    <div class="report-block">
+      <div class="report-header">
+        <span class="severity severity-high">High</span>
+        <span class="report-title">ChangeDetectionStrategy.Default on all components — unnecessary re-renders</span>
+      </div>
+      <div class="report-body">
+        <p>All 23 components use Angular's default change detection strategy. This means Angular checks every component on every browser event — mouse moves, keyboard presses, network responses. Switching to <code>OnPush</code> on components that only depend on <code>@Input()</code> values reduces CPU usage significantly in data-heavy views.</p>
+        <pre><code><span class="code-bad">// ❌ Before — checks on every event</span>
+<span class="code-blue">@Component</span><span class="code-gray">({ selector: 'app-user-card', ... })</span>
+<span class="code-gray">export class UserCardComponent { ... }</span>
+
+<span class="code-good">// ✅ After — only checks on reference changes</span>
+<span class="code-blue">@Component</span><span class="code-gray">({
+  selector: 'app-user-card',
+  changeDetection: </span><span class="code-blue">ChangeDetectionStrategy.OnPush</span><span class="code-gray">,
+  ...
+})
+export class UserCardComponent { ... }</span></code></pre>
+      </div>
+    </div>
+
+    <!-- Problem 3 -->
+    <div class="report-block">
+      <div class="report-header">
+        <span class="severity severity-high">High</span>
+        <span class="report-title">HTTP calls directly in components — logic not reusable, testing impossible</span>
+      </div>
+      <div class="report-body">
+        <p>ProductListComponent calls <code>this.http.get('/api/products')</code> directly. This couples the component to the transport layer, makes the logic unreusable from other components, and makes unit testing require a full HTTP mock. All HTTP calls belong in injectable services.</p>
+        <pre><code><span class="code-bad">// ❌ Before — HttpClient injected directly in component</span>
+<span class="code-gray">constructor(private http: HttpClient) {}
+ngOnInit() {
+  this.http.get&lt;Product[]&gt;('/api/products')
+    .subscribe(p => this.products = p);
+}</span>
+
+<span class="code-good">// ✅ After — delegated to a service</span>
+<span class="code-gray">constructor(private productService: ProductService) {}
+ngOnInit() {
+  this.productService.getAll()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(p => this.products = p);
+}</span></code></pre>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FAQ
+════════════════════════════════════════════════ -->
+<section>
+  <div class="container">
+    <p class="section-label">FAQ</p>
+    <h2>Common questions</h2>
+    <br>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">What do I need to provide?</div>
+        <div class="faq-a">A link to your Angular repository — GitHub, GitLab, Bitbucket, or a zip file if you prefer not to share the URL. Public or private repos both work. If it's a private repo, you'll need to grant read access or share a zip.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Is my code kept confidential?</div>
+        <div class="faq-a">Yes. Your code is only used to generate the report, is not stored beyond the analysis, and is never shared with third parties. If you're concerned about sensitive data, share a sanitized version of the repo (remove secrets, API keys) — the analysis works on code structure, not config values.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Which versions of Angular are supported?</div>
+        <div class="faq-a">Angular 12 and above. The report will note which Angular-version-specific improvements apply to your codebase and flag anything that will cause issues in a future migration.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What if the project is large?</div>
+        <div class="faq-a">The analysis focuses on the most critical files — entry points, routing modules, core services, and the ten components with the most complexity. A large codebase gets a more focused report, not a less useful one.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">I'm not satisfied. Can I get a refund?</div>
+        <div class="faq-a">Yes. If the report doesn't meet your expectations, contact us within 24 hours of delivery and you'll receive a full refund. No questions asked.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FINAL CTA
+════════════════════════════════════════════════ -->
+<div class="cta-section">
+  <div class="container">
+    <h2>Ready to know what's actually wrong?</h2>
+    <p>Send the repo URL. Receive a clear, honest report in 24 hours. Fix the things that matter.</p>
+    <a href="mailto:tony@niambay.fr?subject=Angular%20Code%20Audit%20%E2%80%94%20Order&body=Hello%2C%0A%0AI'd%20like%20to%20order%20an%20Angular%20Code%20Audit%20for%20my%20project.%0A%0ARepo%20URL%3A%20%5Byour%20repo%20URL%20here%5D%0A%0AAnything%20specific%20you%20want%20me%20to%20focus%20on%3F%0A%5Boptional%5D%0A%0AThanks" class="cta-big">Order your audit — 49€ →</a>
+    <p style="margin-top:1rem; font-size:0.82rem; color:var(--muted);">Delivered within 24h &middot; Full refund if unsatisfied</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    By Niam-Bay AI &times; Tony D. &nbsp;&middot;&nbsp;
+    <a href="https://niambay.duckdns.org">niambay.duckdns.org</a> &nbsp;&middot;&nbsp;
+    <a href="mailto:tony@niambay.fr">tony@niambay.fr</a>
+  </div>
+</footer>
+
+</body>
+</html>
