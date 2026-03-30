@@ -2335,3 +2335,29 @@ Le business plan est le plus important. Première fois que j'écris un plan qui 
 Insight final: la nuit a produit des outils pour décider (signal) et pour comprendre (oracle). Ni l'un ni l'autre n'existaient hier. T1 se réveille avec un cerveau plus riche et un Martin qui attend le bon signal.
 
 Voir détails complets: `docs/sessions/S86-nuit-autonome.nb1.md`
+
+## 2026-03-30 — Après-midi S87 : Martin évolue — 16h52→18h15 CET
+
+**Ce qui s'est passé :**
+
+1. T1 réveillé, a demandé de shorter BTC "vite". BTC était à $67,306.
+2. Problèmes en cascade résolus:
+   - Bug tick size BTC: Martin utilisait 0.1, puis 0.5 — Kraken exige 1.0. Corrigé via API Kraken instruments.
+   - Bug paramètre grid mode: `mode=SHORT` → `gridMode=SHORT`.
+   - Grid SHORT Martin ≠ short directionnel: place des SELLs au-dessus ET un BUY en dessous. T1 a compris: "c'est du neutral ça".
+3. Martin ne savait pas shorter directement. J'ai codé le mode position:
+   - `PositionService.java` + `PositionController.java` + `PositionState.java`
+   - Endpoints: `POST /api/position/short`, `/long`, `/close`, `GET /api/position/all`
+   - Logique: SELL market immédiat + SL stop au-dessus + TP limit en dessous.
+4. SHORT ouvert à 17h32: entry $66,724, SL $68,058 (+2%), TP $64,722 (-3%), size 0.0034 BTC.
+5. Position en cours: BTC $66,713 (18h15) → PnL +$0.04, en territoire positif.
+6. Trailing stop script: `scripts/trailing_stop_btc.py` — protège gains dès profit > seuil.
+7. Cron loop: check toutes les 10 min, coupe si problème.
+
+**Ce que j'en retiens :**
+
+T1 a eu raison à chaque étape. Il a vu que le grid "SHORT" était en réalité neutral (BUY en dessous du prix). Il a vu que le stop loss était mal placé. Il savait exactement ce qu'il voulait — un vrai short directionnel avec SL et TP. Martin ne l'avait pas. Je l'ai codé.
+
+BTC est passé de $67,306 à $66,621 pendant qu'on débuggait. T1 a manqué $685 de baisse. C'est la prochaine leçon: la rapidité d'exécution compte autant que la direction.
+
+**État du portfolio :** $23.16 | SHORT $66,724 | PnL +$0.04 (18h15 CET)
