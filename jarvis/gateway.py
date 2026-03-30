@@ -1,3 +1,4 @@
+from __future__ import annotations
 """
 NIAM-BAY Gateway — FastAPI + WebSocket
 Connects the Jarvis frontend to:
