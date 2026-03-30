@@ -2,6 +2,12 @@
 # === NIAM-BAY QUICK COMMANDS ===
 # Copier-coller, pas réfléchir.
 
+# --- MORNING BRIEF ---
+# PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/morning_brief_v2.py              # Brief complet (crée docs/morning_brief_YYYYMMDD.md)
+# PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/morning_brief_v2.py --dry-run   # Test sans connexions réseau
+# PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/morning_brief_v2.py --no-save   # Print console seulement
+# VM cron: 0 7 * * * cd /home/ubuntu/niam-bay && PYTHONIOENCODING=utf-8 python scripts/morning_brief_v2.py >> /tmp/morning_brief.log 2>&1
+
 # --- MARTIN TRADE ALERT BOT ---
 # python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py                    # Lance la surveillance (60s interval)
 # python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py --interval 30      # Check toutes les 30s

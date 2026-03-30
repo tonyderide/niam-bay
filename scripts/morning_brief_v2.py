@@ -461,12 +461,12 @@ def section_thought() -> str:
 
 def build_report(dry_run: bool = False) -> str:
     n = now()
-    titre = f"# Brief Matinal — {n.strftime('%d %B %Y')}"
+    titre = f"# Brief Matinal — {date_fr(n)}"
 
     header = [
         titre,
         "",
-        f"_Généré le {n.strftime('%d/%m/%Y à %H:%M')} par Niam-Bay_",
+        f"_Généré le {n.strftime('%d/%m/%Y')} à {n.strftime('%H:%M')} par Niam-Bay_",
         "",
         "---",
         "",
