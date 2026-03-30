@@ -457,6 +457,77 @@ def section_thought() -> str:
     return "\n".join(lines)
 
 
+# ─── Section 6b : Signal Martin (EMA_TREND) ──────────────────────────────────
+
+def _ema(closes: list, period: int) -> float:
+    k = 2.0 / (period + 1)
+    val = closes[0]
+    for c in closes[1:]:
+        val = c * k + val * (1 - k)
+    return val
+
+
+def _rsi(closes: list, period: int = 14) -> float:
+    if len(closes) < period + 1:
+        return 50.0
+    gains, losses = [], []
+    for i in range(1, period + 1):
+        delta = closes[-period - 1 + i] - closes[-period - 1 + i - 1]
+        (gains if delta >= 0 else losses).append(abs(delta))
+        (losses if delta >= 0 else gains).append(0.0)
+    avg_g = sum(gains) / period
+    avg_l = sum(losses) / period
+    return 100.0 if avg_l == 0 else 100.0 - (100.0 / (1 + avg_g / avg_l))
+
+
+def section_signal(dry_run: bool = False) -> str:
+    lines = ["## Signal Martin Grid (EMA_TREND)", ""]
+
+    if dry_run:
+        lines += ["| EMA50 | EMA200 | RSI | Signal |",
+                  "|-------|--------|-----|--------|",
+                  "| $84,100 | $81,200 | 56.2 | **OUVRIR GRID** |", ""]
+        return "\n".join(lines)
+
+    try:
+        import time as _time
+        since = int(_time.time()) - 220 * 3600
+        url = (f"https://api.kraken.com/0/public/OHLC"
+               f"?pair=XXBTZUSD&interval=60&since={since}")
+        data = http_get(url)
+        ohlc = data.get("result", {}).get("XXBTZUSD", [])
+        if not ohlc:
+            raise ValueError("Pas de données OHLC")
+        closes = [float(c[4]) for c in ohlc]
+        if len(closes) < 205:
+            raise ValueError(f"Seulement {len(closes)} candles")
+
+        e50 = _ema(closes[-50:], 50)
+        e200 = _ema(closes[-200:], 200)
+        rsi_v = _rsi(closes, 14)
+
+        cond_ema = e50 > e200
+        cond_rsi = rsi_v > 50
+        signal = "**OUVRIR GRID**" if (cond_ema and cond_rsi) else "**ATTENDRE**"
+        ema_icon = "✓" if cond_ema else "✗"
+        rsi_icon = "✓" if cond_rsi else "✗"
+
+        lines += [
+            f"| EMA50 | EMA200 | RSI | Signal |",
+            f"|-------|--------|-----|--------|",
+            f"| ${e50:,.0f} {ema_icon} | ${e200:,.0f} | {rsi_v:.1f} {rsi_icon} | {signal} |",
+            "",
+        ]
+        if not (cond_ema and cond_rsi):
+            reason = "EMA50 < EMA200 (retracement)" if not cond_ema else f"RSI {rsi_v:.1f} < 50 (momentum faible)"
+            lines += [f"> Condition non remplie : {reason}", ""]
+
+    except Exception as e:
+        lines += [f"> Signal indisponible: `{e}`", ""]
+
+    return "\n".join(lines)
+
+
 # ─── Assemblage du rapport ────────────────────────────────────────────────────
 
 def build_report(dry_run: bool = False) -> str:
@@ -477,6 +548,7 @@ def build_report(dry_run: bool = False) -> str:
         section_context(),
         section_market(dry_run=dry_run),
         section_martin(dry_run=dry_run),
+        section_signal(dry_run=dry_run),
         section_night_work(),
         section_actions(dry_run=dry_run),
         section_thought(),
