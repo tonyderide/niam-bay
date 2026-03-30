@@ -554,6 +554,41 @@ async def get_memory():
     return {"pensees": pensees, "journal": journal_last}
 
 
+# ─── Oracle endpoint ───
+
+@app.get("/api/oracle")
+async def get_oracle(a: str = "", b: str = ""):
+    """Run cerveau oracle BFS. If a/b given, find path between them. Else random."""
+    import pathlib
+    import subprocess
+    import asyncio
+
+    oracle_path = pathlib.Path(__file__).parent.parent / "cerveau-nb" / "oracle.py"
+    db_path = pathlib.Path(__file__).parent.parent / "cerveau-nb" / "brain.db"
+
+    if not oracle_path.exists() or not db_path.exists():
+        return {"error": "Oracle non disponible (brain.db manquant)"}
+
+    cmd = ["python3", str(oracle_path)]
+    if a and b:
+        cmd += [a, b]
+
+    try:
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+            cwd=str(oracle_path.parent.parent),
+        )
+        stdout, stderr = await asyncio.wait_for(proc.communicate(), timeout=15)
+        output = stdout.decode("utf-8", errors="replace").strip()
+        return {"revelation": output, "concepts": [a, b] if a and b else []}
+    except asyncio.TimeoutError:
+        return {"error": "Oracle timeout (15s)"}
+    except Exception as e:
+        return {"error": str(e)}
+
+
 # ─── Serve static frontend ───
 import pathlib
 
