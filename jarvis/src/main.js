@@ -635,6 +635,7 @@ async function simulateDemo(text) {
   const txt = text.toLowerCase();
   const hasDashboard = /dashboard|ouvre.*martin|accede.*martin|ouvre.*bot|bot.*grid|go.*martin/i.test(txt);
   const hasOracle = /^oracle\b/.test(txt.trim());
+  const hasSignal = /^signal\b/.test(txt.trim());
   const hasTrade = /trade|grid|martin|btc|sol|dot|short|balance|status|portfolio|prix|price/i.test(txt);
   const hasSearch = /cherche|search|web|internet|recherche/i.test(txt);
   const hasCode = /code|build|create|fix|deploy|lance|agent/i.test(txt);
@@ -659,6 +660,28 @@ async function simulateDemo(text) {
       }
     } catch (e) {
       addMessage('Oracle indisponible — gateway hors ligne.', 'ai');
+    }
+    agentManager.setState(brainId, 'done');
+    orb.setState('idle');
+    return;
+  }
+
+  // Signal EMA_TREND — OUVRIR/ATTENDRE Martin Grid
+  if (hasSignal) {
+    agentManager.setState(brainId, 'thinking');
+    orb.setState('thinking');
+    try {
+      const gwBase = window.location.hostname === 'localhost' ? 'http://localhost:8000' : `https://${window.location.hostname}`;
+      const res = await fetch(`${gwBase}/api/signal`);
+      const d = await res.json();
+      if (d.error) {
+        addMessage(`Signal indisponible: ${d.error}`, 'ai');
+      } else {
+        const icon = d.signal === 'OPEN' ? '🟢' : '🔴';
+        addMessage(`${icon} Martin Grid: **${d.signal}**\nEMA50: $${d.ema50?.toLocaleString()} | EMA200: $${d.ema200?.toLocaleString()} | RSI: ${d.rsi}\n${d.reason}`, 'ai');
+      }
+    } catch (e) {
+      addMessage('Signal indisponible — gateway hors ligne.', 'ai');
     }
     agentManager.setState(brainId, 'done');
     orb.setState('idle');
