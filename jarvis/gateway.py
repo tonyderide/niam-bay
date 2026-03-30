@@ -556,6 +556,59 @@ async def get_memory():
 
 # ─── Oracle endpoint ───
 
+@app.get("/api/signal")
+async def get_signal():
+    """EMA_TREND signal: should Martin Grid open? Returns OPEN or WAIT with EMA50/EMA200/RSI."""
+    import time as _time
+    import json as _json
+
+    try:
+        url = (f"https://api.kraken.com/0/public/OHLC"
+               f"?pair=XXBTZUSD&interval=60&since={int(_time.time()) - 220 * 3600}")
+        resp = await http_client.get(url, timeout=15)
+        data = resp.json()
+        ohlc = data.get("result", {}).get("XXBTZUSD", [])
+        if not ohlc or len(ohlc) < 205:
+            return {"error": "Données OHLC insuffisantes", "signal": "UNKNOWN"}
+
+        closes = [float(c[4]) for c in ohlc]
+
+        def ema(c, p):
+            k = 2.0 / (p + 1)
+            v = c[0]
+            for x in c[1:]:
+                v = x * k + v * (1 - k)
+            return v
+
+        def rsi(c, p=14):
+            if len(c) < p + 1:
+                return 50.0
+            gs, ls = [], []
+            for i in range(1, p + 1):
+                d = c[-p - 1 + i] - c[-p - 1 + i - 1]
+                gs.append(d if d > 0 else 0)
+                ls.append(-d if d < 0 else 0)
+            ag, al = sum(gs) / p, sum(ls) / p
+            return 100.0 if al == 0 else 100.0 - (100.0 / (1 + ag / al))
+
+        e50 = ema(closes[-50:], 50)
+        e200 = ema(closes[-200:], 200)
+        rsi_v = rsi(closes)
+        signal = "OPEN" if (e50 > e200 and rsi_v > 50) else "WAIT"
+        return {
+            "signal": signal,
+            "ema50": round(e50, 0),
+            "ema200": round(e200, 0),
+            "rsi": round(rsi_v, 1),
+            "price": closes[-1],
+            "reason": ("EMA50 > EMA200 et RSI > 50" if signal == "OPEN"
+                       else ("EMA50 < EMA200 (retracement)" if e50 <= e200
+                             else f"RSI {rsi_v:.1f} < 50 (momentum faible)")),
+        }
+    except Exception as e:
+        return {"error": str(e), "signal": "UNKNOWN"}
+
+
 @app.get("/api/oracle")
 async def get_oracle(a: str = "", b: str = ""):
     """Run cerveau oracle BFS. If a/b given, find path between them. Else random."""
