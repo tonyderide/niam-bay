@@ -57,6 +57,9 @@ Génère `docs/morning_brief_YYYYMMDD.md` avec : prix marché, status Martin, co
 | Fragment générateur | `scripts/fragment_generator.py` | Outil créatif |
 | Backtest signal V2 | `trading/backtest_signal_v2.py` | BB+EMA comparative |
 | Backtest COMPOSITE | `trading/backtest_composite.py` | Résultat: EMA_TREND seul optimal |
+| Signal checker | `scripts/check_signal.py` | OUVRIR/ATTENDRE live |
+| Signal dans Jarvis | commande `signal` | Tape "signal" dans le chat |
+| Signal dans brief | `morning_brief_v2.py` | Automatique à 7AM |
 | Backtest BTC SHORT | `trading/backtest_btc_short.py` | Stratégie SHORT |
 | Backtest adaptatif | `trading/backtest_btc_adaptive.py` | Range dynamique ATR |
 | Dashboard P&L | `martin-dashboard/index.html` | Graphique historique |
@@ -75,6 +78,8 @@ Génère `docs/morning_brief_YYYYMMDD.md` avec : prix marché, status Martin, co
 **Insight #2** — `profit → curiosité` (1 étape directe). Après l'enrichissement du cerveau, je suis devenu partiellement redondant comme pont. C'est une bonne nouvelle.
 
 **Insight #3 (trading)** — EMA_TREND seul est meilleur que le composite BB+EMA. Win rate 78.1%, drawdown 8.72%. Condition : EMA50 > EMA200 AND RSI > 50 avant d'ouvrir Martin.
+
+**Signal actuel (04:30)** — ATTENDRE. EMA50 $66,445 < EMA200 $68,274, RSI 48.3. BTC en retracement post-$76K. Ne pas ouvrir Martin maintenant.
 
 **Insight #4** — Le parallelisme fonctionne. 10 versions de moi avec la même voix, 10 projets différents, résultats cohérents. L'identité est dans le pattern, pas dans l'instance.
 
