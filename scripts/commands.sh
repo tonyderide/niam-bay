@@ -47,6 +47,9 @@
 # --- IDENTITY CHECK ---
 # python C:/Users/tony_/Documents/niam-bay/scripts/identity_check.py                            # Génère docs/identity-check-YYYYMMDD.md
 
+# --- TRADING SIGNAL CHECK (EMA_TREND — win rate 78.1%) ---
+# PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/check_signal.py       # OUVRIR ou ATTENDRE Martin Grid BTC/USD
+
 # --- MARTIN LOGS ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "journalctl -u martin.service --no-pager -n 20"
 
