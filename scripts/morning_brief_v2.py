@@ -29,8 +29,8 @@ TARGET_WAKE_TIME = "07:00"  # Heure de réveil de Tony
 REPO_ROOT = pathlib.Path(__file__).parent.parent
 
 PAIRS_KRAKEN = {
-    "BTC":  "XBTUSD",
-    "ETH":  "ETHUSD",
+    "BTC":  "XXBTZUSD",
+    "ETH":  "XETHZUSD",
     "SOL":  "SOLUSD",
     "DOT":  "DOTUSD",
 }
@@ -38,10 +38,10 @@ PAIRS_KRAKEN = {
 # Ranges approximatifs des grids (centre ± buffer) — mis à jour manuellement
 # Format: "NOM_PAIR": (low, high, centre)
 GRID_RANGES = {
-    "PF_XBTUSD": (70000, 110000, 90000),
-    "PF_ETHUSD": (1800,  3500,   2600),
-    "PF_SOLUSD": (100,   250,    170),
-    "PF_DOTUSD": (4.0,   12.0,   7.5),
+    "PF_XXBTZUSD": (70000, 110000, 90000),
+    "PF_XETHZUSD": (1800,  3500,   2600),
+    "PF_SOLUSD":   (100,   250,    170),
+    "PF_DOTUSD":   (4.0,   12.0,   7.5),
 }
 
 BALANCE_CRITICAL = 20.0   # Seuil d'alerte balance ($)
@@ -364,7 +364,7 @@ def section_actions(dry_run: bool = False) -> str:
             )
 
     # Analyse position prix vs grid ranges
-    pair_map = {"BTC": "PF_XBTUSD", "ETH": "PF_ETHUSD", "SOL": "PF_SOLUSD", "DOT": "PF_DOTUSD"}
+    pair_map = {"BTC": "PF_XXBTZUSD", "ETH": "PF_XETHZUSD", "SOL": "PF_SOLUSD", "DOT": "PF_DOTUSD"}
     for name, price in prices.items():
         pf_key = pair_map.get(name, "")
         if pf_key not in GRID_RANGES:
