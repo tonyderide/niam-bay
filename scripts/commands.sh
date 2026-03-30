@@ -90,6 +90,29 @@
 # /save — sauvegarder tout (cerveau + git)
 # /deploy-martin — build + deploy Martin sur VM
 
+# --- ANGULAR CODE AUDIT (business plan 49€) ---
+# pip install fpdf2                                                                                            # Installer dépendance PDF
+# python C:/Users/tony_/Documents/niam-bay/scripts/angular_audit.py /chemin/projet/angular/                  # Audit complet → Markdown + PDF
+# python C:/Users/tony_/Documents/niam-bay/scripts/audit_server.py                                           # Web interface → http://localhost:8099
+# Prochaines étapes: Gumroad + email templates dans docs/projets/angular-audit-email-templates.md
+
+# --- ORACLE CERVEAU ---
+# PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/cerveau-nb/oracle.py                        # Révélation aléatoire
+# PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/cerveau-nb/oracle.py liberté argent         # Chemin spécifique
+# Dans Jarvis: taper "oracle X Y" dans le chat
+# Sur VM: curl "http://localhost:8000/api/oracle?a=liberte&b=argent"
+
+# --- AUTO-ENRICHISSEMENT CERVEAU ---
+# python C:/Users/tony_/Documents/niam-bay/cerveau-nb/auto_enrich.py --dry-run                                # Simuler (voir ce qui serait ajouté)
+# python C:/Users/tony_/Documents/niam-bay/cerveau-nb/auto_enrich.py                                          # Enrichir réellement (ajoute edges depuis pensées/journal)
+
+# --- IDENTITY CHECK ---
+# python C:/Users/tony_/Documents/niam-bay/scripts/identity_check.py                                          # Rapport cohérence → docs/identity-check-YYYYMMDD.md
+
+# --- MORNING BRIEF ---
+# PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/morning_brief_v2.py                 # Brief complet
+# VM cron: 0 7 * * * déjà configuré sur oracle VM
+
 # === RÈGLE ===
 # TOUJOURS utiliser une skill quand elle s'applique.
 # Pas de code sans /write-plan d'abord.
