@@ -523,6 +523,26 @@ input[type=range]::-webkit-slider-thumb {
 }
 @keyframes shimmer { 0%{background-position:200% 0;} 100%{background-position:-200% 0;} }
 
+/* ---- P&L History panel ---- */
+.rt-badge {
+  display:flex; flex-direction:column; gap:4px;
+  padding:12px 16px; border-radius:var(--radius-sm);
+  background:var(--bg-card); border:1px solid var(--border);
+  min-width:140px;
+}
+.rt-badge .pair-name {
+  font-family:var(--font-data); font-weight:700; font-size:0.9rem;
+}
+.rt-badge .rt-time {
+  font-family:var(--font-data); font-size:1rem; font-weight:600;
+}
+.rt-badge .rt-label {
+  font-size:0.6rem; color:var(--muted); text-transform:uppercase; letter-spacing:1px;
+}
+.rt-green { border-color:rgba(0,255,136,0.35); background:rgba(0,255,136,0.05); }
+.rt-orange { border-color:rgba(255,170,0,0.35); background:rgba(255,170,0,0.05); }
+.rt-red { border-color:rgba(255,51,102,0.35); background:rgba(255,51,102,0.05); }
+
 /* ---- Scalp panel ---- */
 .scalp-dir-btn {
   flex:1; display:flex; align-items:center; justify-content:center; gap:8px;
@@ -643,6 +663,10 @@ input[type=range]::-webkit-slider-thumb {
     <button class="nav-btn" data-tab="scalp">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       Scalp
+    </button>
+    <button class="nav-btn" data-tab="pnlhistory">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      P&L History
     </button>
     <button class="nav-btn" data-tab="ai">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
@@ -1074,6 +1098,57 @@ input[type=range]::-webkit-slider-thumb {
     </div>
   </div>
 
+  <!-- ======== PANEL: P&L HISTORY ======== -->
+  <div class="panel" id="panel-pnlhistory">
+
+    <!-- KPI row -->
+    <div class="grid-3 animate-in mb">
+      <div class="stat-card">
+        <div class="lbl">Efficacité Grid</div>
+        <div class="val" id="gridEfficiency">--%</div>
+        <div class="sub" id="gridEfficiencySub">profit / capital</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Capital déployé (estimé)</div>
+        <div class="val" id="deployedCapital">--</div>
+        <div class="sub">portfolioValue − availableMargin</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Points P&L enregistrés</div>
+        <div class="val" id="pnlPointCount">0</div>
+        <div class="sub">max 48h · update toutes les 30s</div>
+      </div>
+    </div>
+
+    <!-- Dernier RT par grid -->
+    <div class="card mb animate-in delay-1">
+      <div class="card-header">
+        <div class="card-title">Dernier Round Trip par Grid</div>
+        <span style="font-family:var(--font-data);font-size:0.68rem;color:var(--muted);">
+          <span style="color:var(--profit);">■</span> &lt;2h &nbsp;
+          <span style="color:var(--warn);">■</span> 2-6h &nbsp;
+          <span style="color:var(--loss);">■</span> &gt;6h
+        </span>
+      </div>
+      <div id="lastRTContainer" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:8px;">
+        <div style="color:var(--muted);font-size:0.85rem;">Chargement...</div>
+      </div>
+    </div>
+
+    <!-- P&L cumulé en temps réel -->
+    <div class="card animate-in delay-2">
+      <div class="card-header">
+        <div class="card-title">P&L Cumulé — Temps Réel (48h)</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span id="pnlRTLastValue" style="font-family:var(--font-data);font-size:0.85rem;font-weight:700;">$0.00</span>
+          <button class="btn btn-ghost btn-sm" onclick="clearPnLHistory()" style="font-size:0.7rem;padding:4px 10px;">Reset</button>
+        </div>
+      </div>
+      <div class="chart-container" style="height:320px;" id="pnlRTChart"></div>
+    </div>
+
+  </div>
+
   <!-- ======== PANEL: AI LENS ======== -->
   <div class="panel" id="panel-ai">
     <div class="row">
@@ -1140,6 +1215,9 @@ let state = {
   pnlHistory: [],
   connected: false,
   allFills: [],
+  lastTotalProfit: null,
+  lastStatuses: [],
+  pnlRTHistory: [],
 };
 
 let charts = {};
@@ -1269,6 +1347,10 @@ async function refresh() {
       gridSelect.value = state.activeGrid;
     }
 
+    // Sauvegarder dans state pour P&L History
+    state.lastTotalProfit = totalProfit;
+    state.lastStatuses = statuses;
+
     // Update PnL
     updatePnL(totalProfit, totalRT, totalFills);
 
@@ -1284,6 +1366,12 @@ async function refresh() {
     // Update live fills if on grids tab
     if (document.getElementById('panel-grids').classList.contains('active')) {
       updateLiveFills();
+    }
+
+    // Update P&L History panel if visible
+    if (document.getElementById('panel-pnlhistory').classList.contains('active')) {
+      updateLastRTBadges(statuses);
+      updatePnLHistoryKPIs(totalProfit);
     }
 
     // Fetch prices
@@ -2326,6 +2414,268 @@ document.querySelector('.nav-btn[data-tab="scalp"]').addEventListener('click', (
 
 // Set initial execute button style
 setScalpDir('long');
+
+// ============================================================
+// P&L HISTORY — Temps réel (48h, localStorage, 30s refresh)
+// ============================================================
+
+const PNL_STORAGE_KEY = 'niam_pnl_history_v1';
+const PNL_MAX_AGE_MS  = 48 * 60 * 60 * 1000; // 48h
+const PNL_REFRESH_MS  = 30 * 1000;            // 30s
+
+let pnlRTChart = null;
+let pnlRTSeries = null;
+let pnlRTInterval = null;
+
+// --- Persistance localStorage ---
+function loadPnLHistory() {
+  try {
+    const raw = localStorage.getItem(PNL_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    const cutoff = Date.now() - PNL_MAX_AGE_MS;
+    return parsed.filter(p => p.ts >= cutoff);
+  } catch (e) {
+    return [];
+  }
+}
+
+function savePnLHistory(history) {
+  try {
+    localStorage.setItem(PNL_STORAGE_KEY, JSON.stringify(history));
+  } catch (e) {}
+}
+
+function clearPnLHistory() {
+  if (!confirm('Réinitialiser l\'historique P&L ? (48h de données effacées)')) return;
+  localStorage.removeItem(PNL_STORAGE_KEY);
+  state.pnlRTHistory = [];
+  renderPnLRTChart();
+  document.getElementById('pnlPointCount').textContent = '0';
+  document.getElementById('pnlRTLastValue').textContent = '$0.00';
+}
+
+// --- Ajouter un point ---
+function pushPnLPoint(profit) {
+  const now = Date.now();
+  const cutoff = now - PNL_MAX_AGE_MS;
+  // Charger depuis le storage (d'autres onglets / sessions)
+  let history = loadPnLHistory();
+  history.push({ ts: now, value: profit });
+  // Nettoyer > 48h
+  history = history.filter(p => p.ts >= cutoff);
+  savePnLHistory(history);
+  state.pnlRTHistory = history;
+  renderPnLRTChart();
+  updatePnLHistoryKPIs(profit);
+}
+
+// --- Init chart lightweight-charts ---
+function initPnLRTChart() {
+  const container = document.getElementById('pnlRTChart');
+  if (pnlRTChart) return;
+
+  pnlRTChart = LightweightCharts.createChart(container, {
+    layout: {
+      background: { type: 'solid', color: 'transparent' },
+      textColor: '#6b6b80',
+      fontFamily: "'JetBrains Mono', monospace",
+      fontSize: 10,
+    },
+    grid: {
+      vertLines: { color: 'rgba(255,255,255,0.03)' },
+      horzLines: { color: 'rgba(255,255,255,0.03)' },
+    },
+    timeScale: {
+      borderColor: 'rgba(255,255,255,0.06)',
+      timeVisible: true,
+      secondsVisible: false,
+    },
+    rightPriceScale: { borderColor: 'rgba(255,255,255,0.06)' },
+    crosshair: { mode: 1 },
+    handleScroll: true,
+    handleScale: true,
+  });
+
+  pnlRTSeries = pnlRTChart.addAreaSeries({
+    topColor: 'rgba(0,255,136,0.25)',
+    bottomColor: 'rgba(0,255,136,0.0)',
+    lineColor: '#00ff88',
+    lineWidth: 2,
+    priceFormat: { type: 'price', precision: 4, minMove: 0.0001 },
+  });
+
+  new ResizeObserver(() => {
+    pnlRTChart.applyOptions({
+      width: container.clientWidth,
+      height: container.clientHeight,
+    });
+  }).observe(container);
+
+  // Charger l'historique existant
+  state.pnlRTHistory = loadPnLHistory();
+  renderPnLRTChart();
+}
+
+// --- Rendre le chart ---
+function renderPnLRTChart() {
+  if (!pnlRTSeries) return;
+
+  const history = state.pnlRTHistory || [];
+  document.getElementById('pnlPointCount').textContent = history.length;
+
+  if (history.length < 2) {
+    pnlRTSeries.setData([]);
+    return;
+  }
+
+  // Dédupliquer par seconde (lightweight-charts exige des timestamps uniques croissants)
+  const seen = new Set();
+  const data = [];
+  history.forEach(p => {
+    const t = Math.floor(p.ts / 1000);
+    if (!seen.has(t)) {
+      seen.add(t);
+      data.push({ time: t, value: p.value });
+    }
+  });
+  data.sort((a, b) => a.time - b.time);
+
+  pnlRTSeries.setData(data);
+
+  // Couleur dynamique selon dernière valeur
+  const last = data[data.length - 1].value;
+  if (last < 0) {
+    pnlRTSeries.applyOptions({
+      topColor: 'rgba(255,51,102,0.25)',
+      bottomColor: 'rgba(255,51,102,0.0)',
+      lineColor: '#ff3366',
+    });
+  } else {
+    pnlRTSeries.applyOptions({
+      topColor: 'rgba(0,255,136,0.25)',
+      bottomColor: 'rgba(0,255,136,0.0)',
+      lineColor: '#00ff88',
+    });
+  }
+
+  pnlRTChart.timeScale().fitContent();
+}
+
+// --- KPIs ---
+function updatePnLHistoryKPIs(profit) {
+  // Dernière valeur
+  const isPos = profit >= 0;
+  const lastEl = document.getElementById('pnlRTLastValue');
+  lastEl.textContent = (isPos ? '+$' : '-$') + fmt(Math.abs(profit));
+  lastEl.style.color = isPos ? 'var(--profit)' : 'var(--loss)';
+
+  // Efficacité grid
+  if (state.balance && state.balance.portfolioValue > 0) {
+    const capital = state.balance.portfolioValue - (state.balance.availableMargin || 0);
+    document.getElementById('deployedCapital').textContent = '$' + fmt(capital);
+    const eff = capital > 0 ? (profit / capital * 100) : 0;
+    const effEl = document.getElementById('gridEfficiency');
+    effEl.textContent = (eff >= 0 ? '+' : '') + eff.toFixed(2) + '%';
+    effEl.style.color = eff >= 0 ? 'var(--profit)' : 'var(--loss)';
+    document.getElementById('gridEfficiencySub').textContent =
+      '$' + fmt(profit) + ' / $' + fmt(capital) + ' capital';
+  }
+}
+
+// --- Dernier RT par grid ---
+async function updateLastRTBadges(statuses) {
+  const container = document.getElementById('lastRTContainer');
+  if (!statuses || statuses.length === 0) {
+    container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;">Aucune grid active</div>';
+    return;
+  }
+
+  const now = Date.now();
+  const badges = statuses.map((s, i) => {
+    if (!s) return '';
+    const name = state.grids[i] || '';
+    const displayName = name.replace('PF_', '').replace('USD', '/USD');
+
+    // Trouver le timestamp du dernier fill (= approximation du dernier RT)
+    const fills = s.fills || [];
+    let lastRTMs = null;
+
+    if (fills.length > 0) {
+      // Chercher le fill le plus récent qui a un pnl > 0 (= round trip complet)
+      const rtFills = fills.filter(f => f.pnl && parseFloat(f.pnl) > 0 && f.timestamp);
+      if (rtFills.length > 0) {
+        lastRTMs = Math.max(...rtFills.map(f => new Date(f.timestamp).getTime()));
+      } else {
+        // Fallback: dernier fill tout court
+        const withTs = fills.filter(f => f.timestamp);
+        if (withTs.length > 0) {
+          lastRTMs = Math.max(...withTs.map(f => new Date(f.timestamp).getTime()));
+        }
+      }
+    }
+
+    let timeStr = 'Aucun RT';
+    let colorClass = 'rt-red';
+
+    if (lastRTMs) {
+      const diffMs = now - lastRTMs;
+      const diffH = diffMs / (1000 * 60 * 60);
+      const h = Math.floor(diffH);
+      const m = Math.floor((diffH - h) * 60);
+      timeStr = h > 0 ? `${h}h ${m}m` : `${m}m`;
+
+      if (diffH < 2) colorClass = 'rt-green';
+      else if (diffH < 6) colorClass = 'rt-orange';
+      else colorClass = 'rt-red';
+    }
+
+    const rts = s.completedRoundTrips || 0;
+
+    return `<div class="rt-badge ${colorClass}">
+      <span class="pair-name">${displayName}</span>
+      <span class="rt-time" style="color:${colorClass==='rt-green'?'var(--profit)':colorClass==='rt-orange'?'var(--warn)':'var(--loss)'}">
+        ${timeStr}
+      </span>
+      <span class="rt-label">Dernier RT · ${rts} total</span>
+    </div>`;
+  });
+
+  container.innerHTML = badges.join('');
+}
+
+// --- Refresh 30s pour le panel P&L History ---
+function startPnLHistoryRefresh() {
+  if (pnlRTInterval) return;
+  pnlRTInterval = setInterval(async () => {
+    // On pousse le dernier profit connu
+    if (typeof state.lastTotalProfit === 'number') {
+      pushPnLPoint(state.lastTotalProfit);
+    }
+  }, PNL_REFRESH_MS);
+}
+
+// Init du panel P&L History au clic sur l'onglet
+document.querySelector('.nav-btn[data-tab="pnlhistory"]').addEventListener('click', () => {
+  initPnLRTChart();
+  startPnLHistoryRefresh();
+  if (state.lastTotalProfit !== null) {
+    updatePnLHistoryKPIs(state.lastTotalProfit);
+    updateLastRTBadges(state.lastStatuses);
+  }
+});
+
+// Démarrer le refresh P&L History automatiquement en arrière-plan
+// (on pousse des points toutes les 30s même si le panel n'est pas actif)
+setTimeout(() => {
+  startPnLHistoryRefresh();
+  // Aussi pousser un premier point au démarrage après le premier refresh
+  setTimeout(() => {
+    if (typeof state.lastTotalProfit === 'number') {
+      pushPnLPoint(state.lastTotalProfit);
+    }
+  }, 3000);
+}, 1000);
 </script>
 </body>
 </html>
