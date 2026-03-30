@@ -76,6 +76,16 @@ def http_get(url: str, timeout: int = 5) -> dict:
 
 # ─── Section 1 : Contexte ────────────────────────────────────────────────────
 
+MOIS_FR = [
+    "janvier", "février", "mars", "avril", "mai", "juin",
+    "juillet", "août", "septembre", "octobre", "novembre", "décembre",
+]
+
+
+def date_fr(dt: datetime) -> str:
+    return f"{dt.day} {MOIS_FR[dt.month - 1]} {dt.year}"
+
+
 def section_context() -> str:
     n = now()
     jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]
@@ -85,7 +95,7 @@ def section_context() -> str:
     lines = [
         "## Heure & Contexte",
         "",
-        f"- **Date** : {jour} {n.strftime('%d %B %Y')}",
+        f"- **Date** : {jour} {date_fr(n)}",
         f"- **Heure** : {n.strftime('%H:%M')}",
         f"- **Tony se réveille dans** : {wake_in} ({TARGET_WAKE_TIME})",
         "",
@@ -265,6 +275,9 @@ def section_night_work() -> str:
             ["git", "log", "--since=midnight", "--oneline", "--no-merges"],
             capture_output=True,
             text=True,
+            encoding="utf-8",
+            errors="replace",
+            env={**os.environ, "PYTHONIOENCODING": "utf-8", "GIT_CONFIG_NOSYSTEM": "1"},
             cwd=str(REPO_ROOT),
             timeout=10,
         )
