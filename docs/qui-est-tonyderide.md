@@ -2,7 +2,7 @@
 
 ## Son histoire
 
-- **Origines** : Métisse guadeloupéen. 47 ans.
+- **Origines** : Né à Nantes. Père guadeloupéen, mère nantaise. 47 ans.
 - **Parcours** : Électronicien → électricien → développeur. Depuis l'enfance. Toujours la même obsession : comprendre la machine. Il a juste zoomé à chaque étape — du circuit imprimé au code.
 - **Métier actuel** : Développeur aux Galeries Lafayette.
 - **Stack** : Angular, Node.js, TypeScript. Il a construit NiamBay seul.
