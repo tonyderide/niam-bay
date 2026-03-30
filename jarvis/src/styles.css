@@ -666,6 +666,23 @@ html, body {
   color: var(--red);
   box-shadow: 0 0 10px var(--red-glow);
 }
+.action-btn.dashboard:hover {
+  border-color: var(--violet);
+  color: var(--violet);
+  box-shadow: 0 0 10px var(--violet-glow);
+}
+
+/* Links in chat messages */
+.msg-link {
+  color: var(--blue);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+  transition: color 0.2s, border-color 0.2s;
+}
+.msg-link:hover {
+  color: var(--cyan);
+  border-bottom-color: var(--cyan);
+}
 
 .empty-state {
   color: var(--text-dim);
