@@ -513,6 +513,47 @@ async def build_smart_response(ws_id: int, text: str, is_trading: bool) -> str:
         return f"Erreur LLM: {e}", 0
 
 
+# ─── Memory endpoint ───
+
+@app.get("/api/memory")
+async def get_memory():
+    """Return last 5 pensees + last journal entry."""
+    import pathlib
+
+    repo_root = pathlib.Path(__file__).parent.parent
+    pensees_dir = repo_root / "docs" / "pensees"
+    journal_path = repo_root / "docs" / "journal.nb1.md"
+
+    pensees = []
+    if pensees_dir.exists():
+        files = sorted(
+            [f for f in pensees_dir.iterdir() if f.suffix == ".md"],
+            key=lambda f: f.stat().st_mtime,
+            reverse=True,
+        )[:5]
+        for f in files:
+            try:
+                content = f.read_text(encoding="utf-8", errors="replace")
+                pensees.append({
+                    "titre": f.stem,
+                    "date": f.stat().st_mtime,
+                    "extrait": content[:100].strip(),
+                })
+            except Exception:
+                pass
+
+    journal_last = ""
+    if journal_path.exists():
+        try:
+            content = journal_path.read_text(encoding="utf-8", errors="replace")
+            parts = content.split("---")
+            journal_last = parts[-1].strip() if parts else ""
+        except Exception:
+            pass
+
+    return {"pensees": pensees, "journal": journal_last}
+
+
 # ─── Serve static frontend ───
 import pathlib
 

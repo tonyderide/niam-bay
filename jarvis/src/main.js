@@ -119,6 +119,54 @@ function showToast(text, type = 'info', duration = 3000) {
   }, duration);
 }
 
+// ─── Memory panel ───
+let memoryRefreshInterval = null;
+
+async function loadMemory() {
+  const penseesList = document.getElementById('pensees-list');
+  const journalSummary = document.getElementById('journal-summary');
+  if (!penseesList || !journalSummary) return;
+
+  penseesList.innerHTML = '<div class="empty-state">Chargement...</div>';
+  journalSummary.innerHTML = '<div class="empty-state">Chargement...</div>';
+
+  try {
+    const base = getApiBase();
+    const data = await fetch(`${base}/api/memory`).then(r => r.json());
+
+    if (data.pensees && data.pensees.length > 0) {
+      penseesList.innerHTML = data.pensees.map(p => {
+        const date = new Date(p.date * 1000).toLocaleDateString('fr-FR', {
+          day: '2-digit', month: '2-digit', year: 'numeric',
+        });
+        return `<div class="memory-item">
+          <div class="memory-header">
+            <span class="memory-titre">${p.titre}</span>
+            <span class="memory-date">${date}</span>
+          </div>
+          <div class="memory-extrait">${p.extrait}</div>
+        </div>`;
+      }).join('');
+    } else {
+      penseesList.innerHTML = '<div class="empty-state">Aucune pensée trouvée</div>';
+    }
+
+    if (data.journal) {
+      journalSummary.innerHTML = `<pre class="memory-journal">${data.journal.slice(0, 600)}</pre>`;
+    } else {
+      journalSummary.innerHTML = '<div class="empty-state">Journal introuvable</div>';
+    }
+  } catch (e) {
+    penseesList.innerHTML = '<div class="empty-state">Gateway offline</div>';
+    journalSummary.innerHTML = '<div class="empty-state">—</div>';
+  }
+}
+
+function initMemory() {
+  // Refresh every 5 minutes
+  memoryRefreshInterval = setInterval(loadMemory, 5 * 60 * 1000);
+}
+
 // ─── Navigation ───
 function initNav() {
   const btns = document.querySelectorAll('.nav-btn');
@@ -126,6 +174,7 @@ function initNav() {
     main: null,
     agents: document.getElementById('agents-view'),
     trading: document.getElementById('trading-view'),
+    memory: document.getElementById('memory-view'),
   };
   btns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -136,6 +185,7 @@ function initNav() {
       if (v) {
         v.classList.remove('hidden');
         gsap.fromTo(v, { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.4, ease: 'power2.out' });
+        if (btn.dataset.view === 'memory') loadMemory();
       }
     });
   });
@@ -806,6 +856,7 @@ async function main() {
   initQuickActions();
   connectGateway();
   initTrading();
+  initMemory();
 
   setTimeout(() => addMessage("Systeme en ligne. En attente.", 'ai'), 500);
 

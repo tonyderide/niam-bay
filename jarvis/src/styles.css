@@ -771,3 +771,56 @@ html, body {
   }
   #input-bar { width: calc(100% - 16px); }
 }
+
+/* === Memory Panel === */
+.memory-item {
+  padding: 10px 12px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid var(--violet);
+  margin-bottom: 8px;
+  transition: background 0.2s;
+}
+.memory-item:hover { background: rgba(139, 92, 246, 0.06); }
+.memory-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 4px;
+  gap: 8px;
+}
+.memory-titre {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--violet);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+.memory-date {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+.memory-extrait {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.5;
+  font-family: var(--font-body);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.memory-journal {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  white-space: pre-wrap;
+  line-height: 1.7;
+  max-height: 200px;
+  overflow-y: auto;
+}

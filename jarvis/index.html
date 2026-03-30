@@ -131,6 +131,12 @@
       <button class="nav-btn" data-view="trading" title="Trading">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       </button>
+      <button class="nav-btn" data-view="memory" title="Mémoire">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2a10 10 0 0 1 10 10c0 5.52-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2z"/>
+          <path d="M12 6v6l4 2"/>
+        </svg>
+      </button>
     </nav>
 
     <!-- Trading panel -->
@@ -155,6 +161,18 @@
           <button class="action-btn stop" data-cmd="stop_grid" data-pair="PF_DOTUSD">STOP DOT</button>
           <button class="action-btn dashboard" data-cmd="open_dashboard">DASHBOARD ↗</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Memory view -->
+    <div id="memory-view" class="view-panel hidden">
+      <div class="glass-panel trading-card">
+        <h3>DERNIÈRES PENSÉES</h3>
+        <div id="pensees-list"></div>
+      </div>
+      <div class="glass-panel trading-card">
+        <h3>JOURNAL — DERNIÈRE SESSION</h3>
+        <div id="journal-summary"></div>
       </div>
     </div>
 
