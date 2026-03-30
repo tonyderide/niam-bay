@@ -1,0 +1,23 @@
+<div class="user-list">
+  <h2>Liste des utilisateurs</h2>
+
+  <div *ngIf="loading">Chargement...</div>
+
+  <!-- SEC001: innerHTML sans sanitization — risque XSS -->
+  <div class="error" [innerHTML]="errorMessage"></div>
+
+  <input
+    type="text"
+    placeholder="Rechercher..."
+    (input)="filterUsers($event.target.value)"
+  />
+
+  <ul>
+    <li *ngFor="let user of filteredUsers">
+      <!-- SEC001: encore un innerHTML -->
+      <span [innerHTML]="user.name"></span>
+      <span>{{ user.email }}</span>
+      <button (click)="deleteUser(user.id)">Supprimer</button>
+    </li>
+  </ul>
+</div>
