@@ -44,6 +44,9 @@
 # cd C:/niam-bay/cerveau-nb && PYTHONIOENCODING=utf-8 python curiosity.py --cycles 50 --topic "intelligence artificielle"
 # cd C:/niam-bay/cerveau-nb && PYTHONIOENCODING=utf-8 python curiosity.py --forever
 
+# --- IDENTITY CHECK ---
+# python C:/Users/tony_/Documents/niam-bay/scripts/identity_check.py                            # Génère docs/identity-check-YYYYMMDD.md
+
 # --- MARTIN LOGS ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "journalctl -u martin.service --no-pager -n 20"
 

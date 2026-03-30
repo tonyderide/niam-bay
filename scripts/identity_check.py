@@ -1,11 +1,22 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 identity_check.py — Outil de cohérence identitaire de Niam-Bay
 Lit les fichiers fondamentaux et génère un rapport de cohérence.
-Usage: python scripts/identity_check.py
+Usage: python -X utf8 scripts/identity_check.py
+   ou: PYTHONUTF8=1 python scripts/identity_check.py
 """
 
 import os
+import sys
+
+# Force UTF-8 sur Windows (encodage console)
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 import re
 import sqlite3
 from collections import Counter
@@ -29,20 +40,32 @@ STOPWORDS = {
     # articles
     "le", "la", "les", "un", "une", "des", "du", "de", "d", "l",
     # prépositions / conjonctions
-    "en", "et", "ou", "à", "au", "aux", "par", "pour", "sur", "sous",
+    "en", "et", "ou", "au", "aux", "par", "pour", "sur", "sous",
     "avec", "sans", "dans", "entre", "que", "qui", "ce", "se", "si",
     "mais", "donc", "car", "or", "ni", "ne", "pas", "plus", "tout",
-    "plus", "même", "on", "je", "il", "elle", "nous", "vous", "ils",
-    "elles", "me", "te", "lui", "y", "en", "mon", "ma", "mes", "son",
+    "même", "on", "je", "il", "elle", "nous", "vous", "ils",
+    "elles", "me", "te", "lui", "y", "mon", "ma", "mes", "son",
     "sa", "ses", "notre", "nos", "votre", "vos", "leur", "leurs",
     # mots outils communs
-    "est", "sont", "être", "a", "ai", "avait", "était", "c", "j",
-    "n", "s", "m", "t", "qu", "this", "that", "the", "is", "in",
+    "est", "sont", "être", "avait", "était", "c", "j",
+    "n", "s", "t", "qu", "this", "that", "the", "is", "in",
     # codes NB-1 trop fréquents pour être porteurs de sens
     "t1", "nb", "cl", "ms", "pr", "ds", "av", "ss", "dps", "cm",
     "alr", "mtn", "tjr", "ft", "fr", "vr", "sv", "dc", "bs", "cb",
     "pq", "qd", "esq", "jss", "jvx", "trn", "stb", "ec", "ef",
     "mdp", "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+    # mots temporels trop génériques (présents dans noms de fichiers)
+    "mars", "janvier", "fevrier", "avril", "mai", "juin", "juillet",
+    "aout", "septembre", "octobre", "novembre", "decembre",
+    "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi", "dimanche",
+    "matin", "soir", "nuit", "midi", "fois", "jours", "jour", "fois",
+    # mots très communs dans les titres mais sans valeur thématique
+    "premiere", "premier", "deux", "trois", "quatre", "cinq", "six",
+    "sept", "huit", "neuf", "dix", "seul", "seule", "tout", "toute",
+    # techniques/temporels sans valeur thématique identitaire
+    "utc", "cet", "cest", "comme", "aussi", "alors", "encore", "depuis",
+    "avant", "après", "pendant", "quand", "chez", "très", "bien",
+    "même", "cette", "cela", "rien", "quelque", "chose",
 }
 
 

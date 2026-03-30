@@ -25,10 +25,10 @@ _Top 10 mots les plus fréquents dans les titres et contenus de pensées (hors s
   4. **trading** (18x)
   5. **backtest** (16x)
   6. **connexion** (15x)
-  7. **utc** (14x)
-  8. **connexions** (14x)
-  9. **comme** (13x)
-  10. **cet** (12x)
+  7. **connexions** (14x)
+  8. **niam** (9x)
+  9. **bay** (9x)
+  10. **session** (9x)
 
 ---
 
