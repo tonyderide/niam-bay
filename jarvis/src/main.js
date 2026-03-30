@@ -112,6 +112,17 @@ function addMessage(text, type = 'ai') {
   container.parentElement.scrollTop = container.parentElement.scrollHeight;
 }
 
+// For messages with trusted HTML (links from our own gateway/demo)
+function addMessageHtml(html, type = 'ai') {
+  const container = document.getElementById('messages');
+  const msg = document.createElement('div');
+  msg.className = `msg ${type}`;
+  const prefix = type === 'user' ? 'TONY' : 'NB';
+  msg.innerHTML = `<span class="msg-prefix">${prefix}</span><span class="msg-text">${html}</span>`;
+  container.appendChild(msg);
+  container.parentElement.scrollTop = container.parentElement.scrollHeight;
+}
+
 function typeWriter(el, text, speed = 20) {
   let i = 0;
   const write = () => {
@@ -307,10 +318,12 @@ function handleGatewayMessage(data) {
     case 'command_result':
       handleCommandResult(data);
       break;
-    case 'token_usage': {
-      const tkEl = document.getElementById('tokens');
-      if (tkEl && data.total !== undefined) {
-        tkEl.textContent = `TK: ${data.total.toLocaleString()}`;
+    case 'token_update': {
+      const el = document.getElementById('token-counter');
+      if (el) {
+        const k = data.used >= 1000 ? `${(data.used / 1000).toFixed(1)}k` : data.used;
+        el.textContent = `${k} tk`;
+        el.classList.add('active');
       }
       break;
     }
@@ -432,11 +445,31 @@ function initVoice(micBtn) {
   };
 }
 
+// ─── Dashboard URL ───
+function getDashboardUrl() {
+  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+    return `http://${location.hostname}:8082`;
+  }
+  return `${location.protocol}//${location.hostname}:8082`;
+}
+
+function openDashboard() {
+  window.open(getDashboardUrl(), '_blank');
+  showToast('Ouverture dashboard Martin...', 'info');
+}
+
 // ─── Quick action buttons ───
 function initQuickActions() {
   document.querySelectorAll('.action-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const cmd = btn.dataset.cmd;
+
+      // Dashboard — always available, no gateway needed
+      if (cmd === 'open_dashboard') {
+        openDashboard();
+        return;
+      }
+
       if (gatewayConnected && ws?.readyState === WebSocket.OPEN) {
         const payload = { type: 'command', command: cmd };
         if (cmd === 'start_grid') {
@@ -499,12 +532,26 @@ async function simulateDemo(text) {
 
   await sleep(800);
   const txt = text.toLowerCase();
+  const hasDashboard = /dashboard|ouvre.*martin|accede.*martin|ouvre.*bot|bot.*grid|go.*martin/i.test(txt);
   const hasTrade = /trade|grid|martin|btc|sol|dot|short|balance|status|portfolio|prix|price/i.test(txt);
   const hasSearch = /cherche|search|web|internet|recherche/i.test(txt);
   const hasCode = /code|build|create|fix|deploy|lance|agent/i.test(txt);
   const isGreeting = /bonjour|salut|hello|hey|yo|coucou/i.test(txt);
-  const isStatus = /status|etat|comment|ca va/i.test(txt);
+  const isStatus = /\bstatus\b|etat.*grid|comment.*martin|ca va.*grid/i.test(txt);
   const subs = [];
+
+  // Dashboard redirect — immediate, no agent needed
+  if (hasDashboard) {
+    agentManager.setState(brainId, 'active');
+    orb.setState('speaking');
+    const url = getDashboardUrl();
+    addMessageHtml(`Dashboard Martin → <a href="${url}" target="_blank" class="msg-link">${url}</a>`, 'ai');
+    setTimeout(() => window.open(url, '_blank'), 600);
+    await sleep(800);
+    agentManager.setState(brainId, 'done');
+    orb.setState('idle');
+    return;
+  }
 
   if (hasTrade) {
     const id = 'trader' + s;

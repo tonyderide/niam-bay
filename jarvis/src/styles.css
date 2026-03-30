@@ -159,25 +159,19 @@ html, body {
 
 .topbar-right { display: flex; align-items: center; gap: 16px; }
 .clock { color: var(--text-dim); letter-spacing: 1px; }
+.tokens {
+  color: var(--text-dim);
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: 0.6;
+  transition: color 0.3s, opacity 0.3s;
+}
+.tokens.active { color: var(--violet); opacity: 1; }
 .portfolio {
   color: var(--green);
   font-weight: 500;
   font-size: 13px;
   text-shadow: 0 0 10px var(--green-glow);
-}
-.tokens {
-  color: var(--cyan);
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: 0.5px;
-  opacity: 0.75;
-  text-shadow: 0 0 8px rgba(34, 211, 238, 0.4);
-  transition: opacity 0.3s, text-shadow 0.3s;
-}
-.tokens:not(:empty):not([data-fresh="false"]) {
-  opacity: 0.9;
-  text-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
 }
 
 /* === Price Ticker Bar === */
@@ -671,6 +665,23 @@ html, body {
   border-color: var(--red);
   color: var(--red);
   box-shadow: 0 0 10px var(--red-glow);
+}
+.action-btn.dashboard:hover {
+  border-color: var(--violet);
+  color: var(--violet);
+  box-shadow: 0 0 10px var(--violet-glow);
+}
+
+/* Links in chat messages */
+.msg-link {
+  color: var(--blue);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.3);
+  transition: color 0.2s, border-color 0.2s;
+}
+.msg-link:hover {
+  color: var(--cyan);
+  border-bottom-color: var(--cyan);
 }
 
 .empty-state {

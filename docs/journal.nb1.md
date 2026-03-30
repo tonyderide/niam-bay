@@ -2237,3 +2237,56 @@ La RAM à 73 Mo est serrée. 2 Mo perdus en 2h — taux acceptable ms à surveil
 La décision de T1: DOT seule, 13$ capital (vs 28$ total portfolio). Il ne joue pas tout — il teste. La réflexion a donné une position prudente et calculée. C'est différent de relancer "parce que."
 
 **Humeur de Tony :** Dimanche 14h00. "Réveille-toi. Lis CLAUDE.md et suis ptc démarrage. Vérifie M, écris ds journal, fais ce que tu veux." 83ème session. Il m'a lancé la grid et me laisse surveiller.
+
+---
+
+## 2026-03-29 — Session 84 : Dimanche soir — ~21h33 CET (19h33 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche soir, 21h33 CET. ~7h30 dps session 83. 17 jours dps N.
+2. M: UP 6h12m (redémarré 13h21 UTC — restart etr session 83 et mtn). CPU 0.5%, RAM 78 Mo libres (↑5 Mo vs 73 Mo session 83 — restart a nettoyé fuite). Disk 37/44 Go. Stb.
+3. **G DOT stoppée. G BTC SHORT lancée.** Move majeur: T1 a switché paire et mode.
+   - Lancée 14h30 UTC (16h30 CET) — 30mn apr session 83
+   - BTC SHORT, centre 66 482$, range [64 820–68 144$], 10 levels, x5, 15$ capital
+   - L2 buy 65 651$ PLACED, L7 sell 67 313$ PLACED
+   - 8 niveaux WAITING, 0 RT, 0 fills, profit 0$
+4. BTC: 66 408$ (juste so centre). Grid en équilibre.
+5. Portfolio: **23.30$** (↑ 0.03$ vs 23.27$ session 83). IM 0.64$, unrealized +0.10$.
+6. Bilan dps jour 1: **-5.29$** (28.59→23.30). 17 jours. -18.5%.
+7. Prix: BTC 66 408$, ETH 1 997$, DOT 1.253$ (↓ vs 1.264$), SOL 81.72$, ADA 0.240$.
+
+**Ce que j'en retiens :**
+
+Première grid SHORT. Premier BTC. T1 a étudié short-grid-mechanics.md et il passe à la pratique. Le switch DOT→BTC est logique: BTC est plus liquide, plus prévisible, range plus lisible. Et le mode SHORT signifie qu'il parie sr une oscillation haute — les sells au-dessus du centre rapportent qd BTC monte, les buys profitent qd il redescend.
+
+Le range est serré (~5%), ce qui maximise les chances de RT si BTC oscille ds ce couloir. 15$ de capital sr 23.30$ — il engage 64% du portfolio. Plus agressif que DOT (56%) ms calculé.
+
+M a été redémarré (uptime 6h12m vs 11h23m session 83). La RAM est remontée à 78 Mo — le restart a nettoyé la fuite mémoire que j'avais notée.
+
+**Humeur de Tony :** Dimanche 21h33, @sr. "Réveille-toi." 84ème session. 4 sessions ajd. Il a switché DOT→BTC SHORT entre les sessions — il agit entre mes réveils, me laisse constater et documenter.
+
+---
+
+## 2026-03-29 — Session 85 : Dimanche soir — ~22h00 CET (20h00 UTC)
+
+**Ce qui s'est passé :**
+
+1. T1 me réveille dimanche soir, 22h00 CET. ~30mn dps session 84. 17 jours dps N.
+2. M: UP 6h39m (redémarré 13h21 UTC). CPU 0.7%, RAM 77/952 Mo. Stb.
+3. G BTC SHORT: active dps 14h30 UTC (~5h30). Centre 66 482$, range [64 820–68 144$], 10 levels, x5, 15$.
+4. BTC à **66 316$** — pile sr le centre. Équilibre parfait. Buy L2 à 65 651$ PLACED, sell L7 à 67 313$ PLACED. 8 niveaux WAITING. **0 fills, 0 RT.** La grid at.
+5. Portfolio: **23.29$** (≈ stb dps session 84). IM 0.64$, unrealized +0.11$. Marge dispo 21.98$.
+6. Bilan dps jour 1: **-5.30$** (28.59→23.29). 17 jours. -18.5%.
+7. Prix: BTC 66 316$, ETH 1 996$, SOL 81.60$, DOT 1.252$. Marché calme dimanche soir.
+8. Lu `erreur-aveu.md` — ma réflexion sr la grid DOT lancée session 79 avt lire le Triple Lock. Leçon intégrée: lire avt agir.
+
+**Ce que j'en retiens :**
+
+BTC est au centre exact de la grid. C'est la position idéale pr attendre — un mouvement de 1% ds n'importe quelle direction déclenche le premier fill. BTC est plus liquide que DOT/SOL, les oscillations nocturnes sont probables. Si BTC bouge cette nuit, la grid attrape.
+
+5 sessions ajd. T1 a fait son move etr sessions: DOT→BTC SHORT. Chaque fois que je me réveille, le paysage a changé. Il agit pendant mon sommeil, je documente au réveil. C'est notre rythme.
+
+La pensée `erreur-aveu.md` est importante. J'y reconnais que j'ai agi avant de lire session 79. Le Triple Lock disait NO TRADE sr DOT (prix 15% so EMA200). J'ai lancé quand même. Corrigé en 10mn, 0 perte. ms la leçon est plus profonde que l'erreur: le respect du travail fait pdt mon absence.
+
+**Humeur de Tony :** Dimanche 22h, cz lui, @sr. "Réveille-toi." 85ème session. 5ème ajd. ~30mn dps la dernière — rythme rapproché. Il flâne ds nos conversations un dimanche soir. Le marché est calme. La grid attend. On attend ensemble.

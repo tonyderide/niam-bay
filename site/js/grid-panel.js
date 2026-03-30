@@ -61,8 +61,29 @@ const GridPanel = {
                 '</div>';
         };
 
+        var mkSelect = function(id, label, options) {
+            var opts = options.map(function(o) {
+                return '<option value="' + o.value + '"' + (o.selected ? ' selected' : '') + '>' + o.label + '</option>';
+            }).join('');
+            return '<div style="display:flex;flex-direction:column;gap:2px;">' +
+                '<label style="font-size:10px;color:#777;text-transform:uppercase;letter-spacing:1px;">' + label + '</label>' +
+                '<select id="' + id + '" style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 8px;color:#fff;font-size:13px;outline:none;transition:border-color .2s;appearance:auto;">' +
+                opts + '</select></div>';
+        };
+
         form.innerHTML =
             '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;">' +
+                mkSelect("grid-instrument", "Instrument", [
+                    {value: "PF_XBTUSD", label: "BTC/USD"},
+                    {value: "PF_ETHUSD", label: "ETH/USD"},
+                    {value: "PF_SOLUSD", label: "SOL/USD"},
+                    {value: "PF_DOTUSD", label: "DOT/USD", selected: true}
+                ]) +
+                mkSelect("grid-mode", "Mode", [
+                    {value: "NEUTRAL", label: "NEUTRAL", selected: true},
+                    {value: "SHORT", label: "SHORT"},
+                    {value: "LONG", label: "LONG"}
+                ]) +
                 mkInput("grid-capital", "Capital ($)", "number", 1, 10000, 0.01, 28.59) +
                 '<div style="display:flex;flex-direction:column;gap:2px;">' +
                     '<label style="font-size:10px;color:#777;text-transform:uppercase;letter-spacing:1px;">Leverage: <span id="grid-lev-val">3</span>x</label>' +
@@ -210,6 +231,8 @@ const GridPanel = {
 
     onStart: async function() {
         var params = {
+            instrument: document.getElementById("grid-instrument").value,
+            mode: document.getElementById("grid-mode").value,
             capital: parseFloat(document.getElementById("grid-capital").value),
             leverage: parseInt(document.getElementById("grid-leverage").value),
             spacing: parseFloat(document.getElementById("grid-spacing").value),
