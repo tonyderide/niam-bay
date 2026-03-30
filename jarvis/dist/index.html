@@ -4,13 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>NIAM-BAY // JARVIS</title>
-  <link rel="manifest" href="./assets/manifest-DGuqQhTg.json">
+  <link rel="manifest" href="./assets/manifest-e2RtvPsk.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#0a0a0f">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <script type="module" crossorigin src="./assets/index-Do3u34wq.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-BkNk-3fC.css">
+  <script type="module" crossorigin src="./assets/index-Ddz0Y_BM.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-D3Nhbgay.css">
 </head>
 <body>
   <!-- Boot sequence -->
@@ -48,6 +48,14 @@
       <div class="topbar-right">
         <span class="clock" id="clock">00:00:00</span>
         <span class="tokens" id="token-counter" title="Tokens utilisés cette session">0 tk</span>
+        <button id="voice-btn" class="voice-btn" title="Toggle synthèse vocale">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          </svg>
+          VOICE
+        </button>
         <span class="portfolio" id="portfolio">$--</span>
       </div>
     </header>
@@ -159,6 +167,6 @@
     <!-- Connection toast -->
     <div id="toast" class="toast hidden"></div>
   </div>
-
+
 </body>
 </html>

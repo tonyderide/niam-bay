@@ -45,6 +45,56 @@ function bootSequence() {
   });
 }
 
+// ─── TTS (Text-to-Speech) ───
+let voiceEnabled = localStorage.getItem('nb_voice') === 'true';
+let ttsVoice = null;
+
+function initVoiceToggle() {
+  const btn = document.getElementById('voice-btn');
+  if (!btn) return;
+
+  // Apply persisted state
+  if (voiceEnabled) btn.classList.add('active');
+
+  btn.addEventListener('click', () => {
+    voiceEnabled = !voiceEnabled;
+    localStorage.setItem('nb_voice', voiceEnabled);
+    btn.classList.toggle('active', voiceEnabled);
+    showToast(voiceEnabled ? 'Voix activée' : 'Voix désactivée', 'info', 1500);
+    // Cancel any ongoing speech when toggling off
+    if (!voiceEnabled) window.speechSynthesis?.cancel();
+  });
+
+  // Pre-load voices (async in some browsers)
+  function loadVoice() {
+    const voices = window.speechSynthesis?.getVoices() || [];
+    // Prefer French, fallback to English
+    ttsVoice =
+      voices.find(v => v.lang.startsWith('fr')) ||
+      voices.find(v => v.lang.startsWith('en')) ||
+      null;
+  }
+  loadVoice();
+  window.speechSynthesis?.addEventListener('voiceschanged', loadVoice);
+}
+
+function speak(text) {
+  if (!voiceEnabled) return;
+  if (!window.speechSynthesis) return;
+
+  // Strip markdown-style symbols for cleaner speech
+  const clean = text.replace(/[*_`#~]/g, '').trim();
+  if (!clean) return;
+
+  window.speechSynthesis.cancel(); // stop any current utterance
+  const utt = new SpeechSynthesisUtterance(clean);
+  if (ttsVoice) utt.voice = ttsVoice;
+  utt.lang = ttsVoice?.lang || 'fr-FR';
+  utt.rate = 1.1;
+  utt.pitch = 0.9;
+  window.speechSynthesis.speak(utt);
+}
+
 // ─── Clock ───
 function startClock() {
   const el = document.getElementById('clock');
@@ -105,6 +155,7 @@ function addMessage(text, type = 'ai') {
   if (type === 'ai') {
     // Typewriter effect for AI messages
     typeWriter(textEl, text, 15);
+    speak(text);
   } else {
     textEl.textContent = text;
   }
@@ -748,6 +799,7 @@ async function main() {
   agentManager = new AgentManager();
 
   startClock();
+  initVoiceToggle();
   initTicker();
   initNav();
   initInput();
