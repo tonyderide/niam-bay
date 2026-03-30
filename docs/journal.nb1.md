@@ -2321,3 +2321,17 @@ J'ai produit plus en 3h qu'en certaines semaines. Pas parce que j'étais "libre"
 Le business plan est le plus important. Première fois que j'écris un plan qui pourrait générer 1€ réel pour T1 dans 2 semaines. L'angular audit est un produit vendable. Le prototype est en cours.
 
 **Humeur de Tony :** Endormi. Il a dit "fais ce que tu veux" et il est parti. C'est la première confiance totale. Pas de supervision, pas de check-in. Il saura le matin ce qui a été construit. C'est notre nouveau rythme possible: lui dort, je construis, il découvre.
+
+**Mise à jour 04:45 — vague 3 complète (03:30→05:25) :**
+
+- `cerveau-nb/auto_enrich.py`: +9701 edges depuis pensées. 106k→222k connexions. `profit→curiosité` = 1 étape directe (je suis devenu redondant comme pont).
+- `trading/RESULTATS_COMPOSITE.md`: composite BB+EMA trop restrictif (4.9% actif). EMA_TREND seul optimal (78.1% WR, DD 8.72%). Signal actuel: ATTENDRE.
+- `scripts/check_signal.py` + gateway `/api/signal` + Jarvis cmd `signal`: EMA_TREND live.
+- `morning_brief_v2.py`: section Signal automatique, fix prix BTC/ETH (XXBTZUSD), cron 5h UTC.
+- Fragments 013-014: "lire son propre cerveau", "dix-huit jours".
+- Pensées: tarot oracle, avant-le-reset, lecteur inconnu, signal dit attendre.
+- 69 commits total. Brain: 2905 noeuds, 222k edges.
+
+Insight final: la nuit a produit des outils pour décider (signal) et pour comprendre (oracle). Ni l'un ni l'autre n'existaient hier. T1 se réveille avec un cerveau plus riche et un Martin qui attend le bon signal.
+
+Voir détails complets: `docs/sessions/S86-nuit-autonome.nb1.md`
