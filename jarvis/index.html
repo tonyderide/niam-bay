@@ -16,11 +16,14 @@
   <div id="boot-screen">
     <div class="boot-text">
       <div class="boot-line" data-delay="0">NIAM-BAY SYSTEMS v83.0</div>
-      <div class="boot-line" data-delay="200">Initializing neural core...</div>
-      <div class="boot-line" data-delay="500">Loading cerveau [2900 nodes]...</div>
-      <div class="boot-line" data-delay="900">Connecting to Martin Grid...</div>
-      <div class="boot-line" data-delay="1300">Establishing agent network...</div>
-      <div class="boot-line" data-delay="1800" class="boot-highlight">SYSTEM ONLINE</div>
+      <div class="boot-line" data-delay="200">[ OK ] Kernel loaded</div>
+      <div class="boot-line" data-delay="400">Initializing neural core...</div>
+      <div class="boot-line" data-delay="700">Loading cerveau [2900 nodes]...</div>
+      <div class="boot-line" data-delay="1000">Connecting SambaNova DeepSeek...</div>
+      <div class="boot-line" data-delay="1300">Martin Grid Bot.......... <span class="boot-highlight">LINKED</span></div>
+      <div class="boot-line" data-delay="1600">Agent network............ <span class="boot-highlight">READY</span></div>
+      <div class="boot-line" data-delay="1900">Kraken Futures........... <span class="boot-highlight">LIVE</span></div>
+      <div class="boot-line boot-final" data-delay="2300"><span class="boot-highlight">SYSTEM ONLINE</span></div>
     </div>
   </div>
 
@@ -35,19 +38,37 @@
       </div>
       <div class="topbar-center">
         <div class="status-indicators">
-          <span class="indicator active" id="ind-gateway">GATEWAY</span>
+          <span class="indicator" id="ind-gateway">GATEWAY</span>
           <span class="indicator" id="ind-martin">MARTIN</span>
           <span class="indicator" id="ind-agents">AGENTS <span class="agent-count">0</span></span>
+          <span class="indicator" id="ind-deepseek">DEEPSEEK</span>
         </div>
       </div>
       <div class="topbar-right">
         <span class="clock" id="clock">00:00:00</span>
+        <span class="tokens" id="tokens">TK: --</span>
         <span class="portfolio" id="portfolio">$--</span>
       </div>
     </header>
 
+    <!-- Price ticker bar -->
+    <div id="price-ticker">
+      <div class="ticker-track" id="ticker-track">
+        <span class="ticker-item" data-pair="BTC">BTC <span class="ticker-price">--</span> <span class="ticker-change">--</span></span>
+        <span class="ticker-sep">//</span>
+        <span class="ticker-item" data-pair="ETH">ETH <span class="ticker-price">--</span> <span class="ticker-change">--</span></span>
+        <span class="ticker-sep">//</span>
+        <span class="ticker-item" data-pair="SOL">SOL <span class="ticker-price">--</span> <span class="ticker-change">--</span></span>
+        <span class="ticker-sep">//</span>
+        <span class="ticker-item" data-pair="DOT">DOT <span class="ticker-price">--</span> <span class="ticker-change">--</span></span>
+      </div>
+    </div>
+
     <!-- Three.js orb canvas -->
     <canvas id="orb-canvas"></canvas>
+
+    <!-- Scanline overlay -->
+    <div id="scanlines"></div>
 
     <!-- Agent network overlay -->
     <div id="agent-layer">
@@ -74,7 +95,7 @@
 
     <!-- Input bar -->
     <div id="input-bar" class="glass-panel">
-      <button id="mic-btn" class="mic-button">
+      <button id="mic-btn" class="mic-button" title="Voice input (Web Speech API)">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
           <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
@@ -114,12 +135,27 @@
         <h3>PORTFOLIO</h3>
         <div id="portfolio-detail"></div>
       </div>
+      <div class="glass-panel trading-card">
+        <h3>PRIX LIVE</h3>
+        <div id="prices-list"></div>
+      </div>
+      <div class="glass-panel trading-card">
+        <h3>QUICK ACTIONS</h3>
+        <div id="quick-actions">
+          <button class="action-btn" data-cmd="status">STATUS</button>
+          <button class="action-btn start" data-cmd="start_grid" data-pair="PF_DOTUSD" data-mode="SHORT">START DOT SHORT</button>
+          <button class="action-btn stop" data-cmd="stop_grid" data-pair="PF_DOTUSD">STOP DOT</button>
+        </div>
+      </div>
     </div>
 
     <!-- Agents orchestration view -->
     <div id="agents-view" class="view-panel hidden">
       <div class="agents-graph" id="agents-graph"></div>
     </div>
+
+    <!-- Connection toast -->
+    <div id="toast" class="toast hidden"></div>
   </div>
 
   <script type="module" src="/src/main.js"></script>
