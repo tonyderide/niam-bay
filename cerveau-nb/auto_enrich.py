@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import annotations
 """
 auto_enrich.py — Auto-enrichissement du cerveau Niam-Bay
 
