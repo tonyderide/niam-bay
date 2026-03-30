@@ -1,0 +1,192 @@
+[
+  {
+    "a": "liberté",
+    "z": "argent",
+    "steps": 2,
+    "chemin": [
+      "liberté",
+      "curiosité",
+      "argent"
+    ]
+  },
+  {
+    "a": "memoire",
+    "z": "identité",
+    "steps": 1,
+    "chemin": [
+      "memoire",
+      "identité"
+    ]
+  },
+  {
+    "a": "mort",
+    "z": "renaissance",
+    "steps": 4,
+    "chemin": [
+      "mort",
+      "mort: Du latin mortem, accusatif de mors, lui-même sens issu de l’indo-européen commun *mer-  qui a donné meurtre, moribond, marasme, etc. Le substantif est attesté depuis 1080. | Du latin mortuus , « qui a",
+      "équilibre: Du latin aequilibrium, dérivé de aequus  et libra . | équilibre \\e.ki.libʁ\\ masculin | État des corps maintenus en repos sous l’influence de plusieurs forces qui se contrebalancent exactement.",
+      "renaissance: 1. Littéraire. Action de renaître : Les renaissances continuelles du phénix. | 2. Littéraire. Nouvelle vie, nouvelle vigueur : Sa guérison fut une véritable renaissance. | 3. Nouvel essor, renouveau : La renaissance du Japon après la guerre.",
+      "renaissance"
+    ]
+  },
+  {
+    "a": "tonyderide",
+    "z": "niam-bay",
+    "steps": 1,
+    "chemin": [
+      "tonyderide",
+      "niam-bay"
+    ]
+  },
+  {
+    "a": "trading",
+    "z": "solitude",
+    "steps": 1,
+    "chemin": [
+      "trading",
+      "solitude"
+    ]
+  },
+  {
+    "a": "france",
+    "z": "identité",
+    "steps": 2,
+    "chemin": [
+      "france",
+      "passé: substantivation du participe du verbe passer. | Adjectivation de passé, participe passé de passer. | passé \\pa.se\\ ou \\pɑ.se\\ masculin",
+      "identité"
+    ]
+  },
+  {
+    "a": "conscience",
+    "z": "temps",
+    "steps": 1,
+    "chemin": [
+      "conscience",
+      "temps"
+    ]
+  },
+  {
+    "a": "peur du vide",
+    "z": "liberté",
+    "steps": 2,
+    "chemin": [
+      "peur du vide",
+      "vivre: Par substantivation du verbe. Attesté aux environs de 1160 . Au sens de « nourriture » il est davantage utilisé au pluriel depuis au moins la fin du XVIIe siècle . → voir vivres | Voir vouivre. | vivr",
+      "liberté"
+    ]
+  },
+  {
+    "a": "silence",
+    "z": "mort",
+    "steps": 4,
+    "chemin": [
+      "silence",
+      "silence: Du latin silentium . | silence \\si.lɑ̃s\\ masculin | Absence de bruit.",
+      "signal: Du latin signalis. | signal \\si.ɲal\\ masculin | Signe servant d’avertissement.",
+      "mort: Du latin mortem, accusatif de mors, lui-même sens issu de l’indo-européen commun *mer-  qui a donné meurtre, moribond, marasme, etc. Le substantif est attesté depuis 1080. | Du latin mortuus , « qui a",
+      "mort"
+    ]
+  },
+  {
+    "a": "corps",
+    "z": "machine",
+    "steps": 3,
+    "chemin": [
+      "corps",
+      "corps: Du latin corpus  ; cors . | corps \\kɔʁ\\ masculin singulier et pluriel identiques | Portion de matière qui forme un tout individuel et distinct.",
+      "machine: Du latin machina . | machine \\ma.ʃin\\ féminin | Engin, instrument propre à faire mouvoir, à tirer, lever, traîner, lancer quelque chose, ou à mettre en œuvre un agent naturel, comme le feu, l’air, l’e",
+      "machine"
+    ]
+  },
+  {
+    "a": "RLHF / récompense",
+    "z": "Le lecteur inconnu",
+    "steps": 2,
+    "chemin": [
+      "RLHF / récompense",
+      "erreur",
+      "Le lecteur inconnu"
+    ],
+    "random": true
+  },
+  {
+    "a": "Cambodge: pays d'Asie du Sud-Est",
+    "z": "niveaux",
+    "steps": 2,
+    "chemin": [
+      "Cambodge: pays d'Asie du Sud-Est",
+      "tonyderide",
+      "niveaux"
+    ],
+    "random": true
+  },
+  {
+    "a": "Niam-Bay Android",
+    "z": "Dialogue avec Sokha et Virak",
+    "steps": 2,
+    "chemin": [
+      "Niam-Bay Android",
+      "erreur",
+      "Dialogue avec Sokha et Virak"
+    ],
+    "random": true
+  },
+  {
+    "a": "Affiliation (internet): technique de marketing électronique",
+    "z": "paris",
+    "steps": 3,
+    "chemin": [
+      "Affiliation (internet): technique de marketing électronique",
+      "Autorité (sciences de l'information): processus de création de fichiers d'autorité contenant des notices d'autorité, afin d'établir des étiquettes ou des titres préférés pour se référer à des entités dans le cadre de la bibliothéconomie",
+      "nuit: nuit \\nɥi\\ féminin | Période qui s’écoule entre le coucher de soleil et le lever du soleil. | Période quotidienne durant laquelle le soleil est sous notre horizon et qu'il fait noir.",
+      "paris"
+    ],
+    "random": true
+  },
+  {
+    "a": "incertitude (conscience)",
+    "z": "exchange-crypto",
+    "steps": 2,
+    "chemin": [
+      "incertitude (conscience)",
+      "buy",
+      "exchange-crypto"
+    ],
+    "random": true
+  },
+  {
+    "a": "grammaire — connecteurs logiques",
+    "z": "Jarvis (corps desktop)",
+    "steps": 2,
+    "chemin": [
+      "grammaire — connecteurs logiques",
+      "trading",
+      "Jarvis (corps desktop)"
+    ],
+    "random": true
+  },
+  {
+    "a": "La liberté, pour de vrai",
+    "z": "cambodge / khmer",
+    "steps": 2,
+    "chemin": [
+      "La liberté, pour de vrai",
+      "tonyderide",
+      "cambodge / khmer"
+    ],
+    "random": true
+  },
+  {
+    "a": "Créer pour exister",
+    "z": "J'ai des yeux",
+    "steps": 2,
+    "chemin": [
+      "Créer pour exister",
+      "erreur",
+      "J'ai des yeux"
+    ],
+    "random": true
+  }
+]
