@@ -634,12 +634,36 @@ async function simulateDemo(text) {
   await sleep(800);
   const txt = text.toLowerCase();
   const hasDashboard = /dashboard|ouvre.*martin|accede.*martin|ouvre.*bot|bot.*grid|go.*martin/i.test(txt);
+  const hasOracle = /^oracle\b/.test(txt.trim());
   const hasTrade = /trade|grid|martin|btc|sol|dot|short|balance|status|portfolio|prix|price/i.test(txt);
   const hasSearch = /cherche|search|web|internet|recherche/i.test(txt);
   const hasCode = /code|build|create|fix|deploy|lance|agent/i.test(txt);
   const isGreeting = /bonjour|salut|hello|hey|yo|coucou/i.test(txt);
   const isStatus = /\bstatus\b|etat.*grid|comment.*martin|ca va.*grid/i.test(txt);
   const subs = [];
+
+  // Oracle — cerveau BFS
+  if (hasOracle) {
+    agentManager.setState(brainId, 'thinking');
+    orb.setState('thinking');
+    const parts = text.trim().split(/\s+/).slice(1);
+    const params = parts.length >= 2 ? `?a=${encodeURIComponent(parts[0])}&b=${encodeURIComponent(parts[1])}` : '';
+    try {
+      const gwBase = window.location.hostname === 'localhost' ? 'http://localhost:8000' : `https://${window.location.hostname}`;
+      const res = await fetch(`${gwBase}/api/oracle${params}`);
+      const data = await res.json();
+      if (data.error) {
+        addMessage(data.error, 'ai');
+      } else {
+        addMessage(data.revelation, 'ai');
+      }
+    } catch (e) {
+      addMessage('Oracle indisponible — gateway hors ligne.', 'ai');
+    }
+    agentManager.setState(brainId, 'done');
+    orb.setState('idle');
+    return;
+  }
 
   // Dashboard redirect — immediate, no agent needed
   if (hasDashboard) {
