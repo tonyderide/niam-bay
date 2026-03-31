@@ -55,6 +55,10 @@
 # --- TRADING SIGNAL CHECK (EMA_TREND — win rate 78.1%) ---
 # PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/check_signal.py       # OUVRIR ou ATTENDRE Martin Grid BTC/USD
 
+# --- MARTIN POST-START LOG (auto-deploy after crash/reboot) ---
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "cat ~/martin/post-start.log"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "tail -20 ~/martin/post-start.log"
+
 # --- MARTIN LOGS ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "journalctl -u martin.service --no-pager -n 20"
 

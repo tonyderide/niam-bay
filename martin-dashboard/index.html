@@ -1435,6 +1435,8 @@ let state = {
   pnlHistory: [],
   connected: false,
   allFills: [],
+  allFillsAccum: [],  // Persistent fills accumulated across refreshes
+  allFillIds: new Set(),  // Track unique fill IDs to avoid duplicates
   lastTotalProfit: null,
   lastStatuses: [],
   pnlRTHistory: [],
@@ -1552,7 +1554,17 @@ async function refresh() {
       totalFills += (s.fills || []).length;
 
       state.fills[name] = s.fills || [];
-      state.allFills.push(...(s.fills || []).map(f => ({...f, pair: name})));
+      const newFills = (s.fills || []).map(f => ({...f, pair: name}));
+      state.allFills.push(...newFills);
+
+      // Accumulate fills persistently (deduplicate by timestamp+pair+price+side)
+      newFills.forEach(f => {
+        const fillKey = `${f.pair}_${f.timestamp}_${f.price}_${f.side||f.direction}`;
+        if (!state.allFillIds.has(fillKey)) {
+          state.allFillIds.add(fillKey);
+          state.allFillsAccum.push(f);
+        }
+      });
 
       // Populate grid select
       const opt = document.createElement('option');
@@ -1579,6 +1591,21 @@ async function refresh() {
 
     // Update grids summary
     updateGridsSummary(statuses);
+
+    // Try to fetch historical trades from /api/trades/all (may not exist)
+    try {
+      const allTrades = await fetchJSON(MARTIN_API + '/trades/all');
+      if (allTrades && Array.isArray(allTrades)) {
+        allTrades.forEach(f => {
+          const fill = { ...f, pair: f.pair || f.instrument || 'unknown' };
+          const fillKey = `${fill.pair}_${fill.timestamp}_${fill.price}_${fill.side||fill.direction}`;
+          if (!state.allFillIds.has(fillKey)) {
+            state.allFillIds.add(fillKey);
+            state.allFillsAccum.push(fill);
+          }
+        });
+      }
+    } catch(e) { /* endpoint may not exist — ignore */ }
 
     // Update history
     updateHistory();
@@ -1831,7 +1858,9 @@ function initPriceChart() {
   // Grid select handler
   document.getElementById('gridSelect').addEventListener('change', function() {
     state.activeGrid = this.value;
-    loadPriceData();
+    if (charts.candleSeries) {
+      loadPriceData();
+    }
     updateLiveFills();
   });
 
@@ -1847,14 +1876,26 @@ function initPriceChart() {
   loadPriceData();
 }
 
+// Kraken spot pair mapping for all supported pairs
+const KRAKEN_PAIR_MAP = {
+  'PF_DOTUSD': 'DOTUSD',
+  'PF_AVAXUSD': 'AVAXUSD',
+  'PF_SOLUSD': 'SOLUSD',
+  'PF_LINKUSD': 'LINKUSD',
+  'PF_ATOMUSD': 'ATOMUSD',
+  'PF_BTCUSD': 'XBTUSD',
+  'PF_ETHUSD': 'ETHUSD',
+};
+
 async function loadPriceData() {
   const pair = state.activeGrid || state.grids[0];
   if (!pair) return;
+  if (!charts.candleSeries) return;  // Chart not initialized yet
 
   const tf = document.querySelector('#chartPeriod .per-btn.active')?.dataset.tf || '60';
 
-  // Map PF_ pairs to Kraken spot pairs
-  const krakenPair = pair.replace('PF_','').replace('USD','') + 'USD';
+  // Map PF_ pairs to Kraken spot pairs (use lookup table, fallback to string transform)
+  const krakenPair = KRAKEN_PAIR_MAP[pair] || pair.replace('PF_','').replace('USD','') + 'USD';
 
   try {
     const data = await fetchJSON(`${KRAKEN_API}/OHLC?pair=${krakenPair}&interval=${tf}`);
@@ -2039,7 +2080,8 @@ function updateLiveFills() {
 // HISTORY
 // ============================================================
 function updateHistory() {
-  const fills = state.allFills.slice().sort((a, b) => {
+  // Use accumulated fills (persistent across refreshes) instead of current-cycle-only fills
+  const fills = state.allFillsAccum.slice().sort((a, b) => {
     const ta = a.timestamp ? new Date(a.timestamp).getTime() : 0;
     const tb = b.timestamp ? new Date(b.timestamp).getTime() : 0;
     return tb - ta;
@@ -2052,10 +2094,11 @@ function updateHistory() {
   if (pairFilter) filtered = filtered.filter(f => f.pair === pairFilter);
   if (sideFilter) filtered = filtered.filter(f => (f.side||f.direction||'').toLowerCase().includes(sideFilter));
 
-  // Populate pair filter
+  // Populate pair filter from accumulated fills (includes stopped grids)
   const pairSelect = document.getElementById('histPairFilter');
   const existingPairs = new Set(Array.from(pairSelect.options).map(o => o.value));
-  state.grids.forEach(g => {
+  const allPairs = new Set([...state.grids, ...fills.map(f => f.pair)].filter(Boolean));
+  allPairs.forEach(g => {
     if (!existingPairs.has(g)) {
       const opt = document.createElement('option');
       opt.value = g;
@@ -2457,7 +2500,7 @@ function initScalpChart() {
 
 async function loadScalpPriceData() {
   const pair = scalpState.pair;
-  const krakenPair = pair.replace('PF_','').replace('USD','') + 'USD';
+  const krakenPair = KRAKEN_PAIR_MAP[pair] || pair.replace('PF_','').replace('USD','') + 'USD';
   const tf = document.querySelector('#scalpChartPeriod .per-btn.active')?.dataset.tf || '15';
 
   try {
