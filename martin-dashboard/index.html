@@ -1423,7 +1423,7 @@ input[type=range]::-webkit-slider-thumb {
 // Config
 const MARTIN_API = '/api';  // proxied by server.py
 const KRAKEN_API = 'https://api.kraken.com/0/public';
-const CRYPTOLENS_API = 'https://niambay.duckdns.org/api';
+const CRYPTOLENS_API = '/crypto-api';  // proxied by nginx, avoids CORS
 
 // State
 let state = {
@@ -1874,6 +1874,7 @@ async function loadPriceData() {
     }));
 
     charts.candleSeries.setData(candles);
+    charts.price.timeScale().scrollToRealTime();
 
     // Calculate indicators
     const closes = candles.map(c => c.close);
@@ -2477,6 +2478,7 @@ async function loadScalpPriceData() {
     }));
 
     scalpCharts.candles.setData(candles);
+    scalpCharts.chart.timeScale().scrollToRealTime();
 
     // Calculate BB (20, 2)
     const closes = candles.map(c => c.close);
@@ -3146,7 +3148,13 @@ async function scanFromVM() {
   cards.innerHTML = '';
 
   try {
-    const results = await fetchJSON(MARTIN_API + '/signal/scan');
+    const results = await (async () => {
+      try {
+        const resp = await fetch(MARTIN_API + '/signal/scan', { signal: AbortSignal.timeout(30000) });
+        if (!resp.ok) throw new Error(resp.status);
+        return await resp.json();
+      } catch (e) { console.warn('Scan timeout/error:', e.message); return null; }
+    })();
     if (!results || results.length === 0) {
       tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--loss);">No results from VM</td></tr>';
       return;
