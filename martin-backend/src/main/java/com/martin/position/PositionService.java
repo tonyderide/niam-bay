@@ -1,14 +1,17 @@
 package com.martin.position;
 
 import com.martin.kraken.client.KrakenFuturesRestClient;
+import com.martin.kraken.dto.KrakenOpenOrdersResponse;
 import com.martin.kraken.dto.KrakenOrderRequest;
 import com.martin.kraken.dto.KrakenOrderResponse;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +23,83 @@ public class PositionService {
 
     @Autowired
     private KrakenFuturesRestClient krakenClient;
+
+    @Autowired
+    private PositionRepository positionRepository;
+
+    /**
+     * On startup, recover all active positions from the database.
+     * Verify they still have open orders on Kraken and log any mismatches.
+     */
+    @PostConstruct
+    public void recoverPositions() {
+        log.info("Recovering active positions from database...");
+        List<PositionState> activePositions = positionRepository.findByActiveTrue();
+
+        if (activePositions.isEmpty()) {
+            log.info("No active positions to recover");
+            return;
+        }
+
+        for (PositionState pos : activePositions) {
+            positions.put(pos.getInstrument(), pos);
+            log.info("Recovered position: {} {} {} size={} entry={}",
+                    pos.getDirection(), pos.getInstrument(), pos.getStatus(),
+                    pos.getSize(), pos.getEntryPrice());
+        }
+
+        // Verify against Kraken open orders
+        try {
+            // Check both live and demo
+            verifyAgainstKraken(false);
+            verifyAgainstKraken(true);
+        } catch (Exception e) {
+            log.warn("Could not verify positions against Kraken: {}", e.getMessage());
+        }
+
+        log.info("Position recovery complete: {} positions loaded", activePositions.size());
+    }
+
+    private void verifyAgainstKraken(boolean demo) {
+        try {
+            KrakenOpenOrdersResponse openOrders = krakenClient.getOpenOrders(demo).block();
+            if (openOrders == null || openOrders.getOpenOrders() == null) return;
+
+            for (PositionState pos : positions.values()) {
+                if (pos.isDemo() != demo) continue;
+                if (!pos.isActive()) continue;
+
+                // Check if SL order still exists
+                boolean slFound = false;
+                boolean tpFound = false;
+                if (pos.getSlOrderId() != null) {
+                    slFound = openOrders.getOpenOrders().stream()
+                            .anyMatch(o -> pos.getSlOrderId().equals(o.getOrderId()));
+                }
+                if (pos.getTpOrderId() != null) {
+                    tpFound = openOrders.getOpenOrders().stream()
+                            .anyMatch(o -> pos.getTpOrderId().equals(o.getOrderId()));
+                }
+
+                if (!slFound && pos.getSlOrderId() != null) {
+                    log.warn("MISMATCH: SL order {} for {} not found on Kraken (may have been filled)",
+                            pos.getSlOrderId(), pos.getInstrument());
+                }
+                if (!tpFound && pos.getTpOrderId() != null) {
+                    log.warn("MISMATCH: TP order {} for {} not found on Kraken (may have been filled)",
+                            pos.getTpOrderId(), pos.getInstrument());
+                }
+
+                // If neither SL nor TP found, position may have been closed
+                if (!slFound && !tpFound && pos.getSlOrderId() != null && pos.getTpOrderId() != null) {
+                    log.warn("MISMATCH: Both SL and TP orders missing for {} — position may have been closed externally",
+                            pos.getInstrument());
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Kraken order verification failed for demo={}: {}", demo, e.getMessage());
+        }
+    }
 
     public PositionState openShort(String instrument, double capital, int leverage,
                                    double slPct, double tpPct, boolean demo) {
@@ -101,6 +181,9 @@ public class PositionService {
         state.setStartedAt(Instant.now());
         state.setDemo(String.valueOf(demo));
 
+        // Persist to database
+        positionRepository.save(state);
+
         positions.put(instrument, state);
         return state;
     }
@@ -134,6 +217,10 @@ public class PositionService {
         state.setActive(false);
         state.setStatus("CLOSED");
         state.setRealizedPnl(pnl);
+
+        // Persist to database
+        positionRepository.save(state);
+
         log.info("Closed {} PnL={}", instrument, pnl);
         return state;
     }

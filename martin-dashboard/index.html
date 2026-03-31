@@ -506,6 +506,32 @@ input[type=range]::-webkit-slider-thumb {
   .heatmap-labels { grid-template-columns:repeat(12,1fr); }
 }
 
+/* ---- Position cards ---- */
+.pos-card {
+  background:var(--bg-card); backdrop-filter:blur(24px);
+  border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px; margin-bottom:12px; transition:all 0.3s var(--ease);
+  position:relative; overflow:hidden;
+}
+.pos-card.profit { border-color:rgba(0,255,136,0.25); }
+.pos-card.loss { border-color:rgba(255,51,102,0.25); }
+.pos-card .pos-glow {
+  position:absolute; top:-30px; right:-30px;
+  width:120px; height:120px; border-radius:50%;
+  filter:blur(60px); opacity:0.12; pointer-events:none;
+}
+.pos-card.profit .pos-glow { background:var(--profit); }
+.pos-card.loss .pos-glow { background:var(--loss); }
+.pos-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.pos-pair { font-family:var(--font-data); font-weight:700; font-size:1.1rem; }
+.pos-metrics { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+.pos-metric .lbl { font-size:0.58rem; color:var(--muted); text-transform:uppercase; }
+.pos-metric .val { font-family:var(--font-data); font-size:0.85rem; font-weight:600; }
+.sl-tp-bar { margin-top:10px; }
+.sl-tp-bar .bar-bg { height:6px; background:rgba(255,255,255,0.06); border-radius:3px; position:relative; }
+.sl-tp-bar .bar-fill { height:100%; border-radius:3px; position:absolute; top:0; transition:width 0.5s; }
+.sl-tp-bar .bar-labels { display:flex; justify-content:space-between; font-family:var(--font-data); font-size:0.6rem; color:var(--muted); margin-top:4px; }
+
 /* ---- Animations ---- */
 @keyframes countUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
 .animate-in { animation:countUp 0.6s var(--ease) both; }
@@ -667,6 +693,18 @@ input[type=range]::-webkit-slider-thumb {
     <button class="nav-btn" data-tab="pnlhistory">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
       P&L History
+    </button>
+    <button class="nav-btn" data-tab="positions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="4"/></svg>
+      Positions
+    </button>
+    <button class="nav-btn" data-tab="signal">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      Signal
+    </button>
+    <button class="nav-btn" data-tab="risk">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+      Risk
     </button>
     <button class="nav-btn" data-tab="ai">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg>
@@ -1147,6 +1185,184 @@ input[type=range]::-webkit-slider-thumb {
       <div class="chart-container" style="height:320px;" id="pnlRTChart"></div>
     </div>
 
+  </div>
+
+  <!-- ======== PANEL: POSITIONS ======== -->
+  <div class="panel" id="panel-positions">
+    <div class="card mb animate-in">
+      <div class="card-header">
+        <div class="card-title">Open Positions</div>
+        <button class="btn btn-danger btn-sm" onclick="if(confirm('Close ALL positions?'))closeAllPositions()">CLOSE ALL</button>
+      </div>
+      <div id="positionsContainer">
+        <div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">Loading positions...</div>
+      </div>
+    </div>
+
+    <!-- Grid positions -->
+    <div class="card animate-in delay-1">
+      <div class="card-header">
+        <div class="card-title">Grid Positions</div>
+        <span style="font-family:var(--font-data);font-size:0.7rem;color:var(--muted);" id="gridPosCount">0 grids</span>
+      </div>
+      <div id="gridPositionsContainer">
+        <div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No active grids</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== PANEL: SIGNAL ======== -->
+  <div class="panel" id="panel-signal">
+    <!-- EMA TREND Status -->
+    <div class="card mb animate-in">
+      <div class="card-header">
+        <div class="card-title">EMA_TREND Signal</div>
+        <div id="autoGridBadge" style="font-family:var(--font-data);font-size:0.7rem;padding:4px 10px;border-radius:12px;background:rgba(255,255,255,0.04);color:var(--muted);">AUTO: OFF</div>
+      </div>
+      <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;">
+        <div id="signalHero" class="signal wait" style="flex:1;min-width:200px;padding:24px 30px;font-size:1.4rem;justify-content:center;">
+          <div class="signal-dot" style="width:14px;height:14px;"></div>
+          <span>LOADING...</span>
+        </div>
+        <div style="flex:1;min-width:200px;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <span style="color:var(--muted);font-size:0.8rem;">EMA 50</span>
+            <span style="font-family:var(--font-data);font-weight:700;" id="sigEMA50">--</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <span style="color:var(--muted);font-size:0.8rem;">EMA 200</span>
+            <span style="font-family:var(--font-data);font-weight:700;" id="sigEMA200">--</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <span style="color:var(--muted);font-size:0.8rem;">RSI (14)</span>
+            <span style="font-family:var(--font-data);font-weight:700;" id="sigRSI">--</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;">
+            <span style="color:var(--muted);font-size:0.8rem;">Updated</span>
+            <span style="font-family:var(--font-data);font-size:0.75rem;color:var(--muted);" id="sigTime">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RSI Gauge -->
+    <div class="grid-3 animate-in delay-1 mb">
+      <div class="card" style="text-align:center;">
+        <div class="card-title">RSI Gauge</div>
+        <div style="margin-top:12px;">
+          <div style="position:relative;height:20px;background:linear-gradient(90deg,var(--loss) 0%,var(--warn) 30%,var(--profit) 50%,var(--warn) 70%,var(--loss) 100%);border-radius:10px;overflow:hidden;">
+            <div id="rsiNeedle" style="position:absolute;top:-2px;width:4px;height:24px;background:#fff;border-radius:2px;left:50%;transition:left 0.5s;box-shadow:0 0 8px rgba(255,255,255,0.6);"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:6px;font-family:var(--font-data);font-size:0.6rem;color:var(--muted);">
+            <span>0</span><span>30</span><span>50</span><span>70</span><span>100</span>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-title">EMA Crossover</div>
+        <div style="margin-top:16px;">
+          <div id="emaCrossIcon" style="font-size:2.5rem;">⏳</div>
+          <div id="emaCrossLabel" style="font-family:var(--font-data);font-size:0.85rem;margin-top:8px;color:var(--muted);">Waiting...</div>
+        </div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div class="card-title">Circuit Breaker</div>
+        <div style="margin-top:16px;">
+          <div id="circuitIcon" style="font-size:2.5rem;">✅</div>
+          <div id="circuitLabel" style="font-family:var(--font-data);font-size:0.85rem;margin-top:8px;color:var(--profit);">SAFE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Multi-pair signals -->
+    <div class="card animate-in delay-2">
+      <div class="card-header">
+        <div class="card-title">Multi-Pair Signal Check</div>
+        <button class="btn btn-ghost btn-sm" onclick="refreshAllSignals()">Refresh All</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Pair</th><th>EMA50</th><th>EMA200</th><th>RSI</th><th>Signal</th><th>Strength</th></tr></thead>
+          <tbody id="signalTableBody">
+            <tr><td colspan="6" style="text-align:center;color:var(--muted);">Click "Refresh All" to check signals</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======== PANEL: RISK ======== -->
+  <div class="panel" id="panel-risk">
+    <!-- Risk KPIs -->
+    <div class="grid-4 mb animate-in">
+      <div class="stat-card">
+        <div class="lbl">Current Drawdown</div>
+        <div class="val" id="riskDD" style="color:var(--profit);">0.00%</div>
+        <div class="sub" id="riskDDSub">from peak</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Margin Used</div>
+        <div class="val" id="riskMargin">0%</div>
+        <div class="sub">of portfolio</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Risk Level</div>
+        <div id="riskLevel" style="margin-top:6px;">
+          <div class="trend-badge bull" style="font-size:1rem;padding:8px 16px;">
+            <span>SAFE</span>
+          </div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Portfolio Peak</div>
+        <div class="val" id="riskPeak">--</div>
+        <div class="sub">all-time high</div>
+      </div>
+    </div>
+
+    <!-- Capital Allocation -->
+    <div class="row animate-in delay-1">
+      <div class="col">
+        <div class="card" style="height:100%;">
+          <div class="card-title">Capital per Instrument</div>
+          <div id="riskAllocation" style="margin-top:12px;">
+            <div style="color:var(--muted);font-size:0.85rem;">No positions</div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card" style="height:100%;">
+          <div class="card-title">Risk Rules</div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="font-size:0.8rem;">Max Drawdown Alert</span>
+              <span style="font-family:var(--font-data);color:var(--warn);font-weight:600;">15%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="font-size:0.8rem;">Max Margin Usage</span>
+              <span style="font-family:var(--font-data);color:var(--warn);font-weight:600;">80%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+              <span style="font-size:0.8rem;">Circuit Breaker (RSI)</span>
+              <span style="font-family:var(--font-data);color:var(--loss);font-weight:600;">&lt; 35</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;">
+              <span style="font-size:0.8rem;">Trailing Stop Default</span>
+              <span style="font-family:var(--font-data);color:var(--cyan);font-weight:600;">$0.30</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Equity curve -->
+    <div class="card animate-in delay-2" style="margin-top:16px;">
+      <div class="card-header">
+        <div class="card-title">Portfolio Equity Curve</div>
+        <span style="font-family:var(--font-data);font-size:0.7rem;color:var(--muted);" id="riskEquityPoints">0 points</span>
+      </div>
+      <div class="chart-container" style="height:280px;" id="riskEquityChart"></div>
+    </div>
   </div>
 
   <!-- ======== PANEL: AI LENS ======== -->
@@ -2676,6 +2892,410 @@ setTimeout(() => {
     }
   }, 3000);
 }, 1000);
+
+// ============================================================
+// POSITIONS PANEL
+// ============================================================
+async function refreshPositions() {
+  const container = document.getElementById('positionsContainer');
+  const gridContainer = document.getElementById('gridPositionsContainer');
+
+  try {
+    // Fetch directional positions
+    const posData = await fetchJSON(MARTIN_API + '/position/all');
+
+    if (posData && Object.keys(posData).length > 0) {
+      const cards = Object.entries(posData).map(([inst, p]) => {
+        if (!p || !p.active) return '';
+        const isProfit = (p.realizedPnl || 0) >= 0;
+        const dir = (p.direction || '').toUpperCase();
+        const dirBadge = dir === 'SHORT' ? 'badge-short' : 'badge-long';
+        const elapsed = p.startedAt ? getElapsed(new Date(p.startedAt)) : '--';
+
+        // SL/TP distance calculation
+        const currentPrice = state.prices[inst] || p.entryPrice;
+        let slDist = 0, tpDist = 0, priceProgress = 50;
+        if (p.slPrice && p.tpPrice && p.entryPrice) {
+          const range = Math.abs(p.slPrice - p.tpPrice);
+          if (dir === 'SHORT') {
+            priceProgress = range > 0 ? ((p.slPrice - currentPrice) / range * 100) : 50;
+          } else {
+            priceProgress = range > 0 ? ((currentPrice - p.slPrice) / range * 100) : 50;
+          }
+          priceProgress = Math.max(0, Math.min(100, priceProgress));
+          slDist = Math.abs(currentPrice - p.slPrice);
+          tpDist = Math.abs(currentPrice - p.tpPrice);
+        }
+
+        const unrealizedPnl = dir === 'SHORT'
+          ? (p.entryPrice - currentPrice) * (p.size || 0)
+          : (currentPrice - p.entryPrice) * (p.size || 0);
+        const unrealizedPct = p.entryPrice > 0 ? ((currentPrice - p.entryPrice) / p.entryPrice * 100) : 0;
+        const pnlPositive = unrealizedPnl >= 0;
+
+        return `<div class="pos-card ${pnlPositive ? 'profit' : 'loss'}">
+          <div class="pos-glow"></div>
+          <div class="pos-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="pos-pair">${inst.replace('PF_','').replace('USD','/USD')}</span>
+              <span class="badge ${dirBadge}">${dir}</span>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:var(--font-data);font-weight:800;font-size:1.2rem;color:${pnlPositive?'var(--profit)':'var(--loss)'};">
+                ${pnlPositive?'+':''}$${unrealizedPnl.toFixed(4)}
+              </div>
+              <div style="font-family:var(--font-data);font-size:0.72rem;color:${pnlPositive?'var(--profit)':'var(--loss)'};">
+                ${(dir==='SHORT'?-1:1)*unrealizedPct>=0?'+':''}${((dir==='SHORT'?-1:1)*unrealizedPct).toFixed(2)}%
+              </div>
+            </div>
+          </div>
+          <div class="pos-metrics">
+            <div class="pos-metric"><div class="lbl">Entry</div><div class="val">$${fmt(p.entryPrice)}</div></div>
+            <div class="pos-metric"><div class="lbl">Size</div><div class="val">${p.size || '--'}</div></div>
+            <div class="pos-metric"><div class="lbl">Leverage</div><div class="val">${p.leverage || '--'}x</div></div>
+            <div class="pos-metric"><div class="lbl">SL</div><div class="val" style="color:var(--loss);">$${fmt(p.slPrice)}</div></div>
+            <div class="pos-metric"><div class="lbl">TP</div><div class="val" style="color:var(--profit);">$${fmt(p.tpPrice)}</div></div>
+            <div class="pos-metric"><div class="lbl">Time Open</div><div class="val">${elapsed}</div></div>
+          </div>
+          <div class="sl-tp-bar">
+            <div class="bar-bg">
+              <div class="bar-fill" style="width:${priceProgress}%;background:linear-gradient(90deg,var(--loss),var(--warn),var(--profit));"></div>
+            </div>
+            <div class="bar-labels">
+              <span style="color:var(--loss);">SL $${fmt(p.slPrice)}</span>
+              <span>Price $${fmt(currentPrice)}</span>
+              <span style="color:var(--profit);">TP $${fmt(p.tpPrice)}</span>
+            </div>
+          </div>
+        </div>`;
+      });
+
+      const html = cards.filter(c => c).join('');
+      container.innerHTML = html || '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No directional positions</div>';
+    } else {
+      container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No directional positions open</div>';
+    }
+
+    // Grid positions from existing state
+    if (state.grids.length > 0 && state.lastStatuses.length > 0) {
+      document.getElementById('gridPosCount').textContent = state.grids.length + ' grids';
+      gridContainer.innerHTML = state.lastStatuses.map((s, i) => {
+        if (!s) return '';
+        const name = state.grids[i];
+        const profit = s.totalProfit || 0;
+        const isPos = profit >= 0;
+        return `<div class="pos-card ${isPos ? 'profit' : 'loss'}" style="padding:12px 16px;">
+          <div class="pos-glow"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge badge-active">GRID</span>
+              <span style="font-family:var(--font-data);font-weight:600;">${name.replace('PF_','').replace('USD','/USD')}</span>
+            </div>
+            <div style="display:flex;gap:16px;align-items:center;font-family:var(--font-data);font-size:0.8rem;">
+              <span style="color:var(--muted);">${s.completedRoundTrips||0} RT</span>
+              <span style="color:var(--muted);">${(s.fills||[]).length} fills</span>
+              <span style="font-weight:700;color:${isPos?'var(--profit)':'var(--loss)'};">${isPos?'+':''}$${fmt(profit)}</span>
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+    } else {
+      gridContainer.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No active grids</div>';
+    }
+  } catch (e) {
+    container.innerHTML = '<div style="color:var(--loss);font-size:0.85rem;padding:20px 0;text-align:center;">Error loading positions: ' + e.message + '</div>';
+  }
+}
+
+function getElapsed(start) {
+  const ms = Date.now() - start.getTime();
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  if (h > 24) return Math.floor(h/24) + 'd ' + (h%24) + 'h';
+  return h + 'h ' + m + 'm';
+}
+
+async function closeAllPositions() {
+  try {
+    const posData = await fetchJSON(MARTIN_API + '/position/all');
+    if (posData) {
+      for (const inst of Object.keys(posData)) {
+        if (posData[inst].active) {
+          await fetch(MARTIN_API + '/position/close?instrument=' + inst, { method: 'POST' });
+        }
+      }
+    }
+    alert('All positions closed.');
+    refreshPositions();
+  } catch (e) {
+    alert('Error: ' + e.message);
+  }
+}
+
+// Init positions panel on tab click
+document.querySelector('.nav-btn[data-tab="positions"]').addEventListener('click', refreshPositions);
+
+// ============================================================
+// SIGNAL PANEL
+// ============================================================
+const SIGNAL_PAIRS = ['XXBTZUSD', 'XETHZUSD', 'SOLUSD', 'DOTUSD'];
+const PAIR_LABELS = { 'XXBTZUSD': 'BTC/USD', 'XETHZUSD': 'ETH/USD', 'SOLUSD': 'SOL/USD', 'DOTUSD': 'DOT/USD' };
+
+async function checkSignalForPair(pair) {
+  try {
+    const data = await fetchJSON(`${KRAKEN_API}/OHLC?pair=${pair}&interval=60`);
+    if (!data || data.error?.length) return null;
+    const result = data.result;
+    const key = Object.keys(result).find(k => k !== 'last');
+    if (!key) return null;
+    const ohlc = result[key];
+    if (ohlc.length < 205) return null;
+    const closes = ohlc.map(c => parseFloat(c[4]));
+    const ema50 = calcEMA(closes, 50);
+    const ema200 = calcEMA(closes, 200);
+    const rsi = calcRSI(closes, 14);
+    const e50 = ema50[ema50.length - 1];
+    const e200 = ema200[ema200.length - 1];
+    const r = rsi[rsi.length - 1];
+    const signal = r < 35 ? 'DANGER' : (e50 > e200 && r > 50) ? 'OPEN' : 'WAIT';
+    const strength = Math.abs(e50 - e200) / e200 * 100;
+    return { pair, label: PAIR_LABELS[pair], ema50: e50, ema200: e200, rsi: r, signal, strength };
+  } catch (e) { return null; }
+}
+
+async function refreshSignalPanel(pair) {
+  pair = pair || 'XXBTZUSD';
+  const result = await checkSignalForPair(pair);
+  if (!result) return;
+
+  // Update hero
+  const hero = document.getElementById('signalHero');
+  const signalClass = result.signal === 'OPEN' ? 'trade' : result.signal === 'DANGER' ? 'no-trade' : 'wait';
+  const signalText = result.signal === 'OPEN' ? 'OUVRIR GRID' : result.signal === 'DANGER' ? 'DANGER — RSI < 35' : 'ATTENDRE';
+  hero.className = 'signal ' + signalClass;
+  hero.style.cssText = 'flex:1;min-width:200px;padding:24px 30px;font-size:1.4rem;justify-content:center;';
+  hero.innerHTML = `<div class="signal-dot" style="width:14px;height:14px;"></div><span>${signalText}</span>`;
+
+  // Update values
+  document.getElementById('sigEMA50').textContent = '$' + result.ema50.toFixed(2);
+  document.getElementById('sigEMA50').style.color = result.ema50 > result.ema200 ? 'var(--profit)' : 'var(--loss)';
+  document.getElementById('sigEMA200').textContent = '$' + result.ema200.toFixed(2);
+  document.getElementById('sigRSI').textContent = result.rsi.toFixed(1);
+  document.getElementById('sigRSI').style.color = result.rsi > 70 ? 'var(--loss)' : result.rsi < 30 ? 'var(--profit)' : 'var(--text)';
+  document.getElementById('sigTime').textContent = new Date().toLocaleTimeString('en-GB');
+
+  // RSI needle
+  document.getElementById('rsiNeedle').style.left = (result.rsi) + '%';
+
+  // EMA cross icon
+  const crossIcon = document.getElementById('emaCrossIcon');
+  const crossLabel = document.getElementById('emaCrossLabel');
+  if (result.ema50 > result.ema200) {
+    crossIcon.textContent = '🟢';
+    crossLabel.textContent = 'Golden Cross';
+    crossLabel.style.color = 'var(--profit)';
+  } else {
+    crossIcon.textContent = '🔴';
+    crossLabel.textContent = 'Death Cross';
+    crossLabel.style.color = 'var(--loss)';
+  }
+
+  // Circuit breaker
+  const cbIcon = document.getElementById('circuitIcon');
+  const cbLabel = document.getElementById('circuitLabel');
+  if (result.rsi < 35) {
+    cbIcon.textContent = '🚨';
+    cbLabel.textContent = 'TRIGGERED — RSI ' + result.rsi.toFixed(1);
+    cbLabel.style.color = 'var(--loss)';
+  } else {
+    cbIcon.textContent = '✅';
+    cbLabel.textContent = 'SAFE — RSI ' + result.rsi.toFixed(1);
+    cbLabel.style.color = 'var(--profit)';
+  }
+}
+
+async function refreshAllSignals() {
+  const tbody = document.getElementById('signalTableBody');
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);">Checking signals...</td></tr>';
+
+  const results = await Promise.all(SIGNAL_PAIRS.map(checkSignalForPair));
+
+  tbody.innerHTML = results.map(r => {
+    if (!r) return '';
+    const sigClass = r.signal === 'OPEN' ? 'side-buy' : r.signal === 'DANGER' ? 'side-sell' : '';
+    const sigBg = r.signal === 'OPEN' ? 'var(--profit-dim)' : r.signal === 'DANGER' ? 'var(--loss-dim)' : 'transparent';
+    return `<tr style="background:${sigBg}">
+      <td style="font-weight:600;">${r.label}</td>
+      <td style="color:${r.ema50>r.ema200?'var(--profit)':'var(--loss)'};">$${r.ema50.toFixed(2)}</td>
+      <td>$${r.ema200.toFixed(2)}</td>
+      <td style="color:${r.rsi>70?'var(--loss)':r.rsi<30?'var(--profit)':'var(--text)'};">${r.rsi.toFixed(1)}</td>
+      <td class="${sigClass}" style="font-weight:700;">${r.signal}</td>
+      <td style="font-family:var(--font-data);">${r.strength.toFixed(2)}%</td>
+    </tr>`;
+  }).join('');
+}
+
+// Init signal panel on tab click
+document.querySelector('.nav-btn[data-tab="signal"]').addEventListener('click', () => {
+  refreshSignalPanel('XXBTZUSD');
+});
+
+// ============================================================
+// RISK PANEL
+// ============================================================
+let riskState = {
+  peakPortfolio: parseFloat(localStorage.getItem('niam_peak_portfolio') || '0'),
+  equityHistory: JSON.parse(localStorage.getItem('niam_equity_history') || '[]'),
+};
+
+let riskChart = null, riskSeries = null;
+
+function updateRiskPanel() {
+  if (!state.balance) return;
+  const portfolio = state.balance.portfolioValue || 0;
+  const available = state.balance.availableMargin || 0;
+  const deployed = portfolio - available;
+
+  // Track peak
+  if (portfolio > riskState.peakPortfolio) {
+    riskState.peakPortfolio = portfolio;
+    localStorage.setItem('niam_peak_portfolio', portfolio.toString());
+  }
+
+  // Drawdown
+  const dd = riskState.peakPortfolio > 0 ? ((riskState.peakPortfolio - portfolio) / riskState.peakPortfolio * 100) : 0;
+  const ddEl = document.getElementById('riskDD');
+  ddEl.textContent = '-' + dd.toFixed(2) + '%';
+  ddEl.style.color = dd > 15 ? 'var(--loss)' : dd > 5 ? 'var(--warn)' : 'var(--profit)';
+  document.getElementById('riskDDSub').textContent = 'peak $' + fmt(riskState.peakPortfolio);
+
+  // Margin
+  const marginPct = portfolio > 0 ? (deployed / portfolio * 100) : 0;
+  const marginEl = document.getElementById('riskMargin');
+  marginEl.textContent = marginPct.toFixed(1) + '%';
+  marginEl.style.color = marginPct > 80 ? 'var(--loss)' : marginPct > 50 ? 'var(--warn)' : 'var(--profit)';
+
+  // Risk level
+  const riskEl = document.getElementById('riskLevel');
+  let riskClass = 'bull', riskText = 'SAFE';
+  if (dd > 15 || marginPct > 80) { riskClass = 'bear'; riskText = 'DANGER'; }
+  else if (dd > 5 || marginPct > 50) { riskClass = 'neutral'; riskText = 'CAUTION'; }
+  riskEl.innerHTML = `<div class="trend-badge ${riskClass}" style="font-size:1rem;padding:8px 16px;"><span>${riskText}</span></div>`;
+
+  // Peak
+  document.getElementById('riskPeak').textContent = '$' + fmt(riskState.peakPortfolio);
+
+  // Allocation bars
+  const alloc = document.getElementById('riskAllocation');
+  if (state.grids.length > 0 && state.lastStatuses.length > 0) {
+    alloc.innerHTML = state.lastStatuses.map((s, i) => {
+      if (!s) return '';
+      const name = state.grids[i].replace('PF_','').replace('USD','/USD');
+      const profit = s.totalProfit || 0;
+      const isPos = profit >= 0;
+      return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+        <span style="font-family:var(--font-data);font-weight:600;">${name}</span>
+        <span style="font-family:var(--font-data);font-weight:700;color:${isPos?'var(--profit)':'var(--loss)'};">${isPos?'+':''}$${fmt(profit)}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Equity history
+  const now = Date.now();
+  riskState.equityHistory.push({ ts: now, value: portfolio });
+  const cutoff = now - 7 * 24 * 3600000; // 7 days
+  riskState.equityHistory = riskState.equityHistory.filter(p => p.ts >= cutoff);
+  try { localStorage.setItem('niam_equity_history', JSON.stringify(riskState.equityHistory)); } catch(e) {}
+
+  document.getElementById('riskEquityPoints').textContent = riskState.equityHistory.length + ' points';
+  renderRiskChart();
+}
+
+function renderRiskChart() {
+  const container = document.getElementById('riskEquityChart');
+  if (!riskChart) {
+    riskChart = LightweightCharts.createChart(container, {
+      layout: { background: { type: 'solid', color: 'transparent' }, textColor: '#6b6b80', fontFamily: "'JetBrains Mono', monospace", fontSize: 10 },
+      grid: { vertLines: { color: 'rgba(255,255,255,0.03)' }, horzLines: { color: 'rgba(255,255,255,0.03)' } },
+      timeScale: { borderColor: 'rgba(255,255,255,0.06)', timeVisible: true },
+      rightPriceScale: { borderColor: 'rgba(255,255,255,0.06)' },
+      crosshair: { mode: 1 },
+    });
+    riskSeries = riskChart.addAreaSeries({
+      topColor: 'rgba(94,106,210,0.25)', bottomColor: 'rgba(94,106,210,0.0)',
+      lineColor: '#5E6AD2', lineWidth: 2,
+    });
+    new ResizeObserver(() => riskChart.applyOptions({ width: container.clientWidth, height: container.clientHeight })).observe(container);
+  }
+
+  const seen = new Set();
+  const data = riskState.equityHistory.filter(p => {
+    const t = Math.floor(p.ts / 1000);
+    if (seen.has(t)) return false;
+    seen.add(t);
+    return true;
+  }).map(p => ({ time: Math.floor(p.ts / 1000), value: p.value })).sort((a,b) => a.time - b.time);
+
+  if (data.length > 1) riskSeries.setData(data);
+}
+
+// Init risk panel on tab click
+document.querySelector('.nav-btn[data-tab="risk"]').addEventListener('click', updateRiskPanel);
+
+// ============================================================
+// BROWSER NOTIFICATIONS
+// ============================================================
+let notifEnabled = false;
+let lastFillCount = 0;
+
+async function initNotifications() {
+  if ('Notification' in window && Notification.permission === 'default') {
+    const perm = await Notification.requestPermission();
+    notifEnabled = perm === 'granted';
+  } else if ('Notification' in window) {
+    notifEnabled = Notification.permission === 'granted';
+  }
+}
+
+function sendNotification(title, body) {
+  if (!notifEnabled) return;
+  try { new Notification(title, { body, icon: '🔔', tag: 'martin-' + Date.now() }); } catch(e) {}
+}
+
+// Check for new fills in refresh
+const origRefresh = refresh;
+refresh = async function() {
+  const prevFills = state.allFills.length;
+  await origRefresh();
+  // Notify on new fills
+  if (state.allFills.length > prevFills && prevFills > 0) {
+    const newCount = state.allFills.length - prevFills;
+    sendNotification('Martin Grid', newCount + ' new fill(s) detected!');
+  }
+};
+
+// Request notification permission after first interaction
+document.addEventListener('click', function initNotifOnce() {
+  initNotifications();
+  document.removeEventListener('click', initNotifOnce);
+}, { once: true });
+
+// ============================================================
+// ENHANCED INIT — add position/signal tabs to refresh
+// ============================================================
+const origInitTabs = initTabs;
+initTabs = function() {
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      const panel = document.getElementById('panel-' + btn.dataset.tab);
+      if (panel) panel.classList.add('active');
+      if (btn.dataset.tab === 'grids' && !charts.price) initPriceChart();
+    });
+  });
+};
 </script>
 </body>
 </html>
