@@ -1274,17 +1274,21 @@ input[type=range]::-webkit-slider-thumb {
       </div>
     </div>
 
-    <!-- Multi-pair signals -->
+    <!-- Multi-pair signals — VM scan -->
     <div class="card animate-in delay-2">
       <div class="card-header">
-        <div class="card-title">Multi-Pair Signal Check</div>
-        <button class="btn btn-ghost btn-sm" onclick="refreshAllSignals()">Refresh All</button>
+        <div class="card-title">Multi-Pair Signal Scan (VM)</div>
+        <div style="display:flex;gap:6px;">
+          <button class="btn btn-ghost btn-sm" onclick="refreshAllSignals()">Client-Side</button>
+          <button class="btn btn-primary btn-sm" onclick="scanFromVM()">Scan VM</button>
+        </div>
       </div>
+      <div id="scanCards" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px;"></div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Pair</th><th>EMA50</th><th>EMA200</th><th>RSI</th><th>Signal</th><th>Strength</th></tr></thead>
+          <thead><tr><th>Pair</th><th>Price</th><th>EMA50</th><th>EMA200</th><th>RSI</th><th>Vol%</th><th>Signal</th></tr></thead>
           <tbody id="signalTableBody">
-            <tr><td colspan="6" style="text-align:center;color:var(--muted);">Click "Refresh All" to check signals</td></tr>
+            <tr><td colspan="7" style="text-align:center;color:var(--muted);">Click "Scan VM" to check all pairs</td></tr>
           </tbody>
         </table>
       </div>
@@ -3133,6 +3137,73 @@ async function refreshAllSignals() {
       <td style="font-family:var(--font-data);">${r.strength.toFixed(2)}%</td>
     </tr>`;
   }).join('');
+}
+
+async function scanFromVM() {
+  const tbody = document.getElementById('signalTableBody');
+  const cards = document.getElementById('scanCards');
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);">Scanning 18 pairs on VM... (takes ~10s)</td></tr>';
+  cards.innerHTML = '';
+
+  try {
+    const results = await fetchJSON(MARTIN_API + '/signal/scan');
+    if (!results || results.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--loss);">No results from VM</td></tr>';
+      return;
+    }
+
+    // Visual cards
+    cards.innerHTML = results.map(r => {
+      if (!r || !r.instrument) return '';
+      const pair = r.instrument.replace('PF_','').replace('USD','');
+      const sigColor = r.signal === 'OPEN' ? 'var(--profit)' : r.signal === 'DANGER' ? 'var(--loss)' : 'var(--muted)';
+      const sigBg = r.signal === 'OPEN' ? 'var(--profit-dim)' : r.signal === 'DANGER' ? 'var(--loss-dim)' : 'rgba(255,255,255,0.03)';
+      const volLabel = r.volatilityPct > 2 ? 'HIGH' : r.volatilityPct > 1 ? 'MED' : 'LOW';
+      const volColor = r.volatilityPct > 2 ? 'var(--profit)' : r.volatilityPct > 1 ? 'var(--warn)' : 'var(--muted)';
+      return `<div style="background:${sigBg};border:1px solid ${sigColor}33;border-radius:12px;padding:14px;text-align:center;">
+        <div style="font-family:var(--font-data);font-weight:800;font-size:1.1rem;color:${sigColor};">${pair}</div>
+        <div style="font-family:var(--font-data);font-size:0.75rem;color:var(--text);margin-top:4px;">$${r.price ? r.price.toFixed(r.price>100?2:4) : '--'}</div>
+        <div style="font-family:var(--font-data);font-weight:700;font-size:0.85rem;color:${sigColor};margin-top:6px;">${r.signal}</div>
+        <div style="display:flex;justify-content:space-between;margin-top:8px;font-family:var(--font-data);font-size:0.62rem;">
+          <span style="color:var(--muted);">RSI <span style="color:var(--text);">${r.rsi?r.rsi.toFixed(1):'--'}</span></span>
+          <span style="color:var(--muted);">Vol <span style="color:${volColor};">${r.volatilityPct?r.volatilityPct.toFixed(1):'--'}%</span></span>
+        </div>
+      </div>`;
+    }).join('');
+
+    // Table
+    tbody.innerHTML = results.map(r => {
+      if (!r || !r.instrument) return '';
+      const pair = r.instrument.replace('PF_','').replace('USD','/USD');
+      const sigClass = r.signal === 'OPEN' ? 'side-buy' : r.signal === 'DANGER' ? 'side-sell' : '';
+      const sigBg = r.signal === 'OPEN' ? 'var(--profit-dim)' : r.signal === 'DANGER' ? 'var(--loss-dim)' : 'transparent';
+      const emaColor = r.ema50 > r.ema200 ? 'var(--profit)' : 'var(--loss)';
+      const rsiColor = r.rsi > 70 ? 'var(--loss)' : r.rsi < 30 ? 'var(--profit)' : 'var(--text)';
+      const volColor = r.volatilityPct > 2 ? 'var(--profit)' : r.volatilityPct > 1 ? 'var(--warn)' : 'var(--muted)';
+      return `<tr style="background:${sigBg}">
+        <td style="font-weight:600;">${pair}</td>
+        <td>$${r.price ? r.price.toFixed(r.price>100?2:4) : '--'}</td>
+        <td style="color:${emaColor};">${r.ema50?r.ema50.toFixed(2):'--'}</td>
+        <td>${r.ema200?r.ema200.toFixed(2):'--'}</td>
+        <td style="color:${rsiColor};">${r.rsi?r.rsi.toFixed(1):'--'}</td>
+        <td style="color:${volColor};">${r.volatilityPct?r.volatilityPct.toFixed(1):'--'}%</td>
+        <td class="${sigClass}" style="font-weight:700;">${r.signal}</td>
+      </tr>`;
+    }).join('');
+
+    // Also update the hero with BTC signal
+    const btc = results.find(r => r.instrument === 'PF_XBTUSD');
+    if (btc) {
+      document.getElementById('sigEMA50').textContent = '$' + btc.ema50.toFixed(2);
+      document.getElementById('sigEMA50').style.color = btc.ema50 > btc.ema200 ? 'var(--profit)' : 'var(--loss)';
+      document.getElementById('sigEMA200').textContent = '$' + btc.ema200.toFixed(2);
+      document.getElementById('sigRSI').textContent = btc.rsi.toFixed(1);
+      document.getElementById('sigTime').textContent = new Date().toLocaleTimeString('en-GB');
+      document.getElementById('rsiNeedle').style.left = btc.rsi + '%';
+    }
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--loss);">Error: ' + e.message + '</td></tr>';
+  }
 }
 
 // Init signal panel on tab click
