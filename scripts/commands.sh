@@ -34,6 +34,11 @@
 # --- STOP GRID ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "curl -s -X POST http://localhost:8081/api/grid/stop/PF_DOTUSD"
 
+# --- DEPLOY STRATEGY (5-grid scalp, after restart) ---
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/martin/deploy-strategy.py"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/martin/deploy-strategy.py --dry-run"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/martin/deploy-strategy.py --only PF_DOTUSD"
+
 # --- FEED BRAIN ---
 # cd C:/niam-bay && python cerveau-nb/feed.py --text "TEXTE ICI"
 
