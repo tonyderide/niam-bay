@@ -499,8 +499,18 @@ input[type=range]::-webkit-slider-thumb {
   .pnl-value { font-size:2.4rem; }
   .header { flex-direction:column; align-items:flex-start; }
   .header-right { width:100%; justify-content:space-between; }
-  .nav-btn { min-width:70px; font-size:0.72rem; padding:8px 10px; }
-  .nav-btn svg { display:none; }
+  .nav {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap;
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 12px, #000 calc(100% - 12px), transparent 100%);
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-btn { min-width: 44px; padding: 10px; font-size: 0; }
+  .nav-btn svg { width: 20px; height: 20px; display: inline-block; }
+  .nav-btn.active { font-size: 0.7rem; min-width: 80px; }
   .chart-container.price-chart { height:280px; }
   .heatmap { grid-template-columns:repeat(12,1fr); }
   .heatmap-labels { grid-template-columns:repeat(12,1fr); }
@@ -531,6 +541,23 @@ input[type=range]::-webkit-slider-thumb {
 .sl-tp-bar .bar-bg { height:6px; background:rgba(255,255,255,0.06); border-radius:3px; position:relative; }
 .sl-tp-bar .bar-fill { height:100%; border-radius:3px; position:absolute; top:0; transition:width 0.5s; }
 .sl-tp-bar .bar-labels { display:flex; justify-content:space-between; font-family:var(--font-data); font-size:0.6rem; color:var(--muted); margin-top:4px; }
+
+/* ---- PnL pulse animation ---- */
+@keyframes pnlPulse {
+  0% { text-shadow: 0 0 40px currentColor; transform: scale(1); }
+  50% { text-shadow: 0 0 80px currentColor; transform: scale(1.02); }
+  100% { text-shadow: 0 0 40px currentColor; transform: scale(1); }
+}
+.pnl-pulse { animation: pnlPulse 0.6s ease; }
+
+/* ---- Grid fill flash animation ---- */
+.grid-fill-flash {
+  animation: fillGlow 1s ease;
+}
+@keyframes fillGlow {
+  0% { box-shadow: 0 0 20px var(--profit); }
+  100% { box-shadow: none; }
+}
 
 /* ---- Animations ---- */
 @keyframes countUp { from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
@@ -1446,6 +1473,7 @@ let state = {
   lastTotalProfit: null,
   lastStatuses: [],
   pnlRTHistory: [],
+  autoGridConfigs: null,
 };
 
 let charts = {};
@@ -1518,10 +1546,12 @@ function initSliders() {
 async function refresh() {
   try {
     // Fetch all data in parallel
-    const [activeRes, balanceRes] = await Promise.all([
+    const [activeRes, balanceRes, autoGridRes] = await Promise.all([
       fetchJSON(MARTIN_API + '/grid/active'),
       fetchJSON(MARTIN_API + '/bot/balance'),
+      fetchJSON(MARTIN_API + '/signal/auto/status').catch(() => null),
     ]);
+    state.autoGridConfigs = (autoGridRes && autoGridRes.configs) ? autoGridRes.configs : null;
 
     state.connected = true;
     updateConnection(true);
@@ -1661,6 +1691,9 @@ function updatePnL(profit, rt, fills) {
   const isPositive = profit >= 0;
   el.textContent = (isPositive ? '+$' : '-$') + fmt(Math.abs(profit));
   el.className = 'pnl-value ' + (isPositive ? 'positive' : 'negative');
+  el.classList.remove('pnl-pulse');
+  void el.offsetWidth;
+  el.classList.add('pnl-pulse');
 
   // Calculate percentage based on initial capital (portfolio - pnl = what we started with)
   let pct = 0;
@@ -1805,11 +1838,13 @@ function updateDonut() {
 // ============================================================
 function updateGridsSummary(statuses) {
   const container = document.getElementById('gridsSummary');
-  if (!statuses || statuses.length === 0) {
-    container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;">No active grids</div>';
-    return;
-  }
-  container.innerHTML = statuses.map((s, i) => {
+  if (!state._prevFillCounts) state._prevFillCounts = {};
+
+  // Build set of active grid names
+  const activeSet = new Set(state.grids || []);
+
+  // Render active grids
+  let html = (statuses || []).map((s, i) => {
     if (!s) return '';
     const name = state.grids[i] || '';
     const displayName = name.replace('PF_','').replace('USD','/USD');
@@ -1817,7 +1852,11 @@ function updateGridsSummary(statuses) {
     const rt = s.completedRoundTrips || 0;
     const fills = (s.fills || []).length;
     const isPos = profit >= 0;
-    return `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+    const prevFills = state._prevFillCounts[name] || 0;
+    const hasNewFills = fills > prevFills && prevFills > 0;
+    state._prevFillCounts[name] = fills;
+    const flashClass = hasNewFills ? ' grid-fill-flash' : '';
+    return `<div class="${flashClass}" style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
       <div style="display:flex;align-items:center;gap:8px;">
         <span class="badge badge-active">LIVE</span>
         <span style="font-family:var(--font-data);font-weight:600;">${displayName}</span>
@@ -1829,6 +1868,34 @@ function updateGridsSummary(statuses) {
       </div>
     </div>`;
   }).join('');
+
+  // Render configured-but-inactive grids from auto-grid configs
+  if (state.autoGridConfigs) {
+    const configs = Array.isArray(state.autoGridConfigs) ? state.autoGridConfigs : Object.values(state.autoGridConfigs);
+    configs.forEach(cfg => {
+      const inst = cfg.instrument || cfg.pair || '';
+      if (!inst || activeSet.has(inst)) return; // already shown as LIVE
+      const displayName = inst.replace('PF_','').replace('USD','/USD');
+      const reason = (cfg.stopReason || cfg.status || '').toUpperCase();
+      const isAdxStop = reason.includes('ADX') || reason.includes('STOP');
+      const badgeClass = isAdxStop ? 'badge-stopped' : 'badge-stopped';
+      const badgeText = isAdxStop ? 'ADX STOP' : (cfg.enabled === false ? 'DISABLED' : 'PAUSED');
+      const badgeStyle = isAdxStop
+        ? 'background:rgba(255,51,102,0.12);color:var(--loss);'
+        : 'background:rgba(255,170,0,0.12);color:var(--warn);';
+      html += `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);opacity:0.7;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="badge" style="${badgeStyle}">${badgeText}</span>
+          <span style="font-family:var(--font-data);font-weight:600;">${displayName}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:16px;font-family:var(--font-data);font-size:0.8rem;">
+          <span style="color:var(--muted);">${reason || 'inactive'}</span>
+        </div>
+      </div>`;
+    });
+  }
+
+  container.innerHTML = html || '<div style="color:var(--muted);font-size:0.85rem;">No grids configured</div>';
 }
 
 // ============================================================
@@ -3002,88 +3069,163 @@ async function refreshPositions() {
   const gridContainer = document.getElementById('gridPositionsContainer');
 
   try {
-    // Fetch directional positions
-    const posData = await fetchJSON(MARTIN_API + '/position/all');
+    // Fetch Kraken open positions and directional positions in parallel
+    const [krakenPos, posData] = await Promise.all([
+      fetchJSON(MARTIN_API + '/bot/positions').catch(() => null),
+      fetchJSON(MARTIN_API + '/position/all').catch(() => null),
+    ]);
 
-    if (posData && Object.keys(posData).length > 0) {
-      const cards = Object.entries(posData).map(([inst, p]) => {
-        if (!p || !p.active) return '';
-        const isProfit = (p.realizedPnl || 0) >= 0;
-        const dir = (p.direction || '').toUpperCase();
-        const dirBadge = dir === 'SHORT' ? 'badge-short' : 'badge-long';
-        const elapsed = p.startedAt ? getElapsed(new Date(p.startedAt)) : '--';
-
-        // SL/TP distance calculation
-        const currentPrice = state.prices[inst] || p.entryPrice;
-        let slDist = 0, tpDist = 0, priceProgress = 50;
-        if (p.slPrice && p.tpPrice && p.entryPrice) {
-          const range = Math.abs(p.slPrice - p.tpPrice);
-          if (dir === 'SHORT') {
-            priceProgress = range > 0 ? ((p.slPrice - currentPrice) / range * 100) : 50;
-          } else {
-            priceProgress = range > 0 ? ((currentPrice - p.slPrice) / range * 100) : 50;
-          }
-          priceProgress = Math.max(0, Math.min(100, priceProgress));
-          slDist = Math.abs(currentPrice - p.slPrice);
-          tpDist = Math.abs(currentPrice - p.tpPrice);
-        }
-
-        const unrealizedPnl = dir === 'SHORT'
-          ? (p.entryPrice - currentPrice) * (p.size || 0)
-          : (currentPrice - p.entryPrice) * (p.size || 0);
-        const unrealizedPct = p.entryPrice > 0 ? ((currentPrice - p.entryPrice) / p.entryPrice * 100) : 0;
-        const pnlPositive = unrealizedPnl >= 0;
+    // --- Kraken Open Positions (from /api/bot/positions) ---
+    let hasKrakenPositions = false;
+    if (krakenPos && Array.isArray(krakenPos) && krakenPos.length > 0) {
+      hasKrakenPositions = true;
+      const krakenCards = krakenPos.map(p => {
+        const inst = p.instrument || p.pair || p.symbol || '--';
+        const displayName = inst.replace('PF_','').replace('USD','/USD');
+        const side = (p.side || p.direction || '').toUpperCase();
+        const size = p.size || p.qty || p.amount || 0;
+        const entry = p.entryPrice || p.avgPrice || p.price || 0;
+        const pnl = p.unrealizedPnl != null ? parseFloat(p.unrealizedPnl) : (p.pnl != null ? parseFloat(p.pnl) : null);
+        const pnlPositive = pnl !== null ? pnl >= 0 : true;
+        const dirBadge = side === 'SHORT' ? 'badge-short' : 'badge-long';
 
         return `<div class="pos-card ${pnlPositive ? 'profit' : 'loss'}">
           <div class="pos-glow"></div>
           <div class="pos-header">
             <div style="display:flex;align-items:center;gap:10px;">
-              <span class="pos-pair">${inst.replace('PF_','').replace('USD','/USD')}</span>
-              <span class="badge ${dirBadge}">${dir}</span>
+              <span class="pos-pair">${displayName}</span>
+              <span class="badge ${dirBadge}">${side || 'N/A'}</span>
             </div>
             <div style="text-align:right;">
               <div style="font-family:var(--font-data);font-weight:800;font-size:1.2rem;color:${pnlPositive?'var(--profit)':'var(--loss)'};">
-                ${pnlPositive?'+':''}$${unrealizedPnl.toFixed(4)}
+                ${pnl !== null ? ((pnlPositive?'+':'') + '$' + fmt(Math.abs(pnl))) : '--'}
               </div>
-              <div style="font-family:var(--font-data);font-size:0.72rem;color:${pnlPositive?'var(--profit)':'var(--loss)'};">
-                ${(dir==='SHORT'?-1:1)*unrealizedPct>=0?'+':''}${((dir==='SHORT'?-1:1)*unrealizedPct).toFixed(2)}%
-              </div>
+              <div style="font-family:var(--font-data);font-size:0.72rem;color:var(--muted);">unrealized PnL</div>
             </div>
           </div>
           <div class="pos-metrics">
-            <div class="pos-metric"><div class="lbl">Entry</div><div class="val">$${fmt(p.entryPrice)}</div></div>
-            <div class="pos-metric"><div class="lbl">Size</div><div class="val">${p.size || '--'}</div></div>
-            <div class="pos-metric"><div class="lbl">Leverage</div><div class="val">${p.leverage || '--'}x</div></div>
-            <div class="pos-metric"><div class="lbl">SL</div><div class="val" style="color:var(--loss);">$${fmt(p.slPrice)}</div></div>
-            <div class="pos-metric"><div class="lbl">TP</div><div class="val" style="color:var(--profit);">$${fmt(p.tpPrice)}</div></div>
-            <div class="pos-metric"><div class="lbl">Time Open</div><div class="val">${elapsed}</div></div>
-          </div>
-          <div class="sl-tp-bar">
-            <div class="bar-bg">
-              <div class="bar-fill" style="width:${priceProgress}%;background:linear-gradient(90deg,var(--loss),var(--warn),var(--profit));"></div>
-            </div>
-            <div class="bar-labels">
-              <span style="color:var(--loss);">SL $${fmt(p.slPrice)}</span>
-              <span>Price $${fmt(currentPrice)}</span>
-              <span style="color:var(--profit);">TP $${fmt(p.tpPrice)}</span>
-            </div>
+            <div class="pos-metric"><div class="lbl">Entry</div><div class="val">$${fmt(entry)}</div></div>
+            <div class="pos-metric"><div class="lbl">Size</div><div class="val">${size}</div></div>
+            <div class="pos-metric"><div class="lbl">Side</div><div class="val">${side || '--'}</div></div>
           </div>
         </div>`;
       });
+      container.innerHTML = krakenCards.join('');
+    } else if (krakenPos && typeof krakenPos === 'object' && !Array.isArray(krakenPos) && Object.keys(krakenPos).length > 0) {
+      // Object format: { instrument: positionData, ... }
+      hasKrakenPositions = true;
+      const krakenCards = Object.entries(krakenPos).map(([inst, p]) => {
+        if (!p) return '';
+        const displayName = inst.replace('PF_','').replace('USD','/USD');
+        const side = (p.side || p.direction || '').toUpperCase();
+        const size = p.size || p.qty || p.amount || 0;
+        const entry = p.entryPrice || p.avgPrice || p.price || 0;
+        const pnl = p.unrealizedPnl != null ? parseFloat(p.unrealizedPnl) : (p.pnl != null ? parseFloat(p.pnl) : null);
+        const pnlPositive = pnl !== null ? pnl >= 0 : true;
+        const dirBadge = side === 'SHORT' ? 'badge-short' : 'badge-long';
 
-      const html = cards.filter(c => c).join('');
-      container.innerHTML = html || '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No directional positions</div>';
-    } else {
-      container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No directional positions open</div>';
+        return `<div class="pos-card ${pnlPositive ? 'profit' : 'loss'}">
+          <div class="pos-glow"></div>
+          <div class="pos-header">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span class="pos-pair">${displayName}</span>
+              <span class="badge ${dirBadge}">${side || 'N/A'}</span>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-family:var(--font-data);font-weight:800;font-size:1.2rem;color:${pnlPositive?'var(--profit)':'var(--loss)'};">
+                ${pnl !== null ? ((pnlPositive?'+':'') + '$' + fmt(Math.abs(pnl))) : '--'}
+              </div>
+              <div style="font-family:var(--font-data);font-size:0.72rem;color:var(--muted);">unrealized PnL</div>
+            </div>
+          </div>
+          <div class="pos-metrics">
+            <div class="pos-metric"><div class="lbl">Entry</div><div class="val">$${fmt(entry)}</div></div>
+            <div class="pos-metric"><div class="lbl">Size</div><div class="val">${size}</div></div>
+            <div class="pos-metric"><div class="lbl">Side</div><div class="val">${side || '--'}</div></div>
+          </div>
+        </div>`;
+      });
+      container.innerHTML = krakenCards.filter(c => c).join('') || '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No Kraken positions</div>';
     }
 
-    // Grid positions from existing state
+    // Fallback: if no Kraken positions, try directional positions
+    if (!hasKrakenPositions) {
+      if (posData && Object.keys(posData).length > 0) {
+        const cards = Object.entries(posData).map(([inst, p]) => {
+          if (!p || !p.active) return '';
+          const dir = (p.direction || '').toUpperCase();
+          const dirBadge = dir === 'SHORT' ? 'badge-short' : 'badge-long';
+          const elapsed = p.startedAt ? getElapsed(new Date(p.startedAt)) : '--';
+          const currentPrice = state.prices[inst] || p.entryPrice;
+          let priceProgress = 50;
+          if (p.slPrice && p.tpPrice && p.entryPrice) {
+            const range = Math.abs(p.slPrice - p.tpPrice);
+            if (dir === 'SHORT') {
+              priceProgress = range > 0 ? ((p.slPrice - currentPrice) / range * 100) : 50;
+            } else {
+              priceProgress = range > 0 ? ((currentPrice - p.slPrice) / range * 100) : 50;
+            }
+            priceProgress = Math.max(0, Math.min(100, priceProgress));
+          }
+          const unrealizedPnl = dir === 'SHORT'
+            ? (p.entryPrice - currentPrice) * (p.size || 0)
+            : (currentPrice - p.entryPrice) * (p.size || 0);
+          const unrealizedPct = p.entryPrice > 0 ? ((currentPrice - p.entryPrice) / p.entryPrice * 100) : 0;
+          const pnlPositive = unrealizedPnl >= 0;
+
+          return `<div class="pos-card ${pnlPositive ? 'profit' : 'loss'}">
+            <div class="pos-glow"></div>
+            <div class="pos-header">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span class="pos-pair">${inst.replace('PF_','').replace('USD','/USD')}</span>
+                <span class="badge ${dirBadge}">${dir}</span>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-family:var(--font-data);font-weight:800;font-size:1.2rem;color:${pnlPositive?'var(--profit)':'var(--loss)'};">
+                  ${pnlPositive?'+':''}$${unrealizedPnl.toFixed(4)}
+                </div>
+                <div style="font-family:var(--font-data);font-size:0.72rem;color:${pnlPositive?'var(--profit)':'var(--loss)'};">
+                  ${(dir==='SHORT'?-1:1)*unrealizedPct>=0?'+':''}${((dir==='SHORT'?-1:1)*unrealizedPct).toFixed(2)}%
+                </div>
+              </div>
+            </div>
+            <div class="pos-metrics">
+              <div class="pos-metric"><div class="lbl">Entry</div><div class="val">$${fmt(p.entryPrice)}</div></div>
+              <div class="pos-metric"><div class="lbl">Size</div><div class="val">${p.size || '--'}</div></div>
+              <div class="pos-metric"><div class="lbl">Leverage</div><div class="val">${p.leverage || '--'}x</div></div>
+              <div class="pos-metric"><div class="lbl">SL</div><div class="val" style="color:var(--loss);">$${fmt(p.slPrice)}</div></div>
+              <div class="pos-metric"><div class="lbl">TP</div><div class="val" style="color:var(--profit);">$${fmt(p.tpPrice)}</div></div>
+              <div class="pos-metric"><div class="lbl">Time Open</div><div class="val">${elapsed}</div></div>
+            </div>
+            <div class="sl-tp-bar">
+              <div class="bar-bg">
+                <div class="bar-fill" style="width:${priceProgress}%;background:linear-gradient(90deg,var(--loss),var(--warn),var(--profit));"></div>
+              </div>
+              <div class="bar-labels">
+                <span style="color:var(--loss);">SL $${fmt(p.slPrice)}</span>
+                <span>Price $${fmt(currentPrice)}</span>
+                <span style="color:var(--profit);">TP $${fmt(p.tpPrice)}</span>
+              </div>
+            </div>
+          </div>`;
+        });
+        container.innerHTML = cards.filter(c => c).join('') || '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No open positions</div>';
+      } else {
+        container.innerHTML = '<div style="color:var(--muted);font-size:0.85rem;padding:20px 0;text-align:center;">No open positions</div>';
+      }
+    }
+
+    // Grid positions / inventory from existing state
     if (state.grids.length > 0 && state.lastStatuses.length > 0) {
       document.getElementById('gridPosCount').textContent = state.grids.length + ' grids';
       gridContainer.innerHTML = state.lastStatuses.map((s, i) => {
         if (!s) return '';
         const name = state.grids[i];
         const profit = s.totalProfit || 0;
+        const fills = (s.fills || []).length;
+        const buys = (s.fills || []).filter(f => (f.side||f.direction||'').toLowerCase() === 'buy').length;
+        const sells = (s.fills || []).filter(f => (f.side||f.direction||'').toLowerCase() === 'sell').length;
+        const inventory = buys - sells;
         const isPos = profit >= 0;
         return `<div class="pos-card ${isPos ? 'profit' : 'loss'}" style="padding:12px 16px;">
           <div class="pos-glow"></div>
@@ -3091,10 +3233,11 @@ async function refreshPositions() {
             <div style="display:flex;align-items:center;gap:8px;">
               <span class="badge badge-active">GRID</span>
               <span style="font-family:var(--font-data);font-weight:600;">${name.replace('PF_','').replace('USD','/USD')}</span>
+              ${inventory > 0 ? `<span class="badge badge-long" style="font-size:0.65rem;">${inventory} open</span>` : ''}
             </div>
             <div style="display:flex;gap:16px;align-items:center;font-family:var(--font-data);font-size:0.8rem;">
               <span style="color:var(--muted);">${s.completedRoundTrips||0} RT</span>
-              <span style="color:var(--muted);">${(s.fills||[]).length} fills</span>
+              <span style="color:var(--muted);">${fills} fills</span>
               <span style="font-weight:700;color:${isPos?'var(--profit)':'var(--loss)'};">${isPos?'+':''}$${fmt(profit)}</span>
             </div>
           </div>
@@ -3330,18 +3473,27 @@ function updateRiskPanel() {
   const available = state.balance.availableMargin || 0;
   const deployed = portfolio - available;
 
+  // Use balanceValue as deposited capital (initial capital without PnL)
+  const deposited = state.balance.balanceValue || portfolio;
+  // Use Kraken's real PnL for drawdown calculation
+  const krakenPnl = state.balance.pnl != null ? parseFloat(state.balance.pnl) : 0;
+
   // Track peak
   if (portfolio > riskState.peakPortfolio) {
     riskState.peakPortfolio = portfolio;
     localStorage.setItem('niam_peak_portfolio', portfolio.toString());
   }
 
-  // Drawdown
+  // Drawdown from peak (use real PnL if negative, otherwise calculate from peak)
   const dd = riskState.peakPortfolio > 0 ? ((riskState.peakPortfolio - portfolio) / riskState.peakPortfolio * 100) : 0;
   const ddEl = document.getElementById('riskDD');
   ddEl.textContent = '-' + dd.toFixed(2) + '%';
   ddEl.style.color = dd > 15 ? 'var(--loss)' : dd > 5 ? 'var(--warn)' : 'var(--profit)';
-  document.getElementById('riskDDSub').textContent = 'peak $' + fmt(riskState.peakPortfolio);
+
+  // Show deposited vs current in the sub label
+  const pnlFromDeposit = portfolio - deposited;
+  const pnlSign = pnlFromDeposit >= 0 ? '+' : '';
+  document.getElementById('riskDDSub').textContent = 'peak $' + fmt(riskState.peakPortfolio) + ' | deposited $' + fmt(deposited) + ' (' + pnlSign + '$' + fmt(pnlFromDeposit) + ')';
 
   // Margin
   const marginPct = portfolio > 0 ? (deployed / portfolio * 100) : 0;
@@ -3359,10 +3511,23 @@ function updateRiskPanel() {
   // Peak
   document.getElementById('riskPeak').textContent = '$' + fmt(riskState.peakPortfolio);
 
-  // Allocation bars
+  // Allocation bars — show deposited vs current + per-instrument
   const alloc = document.getElementById('riskAllocation');
+  let allocHtml = `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+    <span style="font-size:0.8rem;color:var(--muted);">Deposited</span>
+    <span style="font-family:var(--font-data);font-weight:700;">$${fmt(deposited)}</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+    <span style="font-size:0.8rem;color:var(--muted);">Current Portfolio</span>
+    <span style="font-family:var(--font-data);font-weight:700;color:${portfolio>=deposited?'var(--profit)':'var(--loss)'};">$${fmt(portfolio)}</span>
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.08);">
+    <span style="font-size:0.8rem;color:var(--muted);">Kraken PnL</span>
+    <span style="font-family:var(--font-data);font-weight:700;color:${krakenPnl>=0?'var(--profit)':'var(--loss)'};">${krakenPnl>=0?'+':''}$${fmt(krakenPnl)}</span>
+  </div>`;
+
   if (state.grids.length > 0 && state.lastStatuses.length > 0) {
-    alloc.innerHTML = state.lastStatuses.map((s, i) => {
+    allocHtml += state.lastStatuses.map((s, i) => {
       if (!s) return '';
       const name = state.grids[i].replace('PF_','').replace('USD','/USD');
       const profit = s.totalProfit || 0;
@@ -3373,10 +3538,19 @@ function updateRiskPanel() {
       </div>`;
     }).join('');
   }
+  alloc.innerHTML = allocHtml;
 
-  // Equity history
+  // Equity history — use PnL history from state if available, otherwise track portfolio
   const now = Date.now();
-  riskState.equityHistory.push({ ts: now, value: portfolio });
+  if (state.pnlHistory && state.pnlHistory.length > 0) {
+    // Rebuild equity curve from PnL history: deposited + pnl at each point
+    riskState.equityHistory = state.pnlHistory.map(p => ({
+      ts: p.time * 1000,
+      value: deposited + (p.value || 0)
+    }));
+  } else {
+    riskState.equityHistory.push({ ts: now, value: portfolio });
+  }
   const cutoff = now - 7 * 24 * 3600000; // 7 days
   riskState.equityHistory = riskState.equityHistory.filter(p => p.ts >= cutoff);
   try { localStorage.setItem('niam_equity_history', JSON.stringify(riskState.equityHistory)); } catch(e) {}
