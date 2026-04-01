@@ -837,11 +837,17 @@ input[type=range]::-webkit-slider-thumb {
   <!-- ======== PANEL: HISTORY ======== -->
   <div class="panel" id="panel-history">
 
-    <!-- Stats -->
+    <!-- Stats from /api/trades/stats -->
     <div class="grid-4 mb animate-in">
       <div class="stat-card">
         <div class="lbl">Win Rate</div>
         <div class="val green" id="histWR">--%</div>
+        <div class="sub" id="histWRSub">0W / 0L</div>
+      </div>
+      <div class="stat-card">
+        <div class="lbl">Total PnL</div>
+        <div class="val" id="histTotalPnL">--</div>
+        <div class="sub" id="histTotalTrades">0 trades</div>
       </div>
       <div class="stat-card">
         <div class="lbl">Avg Profit</div>
@@ -877,7 +883,7 @@ input[type=range]::-webkit-slider-thumb {
       </div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Time</th><th>Pair</th><th>Side</th><th>Price</th><th>Qty</th><th>Fee</th></tr></thead>
+          <thead><tr><th>Time</th><th>Pair</th><th>Dir</th><th>Entry</th><th>Exit</th><th>Size</th><th>PnL</th><th>Fee</th><th>Status</th></tr></thead>
           <tbody id="histBody"></tbody>
         </table>
       </div>
@@ -2079,8 +2085,51 @@ function updateLiveFills() {
 // ============================================================
 // HISTORY
 // ============================================================
-function updateHistory() {
-  // Use accumulated fills (persistent across refreshes) instead of current-cycle-only fills
+async function updateHistory() {
+  // Try /api/trades/all first (real trade data with PnL, fees, status)
+  try {
+    const [trades, stats] = await Promise.all([
+      fetchJSON(MARTIN_API + '/trades/all'),
+      fetchJSON(MARTIN_API + '/trades/stats')
+    ]);
+    if (stats) {
+      document.getElementById('histWR').textContent = (stats.winRate || 0).toFixed(1) + '%';
+      document.getElementById('histWR').style.color = stats.winRate > 50 ? 'var(--profit)' : 'var(--loss)';
+      const wrsub = document.getElementById('histWRSub');
+      if (wrsub) wrsub.textContent = (stats.wins||0) + 'W / ' + (stats.losses||0) + 'L';
+      const tpEl = document.getElementById('histTotalPnL');
+      if (tpEl) { const tp=stats.totalPnl||0; tpEl.textContent=(tp>=0?'+$':'-$')+fmt(Math.abs(tp)); tpEl.style.color=tp>=0?'var(--profit)':'var(--loss)'; }
+      const ttEl = document.getElementById('histTotalTrades');
+      if (ttEl) ttEl.textContent = (stats.totalTrades||0)+' trades | fees $'+fmt(stats.totalFees||0);
+      document.getElementById('histAvg').textContent = stats.avgWin ? '+$'+fmt(stats.avgWin) : '--';
+      document.getElementById('histBest').textContent = stats.bestTrade ? '+$'+fmt(stats.bestTrade) : '--';
+      document.getElementById('histWorst').textContent = stats.worstTrade ? '-$'+fmt(Math.abs(stats.worstTrade)) : '--';
+    }
+    if (trades && trades.length > 0) {
+      const pairFilter = document.getElementById('histPairFilter').value;
+      const sideFilter = document.getElementById('histSideFilter').value;
+      let filtered = trades.sort((a,b) => (b.closedAt||b.openedAt||'').localeCompare(a.closedAt||a.openedAt||''));
+      if (pairFilter) filtered = filtered.filter(t => t.instrument === pairFilter);
+      if (sideFilter) filtered = filtered.filter(t => (t.direction||'').toLowerCase().includes(sideFilter));
+      const pairSelect = document.getElementById('histPairFilter');
+      const ep = new Set(Array.from(pairSelect.options).map(o => o.value));
+      [...new Set(trades.map(t => t.instrument))].forEach(inst => {
+        if (!ep.has(inst)) { const o=document.createElement('option'); o.value=inst; o.textContent=inst.replace('PF_','').replace('USD','/USD'); pairSelect.appendChild(o); }
+      });
+      const tbody = document.getElementById('histBody');
+      tbody.innerHTML = filtered.slice(0,200).map(t => {
+        const time = (t.closedAt||t.openedAt) ? new Date(t.closedAt||t.openedAt).toLocaleString('en-GB',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '--';
+        const pair = (t.instrument||'').replace('PF_','').replace('USD','/USD');
+        const dir = (t.direction||'').toUpperCase();
+        const pnl = t.pnl||0;
+        const sc = t.status==='WON'?'var(--profit)':t.status==='LOST'?'var(--loss)':'var(--warn)';
+        return '<tr><td>'+time+'</td><td style="font-weight:600">'+pair+'</td><td class="'+(dir==='LONG'?'side-buy':'side-sell')+'">'+dir+'</td><td>'+(t.entryPrice?'$'+parseFloat(t.entryPrice).toFixed(4):'--')+'</td><td>'+(t.exitPrice?'$'+parseFloat(t.exitPrice).toFixed(4):'--')+'</td><td>'+(t.stake?'$'+fmt(t.stake):'--')+'</td><td style="color:'+(pnl>=0?'var(--profit)':'var(--loss)')+';font-weight:700">'+(pnl>=0?'+':'')+pnl.toFixed(4)+'</td><td>'+(t.fees?'$'+parseFloat(t.fees).toFixed(4):'--')+'</td><td style="color:'+sc+';font-weight:600">'+t.status+'</td></tr>';
+      }).join('');
+      return;
+    }
+  } catch(e) { console.warn('trades API fallback:', e.message); }
+
+  // Fallback to grid fills
   const fills = state.allFillsAccum.slice().sort((a, b) => {
     const ta = a.timestamp ? new Date(a.timestamp).getTime() : 0;
     const tb = b.timestamp ? new Date(b.timestamp).getTime() : 0;
