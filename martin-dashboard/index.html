@@ -922,6 +922,49 @@ input[type=range]::-webkit-slider-thumb {
 
   <!-- ======== PANEL: STRATEGY ======== -->
   <div class="panel" id="panel-strategy">
+
+    <!-- Strategy Presets -->
+    <div class="card mb animate-in">
+      <div class="card-header">
+        <div class="card-title">Strategy Presets</div>
+        <span id="activePresetLabel" style="font-family:var(--font-data);font-size:0.7rem;color:var(--cyan);">Current: Scalper x10</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px;" id="presetCards">
+
+        <div class="strategy-preset" onclick="loadPreset('conservative')" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;">
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--profit);">🛡️ Conservative</div>
+          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x3 · 1.0% spacing · 8 levels</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">Backtest 90j: +9.7% · Low risk</div>
+        </div>
+
+        <div class="strategy-preset" onclick="loadPreset('balanced')" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;">
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--warn);">⚖️ Balanced</div>
+          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x5 · 0.7% spacing · 10 levels</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">Quant recommended · Medium risk</div>
+        </div>
+
+        <div class="strategy-preset active-preset" onclick="loadPreset('scalper')" style="background:var(--bg-card);border:1px solid var(--cyan);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;box-shadow:0 0 15px rgba(0,229,255,0.15);">
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--cyan);">⚡ Scalper x10</div>
+          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x10 · 0.6% spacing · 10 levels</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">🔥 ACTIVE · 5 pairs · High reward</div>
+        </div>
+
+        <div class="strategy-preset" onclick="loadPreset('vicky')" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;">
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--loss);">🔥 Vicky Aggressive</div>
+          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x10 · 0.35% spacing · 12 levels</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">Max fills · High risk · 50+ fills/day</div>
+        </div>
+
+        <div class="strategy-preset" onclick="loadPreset('dot_only')" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;">
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--text);">🎯 DOT Only</div>
+          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x3 · 1.0% spacing · 8 levels · DOT seul</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">Quant validated · Proven edge</div>
+        </div>
+
+      </div>
+      <div id="presetDeployStatus" style="margin-top:10px;display:none;font-family:var(--font-data);font-size:0.75rem;"></div>
+    </div>
+
     <div class="row">
       <div class="col">
         <div class="card mb">
@@ -1858,6 +1901,95 @@ function updateDonut() {
 // ============================================================
 // GRIDS SUMMARY
 // ============================================================
+// ============================================================
+// STRATEGY PRESETS
+// ============================================================
+const STRATEGY_PRESETS = {
+  conservative: { name: 'Conservative', leverage: 3, spacing: 1.0, levels: 8, cap: 28, maxLoss: 15, pairs: ['PF_DOTUSD','PF_AVAXUSD','PF_SOLUSD'] },
+  balanced: { name: 'Balanced', leverage: 5, spacing: 0.7, levels: 10, cap: 23, maxLoss: 15, pairs: ['PF_DOTUSD','PF_AVAXUSD','PF_SOLUSD','PF_LINKUSD'] },
+  scalper: { name: 'Scalper x10', leverage: 10, spacing: 0.6, levels: 10, cap: 23, maxLoss: 15, pairs: ['PF_DOTUSD','PF_AVAXUSD','PF_SOLUSD','PF_LINKUSD','PF_ATOMUSD'] },
+  vicky: { name: 'Vicky Aggressive', leverage: 10, spacing: 0.35, levels: 12, cap: 22, maxLoss: 15, pairs: ['PF_DOTUSD','PF_AVAXUSD','PF_SOLUSD','PF_LINKUSD','PF_ATOMUSD'] },
+  dot_only: { name: 'DOT Only', leverage: 3, spacing: 1.0, levels: 8, cap: 30, maxLoss: 15, pairs: ['PF_DOTUSD'] },
+};
+
+function loadPreset(presetName) {
+  const p = STRATEGY_PRESETS[presetName];
+  if (!p) return;
+
+  // Update sliders
+  document.getElementById('paramSpacing').value = p.spacing;
+  document.getElementById('sliderSpacing').textContent = p.spacing + '%';
+  document.getElementById('paramLev').value = p.leverage;
+  document.getElementById('sliderLev').textContent = p.leverage + 'x';
+  document.getElementById('paramCap').value = p.cap;
+  document.getElementById('sliderCap').textContent = '$' + p.cap;
+  document.getElementById('paramLevels').value = p.levels;
+  document.getElementById('sliderLevels').textContent = p.levels;
+  document.getElementById('paramMaxLoss').value = p.maxLoss;
+  document.getElementById('sliderMaxLoss').textContent = p.maxLoss + '%';
+
+  // Update active preset visual
+  document.querySelectorAll('.strategy-preset').forEach(el => {
+    el.style.borderColor = 'var(--border)';
+    el.style.boxShadow = 'none';
+  });
+  event.currentTarget.style.borderColor = 'var(--cyan)';
+  event.currentTarget.style.boxShadow = '0 0 15px rgba(0,229,255,0.15)';
+  document.getElementById('activePresetLabel').textContent = 'Selected: ' + p.name;
+
+  // Show deploy button
+  const status = document.getElementById('presetDeployStatus');
+  status.style.display = 'block';
+  status.innerHTML = `<div style="display:flex;align-items:center;gap:10px;">
+    <span style="color:var(--cyan);">Preset "${p.name}" loaded → ${p.pairs.length} pairs, x${p.leverage}, ${p.spacing}% spacing</span>
+    <button class="btn btn-primary btn-sm" onclick="deployPreset('${presetName}')">DEPLOY NOW</button>
+  </div>`;
+}
+
+async function deployPreset(presetName) {
+  const p = STRATEGY_PRESETS[presetName];
+  if (!p) return;
+  if (!confirm('Deploy strategy "' + p.name + '"?\\n\\n' + p.pairs.length + ' pairs, x' + p.leverage + ', ' + p.spacing + '% spacing\\n\\nThis will STOP all current grids and restart with new config.')) return;
+
+  const status = document.getElementById('presetDeployStatus');
+  status.innerHTML = '<span style="color:var(--warn);">Deploying... stopping grids...</span>';
+
+  try {
+    // Stop all current grids
+    for (const g of state.grids) {
+      await fetch(MARTIN_API + '/grid/stop/' + g, { method: 'POST' });
+    }
+
+    status.innerHTML = '<span style="color:var(--warn);">Starting new grids...</span>';
+    let started = 0;
+
+    // Start new grids
+    for (const pair of p.pairs) {
+      const url = MARTIN_API + '/grid/start?instrument=' + pair +
+        '&capital=' + p.cap + '&leverage=' + p.leverage +
+        '&gridSpacingPct=' + p.spacing + '&totalLevels=' + p.levels +
+        '&maxLossPercent=' + p.maxLoss + '&gridMode=NEUTRAL';
+      const resp = await fetch(url, { method: 'POST' });
+      if (resp.ok) started++;
+    }
+
+    // Configure auto-grid
+    for (const pair of p.pairs) {
+      await fetch(MARTIN_API + '/signal/auto/config?instrument=' + pair +
+        '&capital=' + p.cap + '&leverage=' + p.leverage +
+        '&demo=false&gridSpacingPct=' + p.spacing +
+        '&totalLevels=' + p.levels + '&maxLossPercent=' + p.maxLoss +
+        '&gridMode=NEUTRAL', { method: 'POST' });
+    }
+    await fetch(MARTIN_API + '/signal/auto/enable', { method: 'POST' });
+
+    status.innerHTML = '<span style="color:var(--profit);">✓ Deployed "' + p.name + '" — ' + started + '/' + p.pairs.length + ' grids started</span>';
+    refresh();
+  } catch (e) {
+    status.innerHTML = '<span style="color:var(--loss);">Deploy failed: ' + e.message + '</span>';
+  }
+}
+
 async function runBacktest() {
   const btn = event.target;
   btn.textContent = 'Running...';
