@@ -944,9 +944,10 @@ input[type=range]::-webkit-slider-thumb {
         </div>
 
         <div class="strategy-preset active-preset" onclick="loadPreset('scalper')" style="background:var(--bg-card);border:1px solid var(--cyan);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;box-shadow:0 0 15px rgba(0,229,255,0.15);">
-          <div style="font-family:var(--font-data);font-weight:700;color:var(--cyan);">⚡ Scalper x10</div>
-          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x10 · 0.6% spacing · 10 levels</div>
-          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">🔥 ACTIVE · 5 pairs · High reward</div>
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--cyan);">⚡ Scalper x10 (ACTIVE)</div>
+          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x10 · 0.6% spacing · 5 pairs</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">DOT $23 · AVAX $23 · SOL $22 · LINK $23 · ATOM $23</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--cyan);margin-top:4px;">Trail $0.30 · ADX 25 · Kill -40% · Hours 08-01 UTC</div>
         </div>
 
         <div class="strategy-preset" onclick="loadPreset('vicky')" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;">
@@ -963,6 +964,15 @@ input[type=range]::-webkit-slider-thumb {
 
       </div>
       <div id="presetDeployStatus" style="margin-top:10px;display:none;font-family:var(--font-data);font-size:0.75rem;"></div>
+
+      <!-- Live config details -->
+      <div style="margin-top:12px;padding:12px;background:rgba(0,229,255,0.05);border:1px solid rgba(0,229,255,0.15);border-radius:10px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-family:var(--font-data);font-size:0.7rem;color:var(--cyan);font-weight:700;">LIVE CONFIG</span>
+          <button class="btn btn-ghost btn-sm" style="font-size:0.65rem;padding:3px 8px;" onclick="refreshLiveConfig()">Refresh</button>
+        </div>
+        <div id="liveConfigDetails" style="margin-top:8px;font-family:var(--font-data);font-size:0.68rem;color:var(--text-secondary);line-height:1.8;"></div>
+      </div>
     </div>
 
     <div class="row">
@@ -1989,6 +1999,52 @@ async function deployPreset(presetName) {
     status.innerHTML = '<span style="color:var(--loss);">Deploy failed: ' + e.message + '</span>';
   }
 }
+
+async function refreshLiveConfig() {
+  const el = document.getElementById('liveConfigDetails');
+  el.innerHTML = '<span style="color:var(--muted);">Loading...</span>';
+  try {
+    const [autoStatus, balance, trailing] = await Promise.all([
+      fetchJSON(MARTIN_API + '/signal/auto/status'),
+      fetchJSON(MARTIN_API + '/bot/balance'),
+      fetchJSON(MARTIN_API + '/grid/trailing/status'),
+    ]);
+    const portfolio = balance?.accounts?.flex?.portfolioValue || 0;
+    const pnl = balance?.accounts?.flex?.pnl || 0;
+    const configs = autoStatus?.configs || {};
+    const pairs = Object.keys(configs);
+    const trailPairs = Object.keys(trailing || {});
+
+    let html = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:4px 16px;">';
+    html += '<span style="color:var(--muted);">Portfolio</span><span style="color:var(--text);">$' + portfolio.toFixed(2) + '</span>';
+    html += '<span style="color:var(--muted);">PnL</span><span style="color:' + (pnl >= 0 ? 'var(--profit)' : 'var(--loss)') + ';">' + (pnl >= 0 ? '+' : '') + '$' + pnl.toFixed(4) + '</span>';
+    html += '<span style="color:var(--muted);">Auto-grid</span><span style="color:' + (autoStatus?.enabled ? 'var(--profit)' : 'var(--loss)') + ';">' + (autoStatus?.enabled ? 'ON' : 'OFF') + '</span>';
+    html += '<span style="color:var(--muted);">Kill switch</span><span>' + (autoStatus?.drawdown?.killed ? '🚨 KILLED' : '✅ OK') + '</span>';
+    html += '<span style="color:var(--muted);">Trailing</span><span>' + trailPairs.length + ' active</span>';
+    html += '<span style="color:var(--muted);">Trading hours</span><span>08:00-00:55 UTC</span>';
+    html += '</div>';
+
+    if (pairs.length > 0) {
+      html += '<div style="margin-top:8px;border-top:1px solid rgba(255,255,255,0.05);padding-top:8px;">';
+      pairs.forEach(p => {
+        const c = configs[p];
+        const name = p.replace('PF_','').replace('USD','');
+        html += '<div style="display:flex;justify-content:space-between;padding:2px 0;">';
+        html += '<span style="color:var(--text);font-weight:600;">' + name + '</span>';
+        html += '<span style="color:var(--muted);">$' + c.capital + ' x' + c.leverage + ' ' + c.gridSpacingPct + '% ' + c.totalLevels + 'lvl</span>';
+        html += '</div>';
+      });
+      html += '</div>';
+    }
+
+    el.innerHTML = html;
+  } catch (e) {
+    el.innerHTML = '<span style="color:var(--loss);">Failed: ' + e.message + '</span>';
+  }
+}
+
+// Load live config when Strategy tab is shown
+document.querySelector('.nav-btn[data-tab="strategy"]')?.addEventListener('click', refreshLiveConfig);
 
 async function runBacktest() {
   const btn = event.target;
