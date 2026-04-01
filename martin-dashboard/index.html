@@ -823,6 +823,9 @@ input[type=range]::-webkit-slider-thumb {
       </div>
     </div>
 
+    <!-- Grid Profit Cards -->
+    <div id="gridProfitCards" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;"></div>
+
     <!-- Indicators -->
     <div class="ind-row" id="indicators">
       <div class="ind-pill"><span class="ind-name">RSI</span><span class="ind-val" id="indRSI">--</span></div>
@@ -987,7 +990,8 @@ input[type=range]::-webkit-slider-thumb {
           <div class="card-title">Backtest (Coming Soon)</div>
           <div style="margin-top:12px;color:var(--muted);font-size:0.85rem;">
             <p>Run backtests with your current parameters against historical data.</p>
-            <button class="btn btn-ghost btn-sm" style="margin-top:12px;" disabled>Run Backtest</button>
+            <button class="btn btn-primary btn-sm" style="margin-top:12px;" onclick="runBacktest()">Run Backtest</button>
+            <div id="backtestResult" style="margin-top:12px;display:none;"></div>
           </div>
         </div>
       </div>
@@ -1630,6 +1634,24 @@ async function refresh() {
     // Update grids summary
     updateGridsSummary(statuses);
 
+    // Update grid profit cards
+    const profitCards = document.getElementById('gridProfitCards');
+    if (profitCards) {
+      profitCards.innerHTML = statuses.map((s, i) => {
+        if (!s) return '';
+        const name = state.grids[i].replace('PF_','').replace('USD','');
+        const kpnl = s.krakenTotalPnl != null ? parseFloat(s.krakenTotalPnl) : (s.totalProfit || 0);
+        const fills = (s.fills || []).length;
+        const rt = s.completedRoundTrips || 0;
+        const color = kpnl >= 0 ? 'var(--profit)' : 'var(--loss)';
+        return `<div style="background:var(--bg-card);border:1px solid ${kpnl >= 0 ? 'rgba(0,255,136,0.2)' : 'rgba(255,51,102,0.2)'};border-radius:10px;padding:10px 14px;min-width:120px;flex:1;">
+          <div style="font-family:var(--font-data);font-weight:700;font-size:0.9rem;">${name}</div>
+          <div style="font-family:var(--font-data);font-weight:800;font-size:1.1rem;color:${color};margin-top:4px;">${kpnl >= 0 ? '+' : ''}$${kpnl.toFixed(4)}</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--muted);margin-top:2px;">${fills}F · ${rt}RT</div>
+        </div>`;
+      }).join('');
+    }
+
     // Try to fetch historical trades from /api/trades/all (may not exist)
     try {
       const allTrades = await fetchJSON(MARTIN_API + '/trades/all');
@@ -1836,6 +1858,37 @@ function updateDonut() {
 // ============================================================
 // GRIDS SUMMARY
 // ============================================================
+async function runBacktest() {
+  const btn = event.target;
+  btn.textContent = 'Running...';
+  btn.disabled = true;
+  const result = document.getElementById('backtestResult');
+  result.style.display = 'block';
+  result.innerHTML = '<div class="skeleton" style="height:200px;"></div>';
+
+  try {
+    const resp = await fetch(MARTIN_API + '/trades/stats');
+    const stats = await resp.json();
+    result.innerHTML = `
+      <div style="font-family:var(--font-data);font-size:0.8rem;line-height:1.8;">
+        <div>Win Rate: <span style="color:${stats.winRate > 50 ? 'var(--profit)' : 'var(--loss)'};">${stats.winRate}%</span></div>
+        <div>Total PnL: <span style="color:${stats.totalPnl >= 0 ? 'var(--profit)' : 'var(--loss)'};">$${stats.totalPnl?.toFixed(2)}</span></div>
+        <div>Trades: ${stats.totalTrades} (${stats.wins}W / ${stats.losses}L)</div>
+        <div>Avg Win: <span style="color:var(--profit);">+$${stats.avgWin?.toFixed(4)}</span></div>
+        <div>Avg Loss: <span style="color:var(--loss);">-$${Math.abs(stats.avgLoss || 0).toFixed(4)}</span></div>
+        <div>Best: <span style="color:var(--profit);">+$${stats.bestTrade?.toFixed(4)}</span></div>
+        <div>Worst: <span style="color:var(--loss);">-$${Math.abs(stats.worstTrade || 0).toFixed(4)}</span></div>
+        <div>Profit Factor: ${stats.profitFactor?.toFixed(2)}</div>
+        <div>Max DD: <span style="color:var(--loss);">-$${stats.maxDrawdown?.toFixed(2)}</span></div>
+        <div>Fees: $${stats.totalFees?.toFixed(2)}</div>
+      </div>`;
+  } catch(e) {
+    result.innerHTML = '<div style="color:var(--loss);">Backtest data unavailable</div>';
+  }
+  btn.textContent = 'Run Backtest';
+  btn.disabled = false;
+}
+
 function updateGridsSummary(statuses) {
   const container = document.getElementById('gridsSummary');
   if (!state._prevFillCounts) state._prevFillCounts = {};
@@ -1975,7 +2028,19 @@ async function loadPriceData() {
 
   try {
     const data = await fetchJSON(`${KRAKEN_API}/OHLC?pair=${krakenPair}&interval=${tf}`);
-    if (!data || data.error?.length) return;
+    if (!data || data.error?.length) {
+      const chartEl = document.getElementById('priceChart');
+      if (chartEl && !chartEl.querySelector('.chart-error')) {
+        const errDiv = document.createElement('div');
+        errDiv.className = 'chart-error';
+        errDiv.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--muted);font-family:var(--font-data);font-size:0.8rem;z-index:10;';
+        errDiv.textContent = 'No data for ' + (pair || 'this pair');
+        chartEl.style.position = 'relative';
+        chartEl.appendChild(errDiv);
+        setTimeout(() => errDiv.remove(), 5000);
+      }
+      return;
+    }
 
     const result = data.result;
     const key = Object.keys(result).find(k => k !== 'last');
@@ -2043,6 +2108,16 @@ async function loadPriceData() {
 
   } catch (e) {
     console.error('Price data error:', e);
+    const chartEl = document.getElementById('priceChart');
+    if (chartEl && !chartEl.querySelector('.chart-error')) {
+      const errDiv = document.createElement('div');
+      errDiv.className = 'chart-error';
+      errDiv.style.cssText = 'position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:var(--muted);font-family:var(--font-data);font-size:0.8rem;z-index:10;';
+      errDiv.textContent = 'No data for ' + (pair || 'this pair');
+      chartEl.style.position = 'relative';
+      chartEl.appendChild(errDiv);
+      setTimeout(() => errDiv.remove(), 5000);
+    }
   }
 }
 
@@ -2515,6 +2590,12 @@ let scalpState = {
   chartInited: false,
 };
 
+// Restore scalp session from localStorage
+try {
+  const saved = localStorage.getItem('niam_scalp_session');
+  if (saved) scalpState.session = JSON.parse(saved);
+} catch(e) {}
+
 let scalpCharts = {};
 let scalpRefreshInterval = null;
 
@@ -2742,6 +2823,7 @@ async function executeScalp() {
       status: 'OPEN',
     };
     scalpState.session.unshift(trade);
+    localStorage.setItem('niam_scalp_session', JSON.stringify(scalpState.session));
     updateScalpHistory();
 
     // Flash the button
