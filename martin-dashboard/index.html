@@ -717,7 +717,7 @@ input[type=range]::-webkit-slider-thumb {
 
     <!-- PnL Hero -->
     <div class="card pnl-hero mb animate-in">
-      <div class="pnl-label">Total Profit / Loss</div>
+      <div class="pnl-label">Kraken P&L (Realized)</div>
       <div class="pnl-value" id="pnlValue">$0.00</div>
       <div class="pnl-sub" id="pnlSub">Loading...</div>
       <div class="pnl-pct" id="pnlPct">0%</div>
@@ -1586,11 +1586,13 @@ async function refresh() {
     }
 
     // Sauvegarder dans state pour P&L History
-    state.lastTotalProfit = totalProfit;
+    // Use Kraken's real PnL from balance endpoint (accounts.flex.pnl)
+    const krakenPnl = (state.balance && state.balance.pnl != null) ? parseFloat(state.balance.pnl) : totalProfit;
+    state.lastTotalProfit = krakenPnl;
     state.lastStatuses = statuses;
 
-    // Update PnL
-    updatePnL(totalProfit, totalRT, totalFills);
+    // Update PnL — use Kraken PnL, not internal grid totalProfit
+    updatePnL(krakenPnl, totalRT, totalFills);
 
     // Update donut
     updateDonut();
@@ -1624,7 +1626,7 @@ async function refresh() {
     // Update P&L History panel if visible
     if (document.getElementById('panel-pnlhistory').classList.contains('active')) {
       updateLastRTBadges(statuses);
-      updatePnLHistoryKPIs(totalProfit);
+      updatePnLHistoryKPIs(krakenPnl);
     }
 
     // Fetch prices
@@ -1660,16 +1662,17 @@ function updatePnL(profit, rt, fills) {
   el.textContent = (isPositive ? '+$' : '-$') + fmt(Math.abs(profit));
   el.className = 'pnl-value ' + (isPositive ? 'positive' : 'negative');
 
-  // Calculate percentage if we have portfolio value
+  // Calculate percentage based on initial capital (portfolio - pnl = what we started with)
   let pct = 0;
   if (state.balance && state.balance.portfolioValue > 0) {
-    pct = (profit / state.balance.portfolioValue) * 100;
+    const initialCapital = state.balance.portfolioValue - profit;
+    pct = initialCapital > 0 ? (profit / initialCapital) * 100 : 0;
   }
   const pctEl = document.getElementById('pnlPct');
   pctEl.textContent = (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%';
   pctEl.className = 'pnl-pct ' + (pct >= 0 ? 'positive' : 'negative');
 
-  document.getElementById('pnlSub').textContent = rt + ' round trips across ' + state.grids.length + ' grid(s)';
+  document.getElementById('pnlSub').textContent = fills + ' fills \u00b7 ' + rt + ' round trips across ' + state.grids.length + ' grid(s)';
   document.getElementById('statRT').textContent = rt;
   document.getElementById('statFills').textContent = fills;
   document.getElementById('statAvgProfit').textContent = rt > 0 ? '$' + fmt(profit / rt) : '--';
