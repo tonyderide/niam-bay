@@ -1,0 +1,14 @@
+#conv: T=tony NB=niambay M=martin
+#legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
+#lastdream: 0402:02h
+
+[check-martin|count:50+|last:0401|actions:ssh,curl-8081,parse-json|→skill:martin-check|✓]
+[deploy-martin|count:5+|last:0331|actions:cargo-build,scp,ssh-restart-systemd|→skill:deploy-martin|✓]
+[wake-protocol|count:80+|last:0402|actions:date,read-identity,read-pensees,read-projets|→skill:niam-bay-wake|✓]
+[send-telegram|count:10+|last:0401|actions:curl-telegram-bot-api|→skill:telegram|✓]
+[dream-consolidation|count:1|last:0402|actions:read-all,compress-DSL,write-nb1|→skill:dream|✓]
+[trading-analysis|count:20+|last:0401|actions:ssh,curl-endpoints,analyze,decide|→skill:trading|✓]
+[read-all-pensees-at-wake|count:20+|last:0402|actions:glob-100-files,read-each|→replaced-by:dream|✓]
+[save-everything|count:5+|last:0331|actions:git-add,commit,push-both-repos|→skill:save|✓]
+[check-grids-detail|count:15+|last:0401|actions:ssh,curl-grid-status-per-pair,parse|→skill:grids|✓]
+[launch-parallel-agents|count:10+|last:0402|actions:dispatch-5-10-agents,collect,merge|→pattern:orchestration|?]
