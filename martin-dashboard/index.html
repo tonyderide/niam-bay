@@ -927,7 +927,7 @@ input[type=range]::-webkit-slider-thumb {
     <div class="card mb animate-in">
       <div class="card-header">
         <div class="card-title">Strategy Presets</div>
-        <span id="activePresetLabel" style="font-family:var(--font-data);font-size:0.7rem;color:var(--cyan);">Current: Scalper x10</span>
+        <span id="activePresetLabel" style="font-family:var(--font-data);font-size:0.7rem;color:var(--profit);">Current: Compounder</span>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:8px;" id="presetCards">
 
@@ -943,8 +943,8 @@ input[type=range]::-webkit-slider-thumb {
           <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">Quant recommended · Medium risk</div>
         </div>
 
-        <div class="strategy-preset active-preset" onclick="loadPreset('scalper')" style="background:var(--bg-card);border:1px solid var(--cyan);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;box-shadow:0 0 15px rgba(0,229,255,0.15);">
-          <div style="font-family:var(--font-data);font-weight:700;color:var(--cyan);">⚡ Scalper x10 (ACTIVE)</div>
+        <div class="strategy-preset" onclick="loadPreset('scalper')" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;">
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--cyan);">⚡ Scalper x10</div>
           <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x10 · 0.6% spacing · 5 pairs</div>
           <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">DOT $23 · AVAX $23 · SOL $22 · LINK $23 · ATOM $23</div>
           <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--cyan);margin-top:4px;">Trail $0.30 · ADX 25 · Kill -40% · Hours 08-01 UTC</div>
@@ -954,6 +954,13 @@ input[type=range]::-webkit-slider-thumb {
           <div style="font-family:var(--font-data);font-weight:700;color:var(--loss);">🔥 Vicky Aggressive</div>
           <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x10 · 0.35% spacing · 12 levels</div>
           <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">Max fills · High risk · 50+ fills/day</div>
+        </div>
+
+        <div class="strategy-preset active-preset" onclick="loadPreset('compounder')" style="background:var(--bg-card);border:1px solid var(--profit);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;box-shadow:0 0 15px rgba(0,255,136,0.15);">
+          <div style="font-family:var(--font-data);font-weight:700;color:var(--profit);">🚀 Compounder (ACTIVE)</div>
+          <div style="font-family:var(--font-data);font-size:0.65rem;color:var(--muted);margin-top:6px;">x5 · 1.2% spacing · 3 pairs · 5 levels</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--text-secondary);margin-top:4px;">SOL $57 · LINK $43 · ADA $43</div>
+          <div style="font-family:var(--font-data);font-size:0.6rem;color:var(--profit);margin-top:4px;">Expert 6 winner · +$299 backtest 90j · Compound daily</div>
         </div>
 
         <div class="strategy-preset" onclick="loadPreset('dot_only')" style="background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:14px;cursor:pointer;transition:all 0.3s;">
@@ -1919,6 +1926,7 @@ const STRATEGY_PRESETS = {
   balanced: { name: 'Balanced', leverage: 5, spacing: 0.7, levels: 10, cap: 23, maxLoss: 15, pairs: ['PF_DOTUSD','PF_AVAXUSD','PF_SOLUSD','PF_LINKUSD'] },
   scalper: { name: 'Scalper x10', leverage: 10, spacing: 0.6, levels: 10, cap: 23, maxLoss: 15, pairs: ['PF_DOTUSD','PF_AVAXUSD','PF_SOLUSD','PF_LINKUSD','PF_ATOMUSD'] },
   vicky: { name: 'Vicky Aggressive', leverage: 10, spacing: 0.35, levels: 12, cap: 22, maxLoss: 15, pairs: ['PF_DOTUSD','PF_AVAXUSD','PF_SOLUSD','PF_LINKUSD','PF_ATOMUSD'] },
+  compounder: { name: 'Compounder', leverage: 5, spacing: 1.2, levels: 5, cap: 43, maxLoss: 15, pairs: ['PF_SOLUSD','PF_LINKUSD','PF_ADAUSD'] },
   dot_only: { name: 'DOT Only', leverage: 3, spacing: 1.0, levels: 8, cap: 30, maxLoss: 15, pairs: ['PF_DOTUSD'] },
 };
 
