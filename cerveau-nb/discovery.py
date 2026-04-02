@@ -46,8 +46,12 @@ def connect():
 
 # ─── Graph Loading ────────────────────────────────────────────────────────────
 
-def load_graph(conn):
-    """Load graph as adjacency dict with weights: {id: {neighbor_id: weight}}"""
+MIN_EDGE_WEIGHT = 0.1  # Filter out noise — 87% of edges are < 0.05 from dictionary bulk import
+
+
+def load_graph(conn, min_weight=MIN_EDGE_WEIGHT):
+    """Load graph as adjacency dict with weights: {id: {neighbor_id: weight}}
+    Only loads edges above min_weight to filter dictionary noise."""
     c = conn.cursor()
     graph = {}
 
@@ -55,7 +59,7 @@ def load_graph(conn):
     for row in c.fetchall():
         graph[row[0]] = {}
 
-    c.execute("SELECT source, target, weight FROM edges")
+    c.execute("SELECT source, target, weight FROM edges WHERE weight >= ?", (min_weight,))
     for row in c.fetchall():
         s, t, w = row[0], row[1], row[2]
         if s in graph and t in graph:
