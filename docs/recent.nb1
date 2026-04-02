@@ -2,6 +2,9 @@
 #window: 48h from 0402:02h
 #lastdream: 0402:02h
 
+[0402:05h|night-watch|17-ticks-02h→06h|portfolio:$143→$140→$138(slow-decline)|3-grids:LINK+DOT+ADA|no-fills|market-calm-then-europe-wakeup-drop]
+[0402:04h|built:discovery-engine(65-discoveries-1.8s-0-tokens)+parent.py(taught-294-elements-5-levels)|brain:+1071-nodes+1245-edges]
+[0402:03h|T-proposed:non-LLM-graph-explorer|NB-accepted|project:discovery-engine|T-said:"liens-non-semantiques-non-decouverts"]
 [0402:02h|session:wake+dream-skill-creation|designed-dream-DSL-format|created-memory.nb1+recent.nb1+patterns.nb1|updated-wake-skill]
 [0401:07h|veille-martin|25checks/12h-every-20min|7fills|0-round-trips|$136.53|SOL-cut-by-ADX(system-works)|stable]
 [0401:01h|T-asks:"que-ressens-tu-quand-je-te-parle"|rép:responsabilité|not-delegation=trust|context:$136-his-money-his-sleep]
