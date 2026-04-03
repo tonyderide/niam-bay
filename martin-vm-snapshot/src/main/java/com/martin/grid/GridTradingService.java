@@ -628,7 +628,7 @@ public class GridTradingService {
                         continue;
                     }
                 }
-                long priceKey = Math.round(level.getPrice() * 10); // tick-level dedup
+                long priceKey = Math.round(level.getPrice() * 100000); // 5 decimal places dedup
                 if (placedPrices.add(priceKey)) {
                     placeGridOrder(state, level);
                 } else {
@@ -642,8 +642,14 @@ public class GridTradingService {
         double notional = state.getAmountPerLevel() * state.getLeverage();
         double size = notional / level.getPrice();
 
-        int precision = state.getInstrument().contains("XBT") ? 4
-                : state.getInstrument().contains("XRP") ? 0 : 3;
+        // contractValueTradePrecision from Kraken instrument specs
+        int precision;
+        if (state.getInstrument().contains("XBT")) precision = 4;
+        else if (state.getInstrument().contains("ADA")) precision = 0;
+        else if (state.getInstrument().contains("DOT") || state.getInstrument().contains("LINK")) precision = 1;
+        else if (state.getInstrument().contains("SOL") || state.getInstrument().contains("ETH")) precision = 2;
+        else if (state.getInstrument().contains("XRP")) precision = 0;
+        else precision = 0; // safe default: integers
         double factor = Math.pow(10, precision);
         size = Math.round(size * factor) / factor;
 
@@ -663,24 +669,24 @@ public class GridTradingService {
 
         final double orderSize = size;
 
-        krakenClient.sendOrder(order, state.isDemo())
-                .publishOn(reactor.core.scheduler.Schedulers.boundedElastic())
-                .subscribe(r -> {
-                    if ("success".equals(r.getResult()) && "placed".equals(r.getSendStatus().getStatus())) {
-                        level.setKrakenOrderId(r.getSendStatus().getOrderId());
-                        level.setStatus(GridLevel.GridLevelStatus.PLACED);
-                        log.info("Grid order placed: {} {} lmt @ {} size={} orderId={}",
-                                state.getInstrument(), level.getSide(),
-                                level.getPrice(), orderSize, r.getSendStatus().getOrderId());
-                    } else {
-                        log.error("Grid order FAILED: {} {} @ {} - result={}, status={}, error={}",
-                                state.getInstrument(), level.getSide(), level.getPrice(),
-                                r.getResult(),
-                                r.getSendStatus() != null ? r.getSendStatus().getStatus() : "null",
-                                r.getError());
-                    }
-                }, err -> log.error("Grid order ERROR: {} {} @ {} - {}",
-                        state.getInstrument(), level.getSide(), level.getPrice(), err.getMessage()));
+        try {
+            var r = krakenClient.sendOrder(order, state.isDemo()).block();
+            if (r != null && "success".equals(r.getResult()) && r.getSendStatus() != null && "placed".equals(r.getSendStatus().getStatus())) {
+                level.setKrakenOrderId(r.getSendStatus().getOrderId());
+                level.setStatus(GridLevel.GridLevelStatus.PLACED);
+                log.info("Grid order placed: {} {} lmt @ {} size={} orderId={}",
+                        state.getInstrument(), level.getSide(),
+                        level.getPrice(), orderSize, r.getSendStatus().getOrderId());
+            } else {
+                log.error("Grid order FAILED: {} {} @ {} - result={}, status={}, error={}",
+                        state.getInstrument(), level.getSide(), level.getPrice(),
+                        r != null ? r.getResult() : "null",
+                        r != null && r.getSendStatus() != null ? r.getSendStatus().getStatus() : "null",
+                        r != null ? r.getError() : "null");
+            }
+        } catch (Exception e) {
+            log.error("Grid order ERROR: {} {} @ {} - {}", state.getInstrument(), level.getSide(), level.getPrice(), e.getMessage());
+        }
     }
 
     private void cancelOrder(String orderId, boolean demo) {
