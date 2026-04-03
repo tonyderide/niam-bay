@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 public class DrawdownManager {
@@ -12,108 +14,88 @@ public class DrawdownManager {
     private static final Logger log = LoggerFactory.getLogger(DrawdownManager.class);
 
     public enum DrawdownAction {
-        NORMAL,      // no drawdown issue
-        REDUCE,      // >= 10% DD — reduce to 2 levels instead of 6
-        PAUSE_48H,   // >= 20% DD — pause for 48 hours
-        PAUSE_WEEK,  // >= 30% DD — pause for 1 week
-        KILL         // >= 40% DD — permanent stop
+        NORMAL,
+        REDUCE,      // >= 10% DD
+        PAUSE_48H,   // >= 20% DD
+        PAUSE_WEEK,  // >= 30% DD
+        KILL         // >= 40% DD
     }
 
-    private double peakEquity = 0;
-    private double initialCapital = 136.0;
+    private final Map<String, Double> peakEquityMap = new ConcurrentHashMap<>();
+    private double initialCapital = 144.0;
     private boolean killed = false;
     private Instant pauseUntil = null;
 
-    /**
-     * Called every 15 minutes to evaluate drawdown status.
-     */
-    public DrawdownAction checkDrawdown(double currentEquity) {
+    public DrawdownAction checkDrawdown(String instrument, double currentEquity) {
         if (killed) {
-            log.warn("DRAWDOWN: System is KILLED — permanent stop active. Equity={}", currentEquity);
+            log.warn("DRAWDOWN: System is KILLED. Equity={}", currentEquity);
             return DrawdownAction.KILL;
         }
 
-        // Check if we are in a pause period
         if (pauseUntil != null && Instant.now().isBefore(pauseUntil)) {
-            log.info("DRAWDOWN: Paused until {} — current equity={}", pauseUntil, currentEquity);
-            return DrawdownAction.PAUSE_48H; // still paused
+            log.info("DRAWDOWN: Paused until {} equity={}", pauseUntil, currentEquity);
+            return DrawdownAction.PAUSE_48H;
         } else if (pauseUntil != null) {
-            log.info("DRAWDOWN: Pause period ended, resuming checks");
+            log.info("DRAWDOWN: Pause ended, resuming");
             pauseUntil = null;
         }
 
-        // Update peak equity
-        if (currentEquity > peakEquity) {
-            peakEquity = currentEquity;
+        double peak = peakEquityMap.getOrDefault(instrument, currentEquity);
+        if (currentEquity > peak) {
+            peak = currentEquity;
         }
+        peakEquityMap.put(instrument, peak);
 
-        // Initialize peak from initial capital if never set
-        if (peakEquity <= 0) {
-            peakEquity = initialCapital;
-        }
-
-        double ddPct = (peakEquity - currentEquity) / peakEquity * 100;
+        double ddPct = (peak - currentEquity) / peak * 100;
 
         if (ddPct >= 40) {
             killed = true;
-            log.error("DRAWDOWN KILL: {}% drawdown (peak={}, current={}). PERMANENT STOP.",
-                    String.format("%.2f", ddPct), peakEquity, currentEquity);
+            log.error("DRAWDOWN KILL: {}% for {} (peak={}, current={})",
+                    String.format("%.2f", ddPct), instrument, peak, currentEquity);
             return DrawdownAction.KILL;
         }
-
         if (ddPct >= 30) {
-            pauseUntil = Instant.now().plusSeconds(7 * 24 * 3600); // 1 week
-            log.error("DRAWDOWN PAUSE_WEEK: {}% drawdown (peak={}, current={}). Paused until {}",
-                    String.format("%.2f", ddPct), peakEquity, currentEquity, pauseUntil);
+            pauseUntil = Instant.now().plusSeconds(7 * 24 * 3600);
+            log.error("DRAWDOWN PAUSE_WEEK: {}% for {} (peak={}, current={})",
+                    String.format("%.2f", ddPct), instrument, peak, currentEquity);
             return DrawdownAction.PAUSE_WEEK;
         }
-
         if (ddPct >= 20) {
-            pauseUntil = Instant.now().plusSeconds(48 * 3600); // 48 hours
-            log.warn("DRAWDOWN PAUSE_48H: {}% drawdown (peak={}, current={}). Paused until {}",
-                    String.format("%.2f", ddPct), peakEquity, currentEquity, pauseUntil);
+            pauseUntil = Instant.now().plusSeconds(48 * 3600);
+            log.warn("DRAWDOWN PAUSE_48H: {}% for {} (peak={}, current={})",
+                    String.format("%.2f", ddPct), instrument, peak, currentEquity);
             return DrawdownAction.PAUSE_48H;
         }
-
         if (ddPct >= 10) {
-            log.warn("DRAWDOWN REDUCE: {}% drawdown (peak={}, current={}). Reducing grid to 2 levels.",
-                    String.format("%.2f", ddPct), peakEquity, currentEquity);
+            log.warn("DRAWDOWN REDUCE: {}% for {} (peak={}, current={})",
+                    String.format("%.2f", ddPct), instrument, peak, currentEquity);
             return DrawdownAction.REDUCE;
         }
 
         return DrawdownAction.NORMAL;
     }
 
-    public double getPeakEquity() {
-        return peakEquity;
+    public DrawdownAction checkDrawdown(double currentEquity) {
+        return checkDrawdown("GLOBAL", currentEquity);
     }
 
-    public void setPeakEquity(double peakEquity) {
-        this.peakEquity = peakEquity;
+    public void resetPeak(String instrument, double newPeak) {
+        peakEquityMap.put(instrument, newPeak);
+        log.info("DRAWDOWN: Peak reset for {} to {}", instrument, newPeak);
     }
 
-    public double getInitialCapital() {
-        return initialCapital;
-    }
+    public Map<String, Double> getPeakEquityMap() { return peakEquityMap; }
+    public double getPeakEquity() { return peakEquityMap.values().stream().mapToDouble(d -> d).max().orElse(0); }
+    public void setPeakEquity(double v) { /* legacy compat */ }
+    public double getInitialCapital() { return initialCapital; }
+    public void setInitialCapital(double v) { this.initialCapital = v; }
+    public boolean isKilled() { return killed; }
+    public Instant getPauseUntil() { return pauseUntil; }
 
-    public void setInitialCapital(double initialCapital) {
-        this.initialCapital = initialCapital;
-    }
-
-    public boolean isKilled() {
-        return killed;
-    }
-
-    public Instant getPauseUntil() {
-        return pauseUntil;
-    }
-
-    /**
-     * Reset the kill switch (manual override).
-     */
     public void resetKill() {
         this.killed = false;
         this.pauseUntil = null;
-        log.info("DRAWDOWN: Kill switch RESET manually");
+        this.peakEquityMap.clear();
+        log.info("DRAWDOWN: Kill switch RESET");
     }
 }
