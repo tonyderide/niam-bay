@@ -1,0 +1,199 @@
+<div class="auto-page">
+
+  <!-- TOP ROW: Config + Chart -->
+  <div class="top-row">
+
+    <!-- LEFT: Config Panel -->
+    <div class="config-panel card">
+      <h3 class="panel-title">AUTO BOT</h3>
+
+      <div class="form-grid">
+        <label>Instrument</label>
+        <select [(ngModel)]="selectedInstrument" (ngModelChange)="onInstrumentChange()">
+          @for (inst of instruments; track inst) {
+            <option [value]="inst">{{ inst }}</option>
+          }
+        </select>
+
+        <label>Capital ($)</label>
+        <div class="input-with-info">
+          <input type="number" [(ngModel)]="capital" step="0.01" />
+          @if (accountBalance != null) {
+            <span class="info-badge">{{ accountBalance | number:'1.2-2' }}</span>
+          }
+        </div>
+
+        <label>Leverage</label>
+        <input type="number" [(ngModel)]="leverage" min="1" max="50" />
+
+        <label>Demo</label>
+        <label class="toggle-label">
+          <input type="checkbox" [(ngModel)]="demo" />
+          <span class="toggle-text">{{ demo ? 'ON' : 'OFF' }}</span>
+        </label>
+      </div>
+
+      @if (error) {
+        <div class="error-msg">{{ error }}</div>
+      }
+
+      <div class="btn-row">
+        @if (!botState?.active) {
+          <button class="btn-start" (click)="startBot()" [disabled]="loading">
+            {{ loading ? '...' : 'START' }}
+          </button>
+        } @else {
+          <button class="btn-stop" (click)="stopBot()" [disabled]="loading">
+            {{ loading ? '...' : 'STOP' }}
+          </button>
+        }
+      </div>
+
+      <!-- Quick stats in sidebar when active -->
+      @if (botState && botState.active) {
+        <div class="sidebar-stats">
+          <div class="sidebar-stat">
+            <span class="sl">DIRECTION</span>
+            <span class="sv" [class]="getDirectionClass(botState!.direction)">
+              {{ botState!.direction || '--' }}
+            </span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">POSITION</span>
+            <span class="sv">{{ botState!.positionSize | number:'1.4-4' }}</span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">SAFETY ORDERS</span>
+            <span class="sv neon">{{ botState!.safetyOrderCount }}</span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">TRADES</span>
+            <span class="sv">{{ botState!.totalTrades }}</span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">STARTED</span>
+            <span class="sv">{{ botState!.startedAt | date:'HH:mm' }}</span>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- RIGHT: Chart -->
+    <div class="chart-panel card">
+      <div class="chart-header">
+        <h3 class="panel-title">{{ selectedInstrument }}</h3>
+        @if (botState) {
+          <div class="chart-stats">
+            <span class="cs" [class]="getPnlClass(botState.unrealizedPnl)">
+              UPnL: {{ botState.unrealizedPnl != null ? (botState.unrealizedPnl | number:'1.4-4') : '--' }}$
+            </span>
+            <span class="cs" [class]="getPnlClass(botState.realizedPnl)">
+              RPnL: {{ botState.realizedPnl != null ? (botState.realizedPnl | number:'1.4-4') : '--' }}$
+            </span>
+            <span class="cs neon">WR: {{ botState.winRate | number:'1.0-0' }}%</span>
+          </div>
+        }
+      </div>
+      <div class="chart-wrapper" #chartContainer></div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  @if (botState) {
+    <div class="status-bar card">
+      <div class="stats-row">
+        <div class="stat">
+          <span class="sl">DIRECTION</span>
+          <span class="sv" [class]="getDirectionClass(botState.direction)">{{ botState.direction || '--' }}</span>
+        </div>
+        <div class="stat">
+          <span class="sl">ENTRY</span>
+          <span class="sv">${{ (botState.averageEntryPrice || botState.entryPrice) | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat">
+          <span class="sl">CURRENT</span>
+          <span class="sv">${{ botState.currentPrice | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat">
+          <span class="sl">STOP LOSS</span>
+          <span class="sv danger">${{ botState.stopLoss | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat">
+          <span class="sl">TAKE PROFIT</span>
+          <span class="sv success">${{ botState.takeProfit | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat">
+          <span class="sl">UNREALIZED</span>
+          <span class="sv" [class]="getPnlClass(botState.unrealizedPnl)">
+            ${{ botState.unrealizedPnl != null ? (botState.unrealizedPnl | number:'1.4-4') : '--' }}
+          </span>
+        </div>
+        <div class="stat">
+          <span class="sl">REALIZED</span>
+          <span class="sv" [class]="getPnlClass(botState.realizedPnl)">
+            ${{ botState.realizedPnl != null ? (botState.realizedPnl | number:'1.4-4') : '--' }}
+          </span>
+        </div>
+        <div class="stat">
+          <span class="sl">WIN RATE</span>
+          <span class="sv neon">{{ botState.winRate | number:'1.0-0' }}%</span>
+        </div>
+        <div class="stat">
+          <span class="sl">W / L</span>
+          <span class="sv">{{ botState.wins }} / {{ botState.losses }}</span>
+        </div>
+        <div class="stat">
+          <span class="sl">LEVERAGE</span>
+          <span class="sv">{{ botState.leverage }}x</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- RECENT TRADES TABLE -->
+  @if (botState && botState.recentTrades && botState.recentTrades.length) {
+    <div class="trades-panel card">
+      <h3 class="panel-title">RECENT TRADES</h3>
+      <div class="trades-table-wrapper">
+        <table class="trades-table">
+          <thead>
+            <tr>
+              <th>DIR</th>
+              <th>ENTRY</th>
+              <th>EXIT</th>
+              <th>SIZE</th>
+              <th>P&L</th>
+              <th>OPENED</th>
+              <th>CLOSED</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (trade of botState!.recentTrades; track $index) {
+              <tr>
+                <td [class]="getDirectionClass(trade.direction)">{{ trade.direction }}</td>
+                <td>{{ trade.entryPrice | number:'1.2-2' }}</td>
+                <td>{{ trade.exitPrice | number:'1.2-2' }}</td>
+                <td>{{ trade.size | number:'1.4-4' }}</td>
+                <td [class]="getPnlClass(trade.pnl)">{{ trade.pnl | number:'1.4-4' }}$</td>
+                <td>{{ trade.openedAt | date:'HH:mm:ss' }}</td>
+                <td>{{ trade.closedAt | date:'HH:mm:ss' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+  <!-- SIGNAL REASON -->
+  @if (botState && botState.lastSignalReason) {
+    <div class="signal-panel card">
+      <h3 class="panel-title">LAST SIGNAL</h3>
+      <div class="signal-content">
+        <span class="signal-time">{{ botState!.lastSignalAt | date:'HH:mm:ss' }}</span>
+        <span class="signal-reason">{{ botState!.lastSignalReason }}</span>
+      </div>
+    </div>
+  }
+
+</div>

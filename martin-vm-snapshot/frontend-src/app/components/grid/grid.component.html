@@ -1,0 +1,192 @@
+<div class="grid-page">
+
+  <!-- TOP ROW: Setup + Chart side by side -->
+  <div class="top-row">
+
+    <!-- LEFT: Config Panel -->
+    <div class="config-panel card">
+      <h3 class="panel-title">GRID CONFIG</h3>
+
+      <div class="form-grid">
+        <label>Instrument</label>
+        <select [(ngModel)]="selectedInstrument" (ngModelChange)="onInstrumentChange()">
+          @for (inst of instruments; track inst) {
+            <option [value]="inst">{{ inst }}</option>
+          }
+        </select>
+
+        <label>Capital ($)</label>
+        <div class="input-with-info">
+          <input type="number" [(ngModel)]="capital" step="0.01" />
+          @if (accountBalance != null) {
+            <span class="info-badge">{{ accountBalance | number:'1.2-2' }}</span>
+          }
+        </div>
+
+        <label>Leverage</label>
+        <input type="number" [(ngModel)]="leverage" min="1" max="50" />
+
+        <label>Spacing %</label>
+        <input type="number" [(ngModel)]="gridSpacingPct" step="0.1" min="0.1" max="5" />
+
+        <label>Niveaux</label>
+        <input type="number" [(ngModel)]="totalLevels" min="2" max="20" />
+
+        <label>Max Loss %</label>
+        <input type="number" [(ngModel)]="maxLossPercent" min="5" max="100" />
+      </div>
+
+      @if (error) {
+        <div class="error-msg">{{ error }}</div>
+      }
+
+      <div class="btn-row">
+        <button class="btn-analyze" (click)="analyzeMarket()" [disabled]="analyzingMarket">
+          {{ analyzingMarket ? '...' : 'ANALYSER' }}
+        </button>
+        @if (!gridState) {
+          <button class="btn-sync" (click)="syncGrid()" [disabled]="loading">
+            {{ loading ? '...' : 'SYNC' }}
+          </button>
+          <button class="btn-start" (click)="startGrid()" [disabled]="loading">
+            {{ loading ? '...' : 'START' }}
+          </button>
+        } @else {
+          <button class="btn-stop" (click)="stopGrid()" [disabled]="loading">
+            {{ loading ? '...' : 'STOP' }}
+          </button>
+        }
+      </div>
+
+      <!-- Market Analysis (inline) -->
+      @if (marketAnalysis) {
+        <div class="analysis-box" [class.signal-go]="marketAnalysis.signal === 'GO'"
+             [class.signal-caution]="marketAnalysis.signal === 'CAUTION'"
+             [class.signal-wait]="marketAnalysis.signal === 'WAIT'">
+          <div class="analysis-header">
+            <span class="signal-badge">{{ marketAnalysis.signal }}</span>
+            <span class="signal-text">{{ marketAnalysis.recommendation }}</span>
+          </div>
+          @if (marketAnalysis.error) {
+            <div class="error-msg">{{ marketAnalysis.error }}</div>
+          } @else {
+            <div class="analysis-metrics">
+              <span>Vol 1h: {{ marketAnalysis.volatility1h }}%</span>
+              <span [class.positive]="marketAnalysis.trend4h > 0" [class.negative]="marketAnalysis.trend4h < 0">
+                Trend 4h: {{ marketAnalysis.trend4h > 0 ? '+' : '' }}{{ marketAnalysis.trend4h }}%
+              </span>
+              <span>Range 24h: {{ marketAnalysis.range24hPct }}%</span>
+            </div>
+            <div class="analysis-reasons">
+              @for (reason of marketAnalysis.reasons; track $index) {
+                <div class="reason">{{ reason }}</div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- RIGHT: Chart -->
+    <div class="chart-panel card">
+      <div class="chart-header">
+        <h3 class="panel-title">{{ selectedInstrument }}</h3>
+        @if (gridState) {
+          <div class="chart-stats">
+            <span class="cs" [class.positive]="(gridState.krakenTotalPnl ?? 0) > 0" [class.negative]="(gridState.krakenTotalPnl ?? 0) < 0">
+              P&L: {{ gridState.krakenTotalPnl != null ? (gridState.krakenTotalPnl | number:'1.4-4') : '--' }}$
+            </span>
+            <span class="cs neon">RT: {{ gridState.completedRoundTrips }}</span>
+            <span class="cs">{{ gridState.lowerBound | number:'1.1-1' }}–{{ gridState.upperBound | number:'1.1-1' }}</span>
+          </div>
+        }
+      </div>
+      <div class="chart-wrapper" #chartContainer></div>
+    </div>
+  </div>
+
+  <!-- MIDDLE ROW: Active grid info (levels + stats) -->
+  @if (gridState) {
+    <div class="mid-row">
+      <div class="grid-stats card">
+        <div class="stats-row">
+          <div class="stat">
+            <span class="sl">KRAKEN P&L</span>
+            <span class="sv" [class.positive]="(gridState.krakenTotalPnl ?? 0) > 0" [class.negative]="(gridState.krakenTotalPnl ?? 0) < 0">
+              ${{ gridState.krakenTotalPnl != null ? (gridState.krakenTotalPnl | number:'1.4-4') : '--' }}
+            </span>
+          </div>
+          <div class="stat">
+            <span class="sl">REALIZED</span>
+            <span class="sv" [class.positive]="(gridState.krakenRealizedPnl ?? 0) > 0" [class.negative]="(gridState.krakenRealizedPnl ?? 0) < 0">
+              ${{ gridState.krakenRealizedPnl != null ? (gridState.krakenRealizedPnl | number:'1.4-4') : '--' }}
+            </span>
+          </div>
+          <div class="stat">
+            <span class="sl">UNREALIZED</span>
+            <span class="sv" [class.positive]="(gridState.krakenUnrealizedPnl ?? 0) > 0" [class.negative]="(gridState.krakenUnrealizedPnl ?? 0) < 0">
+              ${{ gridState.krakenUnrealizedPnl != null ? (gridState.krakenUnrealizedPnl | number:'1.4-4') : '--' }}
+            </span>
+          </div>
+          <div class="stat">
+            <span class="sl">ROUND TRIPS</span>
+            <span class="sv neon">{{ gridState.completedRoundTrips }}</span>
+          </div>
+          <div class="stat">
+            <span class="sl">CENTER</span>
+            <span class="sv">${{ gridState.centerPrice | number:'1.1-2' }}</span>
+          </div>
+          <div class="stat">
+            <span class="sl">SPACING</span>
+            <span class="sv">${{ gridState.gridSpacing | number:'1.2-2' }}</span>
+          </div>
+          <div class="stat">
+            <span class="sl">$/LEVEL</span>
+            <span class="sv">${{ gridState.amountPerLevel | number:'1.2-2' }}</span>
+          </div>
+          <div class="stat">
+            <span class="sl">LEVERAGE</span>
+            <span class="sv">{{ gridState.leverage }}x</span>
+          </div>
+          <div class="stat">
+            <span class="sl">STARTED</span>
+            <span class="sv">{{ gridState.startedAt | date:'HH:mm' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="levels-panel card">
+        <h3 class="panel-title">LEVELS</h3>
+        <div class="levels-list">
+          @for (level of gridState.levels; track level.index) {
+            <div class="level-row" [class]="getLevelClass(level)">
+              <span class="level-side" [class.buy]="level.side === 'buy'" [class.sell]="level.side === 'sell'">
+                {{ level.side === 'buy' ? 'B' : 'S' }}
+              </span>
+              <span class="level-price">${{ level.price | number:'1.1-2' }}</span>
+              <span class="level-status">{{ level.status }}</span>
+              <span class="level-rt">{{ level.roundTrips }}RT</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- BOTTOM: Logs -->
+  <div class="logs-panel card">
+    <h3 class="panel-title">LOG</h3>
+    <div class="logs-body">
+      @for (log of gridLogs; track $index) {
+        <div class="log-line" [class]="getLogClass(log)">
+          <span class="log-ts">{{ log.ts }}</span>
+          <span class="log-level">{{ log.level }}</span>
+          <span class="log-msg">{{ log.msg }}</span>
+        </div>
+      }
+      @if (gridLogs.length === 0) {
+        <div class="log-empty">Waiting for logs...</div>
+      }
+    </div>
+  </div>
+</div>

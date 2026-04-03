@@ -1,0 +1,320 @@
+<div class="scalp-page">
+
+  <!-- LOADING SPINNER -->
+  @if (initialLoading) {
+    <div class="loading-overlay">
+      <div class="spinner"></div>
+      <span class="loading-text">Chargement des données...</span>
+    </div>
+  }
+
+  <!-- TOP: Config + Chart -->
+  <div class="top-row" [class.dimmed]="initialLoading">
+
+    <!-- LEFT: Config Panel -->
+    <div class="config-panel card">
+      <h3 class="panel-title">SCALP BOT</h3>
+
+      <div class="form-grid">
+        <label>Instrument</label>
+        <select [(ngModel)]="selectedInstrument" (ngModelChange)="onInstrumentChange()">
+          @for (inst of instruments; track inst) {
+            <option [value]="inst">{{ inst }}</option>
+          }
+        </select>
+
+        <label>Capital ($)</label>
+        <div class="input-with-info">
+          <input type="number" [(ngModel)]="capital" step="1" />
+          @if (accountBalance != null) {
+            <span class="info-badge">{{ accountBalance | number:'1.2-2' }}</span>
+          }
+        </div>
+
+        <label>Leverage</label>
+        <input type="number" [(ngModel)]="leverage" min="1" max="50" />
+
+        <label>Demo</label>
+        <label class="toggle-label">
+          <input type="checkbox" [(ngModel)]="demo" />
+          <span class="toggle-text">{{ demo ? 'ON' : 'OFF' }}</span>
+        </label>
+
+        <label>Heures</label>
+        <label class="toggle-label">
+          <input type="checkbox" [(ngModel)]="tradingHoursEnabled"
+                 (ngModelChange)="botState?.active ? toggleTradingHours() : null" />
+          <span class="toggle-text">8h-22h {{ tradingHoursEnabled ? 'ON' : 'OFF' }}</span>
+        </label>
+      </div>
+
+      @if (error) {
+        <div class="error-msg">{{ error }}</div>
+      }
+
+      <div class="btn-row">
+        @if (!botState || !botState.active) {
+          <button class="btn-start" (click)="startBot()" [disabled]="loading">
+            {{ loading ? '...' : 'START' }}
+          </button>
+        } @else {
+          <button class="btn-stop" (click)="stopBot()" [disabled]="loading">
+            {{ loading ? '...' : 'STOP' }}
+          </button>
+        }
+      </div>
+
+      <!-- Strategy info -->
+      <div class="strategy-info">
+        <div class="strat-label">STRATEGY</div>
+        <div class="strat-item has-tooltip">
+          BB(20,2) + RSI(7) + EMA(5/13)
+          <span class="tooltip">Bollinger Bands sur 20 bougies (écart-type x2) pour détecter les zones de surachat/survente. RSI sur 7 périodes pour confirmer la force du mouvement. EMA rapide (5) vs lente (13) pour la tendance.</span>
+        </div>
+        <div class="strat-item has-tooltip">
+          BB Squeeze breakout detection
+          <span class="tooltip">Quand les bandes de Bollinger se resserrent (squeeze), la volatilité est faible. Le bot détecte ce squeeze et attend le breakout pour entrer dans la direction de la cassure.</span>
+        </div>
+        <div class="strat-item has-tooltip">
+          Volume filter (>1.5x avg)
+          <span class="tooltip">Le bot n'entre en position que si le volume actuel dépasse 1.5x la moyenne des 20 dernières bougies. Évite les faux signaux en période calme.</span>
+        </div>
+        <div class="strat-item has-tooltip">
+          TP: 0.50% | SL: 0.20%
+          <span class="tooltip">Take Profit à 0.50% du prix d'entrée (on prend le gain). Stop Loss à 0.20% (on coupe la perte). Ratio risque/récompense de 1:2.5 pour rester profitable même avec un taux de réussite moyen.</span>
+        </div>
+        <div class="strat-item has-tooltip">
+          Limit orders (maker 0.02%)
+          <span class="tooltip">Les ordres sont passés en "limit" (maker) au lieu de "market" (taker). Frais maker = 0.02% vs taker = 0.05%. Économise ~60% sur les frais de trading.</span>
+        </div>
+        <div class="strat-item has-tooltip">
+          Hours: 08-22 UTC only
+          <span class="tooltip">Le bot ne trade qu'entre 8h et 22h UTC. En dehors de ces heures, le volume et la liquidité sont trop faibles, ce qui augmente le spread et le risque de slippage.</span>
+        </div>
+      </div>
+
+      <!-- Quick stats when active -->
+      @if (botState && botState.active) {
+        <div class="sidebar-stats">
+          <div class="sidebar-stat">
+            <span class="sl">PHASE</span>
+            <span class="sv" [class]="getPhaseClass(botState.phase)">
+              {{ getPhaseLabel(botState.phase) }}
+            </span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">DIRECTION</span>
+            <span class="sv" [class]="getDirectionClass(botState.direction)">
+              {{ botState.direction }}
+            </span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">SPREAD</span>
+            <span class="sv">{{ botState.spread | number:'1.2-2' }}</span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">RSI</span>
+            <span class="sv" [class]="botState.rsi < 35 ? 'positive' : botState.rsi > 65 ? 'negative' : ''">
+              {{ botState.rsi | number:'1.1-1' }}
+            </span>
+          </div>
+          <div class="sidebar-stat">
+            <span class="sl">TRADES/H</span>
+            <span class="sv neon">{{ botState.tradesPerHour }}</span>
+          </div>
+          @if (botState.squeezed) {
+            <div class="sidebar-stat squeeze-alert">
+              <span class="sl">SQUEEZE</span>
+              <span class="sv amber">ACTIVE</span>
+            </div>
+          }
+          @if (botState.consecutiveLosses > 0) {
+            <div class="sidebar-stat">
+              <span class="sl">STREAK</span>
+              <span class="sv negative">{{ botState.consecutiveLosses }}L</span>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- RIGHT: Chart -->
+    <div class="chart-panel card">
+      <div class="chart-header">
+        <h3 class="panel-title">{{ selectedInstrument }} — 1m</h3>
+        @if (botState && botState.active) {
+          <div class="chart-stats">
+            <span class="cs" [class]="getPnlClass(botState.unrealizedPnl)">
+              UPnL: {{ botState.unrealizedPnl != null ? (botState.unrealizedPnl | number:'1.4-4') : '--' }}$
+            </span>
+            <span class="cs" [class]="getPnlClass(botState.realizedPnl)">
+              RPnL: {{ botState.realizedPnl != null ? (botState.realizedPnl | number:'1.4-4') : '--' }}$
+            </span>
+            <span class="cs neon">WR: {{ botState.winRate | number:'1.0-0' }}%</span>
+          </div>
+        }
+      </div>
+      <div class="chart-wrapper" #chartContainer></div>
+    </div>
+  </div>
+
+  <!-- STATUS BAR -->
+  @if (botState && botState.active) {
+    <div class="status-bar card">
+      <div class="stats-row">
+        <div class="stat has-tip" title="État actuel du bot : SCANNING = cherche un signal, IN POSITION = en trade, COOLDOWN = pause après un trade">
+          <span class="sl">PHASE</span>
+          <span class="sv" [class]="getPhaseClass(botState.phase)">{{ getPhaseLabel(botState.phase) }}</span>
+        </div>
+        <div class="stat has-tip" title="Prix actuel de l'instrument sur le marché">
+          <span class="sl">PRIX</span>
+          <span class="sv">${{ botState.currentPrice | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat has-tip" title="Bid = meilleur prix d'achat / Ask = meilleur prix de vente. La différence est le spread (coût caché de chaque trade)">
+          <span class="sl">BID / ASK</span>
+          <span class="sv">{{ botState.bidPrice | number:'1.2-2' }} / {{ botState.askPrice | number:'1.2-2' }}</span>
+        </div>
+        @if (botState.phase === 'IN_POSITION') {
+          <div class="stat has-tip" title="Prix auquel le bot est entré en position">
+            <span class="sl">ENTRÉE</span>
+            <span class="sv">${{ botState.entryPrice | number:'1.2-2' }}</span>
+          </div>
+          <div class="stat has-tip" title="Take Profit : prix cible où le bot vend pour encaisser le gain (+0.50%)">
+            <span class="sl">OBJECTIF</span>
+            <span class="sv positive">${{ botState.takeProfit | number:'1.2-2' }}</span>
+          </div>
+          <div class="stat has-tip" title="Stop Loss : prix de sécurité où le bot coupe la position pour limiter la perte (-0.20%)">
+            <span class="sl">STOP</span>
+            <span class="sv negative">${{ botState.stopLoss | number:'1.2-2' }}</span>
+          </div>
+          <div class="stat has-tip" title="Gain ou perte en cours sur la position ouverte (pas encore encaissé)">
+            <span class="sl">GAIN EN COURS</span>
+            <span class="sv" [class]="getPnlClass(botState.unrealizedPnl)">
+              ${{ botState.unrealizedPnl | number:'1.4-4' }}
+            </span>
+          </div>
+        }
+        <div class="stat has-tip" title="Total des gains et pertes réalisés depuis le lancement du bot (trades clôturés)">
+          <span class="sl">GAIN TOTAL</span>
+          <span class="sv" [class]="getPnlClass(botState.realizedPnl)">
+            ${{ botState.realizedPnl | number:'1.4-4' }}
+          </span>
+        </div>
+        <div class="stat has-tip" title="Nombre de trades gagnants / perdants depuis le lancement">
+          <span class="sl">GAGNÉS / PERDUS</span>
+          <span class="sv">{{ botState.wins }} / {{ botState.losses }}</span>
+        </div>
+        <div class="stat has-tip" title="Pourcentage de trades gagnants. Au-dessus de 50% avec un bon ratio TP/SL = profitable">
+          <span class="sl">TAUX RÉUSSITE</span>
+          <span class="sv neon">{{ botState.winRate | number:'1.0-0' }}%</span>
+        </div>
+        <div class="stat has-tip" title="Meilleur gain sur un seul trade depuis le lancement">
+          <span class="sl">MEILLEUR</span>
+          <span class="sv positive">${{ botState.bestTrade | number:'1.4-4' }}</span>
+        </div>
+        <div class="stat has-tip" title="Pire perte sur un seul trade depuis le lancement">
+          <span class="sl">PIRE</span>
+          <span class="sv negative">${{ botState.worstTrade | number:'1.4-4' }}</span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- INDICATORS BAR -->
+  @if (botState && botState.active && botState.bbUpper > 0) {
+    <div class="indicators-bar card">
+      <div class="stats-row">
+        <div class="stat has-tip" title="Bande de Bollinger haute : si le prix touche cette zone, le marché est en surachat (signal de vente possible)">
+          <span class="sl">BB HAUTE</span>
+          <span class="sv amber">${{ botState.bbUpper | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat has-tip" title="Bande de Bollinger moyenne : moyenne mobile sur 20 bougies, représente le prix 'normal'">
+          <span class="sl">BB MOYENNE</span>
+          <span class="sv">${{ botState.bbMiddle | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat has-tip" title="Bande de Bollinger basse : si le prix touche cette zone, le marché est en survente (signal d'achat possible)">
+          <span class="sl">BB BASSE</span>
+          <span class="sv amber">${{ botState.bbLower | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat has-tip" title="Relative Strength Index sur 7 périodes. En dessous de 35 = survente (achat). Au-dessus de 65 = surachat (vente). Entre les deux = neutre">
+          <span class="sl">RSI(7)</span>
+          <span class="sv" [class]="botState.rsi < 35 ? 'positive' : botState.rsi > 65 ? 'negative' : 'neon'">
+            {{ botState.rsi | number:'1.1-1' }}
+          </span>
+        </div>
+        <div class="stat has-tip" title="Moyenne mobile exponentielle rapide (5 bougies). Réagit vite aux changements de prix">
+          <span class="sl">EMA RAPIDE</span>
+          <span class="sv">${{ botState.emaFast | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat has-tip" title="Moyenne mobile exponentielle lente (13 bougies). Montre la tendance de fond">
+          <span class="sl">EMA LENTE</span>
+          <span class="sv">${{ botState.emaSlow | number:'1.2-2' }}</span>
+        </div>
+        <div class="stat has-tip" title="Si EMA rapide > EMA lente = tendance haussière (BULLISH). Sinon = tendance baissière (BEARISH). Le bot achète en bullish, vend en bearish">
+          <span class="sl">TENDANCE</span>
+          <span class="sv" [class]="botState.emaFast > botState.emaSlow ? 'positive' : 'negative'">
+            {{ botState.emaFast > botState.emaSlow ? 'HAUSSIER' : 'BAISSIER' }}
+          </span>
+        </div>
+        <div class="stat has-tip" title="Écart entre les bandes de Bollinger. Plus c'est petit = squeeze (compression). Un squeeze annonce souvent un mouvement fort à venir">
+          <span class="sl">LARGEUR BB</span>
+          <span class="sv" [class]="botState.squeezed ? 'amber' : ''">
+            {{ botState.bbWidth | number:'1.3-3' }}%{{ botState.squeezed ? ' SQUEEZE' : '' }}
+          </span>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- SIGNAL REASON -->
+  @if (botState && botState.lastSignalReason) {
+    <div class="signal-panel card">
+      <div class="signal-content">
+        <span class="signal-time">{{ botState.lastSignalAt | date:'HH:mm:ss' }}</span>
+        <span class="signal-reason">{{ botState.lastSignalReason }}</span>
+      </div>
+    </div>
+  }
+
+  <!-- RECENT TRADES TABLE -->
+  @if (botState && botState.recentTrades && botState.recentTrades.length) {
+    <div class="trades-panel card">
+      <h3 class="panel-title">RECENT SCALPS ({{ botState.totalTrades }} total)</h3>
+      <div class="trades-table-wrapper">
+        <table class="trades-table">
+          <thead>
+            <tr>
+              <th>DIR</th>
+              <th>ENTRY</th>
+              <th>EXIT</th>
+              <th>SIZE</th>
+              <th>P&L</th>
+              <th>%</th>
+              <th>FEES</th>
+              <th>EXIT</th>
+              <th>HOLD</th>
+              <th>TIME</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (trade of botState.recentTrades; track $index) {
+              <tr>
+                <td [class]="getDirectionClass(trade.direction)">{{ trade.direction }}</td>
+                <td>{{ trade.entryPrice | number:'1.2-2' }}</td>
+                <td>{{ trade.exitPrice | number:'1.2-2' }}</td>
+                <td>{{ trade.size | number:'1.4-4' }}</td>
+                <td [class]="getPnlClass(trade.pnl)">{{ trade.pnl | number:'1.4-4' }}$</td>
+                <td [class]="getPnlClass(trade.pnlPercent)">{{ trade.pnlPercent | number:'1.3-3' }}%</td>
+                <td class="muted">{{ trade.fees | number:'1.4-4' }}$</td>
+                <td class="exit-reason">{{ trade.exitReason }}</td>
+                <td>{{ trade.durationSeconds }}s</td>
+                <td>{{ trade.closedAt | date:'HH:mm:ss' }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  }
+
+</div>

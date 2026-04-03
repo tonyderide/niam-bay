@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:./data/martindb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+  h2:
+    console:
+      enabled: true
+
+logging:
+  level:
+    org.hibernate: WARN
+    org.hibernate.SQL: OFF
+    org.hibernate.type: OFF
+    com.martin: DEBUG
+    com.martin.kraken: DEBUG
+    com.martin.service: DEBUG
+    com.martin.api: DEBUG

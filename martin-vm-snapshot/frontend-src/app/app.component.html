@@ -1,0 +1,112 @@
+<header class="topbar">
+  <div class="brand-section">
+    <svg class="brand-icon" viewBox="0 0 48 48" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Antenna -->
+      <line x1="24" y1="2" x2="24" y2="10" stroke="#00fff9" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="24" cy="2" r="2" fill="#00fff9">
+        <animate attributeName="opacity" values="1;0.3;1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Head -->
+      <rect x="8" y="10" width="32" height="22" rx="4" fill="#0d1117" stroke="#00fff9" stroke-width="1.5"/>
+      <!-- Eyes (anime style - big glowing) -->
+      <ellipse cx="17" cy="21" rx="4.5" ry="5" fill="#0d1117" stroke="#39ff14" stroke-width="1.2"/>
+      <ellipse cx="17" cy="20" rx="2.5" ry="3" fill="#39ff14" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+      <circle cx="16" cy="19" r="1" fill="#fff" opacity="0.9"/>
+      <ellipse cx="31" cy="21" rx="4.5" ry="5" fill="#0d1117" stroke="#39ff14" stroke-width="1.2"/>
+      <ellipse cx="31" cy="20" rx="2.5" ry="3" fill="#39ff14" opacity="0.8">
+        <animate attributeName="opacity" values="0.8;0.4;0.8" dur="3s" repeatCount="indefinite"/>
+      </ellipse>
+      <circle cx="30" cy="19" r="1" fill="#fff" opacity="0.9"/>
+      <!-- Mouth (small grin) -->
+      <path d="M18 28 Q24 31 30 28" stroke="#00fff9" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      <!-- Ears/sensors -->
+      <rect x="3" y="16" width="5" height="10" rx="2" fill="#0d1117" stroke="#ffb800" stroke-width="1"/>
+      <rect x="40" y="16" width="5" height="10" rx="2" fill="#0d1117" stroke="#ffb800" stroke-width="1"/>
+      <!-- Body -->
+      <rect x="12" y="33" width="24" height="12" rx="3" fill="#0d1117" stroke="#00fff9" stroke-width="1.2"/>
+      <!-- Chest light -->
+      <circle cx="24" cy="39" r="2.5" fill="#ff3366" opacity="0.7">
+        <animate attributeName="r" values="2.5;3;2.5" dur="1.5s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.7;1;0.7" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Arms -->
+      <line x1="12" y1="37" x2="6" y2="42" stroke="#00fff9" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="36" y1="37" x2="42" y2="42" stroke="#00fff9" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="6" cy="42" r="2" fill="#0d1117" stroke="#ffb800" stroke-width="1"/>
+      <circle cx="42" cy="42" r="2" fill="#0d1117" stroke="#ffb800" stroke-width="1"/>
+    </svg>
+    <div class="brand-text">
+      <span class="brand">MARTIN<span class="brand-accent">BOT</span></span>
+      <span class="brand-sub">TRADING SYSTEM</span>
+    </div>
+  </div>
+  <nav class="tab-nav">
+    <button class="tab-btn" [class.active]="activeTab === 'dashboard'" (click)="activeTab = 'dashboard'">
+      DASHBOARD
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'scalping'" (click)="activeTab = 'scalping'">
+      SCALPING
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'grid'" (click)="activeTab = 'grid'">
+      GRID
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'auto'" (click)="activeTab = 'auto'">
+      AUTO
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'trades'" (click)="activeTab = 'trades'">
+      TRADES
+    </button>
+    <button class="tab-btn" [class.active]="activeTab === 'config'" (click)="activeTab = 'config'">
+      CONFIG
+    </button>
+  </nav>
+  <div class="status-indicators">
+    @for (instrument of instruments; track instrument) {
+      <div class="status-dot-wrapper">
+        <span class="status-dot" [class]="getBotState(instrument)"></span>
+        <span class="status-label">{{ getShortName(instrument) }}</span>
+      </div>
+    }
+  </div>
+</header>
+<div class="topbar-glow"></div>
+
+@if (activeTab === 'dashboard') {
+  <main class="page">
+    <app-dashboard></app-dashboard>
+  </main>
+}
+
+@if (activeTab === 'scalping') {
+  <main class="page">
+    <app-scalping></app-scalping>
+  </main>
+}
+
+@if (activeTab === 'grid') {
+  <main class="page">
+    <app-grid></app-grid>
+  </main>
+}
+
+@if (activeTab === 'auto') {
+  <main class="page">
+    <app-auto></app-auto>
+  </main>
+}
+
+@if (activeTab === 'trades') {
+  <main class="page">
+    <app-trades></app-trades>
+  </main>
+}
+
+@if (activeTab === 'config') {
+  <main class="page">
+    <app-config></app-config>
+  </main>
+}
+
+<app-log-panel></app-log-panel>
