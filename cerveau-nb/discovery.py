@@ -76,6 +76,24 @@ def load_nodes(conn):
     return {row[0]: {"content": row[1], "type": row[2]} for row in c.fetchall()}
 
 
+def is_dictionary_node(content):
+    """Detect bulk-imported Larousse/Wiktionary dictionary definitions."""
+    markers = ["masculin", "féminin", "verbe", "adjectif", "\\", "étymologie", "Du latin", "Du grec"]
+    return any(m in content for m in markers) and len(content) > 80
+
+
+def short(content, max_len=30):
+    """Truncate dictionary definitions to just the word. 'marché: Du latin...' -> 'marché'."""
+    if len(content) <= max_len:
+        return content
+    # Cut at first colon, pipe, or backslash (dictionary markers)
+    for sep in [":", "|", "\\", " —"]:
+        idx = content.find(sep)
+        if 0 < idx < max_len:
+            return content[:idx].strip()
+    return content[:max_len].rstrip() + "…"
+
+
 def load_edges_typed(conn):
     """Return list of (source, target, type, weight) tuples."""
     c = conn.cursor()
@@ -88,9 +106,11 @@ def load_edges_typed(conn):
 def random_walk(graph, start_id, steps=20):
     """
     Walk the graph randomly, weighted by edge weights.
+    No revisiting — prevents getting stuck in dictionary loops.
     Returns the path taken as list of node IDs.
     """
     path = [start_id]
+    visited = {start_id}
     current = start_id
 
     for _ in range(steps):
@@ -98,9 +118,14 @@ def random_walk(graph, start_id, steps=20):
         if not neighbors:
             break
 
+        # Filter out already-visited nodes
+        candidates = {n: w for n, w in neighbors.items() if n not in visited}
+        if not candidates:
+            break
+
         # Weight-biased random choice
-        ids = list(neighbors.keys())
-        weights = [neighbors[n] for n in ids]
+        ids = list(candidates.keys())
+        weights = [candidates[n] for n in ids]
         total = sum(weights)
         if total == 0:
             break
@@ -115,6 +140,7 @@ def random_walk(graph, start_id, steps=20):
                 break
 
         path.append(chosen)
+        visited.add(chosen)
         current = chosen
 
     return path
@@ -131,14 +157,16 @@ def discover_by_walks(graph, nodes, n_walks=200, steps=15, start_from=None):
     # Pick starting nodes
     if start_from:
         start_ids = [nid for nid, info in nodes.items()
-                     if start_from.lower() in info["content"].lower()]
+                     if start_from.lower() in info["content"].lower()
+                     and not is_dictionary_node(info["content"])]
         if not start_ids:
             return []
     else:
-        # Start from random concept/memory nodes
+        # Start from random concept/memory nodes, exclude dictionary definitions
         candidates = [nid for nid, info in nodes.items()
                       if info["type"] in ("concept", "memory", "emotion")
-                      and len(info["content"]) < 60]
+                      and len(info["content"]) < 60
+                      and not is_dictionary_node(info["content"])]
         start_ids = candidates
 
     if not start_ids:
@@ -160,11 +188,11 @@ def discover_by_walks(graph, nodes, n_walks=200, steps=15, start_from=None):
         if len(unique_starts) >= 3:
             # This node is a convergence point — many walks arrive here
             for start_id, path in walk_list[:1]:
-                path_contents = [nodes[p]["content"] for p in path if p in nodes]
+                path_contents = [short(nodes[p]["content"]) for p in path if p in nodes]
                 discoveries.append({
                     "type": "convergence",
-                    "start": nodes.get(start_id, {}).get("content", "?"),
-                    "end": nodes.get(end_id, {}).get("content", "?"),
+                    "start": short(nodes.get(start_id, {}).get("content", "?")),
+                    "end": short(nodes.get(end_id, {}).get("content", "?")),
                     "path_length": len(path) - 1,
                     "path": " → ".join(path_contents),
                     "convergence_count": len(unique_starts),
@@ -178,11 +206,11 @@ def discover_by_walks(graph, nodes, n_walks=200, steps=15, start_from=None):
             start_type = nodes.get(path[0], {}).get("type", "")
             end_type = nodes.get(path[-1], {}).get("type", "")
             if start_type != end_type:
-                path_contents = [nodes[p]["content"] for p in path if p in nodes]
+                path_contents = [short(nodes[p]["content"]) for p in path if p in nodes]
                 discoveries.append({
                     "type": "cross_type",
-                    "start": nodes.get(path[0], {}).get("content", "?"),
-                    "end": nodes.get(path[-1], {}).get("content", "?"),
+                    "start": short(nodes.get(path[0], {}).get("content", "?")),
+                    "end": short(nodes.get(path[-1], {}).get("content", "?")),
                     "start_type": start_type,
                     "end_type": end_type,
                     "path_length": len(path) - 1,
@@ -262,11 +290,11 @@ def find_bridges(graph, nodes):
             neighbor_contents.append(n_info.get("content", "?"))
 
         bridges.append({
-            "node": info.get("content", "?"),
+            "node": short(info.get("content", "?")),
             "node_type": info.get("type", "?"),
             "betweenness_score": count,
             "connects_types": list(neighbor_types),
-            "connects_to": neighbor_contents[:5],
+            "connects_to": [short(c) for c in neighbor_contents[:5]],
             "degree": len(graph.get(node_id, {})),
         })
 
@@ -310,13 +338,13 @@ def find_structural_holes(graph, nodes, n_samples=500):
                 score *= 1.5
 
             holes.append({
-                "a": a_info.get("content", "?"),
+                "a": short(a_info.get("content", "?")),
                 "a_type": a_info.get("type", "?"),
-                "bridge": b_info.get("content", "?"),
-                "c": c_info.get("content", "?"),
+                "bridge": short(b_info.get("content", "?")),
+                "c": short(c_info.get("content", "?")),
                 "c_type": c_info.get("type", "?"),
                 "score": round(score, 3),
-                "hypothesis": f"'{a_info.get('content', '?')}' might be linked to '{c_info.get('content', '?')}' through '{b_info.get('content', '?')}'",
+                "hypothesis": f"'{short(a_info.get('content', '?'))}' might be linked to '{short(c_info.get('content', '?'))}' through '{short(b_info.get('content', '?'))}'",
             })
 
     # Deduplicate and sort
@@ -398,10 +426,10 @@ def find_analogies(graph, nodes, edges_typed, n_samples=200):
             if not has_c_type:
                 # Structural analogy: A→B→C exists, A'→B' exists, but B'→C' is missing
                 analogies.append({
-                    "pattern": f"{a_info.get('content', '?')} → {b_info.get('content', '?')} → {c_info.get('content', '?')}",
-                    "incomplete": f"{nodes.get(a_prime, {}).get('content', '?')} → {nodes.get(b_prime, {}).get('content', '?')} → ???",
+                    "pattern": f"{short(a_info.get('content', '?'))} → {short(b_info.get('content', '?'))} → {short(c_info.get('content', '?'))}",
+                    "incomplete": f"{short(nodes.get(a_prime, {}).get('content', '?'))} → {short(nodes.get(b_prime, {}).get('content', '?'))} → ???",
                     "missing_type": c_type,
-                    "suggestion": f"Find a '{c_type}' node connected to '{nodes.get(b_prime, {}).get('content', '?')}' — it might mirror '{c_info.get('content', '?')}'",
+                    "suggestion": f"Find a '{c_type}' node connected to '{short(nodes.get(b_prime, {}).get('content', '?'))}' — it might mirror '{short(c_info.get('content', '?'))}'",
                 })
                 break
 
