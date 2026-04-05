@@ -4,6 +4,7 @@ Niam-Bay Telegram Bot — bidirectionnel
 Commandes: /status /balance /price /start /short /stop /help
 """
 
+import os
 import requests
 import time
 import json
@@ -14,7 +15,7 @@ log = logging.getLogger(__name__)
 
 BOT_TOKEN = "7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454"
 CHAT_ID = "6574420846"
-MARTIN = "http://localhost:8081"
+MARTIN = os.getenv("MARTIN_API", "http://localhost:8081")
 KRAKEN_PUBLIC = "https://api.kraken.com/0/public"
 OFFSET = 0
 

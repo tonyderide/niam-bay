@@ -35,9 +35,9 @@
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "curl -s -X POST http://localhost:8081/api/grid/stop/PF_DOTUSD"
 
 # --- DEPLOY STRATEGY (5-grid scalp, after restart) ---
-# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/martin/deploy-strategy.py"
-# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/martin/deploy-strategy.py --dry-run"
-# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/martin/deploy-strategy.py --only PF_DOTUSD"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/autobot/deploy-strategy.py"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/autobot/deploy-strategy.py --dry-run"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/autobot/deploy-strategy.py --only PF_DOTUSD"
 
 # --- FEED BRAIN ---
 # cd C:/niam-bay && python cerveau-nb/feed.py --text "TEXTE ICI"
@@ -56,8 +56,8 @@
 # PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/check_signal.py       # OUVRIR ou ATTENDRE Martin Grid BTC/USD
 
 # --- MARTIN POST-START LOG (auto-deploy after crash/reboot) ---
-# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "cat ~/martin/post-start.log"
-# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "tail -20 ~/martin/post-start.log"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "cat ~/autobot/post-start.log"
+# ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "tail -20 ~/autobot/post-start.log"
 
 # --- MARTIN LOGS ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "journalctl -u martin.service --no-pager -n 20"

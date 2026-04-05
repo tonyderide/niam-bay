@@ -38,6 +38,14 @@ public class AutoGridScheduler {
     @Autowired
     private DrawdownManager drawdownManager;
 
+    /**
+     * Trading hours: 08:00 - 02:00 UTC. Night (02:00-08:00 UTC) = observe only.
+     */
+    private boolean isWithinTradingHours() {
+        int hour = java.time.ZonedDateTime.now(java.time.ZoneOffset.UTC).getHour();
+        return hour >= 8 || hour < 2;
+    }
+
     private volatile boolean enabled = false;
     private final Map<String, AutoGridConfig> configs = new ConcurrentHashMap<>();
     private final Map<String, SignalResult> lastSignals = new ConcurrentHashMap<>();
@@ -86,22 +94,28 @@ public class AutoGridScheduler {
                     }
                 }
 
-                // 2. Signal check
+                // 2. Signal + regime checks — ALWAYS run (observation)
                 SignalResult signal = signalService.checkEMATrend(instrument);
                 lastSignals.put(instrument, signal);
 
+                RegimeResult regime = signalService.checkRegime(instrument);
+                lastRegimes.put(instrument, regime);
+
+                // 3. Night gate — observe only, no action (drawdown still runs above)
+                if (!isWithinTradingHours()) {
+                    log.info("[NIGHT] {} regime={} signal={} gridActive={} — observe only, no action",
+                            instrument, regime.getRegime(), signal.getSignal(), gridActive);
+                    continue;
+                }
+
+                // 4. CIRCUIT BREAKER — daytime only
                 if (signal.getSignal() == SignalResult.Signal.DANGER && gridActive) {
                     gridTradingService.stopGrid(instrument);
                     log.warn("CIRCUIT BREAKER: Stopped grid for {} DANGER", instrument);
                     continue;
                 }
 
-                // 3. Regime check
-                RegimeResult regime = signalService.checkRegime(instrument);
-                lastRegimes.put(instrument, regime);
-
-                // FIX 1: RANGING = open grid, even if EMA downtrend
-                // Grids profit from oscillation not direction. Only block on DANGER.
+                // 5. RANGING = open grid, even if EMA downtrend
                 if (regime.isTradeable() && !gridActive) {
                     if (signal.getSignal() != SignalResult.Signal.DANGER) {
                         GridMode mode = GridMode.valueOf(config.getGridMode() != null ? config.getGridMode().toUpperCase() : "NEUTRAL");
@@ -115,12 +129,11 @@ public class AutoGridScheduler {
                     }
                 }
 
-                // TRENDING = close-only or stop
+                // 6. TRENDING = close-only or stop
                 if (!regime.isTradeable() && gridActive) {
                     boolean hasPositions = gridTradingService.hasOpenPositionsOnKraken(instrument, config.isDemo());
                     if (hasPositions) {
                         gridState.setCloseOnly(true);
-                        // FIX 4: Place TP/SL protection
                         placeCloseOnlyProtection(instrument, config, signal);
                         log.warn("REGIME SWITCH CLOSE-ONLY for {} + TP/SL placed", instrument);
                     } else {

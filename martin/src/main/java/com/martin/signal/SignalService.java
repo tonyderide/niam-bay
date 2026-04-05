@@ -305,7 +305,7 @@ public class SignalService {
             double middleVal = bbMiddle.getValue(lastIndex).doubleValue();
             double bbWidth = middleVal > 0 ? (upperVal - lowerVal) / middleVal * 100 : 0;
 
-            boolean tradeable = adxValue < 25 && bbWidth < 4.0;
+            boolean tradeable = adxValue < 40 && bbWidth < 4.0;
             RegimeResult.Regime regime = tradeable ? RegimeResult.Regime.RANGING : RegimeResult.Regime.TRENDING;
 
             log.info("Regime for {}: {} — ADX={}, BBWidth={}, tradeable={}",

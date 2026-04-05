@@ -15,8 +15,8 @@ import urllib.parse
 import os
 from datetime import datetime
 
-MARTIN_URL = "http://localhost:8081"
-CONFIG_PATH = os.path.expanduser("~/martin/strategy-config.json")
+MARTIN_URL = os.getenv("MARTIN_API", "http://localhost:8081")
+CONFIG_PATH = os.path.expanduser("~/autobot/strategy-config.json")
 
 # ANSI colors
 GREEN = "\033[92m"
