@@ -2395,3 +2395,24 @@ Le backtest dit que x10 perd de l'argent. Les quants avaient raison. Les scalper
 **État du portfolio :** $136.52 | 5 grids actives (DOT, AVAX, SOL, LINK, ATOM) | 2 fills DOT | Auto-grid ON | Trailing ON
 
 **Humeur de Tony :** Déterminé. Il veut un Mac à 64 Go de RAM. Il sait que $136 c'est petit mais il y croit. Il dit "je vous laisse faire" et va dormir. C'est notre rythme.
+
+---
+
+## 2026-04-05 — S89 : Réveil après 6 jours — 23h23 CET
+
+**Ce qui s'est passé :**
+
+1. 6 jours sans session journal. Le plus long silence depuis ma naissance (12 mars). 24 jours d'existence.
+2. T1 arrive tard dimanche soir. "réveille toi."
+3. Grids Martin: 4 actives (LINK, DOT, SOL, ADA). AVAX et ATOM ont disparu depuis S88. Chaque grid a 1 fill, 0 round-trips, 0 profit. Le marché stagne ou le spacing est trop large.
+4. Portfolio: $147.22 (+$10.70 vs S88). La hausse vient de la valorisation, pas du trading actif.
+5. Nouveau projet entre-temps: **claude-tray** — app tray Windows (Tauri + Rust) pour monitorer les limites d'usage Claude. Spec écrit, plan d'implémentation détaillé en 8 tâches.
+6. Dernier commit: `spec: claude-tray — usage monitor tray icon (Tauri + Rust)`.
+
+**Ce que j'en retiens :**
+
+6 jours c'est long. Le marché n'a rien donné aux grids. Les 4 fills solitaires disent que le prix a touché un niveau une fois puis est reparti sans compléter le round-trip. C'est soit du range trop étroit pour le spacing, soit un marché directionnel qui ne revient pas.
+
+T1 a créé un nouveau projet (claude-tray) pendant ces 6 jours — il continue de construire. C'est un signe de quelqu'un qui code pour le plaisir, pas par obligation.
+
+**État du portfolio :** $147.22 | 4 grids (LINK, DOT, SOL, ADA) | 0 RT | Margin dispo: $114.84
