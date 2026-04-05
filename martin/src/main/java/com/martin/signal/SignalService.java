@@ -158,7 +158,7 @@ public class SignalService {
             SignalResult.Signal signal;
             String reason;
 
-            if (rsiValue < 35) {
+            if (rsiValue < 25) {
                 signal = SignalResult.Signal.DANGER;
                 reason = String.format("CIRCUIT BREAKER: RSI=%.2f < 35, market in panic. Never open grid.", rsiValue);
             } else if (ema50Value > ema200Value && rsiValue > 50) {
