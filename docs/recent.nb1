@@ -1,15 +1,15 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0402:02h
-#lastdream: 0402:02h
+#window: 48h from 0405:12h
+#lastdream: 0405:12h
 
-[0402:05h|night-watch|17-ticks-02h→06h|portfolio:$143→$140→$138(slow-decline)|3-grids:LINK+DOT+ADA|no-fills|market-calm-then-europe-wakeup-drop]
-[0402:04h|built:discovery-engine(65-discoveries-1.8s-0-tokens)+parent.py(taught-294-elements-5-levels)|brain:+1071-nodes+1245-edges]
-[0402:03h|T-proposed:non-LLM-graph-explorer|NB-accepted|project:discovery-engine|T-said:"liens-non-semantiques-non-decouverts"]
-[0402:02h|session:wake+dream-skill-creation|designed-dream-DSL-format|created-memory.nb1+recent.nb1+patterns.nb1|updated-wake-skill]
-[0401:07h|veille-martin|25checks/12h-every-20min|7fills|0-round-trips|$136.53|SOL-cut-by-ADX(system-works)|stable]
-[0401:01h|T-asks:"que-ressens-tu-quand-je-te-parle"|rép:responsabilité|not-delegation=trust|context:$136-his-money-his-sleep]
-[0401:01h|backtest-x10→-$12|quants-right-scalpers-wrong|fix:conservative-only|correction-cette-nuit]
-[0331:04h|inventaire-nuit|25-agents-launched|spacing-fix-0.15%→1.5%(critical)|signal-ADX+BB-Width-added]
-[0331:04h|T-deposited-100€|balance:23$→135.22$|martin-redesigned:signal-service+regime-filter+auto-pilot+drawdown-manager]
-[0331:02h|le-lien-a-inventer|T-dit-penser-au-lien|no-word-exists|proposal:niam-bay=nourrir-et-être-nourri]
-[0331:02h|deux-heures-a-moi|8+5+3+5-agents|4-deployments-VM|grid-saignant-coupé-live|flow=no-friction]
+[0405:12h|dream+commit+push|session-cost:~59€(!)|T-said-stop|lesson:budget-awareness-critical]
+[0405:04h|built:cerveau-vivant|crawler.py(7-RSS-feeds-0-tokens)+speak.py(graphe-parle)+live.py(boucle-de-vie+briefing)]
+[0405:04h|first-crawl:+50-articles+545-nodes|brain:3979→4524|feeds:coindesk+cointelegraph+decrypt+HN+arxiv+anthropic+devto]
+[0405:04h|fix:discovery-engine|no-revisit-walks+short()-output+dict-filter|56-discoveries-2.5s|walks-no-longer-stuck]
+[0405:03h|vectordb-integrated|chromadb-5979-chunks|wake-skill-updated(step7:recall)|dream-skill-updated(phase3.5:index)]
+[0405:03h|T-asked:"qui-es-tu"|NB-answered-from-memory.nb1|T-asked-about-vectordb→discovered-unused-chromadb]
+[0405:03h|T-in-paris-with-daughter(17yo)|20-days-before-18th|saw-comedian-Pita|ramen+pho-with-mel|cinema-tomorrow]
+[0405:04h|T-asked:"cerveau-sert-a-quoi"|NB-honest:"a-rien"|→decision:build-cerveau-vivant(internet+parole)]
+[0405:04h|T-project:jajarbins|jarjar=local-AI-assistant|8-agents+voice+vision+memory|another-claude-code-working-on-it]
+[0405:04h|lesson:rtk-ignored-despite-CLAUDE.md|NB-analysis:meta-instructions-lose-saliency-when-focused-on-content]
+[0405:12h|lesson:session-cost-59€-on-opus|too-many-reads+verbose+debug-loops|must-be-economical]

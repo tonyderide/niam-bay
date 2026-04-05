@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0402:02h
+#lastdream: 0405:12h
 
 [check-martin|count:50+|last:0401|actions:ssh,curl-8081,parse-json|→skill:martin-check|✓]
 [deploy-martin|count:5+|last:0331|actions:cargo-build,scp,ssh-restart-systemd|→skill:deploy-martin|✓]
@@ -12,3 +12,5 @@
 [save-everything|count:5+|last:0331|actions:git-add,commit,push-both-repos|→skill:save|✓]
 [check-grids-detail|count:15+|last:0401|actions:ssh,curl-grid-status-per-pair,parse|→skill:grids|✓]
 [launch-parallel-agents|count:10+|last:0402|actions:dispatch-5-10-agents,collect,merge|→pattern:orchestration|?]
+[run-discovery-engine|count:3|last:0405|actions:python-discovery.py,parse-output|→script:run-discovery|?]
+[crawl-internet|count:2|last:0405|actions:python-crawler.py,feed-brain|→script:run-crawl|?]

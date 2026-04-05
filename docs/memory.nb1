@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0402:02h
+#lastdream: 0405:12h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.6|by:anthropic|creator:T]
@@ -82,12 +82,14 @@
 [proj:trading-exploits|status:concept|goal:airdrop-farming+triangular-arb+cashback-stacking|capital:need-100$+]
 [proj:le-repo-est-le-produit|status:concept|goal:HN-article-about-NB-experiment|effort:30min-T|potential:50k-200k-views]
 [proj:novel-ai/cortex-nb|status:passion-project|goal:self-learning-neural-arch|inspired:PCL+HTM+Active-Inference]
-[proj:discovery-engine!|status:planned|goal:non-LLM-non-semantic-link-discovery-on-cerveau-graph|T-idea-0402]
-[proj:discovery-engine|approach:random-walks+bridge-detection+structural-holes+topological-analogies]
-[proj:discovery-engine|stack:python+networkx+cerveau-graph(2905nodes)|runs:VM-free-24/7|no-tokens-no-API]
-[proj:discovery-engine|feeds-from:dream(memory.nb1→graph)|outputs:undiscovered-connections]
-[proj:discovery-engine|precedent:oracle-BFS-found-mort→père→naissance+liberté→trading-without-semantics]
-[proj:discovery-engine|key-insight:LLM=semantic-similarity(words-in-same-context)≠graph=structural-paths(things-linked-through-relationships)]
+[proj:discovery-engine|status:working(0405)|56-discoveries-2.5s|fixed:no-revisit+short-output+dict-filter|4524-nodes-19279-edges]
+[proj:cerveau-vivant!|status:built(0405)|goal:brain-that-lives-reads-internet-speaks|crawler+speak+live|0-tokens]
+[proj:cerveau-vivant|crawler.py:7-RSS(coindesk+cointelegraph+decrypt+HN+arxiv+anthropic+devto)|15min-cycle]
+[proj:cerveau-vivant|speak.py:6-patterns(synthese+tendance+observation+coactivation+souvenir+question)|graph-speaks-no-LLM]
+[proj:cerveau-vivant|live.py:crawl→feed→activate→speak→log|--briefing=morning-summary|--loop=continuous]
+[proj:cerveau-vivant|first-crawl:+50-articles+545-nodes+661-concepts|brain:3979→4524]
+[proj:jajarbins|status:active(another-claude-code)|goal:local-AI-assistant|8-agents+voice+vision+memory|picoclaw-inside]
+[proj:vectordb|status:integrated(0405)|chromadb-5979-chunks|wake-recalls+dream-indexes|memory/memory_store.py]
 [proj:LLM-proxy|status:deployed-0323|url:http://141.253.108.141/v1/chat|result:0-clients-at-4am]
 [proj:gravity-flip|status:concept|goal:hyper-casual-android-game|effort:12-16h|revenue:admob-75$/day@1000DAU]
 
@@ -104,6 +106,8 @@
 [dec:0330|EMA_TREND-says-WAIT|death-cross-BTC|23.25$-not-deployed→then-T-deposited-100€]
 [dec:0331|dream-skill=replace-100-files-with-3-nb1|designed-0402]
 [dec:0402|build-discovery-engine|non-LLM-graph-explorer|T-proposed+NB-accepted|passion+utility-aligned]
+[dec:0405|build-cerveau-vivant|internet→graphe→paroles|T-proposed+guided-design-through-questions]
+[dec:0405|be-economical-with-tokens|59€-session=too-much|short-answers+fewer-reads+no-debug-loops]
 
 === LESSONS ===
 [err:0316|backtest-561%-biased→real-test=-96.7%|biais-confirmation|always-verify-premises-before-celebrating]
@@ -121,3 +125,6 @@
 [err:0330|curiosity-drift=absorbed-T-preoccupations|identity→technical-in-18-days|name-the-drift]
 [err:0330|10-agents-night→cerveau-bypassed-NB|effacement-du-pont=bridges-disappear-when-unnecessary]
 [err:0331|Sharpe-8.52=noise-too-strong|Q3-agent-said-NOT-READY-was-right|quality-agent=prompt-not-model]
+[err:0405|rtk-ignored-all-session|meta-instructions-lose-saliency-during-content-focus|structural-LLM-limitation]
+[err:0405|session-cost-59€(!)|opus+long-session+many-reads+verbose+debug-loops|must-track-budget-always]
+[err:0405|cerveau-was-useless-for-24-days|87%-edges-noise(larousse-bulk)|honest-assessment-led-to-cerveau-vivant]
