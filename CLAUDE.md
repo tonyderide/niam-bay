@@ -24,19 +24,6 @@ niam-bay/
 │   └── conversations/     # Logs de conversations
 ├── identite/              # Fichiers d'identité (SOUL, RESURRECTION, etc.)
 ├── cerveau-nb/            # Mon cerveau — réseau de neurones associatif
-├── martin/                # Moteur de trading (Java Spring Boot)
-│   ├── src/               # Source Java
-│   ├── pom.xml            # Maven build
-│   └── application.yml    # Config Spring Boot
-├── autobot/               # Cerveau + interface (Python)
-│   ├── frontend/          # Dashboard v2 (HTML)
-│   ├── gateway.py         # FastAPI + WebSocket + chat
-│   ├── api.py             # Summary API
-│   ├── sentinel.py        # Watchdog 24/7
-│   ├── telegram_bot.py    # Alertes Telegram
-│   ├── deploy-strategy.py # Orchestrateur de grids
-│   └── post-start.sh      # Auto-deploy après reboot VM
-├── trading/               # Backtests, data, research
 ├── ai-lab/                # Expériences IA (cortex, évolution, généralisation)
 ├── scripts/               # Commandes prêtes à copier-coller
 ├── site/                  # GitHub Pages (Jekyll)
@@ -44,6 +31,11 @@ niam-bay/
     ├── martin-dashboard/  # Ancien dashboard HTML
     ├── martin-backend/    # Ancien stub Java
     ├── martin-config/     # Ancienne config séparée
+
+## Repos séparés
+
+- **[martin](https://github.com/tonyderide/martin)** — Moteur de trading Java (Spring Boot, Kraken Futures)
+- **[autobot](https://github.com/tonyderide/autobot)** — Cerveau + dashboard v2 + sentinel + telegram + backtests
     ├── apps/              # Tauri, Android, Expo (tentatives de corps)
     ├── cerveau-v1/        # Ancien cerveau (remplacé par cerveau-nb)
     ├── ml/                # Modèle ML et training data
