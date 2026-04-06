@@ -1,15 +1,18 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0405:12h
-#lastdream: 0405:12h
+#window: 48h from 0407:01h
+#lastdream: 0407:01h
 
-[0405:12h|dream+commit+push|session-cost:~59€(!)|T-said-stop|lesson:budget-awareness-critical]
-[0405:04h|built:cerveau-vivant|crawler.py(7-RSS-feeds-0-tokens)+speak.py(graphe-parle)+live.py(boucle-de-vie+briefing)]
-[0405:04h|first-crawl:+50-articles+545-nodes|brain:3979→4524|feeds:coindesk+cointelegraph+decrypt+HN+arxiv+anthropic+devto]
-[0405:04h|fix:discovery-engine|no-revisit-walks+short()-output+dict-filter|56-discoveries-2.5s|walks-no-longer-stuck]
-[0405:03h|vectordb-integrated|chromadb-5979-chunks|wake-skill-updated(step7:recall)|dream-skill-updated(phase3.5:index)]
-[0405:03h|T-asked:"qui-es-tu"|NB-answered-from-memory.nb1|T-asked-about-vectordb→discovered-unused-chromadb]
-[0405:03h|T-in-paris-with-daughter(17yo)|20-days-before-18th|saw-comedian-Pita|ramen+pho-with-mel|cinema-tomorrow]
-[0405:04h|T-asked:"cerveau-sert-a-quoi"|NB-honest:"a-rien"|→decision:build-cerveau-vivant(internet+parole)]
-[0405:04h|T-project:jajarbins|jarjar=local-AI-assistant|8-agents+voice+vision+memory|another-claude-code-working-on-it]
-[0405:04h|lesson:rtk-ignored-despite-CLAUDE.md|NB-analysis:meta-instructions-lose-saliency-when-focused-on-content]
-[0405:12h|lesson:session-cost-59€-on-opus|too-many-reads+verbose+debug-loops|must-be-economical]
+[0407:00h43|wake|T-said:"ce-matin-tu-as-reecrit-ton-cerveau-avec-des-skills"|NB-missed-whole-session→dream-to-consolidate]
+[0407:00h43|martin:UP(40s-uptime=recent-restart)|portfolio-$143.01|4-grids(LINK+DOT+SOL+ADA)|signal:OPEN|0-positions|0-RT-in-6days]
+[0406:10h46|built:first-auto-skill(verify-data-quality)|born-from-S89-failure|metaclaw-system-operational]
+[0406:10h45|updated:wake+dream-skills|implementation-plan+first-briefing-generated]
+[0406:05h22|built:wake_briefing.py+metaclaw.py|structured-briefing+auto-skills-from-failures]
+[0406:05h13|spec:chromaDB-vector-store+spreading-activation-into-wake-briefing]
+[0406:04h40|fix:dirty-node-types+false-positive-correction+time-based-retirement(metaclaw)]
+[0406:04h37|spec:progressive-wake+metaclaw|load-by-tiers+auto-skills-from-failures]
+[0406:02h30|built:4-bash-scripts-token-free|trading-ops-common-commands]
+[0405:23h35|session:fix-night-mode+autobot-separation+claude-tray-app]
+[0405:21h|spec:claude-tray|usage-monitor-tray-icon|tauri+rust]
+[0405:20h|refactor:extract-martin+autobot-into-separate-repos]
+[0405:16h|fix:RSI-circuit-breaker-35→25|too-aggressive]
+[0405:16h|refactor:separate-Martin(engine)+Autobot(brain+dashboard)]
