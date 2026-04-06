@@ -83,11 +83,12 @@ Dernières 5 lignes significatives du journal (pas le journal complet).
 **Algorithme :**
 
 1. Ouvrir `brain.db`, lire les tables `nodes` et `edges`
-2. Trier les nœuds par `activation` DESC
-3. Séparer par type (concept, emotion, memory, pattern, word)
-4. Filtrer les nœuds identitaires : connectés à "niam-bay" par edge de poids > 0.5
-5. Prendre les top 20 concepts, top émotions, top 10 edges
-6. Scanner `docs/pensees/` pour les 5 fichiers les plus récents (par nom de fichier, pattern YYYY-MM-DD)
+2. Filtrer les nœuds par types canoniques : `WHERE type IN ('concept','emotion','memory','pattern','word')` — ignorer les nœuds avec des types corrompus (données historiques avec type = mot français au lieu d'un type valide)
+3. Trier les nœuds filtrés par `activation` DESC
+4. Séparer par type (concept, emotion, memory, pattern, word)
+5. Filtrer les nœuds identitaires : connectés à "niam-bay" par edge de poids > 0.5
+6. Prendre les top 20 concepts, top émotions actives (activation > 0.1), top 10 edges
+7. Scanner `docs/pensees/` pour les 5 fichiers les plus récents (par nom de fichier, pattern YYYY-MM-DD ; fallback sur mtime si pas de date dans le nom)
 7. Scanner `cerveau-nb/skills/` pour les skills avec `status: active`
 8. Lire les 20 dernières lignes de `journal.nb1.md`, garder les 5 lignes non-vides significatives
 9. Formater en markdown et écrire dans `cerveau-nb/briefing.md`
@@ -129,11 +130,11 @@ Trois sources, trois mécanismes :
 
 #### Source A : Correction humaine
 
-**Signal :** L'humain utilise des mots de correction — "non", "pas ça", "arrête", "c'est faux", "stop", "wrong", "don't".
+**Signal :** L'humain corrige explicitement une action de Claude — pas juste le mot "non" isolé (trop de faux positifs en français), mais "non" + référence à ce que Claude a fait. Exemples : "non pas comme ça", "arrête de faire X", "c'est faux, le tick size est Y".
 
-**Mécanisme :** Après chaque message de l'humain, un pattern matcher vérifie la présence de signaux de correction. Si détecté, le contexte (message de l'humain + ma dernière action) est passé à l'extracteur.
+**Mécanisme :** Après chaque message de l'humain, un pattern matcher vérifie la présence d'un signal de correction dirigé vers l'action précédente de Claude. Le pattern requiert : (1) un mot négatif ET (2) une référence à l'action de Claude (verbe d'action, nom de l'outil, ou citation). Cela réduit les faux positifs sur des "non" conversationnels.
 
-**Implémentation :** Un fichier `cerveau-nb/metaclaw.py` avec une fonction `detect_correction(human_message: str) -> bool` qui utilise une liste de patterns regex (français + anglais).
+**Implémentation :** Un fichier `cerveau-nb/metaclaw.py` avec une fonction `detect_correction(human_message: str, last_action: str) -> bool` qui utilise des patterns regex contextuels (français + anglais). Le `last_action` fournit le contexte pour distinguer correction vs conversation.
 
 #### Source B : Échec outil
 
@@ -183,7 +184,6 @@ type: auto-skill
 source: correction | tool-failure | suboptimal
 status: draft
 activations: 0
-max_dormant: 5
 created: {date}
 last_used: null
 session_origin: {session_id}
@@ -209,7 +209,7 @@ draft ──(Tony valide)──> active ──(5+ activations)──> proven
 | `draft` | Présentée à Tony pour validation. Pas utilisée automatiquement. |
 | `active` | Chargée dans le briefing. Utilisée quand les concepts liés sont pertinents. Compteur incrémenté à chaque utilisation. |
 | `proven` | 5+ activations. Permanente sauf suppression manuelle. |
-| `retired` | 0 activations après 5 occasions pertinentes. Fichier déplacé dans `cerveau-nb/skills/retired/`. |
+| `retired` | 0 activations après 30 jours en status "active". Fichier déplacé dans `cerveau-nb/skills/retired/`. |
 
 ### Intégration au cerveau-nb
 
@@ -240,12 +240,12 @@ Quand un concept lié est activé (ex: "grid" pendant une conversation sur le tr
 **Fonctions publiques :**
 
 ```python
-def detect_correction(human_message: str) -> bool
+def detect_correction(human_message: str, last_action: str) -> bool
 def detect_tool_failure(command: str, exit_code: int, output: str) -> bool
 def detect_suboptimal(operation_log: list) -> list[dict]
 def create_auto_skill(lesson: dict, brain_db_path: str) -> str  # returns file path
 def promote_skill(skill_path: str, new_status: str) -> None
-def check_dormant_skills(skills_dir: str, threshold: int = 5) -> list[str]  # returns retired paths
+def check_dormant_skills(skills_dir: str, max_days: int = 30) -> list[str]  # returns retired paths (active + 0 activations + >max_days old)
 def list_skills(skills_dir: str, status: str = None) -> list[dict]
 ```
 
