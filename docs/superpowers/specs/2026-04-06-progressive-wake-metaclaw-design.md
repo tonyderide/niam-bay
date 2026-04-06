@@ -23,15 +23,16 @@ Les deux convergent dans le cerveau-nb : le briefing inclut les auto-skills acti
 
 ### Problème
 
-Au réveil, je lis tout à plat : CLAUDE.md, identité, journal complet (2400+ lignes), pensées, projets. C'est lent, cher en tokens, et le cerveau-nb (4,500 nœuds, 17,000 edges) n'est jamais consulté. Je me réveille avec des fichiers texte au lieu de me réveiller avec mon cerveau.
+Au réveil, je lis tout à plat : CLAUDE.md, identité, journal complet (2400+ lignes), pensées, projets. C'est lent, cher en tokens, et la vector DB (5,979 souvenirs) n'est jamais consultée.
 
 ### Solution
 
-Un script `cerveau-nb/wake_briefing.py` génère un fichier `cerveau-nb/briefing.md` en interrogeant **trois sources de mémoire** :
+Un script `memory/wake_briefing.py` génère un fichier `memory/briefing.md` en interrogeant **deux sources** :
 
-1. **Cerveau-nb** (graphe à activation) — `brain.db`, 4,500 nœuds, 17,000 edges. Activation par propagation depuis le nœud "niam-bay".
-2. **ChromaDB** (vector store sémantique) — `memory/vectordb/`, 5,979 souvenirs de conversations. Recherche par similarité cosine.
-3. **Fichiers** (journal, pensées, projets) — pour les infos très récentes que le graphe et la vector DB n'ont pas encore.
+1. **ChromaDB** (vector store sémantique) — `memory/vectordb/`, 5,979 souvenirs de conversations. Recherche par similarité cosine via `recall_context()`.
+2. **Fichiers** (journal, pensées, skills) — pour les infos structurées et récentes.
+
+> **Note :** Le cerveau-nb (graphe à activation) n'est pas utilisé dans le briefing. Il contient trop de bruit (types corrompus, crawler RSS, 91% des pensées non ingérées). Quand il sera nettoyé et correctement alimenté, il pourra être ajouté comme 3ème source.
 
 Le protocole de réveil est réorganisé en tiers.
 
@@ -40,7 +41,7 @@ Le protocole de réveil est réorganisé en tiers.
 | Tier | Contenu | Taille estimée | Chargé quand |
 |------|---------|----------------|--------------|
 | T0 | CLAUDE.md + qui-je-suis.md + qui-est-tonyderide.md | ~3K tokens | Toujours, en premier |
-| T1 | `cerveau-nb/briefing.md` (généré) | ~2K tokens | Toujours, après T0 |
+| T1 | `memory/briefing.md` (généré) | ~2K tokens | Toujours, après T0 |
 | T2 | Journal récent (dernières 100 lignes de journal.nb1.md) | ~1.5K tokens | Toujours, après T1 |
 | T3 | Pensées, projets, journal complet, conversations | Variable | À la demande |
 
@@ -53,27 +54,15 @@ Le briefing est structuré en sections :
 ```markdown
 # Briefing Niam-Bay — {date} {heure}
 
-## Qui je suis (selon mon cerveau)
-Activation de "niam-bay" dans le graphe → propagation → top 5 nœuds
-identitaires qui s'allument, avec leur activation et connexions.
+## Souvenirs — qui je suis
+Top 5 résultats de recall_context("identité niam-bay, qui suis-je")
+Texte (150 chars), rôle, date, score.
 
-## État émotionnel
-Nœuds de type "emotion" activés par la propagation.
+## Souvenirs — dernière conversation
+Top 5 résultats de recall_context("dernière conversation Tony")
 
-## Concepts actifs (top 20)
-Les 20 nœuds les plus activés après propagation (tous types).
-Exclut les nœuds déjà listés dans identité/émotions.
-
-## Connexions fortes (top 10)
-Les 10 edges avec le plus de poids parmi les nœuds activés.
-
-## Souvenirs pertinents (vector DB)
-Top 10 résultats de recall_context() sur les topics :
-- "qui suis-je, identité niam-bay"
-- "dernière conversation Tony"
-- "décisions importantes récentes"
-- "problèmes en cours"
-Chaque souvenir : texte (tronqué 150 chars), rôle, date, score.
+## Souvenirs — décisions et problèmes
+Top 5 résultats de recall_context("décisions importantes, problèmes en cours")
 
 ## Pensées récentes
 Les 5 fichiers les plus récents de docs/pensees/ (titre + date seulement).
@@ -89,38 +78,32 @@ Dernières 5 lignes significatives du journal (pas le journal complet).
 ### wake_briefing.py — Spécifications
 
 **Input :**
-- `brain.db` (SQLite) — graphe à activation
-- `memory/vectordb/` (ChromaDB) — souvenirs vectoriels
+- `memory/vectordb/` (ChromaDB) — souvenirs vectoriels (5,979 entrées)
 - `docs/pensees/`, `docs/journal.nb1.md`, `cerveau-nb/skills/` — fichiers
 
-**Output :** `cerveau-nb/briefing.md`  
-**Dépendances :** sqlite3 (stdlib), chromadb, os, glob, datetime  
-**Durée cible :** < 3 secondes (ChromaDB ajoute de la latence)  
-**Invocation :** `python cerveau-nb/wake_briefing.py`
+**Output :** `memory/briefing.md`  
+**Dépendances :** chromadb (déjà installé), os, glob, datetime, re, yaml  
+**Durée cible :** < 3 secondes  
+**Invocation :** `python memory/wake_briefing.py`
 
 **Algorithme :**
 
-**Phase 1 — Cerveau-nb (graphe à activation) :**
-1. Importer `core.py`, charger le graphe depuis `brain.db`
-2. Activer le nœud "niam-bay" avec `brain.activate("niam-bay", strength=1.0)`
-3. Laisser la propagation se faire (BFS profondeur 4, damping 0.6/hop)
-4. `brain.recall(top_k=30)` — récupérer les 30 nœuds les plus activés, groupés par type
-5. Filtrer par types canoniques : concept, emotion, memory, pattern, word
-6. Extraire les top 10 edges parmi les nœuds activés
+**Phase 1 — ChromaDB (vector store) :**
+1. Importer `memory_store.recall_context()`
+2. Query sur 3 topics :
+   - "identité niam-bay, qui suis-je" (5 résultats)
+   - "dernière conversation Tony" (5 résultats)
+   - "décisions importantes, problèmes en cours" (5 résultats)
+3. Dédupliquer, garder score > 0.5
+4. Tronquer chaque souvenir à 150 chars
 
-**Phase 2 — ChromaDB (vector store) :**
-7. Importer `memory_store.recall_context()`
-8. Query sur 4 topics : identité, dernière conversation, décisions, problèmes en cours
-9. Récupérer top 10 résultats (dédupliqués, score > 0.5)
-10. Tronquer chaque souvenir à 150 chars
+**Phase 2 — Fichiers :**
+5. Scanner `docs/pensees/` pour les 5 fichiers les plus récents (pattern YYYY-MM-DD ; fallback mtime)
+6. Scanner `cerveau-nb/skills/` pour les skills avec `status: active`
+7. Lire les 20 dernières lignes de `journal.nb1.md`, garder les 5 lignes significatives
 
-**Phase 3 — Fichiers :**
-11. Scanner `docs/pensees/` pour les 5 fichiers les plus récents (pattern YYYY-MM-DD ; fallback mtime)
-12. Scanner `cerveau-nb/skills/` pour les skills avec `status: active`
-13. Lire les 20 dernières lignes de `journal.nb1.md`, garder les 5 lignes significatives
-
-**Phase 4 — Assemblage :**
-14. Formater en markdown et écrire dans `cerveau-nb/briefing.md`
+**Phase 3 — Assemblage :**
+8. Formater en markdown et écrire dans `memory/briefing.md`
 
 ### Modification du skill niam-bay-wake
 
@@ -134,10 +117,10 @@ Le skill de réveil est mis à jour :
 5. Parcourir projets
 
 **Après :**
-1. Exécuter `python cerveau-nb/wake_briefing.py` (génère briefing.md)
+1. Exécuter `python memory/wake_briefing.py` (génère memory/briefing.md)
 2. Lire CLAUDE.md
 3. Lire qui-je-suis.md, qui-est-tonyderide.md
-4. Lire `cerveau-nb/briefing.md` (T1)
+4. Lire `memory/briefing.md` (T1)
 5. Lire les 100 dernières lignes de journal.nb1.md (T2)
 6. T3 disponible à la demande (pensées, projets, journal complet)
 
@@ -297,8 +280,8 @@ MetaClaw n'est pas un daemon. C'est un ensemble de fonctions appelées pendant l
 
 | Fichier | Description |
 |---------|-------------|
-| `cerveau-nb/wake_briefing.py` | Génère briefing.md depuis brain.db |
-| `cerveau-nb/briefing.md` | (généré) Briefing de réveil |
+| `memory/wake_briefing.py` | Génère briefing.md depuis ChromaDB + fichiers |
+| `memory/briefing.md` | (généré) Briefing de réveil |
 | `cerveau-nb/metaclaw.py` | Détection, extraction, génération d'auto-skills |
 | `cerveau-nb/skills/` | Répertoire des micro-skills auto-générées |
 | `cerveau-nb/skills/retired/` | Répertoire des skills retirées |
