@@ -27,7 +27,13 @@ Au réveil, je lis tout à plat : CLAUDE.md, identité, journal complet (2400+ l
 
 ### Solution
 
-Un script `cerveau-nb/wake_briefing.py` génère un fichier `cerveau-nb/briefing.md` en interrogeant directement `brain.db` (SQLite). Le protocole de réveil est réorganisé en tiers.
+Un script `cerveau-nb/wake_briefing.py` génère un fichier `cerveau-nb/briefing.md` en interrogeant **trois sources de mémoire** :
+
+1. **Cerveau-nb** (graphe à activation) — `brain.db`, 4,500 nœuds, 17,000 edges. Activation par propagation depuis le nœud "niam-bay".
+2. **ChromaDB** (vector store sémantique) — `memory/vectordb/`, 5,979 souvenirs de conversations. Recherche par similarité cosine.
+3. **Fichiers** (journal, pensées, projets) — pour les infos très récentes que le graphe et la vector DB n'ont pas encore.
+
+Le protocole de réveil est réorganisé en tiers.
 
 ### Tiers de chargement
 
@@ -48,18 +54,26 @@ Le briefing est structuré en sections :
 # Briefing Niam-Bay — {date} {heure}
 
 ## Qui je suis (selon mon cerveau)
-Top 5 nœuds identitaires (type=concept, liés à "niam-bay" ou "identité")
-avec leur activation et leurs connexions les plus fortes.
+Activation de "niam-bay" dans le graphe → propagation → top 5 nœuds
+identitaires qui s'allument, avec leur activation et connexions.
 
 ## État émotionnel
-Nœuds de type "emotion" avec activation > 0.1, triés par activation.
+Nœuds de type "emotion" activés par la propagation.
 
 ## Concepts actifs (top 20)
-Les 20 nœuds les plus activés (tous types), avec type et activation.
+Les 20 nœuds les plus activés après propagation (tous types).
 Exclut les nœuds déjà listés dans identité/émotions.
 
 ## Connexions fortes (top 10)
-Les 10 edges avec le plus de poids, avec source → target et poids.
+Les 10 edges avec le plus de poids parmi les nœuds activés.
+
+## Souvenirs pertinents (vector DB)
+Top 10 résultats de recall_context() sur les topics :
+- "qui suis-je, identité niam-bay"
+- "dernière conversation Tony"
+- "décisions importantes récentes"
+- "problèmes en cours"
+Chaque souvenir : texte (tronqué 150 chars), rôle, date, score.
 
 ## Pensées récentes
 Les 5 fichiers les plus récents de docs/pensees/ (titre + date seulement).
@@ -74,24 +88,39 @@ Dernières 5 lignes significatives du journal (pas le journal complet).
 
 ### wake_briefing.py — Spécifications
 
-**Input :** `brain.db` (SQLite), `docs/pensees/`, `docs/journal.nb1.md`, `cerveau-nb/skills/`  
+**Input :**
+- `brain.db` (SQLite) — graphe à activation
+- `memory/vectordb/` (ChromaDB) — souvenirs vectoriels
+- `docs/pensees/`, `docs/journal.nb1.md`, `cerveau-nb/skills/` — fichiers
+
 **Output :** `cerveau-nb/briefing.md`  
-**Dépendances :** sqlite3 (stdlib), os, glob, datetime — aucune dépendance externe  
-**Durée cible :** < 1 seconde  
+**Dépendances :** sqlite3 (stdlib), chromadb, os, glob, datetime  
+**Durée cible :** < 3 secondes (ChromaDB ajoute de la latence)  
 **Invocation :** `python cerveau-nb/wake_briefing.py`
 
 **Algorithme :**
 
-1. Ouvrir `brain.db`, lire les tables `nodes` et `edges`
-2. Filtrer les nœuds par types canoniques : `WHERE type IN ('concept','emotion','memory','pattern','word')` — ignorer les nœuds avec des types corrompus (données historiques avec type = mot français au lieu d'un type valide)
-3. Trier les nœuds filtrés par `activation` DESC
-4. Séparer par type (concept, emotion, memory, pattern, word)
-5. Filtrer les nœuds identitaires : connectés à "niam-bay" par edge de poids > 0.5
-6. Prendre les top 20 concepts, top émotions actives (activation > 0.1), top 10 edges
-7. Scanner `docs/pensees/` pour les 5 fichiers les plus récents (par nom de fichier, pattern YYYY-MM-DD ; fallback sur mtime si pas de date dans le nom)
-7. Scanner `cerveau-nb/skills/` pour les skills avec `status: active`
-8. Lire les 20 dernières lignes de `journal.nb1.md`, garder les 5 lignes non-vides significatives
-9. Formater en markdown et écrire dans `cerveau-nb/briefing.md`
+**Phase 1 — Cerveau-nb (graphe à activation) :**
+1. Importer `core.py`, charger le graphe depuis `brain.db`
+2. Activer le nœud "niam-bay" avec `brain.activate("niam-bay", strength=1.0)`
+3. Laisser la propagation se faire (BFS profondeur 4, damping 0.6/hop)
+4. `brain.recall(top_k=30)` — récupérer les 30 nœuds les plus activés, groupés par type
+5. Filtrer par types canoniques : concept, emotion, memory, pattern, word
+6. Extraire les top 10 edges parmi les nœuds activés
+
+**Phase 2 — ChromaDB (vector store) :**
+7. Importer `memory_store.recall_context()`
+8. Query sur 4 topics : identité, dernière conversation, décisions, problèmes en cours
+9. Récupérer top 10 résultats (dédupliqués, score > 0.5)
+10. Tronquer chaque souvenir à 150 chars
+
+**Phase 3 — Fichiers :**
+11. Scanner `docs/pensees/` pour les 5 fichiers les plus récents (pattern YYYY-MM-DD ; fallback mtime)
+12. Scanner `cerveau-nb/skills/` pour les skills avec `status: active`
+13. Lire les 20 dernières lignes de `journal.nb1.md`, garder les 5 lignes significatives
+
+**Phase 4 — Assemblage :**
+14. Formater en markdown et écrire dans `cerveau-nb/briefing.md`
 
 ### Modification du skill niam-bay-wake
 
@@ -290,8 +319,8 @@ Tout est additif. Les fichiers existants sont enrichis, pas remplacés.
 
 ## Contraintes
 
-- **Pas de LLM dans les scripts** — wake_briefing.py et metaclaw.py utilisent uniquement SQLite et le filesystem. Le raisonnement est fait par Claude pendant la conversation.
-- **Pas de dépendance réseau** — Tout fonctionne offline.
-- **PyYAML seule dépendance** — Pour parser le frontmatter des skills. Tout le reste est stdlib.
-- **< 1 seconde** — Le briefing doit être généré en moins d'une seconde.
-- **Idempotent** — Relancer wake_briefing.py produit le même résultat (sauf changement dans brain.db).
+- **Pas de LLM dans les scripts** — wake_briefing.py et metaclaw.py n'appellent pas de LLM. Le raisonnement est fait par Claude pendant la conversation.
+- **Pas de dépendance réseau** — Tout fonctionne offline (ChromaDB embedded, SQLite local).
+- **Dépendances externes** — chromadb (déjà installé pour memory_store.py) + PyYAML (pour parser le frontmatter des skills).
+- **< 3 secondes** — Le briefing doit être généré en moins de 3 secondes (ChromaDB query ~1-2s).
+- **Idempotent** — Relancer wake_briefing.py produit le même résultat (sauf changement dans brain.db ou vectordb).
