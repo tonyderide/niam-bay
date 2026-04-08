@@ -19,24 +19,34 @@ def _register(name):
         return fn
     return decorator
 
-@_register("buy-on-dip-3pct")
+@_register("buy-on-dip-0.5pct")
 def _(candle, prev, pos):
-    if _pct_change(prev["close"], candle["close"]) < -0.03:
+    if _pct_change(prev["close"], candle["close"]) < -0.005:
         return "buy"
 
-@_register("buy-on-dip-5pct")
+@_register("buy-on-dip-1pct")
 def _(candle, prev, pos):
-    if _pct_change(prev["close"], candle["close"]) < -0.05:
+    if _pct_change(prev["close"], candle["close"]) < -0.01:
         return "buy"
 
-@_register("sell-on-pump-3pct")
+@_register("buy-on-dip-2pct")
 def _(candle, prev, pos):
-    if _pct_change(prev["close"], candle["close"]) > 0.03:
+    if _pct_change(prev["close"], candle["close"]) < -0.02:
+        return "buy"
+
+@_register("sell-on-pump-0.5pct")
+def _(candle, prev, pos):
+    if _pct_change(prev["close"], candle["close"]) > 0.005:
         return "sell"
 
-@_register("sell-on-pump-5pct")
+@_register("sell-on-pump-1pct")
 def _(candle, prev, pos):
-    if _pct_change(prev["close"], candle["close"]) > 0.05:
+    if _pct_change(prev["close"], candle["close"]) > 0.01:
+        return "sell"
+
+@_register("sell-on-pump-2pct")
+def _(candle, prev, pos):
+    if _pct_change(prev["close"], candle["close"]) > 0.02:
         return "sell"
 
 @_register("buy-when-low-touches-support")
@@ -64,11 +74,18 @@ def _(candle, prev, pos):
     if candle["volume"] < prev["volume"] * 0.5:
         return "hold"
 
-@_register("trailing-stop-2pct")
+@_register("trailing-stop-1pct")
 def _(candle, prev, pos):
     if pos and pos.get("peak", 0) > 0:
         drawdown = _pct_change(pos["peak"], candle["close"])
-        if drawdown < -0.02:
+        if drawdown < -0.01:
+            return "sell"
+
+@_register("trailing-stop-3pct")
+def _(candle, prev, pos):
+    if pos and pos.get("peak", 0) > 0:
+        drawdown = _pct_change(pos["peak"], candle["close"])
+        if drawdown < -0.03:
             return "sell"
 
 @_register("never-buy-in-downtrend")
@@ -76,12 +93,45 @@ def _(candle, prev, pos):
     if candle["close"] < prev["close"] < prev["open"]:
         return "hold"
 
+@_register("take-profit-2pct")
+def _(candle, prev, pos):
+    if pos and pos.get("entry", 0) > 0:
+        gain = _pct_change(pos["entry"], candle["close"])
+        if gain > 0.02:
+            return "sell"
+
 @_register("take-profit-5pct")
 def _(candle, prev, pos):
     if pos and pos.get("entry", 0) > 0:
         gain = _pct_change(pos["entry"], candle["close"])
         if gain > 0.05:
             return "sell"
+
+@_register("buy-on-big-red-body")
+def _(candle, prev, pos):
+    body = abs(candle["close"] - candle["open"])
+    full_range = candle["high"] - candle["low"]
+    if full_range > 0 and body / full_range > 0.7 and candle["close"] < candle["open"]:
+        return "buy"
+
+@_register("sell-on-big-green-body")
+def _(candle, prev, pos):
+    body = abs(candle["close"] - candle["open"])
+    full_range = candle["high"] - candle["low"]
+    if full_range > 0 and body / full_range > 0.7 and candle["close"] > candle["open"]:
+        return "sell"
+
+@_register("buy-when-close-near-low")
+def _(candle, prev, pos):
+    rng = candle["high"] - candle["low"]
+    if rng > 0 and (candle["close"] - candle["low"]) / rng < 0.2:
+        return "buy"
+
+@_register("sell-when-close-near-high")
+def _(candle, prev, pos):
+    rng = candle["high"] - candle["low"]
+    if rng > 0 and (candle["high"] - candle["close"]) / rng < 0.2:
+        return "sell"
 
 def load_metaclaw_skills():
     """Load skill names from cerveau-nb/skills/ auto-skills."""

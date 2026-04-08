@@ -21,10 +21,18 @@ def crossover(parent1: Agent, parent2: Agent, generation: int) -> Agent:
     for name, weight in parent2.skills.items():
         if name not in all_skills and random.random() < 0.5:
             all_skills[name] = weight
-    if not all_skills:
+    # Ensure at least 2 skills from parents
+    while len(all_skills) < 2:
         donor = random.choice([parent1, parent2])
-        name = random.choice(list(donor.skills.keys()))
-        all_skills[name] = donor.skills[name]
+        remaining = [s for s in donor.skills if s not in all_skills]
+        if remaining:
+            name = random.choice(remaining)
+            all_skills[name] = donor.skills[name]
+        else:
+            # Fallback: random from pool
+            pool = list(SKILL_POOL.keys())
+            name = random.choice(pool)
+            all_skills[name] = round(random.uniform(0.3, 1.0), 2)
     return Agent(
         agent_id=f"agent-{uuid.uuid4().hex[:6]}",
         skills=all_skills,
@@ -33,23 +41,29 @@ def crossover(parent1: Agent, parent2: Agent, generation: int) -> Agent:
     )
 
 def mutate(agent: Agent, rate: float = 0.3) -> Agent:
-    """Mutate an agent's skills: add, remove, or tweak weights."""
+    """Mutate an agent's skills: add, remove, or tweak weights. Always keeps at least 2 skills."""
     new_skills = dict(agent.skills)
     pool = list(SKILL_POOL.keys())
+    min_skills = 2
 
     for skill_name in list(new_skills.keys()):
         if random.random() < rate:
-            action = random.choice(["tweak", "remove", "replace"])
+            action = random.choice(["tweak", "tweak", "remove", "replace", "add"])
             if action == "tweak":
                 new_skills[skill_name] = max(0.1, min(1.0, new_skills[skill_name] + random.uniform(-0.2, 0.2)))
-            elif action == "remove" and len(new_skills) > 1:
+            elif action == "remove" and len(new_skills) > min_skills:
                 del new_skills[skill_name]
             elif action == "replace":
                 new_name = random.choice(pool)
                 if new_name not in new_skills:
                     del new_skills[skill_name]
                     new_skills[new_name] = round(random.uniform(0.3, 1.0), 2)
+            elif action == "add":
+                new_name = random.choice(pool)
+                if new_name not in new_skills:
+                    new_skills[new_name] = round(random.uniform(0.3, 1.0), 2)
 
+    # Always try to add a skill (exploration)
     if random.random() < rate:
         new_name = random.choice(pool)
         if new_name not in new_skills:

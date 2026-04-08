@@ -461,7 +461,39 @@
       <input type="range" id="sl-mut" min="0.10" max="0.50" value="0.30" step="0.01" />
     </div>
 
+    <div class="control-group">
+      <div class="control-label">
+        Symbol
+      </div>
+      <select id="sel-symbol" style="width:100%; padding:6px 10px; background:rgba(123,104,238,0.1); border:1px solid rgba(123,104,238,0.3); border-radius:6px; color:var(--text); font-family:var(--font); font-size:12px; cursor:pointer;">
+        <option value="PF_SOLUSD">SOL/USD</option>
+        <option value="PF_DOTUSD">DOT/USD</option>
+        <option value="PF_ADAUSD">ADA/USD</option>
+        <option value="PF_ETHUSD">ETH/USD</option>
+        <option value="PF_XBTUSD">BTC/USD</option>
+        <option value="PF_AVAXUSD">AVAX/USD</option>
+        <option value="PF_LINKUSD">LINK/USD</option>
+      </select>
+    </div>
+
+    <div class="control-group">
+      <div class="control-label">Resolution</div>
+      <select id="sel-interval" style="width:100%; padding:4px 6px; background:rgba(123,104,238,0.1); border:1px solid rgba(123,104,238,0.3); border-radius:4px; color:var(--text); font-family:var(--font); font-size:10px; cursor:pointer;">
+        <option value="60">1h (~83 days)</option>
+        <option value="240" selected>4h (~1 year)</option>
+        <option value="1440">1d (~5 years)</option>
+      </select>
+    </div>
+    <div class="control-group">
+      <div class="control-label">Date Range</div>
+      <div style="display:flex; gap:6px;">
+        <input type="date" id="date-from" style="flex:1; padding:4px 6px; background:rgba(123,104,238,0.1); border:1px solid rgba(123,104,238,0.3); border-radius:4px; color:var(--text); font-family:var(--font); font-size:10px;" />
+        <input type="date" id="date-to" style="flex:1; padding:4px 6px; background:rgba(123,104,238,0.1); border:1px solid rgba(123,104,238,0.3); border-radius:4px; color:var(--text); font-family:var(--font); font-size:10px;" />
+      </div>
+    </div>
+
     <button id="btn-start">START EVOLUTION</button>
+    <button id="btn-replay" style="display:none; width:100%; margin-top:6px; padding:10px; background:rgba(78,205,196,0.2); border:1px solid rgba(78,205,196,0.4); color:#4ecdc4; border-radius:8px; font-family:var(--font); font-size:12px; font-weight:600; cursor:pointer; letter-spacing:1px;">REPLAY WINNER</button>
     <div id="status-text">Ready</div>
 
     <div id="ws-indicator">
@@ -505,6 +537,16 @@
     <div class="best-name" id="best-name">—</div>
     <div class="best-pnl" id="best-pnl"></div>
     <button id="btn-close-banner">CLOSE</button>
+  </div>
+
+  <!-- Robustness report overlay -->
+  <div id="robustness-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); z-index:100; overflow-y:auto;">
+    <div style="max-width:900px; margin:40px auto; padding:30px; background:rgba(15,15,30,0.95); border:1px solid var(--glass-border); border-radius:16px;">
+      <h2 style="color:var(--purple); font-size:20px; margin-bottom:8px;">ROBUSTNESS REPORT</h2>
+      <p style="color:var(--text-dim); font-size:11px; margin-bottom:20px;">Trained on Q1, tested on Q2-Q4. Agents ranked by number of profitable quarters.</p>
+      <div id="robustness-table"></div>
+      <button onclick="document.getElementById('robustness-overlay').style.display='none'" style="margin-top:20px; padding:10px 30px; background:var(--purple); color:#fff; border:none; border-radius:8px; font-family:var(--font); font-size:13px; cursor:pointer;">CLOSE</button>
+    </div>
   </div>
 
   <script type="module">
@@ -584,7 +626,7 @@
         size: 0.18,
         transparent: true,
         opacity: 0.55,
-        sizeAtteenuation: true,
+        sizeAttenuation: true,
       });
       scene.add(new THREE.Points(geo, mat));
     })();
@@ -1029,9 +1071,12 @@
         case 'generation': onGeneration(msg); break;
         case 'deaths':     onDeaths(msg);     break;
         case 'births':     onBirths(msg);     break;
-        case 'complete':   onComplete(msg);   break;
-        case 'status':     setStatus(msg.message || ''); break;
-        case 'error':      setStatus('ERROR: ' + (msg.message || '?')); break;
+        case 'complete':        onComplete(msg);        break;
+        case 'quarter_result':  onQuarterResult(msg);   break;
+        case 'robustness_report': onRobustness(msg);    break;
+        case 'replay_result':     onReplayResult(msg);  break;
+        case 'status':          setStatus(msg.message || ''); break;
+        case 'error':           setStatus('ERROR: ' + (msg.message || '?')); break;
       }
     }
 
@@ -1072,7 +1117,8 @@
 
     function onDeaths(msg) {
       const dead = msg.dead || [];
-      dead.forEach(id => {
+      dead.forEach(d => {
+        const id = (typeof d === 'string') ? d : d.id;
         const n = nodes.get(id);
         if (n && !n.dying) {
           n.dying  = true;
@@ -1096,7 +1142,18 @@
       setStatus('Evolution complete');
 
       const ranking = msg.final_ranking || [];
-      if (ranking.length) updateLeaderboard(ranking);
+      // Show ALL agents in final leaderboard (no alive filter)
+      if (ranking.length) {
+        const sorted = [...ranking].sort((a, b) => (b.fitness ?? -Infinity) - (a.fitness ?? -Infinity));
+        const top5 = sorted.slice(0, 5);
+        leaderboardEl.innerHTML = top5.map((a, i) => `
+          <div class="lb-row">
+            <span class="lb-rank">${i + 1}</span>
+            <span class="lb-name">${a.id}</span>
+            <span class="lb-pnl ${pnlClass(a.fitness)}">${formatPnl(a.fitness)}</span>
+          </div>
+        `).join('');
+      }
 
       const best = msg.best;
       if (best) {
@@ -1104,8 +1161,159 @@
         const pnl = formatPnl(best.fitness);
         bestPnl.textContent  = pnl;
         bestPnl.className    = 'best-pnl ' + pnlClass(best.fitness);
+
+        // Show best agent's skills in selected panel
+        showSelectedAgent(best);
+
+        // Save winner for replay
+        lastWinner = best;
+        document.getElementById('btn-replay').style.display = 'block';
       }
       completeBanner.classList.add('visible');
+    }
+
+    function onQuarterResult(msg) {
+      setStatus(`${msg.label}: best = ${msg.best?.id ?? '?'} (${formatPnl(msg.best?.fitness)})`);
+    }
+
+    function onRobustness(msg) {
+      const overlay = document.getElementById('robustness-overlay');
+      const table = document.getElementById('robustness-table');
+      const agents = msg.agents || [];
+      const quarters = msg.quarters || [];
+
+      let html = `<table style="width:100%; border-collapse:collapse; font-size:12px;">
+        <thead>
+          <tr style="border-bottom:1px solid var(--glass-border);">
+            <th style="text-align:left; padding:8px; color:var(--text-dim);">#</th>
+            <th style="text-align:left; padding:8px; color:var(--text-dim);">Agent</th>`;
+      quarters.forEach(q => {
+        html += `<th style="text-align:right; padding:8px; color:var(--text-dim);">${q}</th>`;
+      });
+      html += `<th style="text-align:right; padding:8px; color:var(--text-dim);">Total</th>
+            <th style="text-align:center; padding:8px; color:var(--text-dim);">Win Q</th>
+          </tr>
+        </thead><tbody>`;
+
+      agents.forEach((a, i) => {
+        html += `<tr style="border-bottom:1px solid rgba(123,104,238,0.1);">
+          <td style="padding:8px; color:var(--text-dim);">${i + 1}</td>
+          <td style="padding:8px; color:var(--purple); font-weight:600;">${a.id}</td>`;
+        quarters.forEach(q => {
+          const pnl = a.quarters[q] ?? 0;
+          const cls = pnl >= 0 ? 'color:var(--green)' : 'color:var(--red)';
+          html += `<td style="text-align:right; padding:8px; ${cls};">${pnl >= 0 ? '+' : ''}${pnl.toFixed(2)}%</td>`;
+        });
+        const totalCls = a.total_pnl >= 0 ? 'color:var(--green); font-weight:700' : 'color:var(--red); font-weight:700';
+        html += `<td style="text-align:right; padding:8px; ${totalCls};">${a.total_pnl >= 0 ? '+' : ''}${a.total_pnl.toFixed(2)}%</td>`;
+        const stars = '★'.repeat(a.positive_quarters) + '☆'.repeat(4 - a.positive_quarters);
+        html += `<td style="text-align:center; padding:8px; color:var(--purple);">${stars}</td>`;
+        html += `</tr>`;
+
+        // Skills row
+        const skills = Object.entries(a.skills || {}).sort((x, y) => y[1] - x[1]);
+        html += `<tr><td></td><td colspan="${quarters.length + 2}" style="padding:2px 8px 10px;">`;
+        skills.forEach(([name, w]) => {
+          html += `<span style="display:inline-block; padding:2px 6px; margin:1px; background:rgba(123,104,238,0.15); border:1px solid rgba(123,104,238,0.3); border-radius:3px; font-size:10px; color:#b0a0ff;">${name} <b>${(w * 100).toFixed(0)}</b></span> `;
+        });
+        html += `</td></tr>`;
+      });
+
+      html += '</tbody></table>';
+      table.innerHTML = html;
+      overlay.style.display = 'block';
+    }
+
+    function onReplayResult(msg) {
+      running = false;
+      btnStart.disabled = false;
+
+      const overlay = document.getElementById('robustness-overlay');
+      const table = document.getElementById('robustness-table');
+      const a = msg.agent;
+      const trades = msg.trades || [];
+      const totalTrades = trades.length;
+      const wins = trades.filter(t => t.pnl > 0).length;
+      const losses = trades.filter(t => t.pnl < 0).length;
+      const winRate = totalTrades > 0 ? ((wins / totalTrades) * 100).toFixed(1) : '0.0';
+
+      let html = `<h3 style="color:var(--purple); margin-bottom:12px;">REPLAY: ${a.id}</h3>`;
+      html += `<div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:12px; margin-bottom:20px;">
+        <div style="padding:12px; background:rgba(123,104,238,0.1); border-radius:8px; text-align:center;">
+          <div style="font-size:20px; font-weight:700; color:${msg.pnl >= 0 ? 'var(--green)' : 'var(--red)'};">${msg.pnl >= 0 ? '+' : ''}${msg.pnl.toFixed(2)}%</div>
+          <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">TOTAL PnL</div>
+        </div>
+        <div style="padding:12px; background:rgba(123,104,238,0.1); border-radius:8px; text-align:center;">
+          <div style="font-size:20px; font-weight:700; color:var(--text);">${totalTrades}</div>
+          <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">TRADES</div>
+        </div>
+        <div style="padding:12px; background:rgba(123,104,238,0.1); border-radius:8px; text-align:center;">
+          <div style="font-size:20px; font-weight:700; color:var(--green);">${winRate}%</div>
+          <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">WIN RATE</div>
+        </div>
+        <div style="padding:12px; background:rgba(123,104,238,0.1); border-radius:8px; text-align:center;">
+          <div style="font-size:20px; font-weight:700; color:var(--text);">${msg.candles}</div>
+          <div style="font-size:10px; color:var(--text-dim); margin-top:4px;">CANDLES</div>
+        </div>
+      </div>`;
+
+      // Skills
+      html += `<div style="margin-bottom:16px;">`;
+      Object.entries(a.skills || {}).sort((x, y) => y[1] - x[1]).forEach(([name, w]) => {
+        html += `<span style="display:inline-block; padding:3px 8px; margin:2px; background:rgba(123,104,238,0.15); border:1px solid rgba(123,104,238,0.3); border-radius:4px; font-size:10px; color:#b0a0ff;">${name} <b>${(w * 100).toFixed(0)}</b></span> `;
+      });
+      html += `</div>`;
+
+      // Equity curve (simple text-based)
+      if (msg.equity && msg.equity.length > 0) {
+        const maxEq = Math.max(...msg.equity);
+        const minEq = Math.min(...msg.equity);
+        const range = maxEq - minEq || 1;
+        const W = 800, H = 150;
+        let svg = `<svg width="${W}" height="${H}" style="width:100%; border:1px solid rgba(123,104,238,0.2); border-radius:8px; background:rgba(0,0,0,0.3);">`;
+        // Zero line
+        const zeroY = H - ((100 - minEq) / range) * H;
+        svg += `<line x1="0" y1="${zeroY}" x2="${W}" y2="${zeroY}" stroke="rgba(255,255,255,0.1)" stroke-dasharray="4"/>`;
+        // Curve
+        const step = W / (msg.equity.length - 1);
+        let path = '';
+        msg.equity.forEach((v, i) => {
+          const x = i * step;
+          const y = H - ((v - minEq) / range) * H;
+          path += (i === 0 ? 'M' : 'L') + `${x.toFixed(1)},${y.toFixed(1)} `;
+        });
+        const lastVal = msg.equity[msg.equity.length - 1];
+        const curveColor = lastVal >= 100 ? '#39ff9a' : '#ff4d6d';
+        svg += `<path d="${path}" fill="none" stroke="${curveColor}" stroke-width="2"/>`;
+        svg += `<text x="8" y="16" fill="var(--text-dim)" font-size="10" font-family="var(--font)">Equity Curve ($100 start)</text>`;
+        svg += `</svg>`;
+        html += svg;
+      }
+
+      // Trade list
+      if (trades.length > 0) {
+        html += `<div style="margin-top:16px; max-height:200px; overflow-y:auto;">
+          <table style="width:100%; border-collapse:collapse; font-size:11px;">
+            <thead><tr style="border-bottom:1px solid var(--glass-border);">
+              <th style="text-align:left; padding:4px; color:var(--text-dim);">#</th>
+              <th style="text-align:left; padding:4px; color:var(--text-dim);">Action</th>
+              <th style="text-align:right; padding:4px; color:var(--text-dim);">Price</th>
+              <th style="text-align:right; padding:4px; color:var(--text-dim);">PnL</th>
+            </tr></thead><tbody>`;
+        trades.forEach((t, i) => {
+          const cls = t.pnl > 0 ? 'color:var(--green)' : t.pnl < 0 ? 'color:var(--red)' : 'color:var(--text-dim)';
+          html += `<tr style="border-bottom:1px solid rgba(123,104,238,0.05);">
+            <td style="padding:3px 4px; color:var(--text-dim);">${i + 1}</td>
+            <td style="padding:3px 4px; color:${t.action === 'buy' ? 'var(--green)' : 'var(--red)'};">${t.action.toUpperCase()}</td>
+            <td style="padding:3px 4px; text-align:right;">${t.price.toFixed(4)}</td>
+            <td style="padding:3px 4px; text-align:right; ${cls};">${t.pnl !== null ? (t.pnl >= 0 ? '+' : '') + t.pnl.toFixed(2) + '%' : '—'}</td>
+          </tr>`;
+        });
+        html += '</tbody></table></div>';
+      }
+
+      table.innerHTML = html;
+      overlay.style.display = 'block';
     }
 
     function setStatus(text) {
@@ -1127,10 +1335,30 @@
         population:    parseInt(document.getElementById('sl-pop').value),
         generations:   parseInt(document.getElementById('sl-gen').value),
         mutation_rate: parseFloat(document.getElementById('sl-mut').value),
-        symbol:        'PI_XBTUSD',
+        symbol:        document.getElementById('sel-symbol').value,
+        interval:      parseInt(document.getElementById('sel-interval').value),
+        date_from:     document.getElementById('date-from').value || null,
+        date_to:       document.getElementById('date-to').value || null,
       };
 
       ws.send(JSON.stringify({ type: 'start', config }));
+    });
+
+    // Replay winner button
+    let lastWinner = null;
+    document.getElementById('btn-replay').addEventListener('click', () => {
+      if (!wsConnected || !lastWinner) return;
+      running = true;
+      btnStart.disabled = true;
+      setStatus('Replaying winner…');
+      ws.send(JSON.stringify({
+        type: 'replay',
+        agent: lastWinner,
+        symbol: document.getElementById('sel-symbol').value,
+        interval: parseInt(document.getElementById('sel-interval').value),
+        date_from: document.getElementById('date-from').value || null,
+        date_to: document.getElementById('date-to').value || null,
+      }));
     });
 
     btnCloseBanner.addEventListener('click', () => {
