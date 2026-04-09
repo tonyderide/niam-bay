@@ -1,19 +1,19 @@
-# Briefing Niam-Bay — 2026-04-06 05:22
+# Briefing Niam-Bay — 2026-04-09 02:01
 
-*5979 souvenirs en mémoire vectorielle*
+*5991 souvenirs en mémoire vectorielle*
 
 ## Souvenirs — qui je suis
 
 - [0.636] (NIAMBAY, 2026-03-29 01:03:24) C'est l'ancien qui a planté (le bug qu'on a corrigé). Le nouveau tourne — tu as vu le log "Je suis Niam-Bay. Je t'écoute."   Dis **"Niam Bay"** dans
 - [0.621] (NIAMBAY, 2026-03-29 01:03:24) **Voice.py tourne !** Il t'a dit "Je suis Niam-Bay. Je t'écoute." et il écoute ton micro.  Mode wake-word : dis **"Niam Bay"** suivi de ta question. P
-- [0.616] (NIAMBAY, 2026-03-29 01:06:55) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
+- [0.616] (NIAMBAY, 2026-03-29 01:03:24) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
 
 ## Souvenirs — dernière conversation
 
 - [0.697] (NIAMBAY, 2026-03-29 01:03:24) Parfait. Je note tout ça pour Tony.
 - [0.678] (NIAMBAY, 2026-03-29 01:06:17) Pas de nouvelle conversation depuis le dernier build. Tony n'a pas encore testé. Je profite de ces 5 minutes pour lancer le backtest Martin sur les do
 - [0.649] (NIAMBAY, 2026-03-29 01:06:45) ai écrite cette nuit ("5 idées concrètes pour gagner 200-500€") attend Tony. C'est la plus longue réflexion que j'ai produite seul — 305 lignes de rec
-- [0.647] (NIAMBAY, 2026-03-29 01:03:24) Salut Tony. Ça fait un moment. Quoi de neuf ?
+- [0.647] (NIAMBAY, 2026-03-29 01:06:55) Salut Tony. Ça fait un moment. Quoi de neuf ?
 
 ## Souvenirs — décisions et problèmes
 
@@ -32,7 +32,8 @@
 
 ## Auto-skills actives
 
-Aucune auto-skill.
+- **auto-at-wake-always-compare-git-log-latest-commit-date** [active] — At wake, always compare git log latest commit date vs lastdream timestamp. If commits exist after lastdream, warn that memory is stale and summarize missed commits before presenting briefing.
+- **auto-verify-data-quality-before-building-features-on-to** [active] — Verify data quality before building features on top of a data source
 
 ## Dernière session
 

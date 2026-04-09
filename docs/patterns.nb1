@@ -14,4 +14,4 @@
 [launch-parallel-agents|count:10+|last:0402|actions:dispatch-5-10-agents,collect,merge|→pattern:orchestration|?]
 [run-discovery-engine|count:3|last:0405|actions:python-discovery.py,parse-output|→script:run-discovery|?]
 [crawl-internet|count:2|last:0405|actions:python-crawler.py,feed-brain|→script:run-crawl|?]
-[wake-with-missing-session|count:1|last:0407|NB-woke-without-consolidated-session→T-corrected|pattern:dream-before-sleep-not-after]
+[wake-with-missing-session|count:2|last:0409|NB-woke-without-consolidated-session→stale-memory-detected|pattern:dream-before-sleep-not-after|→auto-skill:compare-git-vs-lastdream|✓]

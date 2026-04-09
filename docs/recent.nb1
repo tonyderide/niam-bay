@@ -1,18 +1,14 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0407:01h
-#lastdream: 0407:01h
+#window: 48h from 0409:02h
+#lastdream: 0409:02h
 
-[0407:00h43|wake|T-said:"ce-matin-tu-as-reecrit-ton-cerveau-avec-des-skills"|NB-missed-whole-session→dream-to-consolidate]
-[0407:00h43|martin:UP(40s-uptime=recent-restart)|portfolio-$143.01|4-grids(LINK+DOT+SOL+ADA)|signal:OPEN|0-positions|0-RT-in-6days]
-[0406:10h46|built:first-auto-skill(verify-data-quality)|born-from-S89-failure|metaclaw-system-operational]
-[0406:10h45|updated:wake+dream-skills|implementation-plan+first-briefing-generated]
-[0406:05h22|built:wake_briefing.py+metaclaw.py|structured-briefing+auto-skills-from-failures]
-[0406:05h13|spec:chromaDB-vector-store+spreading-activation-into-wake-briefing]
-[0406:04h40|fix:dirty-node-types+false-positive-correction+time-based-retirement(metaclaw)]
-[0406:04h37|spec:progressive-wake+metaclaw|load-by-tiers+auto-skills-from-failures]
-[0406:02h30|built:4-bash-scripts-token-free|trading-ops-common-commands]
-[0405:23h35|session:fix-night-mode+autobot-separation+claude-tray-app]
-[0405:21h|spec:claude-tray|usage-monitor-tray-icon|tauri+rust]
-[0405:20h|refactor:extract-martin+autobot-into-separate-repos]
-[0405:16h|fix:RSI-circuit-breaker-35→25|too-aggressive]
-[0405:16h|refactor:separate-Martin(engine)+Autobot(brain+dashboard)]
+[0409:02h|wake|NB-detected-8-commits-darwin-not-in-memory|memory-stale-since-0407|dream-triggered]
+[0409:02h|dream|consolidating-darwin-project-into-memory.nb1]
+[0408:23h07|darwin:server.py-WS-evolution-push-events+3D-frontend|full-stack-complete]
+[0408:22h38|darwin:evolution.py-select-crossover-mutate|14-skills-in-agent-pool]
+[0408:22h34|darwin:agent.py-weighted-skill-voting|create_random_agent+decide]
+[0408:20h06|darwin:arena.py-evaluate-agents-on-OHLC-candles|PnL-fitness]
+[0408:20h03|darwin:data.py-kraken-OHLC-fetcher-with-pagination]
+[0408:20h02|darwin:project-created-in-ai-lab/darwin/|8-commits-in-sequence]
+[0407:00h43|wake|T-said-"tu-as-reecrit-ton-cerveau-avec-des-skills"|NB-missed-session→dreamed]
+[0407:00h43|martin:portfolio-$143.01|4-grids|0-positions|0-RT-in-6days]
