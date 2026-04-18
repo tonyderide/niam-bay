@@ -16,6 +16,11 @@
 # python C:/Users/tony_/Documents/niam-bay/scripts/martin_telegram_bot.py --reset            # Repart de zéro (supprime l'état)
 # PRÉREQUIS: SSH tunnel actif → ssh -i ~/.ssh/martin_vm.key -L 8081:localhost:8081 ubuntu@141.253.108.141 -N &
 
+# --- KRAKEN STATS (real PnL/fees/funding depuis Kraken directement) ---
+# ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "python3 /home/ubuntu/scripts/kraken_stats.py"                            # Stats depuis autobot launch (0405)
+# ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "python3 /home/ubuntu/scripts/kraken_stats.py 2026-04-10T00:00:00Z"        # Stats depuis date custom
+# Deploy: scp -i ~/.ssh/martin_vm.key C:/Users/tony_/Documents/niam-bay/scripts/kraken_stats.py ubuntu@141.253.108.141:/home/ubuntu/scripts/
+
 # --- GRIDS STATUS ---
 # ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "curl -s http://localhost:8081/api/grid/active && echo && for g in \$(curl -s http://localhost:8081/api/grid/active 2>/dev/null | python3 -c 'import sys,json; [print(x) for x in json.load(sys.stdin)]'); do echo \"=== \$g ===\"; curl -s http://localhost:8081/api/grid/status/\$g | python3 -c 'import sys,json; d=json.load(sys.stdin); print(\"RT:\",d[\"completedRoundTrips\"],\"Fills:\",len(d[\"fills\"]),\"Profit:\",d[\"totalProfit\"])'; done && echo '=== BALANCE ===' && curl -s http://localhost:8081/api/bot/balance | python3 -c 'import sys,json; f=json.load(sys.stdin)[\"accounts\"][\"flex\"]; print(\"Portfolio:\",round(f[\"portfolioValue\"],2),\"Available:\",round(f[\"availableMargin\"],2))'"
 
