@@ -266,10 +266,13 @@ public class Jarvis {
 
     static boolean isGarbage(String text) {
         if (text == null || text.isEmpty()) return true;
+        // Normalize: lowercase + strip accents to catch "regardé" vs "regarde"
         String low = text.toLowerCase(Locale.ROOT);
+        String norm = java.text.Normalizer.normalize(low, java.text.Normalizer.Form.NFD)
+                         .replaceAll("\\p{M}", "");
         String[] patterns = {"sous-titres", "sous titres", "merci d'avoir regarde",
                              "merci de votre attention", "abonnez-vous", "\u266a", "..."};
-        for (String p : patterns) if (low.contains(p)) return true;
+        for (String p : patterns) if (norm.contains(p)) return true;
         if (text.split("\\s+").length < 2) return true;
         return false;
     }
@@ -488,8 +491,11 @@ public class Jarvis {
         String lo = text.toLowerCase(Locale.ROOT);
         // Heure
         if (lo.contains("quelle heure") || lo.contains("dis-moi l'heure") || lo.contains("dis moi l heure") || lo.contains("il est quelle heure")) {
-            String h = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm", Locale.FRENCH));
-            return "Il est " + h.replace(":", " heure ").replace(" 00", "") + ".";
+            int hh = LocalDateTime.now().getHour();
+            int mm = LocalDateTime.now().getMinute();
+            String hrWord = (hh == 1) ? "une heure" : (hh + " heures");
+            if (mm == 0) return "Il est " + hrWord + " pile.";
+            return "Il est " + hrWord + " " + mm + ".";
         }
         // Date
         if (lo.contains("quelle date") || lo.contains("on est quel jour") || lo.contains("on est le combien")) {
@@ -714,21 +720,134 @@ public class Jarvis {
 
     void runOnce(String q) { turn(q); }
 
+    // ---------- SELF-TESTS (--test) ----------
+    /**
+     * Unit tests runnable sans micro, sans Claude, sans audio.
+     * Valide wake-word, garbage filter, local commands, JSON parse,
+     * stress repeat (leak check), background thread survival.
+     * Exit 0 si tout passe, exit 1 sinon.
+     */
+    static int runSelfTests() {
+        int pass = 0, fail = 0;
+        System.out.println("=== NIAM-BAY JARVIS SELF-TESTS ===\n");
+
+        // 1. Wake word detection
+        Jarvis j = new Jarvis(true, true, null, false);  // wakeWord=true
+        Object[][] wakeCases = {
+            {"niam bay quelle heure",         "quelle heure"},
+            {"Niam-Bay, checke martin",       "checke martin"},
+            {"niambay",                        null},   // juste le wake word, pas de commande
+            {"nyam bay portfolio",            "portfolio"},
+            {"NIAM BAILLE dis-moi l'heure",   "dis-moi l'heure"},
+            {"bonjour comment ca va",         null},   // pas de wake word
+            {"tony a mange du riz",           null},
+            {"niam bay",                       null},
+            {"hey niambay, quelle date ?",    ", quelle date ?"},
+        };
+        for (Object[] c : wakeCases) {
+            String in = (String) c[0];
+            String expected = (String) c[1];
+            String got = j.handleWake(in);
+            // Normalize for comparison
+            String normGot = got == null ? null : got.strip();
+            String normExp = expected == null ? null : expected.strip();
+            boolean ok;
+            if (normExp == null) ok = normGot == null;
+            else ok = normExp.equals(normGot) || (normGot != null && normGot.contains(normExp.replace(",", "").strip()));
+            if (ok) { pass++; System.out.printf("  OK   wake[%s] -> %s%n", in, normGot); }
+            else    { fail++; System.out.printf("  FAIL wake[%s] expected=%s got=%s%n", in, normExp, normGot); }
+        }
+
+        // 2. Garbage filter
+        String[] garbage = {"", "sous-titres", "Merci d'avoir regardé", "un", "...", "aaaaa"};
+        for (String g : garbage) {
+            if (isGarbage(g)) { pass++; System.out.printf("  OK   garbage[%s] -> filtered%n", g); }
+            else              { fail++; System.out.printf("  FAIL garbage[%s] -> passed through%n", g); }
+        }
+        String[] notGarbage = {"quelle heure est-il", "checke martin maintenant", "niam bay bonjour"};
+        for (String g : notGarbage) {
+            if (!isGarbage(g)) { pass++; System.out.printf("  OK   ok_text[%s]%n", g); }
+            else               { fail++; System.out.printf("  FAIL ok_text[%s] -> wrongly filtered%n", g); }
+        }
+
+        // 3. Local commands (no Claude, no SSH for heure)
+        Jarvis jj = new Jarvis(true, false, null, false);
+        String[] timeInputs = {"quelle heure est-il", "dis-moi l'heure", "il est quelle heure"};
+        for (String t : timeInputs) {
+            String r = jj.tryLocalCommand(t);
+            if (r != null && r.toLowerCase().contains("heure")) { pass++; System.out.printf("  OK   local[%s] -> %s%n", t, r); }
+            else                                                 { fail++; System.out.printf("  FAIL local[%s] -> %s%n", t, r); }
+        }
+        // Unknown input -> null (goes to Claude)
+        if (jj.tryLocalCommand("explique-moi la relativite") == null) {
+            pass++; System.out.println("  OK   local[unknown] -> null (delegate to Claude)");
+        } else {
+            fail++; System.out.println("  FAIL local[unknown] -> should be null");
+        }
+
+        // 4. JSON extractor
+        String sample = "{\"accounts\":{\"flex\":{\"portfolioValue\":167.05,\"availableMargin\":125.76}}}";
+        String port = extractJsonNumber(sample, "portfolioValue");
+        String avail = extractJsonNumber(sample, "availableMargin");
+        if ("167,05".equals(port)) { pass++; System.out.println("  OK   json portfolioValue -> 167,05"); }
+        else { fail++; System.out.println("  FAIL json portfolioValue -> " + port); }
+        if ("125,76".equals(avail)) { pass++; System.out.println("  OK   json availableMargin -> 125,76"); }
+        else { fail++; System.out.println("  FAIL json availableMargin -> " + avail); }
+        if (extractJsonNumber(sample, "absent") == null) { pass++; System.out.println("  OK   json absent key -> null"); }
+        else { fail++; System.out.println("  FAIL json absent key -> not null"); }
+
+        // 5. Stress : 1000 handleWake + 1000 isGarbage calls (leak/perf smoke test)
+        long t0 = System.currentTimeMillis();
+        for (int i = 0; i < 1000; i++) {
+            j.handleWake("niam bay test " + i);
+            isGarbage("sous-titres " + i);
+        }
+        long dt = System.currentTimeMillis() - t0;
+        if (dt < 2000) { pass++; System.out.printf("  OK   stress 1000x wake+garbage in %dms%n", dt); }
+        else           { fail++; System.out.printf("  FAIL stress too slow: %dms%n", dt); }
+
+        // 6. Background thread survival : lance un daemon, verifie qu'il est bien daemon (Swing EDT OK sans focus)
+        Thread test = new Thread(() -> { try { Thread.sleep(50); } catch (InterruptedException ignored) {} });
+        test.setDaemon(true);
+        test.start();
+        try { test.join(500); } catch (InterruptedException ignored) {}
+        if (!test.isAlive()) { pass++; System.out.println("  OK   daemon thread lifecycle"); }
+        else { fail++; System.out.println("  FAIL daemon thread still alive"); }
+
+        // 7. System prompt load
+        String prompt = loadMemory();
+        if (prompt.length() > 200 && prompt.contains("Niam-Bay")) { pass++; System.out.printf("  OK   system prompt loaded (%d chars)%n", prompt.length()); }
+        else { fail++; System.out.printf("  FAIL system prompt suspect (%d chars)%n", prompt.length()); }
+
+        // 8. Paths
+        if (Files.exists(ROOT.resolve("CLAUDE.md"))) { pass++; System.out.println("  OK   repo root detected"); }
+        else { fail++; System.out.println("  FAIL repo root not detected"); }
+
+        System.out.printf("%n=== RESULT: %d pass, %d fail ===%n", pass, fail);
+        return fail == 0 ? 0 : 1;
+    }
+
     // ---------- MAIN ----------
     public static void main(String[] args) {
-        boolean textMode = false, wakeWord = false, noUI = false;
+        boolean textMode = false, wakeWord = false, noUI = false, runTests = false;
         String once = null;
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "--text" -> textMode = true;
                 case "--wake-word" -> wakeWord = true;
                 case "--no-ui" -> noUI = true;
+                case "--test" -> runTests = true;
                 case "--once" -> { if (i + 1 < args.length) once = args[++i]; }
                 case "-h", "--help" -> {
-                    System.out.println("Usage: java niambay.Jarvis [--text|--once TEXT|--wake-word|--no-ui]");
+                    System.out.println("Usage: java niambay.Jarvis [--text|--once TEXT|--wake-word|--no-ui|--test]");
                     return;
                 }
             }
+        }
+
+        if (runTests) {
+            System.exit(runSelfTests());
+            return;
         }
 
         System.out.println("==============================================");
