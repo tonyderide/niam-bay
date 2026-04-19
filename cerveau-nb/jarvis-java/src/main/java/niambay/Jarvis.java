@@ -412,6 +412,83 @@ public class Jarvis {
         }
     }
 
+    // ---------- LOCAL COMMANDS (no Claude needed, 0s latency) ----------
+    /** Try to handle as a local command. Returns response or null if not handled. */
+    String tryLocalCommand(String text) {
+        String lo = text.toLowerCase(Locale.ROOT);
+        // Heure
+        if (lo.contains("quelle heure") || lo.contains("dis-moi l'heure") || lo.contains("dis moi l heure") || lo.contains("il est quelle heure")) {
+            String h = LocalDateTime.now().format(DateTimeFormatter.ofPattern("HH:mm", Locale.FRENCH));
+            return "Il est " + h.replace(":", " heure ").replace(" 00", "") + ".";
+        }
+        // Date
+        if (lo.contains("quelle date") || lo.contains("on est quel jour") || lo.contains("on est le combien")) {
+            String d = LocalDateTime.now().format(DateTimeFormatter.ofPattern("EEEE d MMMM", Locale.FRENCH));
+            return "On est " + d + ".";
+        }
+        // Martin portfolio
+        if (lo.contains("checke martin") || lo.contains("check martin") || lo.contains("etat martin") || lo.contains("état martin") || lo.contains("comment va martin")) {
+            return checkMartin();
+        }
+        // Portfolio direct
+        if (lo.matches(".*(portefeuille|portfolio|balance).*")) {
+            return checkMartin();
+        }
+        return null;
+    }
+
+    /** SSH to VM and get Martin balance. ~3-5s. */
+    String checkMartin() {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("ssh",
+                "-i", System.getProperty("user.home") + "/.ssh/martin_vm.key",
+                "-o", "StrictHostKeyChecking=no",
+                "-o", "ConnectTimeout=10",
+                "ubuntu@141.253.108.141",
+                "curl -s http://localhost:8081/api/bot/balance");
+            pb.redirectErrorStream(false);
+            Process p = pb.start();
+            StringBuilder out = new StringBuilder();
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = r.readLine()) != null) out.append(line);
+            }
+            boolean ok = p.waitFor(15, TimeUnit.SECONDS);
+            if (!ok) { p.destroyForcibly(); return "Martin ne repond pas, ssh trop long."; }
+            String json = out.toString();
+            // Parse portfolioValue from JSON (lightweight)
+            String portfolio = extractJsonNumber(json, "portfolioValue");
+            String available = extractJsonNumber(json, "availableMargin");
+            if (portfolio == null) return "Je n'ai pas pu lire le portefeuille.";
+            return String.format("Portefeuille Martin %s dollars, disponible %s.", portfolio, available != null ? available : "inconnu");
+        } catch (Exception e) {
+            return "Erreur en contactant Martin : " + e.getMessage();
+        }
+    }
+
+    /** Very loose JSON number extractor — avoids pulling a JSON lib. */
+    static String extractJsonNumber(String json, String key) {
+        if (json == null) return null;
+        String needle = "\"" + key + "\":";
+        int idx = json.indexOf(needle);
+        if (idx < 0) return null;
+        int start = idx + needle.length();
+        while (start < json.length() && Character.isWhitespace(json.charAt(start))) start++;
+        int end = start;
+        while (end < json.length()) {
+            char c = json.charAt(end);
+            if (Character.isDigit(c) || c == '.' || c == '-' || c == 'e' || c == 'E' || c == '+') end++;
+            else break;
+        }
+        if (end == start) return null;
+        try {
+            double d = Double.parseDouble(json.substring(start, end));
+            return String.format(Locale.FRENCH, "%.2f", d);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+    }
+
     // ---------- TURN ----------
     void turn(String userText) {
         if (userText == null || userText.isBlank()) return;
@@ -419,6 +496,13 @@ public class Jarvis {
         for (String q : QUIT_WORDS) if (lo.contains(q)) {
             speak("A bientot.");
             running = false;
+            return;
+        }
+        // Try local commands first (no Claude = 0s latency)
+        String local = tryLocalCommand(userText);
+        if (local != null) {
+            speak(local);
+            logConversation(userText, local);
             return;
         }
         String response = askClaude(userText, systemPrompt);
@@ -457,10 +541,47 @@ public class Jarvis {
         }
     }
 
+    /** Fast Martin check (6s hard timeout), returns short spoken string or null. */
+    String tryQuickMartin() {
+        try {
+            ProcessBuilder pb = new ProcessBuilder("ssh",
+                "-i", System.getProperty("user.home") + "/.ssh/martin_vm.key",
+                "-o", "StrictHostKeyChecking=no",
+                "-o", "ConnectTimeout=3",
+                "-o", "BatchMode=yes",
+                "ubuntu@141.253.108.141",
+                "curl -s --max-time 3 http://localhost:8081/api/bot/balance");
+            Process p = pb.start();
+            StringBuilder out = new StringBuilder();
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = r.readLine()) != null) out.append(line);
+            }
+            boolean ok = p.waitFor(6, TimeUnit.SECONDS);
+            if (!ok) { p.destroyForcibly(); return null; }
+            String portfolio = extractJsonNumber(out.toString(), "portfolioValue");
+            if (portfolio == null) return null;
+            return "Martin tient " + portfolio + " dollars.";
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     void runVoice() {
-        String greet = "Je suis pret.";
-        if (wakeWord) greet += " Dis Niam-Bay pour me reveiller.";
-        speak(greet);
+        // Rich greeting: time + Martin snapshot
+        StringBuilder g = new StringBuilder();
+        int hour = LocalDateTime.now().getHour();
+        if (hour < 5) g.append("Salut Tony, tu veilles tard. ");
+        else if (hour < 10) g.append("Bonjour Tony. ");
+        else if (hour < 14) g.append("Salut. ");
+        else if (hour < 18) g.append("Salut Tony. ");
+        else if (hour < 23) g.append("Bonsoir Tony. ");
+        else g.append("Salut, il est tard. ");
+        String martin = tryQuickMartin();
+        if (martin != null) g.append(martin).append(" ");
+        g.append("Je suis pret.");
+        if (wakeWord) g.append(" Dis Niam-Bay pour me reveiller.");
+        speak(g.toString());
 
         while (running) {
             try {

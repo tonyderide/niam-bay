@@ -31,10 +31,16 @@ Mode : /loop 10 minutes, continuer ce plan, commit à chaque itération.
 - [ ] Pré-charger Whisper/Vosk au boot (pas à la 1ère transcription)
 - [ ] Parallélisme : commencer Claude pendant que TTS finit phrase précédente
 
-### Batch 3 — UX (priorité 3)
-- [ ] Commande vocale "checke Martin" → lance martin-check via subprocess
-- [ ] Commande vocale "dis-moi l'heure" → pas besoin de Claude
-- [ ] Greeting au boot : lire l'heure + état + dernière commande Martin
+### Batch 3 — "VRAI JARVIS" (priorité absolue, par demande Tony 04h50)
+Tony veut "tout Jarvis" : écoute passive, wake-word robuste, actions vocales.
+- [ ] **Wake-word mode testé end-to-end** : dire "Niam Bay" active Jarvis, sinon il ignore tout. Gérer les variantes Whisper ("niam baille", "nyambay", etc.)
+- [ ] **Greeting au boot** : heure actuelle + dernière action Martin (portfolio, grids actives) en 1-2 phrases parlées
+- [ ] **Commande vocale "checke Martin"** → subprocess au one-liner martin-check → résumé parlé
+- [ ] **Commande vocale "dis-moi l'heure"** → locale direct, pas de Claude (0s latence)
+- [ ] **Commande vocale "portfolio"** → ssh Martin /api/bot/balance → parlé
+- [ ] **Commande vocale "quitte/stop"** → shutdown propre (déjà OK mais retester)
+- [ ] **Robustesse boucle 1h+** : pas de leak mic, pas de crash sur Whisper fail
+- [ ] **Mode background** : peut tourner en fenêtre minimisée, ne crash pas sans focus
 
 ### Batch 4 — Packaging (priorité 4)
 - [ ] Script d'installation `install.ps1` qui vérifie Java/Python/Whisper/Claude
