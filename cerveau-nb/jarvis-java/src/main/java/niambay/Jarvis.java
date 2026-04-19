@@ -303,6 +303,111 @@ public class Jarvis {
         return "claude";  // Let PATH handle it
     }
 
+    /**
+     * Streaming Claude call - parses stream-json NDJSON, calls onSentence
+     * callback as each sentence arrives. Returns full response text when done.
+     * Pairs sentences to TTS in real-time so the user hears speech starting
+     * ~3-4s after TTFT instead of waiting for the full response.
+     */
+    static String askClaudeStreaming(String prompt, String system, java.util.function.Consumer<String> onSentence) {
+        String claudeExe = resolveClaudeExe();
+        List<String> cmd = new ArrayList<>(Arrays.asList(
+            claudeExe,
+            "-p",
+            "--model", "sonnet",
+            "--system-prompt", system,
+            "--output-format", "stream-json",
+            "--verbose",
+            "--include-partial-messages",
+            "--tools", "",
+            "--no-chrome",
+            "--no-session-persistence",
+            "--disable-slash-commands",
+            prompt
+        ));
+        System.out.println("TOI: " + prompt);
+        StringBuilder full = new StringBuilder();
+        StringBuilder buffer = new StringBuilder();
+        java.util.regex.Pattern textDelta = java.util.regex.Pattern.compile(
+            "\"type\"\\s*:\\s*\"text_delta\"\\s*,\\s*\"text\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
+        java.util.regex.Pattern sentenceEnd = java.util.regex.Pattern.compile("([.!?…])\\s+");
+        try {
+            long t0 = System.currentTimeMillis();
+            ProcessBuilder pb = new ProcessBuilder(cmd);
+            pb.directory(ROOT.toFile());
+            pb.redirectErrorStream(false);
+            Process p = pb.start();
+            // Read stdout line by line
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = r.readLine()) != null) {
+                    java.util.regex.Matcher m = textDelta.matcher(line);
+                    while (m.find()) {
+                        String chunk = unescapeJsonString(m.group(1));
+                        full.append(chunk);
+                        buffer.append(chunk);
+                        // Emit complete sentences
+                        java.util.regex.Matcher se = sentenceEnd.matcher(buffer);
+                        int lastEnd = 0;
+                        while (se.find()) {
+                            String sentence = buffer.substring(lastEnd, se.end()).trim();
+                            if (!sentence.isEmpty() && onSentence != null) {
+                                onSentence.accept(sentence);
+                            }
+                            lastEnd = se.end();
+                        }
+                        if (lastEnd > 0) buffer.delete(0, lastEnd);
+                    }
+                }
+            }
+            boolean ok = p.waitFor(CLAUDE_TIMEOUT_S, TimeUnit.SECONDS);
+            double dt = (System.currentTimeMillis() - t0) / 1000.0;
+            System.out.printf("  [claude stream %.1fs]%n", dt);
+            if (!ok) {
+                p.destroyForcibly();
+                return full.length() > 0 ? full.toString() : "Je mets trop longtemps a reflechir, reessaie.";
+            }
+            // Flush remainder
+            String rest = buffer.toString().trim();
+            if (!rest.isEmpty() && onSentence != null) onSentence.accept(rest);
+            return full.toString().trim();
+        } catch (Exception e) {
+            System.err.println("  [claude stream erreur: " + e.getMessage() + "]");
+            return "Une erreur est survenue.";
+        }
+    }
+
+    /** Simple JSON string unescape (just the common cases for text content). */
+    static String unescapeJsonString(String s) {
+        StringBuilder sb = new StringBuilder(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+            if (c == '\\' && i + 1 < s.length()) {
+                char next = s.charAt(++i);
+                switch (next) {
+                    case 'n' -> sb.append('\n');
+                    case 't' -> sb.append('\t');
+                    case 'r' -> sb.append('\r');
+                    case '"' -> sb.append('"');
+                    case '\\' -> sb.append('\\');
+                    case '/' -> sb.append('/');
+                    case 'u' -> {
+                        if (i + 4 < s.length()) {
+                            try {
+                                sb.append((char) Integer.parseInt(s.substring(i + 1, i + 5), 16));
+                                i += 4;
+                            } catch (NumberFormatException e) { sb.append(next); }
+                        }
+                    }
+                    default -> sb.append(next);
+                }
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
     static String askClaude(String prompt, String system) {
         String claudeExe = resolveClaudeExe();
         List<String> cmd = new ArrayList<>(Arrays.asList(
@@ -596,13 +701,28 @@ public class Jarvis {
             // UI will show SPEAKING via isSpeaking check in next loop iteration
             return;
         }
-        String response = askClaude(userText, systemPrompt);
-        uiState(JarvisUI.State.SPEAKING);
-        uiSubtitle(response);
-        speakAsync(response);  // non-blocking
-        logConversation(userText, response);
+        // Streaming: parle chaque phrase aussi vite qu'elle arrive de Claude
+        StringBuilder fullResponse = new StringBuilder();
+        boolean[] firstShown = {false};
+        String response = askClaudeStreaming(userText, systemPrompt, sentence -> {
+            if (!firstShown[0]) {
+                uiState(JarvisUI.State.SPEAKING);
+                firstShown[0] = true;
+            }
+            uiSubtitle(sentence);
+            speakAsync(sentence);  // TTS phrase par phrase
+            // Attendre la fin du TTS avant de commencer la phrase suivante
+            // pour éviter que les phrases se chevauchent
+            Process current = currentTTS;
+            if (current != null) {
+                try { current.waitFor(30, TimeUnit.SECONDS); } catch (InterruptedException ignored) {}
+            }
+            fullResponse.append(sentence).append(" ");
+        });
+        // response contient déjà le total, fullResponse est pour backup
+        String finalText = !response.isEmpty() ? response : fullResponse.toString().trim();
+        logConversation(userText, finalText);
         // Main loop continues; UI state flips to IDLE once TTS finishes naturally
-        // or user interrupts (barge-in)
     }
 
     String handleWake(String text) {
