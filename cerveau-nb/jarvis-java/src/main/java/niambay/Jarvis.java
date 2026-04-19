@@ -134,7 +134,8 @@ public class Jarvis {
         AudioFormat format = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_BITS, CHANNELS, SIGNED, BIG_ENDIAN);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
         if (!AudioSystem.isLineSupported(info)) {
-            System.err.println("  [mic non supporte]");
+            System.err.println("  [mic non supporte - passe en mode texte avec --text]");
+            try { Thread.sleep(5000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
             return null;
         }
 
@@ -143,9 +144,16 @@ public class Jarvis {
         int maxChunks = (int) (MAX_SPEECH_S / CHUNK_DURATION_S);
         int minChunks = (int) (MIN_SPEECH_S / CHUNK_DURATION_S);
 
-        TargetDataLine line = (TargetDataLine) AudioSystem.getLine(info);
-        line.open(format, bytesPerChunk * 4);
-        line.start();
+        TargetDataLine line;
+        try {
+            line = (TargetDataLine) AudioSystem.getLine(info);
+            line.open(format, bytesPerChunk * 4);
+            line.start();
+        } catch (javax.sound.sampled.LineUnavailableException e) {
+            System.err.println("  [mic occupe par une autre app - reessaie dans 5s]");
+            try { Thread.sleep(5000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+            return null;
+        }
 
         List<byte[]> speechBuffer = new ArrayList<>();
         int silenceChunks = 0;
@@ -312,7 +320,7 @@ public class Jarvis {
             System.out.printf("  [claude %.1fs]%n", dt);
             if (!ok) {
                 p.destroyForcibly();
-                return "Trop long a reflechir.";
+                return "Je mets trop longtemps a reflechir, reessaie.";
             }
             if (p.exitValue() != 0) {
                 System.err.println("  [claude stderr: " + err.toString().strip() + "]");
@@ -483,8 +491,19 @@ public class Jarvis {
         Jarvis j = new Jarvis(textMode, wakeWord, once);
         System.out.println("  System prompt: " + j.systemPrompt.length() + " chars");
 
-        if (once != null) j.runOnce(once);
-        else if (textMode) j.runText();
-        else j.runVoice();
+        // Ctrl+C clean shutdown
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            j.running = false;
+            System.out.println("\n  [arret]");
+        }, "jarvis-shutdown"));
+
+        try {
+            if (once != null) j.runOnce(once);
+            else if (textMode) j.runText();
+            else j.runVoice();
+        } catch (Exception e) {
+            System.err.println("  [erreur fatale: " + e.getMessage() + "]");
+            e.printStackTrace(System.err);
+        }
     }
 }
