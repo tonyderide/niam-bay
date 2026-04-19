@@ -23,3 +23,5 @@ target/
 # Too large for GitHub (>100MB)
 backups/*.tar.gz
 cerveau-nb/brain.db
+cerveau-nb/brain.db
+memory/vectordb/chroma.sqlite3
