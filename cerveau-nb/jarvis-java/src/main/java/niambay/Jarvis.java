@@ -137,8 +137,17 @@ public class Jarvis {
         return Math.sqrt(sum / count);
     }
 
-    /** Capture mic with VAD. Returns WAV path or null. */
+    /**
+     * Capture mic with VAD. Returns WAV path or null.
+     * If Jarvis is currently speaking (TTS active), uses a 3x higher threshold
+     * so only loud speech triggers a barge-in (minimizes self-feedback).
+     */
     static Path listenVAD() throws Exception {
+        double dynamicThreshold = isSpeaking() ? VAD_THRESHOLD * 3 : VAD_THRESHOLD;
+        return listenVADWithThreshold(dynamicThreshold);
+    }
+
+    static Path listenVADWithThreshold(double threshold) throws Exception {
         AudioFormat format = new AudioFormat(SAMPLE_RATE, SAMPLE_SIZE_BITS, CHANNELS, SIGNED, BIG_ENDIAN);
         DataLine.Info info = new DataLine.Info(TargetDataLine.class, format);
         if (!AudioSystem.isLineSupported(info)) {
@@ -179,7 +188,7 @@ public class Jarvis {
                 if (bytesRead < chunk.length) break;
                 double energy = rms(chunk, bytesRead);
 
-                if (energy > VAD_THRESHOLD) {
+                if (energy > threshold) {
                     if (!started) {
                         System.out.println("  [parole detectee...]");
                         started = true;
@@ -344,34 +353,86 @@ public class Jarvis {
     }
 
     // ---------- TTS ----------
+    // Currently running TTS process (for barge-in)
+    static volatile Process currentTTS = null;
+
+    /** Speaks synchronously (blocks until done). Kept for backwards compat / --once. */
     static void speak(String text) {
         if (text == null || text.isBlank()) return;
-        System.out.println("JARVIS: " + text);
-        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
-        try {
-            if (os.contains("win")) {
-                speakWindowsSAPI(text);
-            } else if (os.contains("mac")) {
-                new ProcessBuilder("say", "-v", "Thomas", text).start().waitFor();
-            } else {
-                // espeak-ng is the most available
-                try {
-                    new ProcessBuilder("espeak-ng", "-v", "fr", text).start().waitFor();
-                } catch (IOException e) {
-                    new ProcessBuilder("espeak", "-v", "fr", text).start().waitFor();
-                }
-            }
-        } catch (Exception e) {
-            System.err.println("  [TTS erreur: " + e.getMessage() + "]");
+        Process p = speakAsync(text);
+        if (p != null) {
+            try { p.waitFor(); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
         }
     }
 
-    static void speakWindowsSAPI(String text) throws Exception {
-        // Use SAPI.SpVoice COM (not System.Speech) to access OneCore voices incl. Paul frFR baryton.
-        // Paul matches "ma-voix.md" — grave, posé, baryton. Identity choice made 2026-03-12.
+    /** Speaks asynchronously (returns immediately). Tracks currentTTS for barge-in. */
+    static Process speakAsync(String text) {
+        if (text == null || text.isBlank()) return null;
+        System.out.println("JARVIS: " + text);
+        // Kill any prior TTS (shouldn't happen but safety)
+        Process prev = currentTTS;
+        if (prev != null && prev.isAlive()) {
+            prev.destroyForcibly();
+        }
+        String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
+        try {
+            Process p;
+            if (os.contains("win")) {
+                p = speakWindowsSAPIAsync(text);
+            } else if (os.contains("mac")) {
+                p = new ProcessBuilder("say", "-v", "Thomas", text).start();
+            } else {
+                try {
+                    p = new ProcessBuilder("espeak-ng", "-v", "fr", text).start();
+                } catch (IOException e) {
+                    p = new ProcessBuilder("espeak", "-v", "fr", text).start();
+                }
+            }
+            currentTTS = p;
+            final Process started = p;
+            // Auto-clear when done
+            Thread cleanup = new Thread(() -> {
+                try { started.waitFor(); } catch (InterruptedException ignored) {}
+                if (currentTTS == started) currentTTS = null;
+            }, "tts-cleanup");
+            cleanup.setDaemon(true);
+            cleanup.start();
+            return started;
+        } catch (Exception e) {
+            System.err.println("  [TTS erreur: " + e.getMessage() + "]");
+            return null;
+        }
+    }
+
+    /** Kill current TTS (barge-in). Returns true if something was killed. */
+    static boolean bargeIn() {
+        Process p = currentTTS;
+        if (p != null && p.isAlive()) {
+            p.destroyForcibly();
+            currentTTS = null;
+            return true;
+        }
+        return false;
+    }
+
+    /** True if TTS is currently playing. */
+    static boolean isSpeaking() {
+        Process p = currentTTS;
+        return p != null && p.isAlive();
+    }
+
+    /** Non-blocking variant: starts PowerShell and returns Process. */
+    static Process speakWindowsSAPIAsync(String text) throws Exception {
         String escaped = text.replace("'", "''").replace("\r", "").replace("\n", " ");
-        String psScript =
-            // Preferred OneCore voice tokens (order = preference: Paul > Julie > Hortense)
+        String psScript = buildPaulPowerShellScript(escaped);
+        ProcessBuilder pb = new ProcessBuilder("powershell", "-NoProfile", "-Command", psScript);
+        pb.redirectErrorStream(true);
+        pb.redirectOutput(ProcessBuilder.Redirect.DISCARD);
+        return pb.start();
+    }
+
+    static String buildPaulPowerShellScript(String escaped) {
+        return
             "$preferred = @(" +
             "  'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_frFR_PaulM'," +
             "  'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_frFR_JulieM'," +
@@ -388,7 +449,6 @@ public class Jarvis {
             "  } catch {}" +
             "}" +
             "if (-not $done) {" +
-            // Fallback to classic System.Speech if OneCore unavailable
             "  Add-Type -AssemblyName System.Speech;" +
             "  $speaker = New-Object System.Speech.Synthesis.SpeechSynthesizer;" +
             "  foreach ($v in $speaker.GetInstalledVoices()) {" +
@@ -396,13 +456,15 @@ public class Jarvis {
             "    if ($n -match 'Hortense' -or $n -match 'French') { $speaker.SelectVoice($n); break }" +
             "  }" +
             "}" +
-            "$speaker.Rate = -1;" +  // Legerement plus lent = "posé" (ma-voix.md)
+            "$speaker.Rate = -1;" +
             "$speaker.Volume = 100;" +
             "$speaker.Speak('" + escaped + "')";
-        ProcessBuilder pb = new ProcessBuilder("powershell", "-NoProfile", "-Command", psScript);
-        pb.redirectErrorStream(true);
-        Process p = pb.start();
-        p.waitFor(30, TimeUnit.SECONDS);
+    }
+
+    /** Legacy synchronous path (unused now, kept for compat). */
+    static void speakWindowsSAPI(String text) throws Exception {
+        Process p = speakWindowsSAPIAsync(text);
+        if (p != null) p.waitFor(30, TimeUnit.SECONDS);
     }
 
     // ---------- LOGGING ----------
@@ -498,8 +560,16 @@ public class Jarvis {
     }
 
     // ---------- TURN ----------
+    /**
+     * One turn of dialogue. Uses async TTS so the mic can keep listening
+     * while Jarvis speaks (enables barge-in).
+     */
     void turn(String userText) {
         if (userText == null || userText.isBlank()) return;
+        // Barge-in : if we're speaking from a previous turn, kill it
+        if (bargeIn()) {
+            System.out.println("  [barge-in: interruption TTS]");
+        }
         uiSubtitle("> " + userText);
         String lo = userText.toLowerCase(Locale.ROOT);
         for (String q : QUIT_WORDS) if (lo.contains(q)) {
@@ -509,23 +579,24 @@ public class Jarvis {
             running = false;
             return;
         }
-        // Try local commands first (no Claude = 0s latency)
+        // Local commands first (0s latency)
         uiState(JarvisUI.State.THINKING);
         String local = tryLocalCommand(userText);
         if (local != null) {
             uiState(JarvisUI.State.SPEAKING);
             uiSubtitle(local);
-            speak(local);
+            speakAsync(local);  // non-blocking
             logConversation(userText, local);
-            uiState(JarvisUI.State.IDLE);
+            // UI will show SPEAKING via isSpeaking check in next loop iteration
             return;
         }
         String response = askClaude(userText, systemPrompt);
         uiState(JarvisUI.State.SPEAKING);
         uiSubtitle(response);
-        speak(response);
+        speakAsync(response);  // non-blocking
         logConversation(userText, response);
-        uiState(JarvisUI.State.IDLE);
+        // Main loop continues; UI state flips to IDLE once TTS finishes naturally
+        // or user interrupts (barge-in)
     }
 
     String handleWake(String text) {
@@ -607,9 +678,20 @@ public class Jarvis {
 
         while (running) {
             try {
-                uiState(JarvisUI.State.LISTENING);
+                // Reflect TTS state in UI between turns
+                if (isSpeaking()) uiState(JarvisUI.State.SPEAKING);
+                else uiState(JarvisUI.State.LISTENING);
+
                 Path wav = listenVAD();
-                if (wav == null) { uiState(JarvisUI.State.IDLE); continue; }
+                if (wav == null) {
+                    if (!isSpeaking()) uiState(JarvisUI.State.IDLE);
+                    continue;
+                }
+                // Mic triggered — if we're still speaking, treat it as barge-in
+                if (isSpeaking()) {
+                    bargeIn();
+                    System.out.println("  [barge-in]");
+                }
                 uiState(JarvisUI.State.THINKING);
                 uiSubtitle("transcription...");
                 String text = transcribe(wav);
