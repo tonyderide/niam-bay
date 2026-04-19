@@ -1,4 +1,18 @@
-# Niam-Bay Jarvis (Java)
+# Niam-Bay Jarvis (Java) — ⏸️ PARKED 2026-04-19
+
+> **Status** : Expérimentation mise de côté. Fonctionne mais pas prêt pour un usage quotidien.
+>
+> **Raison principale** : latence de 10-15s par tour (boot Claude CLI subprocess), incompatible avec une conversation vocale naturelle.
+>
+> **Pour débloquer** (quand on y reviendra) :
+> 1. Setter `ANTHROPIC_API_KEY` dans l'env + basculer sur `--bare` → latence ~2-3s
+> 2. Ou remplacer le subprocess CLI par l'Anthropic SDK Java direct → pareil, ~2-3s
+> 3. Ou garder un `claude` interactif vivant en stream-json pour amortir le boot
+>
+> Le reste (orbe, voix Paul, commandes locales, wake-word, barge-in, self-tests) fonctionne.
+> Reprise possible quand Tony veut. Tout est commité.
+
+---
 
 Assistant vocal personnel de Tony. Écoute, demande à Claude, répond.
 Orbe visuel pour voir l'état. Voix Paul (baryton FR). Écoute en continu, interruptible.
