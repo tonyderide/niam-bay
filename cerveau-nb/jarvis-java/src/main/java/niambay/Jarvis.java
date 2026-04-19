@@ -75,14 +75,22 @@ public class Jarvis {
     final boolean wakeWord;
     final String onceQuestion;
     final String systemPrompt;
+    final boolean showUI;
+    final JarvisUI ui;
     boolean running = true;
 
-    public Jarvis(boolean textMode, boolean wakeWord, String onceQuestion) {
+    public Jarvis(boolean textMode, boolean wakeWord, String onceQuestion, boolean showUI) {
         this.textMode = textMode;
         this.wakeWord = wakeWord;
         this.onceQuestion = onceQuestion;
         this.systemPrompt = loadMemory();
+        this.showUI = showUI;
+        this.ui = showUI ? new JarvisUI() : null;
+        if (this.ui != null) this.ui.show();
     }
+
+    void uiState(JarvisUI.State s) { if (ui != null) ui.setState(s); }
+    void uiSubtitle(String t)      { if (ui != null) ui.setSubtitle(t); }
 
     // ---------- MEMORY ----------
     /**
@@ -492,22 +500,32 @@ public class Jarvis {
     // ---------- TURN ----------
     void turn(String userText) {
         if (userText == null || userText.isBlank()) return;
+        uiSubtitle("> " + userText);
         String lo = userText.toLowerCase(Locale.ROOT);
         for (String q : QUIT_WORDS) if (lo.contains(q)) {
+            uiState(JarvisUI.State.SPEAKING);
             speak("A bientot.");
+            uiState(JarvisUI.State.IDLE);
             running = false;
             return;
         }
         // Try local commands first (no Claude = 0s latency)
+        uiState(JarvisUI.State.THINKING);
         String local = tryLocalCommand(userText);
         if (local != null) {
+            uiState(JarvisUI.State.SPEAKING);
+            uiSubtitle(local);
             speak(local);
             logConversation(userText, local);
+            uiState(JarvisUI.State.IDLE);
             return;
         }
         String response = askClaude(userText, systemPrompt);
+        uiState(JarvisUI.State.SPEAKING);
+        uiSubtitle(response);
         speak(response);
         logConversation(userText, response);
+        uiState(JarvisUI.State.IDLE);
     }
 
     String handleWake(String text) {
@@ -581,24 +599,32 @@ public class Jarvis {
         if (martin != null) g.append(martin).append(" ");
         g.append("Je suis pret.");
         if (wakeWord) g.append(" Dis Niam-Bay pour me reveiller.");
-        speak(g.toString());
+        String greeting = g.toString();
+        uiState(JarvisUI.State.SPEAKING);
+        uiSubtitle(greeting);
+        speak(greeting);
+        uiState(JarvisUI.State.IDLE);
 
         while (running) {
             try {
+                uiState(JarvisUI.State.LISTENING);
                 Path wav = listenVAD();
-                if (wav == null) continue;
+                if (wav == null) { uiState(JarvisUI.State.IDLE); continue; }
+                uiState(JarvisUI.State.THINKING);
+                uiSubtitle("transcription...");
                 String text = transcribe(wav);
                 try { Files.deleteIfExists(wav); } catch (IOException ignored) {}
-                if (text.isEmpty()) continue;
+                if (text.isEmpty()) { uiState(JarvisUI.State.IDLE); continue; }
                 System.out.println("  [entendu] \"" + text + "\"");
                 String clean = handleWake(text);
-                if (clean == null) continue;
+                if (clean == null) { uiState(JarvisUI.State.IDLE); continue; }
                 turn(clean);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
             } catch (Exception e) {
                 System.err.println("  [boucle erreur: " + e.getMessage() + "]");
+                uiState(JarvisUI.State.IDLE);
                 try { Thread.sleep(1000); } catch (InterruptedException ie) { break; }
             }
         }
@@ -608,15 +634,16 @@ public class Jarvis {
 
     // ---------- MAIN ----------
     public static void main(String[] args) {
-        boolean textMode = false, wakeWord = false;
+        boolean textMode = false, wakeWord = false, noUI = false;
         String once = null;
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "--text" -> textMode = true;
                 case "--wake-word" -> wakeWord = true;
+                case "--no-ui" -> noUI = true;
                 case "--once" -> { if (i + 1 < args.length) once = args[++i]; }
                 case "-h", "--help" -> {
-                    System.out.println("Usage: java niambay.Jarvis [--text|--once TEXT|--wake-word]");
+                    System.out.println("Usage: java niambay.Jarvis [--text|--once TEXT|--wake-word|--no-ui]");
                     return;
                 }
             }
@@ -627,8 +654,11 @@ public class Jarvis {
         System.out.println("  Repo root: " + ROOT);
         System.out.println("==============================================");
 
-        Jarvis j = new Jarvis(textMode, wakeWord, once);
+        // UI shown in voice mode only by default (not for --text / --once)
+        boolean showUI = !noUI && once == null && !textMode;
+        Jarvis j = new Jarvis(textMode, wakeWord, once, showUI);
         System.out.println("  System prompt: " + j.systemPrompt.length() + " chars");
+        if (showUI) System.out.println("  UI: orbe affiche en bas-droit (drag pour deplacer, right-click pour quitter)");
 
         // Ctrl+C clean shutdown
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {

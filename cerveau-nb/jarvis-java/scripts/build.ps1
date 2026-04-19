@@ -5,7 +5,11 @@ $Out = Join-Path $Root "out"
 
 Write-Host "[build] javac..."
 New-Item -ItemType Directory -Path $Out -Force | Out-Null
-& javac -d $Out (Join-Path $Root "src\main\java\niambay\Jarvis.java")
+$srcs = @(
+    (Join-Path $Root "src\main\java\niambay\Jarvis.java"),
+    (Join-Path $Root "src\main\java\niambay\JarvisUI.java")
+)
+& javac -d $Out @srcs
 if ($LASTEXITCODE -ne 0) { throw "javac failed" }
 
 Write-Host "[build] packaging jar..."

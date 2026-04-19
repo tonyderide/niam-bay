@@ -42,7 +42,24 @@ Tony veut "tout Jarvis" : écoute passive, wake-word robuste, actions vocales.
 - [ ] **Robustesse boucle 1h+** : pas de leak mic, pas de crash sur Whisper fail
 - [ ] **Mode background** : peut tourner en fenêtre minimisée, ne crash pas sans focus
 
-### Batch 4 — Packaging (priorité 4)
+### Batch 4 — Interface visuelle (priorité MAX, demande Tony 05h05)
+Tony : "une icône pour voir quand tu écoutes + beau design + écoute asynchrone"
+
+Identité visuelle selon `docs/journal.md` : "cercle lumineux, bleu calme, bleu vif, orange, rouge"
+
+- [ ] **JarvisUI.java** — Swing JFrame undecorated, transparent, always-on-top
+  - Orbe 200x200px, dégradé radial bleu, pulsation subtile
+  - États : idle (bleu calme), listening (bleu vif + pulse rapide), thinking (orange), speaking (rouge vif)
+  - Drag à la souris pour déplacer
+  - Right-click = quit
+  - Affichage du texte courant (dernière phrase Jarvis) en sous-titre
+- [ ] **Tray icon** (SystemTray AWT) — présence discrète en bas-droite
+- [ ] **Wiring Jarvis ↔ UI** — event bus simple (setState)
+- [ ] **Async listening** — thread mic séparé, la queue alimente le processor
+- [ ] **Barge-in** — détecter parole pendant TTS, kill PowerShell subprocess pour interrompre
+- [ ] **Mode "double écran"** — si 2 écrans, orbe sur l'écran secondaire
+
+### Batch 5 — Packaging (priorité 5)
 - [ ] Script d'installation `install.ps1` qui vérifie Java/Python/Whisper/Claude
 - [ ] Raccourci bureau Windows `.lnk` vers `jarvis.ps1`
 - [ ] Service Windows optionnel (démarrage automatique)

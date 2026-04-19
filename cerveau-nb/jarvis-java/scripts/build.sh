@@ -7,7 +7,7 @@ OUT="$ROOT/out"
 
 echo "[build] javac..."
 mkdir -p "$OUT"
-javac -d "$OUT" "$ROOT/src/main/java/niambay/Jarvis.java"
+javac -d "$OUT" "$ROOT/src/main/java/niambay/Jarvis.java" "$ROOT/src/main/java/niambay/JarvisUI.java"
 
 echo "[build] packaging jar..."
 # Manifest
