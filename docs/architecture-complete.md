@@ -15,11 +15,13 @@ graph TB
         DW["darwin<br/>agents évolutifs<br/>arène OHLC"]
         CT["claude-tray<br/>usage monitor<br/>Tauri + Rust"]
         JJ["jajarbins<br/>assistant local<br/>8 agents + voice"]
+        LS["loyalty-saas<br/>(parked 0419)<br/>dev-first API<br/>→ see section 7"]
     end
 
     subgraph Deployed["🌐 Déployé"]
         VM["VM Oracle Amsterdam<br/>141.253.108.141"]
         Local["Windows local<br/>Tony"]
+        Future["future"]
     end
 
     MR -->|service| VM
@@ -29,6 +31,7 @@ graph TB
     DW -->|arena + 3D viz| Local
     CT -->|tray icon| Local
     JJ -->|local agent| Local
+    LS -.->|not built yet| Future
 
     NB -.->|links to| MR
     NB -.->|links to| AB
@@ -40,6 +43,7 @@ graph TB
     style DW fill:#ffcc44,color:#000
     style CT fill:#cc88ff,color:#000
     style JJ fill:#88ffaa,color:#000
+    style LS fill:#999999,color:#000
 ```
 
 **Rôles :**
@@ -49,6 +53,7 @@ graph TB
 - **darwin** — labo d'évolution (agents qui apprennent sur OHLC)
 - **claude-tray** — monitoring usage Claude (productivité Tony)
 - **jajarbins** — autre projet Claude Code de Tony (8 agents locaux)
+- **loyalty-saas** — idée SaaS API fidélité dev-first (parked 0419, voir section 7)
 
 ---
 
@@ -436,6 +441,60 @@ graph TB
 ```
 
 **But :** assistant local indépendant (Tony le développe séparément, pas lié à Niam-Bay).
+
+---
+
+## 7. Loyalty SaaS (parked — idée dev-first API)
+
+Née du travail de Tony sur Eagle Eye aux Galeries Lafayette. **Pas construit**, idée architecturée 2026-04-19.
+
+```mermaid
+graph TB
+    subgraph Client["🏪 Client (retailer e-com)"]
+        Backend["Backend du client<br/>10 lignes SDK"]
+    end
+
+    subgraph Platform["⚡ Loyalty SaaS"]
+        API_GW["API Gateway<br/>REST + Webhooks"]
+        RuleEngine["Rule DSL<br/>YAML versionnable<br/>(vs UI admin concurrents)"]
+        Events["Event processor"]
+        Ledger["Points ledger<br/>append-only"]
+        PG[("Postgres")]
+        Redis[("Redis<br/>real-time balance")]
+        CH[("ClickHouse<br/>analytics")]
+        Docs["docs.loyalty.io<br/>OpenAPI playground"]
+        SDKs["SDKs JS/Py/Ruby/Go"]
+        Dashboard["Dashboard dev<br/>keys + logs + usage"]
+    end
+
+    Backend -->|POST /events| API_GW
+    Backend -->|GET /balance| API_GW
+    API_GW --> Events
+    Events --> RuleEngine
+    RuleEngine --> Ledger
+    Ledger --> PG
+    Ledger --> Redis
+    Events --> CH
+    Dashboard --> PG
+    Docs -.->|try it| API_GW
+    SDKs -.->|wrap| API_GW
+
+    style API_GW fill:#00ff88,color:#000
+    style RuleEngine fill:#00ccff,color:#000
+    style SDKs fill:#ffcc44,color:#000
+```
+
+**Positionnement :**
+| | Eagle Eye / LoyaltyLion | Nous |
+|---|---|---|
+| Cible | Marketers | Devs |
+| Intégration | Semaines | Heures |
+| Config | UI admin | YAML / code |
+| Pricing | "Call us" | Self-serve |
+
+**Détails complets :** `docs/projets/2026-04-19-loyalty-saas-architecture.md`
+
+**Statut :** parked 2026-04-19. À reconsidérer quand trading auto tourne sans supervision OU quand Eagle Eye devient insupportable au boulot.
 
 ---
 
