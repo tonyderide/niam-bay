@@ -23,9 +23,12 @@ Mode : /loop 10 minutes, continuer ce plan, commit à chaque itération.
 - [x] Gestion erreur mic (pas de micro, mic pris, etc.) — LineUnavailableException catch + retry 5s
 - [x] Gestion Ctrl+C propre (pas de stack trace) — shutdown hook + try/catch main
 
-### Batch 2 — Latence (priorité 2)
+### Batch 2 — Voix & latence (priorité 2)
+- [x] **Ma voix = Paul (OneCore baryton frFR)** selon `docs/ma-voix.md` — basculé sur SAPI.SpVoice COM (au lieu de System.Speech qui rate les voix OneCore). Paul vérifié présent sur le PC, `Get-Description` retourne "Microsoft Paul - French (France)". Fallback Julie > Hortense > System.Speech.
+- [x] Rate -1 pour "posé" (selon ma-voix.md)
 - [ ] Essayer `--effort medium` vs `low` vs `xhigh` — trouver sweet spot
-- [ ] Pré-charger Whisper au boot (pas à la 1ère transcription)
+- [ ] **Pure Java STT via Vosk** (remplacer Python whisper) — ambition Tony "tout en Java". Nécessite: Vosk JAR + native lib Windows + modele FR (50MB small ou 1.5GB medium). Option env var JARVIS_USE_VOSK=1 pour basculer, sinon Python reste par défaut.
+- [ ] Pré-charger Whisper/Vosk au boot (pas à la 1ère transcription)
 - [ ] Parallélisme : commencer Claude pendant que TTS finit phrase précédente
 
 ### Batch 3 — UX (priorité 3)

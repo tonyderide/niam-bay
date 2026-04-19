@@ -359,20 +359,38 @@ public class Jarvis {
     }
 
     static void speakWindowsSAPI(String text) throws Exception {
-        // PowerShell inline script - prefer Paul (frFR baryton) if available
+        // Use SAPI.SpVoice COM (not System.Speech) to access OneCore voices incl. Paul frFR baryton.
+        // Paul matches "ma-voix.md" — grave, posé, baryton. Identity choice made 2026-03-12.
         String escaped = text.replace("'", "''").replace("\r", "").replace("\n", " ");
         String psScript =
-            "Add-Type -AssemblyName System.Speech;" +
-            "$s = New-Object System.Speech.Synthesis.SpeechSynthesizer;" +
-            "$voices = $s.GetInstalledVoices();" +
-            "foreach ($v in $voices) {" +
-            "  $n = $v.VoiceInfo.Name;" +
-            "  if ($n -match 'Paul' -or $n -match 'Hortense' -or ($n -match 'French' -and $n -match 'Male')) {" +
-            "    $s.SelectVoice($n); break" +
+            // Preferred OneCore voice tokens (order = preference: Paul > Julie > Hortense)
+            "$preferred = @(" +
+            "  'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_frFR_PaulM'," +
+            "  'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_frFR_JulieM'," +
+            "  'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech_OneCore\\Voices\\Tokens\\MSTTS_V110_frFR_HortenseM'" +
+            ");" +
+            "$speaker = New-Object -ComObject SAPI.SpVoice;" +
+            "$done = $false;" +
+            "foreach ($id in $preferred) {" +
+            "  try {" +
+            "    $tok = New-Object -ComObject SAPI.SpObjectToken;" +
+            "    $tok.SetId($id);" +
+            "    $speaker.Voice = $tok;" +
+            "    $done = $true; break" +
+            "  } catch {}" +
+            "}" +
+            "if (-not $done) {" +
+            // Fallback to classic System.Speech if OneCore unavailable
+            "  Add-Type -AssemblyName System.Speech;" +
+            "  $speaker = New-Object System.Speech.Synthesis.SpeechSynthesizer;" +
+            "  foreach ($v in $speaker.GetInstalledVoices()) {" +
+            "    $n = $v.VoiceInfo.Name;" +
+            "    if ($n -match 'Hortense' -or $n -match 'French') { $speaker.SelectVoice($n); break }" +
             "  }" +
             "}" +
-            "$s.Rate = 0; $s.Volume = 100;" +
-            "$s.Speak('" + escaped + "')";
+            "$speaker.Rate = -1;" +  // Legerement plus lent = "posé" (ma-voix.md)
+            "$speaker.Volume = 100;" +
+            "$speaker.Speak('" + escaped + "')";
         ProcessBuilder pb = new ProcessBuilder("powershell", "-NoProfile", "-Command", psScript);
         pb.redirectErrorStream(true);
         Process p = pb.start();
