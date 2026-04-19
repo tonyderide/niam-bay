@@ -1,3 +1,4 @@
-jarvis-java/out/
-jarvis-java/jarvis.jar
-jarvis-java/jarvis.log
+out/
+jarvis.jar
+jarvis.log
+*.class
