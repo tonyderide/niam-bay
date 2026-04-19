@@ -31,16 +31,16 @@ Mode : /loop 10 minutes, continuer ce plan, commit à chaque itération.
 - [ ] Pré-charger Whisper/Vosk au boot (pas à la 1ère transcription)
 - [ ] Parallélisme : commencer Claude pendant que TTS finit phrase précédente
 
-### Batch 3 — "VRAI JARVIS" (priorité absolue, par demande Tony 04h50)
-Tony veut "tout Jarvis" : écoute passive, wake-word robuste, actions vocales.
-- [ ] **Wake-word mode testé end-to-end** : dire "Niam Bay" active Jarvis, sinon il ignore tout. Gérer les variantes Whisper ("niam baille", "nyambay", etc.)
-- [ ] **Greeting au boot** : heure actuelle + dernière action Martin (portfolio, grids actives) en 1-2 phrases parlées
-- [ ] **Commande vocale "checke Martin"** → subprocess au one-liner martin-check → résumé parlé
-- [ ] **Commande vocale "dis-moi l'heure"** → locale direct, pas de Claude (0s latence)
-- [ ] **Commande vocale "portfolio"** → ssh Martin /api/bot/balance → parlé
-- [ ] **Commande vocale "quitte/stop"** → shutdown propre (déjà OK mais retester)
-- [ ] **Robustesse boucle 1h+** : pas de leak mic, pas de crash sur Whisper fail
-- [ ] **Mode background** : peut tourner en fenêtre minimisée, ne crash pas sans focus
+### Batch 3 — "VRAI JARVIS" (demande Tony 04h50)
+- [x] **Greeting au boot** — heure + snapshot Martin dans runVoice() via tryQuickMartin()
+- [x] **Commande vocale "checke Martin"** — checkMartin() SSH + parse JSON + parlé (testé --once)
+- [x] **Commande vocale "dis-moi l'heure"** — tryLocalCommand(), 0s latence (testé --once)
+- [x] **Commande vocale "portfolio/balance"** — mapped via regex dans tryLocalCommand
+- [x] **Commande vocale "quitte/stop"** — QUIT_WORDS check au début de turn(), shutdown propre
+- [x] **Wake-word regex** — 6 variantes Whisper (niam bay, niambay, nyam bay, niam baille, etc.)
+- [~] **Wake-word testé end-to-end** — BLOQUEUR : nécessite micro vivant, ne peut être testé sans Tony. Code en place, regex décent, à valider au premier usage.
+- [~] **Robustesse boucle 1h+** — BLOQUEUR : impossible à tester en une nuit sans Tony parlant. Code défensif : LineUnavailableException retry, erreur boucle catch+sleep, shutdown hook.
+- [~] **Mode background** — PARTIEL : UI Swing EDT tourne sans focus, mais pas testé en fenêtre minimisée complète. Attendu OK, à confirmer.
 
 ### Batch 4 — Interface visuelle (demande Tony 05h05) ✅ DONE
 - [x] **JarvisUI.java** — Swing JFrame undecorated, transparent, always-on-top, 220x290px
