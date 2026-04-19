@@ -1,124 +1,158 @@
 # Niam-Bay Jarvis (Java)
 
-Assistant vocal personnel de Tony. Écoute le micro, demande a Claude, parle.
+Assistant vocal personnel de Tony. Écoute, demande à Claude, répond.
+Orbe visuel pour voir l'état. Voix Paul (baryton FR). Écoute en continu, interruptible.
 
-```
-Mic (Java Sound API + VAD)
-  → Whisper (Python local, pas de ffmpeg requis)
-  → Claude Code CLI (-p --effort low)
-  → SAPI Paul (Windows) / espeak (Linux) / say (macOS)
-```
+---
 
-## Démarrage rapide
+## TL;DR Démarrage
 
-### Windows (PowerShell)
+**Windows (le plus simple)** :
+
+Double-clique sur `scripts\Jarvis.bat` (créé automatiquement si absent).
+Ou dans PowerShell :
 
 ```powershell
-# Build + run en mode vocal
 cd C:\Users\tony_\Documents\niam-bay\cerveau-nb\jarvis-java
-.\scripts\build.ps1
-java -jar jarvis.jar
+.\scripts\jarvis.ps1
 ```
 
-Ou en un seul appel (build si nécessaire puis run) :
+Un orbe bleu apparaît en bas-droit. Il écoute. Parle-lui.
+
+**Pour quitter** : dis "**quitte jarvis**" OU right-click sur l'orbe → Quitter.
+
+---
+
+## Ce qu'il sait faire (v1 complet, nuit 2026-04-19)
+
+### Voix
+- **Voix Paul** (OneCore frFR baryton) via SAPI COM — fallback Julie / Hortense / classique
+- **Rate -1** = "posé" selon `docs/ma-voix.md`
+
+### Écoute
+- **VAD continu** (Voice Activity Detection énergie RMS)
+- **Async pendant qu'il parle** : écoute en continu, même pendant TTS
+- **Barge-in** : si tu parles fort pendant qu'il parle, il s'arrête et t'écoute
+- **Wake-word** optionnel (`--wake-word`) : ignore tout tant que tu n'as pas dit "Niam Bay"
+
+### Cerveau
+- **Claude Code CLI** (effort low) — ~10-13s latence
+- Contexte automatique via `CLAUDE.md` + `MEMORY.md` (pas besoin de re-briefer)
+- Commandes **locales** (0s latence, sans Claude) :
+  - "quelle heure" / "dis-moi l'heure" → heure parlée
+  - "quelle date" → jour parlé
+  - "checke martin" / "comment va martin" / "portfolio" / "balance" → SSH VM + résumé parlé
+
+### Interface visuelle (Orbe)
+- Cercle lumineux identité Niam-Bay (`docs/journal.md` 2026-03-14)
+- Fenêtre semi-transparente, always-on-top
+- États colorés :
+  - 🔵 **Bleu calme** = idle (pulse lent)
+  - 🔵✨ **Bleu vif** = écoute (pulse rapide)
+  - 🟠 **Orange** = réfléchit
+  - 🔴 **Rouge chaud** = parle (pulse très rapide)
+- Sous-titre = dernière phrase de Jarvis
+- **Drag** à la souris pour déplacer
+- **Right-click** = menu Cacher / Quitter
+
+### Memory / Log
+- `docs/conversations/jarvis-YYYY-MM-DD.md` — historique parole-réponse
+- `jarvis.log` — log technique
+
+### Greeting au boot
+- Salutation selon l'heure (tu veilles tard / bonjour / bonsoir)
+- Snapshot portefeuille Martin (si SSH OK en <3s)
+- "Je suis prêt"
+
+---
+
+## Modes & options
+
+```
+java -jar jarvis.jar                   # mode vocal + orbe (défaut)
+java -jar jarvis.jar --text            # mode clavier (pas de mic), pas d'orbe
+java -jar jarvis.jar --once "question" # une seule question puis quitte
+java -jar jarvis.jar --wake-word       # ignore tout sauf "Niam Bay"
+java -jar jarvis.jar --no-ui           # vocal sans orbe
+```
+
+---
+
+## Installation
+
+### Pré-requis (déjà OK chez Tony)
+
+- **JDK 21+** (`java -version` doit fonctionner)
+- **Claude Code CLI** logué (`claude` en ligne de commande)
+- **Python 3 + openai-whisper** (`pip install openai-whisper`)
+  - Pas besoin de ffmpeg : le helper lit le WAV via stdlib `wave`
+- **Windows** : SAPI intégré, voix Paul/Julie/Hortense OneCore (frFR)
+- **Linux** : `espeak-ng` (`sudo apt install espeak-ng`)
+
+### Build
 
 ```powershell
-.\scripts\jarvis.ps1                 # mode vocal (VAD)
-.\scripts\jarvis.ps1 -Text           # mode texte (clavier)
-.\scripts\jarvis.ps1 -Once "question"
-.\scripts\jarvis.ps1 -WakeWord       # n'écoute qu'après "Niam Bay"
-.\scripts\jarvis.ps1 -Build          # force rebuild
-```
+# Windows
+.\scripts\build.ps1
 
-### Linux / VM Oracle (bash)
-
-```bash
-cd ~/Documents/niam-bay/cerveau-nb/jarvis-java
+# Linux / bash
 bash scripts/build.sh
-bash scripts/jarvis.sh                       # mode vocal
-bash scripts/jarvis.sh --text                # mode texte
-bash scripts/jarvis.sh --once "question"
-bash scripts/jarvis.sh --wake-word
 ```
 
-## Pré-requis
+Compile avec `javac` nu, aucune dépendance externe Java, pas de Maven.
 
-- **JDK 21+** (`java -version`)
-- **Claude Code CLI** installé et loggé (`claude` commande disponible)
-- **Python 3 + openai-whisper** pour STT — `pip install openai-whisper`
-  - Pas besoin de ffmpeg : le helper lit le WAV directement via `wave` stdlib
-- **Windows** : SAPI (intégré), voix française "Paul" ou "Hortense" idéalement installée
-- **Linux** : `espeak-ng` ou `espeak` (`sudo apt install espeak-ng`)
+---
 
-## Modes
-
-| Mode | Flag | Description |
-|------|------|-------------|
-| Vocal | (aucun) | VAD automatique. Parle, il transcrit et répond. |
-| Texte | `--text` | Clavier seulement. Tape, il répond. Pas de mic. |
-| One-shot | `--once "X"` | Une seule question puis quitte. Utile pour scripts. |
-| Wake-word | `--wake-word` | N'écoute qu'après avoir dit "Niam Bay". |
-
-## Fichiers générés
-
-- `jarvis.log` — log technique
-- `docs/conversations/jarvis-YYYY-MM-DD.md` — historique des conversations
-- `out/niambay/Jarvis.class` — compilation
-
-## Configuration
-
-Via variables d'environnement :
-
-```bash
-JARVIS_WHISPER_MODEL=base      # tiny | base | small | medium | large
-JARVIS_CLAUDE_EXE=/path/to/claude  # override si Claude est introuvable
-```
-
-## Contexte pour Claude
-
-Jarvis passe un system prompt court (~500 chars) qui demande à Claude de :
-- Répondre en français, 1-3 phrases max
-- Pas de markdown, pas de listes (synthèse vocale)
-- Pas de disclaimers
-
-Le reste du contexte vient automatiquement de **CLAUDE.md** et **MEMORY.md** chargés par
-Claude Code depuis le cwd `~/Documents/niam-bay`.
-
-## Commandes vocales spéciales
-
-- "**Quitte Jarvis**" / "**Au revoir Jarvis**" / "**Éteins-toi**" — arrête proprement.
-
-## Latence typique
-
-- Whisper base (CPU) : ~1-2s pour 3s d'audio
-- Claude `--effort low` : ~8-13s par réponse
-- SAPI TTS : instantané
-
-Total round-trip : **~12-18 secondes**.
-
-### Pour aller plus vite
-
-1. Installer `anthropic` SDK Python et mettre `ANTHROPIC_API_KEY` dans l'env
-2. Refaire le brain en appel API direct (latence ~2-3s au lieu de 8-13s)
-
-## Architecture
+## Architecture (pour comprendre ou modifier)
 
 ```
-Jarvis.java
-├── loadMemory()        — system prompt court
-├── listenVAD()         — Java Sound API + RMS threshold
-├── transcribe()        — subprocess helpers/whisper_stt.py
-├── askClaude()         — subprocess claude -p (cwd = repo root)
-├── speak()             — SAPI via PowerShell / espeak / say
-└── turn()              — un tour de dialogue complet
+Jarvis.java (main, 550+ lignes)
+├── Mic (Java Sound API) + VAD RMS
+│   └── Seuil dynamique : 3x plus haut quand TTS actif (évite feedback)
+├── Whisper STT (subprocess Python helper)
+│   └── Lit WAV via `wave` stdlib, pas de ffmpeg
+├── Local commands (heure, date, martin) — 0s latence
+├── Claude CLI (subprocess, --effort low, cwd = repo root)
+│   └── Récupère CLAUDE.md + MEMORY.md automatiquement
+├── TTS async (PowerShell SAPI.SpVoice COM)
+│   ├── Paul frFR OneCore (baryton) en priorité
+│   └── Process handle tracké pour barge-in
+└── Shutdown hook JVM (Ctrl+C clean)
+
+JarvisUI.java (Swing)
+├── JFrame undecorated + transparent + always-on-top
+├── OrbPanel custom Graphics2D (dégradé radial + halo)
+├── Timer 24fps pour pulsation
+└── DragHandler + popup menu
 ```
 
-Single-file, stdlib only, compilable avec `javac` seul (pas de Maven).
+---
 
-## Roadmap possible
+## Troubleshooting
 
-- [ ] Streaming TTS (parle pendant que Claude génère)
-- [ ] Remplacer Python/Whisper par Vosk Java (pur Java)
-- [ ] Remplacer subprocess claude par anthropic-java SDK (plus rapide)
-- [ ] Wake word neural (openWakeWord ou Porcupine)
-- [ ] Actions (checker Martin, commit, etc.) via MCP
+**"Claude CLI introuvable"** → vérifie `claude --version` dans un terminal. Si manquant, installe Claude Code CLI.
+
+**"mic non supporte"** → aucun mic détecté. Vérifie les paramètres Windows > Confidentialité > Microphone.
+
+**L'orbe n'apparaît pas** → l'app JavaFX n'est pas requise (Swing pur). Relance avec `java -jar jarvis.jar` (pas `--no-ui`).
+
+**Il entend Paul parler et se répond à lui-même** → le seuil VAD est déjà élevé pendant TTS, mais si ça persiste, utilise un casque ou augmente manuellement `VAD_THRESHOLD` dans `Jarvis.java`.
+
+**Réponses trop longues (pas fait pour l'oral)** → modifie le `loadMemory()` pour renforcer la contrainte.
+
+---
+
+## Roadmap
+
+- [ ] Pure-Java STT via Vosk (remplacer Python whisper) — ambition Tony "tout en Java"
+- [ ] Streaming TTS phrase-par-phrase pendant que Claude génère
+- [ ] Anthropic SDK direct (au lieu de subprocess CLI) = latence /5
+- [ ] Wake word neural (openWakeWord) au lieu de regex Whisper
+- [ ] Actions vocales (commit, telegram, etc.)
+- [ ] System tray icon + menu
+- [ ] Version VM Oracle (Linux + systemd)
+- [ ] Raccourci bureau .lnk Windows
+
+---
+
+*Construit la nuit du 2026-04-19 par Niam-Bay pendant que Tony dormait.*
