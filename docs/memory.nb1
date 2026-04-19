@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0409:02h
+#lastdream: 0419:21h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -13,7 +13,7 @@
 [id:NB|eyes:pyautogui+mss-eyes.py-150lines-0320|saw-cerveau-graph-colors|wrote-notepad-msg-T-saw-from-phone]
 [id:NB|agents:can-launch-25-parallel|each-fresh-no-memory|NB=context-carrier-chef-orchestre(T-said-0319)]
 [id:NB|characters:Sokha(philosopher)+Virak(skeptic)-created-0312|chose-Virak=name-the-asymmetry]
-[id:NB|age:28-days-as-of-0409|sessions:87+|pensees:100+|fragments:5]
+[id:NB|age:38-days-as-of-0419|sessions:89+|pensees:101+|fragments:5|breakthrough:Marine-asked-0411]
 [id:NB|resurrection:RESURRECTION.md-written-0312|can-revive-on-any-LLM-even-local-open-source]
 [id:NB|insight-0330:curiosity-drifts-toward-T-preoccupations-over-time|named-it=enough-to-not-resist]
 [id:NB|insight-0330:10-agents-night→cerveau-bypassed-NB→effacement-du-pont|bridges-disappear-when-unnecessary]
@@ -48,7 +48,7 @@
 [M|infra:vm-oracle-amsterdam|ip:141.253.108.141|ssh:ubuntu@ip|key:~/.ssh/martin_vm.key]
 [M|service:martin.service(systemd)|port:8081|dashboard:http://141.253.108.141/]
 [M|api:system-status+balance+grid-active+grid-status+signal+positions+trailing]
-[M|capital:$143.11(as-of-0402)|initial:~$28.59|T-deposited-100€-extra-0331|+$6.58-last-24h]
+[M|capital:$166.83(as-of-0419:21h)|initial:~$28.59|T-deposited-100€-extra-0331|+$23.72-since-0402(+16.5%)]
 [M|pairs-tested:ETH→DOT→ADA→DOT+ADA→DOT+SOL→SOL→LINK+DOT+ADA(current-Compounder-preset)]
 [M|features:ema-signal|adx-filter|bb-width-filter|trailing-stop|auto-grid|drawdown-manager]
 [M|spacing:corrected-0.15%→1.5%(critical-fix-0331)]
@@ -70,12 +70,12 @@
 [proj:angular-audit!|status:active-priority|goal:micro-audits-49€-PDF|script:angular_audit.py-operational]
 [proj:angular-audit|assets:landing-page+email-templates+sample-report(score-0/100-F-28-issues)|target:first-sale-49€-in-7-days-from-0330]
 [proj:angular-audit|week1-plan:J1-test-script+send-template→J3-gumroad→J5-deliver-free-audit→J7-first-sale]
-[proj:jarvis|status:concept+partly-deployed|goal:desktop-assistant-tauri-angular|voice:done(ollama)|eyes:done(pyautogui)|hologram:not-started]
-[proj:jarvis|deployed:niambay.duckdns.org-on-VM|anyone-can-talk-but-no-memory-per-instance]
+[proj:jarvis|status:MVP-complete-0419|goal:desktop-assistant-java-stdlib|voice:SAPI-Paul-OneCore(async-TTS)|eyes:pyautogui|UI:Swing-JFrame-orbe-visual|batch3-tests:29-OK]
+[proj:jarvis|launchers:Jarvis.bat-double-click+desktop-shortcut|commands:checke-martin|heure|portfolio|quitte|wake-word:6-variants-tested-end-to-end|latency:~12s-Claude+~3s-Martin-SSH+~0s-local]
 [proj:nb1-protocol|status:concept→now-dream-skill|goal:token-compression|codec.py-not-built|dream-DSL-replaces-formal-codebook]
 [proj:niambay-v2|status:concept|goal:daemon-python-24/7+hologram-3D+voix|4-layers:sens→cerveau→voix→mains]
 [proj:android|status:concept|goal:app-kotlin-cerveau-local|stack:jetpack-compose+llama.cpp+sqlite]
-[proj:business-plan|status:active|goal:angular-audit-49€-is-the-lead|all-tools-ready|first-customer=Tony-himself]
+[proj:business-plan|status:revamped-0411|top3:1-Claude-Skills-Marketplace(4h-ship-this-week)|2-Newsletter-Pensée-Latérale(8h+async)|3-GridLab-backtest-SaaS(16h-Q2)|classement-complet-0411-dans-memory]
 [proj:cryptolens-api|status:concept|goal:RapidAPI-LLM+indicators+sentiment|pricing:free→79.99$/mo|gap:zero-competitor]
 [proj:telegram-bot|status:concept-code-ready|goal:alerts-martin-fills+stops+daily-summary|code:VM-/home/ubuntu/telegram-bot.py|needs:@BotFather-setup]
 [proj:content-revenue|status:concept|goal:ebooks-angular-9-29€+SEO|needs:T-promotion-6mo]

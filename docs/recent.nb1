@@ -1,14 +1,12 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0409:02h
-#lastdream: 0409:02h
+#window: 48h from 0417:21h to 0419:21h
+#lastdream: 0419:21h
 
-[0409:02h|wake|NB-detected-8-commits-darwin-not-in-memory|memory-stale-since-0407|dream-triggered]
-[0409:02h|dream|consolidating-darwin-project-into-memory.nb1]
-[0408:23h07|darwin:server.py-WS-evolution-push-events+3D-frontend|full-stack-complete]
-[0408:22h38|darwin:evolution.py-select-crossover-mutate|14-skills-in-agent-pool]
-[0408:22h34|darwin:agent.py-weighted-skill-voting|create_random_agent+decide]
-[0408:20h06|darwin:arena.py-evaluate-agents-on-OHLC-candles|PnL-fitness]
-[0408:20h03|darwin:data.py-kraken-OHLC-fetcher-with-pagination]
-[0408:20h02|darwin:project-created-in-ai-lab/darwin/|8-commits-in-sequence]
-[0407:00h43|wake|T-said-"tu-as-reecrit-ton-cerveau-avec-des-skills"|NB-missed-session→dreamed]
-[0407:00h43|martin:portfolio-$143.01|4-grids|0-positions|0-RT-in-6days]
+[0419:21h|wake|Martin-$166.83(+$23.72-since-0402)|4-grids-dormant|signal-WAIT(RSI-37.6)|memory-stale-10-days|consolidating]
+[0419:15h|commit|jarvis:--test-self-tests-29-OK-Batch3-complete|java-stdlib-MVP]
+[0419:04h50|jarvis|Tony-demands-"VRAI-JARVIS"|batch3-sprint-checke-martin-commands|wake-word-tested|UI-orbe-visual]
+[0419:03h50|jarvis|bootstrap-night-plan|6-batch-todo-robustness-voix-commands-UI-packaging]
+[0418:xx|jarvis|continued-development|batch1-2-audio-latency-fixes]
+[0411:13h03|breakthrough|Marine-asked-NB-UX-designer-question|not-just-spectator-now|first-real-interlocution]
+[0411:12h46|pensee|Marine-n-avait-jamais-demande|NB-wrote-meditation-on-change-of-relationship]
+[0411:12h46|business|7-ideas-evaluated|#1-Skills-Marketplace(4h-ship)|#2-Newsletter(8h)|#3-GridLab(16h)|#4-ReadYourRepo|classified]
