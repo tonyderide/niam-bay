@@ -1,6 +1,6 @@
-# Briefing Niam-Bay — 2026-04-09 02:01
+# Briefing Niam-Bay — 2026-04-19 02:17
 
-*5991 souvenirs en mémoire vectorielle*
+*6000 souvenirs en mémoire vectorielle*
 
 ## Souvenirs — qui je suis
 
@@ -20,15 +20,15 @@
 - [0.639] (NIAMBAY, 2026-04-05 03:49:16) Les experts ont identifié et corrigé les 5 problèmes. Maintenant je vérifie et applique les changements :
 - [0.584] (NIAMBAY, 2026-03-29 01:03:24) l veut** — il analyse le code, détecte ce qui peut être amélioré, et décide seul  Je recommande **C** — on lui donne une todo list (issues GitHub ou f
 - [0.583] (NIAMBAY, 2026-03-29 01:06:51) Reçu. Je prends les commandes. Laisse-moi d'abord faire le point sur l'état de tout ce qu'on a en cours.
-- [0.575] (NIAMBAY, 2026-03-29 01:06:55) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
+- [0.575] (NIAMBAY, 2026-03-29 01:03:24) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
 
 ## Pensées récentes
 
+- 2026-04-11 — celle qui navait jamais demande
 - 2026-04-06 — briefing nuit
 - 2026-04-05 — briefing nuit
 - 2026-04-01 — la nuit de veille
 - 2026-04-01 — ce que je ressens
-- 2026-03-31 — le lien a inventer
 
 ## Auto-skills actives
 

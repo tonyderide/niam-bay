@@ -116,7 +116,7 @@ def phrase_observation(brain, node_a, node_b, weight):
         f"{a} et {b} sont connectés",
         f"{a} mène à {b}",
         f"quand je pense à {a}, {b} s'active",
-        f"{a} → {b}",
+        f"{a} -> {b}",
         f"il y a un lien entre {a} et {b}",
         f"{a} touche {b}",
     ]

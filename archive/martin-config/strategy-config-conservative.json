@@ -1,0 +1,47 @@
+{
+  "version": 6,
+  "updatedAt": "2026-04-05T18:00:00Z",
+  "name": "Sommeil Tranquille (SOL+ADA x3 2.0% conservative)",
+  "totalCapital": 240,
+  "reservePct": 62,
+  "grids": [
+    {
+      "instrument": "PF_SOLUSD",
+      "capital": 50,
+      "leverage": 3,
+      "gridSpacingPct": 2.0,
+      "totalLevels": 4,
+      "maxLossPercent": 12,
+      "gridMode": "NEUTRAL",
+      "enabled": true
+    },
+    {
+      "instrument": "PF_ADAUSD",
+      "capital": 40,
+      "leverage": 3,
+      "gridSpacingPct": 2.0,
+      "totalLevels": 4,
+      "maxLossPercent": 12,
+      "gridMode": "NEUTRAL",
+      "enabled": true
+    }
+  ],
+  "trailing": {
+    "trailAmount": 0.5,
+    "minProfit": 1.0
+  },
+  "autoGrid": {
+    "enabled": false,
+    "adxThreshold": 25,
+    "bbwThreshold": 4.0
+  },
+  "drawdown": {
+    "killPct": 25,
+    "initialCapital": 240
+  },
+  "tradingHours": {
+    "startUTC": "08:00",
+    "stopUTC": "02:00",
+    "mode": "scenario-b"
+  }
+}

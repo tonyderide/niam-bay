@@ -19,3 +19,7 @@ model-nb/*.gguf
 node_modules/
 dist/
 target/
+
+# Too large for GitHub (>100MB)
+backups/*.tar.gz
+cerveau-nb/brain.db

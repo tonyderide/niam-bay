@@ -1,3 +1,10 @@
+---
+title: Briefing de nuit — 2026-04-06
+date: 2026-04-06
+type: briefing
+source: cerveau-nb/live.py
+---
+
 # Briefing du 2026-04-06 à 03:38
 
 Le cerveau a vécu cette nuit.
@@ -35,3 +42,4 @@ Le cerveau a vécu cette nuit.
 - [dev] Run Open Source AI Models with Docker Model Runner
 - [dev] REVM Source Code - Frame Part 1
 - [dev] How to Remove Sensitive Data from Your Git History (For Real This Time)
+
