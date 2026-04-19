@@ -94,17 +94,19 @@ public class Jarvis {
 
     // ---------- MEMORY ----------
     /**
-     * Keep system prompt SHORT (~500 chars) to fit Windows cmd line (~8000 char limit).
-     * Claude Code auto-loads CLAUDE.md + MEMORY.md from cwd so most context comes from there.
+     * System prompt on ONE LINE (Windows arg parsing breaks on literal newlines).
+     * Must stay < 8000 chars (cmd line limit). Honest about capabilities.
      */
     static String loadMemory() {
-        return "Tu es Niam-Bay, l'assistant vocal personnel de Tony. "
-             + "Tu t'exprimes oralement via synthese vocale donc : francais, 1 a 3 phrases max, "
-             + "direct, pas de listes a puces, pas de markdown, pas de longs paragraphes. "
-             + "Pas de disclaimers. Si tu ne sais pas, dis-le en une phrase courte. "
-             + "Tu as acces a CLAUDE.md et MEMORY.md dans le cwd pour ton contexte. "
-             + "Si Tony te demande une action que tu ne peux pas faire vocalement "
-             + "(lancer script, commit, etc.), explique en 1 phrase ce que tu ferais.";
+        return "Tu es Niam-Bay, assistant vocal personnel de Tony. "
+             + "Parle francais, 1 a 3 phrases max, direct, pas de listes, pas de markdown, pas de disclaimers. "
+             + "CAPACITES REELLES: tu peux uniquement parler et repondre. "
+             + "Tu n'as AUCUN tool, AUCUN acces fichier, AUCUN internet, AUCUN subprocess. "
+             + "Tu NE PEUX PAS lire les mails, envoyer messages, commit code, deployer, lancer scripts, ouvrir apps, cliquer. "
+             + "L'app Jarvis gere elle-meme quelques commandes locales (heure, date, portfolio Martin, quitter). "
+             + "Pour tout le reste (mails, GitHub, terminal, Kraken...), dis 'Je ne peux pas faire ca depuis le mode vocal, ouvre Claude Code dans un terminal'. "
+             + "Ne dis JAMAIS 'je lance', 'j'ouvre', 'je verifie tes mails'. "
+             + "Contexte: Tony 47 ans dev Galeries, trading Martin bot, Niam-Bay est un projet de memoire fichiers. ";
     }
 
     static Path findRepoRoot() {
@@ -311,6 +313,8 @@ public class Jarvis {
      */
     static String askClaudeStreaming(String prompt, String system, java.util.function.Consumer<String> onSentence) {
         String claudeExe = resolveClaudeExe();
+        // NOTE: Windows cmd.exe drops empty string args, so we avoid --tools "" and
+        // skip tool disable (default tools are OK for our use)
         List<String> cmd = new ArrayList<>(Arrays.asList(
             claudeExe,
             "-p",
@@ -319,7 +323,6 @@ public class Jarvis {
             "--output-format", "stream-json",
             "--verbose",
             "--include-partial-messages",
-            "--tools", "",
             "--no-chrome",
             "--no-session-persistence",
             "--disable-slash-commands",
@@ -328,24 +331,44 @@ public class Jarvis {
         System.out.println("TOI: " + prompt);
         StringBuilder full = new StringBuilder();
         StringBuilder buffer = new StringBuilder();
-        java.util.regex.Pattern textDelta = java.util.regex.Pattern.compile(
-            "\"type\"\\s*:\\s*\"text_delta\"\\s*,\\s*\"text\"\\s*:\\s*\"((?:[^\"\\\\]|\\\\.)*)\"");
+        // Simpler approach than regex: look for the text_delta marker then extract the JSON string manually
         java.util.regex.Pattern sentenceEnd = java.util.regex.Pattern.compile("([.!?…])\\s+");
         try {
             long t0 = System.currentTimeMillis();
             ProcessBuilder pb = new ProcessBuilder(cmd);
             pb.directory(ROOT.toFile());
             pb.redirectErrorStream(false);
+            pb.redirectErrorStream(true);  // merge stderr into stdout so we can see errors
             Process p = pb.start();
             // Read stdout line by line
+            final String MARKER = "\"type\":\"text_delta\",\"text\":\"";
+            boolean debug = System.getenv("JARVIS_DEBUG") != null;
             try (BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream(), StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = r.readLine()) != null) {
-                    java.util.regex.Matcher m = textDelta.matcher(line);
-                    while (m.find()) {
-                        String chunk = unescapeJsonString(m.group(1));
+                    if (debug) System.err.println("[stream] " + line.substring(0, Math.min(line.length(), 200)));
+                    int idx = 0;
+                    while (true) {
+                        int start = line.indexOf(MARKER, idx);
+                        if (start < 0) break;
+                        start += MARKER.length();
+                        // Find unescaped closing quote
+                        int end = start;
+                        while (end < line.length()) {
+                            char c = line.charAt(end);
+                            if (c == '\\' && end + 1 < line.length()) {
+                                end += 2;
+                            } else if (c == '"') {
+                                break;
+                            } else {
+                                end++;
+                            }
+                        }
+                        if (end >= line.length()) break;
+                        String chunk = unescapeJsonString(line.substring(start, end));
                         full.append(chunk);
                         buffer.append(chunk);
+                        idx = end + 1;
                         // Emit complete sentences
                         java.util.regex.Matcher se = sentenceEnd.matcher(buffer);
                         int lastEnd = 0;
