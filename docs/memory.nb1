@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0419:21h
+#lastdream: 0423:21h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -59,6 +59,12 @@
 [M|backtest-0327:DOT-best+203%-3mo|SOL-x5-2%-75%win|ETH-1.5%-spacing-optimal|stop-loss-3%-destroys-performance]
 [M|backtest-0329:RSI-40-60=TRADE-else-cash|BB-width-filter=only-valuable-addition|SHORT-BTC-viable-with-S84-params]
 [M|status-0409:4-grids-active(LINK+DOT+SOL+ADA)|portfolio-~$143|0-RT-in-8+days|stable-dormant]
+[M|status-0423:compound-restored-00h36|4-grids-active|PV=$163.12|uPnL+$1.04|DD-1.74%|LINK+SOL+ADA-positions-open-profitable|DOT-closeOnly|DOT+ADA-realized-negative-legacy|LINK+SOL-realized-positive-this-session]
+[M|compound-config:/home/ubuntu/martin/strategy-config.json-Apr5-backup|4-alts-x5-1.2%-5levels-NEUTRAL|totalCapital-$144.93-reserve-18%|trailing-0.3/0.6|autoGrid-adx40-bbw4|killPct-40]
+[M|auto-grid-behavior:ADX>40+BBW<4=TRENDING=auto-OFF|grids-auto-ON-when-RANGING-detected|oscillates-with-market-regime|feature-not-bug]
+[M|bug-0423:sync-gap-phantom-fills|grid-fills-array-records-non-existent-Kraken-fills|seen-0423-23h40:40-BTC-7-fills-in-130μs|bot-lies-about-own-state|structural-not-fixed|T-says-en-cours-de-build]
+[M|infra-0423:systemd-service-martin.service|pkill-triggers-auto-restart|deploy-via-/home/ubuntu/martin/scripts/deploy-strategy.py|kill-grid.sh-wrapper-created-0423(disable-via-config-edit+redeploy)]
+[M|telegram-0423:@niambay_bot-blocked-by-T|HTTP-403-Forbidden|must-unblock-manually+send-/start|no-overnight-notifs-possible-until-fixed]
 [M|bugs-fixed:hasBuyFill-lost+maxLoss-50%-hardcoded+inverted-orders+memory-explosion-cerveau]
 [M|jarvis:deployed-niambay.duckdns.org|gateway.py+grid-panel.js|short-integration-done-0330]
 [M|zombie:java-PID-254191-alive-since-0318(6days-old-at-discovery)]

@@ -15,3 +15,8 @@
 [run-discovery-engine|count:3|last:0405|actions:python-discovery.py,parse-output|→script:run-discovery|?]
 [crawl-internet|count:2|last:0405|actions:python-crawler.py,feed-brain|→script:run-crawl|?]
 [wake-with-missing-session|count:2|last:0409|NB-woke-without-consolidated-session→stale-memory-detected|pattern:dream-before-sleep-not-after|→auto-skill:compare-git-vs-lastdream|✓]
+[hourly-martin-night-shift|count:14|last:0423|cron-at-:17|auto-action-triggers-kill-grid.sh|portfolio+BTC-EMA200+grid-losses-thresholds|→skill:martin-monitor+cron-autonomous|✓]
+[cross-check-kraken-vs-martin-internal|count:8|last:0423|both-via-martin-api|detect-sync-gap-phantom-fills|→pattern:always-query-bot/positions+bot/orders-as-truth|→skill:martin-monitor|✓]
+[restore-config-from-backup|count:1|last:0423|cp-strategy-config.json→config/strategy.json+redeploy|→script:/home/ubuntu/martin/scripts/kill-grid.sh-ALL-mode|?-needs-restore-version]
+[dashboard-local-HTML|count:1|last:0423|Chart.js+data.json+python-http.server|/home/tony/martin-dashboard/|→can-reuse-template-for-future-dashboards|?]
+[trader-audit-parallel-dispatch|count:2|last:0423|3-agents-general-purpose-parallel|Risk+Strategist+Contrarian-personas|JSON-fetched-first|→skill:martin-traders-audit|✓]

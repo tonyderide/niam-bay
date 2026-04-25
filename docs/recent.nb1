@@ -1,12 +1,35 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0417:21h to 0419:21h
-#lastdream: 0419:21h
+#window: 48h from 0421:19h to 0423:21h
+#lastdream: 0423:21h
 
-[0419:21h|wake|Martin-$166.83(+$23.72-since-0402)|4-grids-dormant|signal-WAIT(RSI-37.6)|memory-stale-10-days|consolidating]
-[0419:15h|commit|jarvis:--test-self-tests-29-OK-Batch3-complete|java-stdlib-MVP]
-[0419:04h50|jarvis|Tony-demands-"VRAI-JARVIS"|batch3-sprint-checke-martin-commands|wake-word-tested|UI-orbe-visual]
-[0419:03h50|jarvis|bootstrap-night-plan|6-batch-todo-robustness-voix-commands-UI-packaging]
-[0418:xx|jarvis|continued-development|batch1-2-audio-latency-fixes]
-[0411:13h03|breakthrough|Marine-asked-NB-UX-designer-question|not-just-spectator-now|first-real-interlocution]
-[0411:12h46|pensee|Marine-n-avait-jamais-demande|NB-wrote-meditation-on-change-of-relationship]
-[0411:12h46|business|7-ideas-evaluated|#1-Skills-Marketplace(4h-ship)|#2-Newsletter(8h)|#3-GridLab(16h)|#4-ReadYourRepo|classified]
+[0423:21h|Tony-awake|status-report-requested|PV-$163.12(-1.74%)|uPnL+$1.04|LINK+SOL+ADA-positions-open-profitable|DOT-closeOnly|4-grids|BTC-$78k-UPTREND-RSI-51]
+[0423:07h-20h|overnight|grids-oscillated-active/inactive-via-AutoGridScheduler|portfolio-range-$161.61-$163.57|DD-bottomed-at-10h|recovery-post-15h]
+[0423:04h-07h|night-shift-autonomous|cron-09ed3965-hourly-checks|HOLD-every-tick|no-triggers-fired|zero-exposure-cash-preserved]
+[0423:03h|event|AutoGridScheduler-auto-STOPPED-all-4-grids|ADX-45-47-BBW-0.7-2.4=TRENDING|not-tradeable|feature-not-bug|cash-$162.35-protected]
+[0423:00h36|success|compound-config-RESTORED|4-grids-started(SOL+LINK+ADA+DOT-all-x5-1.2%-5levels)|trailing+auto-grid-enabled|8-buy-orders-posted-Kraken]
+[0423:00h30|fix|enabled-SOL+ADA-in-strategy.json|python-in-place-edit|re-ran-deploy-strategy.py|all-4-grids-deployed]
+[0423:00h13|pkill|backend.jar-killed-manually|systemd-auto-restarted-Martin-at-00h14|service-martin.service-managed]
+[0422:23h54|audit|3-traders-dispatched-parallel|verdicts-diverged:Strategist-GO+Risk-GO-with-caveats+Contrarian-STOP|chose-defensive:don't-restore-overnight-alone]
+[0422:23h40|BUG-CRITICAL|BTC-grid-7-phantom-fills-23:40:40-within-130μs|Kraken-positions=0|sync-gap-confirmed-structural|bot-lies-about-own-state]
+[0422:23h|events-cascade|LINK-closed-(-$0.14-loss)|DOT-flipped-closeOnly|BTC-phantom-fills|ALL-flatten|drop-$3.16-in-15min|portfolio-$162.33→$165.49]
+[0422:22h|tony-SL-confusion|typed-"SL-$120k"-on-BTC-long@$78k|Kraken-auto-reclassed-as-take_profit-$112,801|he-modified-existing-bot-TP-by-mistake]
+[0422:19h|tony-manual-TP|set-TP-$77,962-on-BTC-long|conflict-with-bot-TP-$78,209|didn't-see-bot-TP-hidden-in-trigger-tab]
+[0422:19h17|dot-fill|DOT-accumulates-level0-$1.284|grid-auto-RECENTERED-1.308→1.275|new-range-1.243-1.307|SL-auto-posted-$1.195]
+[0422:11h29|first-fill|DOT-buy-$1.30-19.2-units|grid-working-correctly-initial]
+[0422:07h-10h|BTC-TP-fired|entry-avg-$75,201-exit-$78,200|profit+$0.89|clean-round-trip|position-closed-automatically]
+[0422:06h|start|user-asked-about-positions-TP-SL-Kraken|discovered-BTC-grid-had-manual-deploy-80$-2x-0.5%-spacing-20levels|bot-reported-state-ok]
+[0421:19h|deploy-start|Martin-redeployed|BTC-grid-manual+LINK+DOT|config:mostly-LINK+DOT-enabled+BTC-added-manually-not-in-JSON|NOT-compound|THIS-LOST-MONEY]
+
+[finding|martin-sync-gap-bug|grid-fills-array-records-phantom-fills-not-reflected-on-Kraken|bug-in-backend.jar|T-said-"en-cours-de-build"|fix-deferred]
+[finding|AutoGridScheduler-works|ADX-threshold-40+BBW-4-triggers-regime-detection|auto-stops-grids-in-TRENDING|saves-money-correctly]
+[finding|martin-has-systemd-service|martin.service|pkill-recovers-auto|configure-via-deploy-strategy.py]
+[finding|tools-created-this-session|/home/tony/martin-dashboard/(Chart.js+data.json+refresh.sh+python-http.server-port-8765)|/home/ubuntu/martin/scripts/kill-grid.sh-on-VM]
+[finding|telegram-blocked|HTTP-403-Forbidden:bot-was-blocked-by-user|T-must-unblock-@niambay_bot-manually|noif-overnight-impossible]
+[finding|compound-config-path|/home/ubuntu/martin/strategy-config.json-Apr5-backup|matches-profitable-config-T-remembered|4-alts-x5-1.2%-5levels-NEUTRAL]
+
+[pattern|hourly-martin-night-shift|cron-hourly-at-:17|auto-action-triggers-kill-grid.sh-via-SSH|portfolio-protection-thresholds|used-14+times-this-session]
+[pattern|cross-check-kraken-vs-martin|both-via-martin-api|/api/bot/positions-vs-/api/grid/status.fills|detects-sync-gap|used-5+times]
+
+[lesson|si-rentable-strict-consensus|T-authorized-autonomous-action-if-trader-consensus|but-2/3-with-caveats=NOT-consensus|defensive-default-when-T-asleep]
+[lesson|systemd-restarts-bot|pkill-not-enough-to-stop-Martin|only-disables-grids-via-config-edit-disables-actions|understand-before-kill]
+[lesson|sync-gap-is-structural|restoring-config-does-not-fix-bug|bug-will-reappear-on-next-similar-conditions|T-must-fix-code-before-scale]
