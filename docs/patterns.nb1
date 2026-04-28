@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0405:12h
+#lastdream: 0428:14h
 
 [check-martin|count:50+|last:0401|actions:ssh,curl-8081,parse-json|→skill:martin-check|✓]
 [deploy-martin|count:5+|last:0331|actions:cargo-build,scp,ssh-restart-systemd|→skill:deploy-martin|✓]
@@ -19,4 +19,9 @@
 [cross-check-kraken-vs-martin-internal|count:8|last:0423|both-via-martin-api|detect-sync-gap-phantom-fills|→pattern:always-query-bot/positions+bot/orders-as-truth|→skill:martin-monitor|✓]
 [restore-config-from-backup|count:1|last:0423|cp-strategy-config.json→config/strategy.json+redeploy|→script:/home/ubuntu/martin/scripts/kill-grid.sh-ALL-mode|?-needs-restore-version]
 [dashboard-local-HTML|count:1|last:0423|Chart.js+data.json+python-http.server|/home/tony/martin-dashboard/|→can-reuse-template-for-future-dashboards|?]
-[trader-audit-parallel-dispatch|count:2|last:0423|3-agents-general-purpose-parallel|Risk+Strategist+Contrarian-personas|JSON-fetched-first|→skill:martin-traders-audit|✓]
+[trader-audit-parallel-dispatch|count:4|last:0427|escalated-to-10-agents-for-runaway-prevention-analysis|consensus-extraction|→skill:martin-traders-audit|✓|extension-pattern:10-vs-3-traders-when-strategic-vs-tactical]
+[martin-kill+redeploy|count:3|last:0427|stop-grid+market-reduceOnly-close+verify+optional-restart|→skill:martin-kill-clean|✓-created-0426]
+[martin-api-direct|count:50+|last:0427|/api/grid/start+stop+sl/config+/api/scalp/order+/api/bot/cancel-order|→skill:martin-api|✓-created-0426]
+[java-patch-from-bug|count:1|last:0427|read-controller+grep-method+Edit-with-evidence|mvn-compile|fichiers-modifiés-pas-deployés|→needs:martin-patch-deploy-skill?]
+[runaway-detection|count:2|last:0427|krakenUnrealizedPnl/capital-ratio+position-vs-grid-theoretical-max|9.91x-detected-via-monitoring|already-in-martin-monitor|✓]
+[crash-rebond-monitor-/loop|count:70+|last:0428|/loop-30m-martin-monitor|crisis-mode-cron-7,37|consumed-100k+-tokens|→if-routine-needs-cloud-schedule-instead]
