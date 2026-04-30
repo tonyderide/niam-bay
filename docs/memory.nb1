@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0428:14h
+#lastdream: 0430:00h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -60,11 +60,13 @@
 [M|backtest-0329:RSI-40-60=TRADE-else-cash|BB-width-filter=only-valuable-addition|SHORT-BTC-viable-with-S84-params]
 [M|status-0409:4-grids-active(LINK+DOT+SOL+ADA)|portfolio-~$143|0-RT-in-8+days|stable-dormant]
 [M|status-0428:14h|2-grids-residual(LINK+ADA)|portfolio-$133.29|cash-banké-$180.87(net+$10.37)|uPnL-$46.99|net-session-$37.21=-21.8%|BTC-DOWNTREND-$75.9k-EMA200-break-confirmed]
+[M|status-0428:21h|FINAL-100%-cash|portfolio=balanceValue=$138.64|0-positions|0-orders|net-session-$31.86=-18.7%|patches-deployed-validated|HARD-STOP-fired-2x(LINK-then-ADA)|cron-stopped]
 [M|compound-config:/home/ubuntu/martin/strategy-config.json-Apr5-backup|4-alts-x5-1.2%-5levels-NEUTRAL|totalCapital-$144.93-reserve-18%|trailing-0.3/0.6|autoGrid-adx40-bbw4|killPct-40]
 [M|auto-grid-behavior:ADX>40+BBW<4=TRENDING=auto-OFF|grids-auto-ON-when-RANGING-detected|oscillates-with-market-regime|feature-not-bug]
 [M|bug-0423:sync-gap-phantom-fills|grid-fills-array-records-non-existent-Kraken-fills|seen-0423-23h40:40-BTC-7-fills-in-130μs|bot-lies-about-own-state|structural-not-fixed|T-says-en-cours-de-build]
 [M|bugs-0427:3-critical-found+patched|1-placeGridOrder-no-dedup→hits-Kraken-42-orders-cap(T-saw-42-orders-himself)|2-checkStopLoss-uses-theoretical-not-krakenUnrealizedPnl→never-fires-on-runaway|3-StopLossManager-stopPrice-too-close-to-entry→Kraken-rejects-silently→stopLossOrderId-null-forever]
-[M|patches-0427:written+compiled-OK|GridTradingService-line-687-dedup-skip-if-PLACED|line-533-checkStopLoss-uses-state.getKrakenUnrealizedPnl|new-closePositionAndStopGrid-method|StopLossManager-clamp-1.5%-min-distance+slFailureCount-tracker|status:NOT-DEPLOYED-yet(T-asked-deploy-0428:14h)]
+[M|patches-DEPLOYED-0428:21h|commit-afe1836-on-hotfix/autogrid-enabled-flag|build-mvn-package+scp-jar-direct-bypass-git-push|backup-backend.jar.bak-prepatch-runaway-1777404125|workflow-option-D-pragmatique]
+[M|patches-VALIDATED-0428:21h:23|HARD-STOP-fired-PF_LINKUSD-9s-after-restart(krakenTotalPnl-$5.00>maxLoss-$4.35)|then-ADA-9s-after-grid-restart-via-API(krakenTotalPnl-$35.48>$4.35)|positions-5.5-LINK+5627-ADA-both-market-closed-automatically|StopLossManager-clamp-also-triggered(0.253→0.2499-too-close-to-entry)]
 [M|runaway-0427:ADA-position-5862-units-9.91x-grid-max|cause:no-dedup-placeGridOrder|36-orders-ADA-live-on-Kraken|hit-42-orders-cap|Tony-cleaned-manually]
 [M|crash-0427:BTC-cassure-EMA200-22h-UTC-26-04|tensions-US-Iran+oil+profit-taking-not-crypto-specific|regime-officially-DOWNTREND|grids-NEUTRAL-souffrent-en-trend|peak-session+12.6%-then-crash-to-22%-net|recovery-partial-via-Tony-SL-manual-Kraken]
 [M|skills-created-0427:martin-kill-clean(stop+market-reduceOnly+verify+optional-redeploy)|martin-api(complete-endpoints-reference-with-curls-templates+playbooks)]

@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0428:14h
+#lastdream: 0430:00h
 
 [check-martin|count:50+|last:0401|actions:ssh,curl-8081,parse-json|→skill:martin-check|✓]
 [deploy-martin|count:5+|last:0331|actions:cargo-build,scp,ssh-restart-systemd|→skill:deploy-martin|✓]
@@ -25,3 +25,6 @@
 [java-patch-from-bug|count:1|last:0427|read-controller+grep-method+Edit-with-evidence|mvn-compile|fichiers-modifiés-pas-deployés|→needs:martin-patch-deploy-skill?]
 [runaway-detection|count:2|last:0427|krakenUnrealizedPnl/capital-ratio+position-vs-grid-theoretical-max|9.91x-detected-via-monitoring|already-in-martin-monitor|✓]
 [crash-rebond-monitor-/loop|count:70+|last:0428|/loop-30m-martin-monitor|crisis-mode-cron-7,37|consumed-100k+-tokens|→if-routine-needs-cloud-schedule-instead]
+[deploy-via-scp-bypass-git|count:1|last:0428|build-jar-locally+scp+backup+systemctl-restart|works-when-branches-divergent|→martin-deploy-skill-option-D-already-implicit|✓]
+[grid-restart-to-trigger-HARD-STOP|count:1|last:0428|api-grid-start-on-instrument-with-existing-oversize-position|HARD-STOP-fires-9s-later|materializes-loss-cleanly|→useful-pattern-document-in-martin-api-skill|?]
+[java-patch-write+test+deploy-cycle|count:1|last:0428|read-controller+grep-method+Edit-with-evidence-comment+mvn-compile+package+scp+systemctl-restart+verify-logs|full-cycle-end-to-end|→needs:martin-patch-and-deploy-skill?]

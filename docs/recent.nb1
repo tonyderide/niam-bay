@@ -1,8 +1,28 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0426:18h to 0428:14h
-#lastdream: 0428:14h
+#window: 48h from 0428:14h to 0430:00h
+#lastdream: 0430:00h
 
-[0428:14h|now|portfolio-$133.29|cash-banké-$180.87|uPnL-$46.99|net-$37.21=-21.8%|2-grids-residual(LINK+ADA)|BTC-$75.9k-DOWNTREND-RSI-30|T-asked-deploy-Java-patches]
+[0430:00h|now|FINAL-100%-cash-$138.64|0-positions|net-session-$31.86=-18.7%|cron-stopped|bot-secured]
+[0428:21h:27|HARD-STOP-fired-ADA|9s-after-grid-restart-via-API|krakenTotalPnl-$35.48>maxLoss-$4.35|closed-5627-ADA-long|patches-validated-2x]
+[0428:21h:27|T-chose-option-2|re-start-ADA-grid-via-API-to-trigger-HARD-STOP|materialize-ADA-loss-rather-than-leave-position-unprotected]
+[0428:19h:23|HARD-STOP-fired-LINK|9s-after-restart-bot|krakenTotalPnl-$5.00>maxLoss-$4.35|closed-5.5-LINK-long|patches-working-from-first-tick]
+[0428:19h:23|StopLossManager-clamp-fired|SL-stopPrice-0.253-too-close-to-entry-0.254-clamped-to-0.2499|patch-3-validated]
+[0428:19h:21|deploy-success|build-mvn-package-jar-64.5MB|scp-to-VM|backup-bak-prepatch-runaway|systemctl-restart-active|Spring-boot-37s|reload-4-grids-from-DB]
+[0428:19h:00|Tony-chose-option-D|build+scp-jar-direct-bypass-git-push|switch-to-hotfix/autogrid-enabled-flag-branch-which-compiles|because-master+origin/master-divergent]
+[0428:14h|Tony-asked-deploy-patches-option-c|workflow-discussion-A/B/C|chose-C-then-realized-need-D-because-origin/master-doesnt-have-StrategyRegistry]
+[0428:14h|/dream-1|consolidated-48h-marathon-26-04→28-04|3-patches-NOT-deployed-yet|2-skills-created-martin-kill-clean+martin-api]
+
+[finding|hotfix/autogrid-enabled-flag-is-canonical-branch|matches-VM-jar|origin/master-is-stale-pre-RegimeSwitcher|master-local-incomplete-missing-StrategyRegistry|patches-only-compile-on-hotfix/autogrid-enabled-flag]
+[finding|deploy-via-scp-jar-bypasses-git-issues|works-when-branches-are-divergent|martin-deploy-skill-Option-D-implicit|safer-than-pushing-when-uncertain-about-branch-state]
+[finding|HARD-STOP-fires-quickly|9s-after-active-grid-with-existing-oversize-position|enrichWithKrakenPnl-runs-on-poll|checkStopLoss-uses-real-Kraken-uPnL|works-as-designed]
+[finding|StopLossManager-clamp-prevents-Kraken-rejection|MIN_STOP_DISTANCE_PCT-1.5%|tested-on-ADA-with-stopPrice-0.253-too-close-to-entry-0.254]
+
+[pattern|deploy-via-scp-bypass-git-push|count:1|build-locally+scp-backend.jar+backup-on-VM+systemctl-restart|works-when-git-branches-divergent|→pattern:martin-deploy-skill-option-D-implicit|→needs:document-in-skill]
+[pattern|grid-restart-to-trigger-HARD-STOP|count:1|api-grid-start-with-existing-oversize-position+wait-9s|HARD-STOP-fires-via-checkStopLoss-on-poll|materializes-loss-cleanly|useful-when-position-leaks-from-runaway]
+
+[lesson|HARD-STOP-only-fires-on-active-grids|pollGridOrders-skip-if-active=false|so-orphan-positions-need-grid-re-started-to-trigger-protection|or-Tony-uses-manual-Kraken-Pro-SL]
+[lesson|build+scp-direct-saves-time-when-git-divergent|no-need-to-resolve-merge-conflicts-or-push-untrusted-commits|risk:no-VM-git-history-of-this-jar|mitigation:backup-jar-tagged-bak-prepatch-runaway-with-timestamp]
+[lesson|patches-validate-themselves-fast-with-real-trading|incident-driven-patches-can-be-tested-immediately-on-recovery|first-tick-fired-the-defensive-logic|no-need-for-staging]
 [0428:07h|regime-shift|emaStatus-passed-from-UPTREND-to-DOWNTREND-officially|BTC-cassé-EMA200-stable|trigger-ABORT-régime-théorique-déclenché-mais-bot-action-required-via-deploy]
 [0428:04h-12h|nuit-yo-yo|BTC-oscille-$75.7k-$76.8k|ADA-uPnL-fluctue-$30-$50-en-baisse|SL-Tony-@0.244-tient-malgré-test-très-proche-$75.777|buffer-0.4-1.5%-rétréci-puis-élargi]
 [0428:00h-04h|reverse|rebond-+11-puis-reperd-tout|marché-US-tardif-instable|patches-Java-écrits-pas-déployés]
