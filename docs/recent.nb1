@@ -1,8 +1,14 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0428:14h to 0430:00h
+#window: 48h from 0428:14h to 0430:20h
 #lastdream: 0430:00h
 
-[0430:00h|now|FINAL-100%-cash-$138.64|0-positions|net-session-$31.86=-18.7%|cron-stopped|bot-secured]
+[0430:20h|10-traders-audit-stratégique|consensus-9/10-STOP+fix-bug+regime-filter|Engineering-localisé-précisément-bug-HARD-STOP-loop|enrichWithKrakenPnl-no-startedAt-filter→AutoGridScheduler-restart-inherited-prior-realized-losses→loop-15min]
+[0430:20h|patches-déployés|3-edits-GridTradingService.java|filter-fills-by-startedAt+isActive-guard+enrich-every-poll|build+scp+systemctl-restart-success-uptime-39s]
+[0430:20h|0-HARD-STOP-loop-post-restart|était-1-every-15min|DOT-realized-passé-de--$0.94-à-+$0.10-prouvant-filter-exclut-pre-startedAt-fills]
+[0430:20h|LINK+SOL-disabled-persistent|via-/api/strategy/pairs/X/disable|écrit-dans-strategy.json|grids-stoppés-via-stopGrid|seul-DOT-actif]
+[0430:20h|AutoGrid-global-ENABLED|autonomie-ON|DOT-trading-NEUTRAL-mode-closeOnly=false|SL-on-exchange-@$1.034-id=a1ab5875]
+[0430:20h|cron-7,37-stoppé-via-CronDelete|f117a1a0-cancelled|économise-tokens-bot-tourne-autonomement]
+[0430:00h|FINAL-100%-cash-$138.64|0-positions|net-session-$31.86=-18.7%|cron-stopped|bot-secured]
 [0428:21h:27|HARD-STOP-fired-ADA|9s-after-grid-restart-via-API|krakenTotalPnl-$35.48>maxLoss-$4.35|closed-5627-ADA-long|patches-validated-2x]
 [0428:21h:27|T-chose-option-2|re-start-ADA-grid-via-API-to-trigger-HARD-STOP|materialize-ADA-loss-rather-than-leave-position-unprotected]
 [0428:19h:23|HARD-STOP-fired-LINK|9s-after-restart-bot|krakenTotalPnl-$5.00>maxLoss-$4.35|closed-5.5-LINK-long|patches-working-from-first-tick]

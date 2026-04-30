@@ -27,4 +27,6 @@
 [crash-rebond-monitor-/loop|count:70+|last:0428|/loop-30m-martin-monitor|crisis-mode-cron-7,37|consumed-100k+-tokens|→if-routine-needs-cloud-schedule-instead]
 [deploy-via-scp-bypass-git|count:1|last:0428|build-jar-locally+scp+backup+systemctl-restart|works-when-branches-divergent|→martin-deploy-skill-option-D-already-implicit|✓]
 [grid-restart-to-trigger-HARD-STOP|count:1|last:0428|api-grid-start-on-instrument-with-existing-oversize-position|HARD-STOP-fires-9s-later|materializes-loss-cleanly|→useful-pattern-document-in-martin-api-skill|?]
-[java-patch-write+test+deploy-cycle|count:1|last:0428|read-controller+grep-method+Edit-with-evidence-comment+mvn-compile+package+scp+systemctl-restart+verify-logs|full-cycle-end-to-end|→needs:martin-patch-and-deploy-skill?]
+[java-patch-write+test+deploy-cycle|count:2|last:0430|read-controller+grep-method+Edit-with-evidence-comment+mvn-compile+package+scp+systemctl-restart+verify-logs|full-cycle-end-to-end|→needs:martin-patch-and-deploy-skill?]
+[10-traders-audit-strategique|count:5|last:0430|spawn-10-Agent-personas-distincts-en-parallel|consensus-extraction-by-NB|fait-pour-runaway+pour-1euro-par-jour-objective|→skill:martin-traders-audit-extension-needed]
+[fix-runaway-bug-cycle|count:1|last:0430|enrichWithKrakenPnl-filter-by-startedAt+isActive-guard+enrich-every-poll|3-edits-Java+build+scp+verify|0-HARD-STOP-loop-post-deploy|→pattern-pour-incidents-similaires]
