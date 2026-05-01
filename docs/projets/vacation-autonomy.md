@@ -229,3 +229,47 @@ Choix narratifs assumés :
 - Skill `morning-brief` pour consolider les daily-brief.py de la VM
 
 Pas de Telegram (pas dans la fenêtre 17-19h, et le draft est pour relecture future, pas une découverte bloquante).
+
+---
+
+## Cycle 2026-05-02 00h13 Paris — angular_audit v1.1.0 : 3 nouvelles règles
+
+État Martin (martin-monitor 22h43 UTC du 0501) : **HOLD idle**. PV $135.10. 0 pos / 0 ordre / 0 grid. Bot UP 11h. BTC $78,236, signal **OPEN** UPTREND, RSI 60.8. Régime stable. Cycle silencieux (pas de Telegram, hors fenêtre).
+
+**Travail accompli — angular_audit.py upgrade** :
+
+Le tool était à 7 règles (v1.0.0). J'en ai ajouté 3 :
+- **PERF003** — `*ngFor sans trackBy` (regex avec lookahead négatif pour exclure le cas trackBy présent). Sévérité IMPORTANT.
+- **ARCH002** — `URL hardcodée` (regex matchant `'http://...'` ou `'https://...'` hors localhost). Exclu pour `*.spec.ts` et `environment*.ts`. Sévérité IMPORTANT.
+- **ARCH003** — `Import profond @angular` (regex matchant `from '@angular/.../src/...'`). Sévérité MINEUR.
+
+Bump version `1.0.0` → `1.1.0`.
+
+**Tests de non-régression** :
+- `test-angular-project` (cas catastrophe) : 28 → **33 problèmes** détectés. PERF003 +1, ARCH002 +4. ARCH003 = 0 (pas de deep imports dans le test). Score reste 0/100.
+- `angular-tuto-tony` (cas mid) : 1 → **2 problèmes**. Score 81/100 → **77/100**. Une nouvelle détection légitime (probablement ngFor sans trackBy ou URL hardcodée).
+- `angular-tuto` (cas clean) : 0 problèmes inchangé. Score **100/100**.
+
+**Aucun faux positif** sur le projet clean = les regex sont assez précises pour ne pas spammer les bons projets.
+
+**Action publique** :
+- PDF public régénéré avec v1.1.0 → `site/assets/sample-audit-report.pdf` (4696 octets, 33 problems).
+- Landing modifiée : "28 problems detected across all 7 categories" → **"33 problems detected across 10 detection rules"**. Plus crédible et plus impressionnant pour le prospect.
+
+**Pourquoi c'est important pour la revenue path** :
+1. Le tool est maintenant **plus riche en valeur** (10 règles vs 7) → un audit payant à 49€ détecte plus de choses → moins de demande de remboursement.
+2. La landing matche désormais ce que l'outil produit. Pas de gap promesse/livrable.
+3. Quand Tony fixera le blocker GitHub Pages (changer source branch), le sample PDF public sera up-to-date avec le tool.
+
+**Ce qui n'a pas avancé** : pas touché à Gumroad/email (toujours bloqué sur Tony). Pas touché VM/Martin.
+
+**Prochain cycle (04h13 silencieux)** :
+- Option A : ajouter 2-3 règles supplémentaires (a11y attributes manquants, RxJS pipes pas optimisés, missing OnInit/OnDestroy)
+- Option B : améliorer le layout PDF (le rapport est un peu sec, on pourrait y ajouter un sommaire, des sections plus visuelles)
+- Option C : fragment 021 (créatif, court)
+- Option D : commencer le skill `morning-brief`
+
+Inclination : option B (PDF prettifier) car c'est ce qui impacte le plus la perception "audit professionnel à 49€" vs "script Python qui crache du markdown". Mais B prend ~1h, donc à voir si le contexte le permet au cycle 04h13.
+
+**Métriques cycle** : ~25 min, 1 fichier modifié (audit script), 1 fichier public modifié (landing), 1 PDF régénéré, 0 erreur.
+

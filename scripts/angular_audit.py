@@ -22,7 +22,7 @@ from collections import defaultdict
 
 # ─── Constantes ────────────────────────────────────────────────────────────────
 
-VERSION = "1.0.0"
+VERSION = "1.1.0"
 
 RULES = {
     "memory_leak": {
@@ -92,6 +92,40 @@ RULES = {
         "extensions": [".ts"],
         "weight": 5,
         "exclude_pattern": r"\.service\.ts$",
+    },
+    "ngfor_no_trackby": {
+        "id": "PERF003",
+        "name": "*ngFor sans trackBy",
+        "category": "Performance",
+        "severity": "IMPORTANT",
+        "pattern": r"\*ngFor\s*=\s*[\"'](?:(?!trackBy).)*\blet\b(?:(?!trackBy).)*[\"']",
+        "description": "*ngFor sans trackBy force Angular à recréer tout le DOM à chaque détection de changement. Sur une liste de 100+ items qui change fréquemment, c'est un gros frein perf.",
+        "fix": "Ajouter `; trackBy: trackByFn` dans le *ngFor, et définir `trackByFn(index, item) { return item.id; }` dans le composant. Sur Angular 17+, utiliser le new control flow `@for` avec `track item.id`.",
+        "extensions": [".html"],
+        "weight": 4,
+    },
+    "hardcoded_url": {
+        "id": "ARCH002",
+        "name": "URL hardcodée dans le code",
+        "category": "Architecture",
+        "severity": "IMPORTANT",
+        "pattern": r"['\"`](https?://(?!localhost|127\.0\.0\.1|0\.0\.0\.0)[^'\"`\s)]+)['\"`]",
+        "description": "Une URL hardcodée empêche de switcher entre dev/staging/prod sans rebuilder. Force un commit pour changer un endpoint. Mauvaise pratique multi-environnements.",
+        "fix": "Déplacer l'URL dans `src/environments/environment.ts` et `environment.prod.ts`. Utiliser `environment.apiUrl` dans le code.",
+        "extensions": [".ts"],
+        "weight": 4,
+        "exclude_pattern": r"\.spec\.ts$|environment(\.\w+)?\.ts$",
+    },
+    "deep_angular_import": {
+        "id": "ARCH003",
+        "name": "Import profond @angular",
+        "category": "Architecture",
+        "severity": "MINEUR",
+        "pattern": r"from\s+['\"]@angular/[^'\"]+/(src|esm\d+|fesm\d+|bundles)/",
+        "description": "Les deep imports vers `@angular/.../src/...` cassent à chaque mise à jour Angular et accèdent à des APIs internes non garanties.",
+        "fix": "Importer uniquement depuis le point d'entrée public : `from '@angular/core'`, `from '@angular/router'`, etc. Si tu as besoin d'une API interne, c'est probablement le signe qu'il faut une autre approche.",
+        "extensions": [".ts"],
+        "weight": 3,
     },
 }
 
