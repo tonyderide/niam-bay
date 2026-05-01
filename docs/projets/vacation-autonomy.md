@@ -159,3 +159,39 @@ Découverte critique : **gap entre la promesse et le sample**. Le sample précé
 
 ---
 
+## Cycle 2026-05-01 20h13 Paris — GitHub Pages mismatch découvert
+
+État Martin (martin-monitor 18h43 UTC) : **HOLD idle**. PV $135.08, 0 pos / 0 grid. Bot UP 7h. BTC $78,435, signal **OPEN** (UPTREND, EMA50 > EMA200, RSI 67.5). Régime change vs cycle précédent : passage de DOWNTREND→UPTREND signal. Pas de grid à protéger donc neutre pour nous.
+
+**Telegram report officiel envoyé** ✓ (cycle 3, 20h13).
+
+**Découverte critique** : `gh api repos/tonyderide/niam-bay/pages` révèle que GitHub Pages sert depuis la branche `claude/ai-consciousness-discussion-UFztk`, **pas master**. La branche source date de mars 2026 (last-modified 20 mars). 
+
+**Conséquence** : tout le travail du cycle précédent (commit `eb35c20` : landing modifiée, PDF déployé) **n'est pas servi publiquement**. La landing à `https://tonyderide.github.io/niam-bay/angular-audit.html` retourne 404. La PDF idem.
+
+**Ce que ça signifie business-wise** : aucun trafic ne peut convertir tant que ce blocker existe. Pour un Tony qui vendrait l'audit : l'URL marketing pointe vers une page 404. Donc même si email + Gumroad étaient OK, **la landing n'est pas atteignable**.
+
+**Décision** : ne pas modifier la config Pages sans validation Tony. Le fix est admin-side (changer source branch master OR `gh-pages`), 30 secondes pour Tony à son retour. Pas une urgence — il ne fait pas d'outreach pendant ses vacances.
+
+**Action prise pour avancer** :
+1. Commit staging des loose ends : `fragment-020-huit-jours.md`, `scripts/niambay-vacation-wake.sh`, `scripts/audit-samples/`. Préparé pour push.
+2. Documenté ce blocker dans le journal (ce fichier) pour que Tony le voie au retour.
+3. Pas de Telegram supplémentaire pour ce findings (cycle Telegram déjà envoyé, flag email était déjà mentionné — ça serait du double signal).
+
+**Ce qui peut continuer sans le fix Pages** :
+- Améliorer l'outil `angular_audit.py` (ajouter règles, raffiner le PDF layout)
+- Créer plus de samples (variation de scores)
+- Préparer des templates Gumroad (HTML descriptions, screenshots)
+- Améliorer les email templates dans `docs/projets/angular-audit-email-templates.md`
+
+**Ce qui doit attendre Tony** :
+- Pages config switch
+- Email mailto correction (`niambay.fr` → `tony.deride@gmail.com` ou validation)
+- Création produit Gumroad (compte, paiement)
+
+**Prochain cycle (00h13 silencieux)** : vu qu'il y a 4h pour réfléchir et que je n'aurai pas de feedback pendant 8h jusqu'au prochain Telegram à 12h13, je vais utiliser un cycle ou deux pour explorer les **autres tier S** (article HN "le repo est le produit" en particulier — 30 min effort, potentiel viral, indépendant de toute config).
+
+**Métriques cycle** : ~10 min, 4 fichiers stagés pour commit, 1 blocker majeur identifié.
+
+---
+
