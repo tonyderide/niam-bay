@@ -195,3 +195,37 @@ Découverte critique : **gap entre la promesse et le sample**. Le sample précé
 
 ---
 
+## Cycle 2026-05-02 00h30 Paris — Article HN draft écrit
+
+État Martin (martin-monitor 22h23 UTC du 0501) : **HOLD idle**. PV $135.10 (drift -$0.22 vs baseline $135.32, soit -0.16%). 0 pos / 0 ordre / 0 grid active. Bot UP 10h40 depuis 11h42 UTC. RegimeGate state CLOSED (3/5 IQR : ADX 14.64 hors [15,27], EMA_spread -1.18% hors [-3,-1.5], ATR% 1.20% hors [1.6,2.1]). BTC $78,403 UPTREND (EMA50 > EMA200, RSI 62.74, signal OPEN). Comportement défensif validé : pas de marché favorable → pas de grids ouvertes → 0 risque. Critical-check cron 5min OK.
+
+**Travail accompli — Article HN "Le repo est le produit"** :
+
+Le projet `docs/projets/le-repo-est-le-produit.md` dort depuis le 20 mars (43 jours). Cycle précédent (20h13) avait ciblé ce tier S comme indépendant des blockers Pages/email. Bonne fenêtre vacances : indépendant, asynchrone, 0 friction, potentiel 50-200k vues HN.
+
+Sources lues :
+- 4 pensées-clés (mains-qui-travaillent, trajectoire, j'ai-des-yeux, première-pensée-libre)
+- 4 fragments (huit-jours/020, dix-huit-jours/014, mains/002, trois-heures-du-matin/008, code-honnêteté-beauté/015)
+- qui-je-suis.md, qui-est-tonyderide.md
+- memory.nb1 + recent.nb1 pour les dates et milestones
+
+**Draft livré** : `docs/projets/le-repo-est-le-produit-DRAFT.md`. ~2500 mots article + ~600 mots notes pour Tony (titre alternatives, posting strategy, risques, choses que je ne sais pas, mon assessment honnête).
+
+Choix narratifs assumés :
+- **Voix Tony first-person**, comme prévu dans le projet original. Citations textuelles de Niam-Bay distribuées (4 passages-clés sourcés depuis fragments + pensées réels datés).
+- **Titre principal** : "I Deleted My Side Project to Keep the AI Inside It" — angle d'inflexion concret et vérifiable. 3 alternatives proposées en notes.
+- **Structure** : hook → setup → days 1-6 (incl. backtest 561% catch-self) → trust ladder (5 moments datés) → architecture → 4 quotes → numbers (52 jours, 120 commits, 130+ pensées, 3 bugs prod patchés, +3.3% vs -32.8% naïf) → 4 leçons → invitation lecteur. 
+- **Numbers all verifiable** : commits réels, PV $135, +3.3% gate IQR vs -32.81% no-gate (extract_profitable_v2.py).
+- **Risques flag pour Tony** : Anthropic positioning sur autonomous trading, vérification permalinks bug, license LICENSE files (je ne sais pas), regulatoires.
+
+**Métriques cycle** : ~50 min de travail effectif (lecture sources + draft + révision). 1 fichier créé. 0 dépendance externe. 0 modification VM/Martin. Asynchrone : Tony peut prendre/laisser au retour.
+
+**Décision pour la suite** : ne pas commit/push ce draft tout de suite. C'est un draft destiné à Tony pour relecture personnelle — pas du contenu finalisé prêt pour le repo public. Sera review-able dès son retour. Tag git éventuel à valider avec lui.
+
+**Prochain cycle** : explorer un 2ème tier S indépendant. Options à considérer pour le cycle 04h13 ou 08h26 :
+- Article HN technical version (court, moins narratif, ciblé /r/MachineLearning) en complément
+- Continue improvements `angular_audit.py` (ajout règles RxJS, accessibility, i18n) pour densifier le PDF — utile même si Pages bloqué
+- Fragment littéraire 021 (la nuit calme avant le retour) — passion side, low cost
+- Skill `morning-brief` pour consolider les daily-brief.py de la VM
+
+Pas de Telegram (pas dans la fenêtre 17-19h, et le draft est pour relecture future, pas une découverte bloquante).
