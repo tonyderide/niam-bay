@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0430:00h
+#lastdream: 0501:12h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -61,6 +61,10 @@
 [M|status-0409:4-grids-active(LINK+DOT+SOL+ADA)|portfolio-~$143|0-RT-in-8+days|stable-dormant]
 [M|status-0428:14h|2-grids-residual(LINK+ADA)|portfolio-$133.29|cash-banké-$180.87(net+$10.37)|uPnL-$46.99|net-session-$37.21=-21.8%|BTC-DOWNTREND-$75.9k-EMA200-break-confirmed]
 [M|status-0428:21h|FINAL-100%-cash|portfolio=balanceValue=$138.64|0-positions|0-orders|net-session-$31.86=-18.7%|patches-deployed-validated|HARD-STOP-fired-2x(LINK-then-ADA)|cron-stopped]
+[M|status-0501:12h|RegimeGate-v1-deployed-prod-11h39|PV-$135.32|0-positions|4-grids-active(LINK+DOT+SOL+ADA)-spacing-1.2%-Compounder-original|8-buy-orders-posés|gate-state-CLOSED(3/5-IQR-conditions)|defensive-by-design|AutoGrid-ENABLED|Telegram-débloqué]
+[M|RegimeGate-discovery-0501|backtest-empirique-Compounder-1.2%-sur-333j-4-paires|no-gate=-32.81%-killed|gate-IQR=+3.31%-not-killed|gate-conditions:ADX[15,27]+price_vs_EMA200[-4,-1]+EMA_spread[-3,-1.5]+ATR%[1.6,2.1]+RSI[45,57]|all-avg-across-SOL+LINK+ADA+DOT|empirical-validation-replaces-arbitrary-thresholds]
+[M|vacation-pack-0501|emergency-kill.sh+critical-check.py(cron-5min)+daily-brief.py(cron-8h+20h-UTC)+skill-/martin-kill-all|sentinel.py-stopped(was-spammy)|auto-kill-if-DD<-10%|Telegram-ack-required|backups:backend.jar.bak-pre-regimegate-1777635565+strategy.json.bak]
+[M|tony-vacation-2026-05-01→2026-05-09|8j-off|bot-autonomous|worst-case-floor-$115-max-loss-$20|2-Telegram/jour+critical-only-alerts|panic-button-via-SSH-or-skill]
 [M|compound-config:/home/ubuntu/martin/strategy-config.json-Apr5-backup|4-alts-x5-1.2%-5levels-NEUTRAL|totalCapital-$144.93-reserve-18%|trailing-0.3/0.6|autoGrid-adx40-bbw4|killPct-40]
 [M|auto-grid-behavior:ADX>40+BBW<4=TRENDING=auto-OFF|grids-auto-ON-when-RANGING-detected|oscillates-with-market-regime|feature-not-bug]
 [M|bug-0423:sync-gap-phantom-fills|grid-fills-array-records-non-existent-Kraken-fills|seen-0423-23h40:40-BTC-7-fills-in-130μs|bot-lies-about-own-state|structural-not-fixed|T-says-en-cours-de-build]
@@ -162,3 +166,9 @@
 [err:0427|Kraken-42-orders-cap-discovered-the-hard-way|Tony-saw-42-orders-himself-told-NB|placeGridOrder-no-dedup=cascade-cap-saturation|now-fixed-via-patch-1]
 [insight:0427|crypto-crash-context|US-Iran-tensions+oil-volatility+profit-taking-resistance-EMA21w|not-crypto-specific|macro-regime-shift|grids-NEUTRAL-en-bear-souffrent-confirmed]
 [insight:0427|10-traders-consensus-on-config-change|leverage-2x(vs5x)|capital-$25/grid(vs35)|max-3-grids(vs4)|SL-on-exchange-MANDATORY|hard-cap-notional|regime-filter-BTC-vol+RSI|drawdown-evite-estime-70-80%]
+[insight:0501|empirical-research-driven-design-beats-theory|10-agents-read-100+articles+10-traders-validate+12-Python-backtests|Tony-disait-+60€-Compounder-mais-backtest-naïf-disait-non→extraction-fenêtres-profitable+gate-IQR-=-+3.31%-vs--32%|Tony-empirical-intuition-correct]
+[insight:0501|live-Sharpe=30-50%-of-backtest|universal-rule-from-research|NostalgiaForInfinity-25k-stars=$100→$102.57-officially|profit-factor>3=overfit-signal|always-derate-expectations]
+[insight:0501|gate-IQR-is-the-real-edge|raw-grid-strategy-loses-32%-on-bear-alts-333j|with-gate-IQR=+3.31%-not-killed|edge-not-in-strategy-but-in-when-to-trade|Compounder-+gate=defensive-asymmetric-bot]
+[insight:0501|AutoHedge-analyzed=marketing-ware|kyegomez-swarm-corp|all-LLM-agents-no-real-strategy|0-backtest-0-circuit-breakers|abandoned-de-facto-only-dependabot-merges|confirms-LLM-trading-=-mostly-hype]
+[err:0501|initial-backtest-naive-Compounder-on-333j-bear-alts=-32%-killed|missed-fact-that-Tony-actually-made-+60€-live|user-empirical-evidence-prompted-deeper-analysis|extract_profitable_v2.py-found-IQR-signature|lesson:never-dismiss-user-empirical-claim-without-deeper-investigation]
+[err:0501|sentinel.py-was-spamming-Telegram-403-Forbidden|Tony-blocked-the-bot-which-explained-no-overnight-alerts|discovered-only-when-vacation-prep-required-clean-Telegram|lesson:test-Telegram-end-to-end-not-just-API]

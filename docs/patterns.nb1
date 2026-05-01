@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0430:00h
+#lastdream: 0501:12h
 
 [check-martin|count:50+|last:0401|actions:ssh,curl-8081,parse-json|→skill:martin-check|✓]
 [deploy-martin|count:5+|last:0331|actions:cargo-build,scp,ssh-restart-systemd|→skill:deploy-martin|✓]
@@ -30,3 +30,10 @@
 [java-patch-write+test+deploy-cycle|count:2|last:0430|read-controller+grep-method+Edit-with-evidence-comment+mvn-compile+package+scp+systemctl-restart+verify-logs|full-cycle-end-to-end|→needs:martin-patch-and-deploy-skill?]
 [10-traders-audit-strategique|count:5|last:0430|spawn-10-Agent-personas-distincts-en-parallel|consensus-extraction-by-NB|fait-pour-runaway+pour-1euro-par-jour-objective|→skill:martin-traders-audit-extension-needed]
 [fix-runaway-bug-cycle|count:1|last:0430|enrichWithKrakenPnl-filter-by-startedAt+isActive-guard+enrich-every-poll|3-edits-Java+build+scp+verify|0-HARD-STOP-loop-post-deploy|→pattern-pour-incidents-similaires]
+[massive-internet-research|count:1|last:0501|10-agents-parallel-each-5-10-articles+md-synthesis|→workflow:research→master-doc→10-traders-validate→design→backtest|→needs:skill-strategy-research?]
+[10-traders-audit-strategique|count:6|last:0501|extension-validation-design-doc-Compounder-RegimeGate|→skill:martin-traders-audit-extension-needed|count-now-6+]
+[empirical-gate-extraction|count:1|last:0501|backtest→identify-profitable-windows→extract-IQR-of-indicators→build-gate→deploy|transforms-losing-strategy-to-defensive-winner|→pattern-pour-future-stratégies]
+[vacation-safety-pack|count:1|last:0501|emergency-kill.sh+critical-check.py-cron-5min+daily-brief.py-cron-2x/day+skill-emergency-stop|→reusable-template-for-future-vacances]
+[Python-backtest-framework|count:1|last:0501|backtesting.py+vectorbt-architecture+ta-indicators|download-Kraken+modeling-funding-slippage-fees|walk-forward+Monte-Carlo+deflated-Sharpe|→reusable-for-any-strategy]
+[user-empirical-trumps-naive-backtest|count:1|last:0501|Tony-said-+60€-live|naive-333j-backtest-disagreed|deeper-extraction-vindicated|→rule:investigate-user-empirical-before-dismissing]
+[deploy-via-build+scp|count:3|last:0501|martin-deploy-skill-Option-D-implicit|build-locally+scp+backup+systemctl-restart|✓-pattern-now-canonical]
