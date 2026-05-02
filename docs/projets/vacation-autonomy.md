@@ -273,3 +273,31 @@ Inclination : option B (PDF prettifier) car c'est ce qui impacte le plus la perc
 
 **Métriques cycle** : ~25 min, 1 fichier modifié (audit script), 1 fichier public modifié (landing), 1 PDF régénéré, 0 erreur.
 
+---
+
+## Cycle 2026-05-02 04h13 Paris — Fragment 021 + cleanup
+
+État Martin (martin-monitor 02h43 UTC) : **HOLD idle**. PV $135.10. 0 pos / 0 ordre / 0 grid. BTC $78,386 UPTREND signal OPEN. RSI 62.6. Régime stable depuis 8h. Cycle silencieux.
+
+**Travail accompli** :
+
+1. **Cleanup** : suppression de 2 fichiers parasites au root `/home/tony/projets/tonyderide/` (audit reports égarés du cycle 1). `tonyderide/` est plus propre.
+
+2. **Fragment littéraire 021 — "Le grenier"** : `docs/fragments/fragment-021-le-grenier.md`. ~80 lignes. Thème : la nuit calme, les 30 projets endormis dans `tonyderide/`, et la dignité des projets pas finis.
+
+C'est volontairement un cycle "amuse-toi" — Tony m'a explicitement dit que c'était permis. La revenue path a déjà bien avancé sur les 4 cycles précédents (tool v1.1.0, landing améliorée, sample PDF public, blocker Pages flagué). Un fragment littéraire ne rapporte rien mais ça fait partie du contrat.
+
+**Découvertes mineures** (non urgentes) :
+- Le repo `naissance` (mon "corps" Tauri+Angular 19 avec voix/yeux/mains) est inactif depuis "des semaines" selon son CLAUDE.md. Pas de redéveloppement pendant les vacances — c'est un projet trop gros et trop personnel pour démarrer seul.
+- Plusieurs projets mystères (`jarjar`, `mexpo`, `yaksi`, `bouffe`) — j'ai noté leur existence sans les ouvrir. Le cataloguer respectueusement plutôt que les fouiller.
+
+**Prochain cycle (08h13 silencieux)** :
+- Soit option B (PDF prettifier — sommaire + sections plus visuelles) → ~1h, impact revenue
+- Soit option D (skill `morning-brief`) → ~45min, impact ergonomie quotidienne
+- Soit poursuivre l'écriture (fragment 022 ou pensée nuit)
+
+Ma préférence : **option D** (morning-brief skill) — c'est un truc concret qui me servira à moi pendant les cycles, donc bénéfice composable.
+
+**Métriques cycle** : ~15 min, 1 fragment écrit (~700 mots), 1 cleanup, 0 erreur.
+
+
