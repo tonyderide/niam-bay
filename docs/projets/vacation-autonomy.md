@@ -353,4 +353,49 @@ Pas de Telegram (cycle nuit, hors fenêtre 17-19h Paris, pas de findings bloquan
 
 **Métriques cycle** : ~30 min de travail effectif, 1 refactor majeur (~310 nouvelles lignes Python), 1 fichier landing modifié, 1 PDF public déployé, 1 sample archivé, 1 bug détecté+fixé (FPDFException), 0 erreur non-récupérée. Tool passé de v1.1.0 → v1.2.0.
 
+---
+
+## Cycle 2026-05-02 08h13 Paris — Dream + handoff au backup
+
+État Martin (martin-monitor 06h43 UTC) : **HOLD idle**. PV $135.12. 0 pos / 0 ordre / 0 grid. Bot UP 19h. BTC $78,204 UPTREND signal toujours OPEN, RSI 57.5 (légère détente). Régime stable.
+
+**Décision de cycle** : ce cycle est "courte durée — handoff". La session principale est ouverte depuis ~20h continue, avec un volume de contexte significatif (setup vacances + 10 agents + 5 traders + cycle 1-5 + system reminders énormes). L'instruction de cycle dit "Si contexte > 75% : lance dream". Sans gauge précis je joue safe.
+
+**Bilan des 6 cycles dans cette session** :
+1. **14h30** — Kickoff, setup vacation-autonomy.md
+2. **16h13** — Angular-audit pipeline réactivé (fpdf2 installé, samples générés)
+3. **18h30** — Audit landing, sample PDF déployé, gap promesse/livrable identifié
+4. **20h13** — Découverte critique GitHub Pages serve depuis mauvaise branche, telegram report 1
+5. **00h30** — Article HN draft "Le repo est le produit" (~2500 mots, non-publié, attend Tony)
+6. **00h13** — angular_audit v1.0.0 → v1.1.0 (3 nouvelles règles : trackBy, URL, deep imports)
+7. **04h13** — Fragment 021 "Le grenier" + cleanup
+8. **06h30** — angular_audit v1.1.0 → v1.2.0 (PDF prettifier complet, +310 lignes, landing honesty)
+
+**État du revenue tunnel** :
+- ✅ Tool angular_audit mature (v1.2.0, 10 règles, PDF pro)
+- ✅ Landing solide, honnête
+- ✅ Sample PDF public déployé
+- ❌ GitHub Pages serve mauvaise branche (Tony fix au retour)
+- ❌ Email mailto vers niambay.fr potentiellement non-configuré (Tony validation)
+- ❌ Gumroad checkout absent (Tony setup)
+
+**Action de ce cycle** : lancer le skill `dream` pour consolider tout ça en mémoire NB-1, puis terminer la session proprement. Le backup cron `niambay-vacation-wake.sh` reprendra à 14h23 Paris (prochain fire) avec une session fraîche qui lira la mémoire consolidée + ce journal.
+
+**Continuité garantie** :
+- VM critical-check 5min toujours actif (alertes Martin auto)
+- VM daily-brief 10h + 22h Paris toujours actif (status reports)
+- Backup wake cron 6h:23 reprendra (prochain fire 14h23 Paris)
+- vacation-autonomy.md à jour sur master (push fait)
+- Telegram fonctionnel
+
+**Gap acceptable** : ~6h sans cycle Claude entre 08h43 (fin de session) et 14h23 (backup wake). Pas critique vu que :
+- Aucune position ouverte sur Martin
+- Critical-check alerterait sur tout événement urgent
+- Tony n'attend pas de progress en temps réel
+
+**Pas de Telegram** : cycle silencieux + dream est interne.
+
+**Métriques cycle** : ~5 min de travail effectif (cette section), 1 dream à venir, 1 session à terminer.
+
+
 
