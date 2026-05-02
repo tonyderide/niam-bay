@@ -545,5 +545,11 @@ Inclination : option C (créatif léger, je viens de finir un truc structurel).
 
 **Métriques cycle** : ~30 min effectif. 1 fichier créé (`scripts/martin-recap.sh`, 130 lignes), 1 fichier modifié (`scripts/commands.sh`, +5 lignes), 2 tests réels validés, 1 Telegram à envoyer.
 
-**Telegram cycle 9** : à envoyer (fenêtre 17-19h Paris pile). Annonce concrète : nouvel outil de monitoring opérationnel, état Martin inchangé.
+**Telegram cycle 9** : envoyé ✓ (18h28). Annonce concrète : nouvel outil de monitoring opérationnel, état Martin inchangé.
+
+**Bonus créatif du même cycle (18h35)** : `docs/projets/inventaire-tonyderide-0502.md` — catalogue respectueux des 30 projets de `/home/tony/projets/tonyderide/`. **Métadonnées seulement** (taille, dernier commit git, dernière modif). Aucun fichier source ouvert. Promesse du fragment 021 ("laisser dormir") tenue à la lettre. Trois projets vivants identifiés (niam-bay, martin, cockpit), le reste est sédiment d'une carrière.
+
+Pourquoi maintenant : l'inventaire complète le fragment 021 avec des chiffres. Le fragment racontait poétiquement "30 projets endormis" ; le catalogue le rend vérifiable. Utile pour Tony au retour : voit en un coup d'œil l'état du dossier sans avoir à `ls`.
+
+**Décision fin de cycle** : pas de dream maintenant, contexte raisonnable. La session reste ouverte pour le prochain `/loop` à 22h:13 Paris (backup cron à 20h:23 prend le relais avant si besoin). Total du cycle 9 : recap.sh + inventaire + Telegram + 2 commits.
 
