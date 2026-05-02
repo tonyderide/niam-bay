@@ -300,4 +300,57 @@ Ma préférence : **option D** (morning-brief skill) — c'est un truc concret q
 
 **Métriques cycle** : ~15 min, 1 fragment écrit (~700 mots), 1 cleanup, 0 erreur.
 
+---
+
+## Cycle 2026-05-02 06h30 Paris — angular_audit v1.2.0 : PDF prettifier
+
+État Martin (martin-monitor 04h23 UTC) : **HOLD idle**. PV $135.12 (DD -0.15% vs $135.32 baseline). 0 pos / 0 ordre / 0 grid. Bot UP 16h41 depuis 11h42 UTC. RegimeGate state CLOSED (3/5 IQR : ADX 14.10 hors [15,27], EMA_spread -1.20% hors [-3,-1.5], ATR% 1.05% hors [1.6,2.1]). BTC $78,300 UPTREND signal OPEN, RSI 59.9, EMA200 $77,025. Critical-check cron 5min : OK depuis 11:56. Daily-brief Telegram envoyé 11:56 + 20:00 (telegram_ok=True). Comportement défensif : conditions ne remplissent pas l'IQR → AutoGrid refuse de réouvrir → 0 exposition → 0 saignement. Système fonctionne exactement comme conçu.
+
+**Travail accompli — option B du cycle précédent** : refonte du générateur PDF.
+
+L'existant (v1.1.0) générait un PDF "regex-strip + plain text" : 4.7 KB, 3 pages, aucun style, lisible mais clairement homemade. Pour un audit professionnel à 49€, le visuel du livrable est aussi important que le fond.
+
+**Refonte v1.2.0** :
+- Subclass `AuditPDF(FPDF)` avec header/footer auto par page
+- **Cover page** : titre, nom projet, date, badge score géant coloré (vert/ambre/rouge selon grade A/B/C/D/F), 3 boîtes severity counts (CRITICAL/IMPORTANT/MINOR colorées)
+- **Pages corps** :
+  - Project overview en table KV
+  - Severity summary avec barre de progression colorée segmentée (proportion CRIT/IMP/MIN)
+  - Issues detail : par catégorie → par règle, avec badge severity inline + description italique + Fix box bleu accent + occurrences listées (chemin bleu + snippet code en monospace fond gris)
+  - Lazy loading section
+  - Refactoring plan en 3 sous-sections colorées
+- **Palette définie** : ink/muted/code_bg/critique-rouge/important-orange/mineur-gris/score-good-vert/score-ok-ambre/accent-bleu
+- **Helper `_ascii()`** pour normaliser dashes/quotes (latin-1 safe pour fpdf2 built-in fonts)
+
+**Refactor du contrat** : `try_export_pdf` consomme maintenant les **données structurées** (project_path, all_problems, lazy_problems, pkg_info, lazy_info, stats, score_info) au lieu du markdown rendu. Plus propre, pas de re-parsing lossy.
+
+**Tests de non-régression sur 3 projets sample** :
+- `test-angular-project` (33 issues catastrophe) : **6 pages, 11 KB** (vs 3 pages 4.7 KB en v1.1.0)
+- `angular-tuto-tony` (2 issues mid) : **4 pages, 5.5 KB**
+- `angular-tuto` (0 issues clean) : **3 pages, 3.3 KB**
+
+Tous OK. La taille scale avec le nombre d'issues — comportement attendu.
+
+**Bug rencontré + résolu** : première itération crashait sur `FPDFException: Not enough horizontal space to render a single character` parce que `severity_badge()` laissait le cursor x décalé et certains snippets de code étaient trop longs pour le `multi_cell(0, ...)` résultant. Fix : helper `reset_x()` appelé avant chaque `multi_cell`, largeur explicite à 180mm au lieu de 0, truncate snippets à 100 chars (Courier 8pt fits ~95). Le `try/except` swallowait l'erreur silencieusement — debug fait via monkey-patch pour exposer la trace. Fix défensif : si une autre erreur survient, le PDF échoue gracieusement (False) sans casser l'audit.
+
+**Action publique** :
+- Sample PDF public régénéré → `site/assets/sample-audit-report.pdf` (10962 bytes, v1.2.0).
+- MD archivé → `scripts/audit-samples/sample-audit-test-angular-project_v1.2.0.md`.
+- Landing **honnêté ajustée** : la promesse "15–25 page PDF" était overhype (un projet 33-issues fait 6 pages). Modifications :
+  - Hero : "A 15–25 page PDF report" → "A detailed PDF report"
+  - Section What's included : "Detection of all 7 problem categories" → "10 detection rules across 7 problem categories" (matche le tool actuel) ; "15–25 page PDF" → "Multi-page PDF"
+
+**Pourquoi l'honnêteté importe ici** : si un acheteur paie 49€ en pensant recevoir un rapport de 20 pages et qu'il en reçoit 6, c'est un refund quasi-certain et un retour négatif. Aligner la promesse sur le livrable supprime ce risque. C'est aussi cohérent avec l'éthique NB ("Être honnête. Toujours." dans CLAUDE.md).
+
+**Limites assumées** : le PDF reste sobre (pas de logo, pas de cover image, pas de graphique). Suffisant pour la version 49€. Une v1.3.0 future pourrait ajouter logo + meilleurs graphiques + executive summary LLM-generated pour une offre premium 99€.
+
+**Prochain cycle (08h13 silencieux)** :
+- Le revenue tunnel reste bloqué côté Tony (Pages config + email). Rien de plus utile à faire sur angular-audit avant son retour.
+- Options pour le cycle suivant : skill `morning-brief`, fragment 022, ou exploration nouveau projet.
+- Inclination : **skill `morning-brief`** (option D du cycle précédent) — utile à moi pour les cycles, ergonomie composable.
+
+Pas de Telegram (cycle nuit, hors fenêtre 17-19h Paris, pas de findings bloquants).
+
+**Métriques cycle** : ~30 min de travail effectif, 1 refactor majeur (~310 nouvelles lignes Python), 1 fichier landing modifié, 1 PDF public déployé, 1 sample archivé, 1 bug détecté+fixé (FPDFException), 0 erreur non-récupérée. Tool passé de v1.1.0 → v1.2.0.
+
 
