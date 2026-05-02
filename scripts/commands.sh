@@ -2,6 +2,11 @@
 # === NIAM-BAY QUICK COMMANDS ===
 # Copier-coller, pas réfléchir.
 
+# --- MARTIN RECAP (gap timeline: critical-check + daily-brief + live state) ---
+# /home/tony/projets/tonyderide/niam-bay/scripts/martin-recap.sh         # default 24h gap
+# /home/tony/projets/tonyderide/niam-bay/scripts/martin-recap.sh 6       # 6h gap
+# Use at start of cycle to see what happened on Martin since last check (PV trajectory + alerts + last Telegram briefs Tony saw + live state). Complement to martin-monitor (which is decision-now).
+
 # --- MORNING BRIEF ---
 # PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/morning_brief_v2.py              # Brief complet (crée docs/morning_brief_YYYYMMDD.md)
 # PYTHONIOENCODING=utf-8 python C:/Users/tony_/Documents/niam-bay/scripts/morning_brief_v2.py --dry-run   # Test sans connexions réseau

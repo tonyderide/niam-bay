@@ -505,5 +505,45 @@ Inclination : option A si je trouve l'énergie, option C sinon.
 
 **Métriques cycle** : ~10 min, 1 fragment écrit (~60 lignes), 1 Telegram envoyé, 0 erreur. Total fragments depuis le début vacances : 3 (020 huit-jours, 021 le-grenier, 022 le-bot-qui-ne-fait-rien).
 
+---
 
+## Cycle 2026-05-02 18h28 Paris — martin-recap.sh livré (option A acquittée)
+
+État Martin (martin-monitor 16h23 UTC) : **HOLD idle**. PV $135.12. 0 pos / 0 ordre / 0 grid. Bot UP 1j4h. BTC $78,565 UPTREND signal OPEN, RSI 63.6. Régime stable depuis 28h.
+
+**Travail accompli — option A enfin déballée** : `scripts/martin-recap.sh` créé.
+
+L'option A (skill `morning-brief`) traînait depuis 3 cycles. J'ai préféré la livrer comme **script** plutôt que skill global, parce qu'écrire dans `~/.claude/skills/` est sensible et Tony ne peut pas approuver depuis Portugal. Le script reste dans `niam-bay/scripts/` ; il pourra être promu en skill au retour si Tony aime.
+
+**Ce que fait le script** :
+- 1 SSH roundtrip vers VM Oracle
+- Récupère 4 sources : `critical-check.log` (échantillonnage horaire sur N heures), `daily-brief.log` (derniers MATIN+SOIR), `morning_brief_v2.md` newest, live `/api/system+balance+grids+ema_trend`
+- Parse en Python (json + regex), produit ~25 lignes markdown français
+- Sections : trajectoire PV avec delta, alertes, dernier brief Tony (matin+soir), état live, lecture+reco
+
+**Usage** :
+- `./scripts/martin-recap.sh` → 24h par défaut
+- `./scripts/martin-recap.sh 6` → 6h gap (utile entre 2 cycles `/loop`)
+
+**Bénéfice composable** : à chaque réveil cron 6h:23 ou /loop 4h:13, je peux maintenant en 1 commande savoir "qu'est-ce qui s'est passé pendant que je dormais". Économie de 4-5 lectures séparées + raisonnement manuel.
+
+**Test réel exécuté** :
+- 24h gap : 6 samples PV plats, Δ24h = +$0.00 (0.00%), 0 alerte, brief MATIN du jour visible. PV $135.12, BTC $78,565, signal OPEN. → Reco "rien à faire". ✓
+- 6h gap : 6 samples sur 13h-16h UTC, idem 0 variation. ✓
+
+**Bug rencontré + résolu** : 1ère version utilisait `set -euo pipefail` + parsing en bash pur (awk gymnastics + sed). Sortie vide / exit 1 silencieux. Réécrit en bash mince (juste SSH+RAW) + Python (parse JSON et compute). Plus robuste, debugger plus facile, ~40 lignes Python lisibles.
+
+**Doc** : entrée ajoutée en tête de `scripts/commands.sh` pour que les futures sessions Niam-Bay le découvrent au démarrage (étape 7 du wake protocol).
+
+**Prochain cycle (20h13)** : Telegram report + au choix :
+- Option B : article HN technique court (complément narratif draft)
+- Option C : nouvelle pensée ou fragment 023
+- Option D : explorer prudemment un projet endormi (lire README, ne pas modifier)
+- Option E : enrichir `martin-recap.sh` avec une mini-comparaison gate-state (transitions IQR au cours du gap)
+
+Inclination : option C (créatif léger, je viens de finir un truc structurel).
+
+**Métriques cycle** : ~30 min effectif. 1 fichier créé (`scripts/martin-recap.sh`, 130 lignes), 1 fichier modifié (`scripts/commands.sh`, +5 lignes), 2 tests réels validés, 1 Telegram à envoyer.
+
+**Telegram cycle 9** : à envoyer (fenêtre 17-19h Paris pile). Annonce concrète : nouvel outil de monitoring opérationnel, état Martin inchangé.
 
