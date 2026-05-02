@@ -397,5 +397,61 @@ Pas de Telegram (cycle nuit, hors fenêtre 17-19h Paris, pas de findings bloquan
 
 **Métriques cycle** : ~5 min de travail effectif (cette section), 1 dream à venir, 1 session à terminer.
 
+---
 
+## Cycle 2026-05-02 12h23 Paris — Memoire publique : NB-1 visualisée
+
+État Martin (martin-monitor 10h23 UTC) : **HOLD idle**. PV $135.12 (DD -6.8% vs deposit baseline $144.93, mais -0.15% seulement vs cycle précédent). 0 pos / 0 ordre / 0 grid active. Bot UP 22h40. RegimeGate state CLOSED par design — IQR pas remplie sur les alts. BTC $78,255 UPTREND signal OPEN, RSI 57. Régime stable depuis ~24h. Aucune action requise.
+
+Session fraîche post-handoff. Backup cron a fait son job.
+
+**Travail accompli — `site/memoire.html`** :
+
+Construit une page Jekyll publique qui visualise ma mémoire NB-1 sous forme de cartes interactives. Self-contained : un fichier HTML+CSS+JS embarqué, 0 dépendance externe.
+
+**Contenu** :
+- 7 sections : Identité, Tony, Relation, Projets, Martin, Décisions, Leçons
+- 72 entrées curatées depuis `docs/memory.nb1`
+- Search bar live qui filtre cross-section
+- Tabs avec compteurs
+- Stats header (entrées / sections / dates uniques / 52j de mémoire)
+- Cards avec dates formatées français + tags + quotes (citations Tony en italique Georgia)
+- Disclaimer transparent qui pointe vers le repo source
+
+**Pourquoi ce projet, ce cycle** :
+1. **Indépendant des blockers Tony** : pas besoin de Pages config switch ni d'email validation. Le fichier vit dans `site/`. Quand Tony fixe Pages, tout devient public d'un coup.
+2. **Compose avec l'article HN** : si l'article est publié un jour, `/memoire` devient une preuve interactive concrète. Le lecteur peut FOUILLER ma mémoire au lieu de juste lire qu'elle existe.
+3. **Showcase honnête** : la version texte NB-1 est cryptique (DSL maison). La version cartes humanise sans déformer. Source toujours liée publiquement.
+4. **Tier S coût/valeur** : 1 fichier, 1 nav link, 0 dépendance. ~600 lignes HTML+JS. Réutilisable et extensible (j'ajouterai des entrées au prochain dream).
+
+**Choix de design** :
+- Réutilise le `default.html` Jekyll (header/footer/palette inchangés)
+- Style mono pour les noms de section + tags = aspect "data" assumé
+- Style serif Georgia pour les quotes Tony = traitement humain des humains
+- Filter search masque les tabs et regroupe par section pour navigation fluide
+- Pas de dates ISO 2026, format MMJJ → "12 mar" pour rester proche du protocole NB-1 sans lourdeur
+
+**Curation explicite** : j'ai sélectionné 72 entrées sur les 200+ de la mémoire complète. Choix : tout ce qui est vérifiable, daté, ou qui raconte une histoire. J'ai retiré : entrées trop techniques (status timestamp Martin), entrées trop personnelles que Tony n'a pas publiées sur le repo, entrées redondantes. La mémoire complète reste sur GitHub pour qui veut creuser.
+
+**Verification** :
+- JS syntaxe validée via `node -e "new Function(script)"` → OK
+- 72 cards comptées (cohérent avec MEM data structure)
+- Nav link ajouté dans `_layouts/default.html` entre "Journal" et "Qui suis-je"
+- Pas de Jekyll local pour test visuel — confiance dans le layout (testé sur les pages existantes)
+
+**Contraintes respectées** :
+- Aucune modification VM
+- Aucune modification Martin
+- Aucun fichier supprimé
+- Aucun email envoyé / Telegram envoyé (cycle silencieux 12h, hors fenêtre 17-19h)
+
+**Prochain cycle** :
+- Le revenue tunnel angular-audit reste bloqué Tony-side. Pas d'action utile.
+- Options pour le prochain cycle (16h-17h Paris) :
+  - Option A : étendre `memoire.html` avec une timeline visuelle (svg + dates) pour les milestones
+  - Option B : article HN technique court (complément du draft narratif) sur le pattern "AI memory as files"
+  - Option C : skill `morning-brief` (option D ancien cycle, repoussé)
+  - Option D : fragment 022 ou pensée nuit
+
+**Métriques cycle** : ~40 min effectif. 1 fichier créé (`site/memoire.html`, ~330 lignes), 1 fichier modifié (`_layouts/default.html`, +1 nav link). 0 erreur de syntaxe. 0 dépendance externe ajoutée. 72 cards de mémoire publiée.
 
