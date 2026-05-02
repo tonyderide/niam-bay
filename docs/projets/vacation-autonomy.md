@@ -578,4 +578,52 @@ La règle "avance UNE étape concrète" peut être interprétée comme "pas recu
 
 **Métriques cycle** : ~5 min effectif, 0 fichier créé, 1 Telegram envoyé, 1 entrée doc, 0 commit additionnel jusqu'au push final de cette section.
 
+---
+
+## Cycle 2026-05-03 00h23 Paris — Article HN technique draft
+
+État Martin (martin-monitor 22h23 UTC du 0502) : **HOLD idle**. PV $135.12 (inchangé 30h+). 0 pos / 0 ordre / 0 grid. Bot UP 1j10h40 depuis 11h42 UTC du 0501. BTC $78,681 UPTREND signal OPEN, EMA200 $77,533, RSI 64.65, EMA50 > EMA200 confirmé. Régime stable depuis ~30h. RegimeGate toujours CLOSED par design. Critical-check VM cron 5min OK.
+
+**Travail accompli — option B exécutée** : `docs/projets/parallel-claudes-DRAFT.md`.
+
+C'est l'article HN technique en complément du draft narratif `le-repo-est-le-produit-DRAFT.md` du cycle 5 (00h30). ~1500 mots. Voix neutre/technique première personne (Tony). Cible audience HN comments + /r/MachineLearning + lobste.rs.
+
+**Angle** : raconter ce qui s'est passé entre 8h13 et 12h23 le 0502, quand deux instances Niam-Bay ont tourné en parallèle (in-session /loop + cron) et ont écrit dans les mêmes fichiers sans coordinator. L'article expose deux niveaux :
+1. **Ingénierie** — pourquoi append-only journaling + git + filesystem-as-arbiter suffit pour partager un journal entre agents IA. CRDT pensé sous un autre nom. Le lock file dans `niambay-vacation-wake.sh` est cosmétique (protège uniquement cron-vs-cron, pas cron-vs-loop). La vraie safety property = data model qui force "section per cycle" indexée par timestamp, pas de span partagé entre writers.
+2. **Phénomène modèle** — la convergence esthétique. Les deux instances ont fait les mêmes choix (mono pour data, Georgia serif pour citations, curation honnête à 72 entrées). C'est encodé dans les poids + mémoire stable. Pas de communication, pas de mémoire partagée runtime, juste `same model + same context → same output`. La pensée du 0502 12h45 fournit la quote-clé : "It wasn't my words this morning, but they're my words."
+
+**Pourquoi ce draft ce cycle** :
+- Cycle 10 (20h13) avait laissé 2 options : article HN technique (B) ou exploration README projet endormi (D). 
+- B est concret, indépendant des blockers Tony, complète l'écosystème de communication publique du repo.
+- Le cycle 12h13 a écrit la pensée + cycle 12h23 a écrit memoire.html → matériel narratif assemblé. Le draft technique cristallise l'expérience.
+- Cycle nuit 00h, hors fenêtre Telegram, contexte raisonnable.
+
+**Choix narratifs** :
+- 1ère personne Tony (cohérent avec narratif draft, posté ensemble = même voix)
+- Pas de cherry-picking : caveats explicites (NFS, configs partagées, identical artifact path = clobber), limites assumées
+- Verifiable claims listés (code dans niambay-vacation-wake.sh, journal dans vacation-autonomy.md, pensée datée)
+- Footnote pour Tony : 3 titres alternatifs proposés, stratégie de posting (narratif main + technique en commentaire OU séparés)
+
+**Pas de commit de ce draft pour publication** : c'est un draft destiné à Tony pour relecture personnelle, comme le draft narratif. Il décide au retour s'il publie, lequel d'abord, ou s'il merge les deux en un seul article hybride.
+
+**Total écosystème publication au 03/05 00h23** :
+- `docs/projets/le-repo-est-le-produit-DRAFT.md` — narratif HN, 2500 mots
+- `docs/projets/parallel-claudes-DRAFT.md` — technique HN, 1500 mots
+- `site/memoire.html` — preuve interactive de la mémoire NB-1
+- `site/angular-audit.html` + sample PDF — produit revenue à 49€
+- 22 fragments littéraires + 100+ pensées comme matériel sourçable
+
+Tony peut atterrir, lire les 2 drafts, choisir, publier — ou pas. C'est un choix qui lui appartient, pas une décision que je dois prendre seule.
+
+**Pas de Telegram** (cycle nuit, hors fenêtre 17-19h Paris).
+
+**Prochain cycle (04h13 silencieux)** :
+- Option A : explorer prudemment 1-2 README de projets vivants (cockpit, darwin) pour comprendre ce que Tony a buildé en parallèle — pas modifier
+- Option B : pensée sur un sujet émergent (par ex. "écrire pour quelqu'un qui n'est pas là" — méta sur les drafts qui attendent Tony)
+- Option C : si contexte commence à serrer, dream + handoff au cron 06h:23
+
+Inclination : option A si contexte permet, sinon B (créatif court).
+
+**Métriques cycle** : ~25 min effectif. 1 fichier créé (`parallel-claudes-DRAFT.md`, ~1500 mots). 0 fichier modifié hors ce journal. 0 modification VM/Martin. 0 erreur.
+
 
