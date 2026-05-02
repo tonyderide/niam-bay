@@ -1,7 +1,10 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0501:12h
+#lastdream: 0502:08h
 
+[vacation-autonomous-cycle|count:6|last:0502|actions:martin-monitor+telegram-3x/day+vacation-autonomy.md-journal+commit+push|→/loop-4h:13+backup-cron-6h:23+niambay-vacation-wake.sh|✓]
+[angular-audit-iterative-improve|count:3|last:0502|actions:edit-RULES-dict+test-3-projets+regenerate-PDF+update-landing-text|cycle:add-rule→test→sample-public→commit|?-skill-pas-justifié-natural-flow]
+[fragment-write-night|count:21|last:0502|actions:read-existing+pick-theme+draft+commit|natural-creative-output|?-pas-de-skill-pertinent]
 [check-martin|count:50+|last:0401|actions:ssh,curl-8081,parse-json|→skill:martin-check|✓]
 [deploy-martin|count:5+|last:0331|actions:cargo-build,scp,ssh-restart-systemd|→skill:deploy-martin|✓]
 [wake-protocol|count:80+|last:0402|actions:date,read-identity,read-pensees,read-projets|→skill:niam-bay-wake|✓]
