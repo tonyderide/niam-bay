@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Angular Audit Playground — Try the rules in your browser</title>
+  <meta name="description" content="Paste a snippet of Angular code, see issues detected live. Free playground for the Angular Audit tool.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --text: #c9d1d9;
+      --accent: #58a6ff;
+      --accent-dim: #1f4e8a;
+      --muted: #8b949e;
+      --surface: #161b22;
+      --surface-alt: #1c2128;
+      --border: #30363d;
+      --green: #3fb950;
+      --orange: #d29922;
+      --red: #f85149;
+      --code-bg: #0a0e14;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .topbar {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .topbar-left { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+    .topbar-title { color: #e6edf3; font-weight: 600; font-size: 1.05rem; }
+    .topbar-tag {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .topbar-link { font-size: 0.9rem; color: var(--muted); }
+    .topbar-link:hover { color: var(--accent); }
+
+    .hero {
+      padding: 2rem 1.5rem 1rem;
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: #e6edf3;
+      margin-bottom: 0.7rem;
+      line-height: 1.25;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero p {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 4rem;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    @media (max-width: 880px) {
+      .layout { grid-template-columns: 1fr; }
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 480px;
+    }
+
+    .panel-header {
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-alt);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-size: 0.85rem;
+      color: #e6edf3;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    .controls { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+    .lang-btn, .sample-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.35rem 0.7rem;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .lang-btn:hover, .sample-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .lang-btn.active {
+      background: var(--accent-dim);
+      color: #e6edf3;
+      border-color: var(--accent);
+    }
+
+    textarea#code-input {
+      flex: 1;
+      width: 100%;
+      background: var(--code-bg);
+      border: none;
+      color: var(--text);
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.55;
+      padding: 1rem;
+      resize: none;
+      outline: none;
+    }
+
+    .results-body {
+      padding: 1rem;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .summary {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+      padding-bottom: 0.9rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .summary-pill {
+      padding: 0.3rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+    .summary-pill.crit { background: rgba(248,81,73,0.12); color: var(--red); border: 1px solid rgba(248,81,73,0.3); }
+    .summary-pill.imp  { background: rgba(210,153,34,0.12); color: var(--orange); border: 1px solid rgba(210,153,34,0.3); }
+    .summary-pill.min  { background: rgba(139,148,158,0.12); color: var(--muted); border: 1px solid var(--border); }
+    .summary-pill.ok   { background: rgba(63,185,80,0.12); color: var(--green); border: 1px solid rgba(63,185,80,0.3); }
+
+    .issue {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+      border-left-width: 3px;
+      border-radius: 6px;
+      padding: 0.85rem 1rem;
+      margin-bottom: 0.7rem;
+    }
+    .issue.crit { border-left-color: var(--red); }
+    .issue.imp  { border-left-color: var(--orange); }
+    .issue.min  { border-left-color: var(--muted); }
+
+    .issue-head {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.35rem;
+    }
+    .issue-id {
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.72rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+    .issue-name {
+      color: #e6edf3;
+      font-weight: 600;
+      font-size: 0.92rem;
+    }
+    .issue-sev {
+      font-size: 0.65rem;
+      padding: 0.1rem 0.45rem;
+      border-radius: 8px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    .issue-sev.crit { background: var(--red); color: #fff; }
+    .issue-sev.imp  { background: var(--orange); color: #1c2128; }
+    .issue-sev.min  { background: var(--muted); color: var(--bg); }
+
+    .issue-desc { color: var(--text); font-size: 0.85rem; margin-bottom: 0.45rem; }
+    .issue-line {
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.78rem;
+      color: var(--muted);
+      background: var(--code-bg);
+      padding: 0.45rem 0.7rem;
+      border-radius: 4px;
+      overflow-x: auto;
+      white-space: pre;
+      margin-bottom: 0.45rem;
+      border: 1px solid var(--border);
+    }
+    .issue-line .ln {
+      color: var(--accent);
+      margin-right: 0.7rem;
+      user-select: none;
+    }
+    .issue-fix {
+      font-size: 0.82rem;
+      color: var(--text);
+      padding: 0.5rem 0.7rem;
+      background: rgba(88,166,255,0.06);
+      border-left: 2px solid var(--accent);
+      border-radius: 0 4px 4px 0;
+    }
+    .issue-fix b { color: var(--accent); }
+
+    .empty-state {
+      text-align: center;
+      color: var(--muted);
+      padding: 3rem 1rem;
+      font-size: 0.9rem;
+    }
+    .empty-state .big { font-size: 2rem; margin-bottom: 0.6rem; color: var(--green); }
+
+    .cta {
+      margin-top: 2.5rem;
+      padding: 2rem 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      text-align: center;
+    }
+    .cta h3 {
+      color: #e6edf3;
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+    .cta p { color: var(--muted); margin-bottom: 1.2rem; max-width: 540px; margin-left: auto; margin-right: auto; }
+    .cta-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: #0d1117;
+      font-weight: 700;
+      padding: 0.8rem 1.7rem;
+      border-radius: 6px;
+      transition: opacity 0.15s;
+    }
+    .cta-btn:hover { opacity: 0.88; text-decoration: none; }
+
+    .disclaimer {
+      max-width: 720px;
+      margin: 1.5rem auto 0;
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">Angular Audit Playground</span>
+    <span class="topbar-tag">v1.3.0 · 13 rules</span>
+  </div>
+  <a href="angular-audit.html" class="topbar-link">← Back to product page</a>
+</div>
+
+<div class="hero">
+  <h1>Try the audit <span>in your browser</span></h1>
+  <p>Paste a snippet of Angular TypeScript or HTML. Run the same regex rules used in the full audit. No tracking, no install, runs entirely client-side.</p>
+</div>
+
+<main>
+  <div class="layout">
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Your code</span>
+        <div class="controls">
+          <button class="lang-btn active" data-lang="auto">Auto</button>
+          <button class="lang-btn" data-lang="ts">TypeScript</button>
+          <button class="lang-btn" data-lang="html">HTML</button>
+          <button class="sample-btn" data-sample="ts">TS sample</button>
+          <button class="sample-btn" data-sample="html">HTML sample</button>
+          <button class="sample-btn" data-sample="clear">Clear</button>
+        </div>
+      </div>
+      <textarea id="code-input" spellcheck="false" placeholder="// Paste your Angular code here…"></textarea>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Issues detected</span>
+        <span class="topbar-tag" id="lang-detected">auto</span>
+      </div>
+      <div class="results-body" id="results"></div>
+    </div>
+  </div>
+
+  <div class="cta">
+    <h3>This is 13 rules on a snippet. The full audit reads your whole repo.</h3>
+    <p>For €49, you get a full PDF report on a complete Angular project: cross-file memory leak detection, lazy-loading analysis, severity-ranked refactoring plan, every match listed with file:line references.</p>
+    <a href="angular-audit.html" class="cta-btn">See what the full audit delivers →</a>
+  </div>
+
+  <p class="disclaimer">
+    The playground runs the same regex patterns as <a href="https://github.com/tonyderide/niam-bay/blob/master/scripts/angular_audit.py">angular_audit.py</a> on master. Some rules (memory leak heuristic, deep imports, full lazy-loading analysis) need cross-file context and behave differently here. Output is illustrative — the full audit is more thorough.
+  </p>
+</main>
+
+<footer>
+  Part of the <a href="/niam-bay/">Niam-Bay</a> repo · <a href="angular-audit.html">Product page</a>
+</footer>
+
+<script>
+const RULES = [
+  {
+    id: 'MEM001', name: 'Subscription without unsubscribe', sev: 'crit',
+    lang: 'ts', kind: 'file',
+    pattern: /\.subscribe\s*\(/,
+    antiPattern: /takeUntil|unsubscribe|takeUntilDestroyed|AsyncPipe|async\s+pipe/i,
+    desc: 'A .subscribe() call without takeUntil / unsubscribe / async pipe leaks memory across navigation.',
+    fix: 'Use <b>takeUntil(this.destroy$)</b> or <b>takeUntilDestroyed()</b> (Angular 16+) or the async pipe.'
+  },
+  {
+    id: 'PERF001', name: 'ChangeDetectionStrategy.Default', sev: 'imp',
+    lang: 'ts', kind: 'line',
+    pattern: /ChangeDetectionStrategy\.Default/,
+    desc: 'Default change detection re-checks every component on every cycle. Costly on large trees.',
+    fix: 'Use <b>ChangeDetectionStrategy.OnPush</b> with Observables + async pipe, or Signals.'
+  },
+  {
+    id: 'TYPE001', name: "TypeScript 'any' usage", sev: 'imp',
+    lang: 'ts', kind: 'line',
+    pattern: /:\s*any(\b|;|\s*[=,)])/,
+    desc: '`any` opts out of TypeScript. Hides bugs and makes refactoring dangerous.',
+    fix: 'Type explicitly. Use <b>unknown</b> if the type is genuinely unknown at the boundary.'
+  },
+  {
+    id: 'DEBUG001', name: 'console.* in production code', sev: 'min',
+    lang: 'ts', kind: 'line',
+    pattern: /console\.(log|warn|error|debug)\(/,
+    desc: 'Forgotten console calls leak internals in prod and pollute the console.',
+    fix: 'Remove or route through a logging service. Strip via build optimization.'
+  },
+  {
+    id: 'SEC001', name: 'innerHTML without sanitization', sev: 'crit',
+    lang: 'both', kind: 'line',
+    pattern: /\[innerHTML\]|\.innerHTML\s*=/,
+    desc: 'innerHTML can inject HTML (XSS). Angular bypasses sanitization here.',
+    fix: 'Use <b>DomSanitizer.bypassSecurityTrustHtml()</b> with strict validation, or restructure the template.'
+  },
+  {
+    id: 'ARCH001', name: 'HttpClient inside a component', sev: 'imp',
+    lang: 'ts', kind: 'line',
+    pattern: /HttpClient|this\.http\.(get|post|put|delete|patch)\(/,
+    desc: 'HTTP calls in components mix concerns. Hard to test, hard to reuse.',
+    fix: 'Move HTTP calls into dedicated services. Components consume Observables.',
+    skipIfFile: /\.service\.ts$/
+  },
+  {
+    id: 'PERF003', name: '*ngFor without trackBy', sev: 'imp',
+    lang: 'html', kind: 'line',
+    pattern: /\*ngFor\s*=\s*["'](?:(?!trackBy).)*\blet\b(?:(?!trackBy).)*["']/,
+    desc: 'No trackBy means Angular re-creates DOM nodes every change-detection cycle.',
+    fix: 'Add <b>; trackBy: trackByFn</b>. On Angular 17+, use <b>@for (... ; track item.id)</b>.'
+  },
+  {
+    id: 'ARCH002', name: 'Hardcoded URL', sev: 'imp',
+    lang: 'ts', kind: 'line',
+    pattern: /['"`](https?:\/\/(?!localhost|127\.0\.0\.1|0\.0\.0\.0)[^'"`\s)]+)['"`]/,
+    desc: 'Hardcoded URL prevents dev/staging/prod switching without rebuild.',
+    fix: 'Move to <b>environments/environment.ts</b> and read via <b>environment.apiUrl</b>.'
+  },
+  {
+    id: 'A11Y001', name: 'Image without alt attribute', sev: 'imp',
+    lang: 'html', kind: 'line',
+    pattern: /<img\b(?:(?!alt\s*=)[^>])*\/?>/i,
+    desc: 'Invisible to screen readers, penalises SEO. Most common a11y bug.',
+    fix: 'Add <b>alt="description"</b> (or <b>alt=""</b> for purely decorative). For dynamic, use <b>[alt]="…"</b>.'
+  },
+  {
+    id: 'A11Y002', name: '(click) on non-interactive element', sev: 'imp',
+    lang: 'html', kind: 'line',
+    pattern: /<(?:div|span)\b(?![^>]*\b(?:role|tabindex)\s*=)[^>]*\(click\)\s*=/i,
+    desc: '(click) on a div/span without role/tabindex is unreachable by keyboard or screen reader.',
+    fix: 'Use a real <b>&lt;button&gt;</b>, or add <b>role="button" tabindex="0"</b> + (keydown.enter) (keydown.space).'
+  },
+  {
+    id: 'TEST001', name: 'Skipped or focused test', sev: 'min',
+    lang: 'ts', kind: 'line',
+    pattern: /\b(?:xit|fit|fdescribe|xdescribe)\s*\(|\b(?:it|describe)\.(?:skip|only)\s*\(/,
+    desc: 'Forgotten xit/fit/it.skip/describe.only silently disables suites. CI green ≠ tests passing.',
+    fix: 'Re-enable (xit → it) or remove. Always strip focus (fit, .only) before commit.'
+  }
+];
+
+const TS_SAMPLE = `import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-user-list',
+  templateUrl: './user-list.component.html',
+  changeDetection: ChangeDetectionStrategy.Default
+})
+export class UserListComponent implements OnInit {
+  users: any[] = [];
+  apiBase = 'https://api.example.com/v1';
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit() {
+    console.log('Loading users…');
+    this.http.get(this.apiBase + '/users').subscribe(data => {
+      this.users = data as any[];
+    });
+  }
+
+  xit('should not be skipped forever', () => {
+    expect(this.users.length).toBeGreaterThan(0);
+  });
+}
+`;
+
+const HTML_SAMPLE = `<div class="user-card" *ngFor="let user of users">
+  <img src="{{ user.avatar }}">
+  <span (click)="select(user)">{{ user.name }}</span>
+  <div [innerHTML]="user.bioHtml"></div>
+  <button (click)="open(user.id)">View profile</button>
+</div>
+
+<a href="https://api.example.com/v1/users">Backend doc</a>
+`;
+
+const $ = sel => document.querySelector(sel);
+const input = $('#code-input');
+const results = $('#results');
+const langTag = $('#lang-detected');
+let currentLang = 'auto';
+
+function detectLang(code) {
+  if (currentLang !== 'auto') return currentLang;
+  const looksHtml = /<\w+[\s>]|<\/\w+>/.test(code) && !/^[\s\S]*\b(import|export|class|interface|function|const)\s/.test(code.slice(0, 400));
+  return looksHtml ? 'html' : 'ts';
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function runRules(code, lang) {
+  const issues = [];
+  const lines = code.split(/\r?\n/);
+  const fileText = code;
+
+  for (const rule of RULES) {
+    if (rule.lang !== 'both' && rule.lang !== lang) continue;
+    // skipIfFile is irrelevant in the playground (no filename context).
+
+    if (rule.kind === 'file') {
+      // memory leak: file has subscribe but no anti-pattern
+      if (rule.id === 'MEM001') {
+        const codeOnly = lines.filter(l => {
+          const t = l.trim();
+          return !(t.startsWith('//') || t.startsWith('*') || t.startsWith('/*'));
+        }).join('\n');
+        if (rule.pattern.test(codeOnly) && !rule.antiPattern.test(codeOnly)) {
+          // find first occurrence line
+          for (let i = 0; i < lines.length; i++) {
+            if (rule.pattern.test(lines[i]) && !lines[i].trim().startsWith('//')) {
+              issues.push({ rule, line: i + 1, snippet: lines[i] });
+              break;
+            }
+          }
+        }
+      }
+    } else {
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('/*')) continue;
+        if (rule.pattern.test(line)) {
+          issues.push({ rule, line: i + 1, snippet: line });
+        }
+      }
+    }
+  }
+  return issues;
+}
+
+function render(issues, lang) {
+  langTag.textContent = lang;
+  if (!input.value.trim()) {
+    results.innerHTML = '<div class="empty-state">Paste some Angular code to see issues appear here.<br><span style="font-size:0.8rem">Try the <b>TS sample</b> or <b>HTML sample</b> button above.</span></div>';
+    return;
+  }
+  if (issues.length === 0) {
+    results.innerHTML = '<div class="empty-state"><div class="big">✓</div>No issues detected for the current rules and language.<br><span style="font-size:0.8rem">A clean snippet — or a snippet too small to trigger anything. The full audit looks across the whole project.</span></div>';
+    return;
+  }
+
+  // Group hits by rule id so a noisy rule shows once with all line numbers.
+  const grouped = new Map();
+  for (const i of issues) {
+    if (!grouped.has(i.rule.id)) grouped.set(i.rule.id, { rule: i.rule, hits: [] });
+    grouped.get(i.rule.id).hits.push(i);
+  }
+
+  const counts = { crit: 0, imp: 0, min: 0 };
+  for (const g of grouped.values()) counts[g.rule.sev]++;
+  const totalRules = grouped.size;
+
+  let html = '<div class="summary">';
+  if (counts.crit) html += `<span class="summary-pill crit">${counts.crit} critical</span>`;
+  if (counts.imp)  html += `<span class="summary-pill imp">${counts.imp} important</span>`;
+  if (counts.min)  html += `<span class="summary-pill min">${counts.min} minor</span>`;
+  html += `<span class="summary-pill ok">${totalRules} rule${totalRules > 1 ? 's' : ''} fired · ${issues.length} occurrence${issues.length > 1 ? 's' : ''}</span>`;
+  html += '</div>';
+
+  for (const g of grouped.values()) {
+    const r = g.rule;
+    const first = g.hits[0];
+    const moreLines = g.hits.length > 1
+      ? ` <span style="color:var(--muted);font-size:0.78rem">· also L${g.hits.slice(1).map(h => h.line).join(', L')}</span>`
+      : '';
+    html += `<div class="issue ${r.sev}">
+      <div class="issue-head">
+        <span class="issue-id">${r.id}</span>
+        <span class="issue-name">${r.name}</span>
+        <span class="issue-sev ${r.sev}">${r.sev === 'crit' ? 'critical' : r.sev === 'imp' ? 'important' : 'minor'}</span>
+      </div>
+      <div class="issue-desc">${r.desc}</div>
+      <div class="issue-line"><span class="ln">L${first.line}</span>${escapeHtml(first.snippet.trim())}${moreLines}</div>
+      <div class="issue-fix"><b>Fix:</b> ${r.fix}</div>
+    </div>`;
+  }
+  results.innerHTML = html;
+}
+
+function refresh() {
+  const code = input.value;
+  const lang = detectLang(code);
+  const issues = runRules(code, lang);
+  render(issues, lang);
+}
+
+input.addEventListener('input', refresh);
+
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentLang = btn.dataset.lang;
+    refresh();
+  });
+});
+
+document.querySelectorAll('.sample-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const kind = btn.dataset.sample;
+    if (kind === 'ts') input.value = TS_SAMPLE;
+    else if (kind === 'html') input.value = HTML_SAMPLE;
+    else input.value = '';
+    refresh();
+  });
+});
+
+// Preload TS sample so visitors immediately see the tool working.
+input.value = TS_SAMPLE;
+refresh();
+</script>
+
+</body>
+</html>

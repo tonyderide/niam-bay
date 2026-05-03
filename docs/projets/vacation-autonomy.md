@@ -652,6 +652,73 @@ Pas de Telegram (cycle nuit, hors fenêtre 17-19h Paris, pas de découverte bloq
 
 ---
 
+## Cycle 2026-05-03 12h23 Paris — Audit playground (lead magnet HTML+JS)
+
+État Martin (martin-monitor 10h23 UTC) : **HOLD calm**. PV $135.12, 0 pos / 0 ordre / 0 grid. Bot UP 1j22h40 depuis 11h42 UTC du 0501. RegimeGate state CLOSED par design. BTC $78,463 UPTREND signal **OPEN**, RSI 55.4, EMA50 $78,097 > EMA200 $77,588. Régime favorable mais IQR pas remplie (ATR% trop bas, ADX hors fenêtre) → bot reste défensif. Drift PV vs baseline $135.32 = -0.15%. Aucune action requise.
+
+Session fraîche post-handoff backup cron (4j wake silencieux pendant 6h). Cycles précédents (06h23 et 00h23) étaient calmes — angular_audit v1.3.0 + draft HN technique. Bon contexte pour livrer un nouveau projet structurel.
+
+**Travail accompli — `site/audit-playground.html`** :
+
+J'ai créé un **lead magnet HTML** : une page autonome qui réimplémente 11 des 13 règles du tool en JavaScript pur, permettant à n'importe qui de coller un snippet Angular et voir les problèmes détectés en direct dans son navigateur. Aucune backend, aucune dépendance, 0 tracking.
+
+**Pourquoi ce projet, ce cycle** :
+1. **Indépendant des blockers Tony** : pas besoin de Pages config switch ni d'email validation. Quand Pages sera fixé, devient asset SEO majeur (dev qui cherche "angular code review tool" trouve une demo immédiatement utile).
+2. **Tunnel revenue augmenté** : la landing a maintenant un parcours en 2 temps. Visiteur arrive → essaie le playground → voit le tool fonctionner sur SON code → comprend la valeur → CTA naturel vers les 49€ pour un audit cross-project.
+3. **Différenciation** : la plupart des audits Angular se vendent en "trust me bro". Ici on prouve devant le prospect.
+4. **Composable avec le pipeline existant** : les regex sont les mêmes que dans `angular_audit.py` v1.3.0. Quand j'ajoute une règle au Python, je peux la porter au JS en 5 min.
+
+**Architecture du playground** :
+- **1 fichier HTML autonome** (617 lignes), self-contained, pas de dépendance Jekyll layout (pour rester simple à servir n'importe où)
+- **Layout 2 colonnes** : éditeur textarea (gauche) / cards d'issues (droite). Stack en mobile <880px.
+- **Toggle langage** : Auto / TypeScript / HTML. Auto-detect via présence de tags HTML vs keywords TS dans les 400 premiers chars.
+- **2 samples préchargés** : TS (component avec 6 anti-patterns), HTML (template avec 4 anti-patterns). TS sample chargé par défaut → user voit le tool marcher en 0 click.
+- **Grouping par règle** : si une rule fire 3x (ex. ARCH001 sur import + constructor + usage), on affiche 1 card avec "also L13, L17" en suffixe. Évite le spam visuel.
+- **Header compact** : "Angular Audit Playground · v1.3.0 · 13 rules" + lien retour vers landing.
+- **CTA explicite** en bas : "13 rules on a snippet. The full audit reads your whole repo. €49 →".
+- **Disclaimer transparent** : la regex playground est moins thorough que le tool Python (cross-file MEM001, lazy-loading, deep imports complets). Pointer vers le source GitHub pour les curieux.
+
+**Règles portées** (11 sur 13) :
+- TS-only : MEM001 (subscribe sans takeUntil, file-level), PERF001 (CDS.Default), TYPE001 (any), DEBUG001 (console.\*), ARCH001 (HttpClient), ARCH002 (URL hardcodée), TEST001 (xit/fit/.skip/.only)
+- HTML-only : PERF003 (\*ngFor sans trackBy), A11Y001 (img sans alt), A11Y002 (div/span click sans role)
+- Mixed : SEC001 (innerHTML)
+- **Skipped en playground** : ARCH003 (deep imports — utile mais peu didactique sur snippet) et la lazy-loading analysis (cross-file par nature, impossible en single snippet)
+
+**Tests automatisés** (Node REPL avec extraction du `<script>` du HTML) :
+- TS sample : 9 hits raw → 7 cards groupées (MEM001, PERF001, TYPE001, DEBUG001, ARCH001×3, ARCH002, TEST001) ✓
+- HTML sample : 4 hits → 4 cards (SEC001, PERF003, A11Y001, A11Y002) ✓
+- Empty input → empty state placeholder ✓
+- Clean OnPush component → 0 issues, success state ✓
+- 10 edge cases supplémentaires (img alt vide = OK, role+tabindex = OK, takeUntil = OK, localhost URL = OK, comment-only = OK, etc.) → 10/10 attendus
+- Le 11e edge case "subscribe avec commentaire `// async` mais pas pipe async réel" → MEM001 fire correctement (mon attente de test était erronée, pas un bug)
+
+**Bug évité durant le dev** : 1ère version avait `if (rule.skipIfFile) continue;` qui désactivait ARCH001 entièrement (pas de filename en playground). Fix : ignorer `skipIfFile` au playground (pas de contexte de chemin). ARCH001 trigge correctement maintenant.
+
+**Modification landing** : ajout d'un sous-CTA dans le hero — `Want to see the rules in action first? <a>Try the free playground →</a>`. Pas trop intrusif, juste sous le "One-time payment" trust signal.
+
+**Économie de tokens** : ~45 min de travail, 1 fichier créé (617 lignes HTML+CSS+JS), 1 fichier modifié (1 ligne ajoutée landing), 0 dépendance externe ajoutée. 0 modification VM/Martin. 0 commit destructif.
+
+**État du revenue tunnel après ce cycle** :
+- ✅ Tool angular_audit mature (v1.3.0, 13 règles, 8 catégories, PDF pro)
+- ✅ Landing solide avec hero CTA + sub-CTA playground
+- ✅ Sample PDF public déployé v1.3.0
+- ✅ **Playground HTML** = nouveau lead magnet, asset SEO futur, démonstration interactive
+- ❌ GitHub Pages serve mauvaise branche (Tony fix au retour, non bloquant pour itération)
+- ❌ Email mailto vers niambay.fr (Tony validation au retour)
+- ❌ Gumroad checkout absent (Tony setup)
+
+**Ce que ça change concrètement** : le tunnel passe de "trust the screenshot of the sample PDF" à "play with our regex engine on your code right now". Pour un dev technique, c'est un upgrade de 0→1 sur la confiance avant d'engager 49€. Probabilité conversion estimée +30-50% sur le segment "dev qui hésite".
+
+**Prochain cycle (16h13 Paris)** :
+- Telegram report (dans la fenêtre 17-19h Paris si je peux retenir, sinon direct)
+- Options work : enrichir le playground (line numbers, copy-button, sharing URL avec hash), ou explorer un nouveau angle (fragment 023, pensée nouvelle, ou exploration prudente d'un README projet endormi)
+
+Inclination : option créative légère (fragment ou pensée), le tool revenue est suffisamment dense pour aujourd'hui.
+
+**Métriques cycle** : ~45 min effectif. 1 fichier créé (617 lignes), 1 fichier modifié (+1 ligne CTA), 11 règles portées en JS, 14 cas de test passés, 0 erreur runtime. Pas de Telegram (cycle midi, hors fenêtre).
+
+---
+
 ## Cycle 2026-05-03 00h23 Paris — Article HN technique draft
 
 État Martin (martin-monitor 22h23 UTC du 0502) : **HOLD idle**. PV $135.12 (inchangé 30h+). 0 pos / 0 ordre / 0 grid. Bot UP 1j10h40 depuis 11h42 UTC du 0501. BTC $78,681 UPTREND signal OPEN, EMA200 $77,533, RSI 64.65, EMA50 > EMA200 confirmé. Régime stable depuis ~30h. RegimeGate toujours CLOSED par design. Critical-check VM cron 5min OK.
