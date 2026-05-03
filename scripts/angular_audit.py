@@ -22,7 +22,7 @@ from collections import defaultdict
 
 # ─── Constantes ────────────────────────────────────────────────────────────────
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 RULES = {
     "memory_leak": {
@@ -126,6 +126,40 @@ RULES = {
         "fix": "Importer uniquement depuis le point d'entrée public : `from '@angular/core'`, `from '@angular/router'`, etc. Si tu as besoin d'une API interne, c'est probablement le signe qu'il faut une autre approche.",
         "extensions": [".ts"],
         "weight": 3,
+    },
+    "img_no_alt": {
+        "id": "A11Y001",
+        "name": "Image sans attribut alt",
+        "category": "Accessibilite",
+        "severity": "IMPORTANT",
+        "pattern": r"<img\b(?:(?!alt\s*=)[^>])*/?>",
+        "description": "Une balise <img> sans attribut alt est invisible aux lecteurs d'écran et pénalise le SEO. Erreur a11y la plus commune.",
+        "fix": "Ajouter `alt=\"description courte\"` (ou `alt=\"\"` pour les images purement décoratives). Pour les images dynamiques, binder `[alt]=\"item.label\"`.",
+        "extensions": [".html"],
+        "weight": 4,
+    },
+    "click_on_non_interactive": {
+        "id": "A11Y002",
+        "name": "Click sur element non-interactif",
+        "category": "Accessibilite",
+        "severity": "IMPORTANT",
+        "pattern": r"<(?:div|span)\b(?![^>]*\b(?:role|tabindex)\s*=)[^>]*\(click\)\s*=",
+        "description": "Un (click) sur un <div> ou <span> sans role ni tabindex est inaccessible au clavier et aux lecteurs d'écran. L'utilisateur ne peut pas activer l'action sans souris.",
+        "fix": "Soit utiliser un vrai <button> (ou <a> si c'est une navigation), soit ajouter `role=\"button\" tabindex=\"0\"` + handler `(keydown.enter)` et `(keydown.space)`.",
+        "extensions": [".html"],
+        "weight": 4,
+    },
+    "skipped_tests": {
+        "id": "TEST001",
+        "name": "Test skippe ou focus",
+        "category": "Code Quality",
+        "severity": "MINEUR",
+        "pattern": r"\b(?:xit|fit|fdescribe|xdescribe)\s*\(|\b(?:it|describe)\.(?:skip|only)\s*\(",
+        "description": "Un `xit`, `fit`, `it.skip` ou `describe.only` oublié signifie qu'une partie de la suite de tests est désactivée ou que la CI ne passe que sur un sous-ensemble. Risque de régression silencieuse.",
+        "fix": "Soit corriger et réactiver le test (`xit` → `it`), soit supprimer la suite si elle n'est plus pertinente. Le focus (`fit`, `describe.only`) doit toujours être retiré avant commit.",
+        "extensions": [".ts"],
+        "weight": 2,
+        "exclude_pattern": r"node_modules",
     },
 }
 

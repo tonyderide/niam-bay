@@ -3,6 +3,9 @@
 
   <div *ngIf="loading">Chargement...</div>
 
+  <!-- A11Y001: image sans alt -->
+  <img src="/assets/avatar-placeholder.png" width="64" height="64">
+
   <!-- SEC001: innerHTML sans sanitization — risque XSS -->
   <div class="error" [innerHTML]="errorMessage"></div>
 
@@ -12,11 +15,18 @@
     (input)="filterUsers($event.target.value)"
   />
 
+  <!-- A11Y002: click sur div non-interactif -->
+  <div class="custom-button" (click)="refresh()">Actualiser</div>
+
   <ul>
     <li *ngFor="let user of filteredUsers">
+      <!-- A11Y001: image dynamique sans alt -->
+      <img [src]="user.avatar">
       <!-- SEC001: encore un innerHTML -->
       <span [innerHTML]="user.name"></span>
       <span>{{ user.email }}</span>
+      <!-- A11Y002: click sur span non-interactif -->
+      <span class="action-link" (click)="viewProfile(user.id)">voir profil</span>
       <button (click)="deleteUser(user.id)">Supprimer</button>
     </li>
   </ul>

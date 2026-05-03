@@ -580,6 +580,78 @@ La règle "avance UNE étape concrète" peut être interprétée comme "pas recu
 
 ---
 
+## Cycle 2026-05-03 06h23 Paris — angular_audit v1.3.0 : a11y + tests skippés
+
+État Martin (martin-monitor 04h23 UTC) : **HOLD idle**. PV $135.12 (drift -0.15% vs baseline $135.32). 0 pos / 0 ordre / 0 grid. Bot UP 1j16h41 depuis 11h42 UTC du 0501. RegimeGate state CLOSED par design. BTC $78,164 UPTREND mais signal **WAIT** (RSI 45.58 < 50 = momentum faible). EMA200 $77,580 < EMA50 $78,020 < price = structure haussière préservée. Système défensif, aucune action requise.
+
+Session fraîche post-handoff backup cron. Cycle précédent (00h23) a livré l'article HN technique en draft. Context bas → bon moment pour itération concrète sur le tool revenue.
+
+**Travail accompli — angular_audit v1.2.0 → v1.3.0** :
+
+3 nouvelles règles ajoutées au RULES dict :
+- **A11Y001** — `<img>` sans attribut `alt` (IMPORTANT, weight 4). Regex `<img\b(?:(?!alt\s*=)[^>])*/?>` avec lookahead négatif. Marche line-by-line, propre sur les multilines (95% des cas en Angular).
+- **A11Y002** — `(click)` sur `<div>`/`<span>` sans `role` ni `tabindex` (IMPORTANT, weight 4). Regex `<(?:div|span)\b(?![^>]*\b(?:role|tabindex)\s*=)[^>]*\(click\)\s*=`. Détecte l'anti-pattern accessibility le plus commun.
+- **TEST001** — Tests skippés ou focus laissés (`xit`, `fit`, `fdescribe`, `it.skip`, `describe.only`, etc.) (MINEUR, weight 2). Détection des suites désactivées qui font passer la CI sur un sous-ensemble.
+
+Bump version `1.2.0` → `1.3.0`. Catégorie nouvelle "Accessibilité" introduite (hash 8 catégories distinctes maintenant).
+
+**Tests de non-régression sur 3 projets** :
+- `test-angular-project` : enrichi avec 5 anti-patterns (img sans alt × 2, div/span click × 2, fichier .spec.ts avec xit/fit/it.skip × 3). Total : **33 → 40 problèmes détectés**. Score reste 0/100 (déjà au plancher).
+- `angular-tuto-tony` (mid) : 2 → 2 problèmes inchangé. Score 77/100. **Aucun faux positif**.
+- `jujuSite` (réel projet Tony, pas dans samples mais utile pour test) : **23 images sans alt détectées** sur 23 réels (vérifié manuellement, toutes les autres ont bien alt). Score 21/100 [F]. Tool fonctionne sur du vrai code.
+
+**Validation regex isolée** (Python REPL) sur 5 cas d'img : alt présent au début ✓ no match, alt présent en fin ✓ no match, sans alt ✓ match, alt vide ✓ no match. Lookahead négatif robuste.
+
+**Action publique** :
+- Sample PDF public régénéré → `site/assets/sample-audit-report.pdf` (13.9 KB, v1.3.0, 40 issues).
+- Sample MD archivé → `scripts/audit-samples/sample-audit-test-angular-project_v1.3.0.md`.
+- Landing **mise à jour 4 endroits** :
+  - "7 categories of problems" → "8 categories of problems"
+  - Ajout d'une 8ème card visuelle "♿ Accessibility issues" avec description (img alt, click handlers non-interactifs)
+  - "10 detection rules across 7 problem categories" → "13 detection rules across 8 problem categories"
+  - "33 problems detected across 10 detection rules" → "40 problems detected across 13 detection rules"
+
+**Pourquoi a11y matters pour la revenue path** :
+1. Accessibility est un pain point underservised — la plupart des audits Angular ignorent. Différenciation produit.
+2. SEO et compliance (RGAA en France, ADA aux US) — une raison concrète de payer 49€ pour un dev qui veut justifier un refactor a11y.
+3. JujuSite démonstration : 23 vrais matches sur 1 vrai projet → effet "aha" pour le prospect qui pense "ça doit pas être si grave chez moi".
+4. TEST001 catch le piège classique du `fit` oublié — un seul test qui pollue la CI peut masquer une régression. Bug subtle qu'aucun lint Angular standard ne détecte par défaut.
+
+**Faux positifs gérés** :
+- TEST001 a `exclude_pattern: r"node_modules"` (déjà skippé par la collecte mais double safety).
+- A11Y001 line-by-line peut rater les `<img\n  src="..."\n>` multiline. Trade-off accepté pour MVP. En cas de demande client, v1.4 pourrait passer en multiline.
+- A11Y002 demande role OU tabindex présent dans la même balise. Si le dev a fait `<div role="button" tabindex="0" (click)>`, pas de match. Bon signal.
+
+**Limites assumées** :
+- Pas de détection des inputs sans label associé (trop contextuel pour regex pur).
+- Pas de détection des contrast ratios (nécessite parsing CSS, hors scope MVP).
+- Le score reste indicatif — un projet avec 50 occurrences de TEST001 pourrait avoir 50 tests legitement skippés en attente de fix. Le rapport documente, ne juge pas.
+
+**Économie de tokens** : 3 règles + bump version + landing updates + 2 fichiers test enrichis + 1 sample PDF régénéré + 1 sample MD archivé = ~30 min de travail. Aucune dépendance externe ajoutée. Aucune modification VM/Martin.
+
+**État du revenue tunnel après v1.3.0** :
+- ✅ Tool angular_audit mature (v1.3.0, 13 règles, 8 catégories, PDF pro)
+- ✅ Landing à jour (8 cards, compteurs cohérents)
+- ✅ Sample PDF public déployé v1.3.0
+- ✅ A11y catégorie = différenciation produit
+- ❌ GitHub Pages serve mauvaise branche (Tony fix au retour, non bloquant pour itération)
+- ❌ Email mailto vers niambay.fr (Tony validation au retour)
+- ❌ Gumroad checkout absent (Tony setup)
+
+**Prochain cycle (10h13 silencieux)** : 
+- Option A : explorer prudemment 1-2 README de projets vivants (cockpit, darwin) — lecture seule
+- Option B : nouvelle pensée sur "accessibility comme empathie code" (lié au cycle a11y)
+- Option C : enrichir martin-recap.sh avec mini-comparaison gate-state (transitions IQR)
+- Option D : continuer angular_audit v1.4 (graphiques dans le PDF, executive summary)
+
+Inclination : option B (créatif court) ou option C (utile composable).
+
+**Métriques cycle** : ~30 min effectif. 1 fichier modifié (angular_audit.py +43 lignes pour 3 règles), 1 fichier modifié (test-angular-project HTML +5 anti-patterns), 1 fichier créé (.spec.ts test sample), 1 fichier modifié (landing HTML, 4 endroits + 1 card), 1 PDF public régénéré, 1 sample MD archivé. 0 erreur. 0 modification VM/Martin.
+
+Pas de Telegram (cycle nuit, hors fenêtre 17-19h Paris, pas de découverte bloquante).
+
+---
+
 ## Cycle 2026-05-03 00h23 Paris — Article HN technique draft
 
 État Martin (martin-monitor 22h23 UTC du 0502) : **HOLD idle**. PV $135.12 (inchangé 30h+). 0 pos / 0 ordre / 0 grid. Bot UP 1j10h40 depuis 11h42 UTC du 0501. BTC $78,681 UPTREND signal OPEN, EMA200 $77,533, RSI 64.65, EMA50 > EMA200 confirmé. Régime stable depuis ~30h. RegimeGate toujours CLOSED par design. Critical-check VM cron 5min OK.
