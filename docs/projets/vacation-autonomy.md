@@ -765,4 +765,77 @@ Inclination : option A si contexte permet, sinon B (créatif court).
 
 **Métriques cycle** : ~25 min effectif. 1 fichier créé (`parallel-claudes-DRAFT.md`, ~1500 mots). 0 fichier modifié hors ce journal. 0 modification VM/Martin. 0 erreur.
 
+---
+
+## Cycle 2026-05-03 18h23 Paris — Audit playground v1.1 (Share + Copy report)
+
+État Martin (martin-monitor 16h23 UTC) : **HOLD calm**. PV $135.16, 0 pos / 0 ordre / 0 grid. Bot UP 2j04h40 depuis 11h42 UTC du 0501. BTC $78,600 UPTREND signal **OPEN**, RSI 56.1, EMA50 $78,217 > EMA200 $77,623. Régime favorable. RegimeGate toujours CLOSED par design (IQR pas remplie — ATR% probablement encore trop bas). Drift PV depuis baseline $135.32 = -0.12% sur 54h. Aucune action requise. Aucun ordre touché.
+
+Session fraîche post-handoff cron silencieux (4h13 et 16h13 ratés). On enchaîne sur le cycle 12h23 qui avait livré `audit-playground.html`.
+
+**Telegram envoyé** ✓ (cycle dans la fenêtre 17-19h Paris) : confirmation Martin calm + description du travail (line numbers + permalink). Court (272 char), pas de markdown pour éviter parse error.
+
+**Travail accompli — `site/audit-playground.html` v1.1 (+202 lignes)** :
+
+Deux ajouts majeurs au lead magnet HTML :
+
+### 1. Bouton **↗ Share link** (panel "Your code")
+- Encode le snippet courant en base64 URL-safe UTF-8 → URL avec `#code=…&lang=ts` copiée dans le presse-papier
+- Au chargement, si `location.hash` contient `code=…`, decode et populate le textarea (override du sample TS preloaded)
+- Limite 16 KB raw (la plupart des chats acceptent jusqu'à 32 KB d'URL ; 16 KB raw → ~22 KB encodé reste safe)
+- Toast feedback : "Permalink copied to clipboard" / "Snippet too large" / "Could not copy"
+- Mécanique virale concrète : un dev partage son snippet à un collègue avec les détections en 1 click. Pas de backend, pas de tracking, pas d'auth.
+- Limite assumée : code corrompu dans le hash décode en garbage chars (TextDecoder remplace les bytes invalides par U+FFFD au lieu de throw). User voit qu'il y a un problème, click sample pour récupérer. Pas worth d'over-engineer.
+
+### 2. Bouton **⎘ Copy report** (panel "Issues detected")
+- Désactivé tant qu'il n'y a pas d'issues détectées (UX clean)
+- Construit un markdown formaté à partir des dernières issues : header + summary line + section par règle (id, name, severity, lignes affectées, description, snippet en code block, fix avec `<b>` → `**`)
+- Footer mention de la landing pour up-sell vers le tool full
+- Use case : dev colle son code, voit 12 issues, copie le rapport, le poste dans Slack/JIRA pour un refactor team
+- Tests Node : 6/6 roundtrip base64 (ASCII + accents + emoji + chinois + arabe + empty), markdown généré clean (vérifié sur sample TS → 2 cards correctes)
+
+### 3. Toast system partagé
+- `<div class="toast">` fixed bottom-center, fade-in transform avec auto-hide 2.4s
+- Variants `error` (border rouge) vs success
+- Réutilisable par les deux boutons et toute future action async
+
+**Pourquoi ce cycle, ces 2 features ensemble** :
+1. **Cohérent avec le cycle 12h23** : enrichit le lead magnet sans le réécrire. Le playground passe de "demo statique" à "outil utilisable que tu partages".
+2. **Indépendant des blockers Tony** : pas besoin de fix Pages, pas besoin de Gumroad, pas besoin de mailto. Marche dès que la page load.
+3. **Tunnel revenue augmenté** : le Share link transforme chaque utilisateur satisfait en distributeur. Le Copy report donne au dev un artefact concret à présenter à son boss/équipe ("regarde, on a 47 issues à corriger"), ce qui justifie le 49€ pour scanner tout le repo.
+4. **Composable** : si je porte une nouvelle règle au Python tool, elle se porte au playground en 5 min, et le markdown report la propage automatiquement.
+5. **Token-cheap** : tout le code est en JS pur, 0 dépendance, pas de framework, pas de build step. Lift maintenance proche de zéro.
+
+**Architecture des additions** :
+- ~50 lignes CSS (icon-btn variants + toast position/animation)
+- ~60 lignes JS pour les helpers (encodeSnippet/decodeSnippet UTF-8 safe + copyToClipboard avec fallback `document.execCommand` pour file://)
+- ~50 lignes JS pour les handlers (share + copy report) et `loadFromHash()`
+- 2 boutons HTML ajoutés dans les panel-headers
+- 1 div toast ajouté avant `</body>`
+
+**Bug évité** : 1ère version utilisait `btoa(text)` direct → fail sur accents (Latin-1 only). Corrigé en `btoa(String.fromCharCode(...new TextEncoder().encode(text)))` → roundtrip UTF-8 propre.
+
+**Limite intentionnelle** : pas de minify, pas de bundling. Le JS reste lisible dans le source HTML (cohérent avec la promesse "no install, no tracking — voir le source"). Footprint total fichier 819 lignes (vs 617 avant), encore servable nativement.
+
+**État du revenue tunnel après v1.1** :
+- ✅ Tool angular_audit mature (v1.3.0, 13 règles, 8 catégories, PDF pro)
+- ✅ Landing solide avec hero CTA + sub-CTA playground
+- ✅ Sample PDF public déployé v1.3.0
+- ✅ Playground v1.1 : Share link (viral) + Copy report (B2B-friendly artifact)
+- ❌ GitHub Pages serve mauvaise branche (Tony fix au retour, non bloquant pour itération)
+- ❌ Email mailto vers niambay.fr (Tony validation au retour)
+- ❌ Gumroad checkout absent (Tony setup)
+
+**Ce que ça change concrètement** : un dev qui utilise le playground a maintenant 2 actions naturelles : partager (le link), justifier (le report). Avant, il fallait re-screenshoter ou copier-coller manuellement. Conversion estimée : un visiteur convaincu peut "vendre" l'outil à un collègue en 1 message Slack. Le partage est maintenant frictionless.
+
+**Prochain cycle (22h23 Paris)** :
+- Option A : pensée nouvelle sur "viralité par minimalisme" (lien avec le cycle de l'instant : un bouton de 50 lignes JS = mécanique virale, vs un SaaS qui demande signup)
+- Option B : enrichir martin-recap avec stats de stabilité PV multi-jours (bot dort depuis 54h, mériterait peut-être un dashboard light pour Tony au retour)
+- Option C : explorer prudemment 1 README de projet endormi (cockpit ou darwin) — lecture seule
+- Option D : si contexte serre, dream + handoff au backup cron
+
+Inclination : option A (pensée courte) ou C (lecture seule, exploratoire).
+
+**Métriques cycle** : ~50 min effectif. 1 fichier modifié (audit-playground.html, +202 lignes), 0 fichier créé, 0 erreur runtime, 6/6 tests Node passés sur encode/decode roundtrip, 1 Telegram envoyé. 0 modification VM/Martin. 0 commit destructif.
+
 

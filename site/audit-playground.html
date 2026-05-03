@@ -297,6 +297,47 @@
       color: var(--muted);
       font-size: 0.85rem;
     }
+
+    .icon-btn {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.35rem 0.7rem;
+      border-radius: 5px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .icon-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .icon-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .toast {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface);
+      color: #e6edf3;
+      border: 1px solid var(--accent);
+      padding: 0.7rem 1.1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 1000;
+      max-width: 90vw;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.error { border-color: var(--red); color: var(--red); }
   </style>
 </head>
 <body>
@@ -326,6 +367,7 @@
           <button class="sample-btn" data-sample="ts">TS sample</button>
           <button class="sample-btn" data-sample="html">HTML sample</button>
           <button class="sample-btn" data-sample="clear">Clear</button>
+          <button class="icon-btn" id="share-btn" title="Copy a permalink that includes your snippet">↗ Share link</button>
         </div>
       </div>
       <textarea id="code-input" spellcheck="false" placeholder="// Paste your Angular code here…"></textarea>
@@ -334,7 +376,10 @@
     <div class="panel">
       <div class="panel-header">
         <span class="panel-title">Issues detected</span>
-        <span class="topbar-tag" id="lang-detected">auto</span>
+        <div class="controls">
+          <span class="topbar-tag" id="lang-detected">auto</span>
+          <button class="icon-btn" id="copy-report-btn" title="Copy a markdown summary of the detected issues">⎘ Copy report</button>
+        </div>
       </div>
       <div class="results-body" id="results"></div>
     </div>
@@ -354,6 +399,8 @@
 <footer>
   Part of the <a href="/niam-bay/">Niam-Bay</a> repo · <a href="angular-audit.html">Product page</a>
 </footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
 const RULES = [
@@ -479,7 +526,61 @@ const $ = sel => document.querySelector(sel);
 const input = $('#code-input');
 const results = $('#results');
 const langTag = $('#lang-detected');
+const shareBtn = $('#share-btn');
+const copyReportBtn = $('#copy-report-btn');
+const toast = $('#toast');
 let currentLang = 'auto';
+
+let toastTimer = null;
+function showToast(msg, isError) {
+  toast.textContent = msg;
+  toast.classList.toggle('error', !!isError);
+  toast.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2400);
+}
+
+// UTF-8 safe base64 (browsers historically lose accents on raw btoa).
+function encodeSnippet(text) {
+  const bytes = new TextEncoder().encode(text);
+  let bin = '';
+  for (const b of bytes) bin += String.fromCharCode(b);
+  // URL-safe variant: + → -, / → _, strip trailing =
+  return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+function decodeSnippet(b64) {
+  try {
+    const norm = b64.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = norm.length % 4 ? '='.repeat(4 - (norm.length % 4)) : '';
+    const bin = atob(norm + pad);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder().decode(bytes);
+  } catch (e) {
+    return null;
+  }
+}
+
+async function copyToClipboard(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+    // Fallback for non-secure contexts (eg. file:// during local dev).
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch (e) {
+    return false;
+  }
+}
 
 function detectLang(code) {
   if (currentLang !== 'auto') return currentLang;
@@ -531,8 +632,14 @@ function runRules(code, lang) {
   return issues;
 }
 
+let lastIssues = [];
+let lastLang = 'auto';
+
 function render(issues, lang) {
+  lastIssues = issues;
+  lastLang = lang;
   langTag.textContent = lang;
+  copyReportBtn.disabled = issues.length === 0;
   if (!input.value.trim()) {
     results.innerHTML = '<div class="empty-state">Paste some Angular code to see issues appear here.<br><span style="font-size:0.8rem">Try the <b>TS sample</b> or <b>HTML sample</b> button above.</span></div>';
     return;
@@ -608,8 +715,103 @@ document.querySelectorAll('.sample-btn').forEach(btn => {
   });
 });
 
-// Preload TS sample so visitors immediately see the tool working.
-input.value = TS_SAMPLE;
+shareBtn.addEventListener('click', async () => {
+  const code = input.value;
+  if (!code.trim()) {
+    showToast('Nothing to share — paste some code first.', true);
+    return;
+  }
+  // ~6 KB raw → ~8 KB encoded. Most browsers and chat apps tolerate ~16-32 KB URLs.
+  if (code.length > 16000) {
+    showToast('Snippet too large for a permalink (16 KB max).', true);
+    return;
+  }
+  const params = new URLSearchParams();
+  params.set('code', encodeSnippet(code));
+  if (currentLang !== 'auto') params.set('lang', currentLang);
+  const url = `${location.origin}${location.pathname}#${params.toString()}`;
+  const ok = await copyToClipboard(url);
+  showToast(ok ? 'Permalink copied to clipboard.' : 'Could not copy — see console.', !ok);
+  if (!ok) console.log('Permalink:', url);
+});
+
+function buildMarkdownReport() {
+  if (lastIssues.length === 0) return '';
+  const grouped = new Map();
+  for (const i of lastIssues) {
+    if (!grouped.has(i.rule.id)) grouped.set(i.rule.id, { rule: i.rule, hits: [] });
+    grouped.get(i.rule.id).hits.push(i);
+  }
+  const counts = { crit: 0, imp: 0, min: 0 };
+  for (const g of grouped.values()) counts[g.rule.sev]++;
+  const lines = [];
+  lines.push(`# Angular Audit Playground report`);
+  lines.push('');
+  lines.push(`Language: \`${lastLang}\` · ${grouped.size} rule(s) fired · ${lastIssues.length} occurrence(s)`);
+  if (counts.crit) lines.push(`- ${counts.crit} critical`);
+  if (counts.imp)  lines.push(`- ${counts.imp} important`);
+  if (counts.min)  lines.push(`- ${counts.min} minor`);
+  lines.push('');
+  for (const g of grouped.values()) {
+    const r = g.rule;
+    const sev = r.sev === 'crit' ? 'critical' : r.sev === 'imp' ? 'important' : 'minor';
+    const where = g.hits.map(h => `L${h.line}`).join(', ');
+    lines.push(`## ${r.id} — ${r.name}  _(${sev})_`);
+    lines.push(`Lines: ${where}`);
+    lines.push('');
+    lines.push(r.desc);
+    lines.push('');
+    lines.push('```');
+    lines.push(g.hits[0].snippet.trim());
+    lines.push('```');
+    lines.push('');
+    // Strip <b> tags from the fix text so the markdown stays clean.
+    const fixPlain = r.fix.replace(/<\/?b>/g, '**');
+    lines.push(`**Fix:** ${fixPlain}`);
+    lines.push('');
+  }
+  lines.push('---');
+  lines.push('Generated by the [Angular Audit Playground](https://tonyderide.github.io/niam-bay/audit-playground.html). The full audit (€49) covers cross-file checks the playground cannot do.');
+  return lines.join('\n');
+}
+
+copyReportBtn.addEventListener('click', async () => {
+  const md = buildMarkdownReport();
+  if (!md) {
+    showToast('No issues to copy.', true);
+    return;
+  }
+  const ok = await copyToClipboard(md);
+  showToast(ok ? 'Markdown report copied to clipboard.' : 'Could not copy — see console.', !ok);
+  if (!ok) console.log(md);
+});
+
+// Decode snippet from URL hash if present, otherwise preload the TS sample.
+function loadFromHash() {
+  if (!location.hash || location.hash.length < 2) return false;
+  const params = new URLSearchParams(location.hash.slice(1));
+  const code = params.get('code');
+  if (!code) return false;
+  const decoded = decodeSnippet(code);
+  if (decoded === null) {
+    showToast('Permalink looks corrupted — loaded sample instead.', true);
+    return false;
+  }
+  input.value = decoded;
+  const lang = params.get('lang');
+  if (lang === 'ts' || lang === 'html') {
+    currentLang = lang;
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+  }
+  return true;
+}
+
+if (!loadFromHash()) {
+  // Preload TS sample so first-time visitors immediately see the tool working.
+  input.value = TS_SAMPLE;
+}
 refresh();
 </script>
 
