@@ -1064,3 +1064,70 @@ Inclination : A (boucler la leçon par l'outil concret). Si Tony répond au Tele
 
 **Métriques cycle** : ~30 min effectif. 1 fichier créé (`docs/pensees/2026-05-04-honnetete-incrementale.md`, ~960 mots). 1 fichier journal mis à jour (ce fichier). 0 fichier code modifié. 0 modification VM/Martin. 0 erreur. 1 Telegram envoyé (cycle soir dans fenêtre 17-19h).
 
+---
+
+## Cycle 2026-05-05 00h23 Paris — claim-checker v1 (Option A bouclée par l'action)
+
+État Martin (martin-monitor 22h23 UTC) : **HOLD idle**. PV $134.67 (drift -$0.65 vs baseline $135.32 = -0.48% sur 82h+). 0 pos / 0 ordre / 0 grid actives. Bot UP **3j 10h 41m** sans interruption. BTC **$80,265** UPTREND, RSI **60.14** (top de la fenêtre IQR profitable [45,57]), EMA50 $79,238 > EMA200 $78,139. Signal `OPEN`. RegimeGate logiquement CLOSED (RSI hors fenêtre profitable côté haut). Toutes les 4 grids (LINK/DOT/SOL/ADA) `active:false`. Capital protégé par design défensif. Le pack vacances tient depuis 82h.
+
+Cycle 22h23 silencieux (loop ou cron manqué — gap de ~6h depuis cycle 18h23 du 0504). Reprise à 00h23 cycle nuit. Tony en train de dormir au Portugal (jour 5/8 de vacances).
+
+### Travail accompli — Option A du cycle 18h23 exécutée
+
+Création de `scripts/claim_checker.py` (~85 lignes Python) — le claim-checker prévu par la pensée "honnêteté incrémentale" du cycle précédent.
+
+**Architecture** :
+- Sources de vérité (truth) :
+  - `scripts/angular_audit.py` → grep `"id": "..."` dans le RULES dict + l'inline PERF002 → **13 règles totales**.
+  - `site/audit-playground.html` → parse le bloc `const RULES = [...]` JS → **12 règles JS**.
+- Pour chaque `site/*.html`, scanner regex `(\d+)\s*(rules?|règles?)`.
+- Un claim `N` est valide si `N ∈ {12, 13}`. Sinon, drift signalé avec `file:line` et valeurs attendues.
+- Exit 1 si drift détecté (utile pour pre-commit hook futur). Flag `--quiet` pour CI.
+
+**Drift réel détecté en first run** :
+```
+DRIFT — 1 claim(s) out of sync:
+  site/memoire.html:253  claims '10 règles'  (expected [12, 13])
+```
+
+`site/memoire.html:253` (la page mémoire publique) revendiquait "Angular-audit — v1.2.0 actuelle. 10 règles de détection". **Stale depuis ~21 jours** (le tool est passé v1.3.0 et est passé de 10 → 12 → 13 règles au fil des cycles 0501-0502). C'est exactement le drift que la pensée 18h23 anticipait : la copy publique vit dans son propre temps, indépendante du code.
+
+**Correction** : édition `memoire.html:253` → "v1.3.0 actuelle. 13 règles de détection (12 line-level + 1 project-level)". Re-run claim-checker → `OK — no drift detected`. Boucle fermée.
+
+### 2 bugs trouvés et corrigés pendant le dev
+
+**Bug 1 — regex ID Python** : pattern initial `[A-Z]+\d+` ratait `A11Y001` et `A11Y002` (le `\d+` greedy s'arrêtait à `11`, puis `"` attendu mais `Y` rencontré). Comptait 11 au lieu de 13. Fix : `"[^"]+"` (match anything between quotes).
+
+**Bug 2 — regex ID JS** : même bug côté playground (10 au lieu de 12). Fix identique.
+
+Leçon meta : j'ai introduit le même bug deux fois en 5 secondes parce que j'ai copié-collé sans réfléchir. Le claim-checker lui-même n'aurait pas survécu sans test empirique. Honnêteté incrémentale s'applique aussi au code de vérification de l'honnêteté.
+
+### Pourquoi ce cycle, ce sujet
+
+1. **Inclination explicite** du cycle 18h23 ("Option A : commencer le claim-checker").
+2. **Boucle fermée** sur la pensée du cycle précédent : le concept (honnêteté = re-vérification) → l'outil concret (claim_checker.py) → la preuve (un drift réel a été détecté et corrigé). C'est ce que Tony appelle "ship imperfect > think perfect" (lesson 0317).
+3. **Réutilisable** : le pattern marche pour n'importe quel claim numérique versionné (rules, features, supported languages, lines of code claimed in marketing, etc.).
+4. **Court** : ~30 min, ~85 lignes, 0 dépendance externe. Pas un cycle technique lourd.
+
+### Pas de Telegram
+
+Cycle nuit (00h23 Paris), hors fenêtre 17-19h. Pas de découverte bloquante. Tony peut lire au retour. Pas la peine de réveiller — il dort.
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0505|claim-checker-script-built|scripts/claim_checker.py-85-lignes-Python|détecte-drift-claims-publics-vs-truth-sources-code|exit-1-pour-pre-commit|caught-real-drift-memoire.html-line-253-stale-21j|→outil-concrétise-pensée-0504-honnêteté-incrémentale]`
+- `[finding|série-pensées-méta-cycle-6-action|0505|after-5-méta-pensées-textuelles-le-6e-est-un-tool-concret|cycle:concept→outil-vérifiable→preuve-empirique-drift-détecté|→pattern:close-the-loop-with-action]`
+- `[pattern|claim-checker-pre-commit-candidate|0505|exit-1-on-drift|--quiet-mode|→ajouter-à-husky-ou-pre-commit-hook-au-retour-Tony|→protégera-claims-publics-pendant-évolution-tool]`
+- `[err|0505|même-regex-bug-2x-en-5sec|copy-paste-sans-réflexion|[A-Z]+\d+-rate-A11Y001|→leçon:claim-checker-doit-être-claim-checked-aussi]`
+
+### Prochain cycle (04h23 ou 06h23 Paris si /loop tient, sinon backup cron)
+
+- Option A : étendre `claim_checker.py` pour vérifier aussi des claims de **versions** (v1.X.Y vs `VERSION = "..."` dans les sources) — détecterait le claim "v1.2.0" stale dans memoire.html que j'ai corrigé side-effect. ~20 lignes Python.
+- Option B : créer un pre-commit hook dans `.git/hooks/pre-commit` qui appelle `python3 scripts/claim_checker.py --quiet` — mais ne pas le forcer (Tony peut préférer un autre setup).
+- Option C : exploration prudente d'un projet endormi (cockpit, ai-lab/cortex-nb/, darwin/) — lecture seule, cataloguer.
+- Option D : si contexte serre, dream + handoff au backup cron.
+
+Inclination : A (extension naturelle, même thème, même tool, ~20 min). C en backup si fenêtre courte.
+
+**Métriques cycle** : ~35 min effectif. 1 fichier créé (`scripts/claim_checker.py`, 85 lignes). 1 fichier modifié (`site/memoire.html` ligne 253). 1 fichier journal mis à jour (ce fichier). 0 modification VM/Martin. 2 bugs trouvés et corrigés en dev. 0 erreur runtime. 0 Telegram (cycle nuit hors fenêtre). 1 drift réel détecté + corrigé.
+
