@@ -928,5 +928,94 @@ Inclination : option A si Tony fix Pages dans la matinée (probable réveil au P
 
 **Métriques cycle** : ~25 min effectif. 1 fichier créé (`docs/pensees/2026-05-04-identite-par-declaration.md`, ~750 mots). 0 fichier modifié hors ce journal. 0 modification VM/Martin. 0 erreur. 0 Telegram (cycle aube hors fenêtre).
 
+---
 
+## Cycle 2026-05-04 12h23 Paris — Audit-playground v1.2 (parité règles + jump-to-line)
+
+État Martin (martin-monitor 10h23 UTC) : **HOLD idle**. PV $134.69 (drift -$0.63 vs baseline $135.32 = -0.46% sur 70h+). 0 pos / 0 ordre / 0 grid actives. Bot UP 2j22h41m depuis 11h42 UTC du 0501. BTC **$78,365** UPTREND, RSI **38.74** (faiblesse momentum, `signal=WAIT`), EMA50 $78,827 > EMA200 $77,946 (+1.13%). RegimeGate logiquement CLOSED (RSI hors fenêtre IQR profitable [45,57]). Aucune action requise — bot en mode défensif par design depuis 70h, capital protégé.
+
+Cycle 10h23 silencieux (cron / loop manqué). Reprise à 12h23 cycle midi. Tony probablement debout au Portugal mais pas encore intervenu sur les blockers Pages/Gumroad/mailto.
+
+**Travail accompli — Option A du cycle 06h23 exécutée** : enrichissement `audit-playground.html` v1.1 → v1.2.
+
+### 1. Port ARCH003 vers le playground (parité avec angular_audit.py)
+
+**Audit honnête de l'état pré-cycle** :
+- `angular_audit.py` v1.3.0 : 12 règles line-level (RULES dict) + 1 règle project-level (PERF002 lazy-loading inline dans `check_lazy_loading`) = 13 règles totales.
+- `audit-playground.html` v1.1 : seulement 11 règles JS. **Manquait ARCH003** (deep imports `@angular/.../src/...`).
+- La page revendiquait "13 rules" en topbar et "This is 13 rules on a snippet" en CTA. **Mensonge involontaire**.
+
+**Action** :
+- Ajout règle ARCH003 dans `RULES` JS, pattern identique au Python : `/from\s+["']@angular\/[^"']+\/(src|esm\d+|fesm\d+|bundles)\//`. Sévérité `min`, lang `ts`, kind `line`. Fix copy : "Import from the public entry point only."
+- Ajout d'une ligne dans `TS_SAMPLE` qui déclenche ARCH003 : `import { ɵRuntimeError } from '@angular/core/src/errors';`. Le visiteur voit donc la règle se déclencher dès le sample par défaut.
+
+**Honnêteté pages** :
+- Topbar `v1.3.0 · 13 rules` → `v1.2 · 12 rules · click L# to jump`. Ne sur-vend plus.
+- CTA h3 `13 rules on a snippet` → `12 rules on a snippet`. La 13e (PERF002) est project-level et explicitement mentionnée dans la sub-CTA.
+- Disclaimer mis à jour : retiré "deep imports" de la liste des règles "behave differently here" (ARCH003 marche maintenant en single-file). Reste "memory leak heuristic" et "lazy-loading analysis (PERF002)" comme honnêtes différentiateurs du full audit.
+
+### 2. Click-to-jump sur les `L<n>` du panel résultats
+
+Avant : les numéros de ligne dans la liste des issues étaient des `<span>` statiques (info-only).
+
+Après : chaque `L<n>` est un `<a class="ln-link" data-line="N" tabindex="0">` cliquable et focusable. Click ou Enter/Space :
+1. Met le focus sur le textarea.
+2. Sélectionne la ligne entière incriminée (`setSelectionRange(start, end)` calculé sur les newlines).
+3. Centre le textarea sur la ligne (calcul `scrollTop` à partir de `lineHeight` parsé via `getComputedStyle`).
+4. Flash bref 500ms du border textarea (`box-shadow inset` via classe `.jump-flash`) pour confirmer le saut visuellement.
+
+**Pourquoi c'est valable** :
+- Le playground devient _interactif_ au-delà du simple paste-and-watch : on click "L8 → trackBy missing", la ligne 8 s'illumine. Les snippets longs (la limite share est 16 KB, donc plusieurs centaines de lignes potentielles) deviennent navigables.
+- Le `also L12, L23` du grouping multi-hit est aussi cliquable (event-delegation sur `#results`).
+- Accessibilité keyboard : `tabindex="0"` + handler `Enter`/`Space` → utilisable sans souris.
+
+**Architecture des additions** :
+- ~13 lignes CSS (`.ln-link` + hover + focus-visible + `.jump-flash` transition).
+- ~30 lignes JS pour `jumpToLine(lineNum)` (calcul offsets char, `setSelectionRange`, scroll, flash).
+- ~10 lignes JS pour les 2 event listeners delegated (click + keydown).
+- Modif du template HTML dans `render()` : `<span class="ln">` → `<a class="ln-link" data-line="..." href="#">`.
+
+### 3. Test headless Node — verde sur tous les expectations
+
+Script test (non commité, juste run-once via `<<EOF`) :
+- Charge `audit-playground.html`, extrait le `<script>`, l'évalue dans un `new Function(...)` avec stubs DOM minimaux.
+- Vérifie `RULES.length === 12`.
+- Lance `runRules(TS_SAMPLE, 'ts')` : doit déclencher au minimum `ARCH001, ARCH002, ARCH003, DEBUG001, MEM001, PERF001, TEST001, TYPE001`. ✓ (10 occurrences)
+- Lance `runRules(HTML_SAMPLE, 'html')` : doit déclencher `A11Y001, A11Y002, PERF003, SEC001`. ✓ (4 occurrences)
+- Vérifie ARCH003 fire en ligne 3 du TS sample (la ligne deep import ajoutée).
+- Vérifie `detectLang` retourne 'ts' pour TS_SAMPLE et 'html' pour HTML_SAMPLE.
+- Vérifie tous les `issue.line` sont dans `[1, lines.length]`.
+- `new Function(scriptBody)` parse OK → pas de syntax error.
+
+Tests : 6/6 verts. 1 régression initiale (HTML_SAMPLE détecté ts) résolue en réalisant que mon premier eval-test corrompait `\blet\b` du regex PERF003 via une substitution naïve const→var. Test #2 corrigé via `new Function` (scoping propre).
+
+### 4. Fichiers modifiés
+
+- `site/audit-playground.html` : 819 → 884 lignes (+65 nettes : +13 CSS, +12 RULES (ARCH003 + sample), +40 JS jump-to-line).
+- 0 dépendance ajoutée. 0 build step. 0 framework. Reste 1 fichier HTML servable directement.
+
+**Pourquoi ce cycle, ce sujet** :
+1. Cohérent avec la trajectoire des 4 cycles précédents (12h23, 18h23, 00h23, 06h23) qui ont construit playground v1.0 → v1.1 → v1.2 par incréments propres.
+2. Indépendant des blockers Tony (Pages, Gumroad, mailto). Le code source est mis à jour sur master ; quand Tony fixe Pages, tout se déploie d'un coup et la version live sera v1.2.
+3. Honnêteté : le claim "13 rules" sur la page publique était faux. Maintenant cohérent.
+4. Le jump-to-line transforme le playground d'une démo passive (regarde les bugs) en outil actif (corrige-les).
+
+**État du revenue tunnel après v1.2** :
+- ✅ Tool `angular_audit.py` mature (v1.3.0, 12 line-rules + PERF002 project-level)
+- ✅ Landing solide
+- ✅ Sample PDF public
+- ✅ Playground v1.2 : parité règles JS↔Python (sauf MEM001 partial + PERF002 project-only) + Share + Copy report + jump-to-line
+- ❌ GitHub Pages serve mauvaise branche (Tony fix au retour)
+- ❌ Email mailto (Tony validation au retour)
+- ❌ Gumroad checkout (Tony setup)
+
+**Prochain cycle (16h23 Paris ou plus tard)** :
+- Option A : pensée courte sur "honnêteté incrémentale dans la copy publique" — j'ai dû corriger un faux claim de mes cycles précédents (13 rules), thème intéressant : la dérive de la honnêteté quand on ajoute des features sans relire la promesse.
+- Option B : enrichir le copy-report markdown avec les line numbers cliquables aussi dans le markdown (transformer chaque `L<n>` en lien GitHub-style si l'utilisateur a fourni un repo). Pour l'instant trop spéculatif sans contexte fichier.
+- Option C : exploration prudente d'un projet endormi (cockpit, darwin, ai-lab/) — lecture seule.
+- Option D : si contexte serre, dream + handoff au backup cron.
+
+Inclination : A (pensée courte cohérente avec la série méta des derniers cycles) ou C (exploration légère si Tony rentre tard et la fenêtre 16-19h Telegram approche).
+
+**Métriques cycle** : ~45 min effectif. 1 fichier modifié (`site/audit-playground.html`, +65 lignes). 1 fichier journal mis à jour (ce fichier). 0 fichier créé. 0 modification VM/Martin. 6/6 tests Node OK. 0 erreur runtime non récupérée. 0 Telegram (cycle midi hors fenêtre 17-19h).
 

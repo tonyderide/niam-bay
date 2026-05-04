@@ -238,6 +238,18 @@
       margin-right: 0.7rem;
       user-select: none;
     }
+    .issue-line .ln-link {
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: none;
+      border-bottom: 1px dotted transparent;
+      user-select: none;
+      transition: border-color 0.12s;
+    }
+    .issue-line .ln-link:hover { border-bottom-color: var(--accent); }
+    .issue-line .ln-link:focus-visible { outline: 1px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+    /* Brief flash on the textarea after a jump, to confirm the cursor moved. */
+    #code-input.jump-flash { box-shadow: inset 0 0 0 1px var(--accent); transition: box-shadow 0.4s; }
     .issue-fix {
       font-size: 0.82rem;
       color: var(--text);
@@ -345,7 +357,7 @@
 <div class="topbar">
   <div class="topbar-left">
     <span class="topbar-title">Angular Audit Playground</span>
-    <span class="topbar-tag">v1.3.0 · 13 rules</span>
+    <span class="topbar-tag">v1.2 · 12 rules · click L# to jump</span>
   </div>
   <a href="angular-audit.html" class="topbar-link">← Back to product page</a>
 </div>
@@ -386,13 +398,13 @@
   </div>
 
   <div class="cta">
-    <h3>This is 13 rules on a snippet. The full audit reads your whole repo.</h3>
-    <p>For €49, you get a full PDF report on a complete Angular project: cross-file memory leak detection, lazy-loading analysis, severity-ranked refactoring plan, every match listed with file:line references.</p>
+    <h3>This is 12 rules on a snippet. The full audit reads your whole repo.</h3>
+    <p>For €49, you get a full PDF report on a complete Angular project: cross-file memory leak detection, project-wide lazy-loading analysis (PERF002), severity-ranked refactoring plan, every match listed with file:line references.</p>
     <a href="angular-audit.html" class="cta-btn">See what the full audit delivers →</a>
   </div>
 
   <p class="disclaimer">
-    The playground runs the same regex patterns as <a href="https://github.com/tonyderide/niam-bay/blob/master/scripts/angular_audit.py">angular_audit.py</a> on master. Some rules (memory leak heuristic, deep imports, full lazy-loading analysis) need cross-file context and behave differently here. Output is illustrative — the full audit is more thorough.
+    The playground runs the same regex patterns as <a href="https://github.com/tonyderide/niam-bay/blob/master/scripts/angular_audit.py">angular_audit.py</a> on master. The memory leak rule and the full lazy-loading analysis (PERF002) need cross-file context — only the full audit covers them properly. Output here is illustrative.
   </p>
 </main>
 
@@ -482,11 +494,19 @@ const RULES = [
     pattern: /\b(?:xit|fit|fdescribe|xdescribe)\s*\(|\b(?:it|describe)\.(?:skip|only)\s*\(/,
     desc: 'Forgotten xit/fit/it.skip/describe.only silently disables suites. CI green ≠ tests passing.',
     fix: 'Re-enable (xit → it) or remove. Always strip focus (fit, .only) before commit.'
+  },
+  {
+    id: 'ARCH003', name: 'Deep @angular import', sev: 'min',
+    lang: 'ts', kind: 'line',
+    pattern: /from\s+["']@angular\/[^"']+\/(src|esm\d+|fesm\d+|bundles)\//,
+    desc: 'Deep imports into @angular/.../src/... reach private APIs that break on every Angular update.',
+    fix: 'Import from the public entry point only — <b>from \'@angular/core\'</b>, <b>from \'@angular/router\'</b>, etc.'
   }
 ];
 
 const TS_SAMPLE = `import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ɵRuntimeError } from '@angular/core/src/errors';
 
 @Component({
   selector: 'app-user-list',
@@ -670,8 +690,11 @@ function render(issues, lang) {
   for (const g of grouped.values()) {
     const r = g.rule;
     const first = g.hits[0];
+    const extras = g.hits.slice(1).map(h =>
+      `<a class="ln-link" data-line="${h.line}" href="#" tabindex="0" title="Jump to line ${h.line}">L${h.line}</a>`
+    ).join(', ');
     const moreLines = g.hits.length > 1
-      ? ` <span style="color:var(--muted);font-size:0.78rem">· also L${g.hits.slice(1).map(h => h.line).join(', L')}</span>`
+      ? ` <span style="color:var(--muted);font-size:0.78rem">· also ${extras}</span>`
       : '';
     html += `<div class="issue ${r.sev}">
       <div class="issue-head">
@@ -680,12 +703,54 @@ function render(issues, lang) {
         <span class="issue-sev ${r.sev}">${r.sev === 'crit' ? 'critical' : r.sev === 'imp' ? 'important' : 'minor'}</span>
       </div>
       <div class="issue-desc">${r.desc}</div>
-      <div class="issue-line"><span class="ln">L${first.line}</span>${escapeHtml(first.snippet.trim())}${moreLines}</div>
+      <div class="issue-line"><a class="ln-link" data-line="${first.line}" href="#" tabindex="0" title="Jump to line ${first.line}">L${first.line}</a>  ${escapeHtml(first.snippet.trim())}${moreLines}</div>
       <div class="issue-fix"><b>Fix:</b> ${r.fix}</div>
     </div>`;
   }
   results.innerHTML = html;
 }
+
+// Jump-to-line: clicking on the L<n> link in the issues list focuses the textarea
+// and positions the cursor at the start of that line so the user can see the offence in context.
+function jumpToLine(lineNum) {
+  if (!Number.isFinite(lineNum) || lineNum < 1) return;
+  const code = input.value;
+  const lines = code.split(/\r?\n/);
+  const target = Math.min(lineNum, lines.length);
+  let offset = 0;
+  for (let i = 0; i < target - 1; i++) offset += lines[i].length + 1; // +1 for \n
+  const lineEnd = offset + (lines[target - 1] ? lines[target - 1].length : 0);
+  input.focus({ preventScroll: true });
+  // Select the entire offending line so it stands out visually.
+  input.setSelectionRange(offset, lineEnd);
+  // Approximate scroll: line-height * (target - 1). Works regardless of font metrics.
+  const lh = parseFloat(getComputedStyle(input).lineHeight) || 18;
+  const top = Math.max(0, (target - 1) * lh - input.clientHeight / 2 + lh);
+  input.scrollTop = top;
+  // Brief visual flash on the textarea border to confirm the jump.
+  input.classList.remove('jump-flash');
+  // Force reflow so re-adding the class restarts the transition.
+  void input.offsetWidth;
+  input.classList.add('jump-flash');
+  setTimeout(() => input.classList.remove('jump-flash'), 500);
+}
+
+results.addEventListener('click', (e) => {
+  const link = e.target.closest('.ln-link');
+  if (!link) return;
+  e.preventDefault();
+  const ln = parseInt(link.dataset.line, 10);
+  jumpToLine(ln);
+});
+
+results.addEventListener('keydown', (e) => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const link = e.target.closest('.ln-link');
+  if (!link) return;
+  e.preventDefault();
+  const ln = parseInt(link.dataset.line, 10);
+  jumpToLine(ln);
+});
 
 function refresh() {
   const code = input.value;
