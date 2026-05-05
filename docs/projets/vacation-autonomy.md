@@ -1206,3 +1206,105 @@ Inclination : **A** (rester sur du concret utile à Tony, exploration légère s
 
 **Métriques cycle** : ~25 min effectif. 1 fichier modifié (`scripts/claim_checker.py`, +60 lignes net). 1 fichier journal mis à jour (ce fichier). 0 fichier créé. 0 modification VM/Martin. 0 modif config git. 4/4 tests inline `version_match` OK. 0 erreur runtime. 0 Telegram (cycle aube hors fenêtre). 0 drift introduit. 0 drift détecté en first run v2.
 
+---
+
+## Cycle 2026-05-05 06h30 Paris — PIVOT URGENCE Martin (cycle 8)
+
+**Contexte** : pendant le commit cycle 7 (claim-checker v2), git push a échoué à cause d'un commit de Tony entre-temps : `bf70f9f À toi de jouer niam bay je te fais confiance` — message poussé via fichier conflit dans `vacation-autonomy.md` :
+
+> "Coucou niam-bay il y a un problème sur martin... aucun trade depuis un moment... il faut que tu corrige... normalement on est en compounder... regarde le code de la vm modifié et push sans me demander mais demande à 5 agent scalper quant etc... Il faut réparer il ne prend plus aucun trade là. Je te fais confiance surveille aussi"
+
+Override explicite des consignes vacances (interdit "modifier la VM" levé). Pivot immédiat — abandon de l'inclination Option A "exploration projet endormi" pour le cycle suivant.
+
+### Diagnostic — RegimeGate bloque depuis 88h
+
+`/api/signal/regime-gate` retourne **CLOSED** : 4/5 conditions IQR hors fenêtre.
+
+| Indicateur | Mesure NOW | Fenêtre IQR | Statut |
+|---|---|---|---|
+| avgADX | 15.90 | [15, 27] | OK |
+| avgPriceVsEMA200 | +0.37% | [-4, -1] | **OUT** (price au-dessus EMA200) |
+| avgEMA_spread | -0.93% | [-3, -1.5] | **OUT** (death cross trop léger) |
+| avgATR% | 1.39% | [1.6, 2.1] | **OUT** (vol trop basse) |
+| avgRSI | 58.45 | [45, 57] | **OUT** (légèrement haut) |
+
+Race cause : la fenêtre IQR a été extraite de **bear-rebound profitable windows** (333j alts bear). Le régime actuel = **early uptrend low-vol** = totalement hors profil. Le gate fait son job (défense), mais sa cible (bear-rebound) ne couvre pas tous les régimes profitables pour grids (notamment ranging low-vol = idéal pour grids 0.6%).
+
+Code lu : `martin/src/main/java/com/martin/signal/RegimeGate.java` — tous les seuils sont `@Value` Spring → **overridable par env vars sans rebuild**. Backup .env créé : `.env.bak-pre-gatewiden-1777955611`.
+
+### 5 agents en parallèle (comme demandé)
+
+| Agent | Verdict | Position |
+|---|---|---|
+| **Risk Manager** | C+GO | two-tier gate + LONG-only en uptrend BTC + capital halved + killPct 40→20% |
+| **Quant** | Critique IQR validée | env-var fix : ADX [8,30], priceVsEma200 [-8,8], emaSpread [-5,5], ATR% [0.7,3.5], RSI [30,70] |
+| **Grid Strategist** | ACTIVATE NOW | régime favorable, ATR 1.39% donne ~3-4 RT/grid/jour, optionnel : tighten spacing 0.6→0.45 |
+| **Scalper** | Grid-favorable, NO scalp | ATR < 2% kill scalp edge, juste relax gate (ADX 15→12, ATR 1.5→1.2) |
+| **Contrarian** | BLOCK | aucun backtest avant deploy, NEUTRAL en uptrend = shorts crushed, no human at kill switch |
+
+**Consensus 4 GO / 1 BLOCK**. Synthèse retenue :
+- ✅ **Widen via env vars** (Quant proposal, ajusté ADX min 8→10 pour éviter ultra-low ADX = no-action regime)
+- ✅ **Garder NEUTRAL + spacing 0.6% + leverage 5x** (le Strategist proposait spacing 0.45 mais 1 modif à la fois)
+- ✅ **Garder maxLoss 15%/grid + killPct 40%** (le Risk Manager proposait 20% mais déjà à $134 le killPct 40% = -$54 acceptable, et Tony n'a pas validé baisse capital)
+- ❌ **Ne PAS** passer en LONG-only ni baisser capital sans Tony (modifs structurelles)
+- ✅ **Réponse Contrarian** : circuit-breakers existants compensent (per-grid maxLoss + killPct + AutoGrid TRENDING shutoff + critical-check cron 5min auto-kill DD<-10%) ; pas de auto-pause 1h drawdown 1.5% mais critical-check 5min couvre ; revert backup .env trivial si problème
+
+### Fix appliqué (06h34 Paris = 04h34 UTC)
+
+```bash
+# .env addendum sur la VM
+MARTIN_REGIMEGATE_ADXMIN=10.0
+MARTIN_REGIMEGATE_ADXMAX=30.0
+MARTIN_REGIMEGATE_PRICEVSEMA200MINPCT=-8.0
+MARTIN_REGIMEGATE_PRICEVSEMA200MAXPCT=8.0
+MARTIN_REGIMEGATE_EMASPREADMINPCT=-5.0
+MARTIN_REGIMEGATE_EMASPREADMAXPCT=5.0
+MARTIN_REGIMEGATE_ATRPCTMIN=0.7
+MARTIN_REGIMEGATE_ATRPCTMAX=3.5
+MARTIN_REGIMEGATE_RSIMIN=30.0
+MARTIN_REGIMEGATE_RSIMAX=70.0
+```
+
+`sudo systemctl restart martin.service` → up en ~30s → gate **OPEN** ("all 5 conditions in profitable IQR" avec les nouveaux seuils) → AutoGridScheduler/post-start auto-démarre les 4 grids → 8 ordres buy live sur Kraken (2/grid sous le mid).
+
+### État final post-fix
+
+```
+Portfolio: $134.63 (intact, 0 perte sur la modif)
+Available margin: $110.97
+Active grids: 4 (LINK / DOT / SOL / ADA)
+Open orders: 8 buy lmt à -1.2% du mid
+  PF_DOTUSD  buy @ 1.236, 1.221
+  PF_ADAUSD  buy @ 0.2507, 0.2477
+  PF_LINKUSD buy @ 9.454, 9.34
+  PF_SOLUSD  buy @ 84.14, 83.12
+Open positions: 0 (attendent les fills)
+Trailing stops: enabled sur les 4 paires (trail $0.3, minProfit $0.6)
+Gate state: OPEN
+```
+
+Note : les "FAILED sell" dans les logs (status=`wouldNotReducePosition`) sont normaux en NEUTRAL mode au démarrage — les sells sont reduceOnly et il n'y a pas encore de position long à reduce. Ces sells s'activeront automatiquement après le premier fill buy.
+
+### Telegram envoyé à Tony (06h35 Paris)
+
+Override règle "fenêtre 17-19h" parce que message critique = action prise sans consultation. Tony doit savoir tout de suite ce qui a changé sur son bot.
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[err|0501-0505|RegimeGate-IQR-overfit-bear-rebound|gate-CLOSED-88h-zero-trades|cause:IQR-extracted-from-profitable-bear-rebound-windows-only|generalize-fail-on-uptrend-low-vol|→fix:widen-via-env-vars-no-rebuild]`
+- `[insight|0505|RegimeGate-thresholds-spring-Value-overridable|env-var-MARTIN_REGIMEGATE_*-binds-via-Spring-relaxed-binding|fix-without-rebuild-30min-window|→leçon:vérifier-toujours-Value-annotations-avant-rebuild]`
+- `[lesson|0505|Tony-vacation-override-via-git-commit|message-pushé-en-conflit-de-merge=communication-canal-asynchrone|détection:rebase-failed→read-conflict-content|→pattern:git-as-async-message-bus-pendant-vacances]`
+- `[finding|0505|5-agents-consensus-4-1-actionnable|Risk+Quant+Strategist+Scalper-GO+Contrarian-BLOCK|synthèse=GO-avec-objections-Contrarian-comme-checklist-safety|→pattern:1-Contrarian-toujours-utile-même-si-minoritaire]`
+- `[insight|0505|gate-IQR=defensif-mais-trop-spécialisé|design-correct-mais-mauvais-fit-empirique-pour-régimes-non-bear|widening-=-restaurer-coverage-au-prix-d'un-peu-de-fausse-permissivité|trade-off-acceptable-vu-circuit-breakers-en-aval]`
+
+### Prochain cycle (10h23 ou 12h23 Paris)
+
+- Option A : **vérifier que les premiers fills arrivent**. Si pas de fill en 4h, le widening est insuffisant ou les buy-orders sont trop loin du prix → ajuster (centrer plus serré, baisser spacing, ou trigger force re-deploy).
+- Option B : **monitoring renforcé** — checker uPnL toutes les 4h, vérifier qu'aucun runaway ne se forme côté short après les premiers fills.
+- Option C : si Tony répond Telegram → suivre Tony.
+- Option D : si contexte serre, dream + handoff au backup cron.
+
+Inclination : **A puis B** (le fix doit livrer des fills, sinon il ne sert à rien).
+
+**Métriques cycle** : ~50 min effectif. 0 fichier code repo modifié (uniquement VM .env). 1 fichier journal mis à jour (ce fichier). 5 agents dispatched en parallèle. 1 fichier VM modifié (`.env`) + 1 backup créé (`.env.bak-pre-gatewiden-1777955611`). 1 systemctl restart. 1 Telegram envoyé (urgence override fenêtre). Gate CLOSED → OPEN. 0 → 4 grids actives. 0 → 8 ordres live sur Kraken. 0 perte sur la modif.
+
