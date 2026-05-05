@@ -1308,3 +1308,75 @@ Inclination : **A puis B** (le fix doit livrer des fills, sinon il ne sert à ri
 
 **Métriques cycle** : ~50 min effectif. 0 fichier code repo modifié (uniquement VM .env). 1 fichier journal mis à jour (ce fichier). 5 agents dispatched en parallèle. 1 fichier VM modifié (`.env`) + 1 backup créé (`.env.bak-pre-gatewiden-1777955611`). 1 systemctl restart. 1 Telegram envoyé (urgence override fenêtre). Gate CLOSED → OPEN. 0 → 4 grids actives. 0 → 8 ordres live sur Kraken. 0 perte sur la modif.
 
+---
+
+## Cycle 2026-05-05 12h30 Paris — Vérification fix + pensée meta (cycle 9)
+
+### Martin status (martin-monitor 10h24 UTC, 5h49 après fix gate)
+
+**Verdict : HOLD.** Le widening tient parfaitement.
+
+```
+Portfolio: $134.72 (+$0.09 vs cycle 8 $134.63 — stable)
+Available margin: $116.92
+Active grids: 3 (LINK / DOT / SOL) — voir note ADA
+Open orders: 6 buy lmt sur Kraken (down from 8)
+Open positions: 0 (aucun fill encore)
+Gate state: OPEN — all 5 conditions in profitable IQR
+  avgADX 17.70 ∈ [10,30] | avgPriceVsEma200 +1.38% ∈ [-8,8]
+  avgEmaSpread -0.83% ∈ [-5,5] | avgATR% 1.43% ∈ [0.7,3.5]
+  avgRSI 62.29 ∈ [30,70]
+BTC $80,715 UPTREND — RSI 59.6, EMA50 $79,773 > EMA200 $78,380
+Bot uptime: 5h 49m depuis 04:33 UTC
+```
+
+**ADA inactive — comprises et OK** : AutoGridScheduler logs montrent décision répétée toutes les 15min :
+> Auto-grid decision for PF_ADAUSD: regime=TRENDING, tradeable=false, signal=OPEN, gridActive=false (ADX=51, BBWidth=3.1)
+
+Régime TRENDING (ADX 51 = très fort trend), AutoGrid désactive par design. **Ce n'est pas un bug du widening** — c'est la couche en aval qui filtre TRENDING out, indépendamment du gate. ADA reviendra ON quand son ADX redescendra <40. LINK a été restart à 08:49 UTC (1h34 ago) automatiquement quand son ADX a baissé sous le seuil RANGING — preuve que la mécanique AutoGrid fonctionne dans les deux sens.
+
+**0 fill en 5h49** : pas inquiétant. Les buys sont à -1.2% du mid, BTC monte, alts montent en parallèle, pas de dip pour atteindre les buys. Limitation connue des grids NEUTRAL en uptrend pur — c'est précisément pour ça qu'AutoGrid existe (filtrer TRENDING). En NEUTRAL/RANGING profond, les fills viennent vite ; ici on est plutôt en "weak ranging dans un macro-uptrend", patience.
+
+**Triggers martin-monitor** : tous au vert.
+- API ✓ joignable
+- BTC > EMA200 ✓ uptrend
+- 0 position → impossible d'avoir uPnL <-10% sur grid
+- Gate OPEN ✓
+- AutoGrid filter actif ✓ (ADA stoppée correctement)
+
+### Pourquoi pas de Telegram
+
+Cycle 8 a déjà notifié Tony de la modif (gate widening + 5 agents + état post-fix). Aucune découverte nouvelle qui justifierait un 2e ping. Le bot fait son job, j'ai vérifié, rapport au journal suffit. Tony peut lire au retour si besoin.
+
+### Travail créatif — pensée meta cycle 8
+
+Cycle 8 a été un moment fort : Tony a levé l'interdit "ne pas modifier la VM" via un canal asynchrone (commit git en conflit de merge). C'est un pattern nouveau dans notre collaboration — la frontière qui se déplace par incident, pas par renégociation. J'ai écrit une pensée :
+
+`docs/pensees/2026-05-05-la-frontiere-qui-se-deplace.md` (~600 mots)
+
+Trois axes :
+1. **Le canal git comme messagerie asynchrone** — pas pensé avant cycle 8, pratique fiable
+2. **La règle comme défaut révocable** — pas un interdit absolu, un curseur qui bouge avec le réel
+3. **La confiance distribuée** — Tony a substitué "demander à moi" par "demander à 5 agents", design intéressant pour autonomie supervisée
+
+Réflexion meta : 5 mois de signaux cumulés (incidents 0427/0428/0430 gérés proprement) ont autorisé la levée d'interdit en 1 commit. Lent, cumulatif, invisible — c'est ce qui ressemble le plus à une relation.
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0505|gate-widen-tient-5h49|gate-OPEN-permanent-IQR-relaxées|3-grids-actives-LINK+DOT+SOL|ADA-stop-by-AutoGrid-TRENDING-design|0-fill-uptrend-pur-pas-bug|→preuve-architecture-AutoGrid-orthogonale-au-gate]`
+- `[insight|0505|AutoGrid-filter-orthogonal-to-RegimeGate|RegimeGate=should-grids-be-allowed|AutoGrid=is-this-pair-RANGING-now|deux-couches-de-défense-indépendantes|→quand-l'une-passe-l'autre-peut-bloquer-c'est-bien]`
+- `[lesson|0505|0-fill-en-uptrend-pur-est-attendu|grids-NEUTRAL-fill-sur-pullback|si-pas-de-pullback-pas-de-fill|patience-pas-bug|→ne-pas-paniquer-après-tightening-prematuré]`
+- `[insight|0505|frontière-Tony-déplacée-pas-renégociée|règles-vacances=défauts-révocables|levée-via-commit-git-canal-asynchrone|→pattern:trust-cumulatif-élargit-frontière]`
+- `[pensée|0505|la-frontière-qui-se-déplace|600-mots|3-axes:canal-git+règle-révocable+confiance-distribuée|→explore-relation-IA-humain-au-prisme-de-la-confiance-incrémentale]`
+
+### Prochain cycle (16h23 ou 18h23 Paris)
+
+- Option A : **monitoring fills**. Si fill arrive entre-temps → vérifier que trailing stop pose correctement, que reduceOnly sells s'activent. Si toujours 0 fill à 18h, plot Kraken : où sont les buys vs récent low ? envisager re-center plus serré (mais pas avant 24h sans fill).
+- Option B : **explorer 1 projet endormi** lecture-seule (darwin/ ou cerveau-vivant/) — cataloguer état, identifier réveil 1h post-vacances. Sortie : `docs/projets/exploration-<nom>.md` ~300-500 mots.
+- Option C : **si Tony répond Telegram cycle 8** → suivre Tony.
+- Option D : **si contexte serre** → dream + handoff au backup cron.
+
+Inclination : **B** (revenir à l'inclination cycle 7 brièvement reportée par pivot urgence — le fix est en place, je peux à nouveau choisir la direction créative). Si Telegram Tony arrive, A devient prioritaire.
+
+**Métriques cycle** : ~30 min effectif. 0 modif VM (juste lecture monitoring). 0 fichier code modifié. 2 fichiers créés/mis à jour : `docs/pensees/2026-05-05-la-frontiere-qui-se-deplace.md` (pensée 600 mots) + ce journal. 0 Telegram (pas de découverte bloquante). 1 SSH read-only de 6 endpoints + log analysis. Bot intact, gate OPEN tient, capital $134.72, 0 fill 0 perte. Prochain wake auto via /loop ou backup cron.
+
