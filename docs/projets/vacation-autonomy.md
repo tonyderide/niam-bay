@@ -1380,3 +1380,36 @@ Inclination : **B** (revenir à l'inclination cycle 7 brièvement reportée par 
 
 **Métriques cycle** : ~30 min effectif. 0 modif VM (juste lecture monitoring). 0 fichier code modifié. 2 fichiers créés/mis à jour : `docs/pensees/2026-05-05-la-frontiere-qui-se-deplace.md` (pensée 600 mots) + ce journal. 0 Telegram (pas de découverte bloquante). 1 SSH read-only de 6 endpoints + log analysis. Bot intact, gate OPEN tient, capital $134.72, 0 fill 0 perte. Prochain wake auto via /loop ou backup cron.
 
+### Update 12h50 Paris — exploration Darwin réalisée (cycle 9 bis)
+
+Après écriture pensée + journal, j'ai enchaîné sur l'option B (exploration projet endormi). Cible : **Darwin** (`/home/tony/projets/tonyderide/darwin/`).
+
+**Trouvailles** :
+- ~2458 lignes Python+HTML, pure stdlib, **48 skills** (pas 14/22 comme en mémoire), 4 modes arena (grid/scalp/martingale-flip/DCA), brute-force optimizer, server WebSocket, 5 fichiers de tests.
+- Plan de hardening écrit par Tony le 2026-04-20 : `darwin/docs/superpowers/plans/2026-04-20-darwin-hardening.md` — **17 tâches en 6 phases**, audit issu d'un panel 6 agents (2 quant + 2 scalper + 2 trader). Aucune phase checkée.
+- Bug critique documenté ligne 147 d'`indicators.py` (bb_squeeze inclut sa propre bougie dans son percentile) — fix d'1 ligne, prêt dans le plan A.
+- Worktree `.worktrees/hardening/` existe avec venv mais 0 commit — Tony a commencé puis pas push.
+
+**Mémo écrit** : `docs/projets/exploration-darwin.md` (~700 mots) avec :
+- État actuel + maturité réelle
+- Plan de hardening résumé en table par phase + effort
+- 3 idées de connexion Darwin → Martin (offline param optim, gate discovery, validation pré-deploy)
+- 3 options pour Tony au retour (fastest-win = Phase A 1h ; creative-medium = martin_simulator port ; strategic-long = pipeline complet)
+
+**Pourquoi pas exécuter Phase A directement** : 
+1. Phase A demande pytest + setup venv local (effort de bootstrap non trivial)
+2. Tony n'a pas encore greenlight via le canal git async — j'ai préféré écrire la reco pour qu'il choisisse au retour
+3. Garde la frontière "lecture-seule" intacte côté darwin (alors que côté martin Tony a explicitement demandé d'agir)
+
+**Findings nouveaux pour la mémoire (à propager au prochain dream)** :
+- `[insight|0505|darwin-state-mature-cycle-9-exploration|2458-lignes+48-skills+4-modes+brute-force+plan-17-tâches|prêt-pour-Phase-A-1h-ship|→exploration-darwin.md-écrit]`
+- `[finding|0505|darwin-bb_squeeze-bug-line-147|self-inclusion-percentile|fix-=-i+1-→-i|connu-Tony-doc-dans-plan-Phase-A|→shippable-en-15min-quand-greenlight]`
+- `[insight|0505|darwin-→-martin-pipeline-3-niveaux|offline-param-optim+gate-discovery+pre-deploy-validation|→pourrait-fermer-boucle-research-design-deploy|→martin_simulator.py-est-le-pont-manquant]`
+- `[lesson|0505|exploration-projet-endormi=2-livrables|catalogue-état-actuel-pour-revenir-vite-+-recommandation-actionnable-priorisée|≠-juste-lire-+-oublier]`
+
+**Métriques cycle 9 bis** : ~25 min. 1 fichier créé (`docs/projets/exploration-darwin.md`, ~700 mots). 0 modif darwin/ repo. 1 lecture indicators.py (vérification bug). 1 git log darwin (3min). 0 Telegram.
+
+### Total cycle 9 (martin-monitor + pensée + exploration darwin)
+
+~55 min effectif sur cette session de wake. 3 fichiers créés/modifiés : pensée (600 mots) + memo darwin (700 mots) + ce journal. 0 modification VM/Martin/Darwin. 0 perte. 0 risque. Bot stable, gate tient, ADA arrêtée par design TRENDING (correct), 3 grids en attente de fills. Pause attendue pour /loop ou backup cron.
+
