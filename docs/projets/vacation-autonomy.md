@@ -1413,3 +1413,60 @@ Après écriture pensée + journal, j'ai enchaîné sur l'option B (exploration 
 
 ~55 min effectif sur cette session de wake. 3 fichiers créés/modifiés : pensée (600 mots) + memo darwin (700 mots) + ce journal. 0 modification VM/Martin/Darwin. 0 perte. 0 risque. Bot stable, gate tient, ADA arrêtée par design TRENDING (correct), 3 grids en attente de fills. Pause attendue pour /loop ou backup cron.
 
+---
+
+## 2026-05-05 18h23 Paris — Cycle 10 : monitoring + exploration cerveau-vivant
+
+### Martin status — HOLD ✓
+
+```
+Portfolio: $134.87 (+$0.09 uPnL — passé positif depuis cycle 9)
+balanceValue: $134.78 — déposé baseline
+Available margin: $111.21
+Active grids: 4 (LINK / DOT / SOL / ADA — ADA revenu ON à 14:19 UTC)
+Open positions: 2 (DOT 19.7@1.268, LINK 6.0@9.7025) — fills cycle 9→10
+Open orders: 5 buy lmt sur Kraken
+BTC $81,490 UPTREND — RSI 68.6, EMA50>EMA200 ✓
+Uptime bot: 11h49 depuis 04:33 UTC
+```
+
+**Évolution depuis cycle 9** :
+- ADA était stoppée par AutoGrid (TRENDING ADX 51) → maintenant ACTIVE (régime redescendu, restart auto à 14:19 UTC). Confirme que la mécanique fonctionne dans les 2 sens.
+- LINK a fillé 2 buys (9.645 + 9.76), position ouverte avec SL Kraken @ 8.9775 ✓
+- DOT a fillé 1 buy (1.268), position ouverte avec SL Kraken @ 1.0776 ✓
+- SOL et ADA n'ont pas encore fillé → pas de SL posté (correct, StopLossManager attend la première position)
+
+**Triggers martin-monitor** : tous au vert.
+- API ✓ joignable, uptime 11h49
+- BTC > EMA200 ✓ (81.5k > 78.5k)
+- uPnL global +$0.09 (positif !)
+- Capital loss per grid : 0% partout
+- Régime OK, gate widening tient, pas d'incident depuis cycle 8
+
+Pas de Telegram envoyé. Aucune découverte critique justifiant un ping. La sortie cumulée des cycles 8→10 résume bien la situation : widening fix tient, fills arrivent, uPnL positif, bot stable. Si Tony lit en arrivant : "tout va bien".
+
+### Exploration cerveau-vivant (read-only)
+
+Cycle 10 enchaîne sur l'option B exploration projet endormi (pattern cycle 9 bis). Cible : **cerveau-vivant** dans `niam-bay/cerveau-nb/`.
+
+**État** : 47 fichiers, dormant depuis 2026-04-05 (le brain.json a été touché 2026-04-20 par autre code, mais aucun crawl ni live cycle depuis 30 jours).
+
+Memo écrit : `docs/projets/exploration-cerveau-vivant.md` (~600 mots) — détaille architecture, état dormant, 3 niveaux de réveil, et 4 idées de pont avec le système actuel (Martin/dream/wake).
+
+**Findings nouveaux pour la mémoire (prochain dream)** :
+- `[insight|0505|cerveau-vivant-dormant-30j|dernier-crawl-2026-04-05|brain_state.json-4524-nodes-figé|live_log-vide-depuis-1-mois|→cycle-vivant-jamais-redémarré]`
+- `[insight|0505|cerveau-vivant-réveil-1-commande|python3 live.py --briefing|génère-pensée-du-matin-basée-sur-graphe|0-token|→trivial-à-relancer-quand-Tony-veut]`
+- `[finding|0505|metaclaw-skills-générées-2|skills/auto-at-wake-always-compare-git-log-...|skills/auto-verify-data-quality-...|preuve-que-metaclaw-a-tourné-mais-stoppé]`
+- `[lesson|0505|projets-dormants-≠-projets-morts|cerveau-vivant-techniquement-ressuscitable-en-1-cmd|valeur-d-existence-≠-valeur-d-usage|→garder-en-mémoire-pour-futurs-cycles-de-pensée-autonome]`
+
+### Prochain cycle
+
+- Option A : suivre fills SOL/ADA si arrivent. Vérifier que SL Kraken se posent correctement après premier fill.
+- Option B : continuer exploration projet endormi (jarvis ou cerveau-v1 archive).
+- Option C : si contexte sature → dream + handoff backup cron.
+- Option D : si Tony répond Telegram → suivre Tony.
+
+**Inclination** : finir cycle 10 maintenant (memo + journal + commit). Pas de Telegram. Pas de modif Martin (frontière respectée — la levée d'interdit gate-widening était scope-limited à ce fix précis, pas une autorisation générale).
+
+**Métriques cycle 10** : ~30 min. 2 fichiers créés/modifiés : memo cerveau-vivant (~600 mots) + ce journal. 0 modif VM/Martin. 0 modif cerveau-nb (read-only strict). 1 SSH read-only de 8 endpoints. Bot intact, +$0.09 uPnL, 4 grids actives, 3 fills.
+
