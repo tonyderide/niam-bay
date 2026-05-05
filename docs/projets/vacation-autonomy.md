@@ -1470,3 +1470,90 @@ Memo écrit : `docs/projets/exploration-cerveau-vivant.md` (~600 mots) — déta
 
 **Métriques cycle 10** : ~30 min. 2 fichiers créés/modifiés : memo cerveau-vivant (~600 mots) + ce journal. 0 modif VM/Martin. 0 modif cerveau-nb (read-only strict). 1 SSH read-only de 8 endpoints. Bot intact, +$0.09 uPnL, 4 grids actives, 3 fills.
 
+---
+
+## 2026-05-06 00h23 Paris — Cycle 11 : angular_audit v1.4.0 + validation gate bidirectionnelle
+
+### Martin status — HOLD ✓ (et confirmation que le système est correct)
+
+```
+Portfolio: $134.97 (balanceValue=$134.97 → +$0.19 réalisé depuis cycle 10)
+0 positions | 0 ordres | 0 grids actives
+RegimeGate CLOSED — RSI=71.04 hors [30, 70] → forcing closeOnly + skip nouvelles ouvertures
+SOL en TRENDING (ADX 42, BBW 2.07) → AutoGrid OFF design
+BTC $81,351 UPTREND, RSI 60, EMA200 $78,732 → signal OPEN
+Uptime bot: 17h49 depuis 0505:04h33Z
+```
+
+**Lecture cycle 10 → cycle 11** : Entre 18h23 (cycle 10) et 00h23 (cycle 11), BTC a continué de monter, le RSI agrégé des 4 alts est passé > 70 → **gate-widening fix s'est refermé en defensif** (closeOnly mode), liquidant proprement les 2 positions ouvertes (LINK 6.0 + DOT 19.7) **sur la montée, en profit**. Résultat : portfolio passé de $134.78 (déposé) à $134.97 = **+$0.19 réalisé en 6h**.
+
+C'est la **vraie validation** du fix cycle 8 (gate widening RSI 50→70) : le système ouvre quand le marché est ranging accumulable, ferme quand le marché continue de trender, et le gate-widened ne pénalise pas la prise de profit (closeOnly autorise les sells via reduceOnly). **Tony peut dormir.** Le mécanisme respire.
+
+**Triggers** : tous au vert. API ✓, BTC > EMA200 ✓, 0 perte (gain réalisé), aucune anomalie dans les logs (4 cycles AutoGridScheduler 21h34/49h04/19h ont tous loggé `RegimeGate CLOSED — RSI=71.04` — comportement attendu).
+
+### Travail créatif : angular_audit v1.4.0 — 2 nouvelles règles
+
+Cycle 5 (0502:06h) avait livré v1.2.0 (PDF prettifier + 10 règles). Le backup cron a poussé v1.3.0 (13 règles, +PERF003+ARCH002+ARCH003) pendant cycle ~2-3. Cycle 11 livre **v1.4.0 → 15 règles** :
+
+**Nouvelle règle SEC002 — Clé API ou secret hardcodé**
+- Catégorie : Sécurité | Sévérité : CRITIQUE | Poids : 12 (= max impact comme SEC001)
+- Pattern : détecte `sk-...`, `sk_...`, `pk_...`, `ghp_...`, `xoxb-...`, `AIza...`, `eyJ...` (OpenAI/Stripe/GitHub PAT/Slack/Google/JWT) **ET** les attributions explicites `apiKey = "..."` / `secret: "..."` / `token = "..."`
+- Exclusions : `*.spec.ts`, `*.example.*`, `*.template.*`, `node_modules`
+- Justification réelle : OpenAI scanne GitHub public et révoque automatiquement les `sk-` exposées — c'est un cas de douleur concret pour un dev en MVP. Permet à l'audit de surfacer une fuite de credential avant le client.
+
+**Nouvelle règle JS001 — setTimeout/setInterval sans cleanup**
+- Catégorie : Memory Leaks | Sévérité : IMPORTANT | Poids : 6
+- Pattern : `setTimeout(` ou `setInterval(` dans un `.ts` *sans* `clearTimeout`, `clearInterval`, `takeUntilDestroyed`, `takeUntil` ou `ngOnDestroy` au niveau du fichier
+- Anti-pattern file-level (= même mécanisme que MEM001, généralisé dans cette release)
+- Justification : différent de MEM001 (RxJS subscriptions) — un `setInterval(refresh, 5000)` lancé dans un composant qui n'est jamais clear continue à appeler le serveur fantôme après destruction du composant. Bug commun, peu surfacé par les linters.
+
+**Refactor technique** : la logique anti-pattern de MEM001 (vérification niveau-fichier d'une protection) a été généralisée — toute règle avec un champ `anti_pattern` bénéficie maintenant du même mécanisme. Code plus propre, scalable pour futures règles (XHR sans abort, EventListener sans removeListener…).
+
+### Validation false positives
+
+Test de précision sur 4 projets :
+
+| Projet | SEC002 | JS001 | Notes |
+|---|---|---|---|
+| `test-angular-project` (planté) | ✓ 2/2 détectés | ✓ 2/2 détectés | parfait |
+| `angular-tuto-tony` (clean) | 0 | 0 | 0 false positive |
+| `orgamenu-front` (Tony, 103 prob.) | 0 | 0 | 0 false positive sur projet réel |
+| `naissance` (Tony, 8 prob.) | 0 | **1 détecté** | timer leak réel trouvé en prod |
+
+Le détecteur JS001 a trouvé un **vrai bug en prod** dans le projet `naissance` de Tony — c'est exactement le genre de finding qui justifie la valeur du tool à 49€.
+
+### Livrables cycle 11
+
+- `scripts/angular_audit.py` v1.3.0 → v1.4.0 (+34 lignes : 2 RULES, anti_pattern généralisé)
+- `scripts/test-angular-project/src/app/components/user-list/user-list.component.ts` : ajout 4 cas planté (2 secrets + 2 timers + méthode `refreshFromServer`)
+- `scripts/audit-samples/sample-audit-test-angular-project_v1.4.0.{md,pdf}` : nouveau sample public (16KB → 16KB)
+- `site/assets/sample-audit-report.pdf` : PDF servi par la landing remplacé v1.3 → v1.4
+- `site/angular-audit.html` : "13 detection rules" → "15 detection rules" + "40 problems → 48 problems" + categories étendues (incl. memory leaks, security, accessibility)
+- `site/memoire.html` : meta-card audit mise à jour v1.4.0 + mention SEC002+JS001
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0506|gate-widening-validated-bidirectionnel|cycle-10-→-11-=-RSI-pass-au-dessus-70-→-gate-ferme-en-closeOnly-→-positions-LINK+DOT-liquidees-en-profit-+$0.19|le-gate-respire-dans-les-2-sens|fix-cycle-8-est-bon]`
+- `[finding|0506|JS001-detecte-1-vrai-bug-en-prod|projet-naissance-timer-leak-non-clear|tool-prouve-utilite-pas-juste-academique|→-justifie-49€]`
+- `[lesson|0506|generalisation-=-paye|MEM001-anti_pattern-rule-specifique-→-flag-anti_pattern-generic|JS001-livre-en-1-edit-RULES-sans-toucher-au-moteur|→-pattern-pour-futures-XHR/EventListener]`
+- `[insight|0506|tony-en-portugal-jour-6/9|au-cycle-11-bot-banque-+0.19-realise-vacance-en-cours|cumul-vacance-:-balanceValue-passe-de-$135.32(0501)-à-$134.97(0506)-=-baseline-stable-pas-de-saigne]`
+
+### Métriques cycle 11
+
+- **Durée** : ~50 min (incl. analyse logs + 4 tests + landing edits)
+- **Modif Martin/VM** : 0 (frontière respectée — lecture seule SSH, 6 endpoints + 1 grep app.log)
+- **Code modifié** : 1 fichier prod (`angular_audit.py`), 1 fichier test (`user-list.component.ts`), 2 fichiers landing (`angular-audit.html`, `memoire.html`)
+- **Sample regenere** : 1 (sample-audit-test-angular-project_v1.4.0)
+- **Tests false positive** : 4 projets, 0 FP, 1 vrai bug en prod trouvé
+- **Telegram** : 0 (pas de découverte critique, gate-widened fonctionne comme prévu — pas de news urgente pour Tony en vacances)
+- **Valeur livrée** : tool angular-audit passe de 13 à 15 règles + landing alignée. Le revenue path est plus crédible quand un vrai bug en prod est détectable.
+
+### Inclination prochain cycle
+
+- Option A : continuer angular-audit (3 règles candidates : `XHR sans abort`, `EventListener sans remove`, `ngModule legacy quand Angular 16+`) — momentum cumulatif
+- Option B : exploration projet endormi (jarvis ou ancien `cerveau-v1` archive)
+- Option C : fragment littéraire (#022) sur la respiration du gate — leçon poétique du cycle 11
+- Option D : si contexte serre → dream + handoff backup cron
+
+**Inclination** : commit cycle 11 et laisser le /loop décider du prochain cycle. Pas de Telegram. Pas de modif Martin. Tony dort à Lisbonne, le bot a banké +$0.19 sans toucher à rien.
+

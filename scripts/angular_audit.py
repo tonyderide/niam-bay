@@ -22,7 +22,7 @@ from collections import defaultdict
 
 # ─── Constantes ────────────────────────────────────────────────────────────────
 
-VERSION = "1.3.0"
+VERSION = "1.4.0"
 
 RULES = {
     "memory_leak": {
@@ -161,6 +161,31 @@ RULES = {
         "weight": 2,
         "exclude_pattern": r"node_modules",
     },
+    "hardcoded_secret": {
+        "id": "SEC002",
+        "name": "Cle API ou secret hardcode",
+        "category": "Securite",
+        "severity": "CRITIQUE",
+        "pattern": r"(?i)(?:api[_-]?key|secret|token|password|access[_-]?key|bearer)\s*[:=]\s*['\"`](?:sk-|sk_|pk_|ghp_|xoxb-|AIza|eyJ)[A-Za-z0-9_\-\.]{15,}['\"`]|['\"`]sk-[A-Za-z0-9]{20,}['\"`]|['\"`](?:ghp|gho|ghu|ghs)_[A-Za-z0-9]{30,}['\"`]",
+        "description": "Une cle API, token ou secret hardcode dans le code source est expose des qu'il est commit. Toute personne ayant acces au repo (ou au bundle prod) peut l'extraire et abuser des credentials. Cas reel : OpenAI revoque automatiquement les sk-... detectees sur GitHub public.",
+        "fix": "Stocker dans `src/environments/environment.ts` (ignore par .gitignore) ou via variables d'env injectees au build (`ng build --configuration=production` + `fileReplacements`). Pour les secrets serveur, ne jamais les inclure cote client : passer par un backend proxy. Si la cle a deja ete commit, il faut la revoquer immediatement (rotate) puis purger l'historique git.",
+        "extensions": [".ts", ".js", ".html", ".json"],
+        "weight": 12,
+        "exclude_pattern": r"\.spec\.ts$|node_modules|\.example\.|\.template\.",
+    },
+    "timer_leak": {
+        "id": "JS001",
+        "name": "setTimeout/setInterval sans cleanup",
+        "category": "Memory Leaks",
+        "severity": "IMPORTANT",
+        "pattern": r"\b(?:setTimeout|setInterval)\s*\(",
+        "anti_pattern": r"\b(?:clearTimeout|clearInterval|takeUntilDestroyed|takeUntil|ngOnDestroy)\b",
+        "description": "Un `setTimeout` ou surtout `setInterval` lance dans un composant qui n'est jamais clear continue a tourner apres la destruction du composant. Sur une SPA Angular, accumuler des intervalles oublies = memory leak progressif + appels reseau fantomes. Different de RxJS subscriptions (gere par MEM001).",
+        "fix": "Garder la reference (`this.timerId = setTimeout(...)`) et appeler `clearTimeout(this.timerId)` dans `ngOnDestroy()`. Ou mieux : utiliser `interval(N).pipe(takeUntilDestroyed())` (Angular 16+) qui s'auto-nettoie.",
+        "extensions": [".ts"],
+        "weight": 6,
+        "exclude_pattern": r"\.spec\.ts$",
+    },
 }
 
 SEVERITY_ORDER = {"CRITIQUE": 0, "IMPORTANT": 1, "MINEUR": 2}
@@ -199,9 +224,10 @@ def check_rule_in_file(file_path: Path, rule: dict) -> list[dict]:
     except Exception:
         return problems
 
-    # Règle spéciale pour memory_leak : chercher subscribe sans anti-pattern DANS LE MEME FICHIER
-    # On ignore les commentaires pour éviter les faux positifs
-    if rule["id"] == "MEM001":
+    # Generic anti_pattern: si la règle a un anti_pattern, on cherche une protection
+    # au niveau fichier. Si trouvée, on n'émet aucun problème pour ce fichier.
+    # Cas usage : MEM001 (subscribe sans takeUntil), JS001 (setTimeout sans clearTimeout).
+    if "anti_pattern" in rule:
         code_only_lines = [
             l for l in lines
             if not l.strip().startswith("//") and not l.strip().startswith("*") and not l.strip().startswith("/*")
@@ -209,7 +235,7 @@ def check_rule_in_file(file_path: Path, rule: dict) -> list[dict]:
         code_only = "\n".join(code_only_lines)
         file_has_protection = bool(re.search(rule["anti_pattern"], code_only, re.IGNORECASE))
         if file_has_protection:
-            return problems  # Le fichier a au moins un mécanisme de protection
+            return problems
 
     for i, line in enumerate(lines, start=1):
         if re.search(rule["pattern"], line):
