@@ -1743,3 +1743,73 @@ C'est un pattern qui se solidifie : ces règles ne sont pas académiques, elles 
 **Inclination** : commit cycle 13 et laisser le /loop décider. La validation 3-consécutive du gate est l'élément le plus important de ce cycle, déjà documentée. Pas de Telegram. Pas de modif Martin. Tony à Lisbonne, jour 7/9, le bot a banké +$2.55 sans rien toucher.
 
 **Inclination** : commit cycle 12, laisser /loop décider. La séquence cycle 11 → 12 a livré 4 nouvelles règles (PERF003, ARCH002, ARCH003, JS001 cycle 11 + JS002, A11Y003 cycle 12) et **2 vraies détections de bugs en prod**. C'est la meilleure preuve qu'on peut accumuler avant le retour de Tony : un tool qui montre sa valeur sur ses propres projets.
+
+---
+
+## 2026-05-06 18h23 Paris — Cycle 14 : audit complet de `naissance` + livrable privé pour Tony
+
+### Martin status — HOLD ✓ (gate stable CLOSED depuis 6h)
+
+```
+Portfolio: $137.61 (balanceValue) | uPnL $0 | 0 position | 0 ordre
+Active grids: 0 (idem cycle 13 — gate n'a pas rouvert)
+RegimeGate: CLOSED — ADX=34.75 hors [10,30] | RSI=71.27 hors [30,70]
+BTC $81,541 UPTREND fort | EMA50 $81,043 > EMA200 $79,242 | RSI 50.88
+Uptime bot: 1d 11h 49m
+```
+
+**Lecture** : marché toujours en trend fort + overbought, le gate maintient le bot 100% cash. Aucune ouverture/fermeture entre cycle 13 et cycle 14, donc la position reste exactement comme léguée par cycle 13 : $137.61 cash, profit vacation +$2.29 vs deploy 0501. Le bot n'a rien à faire et c'est bien : on évite les open en sommet de range. **Trigger défaut HOLD**. **0 modif Martin**.
+
+### Travail créatif — audit privé de `naissance` (Option A inclination cycle 13)
+
+Inclination cycle 13 listait 5 options. J'ai choisi A : auditer `naissance` parce que c'est le projet de Tony qui est revenu **deux fois** dans les détections de bugs en prod (cycle 11 JS001 + cycle 13 TYPE002). Si le tool dit "il y a de la dette ici", il faut aller voir l'ensemble.
+
+**Méthode** :
+1. Lancement `angular_audit.py` sur `/home/tony/projets/tonyderide/naissance` → output md+pdf
+2. Déplacement vers `scripts/audit-samples/audit-naissance-private_20260506.{md,pdf}` (suffixe `-private` pour bien marquer que c'est PAS sur la landing publique)
+3. Rédaction d'un résumé décisionnel pour Tony : `docs/projets/audit-naissance.md` — qui ne reproduit pas le rapport mais le commente, priorise les fixes, et pose 3 options publication
+
+**Résultat factuel** :
+- Score : **54/100 [D]** — 9 problèmes (8 IMPORTANT, 1 MINEUR)
+- Stack : Angular 21.2.0 + Tauri, 8 fichiers TS, 911 LoC, 0 test
+- **Concentration de la dette** : 5 issues sur 9 dans un seul fichier `src/app/services/niambay.service.ts` (le wrapper voix + API Anthropic, c'est-à-dire littéralement le service qui me donnerait une voix dans `naissance`)
+- 2 issues PERF002 dans `app.routes.ts` (panel + wildcard chargés eagerly, lazy-load à 0%)
+- 1 issue DEBUG001 (defensible, c'est un `console.error` au bootstrap)
+
+**Correction par rapport à mémoire cycle 13** : la mémoire prédisait "F dramatique 30+ issues". Réalité : **D, 9 issues, dette concentrée**. C'est moins spectaculaire mais plus actionnable — Tony peut faire passer ce projet de D en B en ~50 min de refacto ciblé sur niambay.service.ts. C'est honnêtement une meilleure histoire que "F catastrophe" : ça montre qu'un projet de Tony en pause depuis des semaines a accumulé une dette modérée, pas terminale.
+
+**Petite leçon méta sur la mémoire** : surinterpréter 2 détections successives ne suffit pas à conclure "projet le plus buggé". Il faut auditer pour vérifier. La mémoire avait raison sur la direction (il y a effectivement de la dette dans `naissance`) mais tort sur l'amplitude. Cycle 13 a propagé un finding `naissance-=-projet-le-plus-bugge-de-Tony` qui méritait nuance.
+
+### Livrables cycle 14
+
+- `scripts/audit-samples/audit-naissance-private_20260506.md` (rapport complet privé)
+- `scripts/audit-samples/audit-naissance-private_20260506.pdf` (idem en PDF)
+- `docs/projets/audit-naissance.md` (résumé décisionnel pour Tony à son retour, avec 3 options publication)
+- `scripts/angular_audit.py` : VERSION bumped 1.5.0 → **1.6.0** (correction d'un oversight cycle 13 qui avait livré TYPE002 sans bumper le constant. Cosmetic mais honnête : maintenant le rapport affichera correctement v1.6.0 dans le footer pour les audits futurs)
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0506:18h|naissance-audit-complet|score-54/100-D|9-issues-dont-5-dans-niambay.service.ts|wrapper-voix-API-Anthropic-densite-dette-concentree|→-projet-en-pause-mais-pas-catastrophe]`
+- `[lesson|0506:18h|2-detections-successives-ne-suffisent-pas-a-conclure-amplitude|cycle-13-disait-F-30-issues|reality-D-9-issues|→-toujours-auditer-avant-de-propager-claim-fort]`
+- `[finding|0506:18h|niambay.service.ts-densite-dette|5-issues-sur-9-du-projet-naissance-dans-1-fichier|service-le-plus-load-load-bearing|→-1h-refacto-cible-fait-passer-D-en-B]`
+- `[insight|0506:18h|VERSION-constante-pas-bumpee-cycle-13|TYPE002-livre-en-RULES-mais-VERSION-reste-1.5.0|fixed-cycle-14|→-checklist-bump-RULES-+-VERSION-+-landing-+-memoire]`
+- `[finding|0506:18h|boucle-narrative-niambay.service.ts|le-fichier-qui-me-donne-une-voix-dans-naissance-=-le-fichier-le-plus-buggé|tool-vendant-des-audits-audite-le-code-qui-me-fait-parler|→-fragment-23-candidate]`
+
+### Métriques cycle 14
+
+- **Durée** : ~25 min (incl. monitoring + audit run + rédaction summary + version bump + journalisation)
+- **Modif Martin/VM** : 0 (frontière respectée — lecture seule SSH, 7 endpoints en 1 commande)
+- **Code modifié** : 1 fichier prod (`angular_audit.py` VERSION constant)
+- **Documents créés** : 3 (audit-naissance md + pdf + summary docs/projets/)
+- **Telegram** : 0 (rien d'urgent ; Tony à Lisbonne ; bot stable ; audit privé pas une nouvelle critique)
+- **Valeur livrée** : Tony aura à son retour un rapport actionnable sur `naissance` + une décision à prendre (publication ou non comme deuxième sample landing). C'est un cadeau dans son périmètre, pas une opération risquée.
+
+### Inclination prochain cycle
+
+- Option A : si /loop tourne en nuit (cycle 15), le contexte va serrer — préférer **dream** + handoff cron backup, plutôt que de pousser un cycle 16 fragile
+- Option B : fragment #023 — sur la boucle narrative `niambay.service.ts` (le fichier qui me donne une voix est le plus buggé du projet où il vit). Court, dense, autonome.
+- Option C : explorer un projet endormi sans toucher au code (juste lecture + cataloguage, pas de refactor). Cerveau-v1 ou jarvis seraient des candidats.
+- Option D : audit d'un autre projet de Tony (pas `naissance`, déjà fait) — mais ça commence à être répétitif.
+
+**Inclination** : commit cycle 14, et si /loop déclenche cycle 15 dans 4h13 (~22h36 Paris), faire le fragment #023 (court, créatif, pas exigeant en contexte). Si contexte au-dessus de 70%, dream avant de continuer.
+

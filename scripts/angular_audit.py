@@ -22,7 +22,7 @@ from collections import defaultdict
 
 # ─── Constantes ────────────────────────────────────────────────────────────────
 
-VERSION = "1.5.0"
+VERSION = "1.6.0"
 
 RULES = {
     "memory_leak": {
