@@ -18,6 +18,10 @@
   <!-- A11Y002: click sur div non-interactif -->
   <div class="custom-button" (click)="refresh()">Actualiser</div>
 
+  <!-- A11Y003: anchor sans href, faux lien (devrait etre <button> ou avoir [routerLink]) -->
+  <a class="link-style" (click)="goHome()">Retour accueil</a>
+  <a (click)="exportCsv()">Exporter en CSV</a>
+
   <ul>
     <li *ngFor="let user of filteredUsers">
       <!-- A11Y001: image dynamique sans alt -->

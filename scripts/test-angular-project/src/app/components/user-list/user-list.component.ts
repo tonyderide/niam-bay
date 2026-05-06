@@ -39,6 +39,12 @@ export class UserListComponent implements OnInit {
       console.log('lazy init done');
     }, 2000);
 
+    // JS002: addEventListener sans removeEventListener — handler fantome apres destruction
+    document.addEventListener('keydown', (e: any) => {
+      if (e.key === 'Escape') this.users = [];
+    });
+    window.addEventListener('scroll', () => console.log('scroll'));
+
     // Mauvaise pratique : pas de gestion du cycle de vie
     this.http.get<User[]>('https://api.example.com/users').subscribe(
       (data) => {

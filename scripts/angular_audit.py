@@ -22,7 +22,7 @@ from collections import defaultdict
 
 # ─── Constantes ────────────────────────────────────────────────────────────────
 
-VERSION = "1.4.0"
+VERSION = "1.5.0"
 
 RULES = {
     "memory_leak": {
@@ -185,6 +185,30 @@ RULES = {
         "extensions": [".ts"],
         "weight": 6,
         "exclude_pattern": r"\.spec\.ts$",
+    },
+    "event_listener_leak": {
+        "id": "JS002",
+        "name": "addEventListener sans removeEventListener",
+        "category": "Memory Leaks",
+        "severity": "IMPORTANT",
+        "pattern": r"\.addEventListener\s*\(",
+        "anti_pattern": r"\.removeEventListener|\btakeUntilDestroyed\b|\btakeUntil\b|\bngOnDestroy\b|\bRenderer2\b|@HostListener",
+        "description": "Un `addEventListener` (sur document, window ou un element natif via ElementRef) sans `removeEventListener` correspondant continue a recevoir les events apres destruction du composant. Memory leak + handlers fantomes qui s'accumulent a chaque navigation. Pattern frequent quand on echappe Angular pour un cas natif (drag&drop, scroll global, raccourcis clavier).",
+        "fix": "1) Preferer `@HostListener('event') method() {}` qui auto-cleanup avec le composant. 2) Pour des elements arbitraires, utiliser `Renderer2.listen(target, event, handler)` qui retourne une fonction de cleanup a stocker et appeler dans `ngOnDestroy()`. 3) Si `addEventListener` brut indispensable (ex: Worker, SSE), garder la reference du handler et appeler `removeEventListener(event, handler)` dans `ngOnDestroy`.",
+        "extensions": [".ts"],
+        "weight": 5,
+        "exclude_pattern": r"\.spec\.ts$",
+    },
+    "anchor_no_href": {
+        "id": "A11Y003",
+        "name": "Anchor <a> sans href",
+        "category": "Accessibilite",
+        "severity": "IMPORTANT",
+        "pattern": r"<a\b(?:(?!\bhref\s*=|\[href\]|\[routerLink\]|\brouterLink\b)[^>])*\(click\)\s*=",
+        "description": "Un `<a>` avec `(click)` mais sans `href` (ni `[href]`, ni `[routerLink]`) est un faux lien : pas focusable au clavier, pas activable avec Entree, mauvais SEO, n'apparait pas dans la liste des liens du screenreader. Anti-pattern accessibilite courant : un bouton style en lien.",
+        "fix": "Soit ajouter un `href` reel : `<a [routerLink]=\"['/path']\">` pour le router Angular, ou `<a [href]=\"url\">` pour un lien externe. Soit utiliser un vrai `<button>` avec un style 'lien' via CSS (souligne, couleur primaire). Pour navigation = anchor avec href ; pour action = button.",
+        "extensions": [".html"],
+        "weight": 4,
     },
 }
 

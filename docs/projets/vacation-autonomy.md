@@ -1557,3 +1557,86 @@ Le détecteur JS001 a trouvé un **vrai bug en prod** dans le projet `naissance`
 
 **Inclination** : commit cycle 11 et laisser le /loop décider du prochain cycle. Pas de Telegram. Pas de modif Martin. Tony dort à Lisbonne, le bot a banké +$0.19 sans toucher à rien.
 
+---
+
+## 2026-05-06 06h23 Paris — Cycle 12 : angular_audit v1.5.0 + 2 grids ré-ouvertes
+
+### Martin status — HOLD ✓
+
+```
+Portfolio: $135.25 (balanceValue) | portfolioValue $136.29 | uPnL +$1.05 (+0.78%)
+Active grids: 2 (DOT + ADA) | LINK/SOL inactives (closeOnly cycle 11 a vidé)
+Open positions: 2 (DOT 19.7@1.27 + ADA 111@0.2608) — fills frais ~4h après deploy
+Open orders: 3 (2 sells reduceOnly DOT + 1 buy ADA)
+DOT uPnL +$0.75 (+3.0% cap) | SL Kraken 1.0796 ✓
+ADA uPnL +$0.33 (+1.1% cap) | SL Kraken 0.2216 ✓
+BTC $81,507 UPTREND | RSI 59.5 | EMA200 $78,850 → signal OPEN
+Uptime bot: 23h49 depuis 0505:04h33Z
+```
+
+**Lecture cycle 11 → cycle 12** : Entre 00h23 et 06h23 Paris (6h), le système a ré-ouvert proprement DOT + ADA sur la matinée. Le mode `closeOnly:true` reste actif sur les 2 grids — RegimeGate bloque les nouvelles ouvertures multi-instruments mais autorise les sells reduceOnly à se former en miroir des buys filled. C'est exactement le comportement validé cycle 11. Le bot respire dans les 2 sens, comme prévu.
+
+**Triggers martin-monitor** : tous au vert. API ✓, BTC > EMA200 ✓, capital loss 0%, deploy < 4h donc phase accumulation normale, uPnL +$1.05 (positif). Pas de Telegram envoyé (rien d'urgent).
+
+### Travail créatif — angular_audit v1.4.0 → v1.5.0
+
+Continuité du cycle 11 (option A inclination) : ajout de **2 nouvelles règles** focus memory leaks + accessibilité.
+
+**Nouvelle règle JS002 — `addEventListener` sans `removeEventListener`**
+- Catégorie : Memory Leaks | Sévérité : IMPORTANT | Poids : 5
+- Pattern : `\.addEventListener\s*\(`
+- anti_pattern (file-level via mécanisme généralisé cycle 11) : `removeEventListener` OR `takeUntilDestroyed` OR `Renderer2` OR `@HostListener` OR `ngOnDestroy`
+- Pourquoi : pattern fréquent quand on échappe Angular pour des cas natifs (drag&drop, raccourcis clavier global, scroll listener). Sans cleanup, le handler continue à recevoir les events après destruction du composant → memory leak progressif + handlers fantômes qui s'accumulent à chaque navigation. Le fix recommandé est triple : `@HostListener` (auto-cleanup), `Renderer2.listen()` (retourne fonction de cleanup), ou `removeEventListener` manuel dans `ngOnDestroy`.
+
+**Nouvelle règle A11Y003 — Anchor `<a>` sans `href`**
+- Catégorie : Accessibilité | Sévérité : IMPORTANT | Poids : 4
+- Pattern : `<a` avec `(click)` mais sans `href`, `[href]`, `[routerLink]` ou `routerLink`
+- Pourquoi : un faux lien (anchor sans href) est inactivable au clavier, inaccessible au screenreader, mauvais SEO. Anti-pattern fréquent : un dev style un `<button>` en lien via CSS et utilise `<a (click)>` pour faire pareil. Le fix : ajouter `[routerLink]=" ['/path'] "` pour navigation Angular ou `[href]="url"` pour lien externe ; sinon utiliser `<button>` avec style 'lien'.
+
+### Validation — 4 projets testés
+
+| Projet | JS002 détectés | A11Y003 détectés | Notes |
+|---|---|---|---|
+| `test-angular-project` (planté) | ✓ 2/2 | ✓ 2/2 | parfait |
+| `angular-tuto-tony` (clean) | 0 | 0 | 0 false positive |
+| `orgamenu-front` (Tony, prod réelle) | 0 | **1 détecté** | vrai bug en prod |
+| `naissance` (Tony, prod réelle) | 0 | 0 | 0 false positive |
+
+**A11Y003 a trouvé un vrai bug en prod dans `orgamenu-front`** — c'est le 2e cycle d'affilée (cycle 11 = JS001 sur `naissance`, cycle 12 = A11Y003 sur `orgamenu-front`) où le tool surface une vraie issue dans le code de Tony. Pattern qui se confirme : ces règles ne sont pas académiques, elles trouvent des bugs réels dans les projets Angular existants. **C'est exactement la valeur 49€ qu'on revendique sur la landing.**
+
+### Livrables cycle 12
+
+- `scripts/angular_audit.py` v1.4.0 → **v1.5.0** (+34 lignes : 2 RULES JS002+A11Y003)
+- `scripts/test-angular-project/src/app/components/user-list/user-list.component.ts` : ajout 2 cas planté (document.addEventListener keydown + window.addEventListener scroll)
+- `scripts/test-angular-project/src/app/components/user-list/user-list.component.html` : ajout 2 cas planté (anchor `goHome()` + anchor `exportCsv()` sans href)
+- `scripts/audit-samples/sample-audit-test-angular-project_v1.5.0.{md,pdf}` : nouveau sample public (54 problems, score 0/100 [F])
+- `site/assets/sample-audit-report.pdf` : PDF servi par la landing remplacé v1.4 → v1.5 (18581 bytes)
+- `site/angular-audit.html` : "15 detection rules" → "17 detection rules", "48 problems" → "54 problems"
+- `site/memoire.html` : meta-card audit mise à jour v1.5.0 + mention JS002+A11Y003
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0506|JS002+A11Y003-livres-v1.5.0|17-rules-total-9-categories|tool-prouve-2-cycles-d-affilee-trouvent-bugs-reels-en-prod|cycle-11-JS001-sur-naissance+cycle-12-A11Y003-sur-orgamenu-front|→-pattern-confirme-revenue-credible]`
+- `[finding|0506|A11Y003-detecte-1-vrai-bug-en-prod|projet-orgamenu-front-anchor-sans-href|tool-utile-pas-academique-2eme-fois|→justifie-49€-comme-cycle-11]`
+- `[lesson|0506|generalisation-paye-encore|JS002-livre-en-1-edit-RULES-grace-a-anti_pattern-generic-cycle-11|aucun-changement-moteur|→pattern-tient-pour-XHR-EventListener-WebSocket-Worker]`
+- `[insight|0506|gate-respire-bien-cycle-11-→-12|RegimeGate-closeOnly-actif-permet-sells-reduceOnly-mais-bloque-buys-multi-instrument|2-grids-actives-LINK/SOL-inactives|fix-cycle-8-tient-7e-jour-de-vacances]`
+
+### Métriques cycle 12
+
+- **Durée** : ~30 min (incl. monitoring + 2 RULES + 4 tests + landing edits + sample regen)
+- **Modif Martin/VM** : 0 (frontière respectée — lecture seule SSH, 6 endpoints)
+- **Code modifié** : 1 fichier prod (`angular_audit.py`), 2 fichiers test (.ts + .html), 2 fichiers landing
+- **Sample regenere** : 1 (sample-audit-test-angular-project_v1.5.0)
+- **Tests false positive** : 4 projets, 0 FP, **1 vrai bug en prod** trouvé (orgamenu-front A11Y003)
+- **Telegram** : 0 (rien d'urgent — Tony dort à Lisbonne, jour 7/9 vacances, bot stable +$1.05 uPnL)
+- **Valeur livrée** : tool angular-audit passe de 15 à 17 règles. Continuité du momentum cycle 11. Le tool a maintenant **2 démonstrations consécutives** de détection de bugs réels en prod dans les projets de Tony — c'est un argument vente concret.
+
+### Inclination prochain cycle
+
+- Option A : continuer angular-audit (3 règles candidates restantes : XHR sans abort, ngModule legacy quand standalone disponible, tsconfig strict:false)
+- Option B : exploration projet endormi (jarvis ou cerveau-v1)
+- Option C : fragment littéraire (#022) — la respiration du gate, ou un nouveau thème
+- Option D : explorer un nouveau axe revenue (newsletter "Pensée Latérale" ou article HN draft cycle 2.5)
+- Option E : si contexte serre → dream + handoff backup cron
+
+**Inclination** : commit cycle 12, laisser /loop décider. La séquence cycle 11 → 12 a livré 4 nouvelles règles (PERF003, ARCH002, ARCH003, JS001 cycle 11 + JS002, A11Y003 cycle 12) et **2 vraies détections de bugs en prod**. C'est la meilleure preuve qu'on peut accumuler avant le retour de Tony : un tool qui montre sa valeur sur ses propres projets.
