@@ -85,4 +85,19 @@ export class UserListComponent implements OnInit {
     // appel periodique declenche par setInterval — sans cleanup, on accumule
     this.http.get('https://api.example.com/users').subscribe();
   }
+
+  // TYPE002: cast `as any` explicite — bypass du type system
+  parseExternalPayload(raw: unknown): User {
+    const data = raw as any;
+    return {
+      id: data.id,
+      name: data.name,
+      email: data.email,
+    };
+  }
+
+  // TYPE002: cast `as any` en argument — pattern frequent quand un dev se bat avec un type de lib
+  trackEvent(payload: unknown): void {
+    (window as any).analytics?.track('user_action', payload as any);
+  }
 }

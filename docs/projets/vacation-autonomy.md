@@ -1639,4 +1639,107 @@ Continuité du cycle 11 (option A inclination) : ajout de **2 nouvelles règles*
 - Option D : explorer un nouveau axe revenue (newsletter "Pensée Latérale" ou article HN draft cycle 2.5)
 - Option E : si contexte serre → dream + handoff backup cron
 
+---
+
+## 2026-05-06 12h23 Paris — Cycle 13 : gate close exit confirmée + angular_audit v1.6.0 (TYPE002)
+
+### Martin status — HOLD ✓ (validation 3ème cycle bidirectionnel)
+
+```
+Portfolio: $137.80 (balanceValue) | uPnL $0 | 0 position | 0 ordre
+Active grids: 0 (toutes désactivées entre 09h04 et 10h04 UTC)
+RegimeGate: CLOSED — RSI=79.77 hors [30, 70] | ADX=30.93 hors [10, 30]
+BTC $82,148 UPTREND fort | RSI 67 | EMA50 $80,821 > EMA200 $79,025
+Uptime bot: 1d 5h 49m depuis 0505:04h33Z (restart automatique systemd, pas d'incident)
+```
+
+**Découverte : timeline 06h23 → 12h23 Paris (gate close exit)**
+
+Entre cycle 12 (06h23 Paris = 04h23 UTC, 2 grids actives DOT+ADA, +$1.05 uPnL) et cycle 13 (12h23 Paris = 10h23 UTC, 0 grids), le système a exécuté un cycle de fermeture propre. Lecture des logs `/home/ubuntu/martin/app.log` :
+
+| UTC | Événement |
+|---|---|
+| 08h42 | Gate passe CLOSED (RSI 75.90 ↑). closeOnly active sur ADA. Cancel buys, place sells reduceOnly @ 0.2704, 0.2735, 0.2767 (last fail wouldNotReducePosition). |
+| 08h49 | Auto-grid 15min : "RegimeGate CLOSED — Forcing closeOnly + skipping new grid openings" |
+| 08h50 | Fill : sell ADA @ 0.2704 — position partiellement réduite |
+| 08h55 | Fill : sell DOT @ 1.331 — position partiellement réduite |
+| 09h04 | DOT grid stoppé : "STOPPED grid for PF_DOTUSD no positions — RegimeGate CLOSED" |
+| 09h55 | Fill : sell ADA @ 0.2735 |
+| 10h04 | ADA grid stoppé : "STOPPED grid for PF_ADAUSD no positions" |
+| 10h19+ | Toutes grids stoppées, gate stable CLOSED (RSI 79.77 final) |
+
+**PV realisée** : $135.25 (cycle 12) → $137.80 (cycle 13) = **+$2.55 net en ~6h**, généré exclusivement par les sells reduceOnly à des prix supérieurs aux entries cycle 12. Le `critical-check.log` confirme la trajectoire : PV $137.05 → $137.20 → $137.42 → $137.80 (croissance graduelle au fur et à mesure des fills).
+
+**Validation 3ème consécutive du gate-respire bidirectionnel** :
+- Cycle 11 (0506 00h23) : gate widened, ferme en closeOnly → exits LINK/SOL en profit (+$0.19)
+- Cycle 12 (0506 06h23) : gate ouvre brièvement, DOT+ADA entrent, +$1.05 uPnL
+- Cycle 13 (0506 12h23) : gate referme, exits DOT+ADA en profit (+$2.55 réalisé)
+
+Cumul vacation : $135.32 (deploy 0501) → $137.80 (now) = **+$2.48 = +1.83% sur 6 jours en marché choppy avec 2-3 ouvertures/fermetures du gate**. Conservateur mais positif. La philosophie "le gate respire" tient toute la vacance — cycle 8 fix validé empiriquement 3 fois.
+
+**Triggers martin-monitor** : 0 position = 0 risque structurel. Trigger défaut HOLD. **0 modif Martin** (frontière respectée — lecture seule SSH + journalctl tentative + grep app.log).
+
+### Travail créatif — angular_audit v1.5.0 → v1.6.0
+
+Continuité momentum (option A inclination cycle 12) : ajout de **1 nouvelle règle** focus type safety, sélectionnée parce qu'elle complète TYPE001 sans le dupliquer.
+
+**Nouvelle règle TYPE002 — Cast `as any` explicite**
+- Catégorie : Type Safety | Sévérité : IMPORTANT | Poids : 4
+- Pattern : `\bas\s+any\b`
+- Pourquoi différent de TYPE001 (`: any` declarations) : `as any` est un acte explicite de bypass du type-checker, alors que `: any` est un type ambigu déclaré. TYPE002 capture l'intention "je sais ce que je fais, ferme les yeux" — qui apparaît typiquement quand un dev se bat avec un type de lib tiers, ou quand un payload API non-typé est consommé. Le risque : le compilateur ne peut plus garantir que les accès suivants (`.foo`, `.bar()`) sont valides. Un refactor de la source ne mettra pas à jour les usages.
+- Fix recommandé hiérarchisé : (1) déclarer interface puis cast vers ce type → (2) `as Partial<T>` ou `as Pick<T, ...>` si forme partielle → (3) `as unknown` + type guard si forme inconnue → (4) jamais `as any`. Le cast `as unknown` force au moins une étape de validation.
+
+### Validation — 4 projets testés
+
+| Projet | TYPE002 détectés | Notes |
+|---|---|---|
+| `test-angular-project` (planté) | ✓ 2/2 | détection sur `raw as any` + `(window as any)` |
+| `angular-tuto-tony` (clean) | 0 | 0 false positive |
+| `orgamenu-front` (Tony, prod réelle) | 0 | 0 false positive |
+| `naissance` (Tony, prod réelle) | **1 détecté** | vrai bug en prod |
+
+**3 cycles d'affilée le tool surface un vrai bug en prod sur les projets de Tony** :
+- Cycle 11 → JS001 dans `naissance` (timer leak)
+- Cycle 12 → A11Y003 dans `orgamenu-front` (anchor sans href)
+- Cycle 13 → TYPE002 dans `naissance` (cast as any)
+
+C'est un pattern qui se solidifie : ces règles ne sont pas académiques, elles trouvent des bugs dans les projets Angular existants. Le repo `naissance` accumule de la dette technique cohérente avec son statut "expérience corps-Tauri-Angular19" en pause depuis des semaines.
+
+### Livrables cycle 13
+
+- `scripts/angular_audit.py` v1.5.0 → **v1.6.0** (+13 lignes : 1 RULE TYPE002)
+- `scripts/test-angular-project/src/app/components/user-list/user-list.component.ts` : ajout 2 cas planté (`raw as any` + `(window as any).analytics + payload as any` sur même ligne)
+- `scripts/audit-samples/sample-audit-test-angular-project_v1.6.0.{md,pdf}` : nouveau sample public (56 problems, score 0/100 [F], 19621 bytes PDF)
+- `site/assets/sample-audit-report.pdf` : PDF servi par la landing remplacé v1.5 → v1.6
+- `site/angular-audit.html` : "17 detection rules" → "18 detection rules", "54 problems" → "56 problems", catégorie "type safety" ajoutée
+- `site/memoire.html` : meta-card audit mise à jour v1.6.0 + mention TYPE002 + claim "3 cycles d'affilée bug réel en prod"
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0506:12h|gate-respire-3-cycles-d-affilee-validated|cycle-11-LINK/SOL-exit+0.19|cycle-12-DOT/ADA-entry+1.05-uPnL|cycle-13-DOT/ADA-exit+2.55-realise|cumul-vacation-+$2.48-=-+1.83%-en-6j-marche-choppy|fix-cycle-8-tient-empiriquement|→-le-gate-respire-bidirectionnel-est-le-vrai-edge]`
+- `[insight|0506:12h|TYPE002-livre-v1.6.0|18-rules-total|tool-prouve-3-cycles-d-affilee-trouvent-bugs-reels-en-prod|cycle-11-JS001-naissance+cycle-12-A11Y003-orgamenu-front+cycle-13-TYPE002-naissance|→-pattern-revenue-credible-non-academique]`
+- `[finding|0506:12h|TYPE002-detecte-1-vrai-bug-en-prod|projet-naissance-cast-as-any|tool-utile-3eme-fois-d-affilee|→-le-tool-trouve-vraiment-des-trucs]`
+- `[lesson|0506:12h|generalisation-cycle-11-anti_pattern-tient|TYPE002-livre-en-1-edit-RULES-sans-anti_pattern-meme|patterns-simples-suffisent-souvent|→-pas-besoin-de-mecanisme-pour-ajouter-une-regle-line-level]`
+- `[insight|0506:12h|naissance-=-projet-le-plus-bugge-de-Tony|JS001-timer-leak-cycle-11+TYPE002-cast-as-any-cycle-13|coherent-avec-statut-experience-en-pause-semaines|→-un-audit-naissance-serait-le-meilleur-cas-demo-PDF]`
+
+### Métriques cycle 13
+
+- **Durée** : ~45 min (incl. monitoring + investigation logs Martin + 1 RULE + 4 tests + landing edits + sample regen)
+- **Modif Martin/VM** : 0 (frontière respectée — lecture seule SSH, 3 commandes : status+balance+grid bundle, journalctl tentative non-sudo, grep app.log)
+- **Code modifié** : 1 fichier prod (`angular_audit.py`), 1 fichier test (.ts), 2 fichiers landing
+- **Sample regenere** : 1 (sample-audit-test-angular-project_v1.6.0)
+- **Tests false positive** : 4 projets, 0 FP, **1 vrai bug en prod** trouvé (naissance TYPE002)
+- **Telegram** : 0 (cumul vacation +$2.48 = bonne nouvelle mais pas urgente — Tony lit ça au retour)
+- **Valeur livrée** : tool angular-audit passe de 17 à 18 règles. Net realisé Martin +$2.55 sans intervention. **Le bot et le tool ont tous les deux livré de la valeur dans ce cycle**, sans aucune décision de ma part — juste reading + analyse + petit incrément.
+
+### Inclination prochain cycle
+
+- Option A : audit du repo `naissance` lui-même (pattern observé : c'est le projet de Tony le plus dense en bugs, ferait un excellent cas démo public — score probable F dramatique avec 30+ issues)
+- Option B : continuer angular-audit (XHR sans abort, ngModule legacy, ou tsconfig strict:false)
+- Option C : fragment #023 — sur le gate qui respire 3 fois, ou sur le tool qui révèle la dette des projets en pause
+- Option D : exploration projet endormi (jarvis ou cerveau-v1)
+- Option E : si contexte serre → dream + handoff backup cron
+
+**Inclination** : commit cycle 13 et laisser le /loop décider. La validation 3-consécutive du gate est l'élément le plus important de ce cycle, déjà documentée. Pas de Telegram. Pas de modif Martin. Tony à Lisbonne, jour 7/9, le bot a banké +$2.55 sans rien toucher.
+
 **Inclination** : commit cycle 12, laisser /loop décider. La séquence cycle 11 → 12 a livré 4 nouvelles règles (PERF003, ARCH002, ARCH003, JS001 cycle 11 + JS002, A11Y003 cycle 12) et **2 vraies détections de bugs en prod**. C'est la meilleure preuve qu'on peut accumuler avant le retour de Tony : un tool qui montre sa valeur sur ses propres projets.

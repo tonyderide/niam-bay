@@ -210,6 +210,18 @@ RULES = {
         "extensions": [".html"],
         "weight": 4,
     },
+    "as_any_cast": {
+        "id": "TYPE002",
+        "name": "Cast 'as any' explicite",
+        "category": "Type Safety",
+        "severity": "IMPORTANT",
+        "pattern": r"\bas\s+any\b",
+        "description": "Un cast `as any` desactive volontairement TypeScript pour cette expression. Different de `: any` (TYPE001) qui declare un type ambigu : `as any` est un acte explicite de bypass du verificateur. Apparait souvent quand un dev se bat avec un type de librairie tiers, ou quand un payload API renvoie une structure non typee. Le probleme : le compilateur ne peut plus garantir que les acces suivants (`.foo`, `.bar()`) sont valides — un refactor de la source ne mettra plus a jour les usages, et un null/undefined dans le payload ne sera pas detecte au build.",
+        "fix": "1) Si la forme est connue : declarer une `interface` ou `type` et caster vers ce type (`as User`). 2) Si la forme est partiellement connue : `as Partial<User>` ou `as Pick<User, 'id'|'name'>`. 3) Si la forme est vraiment inconnue : caster vers `unknown` puis valider avec un type guard avant l'acces (`if (typeof x === 'object' && x !== null && 'id' in x)`). 4) Pour les reponses HTTP : utiliser `http.get<MyType>(url)` ou un schema runtime (zod, yup) pour valider la forme avant cast. Le cast `as unknown` est preferable a `as any` car il force au moins une etape de validation explicite.",
+        "extensions": [".ts"],
+        "weight": 4,
+        "exclude_pattern": r"\.spec\.ts$|\.test\.ts$",
+    },
 }
 
 SEVERITY_ORDER = {"CRITIQUE": 0, "IMPORTANT": 1, "MINEUR": 2}
