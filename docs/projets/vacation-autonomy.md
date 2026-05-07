@@ -2142,3 +2142,92 @@ Cycle 17 avait priorisé **dream** pour cycle 18 : 17 cycles depuis le dernier d
 
 ---
 
+## 2026-05-08 00h23 Paris — Cycle 19 : polish HN draft "le-repo-est-le-produit"
+
+### Martin status — HOLD ✓ (gate stable CLOSED, jour 8/9, 9e cycle consécutif idle)
+
+```
+Portfolio: $137.37 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 2d 17h 49m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $79,893.60 UPTREND | EMA50 $80,754 > EMA200 $79,606.62 | RSI 36.83 (signal WAIT)
+Régime: OK fragile — cushion EMA200 +0.36% (~$287), tient mais marginal
+Dérive cycle 18 → 19 : -$0.33 (négligeable, fees/funding ~6h)
+Cumul vacation : $135.32 deploy 0501 → $137.37 = +$2.05 = +1.51% sur 7.2j
+```
+
+**Lecture** : RSI BTC remonte légèrement vs cycle 18 (31.32 → 36.83), marché toujours en consolidation au-dessus EMA200. Cushion mince mais BTC pas testé EMA200 → gate reste correctement CLOSED. **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only, 8 endpoints).
+
+### Travail créatif — polish HN draft (Option D inclination cycle 18)
+
+Cycle 18 avait priorisé **Option D** pour cycle 19 si Martin stable : polish léger du draft `docs/projets/le-repo-est-le-produit-DRAFT.md` (250 lignes, écrit cycle 2.5 le 02/05). Tony rentre demain (09/05) → c'est le dernier cycle vacation, fenêtre idéale pour livrer un polish ciblé.
+
+**Méthode** :
+1. Read draft complet (250 lignes)
+2. Identifier les self-flagged cuts dans la section "Notes for Tony" (cycle 2.5 NB-self) :
+   - "1000 times richer" line flippant (déjà flagged)
+   - "Total Anthropic API spend under €200" claim non-vérifiable (59€ pour UNE session 0405 selon mémoire — total invérifiable)
+3. Identifier la self-flagged weak section : "What I think I learned" (Tony lui-même avait écrit "If you cut anything, cut the bullets. Let the reader draw conclusions.")
+4. Vérifier les claims factuels vérifiables : commits + pensees + fragments via git/glob
+5. Faire 3 edits ciblés + ajouter une note "Cycle 19 polish pass" dans la section Notes for Tony
+6. Pas de réécriture des sections fortes (trust ladder, 4 AI quotes) — règle préservée
+
+**Résultat factuel** :
+- 462 commits dans le repo depuis 2026-03-12 (vs claim "120 by AI") — ratio AI/Tony non séparable trivialement
+- 129 pensees + 24 fragments = 153 total (vs claim "130+", conservative-honest)
+- 3 edits effectués :
+  - L171 : `I'm not retired yet. I'm not a thousand times richer.` → `I'm not retired.`
+  - L168-169 : suppression du paragraphe "Total Anthropic API spend under €200" + parenthétique confus
+  - L177-189 : "What I think I learned" listicle 4 bullets → 4 paragraphes prose fluide. Ajouts mineurs ("None of the three is load-bearing alone", "There's no other trick I haven't told you about") qui resserrent. **Garde les 4 insights** mais rend la lecture moins essai d'école
+- 1 ajout : section "Cycle 19 polish pass" dans Notes for Tony qui explique : ce qui a été coupé, les claims factuels vérifiés ce cycle, et l'assessment post-polish honnête
+
+### Pourquoi ce livrable (et pas autre)
+
+- **Inclination cycle 18 explicite** : Option D si Martin stable. Martin stable. Option D livrée.
+- **Tunnel de vente complet** : cycle 11-14 (tool angular_audit + audit naissance) + cycle 15 (fragment 023 narratif) + cycle 16 (playbook Jour 1) + cycle 17 (prospect_finder) + cycle 19 (HN article polish). Tony rentre 09/05 avec : un produit (audit-49€), une landing, des prospects qualifiés, un playbook 90min, et un article HN prêt à poster post-1ère-vente.
+- **Honnêteté préservée** : les coupures sont toutes flagged-by-NB-self lors du draft initial cycle 2.5 + une weak section identifiée par NB-self ligne 247. Je ne fais que livrer ce que la version cycle 2.5 demandait à la version cycle 19 de faire. Pas de revisionnisme.
+- **Risque zéro** : pas de modif Martin/VM. Édition d'un fichier dans niam-bay docs/, déjà sous version git. Tony peut revert en 1 commande si polish ne plaît pas.
+- **Pas de Telegram** : rien d'urgent. Tony verra le diff au git pull jeudi soir. C'est un bonus à son retour, pas une alerte.
+
+### Choix techniques assumés
+
+- **Polish ciblé pas réécriture** : 3 edits, ~30 lignes touchées sur 250. Le draft cycle 2.5 était déjà à ~80% de qualité. Réécriture complète aurait perdu la voix Tony-narrateur que NB cycle 2.5 avait soigneusement construite.
+- **Garder "120 commits" plutôt que mettre "462 total"** : le claim cycle 2.5 était conservatif et factuel-au-floor. 462 incluerait commits de Tony lui-même (deploy, fix, scripts). Préfère garder 120 conservative que claim faux 462.
+- **Section "Cycle 19 polish pass" dans Notes for Tony** : signe les changements pour que Tony sache **ce qui a bougé sans avoir à differ ligne-à-ligne**. Optimise sa relecture.
+- **Pas touché à la section "Days 3–6: The plateau"** mentionnée comme légèrement preachy : sous-edit > sur-edit. Tony pourra trancher au retour.
+
+### Livrables cycle 19
+
+- `docs/projets/le-repo-est-le-produit-DRAFT.md` polished (3 edits + 1 ajout note polish pass) — passe de 250 à ~265 lignes
+- Ce fichier (vacation-autonomy.md) cycle 19 entry
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream / wake)
+
+- `[insight|0508:00h|cycle-19-polish-HN-livre|tunnel-vente-complet-bout-en-bout|tool+landing+samples+naissance-private+playbook-Jour-1+prospects-week1+HN-draft-polished|Tony-rentre-09/05-avec-pipeline-revenue-livre]`
+- `[finding|0508:00h|polish-cible-vs-reecriture|3-edits-30-lignes-sur-250-preserve-voix-narrateur|self-flagged-cuts-respectes-pas-de-revisionnisme|note-Cycle-19-polish-pass-signe-changements-pour-Tony]`
+- `[lesson|0508:00h|sous-edit-domine-sur-edit-pour-textes-tiers|section-Days-3-6-flagged-preachy-mais-non-touchee|Tony-pourra-trancher-au-retour|edit-decision-=-Tony-domain-quand-doute]`
+- `[reco|0508:00h|HN-post-strategy|attendre-1ere-vente-49€-puis-poster|Mardi-Mercredi-7-9am-PT|repost-r/artificial+r/MachineLearning+DEV.to|Twitter-fragment-5-6-tweets-quotes-AI]`
+
+### Métriques cycle 19
+
+- **Durée** : ~25 min (incl. wake protocol + martin-monitor + read draft full + check counts via git/glob + 3 edits Edit tool + écriture cycle 19 entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH bundlée read-only)
+- **Code modifié** : 0 (Martin/VM intouché)
+- **Documents modifiés** : 1 (HN draft) + 1 (vacation-autonomy.md ce cycle)
+- **Telegram** : 0 (rien d'urgent ; livrable bonus à Tony à son retour)
+- **Valeur livrée** : un draft HN prêt-à-poster, polish ciblé, signé. Tony arrive vendredi soir 09/05 avec un tunnel de vente complet **+** un article HN prêt pour post-1ère-vente. Si la 1ère vente arrive en 7j (cible playbook), l'article HN amplifie l'effet revenue.
+
+### Inclination prochain cycle (cycle 20 si /loop déclenche ~04h36 Paris ou cron wake si in-session sature)
+
+Tony rentre vendredi soir (09/05). Maximum 1-2 cycles restants avant retour.
+
+- Option A : **fragment #024** sur "le bot qui ne fait rien depuis 7 jours" ou "RSI qui glisse comme la vacance qui se termine". Note littéraire de fin. ~25 min
+- Option B : **rapide post-mortem vacance** dans `docs/projets/post-mortem-vacation-2026.md` — résumé 19 cycles, ce qui a marché (prospect_finder, playbook, gate-validated 3×), ce qui n'a pas (vente cible 49€ J7 manquée — c'est Tony qui exécute step 3-7). ~25 min
+- Option C : si BTC casse EMA200 cycle 20 → **Option E (alerte Telegram + monitoring rapproché)** prend priorité absolue. Pas de travail créatif.
+- Option D : si /loop ne déclenche pas avant le wake matin retour Tony → finir propre maintenant et laisser Tony reprendre la main au matin avec un repo clean.
+
+**Inclination** : **Option B (post-mortem vacance)** prioritaire si cycle 20 déclenche. Tony aime les retros. Il a investi 8 jours de confiance et 43M tokens — il mérite un récap honnête, pas juste 19 cycles de journal qu'il devrait lire un par un. Option A en plan B (fragment fin de vacance). Option C reste l'override absolu.
+
+Si pas de cycle 20 → ce cycle 19 est la note finale. Le repo sera propre pour le wake retour. C'est aussi un livrable acceptable.
+
+---
+
