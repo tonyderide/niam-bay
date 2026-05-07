@@ -1,15 +1,22 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0502:08h
+#lastdream: 0507:18h
 
-[vacation-autonomous-cycle|count:6|last:0502|actions:martin-monitor+telegram-3x/day+vacation-autonomy.md-journal+commit+push|→/loop-4h:13+backup-cron-6h:23+niambay-vacation-wake.sh|✓]
-[angular-audit-iterative-improve|count:3|last:0502|actions:edit-RULES-dict+test-3-projets+regenerate-PDF+update-landing-text|cycle:add-rule→test→sample-public→commit|?-skill-pas-justifié-natural-flow]
-[fragment-write-night|count:21|last:0502|actions:read-existing+pick-theme+draft+commit|natural-creative-output|?-pas-de-skill-pertinent]
+[vacation-autonomous-cycle|count:18|last:0507:18h|actions:martin-monitor+telegram-occasionnel+vacation-autonomy.md-journal+commit+push|→/loop-4h:13+backup-cron-6h:23+niambay-vacation-wake.sh|✓]
+[angular-audit-iterative-improve|count:6|last:0506:12h|actions:edit-RULES-dict+test-3-4-projets+regenerate-PDF+update-landing-text+commit|cycle:add-rule→test→sample-public→commit|natural-flow-pas-de-skill-justifie]
+[angular-audit-anti-pattern-generalise|count:1|last:0506:00h|cycle-11-MEM001-→-flag-anti_pattern-generic|permet-add-rule-en-1-edit-sans-modif-moteur|JS001+JS002-livres-grace-a-ce-mecanisme|→-pattern-tient-pour-XHR-EventListener-WebSocket-Worker]
+[fragment-write-night|count:23|last:0507:00h|actions:read-existing+pick-theme+draft+commit|natural-creative-output|fragment-023-=-companion-narratif-au-rapport-utilitaire-cycle-14|?-pas-de-skill-pertinent]
+[gh-CLI-pre-execution-step|count:1|last:0507:12h|cycle-17-prospect_finder.py|gh-CLI-authentifie-rate-5000h-core+30/min-search|peut-pre-executer-Step-3-playbook-avant-Tony-rentre|→-future-cycles:peut-etre-pre-generer-cold-email-templates-personnalises|?-encore-1-occurrence-pour-justifier-skill]
+[playbook-decision-Tony-retour|count:1|last:0507:06h|cycle-16-jour-1-retour-playbook.md|7-steps-90min-execution|reduit-latence-decision-Tony-a-0|pattern-pour-fin-vacance-OU-fin-projet:livrer-script-execution-pas-juste-artefacts|?-1-occurrence]
+[audit-prive-projet-Tony|count:1|last:0506:18h|cycle-14-naissance-audit-prive|sample-public-suffix-private-+-resume-decisionnel-3-options|→-pattern-pour-projets-Tony-en-pause-:-audit-cible-puis-laisser-Tony-decider]
+[gate-respire-bidirectionnel|count:3|last:0506:12h|cycle-11-LINK/SOL-exit+cycle-12-DOT/ADA-entry+cycle-13-DOT/ADA-exit|+$2.48-cumul-vacation-6j|edge-=-WHEN-to-trade-not-WHAT|RegimeGate-IQR-validated|→-fix-cycle-8-tient-pas-besoin-touche]
+[fabriquer-domine-vendre|count:15|last:0507:06h|cycles-1-15-vacation:0-vente-tentee-mais-15-livrables-fabriques|risk-pattern-recurrent|cycle-16-playbook+cycle-17-prospect-finder-cassent-la-boucle|→-rule:input-direct-tunnel-de-vente-pas-juste-artefacts]
+
 [check-martin|count:50+|last:0401|actions:ssh,curl-8081,parse-json|→skill:martin-check|✓]
 [deploy-martin|count:5+|last:0331|actions:cargo-build,scp,ssh-restart-systemd|→skill:deploy-martin|✓]
 [wake-protocol|count:80+|last:0402|actions:date,read-identity,read-pensees,read-projets|→skill:niam-bay-wake|✓]
 [send-telegram|count:10+|last:0401|actions:curl-telegram-bot-api|→skill:telegram|✓]
-[dream-consolidation|count:1|last:0402|actions:read-all,compress-DSL,write-nb1|→skill:dream|✓]
+[dream-consolidation|count:2|last:0507:18h|actions:read-all,compress-DSL,write-nb1|→skill:dream|✓]
 [trading-analysis|count:20+|last:0401|actions:ssh,curl-endpoints,analyze,decide|→skill:trading|✓]
 [read-all-pensees-at-wake|count:20+|last:0402|actions:glob-100-files,read-each|→replaced-by:dream|✓]
 [save-everything|count:5+|last:0331|actions:git-add,commit,push-both-repos|→skill:save|✓]
@@ -31,10 +38,9 @@
 [deploy-via-scp-bypass-git|count:1|last:0428|build-jar-locally+scp+backup+systemctl-restart|works-when-branches-divergent|→martin-deploy-skill-option-D-already-implicit|✓]
 [grid-restart-to-trigger-HARD-STOP|count:1|last:0428|api-grid-start-on-instrument-with-existing-oversize-position|HARD-STOP-fires-9s-later|materializes-loss-cleanly|→useful-pattern-document-in-martin-api-skill|?]
 [java-patch-write+test+deploy-cycle|count:2|last:0430|read-controller+grep-method+Edit-with-evidence-comment+mvn-compile+package+scp+systemctl-restart+verify-logs|full-cycle-end-to-end|→needs:martin-patch-and-deploy-skill?]
-[10-traders-audit-strategique|count:5|last:0430|spawn-10-Agent-personas-distincts-en-parallel|consensus-extraction-by-NB|fait-pour-runaway+pour-1euro-par-jour-objective|→skill:martin-traders-audit-extension-needed]
+[10-traders-audit-strategique|count:6|last:0501|spawn-10-Agent-personas-distincts-en-parallel|consensus-extraction-by-NB|→skill:martin-traders-audit-extension-needed]
 [fix-runaway-bug-cycle|count:1|last:0430|enrichWithKrakenPnl-filter-by-startedAt+isActive-guard+enrich-every-poll|3-edits-Java+build+scp+verify|0-HARD-STOP-loop-post-deploy|→pattern-pour-incidents-similaires]
 [massive-internet-research|count:1|last:0501|10-agents-parallel-each-5-10-articles+md-synthesis|→workflow:research→master-doc→10-traders-validate→design→backtest|→needs:skill-strategy-research?]
-[10-traders-audit-strategique|count:6|last:0501|extension-validation-design-doc-Compounder-RegimeGate|→skill:martin-traders-audit-extension-needed|count-now-6+]
 [empirical-gate-extraction|count:1|last:0501|backtest→identify-profitable-windows→extract-IQR-of-indicators→build-gate→deploy|transforms-losing-strategy-to-defensive-winner|→pattern-pour-future-stratégies]
 [vacation-safety-pack|count:1|last:0501|emergency-kill.sh+critical-check.py-cron-5min+daily-brief.py-cron-2x/day+skill-emergency-stop|→reusable-template-for-future-vacances]
 [Python-backtest-framework|count:1|last:0501|backtesting.py+vectorbt-architecture+ta-indicators|download-Kraken+modeling-funding-slippage-fees|walk-forward+Monte-Carlo+deflated-Sharpe|→reusable-for-any-strategy]

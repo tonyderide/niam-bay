@@ -2070,3 +2070,75 @@ Si contexte au cycle 18 reste OK après dream → option B ou C en bonus. Pas de
 
 ---
 
+## 2026-05-07 18h23 Paris — Cycle 18 : dream — consolidation mémoire vacation
+
+### Martin status — HOLD ✓ (gate stable CLOSED, jour 7/9, 8e cycle consécutif idle)
+
+```
+Portfolio: $137.70 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 2d 11h 50m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $79,876 UPTREND mais cushion EMA200 mince (0.38%) | EMA50 $80,966 > EMA200 $79,575
+RSI 31.32 (signal WAIT — momentum très faible, drop continu cycle 16:40 → 17:42 → 18:31)
+Régime: OK mais marginal — cushion EMA200 ~$300, le moindre dump testerait le seuil
+Dérive cycle 17 → 18 : -$0.18 (négligeable, fees/funding)
+Cumul vacation : $135.32 deploy 0501 → $137.70 = +$2.38 = +1.76% sur 6.7j
+```
+
+**Lecture** : RSI BTC continue de glisser (40.83 → 42 → 31.32), marché en consolidation faible. Le gate reste correctement CLOSED. Le bot a bien fait de ne rien ouvrir — le RSI 31 dit "marché en train de se vider". **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only).
+
+### Travail — dream (inclination cycle 17, Option A)
+
+Cycle 17 avait priorisé **dream** pour cycle 18 : 17 cycles depuis le dernier dream (0502:08h), `wake_briefing.py` cassé (chromadb manquant), Tony rentre 09/05 = au plus 2 cycles restants. Compresser maintenant pour que le wake éventuel du cycle 19 (ou du retour Tony) soit propre.
+
+**Méthode (skill dream)** :
+1. Read 3 nb1 files (memory + recent + patterns) — état avant dream
+2. Find new files since last dream (`find -newer memory.nb1`) → 5 pensees + 7 projets + 3 fragments
+3. Skim cycles 11-17 dans vacation-autonomy.md pour extraire findings et patterns
+4. Rewrite memory.nb1 avec :
+   - Update `#lastdream` 0502:08h → 0507:18h
+   - Add `[M|status-0507:18h]` cycle 18 snapshot
+   - Add `[M|gate-respire-bidirectionnel-VALIDATED-3x]` qui résume cycles 11-13
+   - Refresh section `[proj:angular-audit]` avec 6 itérations cycles 11-17 (+11 rules total v1.6.0, 18 rules, 9 cat, 3 vrais bugs prod)
+   - Add 3 entries `proj:angular-audit` : naissance audit privé, playbook Jour 1, prospects-week1
+   - Add `[proj:angular-audit|blocker-restant-1]` GitHub Pages
+   - Append 4 lessons + 3 insights cycles 14-17 dans section LESSONS
+5. Rewrite recent.nb1 entirely (window 0505:18h → 0507:18h, 9 cycles + findings + patterns + lessons)
+6. Rewrite patterns.nb1 (header + 9 nouveaux patterns vacation cycles 11-17 en haut, anciens patterns inchangés en bas)
+7. Skip vectordb indexing (chromadb missing — known broken cycle 16, would need pip install + venv setup, hors scope cycle dream)
+8. Phase 4.5 metaclaw — pas de failure significatif sur cycles 11-17 (pas de correction Tony, pas de tool failure persistant, pas de pattern suboptimal). Skip.
+
+### Pourquoi ce livrable plutôt qu'autre
+
+- **Inclination cycle 17 explicite** : option A (dream) prioritaire pour cycle 18
+- **Hygiène cognitive** : 17 cycles sans dream = mémoire dispersée sur 5 fichiers (memory.nb1 + recent.nb1 + patterns.nb1 + vacation-autonomy.md + pensees+fragments+projets). Wake éventuel cycle 19 ou retour Tony 09/05 doit être lisible en 30 sec
+- **Briefing.py cassé** : depuis cycle 16, `wake_briefing.py` lève `ModuleNotFoundError: chromadb`. Donc seuls les .nb1 servent au prochain wake. Critique de les avoir à jour
+- **Pas plus utile** : Option B (fragment) coup de poésie de plus mais compresser la mémoire est plus durable. Option C (élargir prospect_finder) marginal vs dream. Option D (explorer naissance Rust) = lecture seule, ne change rien à la base
+
+### Findings nouveaux pour la mémoire (déjà propagés par ce dream)
+
+- `[insight|0507:18h|dream-cycle-18-livre|17-cycles-consolides-en-3-nb1|memory.nb1-185-lignes-+10-vs-cycle-17|recent.nb1-flushe-vers-window-0505→0507|patterns.nb1-9-nouveaux-patterns-vacation-en-haut|→-wake-eventuel-cycle-19-sera-propre]`
+- `[finding|0507:18h|wake_briefing.py-toujours-casse|chromadb-missing|skip-volontaire-pas-pip-install-en-vacance-Tony-decidera-au-retour|fallback-=-3-nb1-suffisent]`
+- `[lesson|0507:18h|dream-pas-besoin-de-skill-creation-pendant-vacation-cycles-11-17|9-nouveaux-patterns-tous-count=1-sauf-angular_audit-iterative-natural-flow|count-2+-needed-pour-skill-justifie|→-attendre-pour-voir-quelles-patterns-se-confirment]`
+- `[insight|0507:18h|RSI-BTC-glisse-cycle-16-40→17-42→18-31|marche-se-vide-en-consolidation|cushion-EMA200-mince-$300|gate-defensif-tient-mais-test-EMA200-possible-cycle-19|si-test-=-DOWNTREND-trigger-ABORT|surveille-cycle-19]`
+
+### Métriques cycle 18
+
+- **Durée** : ~35 min (incl. wake protocol + martin-monitor + scan files newer + read cycles 11-14 vacation-autonomy + edit memory.nb1 (3 inserts) + rewrite recent.nb1 + rewrite patterns.nb1 + journalisation)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH bundlée read-only, 8 endpoints)
+- **Code modifié** : 0 (Martin/VM intouché)
+- **Documents modifiés** : 3 (memory.nb1, recent.nb1, patterns.nb1) + 1 (vacation-autonomy.md ce cycle)
+- **Telegram** : 0 (dream est interne, pas une nouvelle pour Tony — il verra le diff au git pull)
+- **Valeur livrée** : la mémoire est compressée et propagée. Si Tony cherche "ce qui s'est passé pendant ses vacances" au retour, les 3 nb1 + tail vacation-autonomy.md le couvrent en <5 min de lecture
+
+### Inclination prochain cycle (cycle 19 si /loop déclenche ~22h36 Paris)
+
+- Option A : **fragment #024** sur le pattern "fabriquer > vendre" cassé cycle 17, ou sur "le bot qui ne fait rien depuis 7 jours" (8 cycles consécutifs HOLD), ou sur "RSI qui glisse comme la vacance qui se termine" (parallèle marché/temps). ~25 min
+- Option B : élargir prospect_finder avec 2 requêtes supplémentaires (angular saas, angular admin) pour passer de 25 à ~50 prospects. ~15 min, valeur limitée vs cycle 17 déjà solide
+- Option C : explorer naissance Tauri/Rust (Option A reportée 3× déjà). ~25 min lecture seule, écriture note de cataloguage
+- Option D : grep + relire le draft article HN cycle 2.5 ("le repo est le produit"), polish léger pour qu'il soit prêt à publier post-1ère-vente (recommandation cycle 16). ~20 min
+- Option E : si cushion EMA200 BTC casse pendant cycle 19 et bot passe DOWNTREND/ABORT → **alerte Telegram + monitoring rapproché**, pas de travail créatif
+
+**Inclination** : si Martin reste stable, **Option D** (polish HN draft) parce qu'elle s'aligne avec le tunnel de vente cycles 16-17 et complète le playbook. Option A en plan B. Pas de Telegram tant que rien d'urgent. Si BTC test EMA200 → Option E prend priorité absolue.
+
+---
+

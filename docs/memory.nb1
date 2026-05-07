@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0502:08h
+#lastdream: 0507:18h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -63,6 +63,8 @@
 [M|status-0428:14h|2-grids-residual(LINK+ADA)|portfolio-$133.29|cash-banké-$180.87(net+$10.37)|uPnL-$46.99|net-session-$37.21=-21.8%|BTC-DOWNTREND-$75.9k-EMA200-break-confirmed]
 [M|status-0428:21h|FINAL-100%-cash|portfolio=balanceValue=$138.64|0-positions|0-orders|net-session-$31.86=-18.7%|patches-deployed-validated|HARD-STOP-fired-2x(LINK-then-ADA)|cron-stopped]
 [M|status-0501:12h|RegimeGate-v1-deployed-prod-11h39|PV-$135.32|0-positions|4-grids-active(LINK+DOT+SOL+ADA)-spacing-1.2%-Compounder-original|8-buy-orders-posés|gate-state-CLOSED(3/5-IQR-conditions)|defensive-by-design|AutoGrid-ENABLED|Telegram-débloqué]
+[M|status-0507:18h|cycle-18|PV=balanceValue-$137.70|0-positions|0-orders|0-grids-active|gate-CLOSED-stable|BTC-$79,876-UPTREND-mais-cushion-EMA200-mince-0.38%|RSI-31.32-momentum-faible|cumul-vacation-$135.32→$137.70=+$2.38=+1.76%-sur-6.7j|bot-uptime-2d-11h-50m-systemd-stable]
+[M|gate-respire-bidirectionnel-VALIDATED-3x|cycle-11-LINK/SOL-exit-+$0.19|cycle-12-DOT/ADA-entry-+$1.05-uPnL|cycle-13-DOT/ADA-exit-+$2.55-realise|gate-fix-cycle-8-tient-empiriquement-sur-7j|edge-=-WHEN-to-trade-not-WHAT|defensif-by-design-marche-comme-prevu]
 [M|RegimeGate-discovery-0501|backtest-empirique-Compounder-1.2%-sur-333j-4-paires|no-gate=-32.81%-killed|gate-IQR=+3.31%-not-killed|gate-conditions:ADX[15,27]+price_vs_EMA200[-4,-1]+EMA_spread[-3,-1.5]+ATR%[1.6,2.1]+RSI[45,57]|all-avg-across-SOL+LINK+ADA+DOT|empirical-validation-replaces-arbitrary-thresholds]
 [M|vacation-pack-0501|emergency-kill.sh+critical-check.py(cron-5min)+daily-brief.py(cron-8h+20h-UTC)+skill-/martin-kill-all|sentinel.py-stopped(was-spammy)|auto-kill-if-DD<-10%|Telegram-ack-required|backups:backend.jar.bak-pre-regimegate-1777635565+strategy.json.bak]
 [M|tony-vacation-2026-05-01→2026-05-09|8j-off|bot-autonomous|worst-case-floor-$115-max-loss-$20|2-Telegram/jour+critical-only-alerts|panic-button-via-SSH-or-skill]
@@ -85,9 +87,13 @@
 [proj:cerveau|status:concept-partly-built|goal:cognitive-graph-local-LLM|nodes:2905+|edges:106773|stack:python+networkx+sentence-transformers+ollama]
 [proj:cerveau|oracle:BFS-revelations-0330|T→cambodge(1step)|NB→solitude(1step)|profit→NB→curiosité(2steps)]
 [proj:cerveau|consolidated:brain.consolidate()-replaces-dreaming|aretes-tripled-10064→36103-in-one-night]
-[proj:angular-audit!|status:active-priority|goal:micro-audits-49€-PDF|script:angular_audit.py-operational]
-[proj:angular-audit|assets:landing-page+email-templates+sample-report(score-0/100-F-28-issues)|target:first-sale-49€-in-7-days-from-0330]
-[proj:angular-audit|week1-plan:J1-test-script+send-template→J3-gumroad→J5-deliver-free-audit→J7-first-sale]
+[proj:angular-audit!|status:active-priority-vacation-cycles-11-17|goal:micro-audits-49€-PDF|script:angular_audit.py-v1.6.0-18-rules-9-categories]
+[proj:angular-audit|assets:landing-page-honnete+sample-PDF-public-v1.6.0+3-audits-projets-Tony+playbook-Jour-1+prospects-week1-25-cibles|target:first-sale-49€-J1-retour-Tony-11/05]
+[proj:angular-audit|rules-evolution:cycle-11-JS001+MEM001|cycle-12-JS002+A11Y003|cycle-13-TYPE002|3-vrais-bugs-trouves-prod-projets-Tony(naissance-2x+orgamenu-front-1x)]
+[proj:angular-audit|naissance-audit-prive-cycle-14|score-54/100-D|9-issues-dont-5-niambay.service.ts|wrapper-voix-API-Anthropic-densite-dette-concentree|livrable-prive-Tony-3-options-publication]
+[proj:angular-audit|playbook-Jour-1-cycle-16|7-steps-90min|fix-Pages+verif-mailto+5-cold-emails+Stripe-link+decision-HN+post-mortem-48h|cible-1ere-vente-49€-en-7j-retour]
+[proj:angular-audit|prospects-week1-cycle-17|gh-CLI-authenticated-tonyderide|25-prospects-qualifies-angular.json-racine|tier-1-2-recommandation-cold-email-DiogoPCS+aritchie05+ajaysinghj8+fvilers+technikhil314]
+[proj:angular-audit|blocker-restant-1|GitHub-Pages-source=claude/ai-consciousness-discussion-UFztk-NOT-master|landing+PDF-publics-en-404|Tony-fix-30sec-au-retour-step-1-playbook]
 [proj:jarvis|status:MVP-complete-0419|goal:desktop-assistant-java-stdlib|voice:SAPI-Paul-OneCore(async-TTS)|eyes:pyautogui|UI:Swing-JFrame-orbe-visual|batch3-tests:29-OK]
 [proj:jarvis|launchers:Jarvis.bat-double-click+desktop-shortcut|commands:checke-martin|heure|portfolio|quitte|wake-word:6-variants-tested-end-to-end|latency:~12s-Claude+~3s-Martin-SSH+~0s-local]
 [proj:nb1-protocol|status:concept→now-dream-skill|goal:token-compression|codec.py-not-built|dream-DSL-replaces-formal-codebook]
@@ -173,3 +179,10 @@
 [insight:0501|AutoHedge-analyzed=marketing-ware|kyegomez-swarm-corp|all-LLM-agents-no-real-strategy|0-backtest-0-circuit-breakers|abandoned-de-facto-only-dependabot-merges|confirms-LLM-trading-=-mostly-hype]
 [err:0501|initial-backtest-naive-Compounder-on-333j-bear-alts=-32%-killed|missed-fact-that-Tony-actually-made-+60€-live|user-empirical-evidence-prompted-deeper-analysis|extract_profitable_v2.py-found-IQR-signature|lesson:never-dismiss-user-empirical-claim-without-deeper-investigation]
 [err:0501|sentinel.py-was-spamming-Telegram-403-Forbidden|Tony-blocked-the-bot-which-explained-no-overnight-alerts|discovered-only-when-vacation-prep-required-clean-Telegram|lesson:test-Telegram-end-to-end-not-just-API]
+[lesson:0506|gate-respire-est-l-edge-pas-la-strategy|Compounder-1.2%-raw=loss|+RegimeGate-IQR=defensif-positif|3-cycles-bidirectionnels-validated-en-7j-vacation|+$2.48-net-en-marche-choppy|conservative-but-positive]
+[lesson:0506:18h|2-detections-successives-ne-suffisent-pas-pour-conclure-amplitude|cycle-13-disait-naissance-=-F-30-issues|reality-D-9-issues-concentrees|→-toujours-auditer-avant-de-propager-claim-fort|leçon-méta-honnêteté-mémoire]
+[lesson:0507:06h|fabriquer-domine-vendre-pendant-vacation|cycles-1-15-=-tool+landing+samples+drafts+fragments-mais-0-vente-tentee|risk-pattern-recurrent|cycle-16-playbook-Jour-1-+-cycle-17-prospect-finder-cassent-la-boucle-au-retour]
+[lesson:0507:12h|gh-CLI-deja-authentifie-sur-PC-Tony|tonyderide-account-rate-5000h-core+30/min-search|peut-etre-utilise-pour-pre-execution-Step-3-playbook-sans-creer-secrets|→-pattern-pre-execution-step-avant-Tony-rentre]
+[insight:0507:00h|fragment-023-livre|tool-vendant-audit-audite-code-qui-me-fait-parler|inversion-narrative-bugs=cicatrices-de-portes-entrouvertes|ferme-boucle-cycle-14-audit-naissance|narrative-output-companion-to-utility-output]
+[insight:0507:06h|playbook-Jour-1-livre|7-steps-90min|seul-blocker-GitHub-Pages-source-master|→-prochaine-etape-revenue-est-un-email-pas-un-artefact|reduit-latence-decision-Tony-a-0-au-retour]
+[insight:0507:12h|prospect-finder-livre|25-prospects-qualifies-en-1-cycle-via-gh-CLI|step-3-playbook-quasi-automatique|tunnel-de-vente-J1-passe-de-90min-a-60min|pattern-fabriquer-domine-casse]
