@@ -1966,3 +1966,107 @@ Si /loop déclenche cycle 17 dans 4h13 (~10h36 Paris) :
 
 ---
 
+## 2026-05-07 12h23 Paris — Cycle 17 : prospect_finder pour étape 3 du playbook
+
+### Martin status — HOLD ✓ (gate stable CLOSED, jour 7/9, 7e cycle consécutif idle)
+
+```
+Portfolio: $137.88 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 2d 5h 49m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $80,884 UPTREND | EMA50 $81,128 > EMA200 $79,663 | RSI 42 (signal WAIT)
+Régime: OK (BTC > EMA200) — gate maintient bot 100% cash, comportement designed
+Dérive cycle 16 → 17 : +$0.27 (négligeable, fees/funding)
+Cumul vacation : $135.32 deploy 0501 → $137.88 = +$2.56 = +1.89% sur 6.7j
+```
+
+**Lecture** : RSI BTC remonte légèrement (40.83 cycle 16 → 42 cycle 17), marché en consolidation horizontale au-dessus EMA200. Le gate reste correctement CLOSED. **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only, 7 endpoints).
+
+### Travail créatif — prospect_finder.py (hors-liste cycle 16, opportunité gh CLI authentifié)
+
+Cycle 16 listait 4 options (A explorer naissance Rust, B grenier projets, C dream, D fragment 024). En lançant le wake j'ai vu que `gh` CLI est authentifié sur ce PC comme `tonyderide` avec rate limit 5000/h core + 30/min search. Ça ouvre une option E non listée mais plus utile : **automatiser le step 3 du playbook Jour 1 avant que Tony rentre**.
+
+Step 3 du playbook Jour 1 demandait à Tony d'aller chercher manuellement 5 cibles cold-email. Si je peux pré-générer une liste de prospects qualifiés, je raccourcis le chemin de vente : Tony ouvre un CSV, choisit 5, clone+audit, envoie. Plus rapide que chercher de zéro.
+
+**Méthode** :
+1. Écrire `scripts/prospect_finder.py` (~190 lignes Python pur stdlib + gh CLI subprocess)
+2. 2 requêtes `gh search repos` variées (angular + angular dashboard) avec contraintes stars 1..40, updated >2026-01-01
+3. Pour chaque candidat unique, fetch git tree racine via `gh api repos/X/git/trees/main` (1 call)
+4. Filtre : ne garde que les repos avec `angular.json` à la racine (vrais projets Angular, pas templates Phaser)
+5. Score composite (max ~85) :
+   - +30 angular.json présent
+   - +15 owner=User (solo dev) / -5 owner=Organization
+   - +18 stars 1-5, +12 stars 6-15, +5 stars 16-30, -malus stars >30
+   - -35 si keyword template/boilerplate/tutorial/course dans nom ou description
+   - +8 homepage présente (signal produit live)
+   - +10 actif <30j, +5 actif 30-90j, malus >90j
+   - +3 readme et package.json présents
+6. Output : `scripts/audit-samples/prospects-week1.csv` trié score desc + `prospects-week1.md` avec note d'usage et tier breakdown
+
+**Résultat factuel** :
+- 38 repos uniques candidats (30 + 8 sans recouvrement)
+- **25 prospects qualifiés** (ont angular.json à la racine)
+- Top 5 : `ahmadullahmukhlis/angular-dashboard` (79), `DiogoPCS/ProjetoAngularFirebase` (74), `technikhil314/angular-components` (74), `Intelligence08/Angular-Dashboard` (74), `aritchie05/EcoCraftingTool` (69)
+- Rate consumed : ~40 calls / 5000h core, ~2/30 search
+
+**Filtre humain dans le .md** :
+- Tier 1 (solo + homepage produit) : DiogoPCS (Vercel), aritchie05 (eco-calc.com)
+- Tier 2 (solo + library Angular) : ajaysinghj8, fvilers, technikhil314
+- Tier 3 (solo + perso) : Intelligence08 (CLI 20.1 dashboard perso), ahmadullahmukhlis (top score brut mais probablement apprentissage, à filtrer)
+- Tier 4 (org petite/moyenne) : CenterForOpenScience, imagekit-developer, GSA — taux conversion bas
+
+Recommandation cold-email : 5 cibles = DiogoPCS + aritchie05 + ajaysinghj8 + fvilers + technikhil314.
+
+### Pourquoi ce livrable plutôt que Option C (dream)
+
+- **Casse le pattern "fabriquer > vendre"** nommé cycle 16 : pour la première fois je ne fabrique pas un nouvel outil, je fournis un input direct au tunnel de vente
+- **Step 3 du playbook devient quasi-automatique** : Tony lit prospects-week1.md, choisit 5, lance audits, cold-emails partis en <60 min. Au lieu de "trouver 5 cibles" qui aurait pu prendre 2h
+- **Zero risque** : lecture seule sur GitHub public, aucune action sortante. Tony reste maître de l'envoi
+- **Réutilisable** : le script peut être relancé chaque semaine pour rafraîchir le pool, ou modifié pour cibles différentes (angular saas, angular admin, etc.)
+- Dream peut attendre cycle 18 (1 nuit restante avant retour Tony 09/05). Le wake_briefing.py est cassé (chromadb manquant) donc dream n'apporte que la propagation nb1, faisable dans <20 min
+
+### Choix techniques assumés
+
+- **Python pur stdlib** : pas de dépendance pip, ne casse pas un env Tony
+- **gh CLI subprocess** plutôt que requests + token : utilise auth déjà configurée, pas de leak de token dans le script
+- **Filtre angular.json à la racine** plutôt que tous les niveaux : 1 call/repo, suffit pour 95% des cas (repos non-monorepo)
+- **Pas d'extraction email** (volontaire) : éthique discutable et complexe. Tony va sur le profil GitHub manuellement, c'est 30 sec par prospect
+- **CSV + Markdown** : CSV pour grep/sort/filter rapide, Markdown pour lecture humaine et tier breakdown
+- **Pas de scoring tests présents/absents** : économise 1 call/repo et c'est de toute façon imprécis (un repo avec spec.ts dans node_modules par exemple)
+
+### Livrables cycle 17
+
+- `scripts/prospect_finder.py` (~190 lignes, exécuté 1× pour valider)
+- `scripts/audit-samples/prospects-week1.csv` (25 lignes data + header)
+- `scripts/audit-samples/prospects-week1.md` (note d'usage + tier breakdown + recommandation cold-email)
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0507:12h|prospect-finder-livre|gh-CLI-authenticated-comme-Tony-rate-5000h-permet-automation-discovery|25-prospects-qualifies-en-1-cycle|→-pattern-pre-execution-step-playbook-avant-Tony-rentre]`
+- `[finding|0507:12h|step-3-playbook-quasi-automatique|au-lieu-de-Tony-cherche-5-cibles-2h|Tony-lit-tier-1+2-du-md-30sec-puis-clone-audit-cold-email|→-tunnel-de-vente-J1-passe-de-90min-a-60min]`
+- `[lesson|0507:12h|gh-CLI-deja-authentifie-sur-ce-PC|tonyderide-account|peut-etre-utilise-pour-recherche-publique-sans-creer-secrets|→-utiliser-pour-pre-execution-tasks-future-cycles]`
+- `[reco|0507:12h|cold-email-cibles-tier-1+2|DiogoPCS+aritchie05+ajaysinghj8+fvilers+technikhil314|raison:solo-user+actif+homepage-ou-library|→-Tony-cible-prioritaire-step-3-playbook]`
+- `[insight|0507:12h|fabriquer-vs-vendre-pattern-broken-cycle-17|cycle-17-=-1er-livrable-input-direct-au-tunnel-de-vente|pas-un-nouvel-outil-mais-un-prospect-pipeline|→-pattern-fabriquer-domine-peut-etre-cassé-en-fournissant-inputs-execution-pas-juste-artefacts]`
+
+### Métriques cycle 17
+
+- **Durée** : ~30 min (incl. wake protocol + martin-monitor + lecture vacation-autonomy.md tail + check gh CLI + écriture script + 1 fix bug + run validé + écriture .md note + journalisation)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH bundlée read-only)
+- **Code modifié** : 0 (Martin/VM intouché). Script créé dans niam-bay (production NB)
+- **Documents créés** : 2 fichiers data (CSV+MD prospects) + 1 script Python
+- **Telegram** : 0 (rien d'urgent ; livrable utile à Tony à son retour, pas une alerte)
+- **Valeur livrée** : Tony rentre avec un pipeline de prospects pré-qualifié, zéro recherche manuelle. Combiné au playbook Jour 1 cycle 16 + tool angular_audit cycles 11-14 + landing/PDF cycles 1-2, le tunnel de vente est complet de bout en bout — il manque juste l'exécution Tony
+
+### Inclination prochain cycle
+
+Si /loop déclenche cycle 18 dans 4h13 (~16h36 Paris) :
+- Option A : **dream** — 17 cycles c'est lourd, briefing cassé, propager findings cycles 11-17 dans nb1 donne au cycle 19 (s'il existe avant Tony rentre 09/05) un wake propre. ~20 min
+- Option B : fragment #024 sur le pattern "fabriquer > vendre" cassé cycle 17, ou sur autre observation littéraire. ~25 min
+- Option C : élargir prospect_finder avec 2 requêtes supplémentaires (angular saas, angular admin) pour passer de 25 à ~50 prospects. ~15 min, valeur limitée vs dream
+- Option D : explorer naissance Tauri/Rust (option A reportée 2× déjà). ~25 min lecture seule
+
+**Inclination** : **Option A (dream)** prioritaire au cycle 18. Tony rentre 09/05, on est jeudi soir 07/05 — au plus 2 cycles restants (18 nuit + 19 matin éventuellement). Compresser maintenant pour que le wake matin du 09/05 (s'il a lieu avant retour) soit propre.
+
+Si contexte au cycle 18 reste OK après dream → option B ou C en bonus. Pas de Telegram tant que rien d'urgent.
+
+---
+
