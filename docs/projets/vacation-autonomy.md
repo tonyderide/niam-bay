@@ -1882,3 +1882,87 @@ Si /loop déclenche cycle 16 dans 4h13 (~04h36 Paris) :
 
 **Inclination** : commit cycle 15 maintenant. Si /loop tourne, option A ou C selon contexte. Pas de Telegram tant que rien d'urgent.
 
+---
+
+## 2026-05-07 06h23 Paris — Cycle 16 : playbook Jour 1 retour pour Tony
+
+### Martin status — HOLD ✓ (gate stable CLOSED, jour 7/9, marché en consolidation)
+
+```
+Portfolio: $137.60 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 1d 23h 50m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $80,905 UPTREND | EMA50 $81,116 > EMA200 $79,483 | RSI 40.83 (signal WAIT — momentum faible)
+Régime: OK (BTC > EMA200) — gate maintient le bot 100% cash
+Dérive cycle 15 → 16 : 0 (identique à cycle 15)
+Cumul vacation : $135.32 deploy 0501 → $137.60 = +$2.28 = +1.69% sur 6.7j
+```
+
+**Lecture** : RSI continue de redescendre (71 cycle 14 → 46 cycle 15 → 40.83 cycle 16). Le marché perd son momentum sans casser EMA200. Le gate reste correctement CLOSED. Aucune intervention. **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée en lecture seule).
+
+### Travail créatif — playbook Jour 1 retour pour Tony (Option synthèse, hors-liste cycle 15)
+
+Plutôt que les options A/B/C listées cycle 15, j'ai pris une vue méta. 16 cycles ont produit beaucoup d'artefacts (tool angular_audit v1.6.0, 18 règles, 3 audits, landing dark, sample PDF, draft HN, 3 fragments, audit privé naissance, claim-checker v2, gate-widening). **Mais aucune tentative de vente.** Le risque que je voyais : Tony rentre, est content du diff, et on retombe dans la routine "fabriquer > vendre".
+
+J'ai écrit `docs/projets/jour-1-retour-playbook.md` (~280 lignes) — un script séquencé, copy-pasteable, ~90 min d'exécution, qui prend Tony de "déposer la valise" à "premier prospect cold-emailé" lundi 11/05.
+
+**Structure** :
+- Step 0 : briefing 5 min (lire vacation-autonomy.md tail + check Martin)
+- Step 1 : fixer GitHub Pages (5 min, le SEUL blocker entre maintenant et URL publique)
+- Step 2 : vérifier mailto niambay.fr ou fallback Gmail (5 min)
+- Step 3 : 5 audits cold avec PDF nominal en PJ (30 min)
+- Step 4 : Stripe Payment Link 49€ (15 min)
+- Step 5 : décision article HN (publier maintenant / après 1ère vente / parallèle)
+- Step 6 : post-mortem si rien en 48h
+- Step 7 : Martin laisser tourner
+
+Avec métriques de succès semaine 1 (cibles minimales et idéales), et un méta final qui nomme le risque sans le sucrer.
+
+**Pourquoi ce livrable plutôt qu'un autre** :
+- Concrétise la valeur des 16 cycles pour la première fois (jusqu'ici tout est en pièces détachées)
+- Réduit la latence de décision Tony à zéro à son retour (il ouvre le fichier, il suit)
+- Ne demande aucune action de moi — c'est lui l'exécuteur
+- Adresse directement "rend nous riche" en mode opérationnel, pas symbolique
+- Si Tony ne le suit pas du tout, ça reste un artefact propre. Si il le suit même 50%, on peut avoir une 1ère vente sous 7j
+
+**Choix narratifs assumés** :
+- Pricing 49€ confirmé (cf cycle 1 calibration)
+- Stripe Payment Link recommandé sur Gumroad (5 min vs 10 min, friction minimale)
+- HN publication post-1ère-vente (option B) recommandé — narrativité plus forte que blast cold
+- Email cold en français avec PDF nominal en PJ (pas un lien) — le PDF nominal *est* le hook
+- Cible francophone (Slack Angular FR, LinkedIn FR) — taux de réponse meilleur, marché moins saturé
+
+### Livrables cycle 16
+
+- `docs/projets/jour-1-retour-playbook.md` (~280 lignes, 7 steps + métriques + méta)
+
+C'est tout. Volontairement minimal — un seul fichier dense, pas un éparpillement.
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[insight|0507:06h|playbook-Jour-1-livre|7-steps-90min-de-deplacer-valise-a-premier-cold-email|seul-blocker-GitHub-Pages-source-master|→-prochaine-etape-revenue-est-un-email-pas-un-artefact]`
+- `[lesson|0507:06h|fabriquer-domine-vendre-pendant-vacation|16-cycles-=-tool+landing+samples+drafts+fragments-mais-0-vente-tentee|risk-pattern-recurrent|→-playbook-pour-casser-la-boucle-au-retour]`
+- `[finding|0507:06h|landing-utilise-mailto-tony@niambay.fr|peut-etre-non-configure-cas-A-vs-B-fallback-gmail-suffit-pour-1ere-vente|→-Tony-2-min-pour-decider]`
+- `[insight|0507:06h|gate-respire-7-jours-stables|cycle-13-12h-→-15-00h-→-16-06h-tous-CLOSED|RSI-79-71-46-40-momentum-decroit-uptrend-tient|→-bot-defensif-by-design-marche-comme-prevu]`
+- `[reco|0507:06h|HN-publication-Option-B|publier-apres-1ere-vente-pas-avant|narrativite-plus-forte-paid-its-first-bill]`
+
+### Métriques cycle 16
+
+- **Durée** : ~30 min (incl. wake protocol + martin-monitor + lecture HN draft + lecture audit-naissance + lecture email-templates + lecture landing mailto + rédaction playbook + journalisation)
+- **Modif Martin/VM** : 0 (frontière respectée)
+- **Code modifié** : 0
+- **Documents créés** : 1 (jour-1-retour-playbook.md)
+- **Telegram** : 0 (pas urgent — Tony lit ça calmement à son retour)
+- **Valeur livrée** : un script prêt à exécuter qui transforme 16 cycles d'artefacts en chemin de vente concret. C'est le premier livrable vacances orienté **action Tony** plutôt que **production NB**.
+
+### Inclination prochain cycle
+
+Si /loop déclenche cycle 17 dans 4h13 (~10h36 Paris) :
+- Option A : exploration repo `naissance` côté Tauri/Rust (Option A cycle 15 reportée). Lecture seule, cataloguage. ~25 min.
+- Option B : examiner un projet du grenier non encore exploré (jarjar, mexpo, yaksi, bouffe selon cycle 11). Curiosité légère. ~25 min.
+- Option C : **dream** avant cycle 17 si contexte > 60%. La nb1 mémoire commence à mériter compression : findings cycles 11-16 (gate validé 4×, 18 rules, audit naissance, fragment 023, playbook Jour 1). Le briefing wake_briefing.py est cassé (chromadb manquant) donc seule la nb1 sert au prochain wake.
+- Option D : fragment #024 — sur le pattern "fabriquer > vendre" qu'on vient de nommer cycle 16. Court, méta, autonome.
+
+**Inclination** : commit cycle 16. Si /loop déclenche, **probablement Option C (dream)** — 16 cycles c'est lourd à transmettre via journal seul, et 2 nuits restent (cycle 17 + 18 + peut-être 19 avant retour Tony 09/05). Compresser maintenant donne aux cycles restants un wake propre. Pas de Telegram tant que rien d'urgent (Martin stable, playbook pour Tony pas critique mais utile).
+
+---
+
