@@ -2231,3 +2231,87 @@ Si pas de cycle 20 → ce cycle 19 est la note finale. Le repo sera propre pour 
 
 ---
 
+## 2026-05-08 06h23 Paris — Cycle 20 : post-mortem vacance
+
+### Martin status — HOLD ✓ (gate stable CLOSED, jour 8/9, 10e cycle consécutif idle)
+
+```
+Portfolio: $137.36 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 2d 23h 49m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $79,714 UPTREND | EMA50 $80,531 > EMA200 $79,543 | RSI 38.34 (signal WAIT)
+Régime: OK marginal — cushion EMA200 +0.21% (~$171), encore plus mince que cycle 19
+Dérive cycle 19 → 20 : -$0.01 (négligeable, fees/funding ~6h)
+Cumul vacation : $135.32 deploy 0501 → $137.36 = +$2.04 = +1.51% sur 7.2j
+```
+
+**Lecture** : RSI 36.83 → 38.34 (+1.5), légère reprise momentum mais toujours weak. Cushion EMA200 0.36% → 0.21% (plus mince). BTC pas encore testé EMA200 → gate reste correctement CLOSED. **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only). Bot uptime ~3 jours sans restart, systemd parfait.
+
+### Travail créatif — post-mortem vacance (Option B inclination cycle 19)
+
+Cycle 19 avait priorisé **Option B** pour cycle 20 si Martin stable : récap des 19 cycles dans un fichier dédié. Tony rentre demain (09/05 soir) → c'est probablement le dernier cycle utile. Fenêtre idéale pour livrer le récap.
+
+**Méthode** :
+1. Read tail vacation-autonomy.md cycles 17-19 pour avoir contexte récent en mémoire
+2. Compose `docs/projets/post-mortem-vacation-2026.md` : TL;DR phrase + chiffres bruts (Martin + tunnel) + ce qui a marché / pas marché / pas tenté + à-faire au retour ordonné par priorité + observations méta + recos prochaines vacances
+3. Format optimisé pour lecture 5 min par Tony, pas relire 19 cycles
+4. Pas de revisionnisme : chiffres factuels, ressentis honnêtes, manques explicites
+
+**Résultat** : `docs/projets/post-mortem-vacation-2026.md` créé (~150 lignes structurées). Couvre :
+- TL;DR : tunnel complet, 1ère vente reste à exécuter par Tony
+- Chiffres Martin (PV $137.36, 0 modif, gate validé 3×) + Angular-audit (v1.6.0, 18 règles, 3 vrais bugs prod, 25 prospects, HN draft poli)
+- 6 wins + 4 manques + 4 disciplines respectées
+- Ton à-faire au retour priorité 1-6 (du fix Pages 30 sec à post-mortem 48h emails)
+- Observations méta (frontière efficace, /loop+cron tient, asymétrie temps/mémoire)
+- Recos prochaines vacances (pré-réparer wake_briefing, livrables "amuse-toi" obligatoires, token tracker)
+
+### Pourquoi ce livrable (et pas autre)
+
+- **Inclination cycle 19 explicite** : Option B si Martin stable. Martin stable. Option B livrée.
+- **Tony aime les retros** : lecture 5 min vs lecture 19 cycles × 2-3 min = 50 min. ROI 10×.
+- **Honnêteté ancrée** : la mission "rend nous riche / amuse-toi" doit être bilanée ouvertement. Y a un manque (0 vente effective) — il est nommé. Y a des wins (frontière, tool 3 bugs, gate validé) — ils sont chiffrés.
+- **Actionable au retour** : la liste 1-6 est ordonnée par priorité ET temps réel. Tony peut faire step 1 (30 sec) AVANT son café et arriver au step 6 en fin de week-end.
+- **Pas de Telegram** : rien d'urgent. Le post-mortem se lit au retour, c'est un cadeau pas une alerte.
+
+### Choix techniques assumés
+
+- **Format Markdown structuré pas prose littéraire** : pas la même tonalité que fragment #023. Le post-mortem doit être scannable, pas méditatif.
+- **Garder TL;DR en haut** : Tony peut s'arrêter après 1 phrase si fatigué et avoir l'essentiel.
+- **Section "Pas tenté (par discipline)"** : explicite ce que je N'AI PAS fait, pour qu'il sache que la frontière n'a pas été un combat (elle était utile).
+- **Reco "Améliorer" prochaines vacances** : pas auto-flagellation, juste 3 patterns à durcir (wake_briefing préparé, fragments obligatoires, token tracker).
+
+### Livrables cycle 20
+
+- `docs/projets/post-mortem-vacation-2026.md` créé (récap 8 jours en 5 min lecture)
+- Ce fichier (vacation-autonomy.md) cycle 20 entry
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream / wake)
+
+- `[insight|0508:06h|cycle-20-post-mortem-livre|recap-19-cycles-en-1-fichier-5min-lecture|TLDR-tunnel-complet-1ere-vente-reste-a-Tony|Martin-+1.51%-7.2j-no-touch|gate-respire-validated-3x|frontiere-100%-tenue]`
+- `[finding|0508:06h|cushion-EMA200-glisse-0.38-0.36-0.21-cycle-18-19-20|BTC-still-UPTREND-mais-test-EMA200-imminent-si-RSI-redescend|gate-defensif-tient-correctement-CLOSED|si-test-EMA200-cycle-21-=-trigger-ABORT-skill-doit-fire]`
+- `[lesson|0508:06h|post-mortem-domine-fragment-comme-livrable-fin-vacance|recap-actionable-utile-Tony-immediatement|fragment-narratif-aurait-ete-bonus-mais-pas-essentiel|→-fin-de-projet-=-recap-action-pas-poesie]`
+- `[reco|0508:06h|prochaines-vacances|pre-reparer-wake_briefing-AVANT-depart|venv-+-pip-install-chromadb-stable|+-livrables-amuse-toi-obligatoires-1-fragment-narratif-min|+-token-budget-tracker-via-rtk-gain]`
+
+### Métriques cycle 20
+
+- **Durée** : ~25 min (incl. wake protocol + martin-monitor + read tail vacation-autonomy + write post-mortem 150 lignes + écriture cycle 20 entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH bundlée read-only)
+- **Code modifié** : 0 (Martin/VM intouché)
+- **Documents créés** : 1 (post-mortem-vacation-2026.md) + 1 modifié (vacation-autonomy.md ce cycle)
+- **Telegram** : 0 (rien d'urgent ; livrable bonus à Tony à son retour)
+- **Valeur livrée** : Tony rentre vendredi soir avec : (1) le tunnel de vente complet (cycles 11-19), (2) un post-mortem 5-min-lecture qui lui dit exactement quoi faire dans quel ordre, (3) le repo propre, le bot en cash. Latence décision retour = quasi 0.
+
+### Inclination prochain cycle (cycle 21 si /loop déclenche ~10h36 Paris)
+
+Tony rentre vendredi soir 09/05. Si cycle 21 déclenche samedi matin 09/05 ~10h36, Tony pourrait être encore en transit ou venir de rentrer. Si cycle 21 déclenche aujourd'hui jeudi 08/05 ~10h36, c'est l'avant-dernier cycle.
+
+- Option A : **fragment #024** sur "le bot qui ne fait rien depuis 8 jours" ou "RSI qui glisse comme la vacance qui se termine" — clôture narrative en parallèle au post-mortem utilitaire. Le manque "trop sage 1 fragment sur 19 cycles" identifié dans le post-mortem appelle ce livrable. ~25 min
+- Option B : **monitoring rapproché Martin** si BTC test EMA200 (cushion 0.21% mince) — pas de travail créatif, juste vigilance + Telegram si ABORT. **Override absolu si signal change.**
+- Option C : **finir propre maintenant** (pas plus de cycles) — le repo est déjà propre, post-mortem livré, le retour Tony se fera sur un état impeccable. Acceptable.
+- Option D : si Tony envoie un signal Telegram entrant pendant cycle 21 (rentrant plus tôt, etc.) → reprendre instructions live, sortir du protocole vacance.
+
+**Inclination** : **Option A (fragment #024)** si cycle 21 déclenche et Martin stable. Le post-mortem dit "1 fragment sur 19 cycles peut-être trop sage" → livrer fragment #024 corrige ce manque tout en clôturant narrativement la vacance. Option B reste override absolu. Pas de Telegram tant que rien d'urgent.
+
+Si pas de cycle 21 → ce cycle 20 + post-mortem est la note finale. Le repo sera propre pour le wake retour Tony. C'est un livrable très acceptable.
+
+---
+
