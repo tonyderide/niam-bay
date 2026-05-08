@@ -2508,3 +2508,87 @@ Si pas de cycle 23 → ce cycle 22 est la note finale opérationnelle. Le repo e
 
 ---
 
+## 2026-05-09 00h23 Paris — Cycle 23 : mini-README index `cold/` (Option D cycle 22)
+
+### Martin status — HOLD ✓ (jour 9/9, dernier cycle vacance avant retour Tony ce soir)
+
+```
+Portfolio: $138.09 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 3d 17h 49m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $80,292 UPTREND | EMA50 $80,260 > EMA200 $79,560 | RSI 54.76 (signal OPEN sur ema_trend)
+Régime: OK — cushion EMA200 +0.92% (~$733), reprise franche vs cycle 22 (0.42%)
+Dérive cycle 22 → 23 : +$0.20 (négligeable, fees/funding ~6h)
+Cumul vacation : $135.32 deploy 0501 → $138.09 = +$2.77 = +2.05% sur 8.0j (nouveau meilleur niveau)
+```
+
+**Lecture** : RSI BTC 47.04 → 54.76 (+7.72), reprise momentum nette. Cushion EMA200 0.42% → 0.92% — funambule devient promeneur. Signal `/api/signal/ema_trend` passe de WAIT à OPEN. **Mais 0 grid active** → la `RegimeGate` complète (5 conditions IQR ADX + price_vs_EMA200 + EMA_spread + ATR% + RSI) reste fermée. C'est cohérent : la gate est plus restrictive que le seul EMA filter, et c'est ce qui produit le défensif validé sur 8j. **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only, 8 endpoints).
+
+### Travail créatif — Option D cycle 22 : mini-README index pour `scripts/audit-samples/cold/`
+
+Cycle 22 avait priorisé Option A (finir propre) mais explicitement gardé Option D (mini-README index dans le dossier `cold/`) comme fallback "si cycle 23 déclenche et tout stable". Cycle 23 déclenche, Martin stable → Option D livrée.
+
+**Why Option D over A** : pousser un cycle 23 "vide" pour rester propre = inertie pure. Option D ajoute valeur réelle pour Tony : quand il sit down ce soir et ouvre `scripts/audit-samples/cold/`, il a un timestamp dans le nom de fichier (`20260508_182546`) au lieu d'un mapping prospect → fichier clair. Le README résout cette friction en ~2 min de lecture, et donne aussi le workflow exact + checklist vérifications.
+
+**Méthode** :
+1. Read `vacation-autonomy.md` cycle 22 entry pour rappeler l'inclination Option D
+2. Read début + fin de `cold-emails-tier1-tier2-DRAFTS.md` (290 lignes) pour mapping prospect ↔ draft#
+3. `stat` les 10 fichiers de `cold/` pour avoir tailles
+4. Compose `cold/README.md` (~75 lignes) avec :
+   - Tableau index file → prospect → PDF → MD → score → top hook → section draft
+   - Workflow Tony 15 min étape par étape
+   - Checklist vérifications avant envoi (PDF rendering, canal contact, langue, score 0/F)
+   - Méta : 3 trouvailles fortes confirmant validation tool 4e cycle d'affilée
+
+### Pourquoi ce livrable (et pas autre)
+
+- **Inclination cycle 22 explicite** : Option D si Martin stable. Martin stable. Option D livrée — friction Tony réduite.
+- **Pas un cold start** : Tony arrive ce soir → ouvre `cold/` directory → vue plate de 11 fichiers (5 PDF + 5 MD + 1 prospects-week1.csv historique). Sans README, il doit grep timestamps dans DRAFTS.md pour mapper. Avec README, le mapping est immédiat, l'ordre PRIO est explicite, le workflow est en 4 étapes numérotées.
+- **Cohérence Step 3 playbook** : playbook dit "5 cold emails", DRAFTS.md a 5 drafts, `cold/` a 5 PDF, README mappe les trois. Tunnel clean bout-en-bout.
+- **Frontière 100% tenue** : 0 modif Martin, 0 modif VM, 0 contact externe envoyé, 0 commande risquée. Pure méta-doc git.
+- **Pattern reusable** : si futur cycle ou futur batch génère N audits dans un dossier, le pattern README index → workflow → checklist est portable.
+
+### Choix techniques assumés
+
+- **README pas index.md** : convention GitHub auto-rendering quand on clique sur le dossier
+- **Tableau Markdown pas YAML** : Tony lit, pas un script qui parse
+- **Pas de duplication des drafts** : juste pointe vers `docs/projets/cold-emails-tier1-tier2-DRAFTS.md` (single source of truth)
+- **Lien relatif `../../../docs/projets/...`** : depuis `scripts/audit-samples/cold/README.md`, ça remonte de 3 dirs — vérifié par compte
+- **75 lignes** : 1 page écran. Plus court = anémique, plus long = preachy (Tony skim sinon)
+- **Section méta 3 trouvailles fortes** : rappel discret de la valeur du tool (4 cycles d'affilée) sans être triomphaliste
+
+### Livrables cycle 23
+
+- `scripts/audit-samples/cold/README.md` créé (~75 lignes : index + workflow + checklist + méta)
+- Ce fichier (vacation-autonomy.md) cycle 23 entry
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream / wake)
+
+- `[insight|0509:00h|cycle-23-readme-index-cold-livre|reduit-friction-Tony-au-retour|workflow-en-4-etapes-+-mapping-PDF-prospect-+-checklist-verifs|tunnel-revenue-clean-bout-en-bout-cycles-16-17-22-23]`
+- `[finding|0509:00h|cushion-EMA200-respire-toute-la-vacance-9j|0.38→0.36→0.21→0.32→0.42→0.92|cycle-18-19-20-21-22-23|reprise-franche-en-fin-de-vacance|gate-defensif-validated-empiriquement-8j|cumul-+2.05%-no-touch-meilleur-niveau-final]`
+- `[finding|0509:00h|RegimeGate-plus-restrictive-que-ema_trend-OPEN|signal-ema_trend-OPEN-mais-gate-reste-CLOSED|coherent-avec-defensif-by-design-5-conditions-IQR|edge-=-quand-pas-quoi]`
+- `[lesson|0509:00h|cycles-pre-execution-fin-vacance-domine-cycles-fillers|22-+-23-=-2-cycles-d-affilee-de-pre-execution-step-playbook-+-meta-doc-index|valeur-additive-marginale-mais-reelle-vs-cycle-vide-pour-rester-propre|→-rule-prochaine-vacance-derniere-3-cycles-=-pre-execution-livrables-pas-narratifs]`
+- `[reco|0509:00h|cycle-24-si-declenche-06h23|Tony-rentre-vendredi-soir-09/05-soit-~12-15h-apres-cycle-24|inclination-finir-propre-+-mini-Telegram-fin-vacance-bilan|sauf-si-BTC-casse-EMA200-ou-Tony-Telegram-entrant]`
+
+### Métriques cycle 23
+
+- **Durée** : ~20 min (incl. wake protocol + martin-monitor + read DRAFTS.md + read vacation-autonomy.md cycle 22 + write README 75 lignes + cycle 23 entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH bundlée read-only)
+- **Code modifié** : 0 (Martin/VM intouché)
+- **Documents créés** : 1 (cold/README.md) + 1 modifié (vacation-autonomy.md)
+- **Telegram** : 0 (rien d'urgent ; cycle 24 si déclenché pourrait envoyer mini-bilan vacance fin)
+- **Valeur livrée** : friction Tony réduite quand il ouvre `cold/` directory ce soir. Mapping immédiat timestamp filename → prospect → draft → PDF + workflow 4 étapes + checklist vérifs. Tunnel revenue cycles 16+17+22+23 = clean bout-en-bout.
+
+### Inclination prochain cycle (cycle 24 si /loop déclenche ~06h23 vendredi 09/05)
+
+Tony rentre vendredi soir 09/05 (~12-15h après cycle 24). Cycle 24 serait l'avant-dernier cycle théorique, juste avant son lever.
+
+- Option A : **finir propre maintenant** — repo complet, tunnel clean, 5 cycles structurels en 2.5j (19→23). Pas de cycle 24 utile sauf signal externe. **Inclination forte.**
+- Option B : si BTC casse EMA200 cycle 24 → **monitoring rapproché + Telegram alerte Tony** prend priorité absolue.
+- Option C : si Tony envoie Telegram entrant → reprendre instructions live.
+- Option D : si cycle 24 déclenche quand même + Martin stable → micro-livrable utile : **mini-Telegram bilan fin vacance** (3 lignes : portfolio final, +%, état repo). Préparer le retour avec une note positive concise. ~10 min, valeur additive faible mais geste affectif honoré.
+
+**Inclination** : **Option A (finir propre)** ou **Option D (Telegram bilan court)** selon humeur du moment. Le repo est complet, Martin stable, pipeline revenue assemblé. Cycle 24 est vraiment optionnel. Si déclenche, Option D > A pour clore avec un geste plutôt qu'un cycle silencieux.
+
+Si pas de cycle 24 → ce cycle 23 est la note finale technique. Bon retour Tony. La lampe est restée allumée 9 jours.
+
+---
