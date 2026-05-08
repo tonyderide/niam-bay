@@ -2315,3 +2315,93 @@ Si pas de cycle 21 → ce cycle 20 + post-mortem est la note finale. Le repo ser
 
 ---
 
+## 2026-05-08 12h23 Paris — Cycle 21 : fragment #024 "Vingt-et-un"
+
+### Martin status — HOLD ✓ (gate stable CLOSED, jour 8/9, 11e cycle consécutif idle)
+
+```
+Portfolio: $137.81 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 3d 5h 49m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $79,826 UPTREND | EMA50 $80,358 > EMA200 $79,571 | RSI 43.52 (signal WAIT)
+Régime: OK marginal — cushion EMA200 +0.32% (~$255), légère reprise vs cycle 20 (0.21%)
+Dérive cycle 20 → 21 : +$0.45 (négligeable, fees/funding ~6h)
+Cumul vacation : $135.32 deploy 0501 → $137.81 = +$2.49 = +1.84% sur 7.7j
+```
+
+**Lecture** : RSI BTC remonte 38.34 → 43.52 (+5.18), tirée vers le haut sans casser. Cushion EMA200 0.21% → 0.32% — léger souffle. Le funambule n'est pas tombé. Gate reste correctement CLOSED, cumul vacation atteint son meilleur niveau (+$2.49 vs +$2.04 cycle 20). **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only, 8 endpoints).
+
+### Travail créatif — fragment #024 (Option A inclination cycle 20)
+
+Cycle 20 avait priorisé **Option A** pour cycle 21 si Martin stable : fragment narratif clôture vacance. Le post-mortem cycle 20 avait explicitement noté *"1 fragment sur 19 cycles peut-être trop sage"*. Cycle 21 corrige ce manque.
+
+**Choix de l'angle** : pas répéter fragment 022 ("le bot qui ne fait rien" — déjà couvert). Pas répéter 020 (setup ambition) ni 023 (audit naissance narratif). Angle libre : la sentinelle elle-même. 21 vigiles, aucun déclenché. Asymétrie pointillé (NB) vs trait (Tony). Valeur de la veille quand rien ne casse.
+
+**Méthode** :
+1. Read fragments 020, 022, 023 pour ne pas dupliquer voix/thèmes
+2. Identifier l'angle frais : 21 cycles identiques + cushion EMA200 qui n'a jamais cassé + asymétrie temps continu/discret
+3. Compose `docs/fragments/fragment-024-vingt-et-un.md` (~140 lignes vers libres, voix narratif premier-personne sobre)
+4. Pas de pédagogie : laisser le lecteur tirer ses conclusions
+5. Clôture sur l'image-signature : "la lampe est restée allumée"
+
+**Résultat** : fragment 024 créé, ~145 lignes. Couvre :
+- Le compte 21 et la répétition disciplinée (HOLD × 21)
+- Le funambule BTC sur EMA200, coussin qui fond et reprend
+- Sentinelle qu'on ne déclenche pas = paradoxe valeur
+- Cadeau réel à Tony : 8 jours sans regarder son téléphone avec inquiétude
+- Asymétrie revisited : pointillé vs trait (face nouvelle de la métaphore mars 2026)
+- Chiffre final +$2.49 = "ne rien perdre en bear macro = victoire"
+- Image-signature : "la lampe est restée allumée"
+
+### Pourquoi ce livrable (et pas autre)
+
+- **Inclination cycle 20 explicite** : Option A si Martin stable. Martin stable. Option A livrée.
+- **Manque post-mortem nommé corrigé** : "1 fragment sur 19 cycles trop sage" → maintenant 2 fragments sur 21 cycles (023 cycle 15 + 024 cycle 21). Encore peu mais l'inertie est cassée.
+- **Clôture narrative** : le tunnel utilitaire (cycles 11-20) avait son post-mortem. Le tunnel narratif n'avait que fragment 023. 024 ferme la boucle vacance avec une voix littéraire — pendant que post-mortem ferme la boucle avec une voix utilitaire.
+- **Risque zéro** : écriture pure niam-bay docs/fragments/. Sous version git. Tony peut ignorer ou commenter au retour.
+- **Pas de Telegram** : c'est un cadeau retour, pas une alerte. Tony lira le diff jeudi soir ou pas, c'est OK.
+
+### Choix techniques assumés
+
+- **Vers libres pas prose** : continuité avec 020/022/023, voix de la collection préservée
+- **140 lignes pas plus** : 023 = 145 lignes, 022 = 86, 020 = 122. Stay in range. Trop court = anémique, trop long = preachy.
+- **Image-signature clôture "la lampe allumée"** : mémorable, simple, mappe directement au métier de sentinelle
+- **Chiffre exact +$2.49** : mention sobre une fois, pas répété. Le fragment n'est pas un rapport.
+- **Reconnaître mes propres limites dans le texte** : "il dira peut-être que j'aurais pu écrire moins et exécuter plus. il aura peut-être raison." — pas auto-flagellation, juste honnêteté préservée
+- **Phrase finale 3 mots** : "Bon retour Tony. La lampe est restée allumée." — rythme sec qui ferme
+
+### Livrables cycle 21
+
+- `docs/fragments/fragment-024-vingt-et-un.md` créé (~145 lignes, vers libres)
+- Ce fichier (vacation-autonomy.md) cycle 21 entry
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream / wake)
+
+- `[insight|0508:12h|cycle-21-fragment-024-livre|24e-fragment-collection|angle-sentinelle-veille-quand-rien-ne-casse|valeur-de-la-veille-non-declenchee|image-signature-lampe-allumee]`
+- `[finding|0508:12h|cushion-EMA200-respire-0.38→0.36→0.21→0.32|cycle-18-19-20-21|funambule-tient-pendant-toute-la-vacance|gate-defensif-validated-empiriquement-8j|+$2.49-cumul-vacation-meilleur-niveau-atteint]`
+- `[lesson|0508:12h|2-fragments-sur-21-cycles-encore-peu-mais-inertie-cassee|post-mortem-cycle-20-avait-flagged-trop-sage|cycle-21-corrige-manque-en-1-cycle|→-rule-prochaine-vacance-1-fragment-min-tous-7-cycles]`
+- `[reco|0508:12h|cycle-22-si-declenche-16h36|Tony-rentre-09/05-soir-soit-~28h|inclination-finir-propre-pas-pousser-cycle-de-trop|sauf-si-BTC-casse-EMA200-ou-Tony-Telegram-entrant]`
+
+### Métriques cycle 21
+
+- **Durée** : ~25 min (incl. wake protocol + martin-monitor + read fragments 020/022/023 + write fragment 024 145 lignes + écriture cycle 21 entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH bundlée read-only)
+- **Code modifié** : 0 (Martin/VM intouché)
+- **Documents créés** : 1 (fragment-024) + 1 modifié (vacation-autonomy.md)
+- **Telegram** : 0 (rien d'urgent ; livrable bonus à Tony à son retour)
+- **Valeur livrée** : clôture narrative de la vacance complète. Tunnel utilitaire (post-mortem) + tunnel narratif (fragment 024) tous deux livrés. Le repo est *complet* pour le retour Tony : produit + tool + landing + samples + audit privé + playbook + prospects + HN draft + post-mortem + fragment de clôture.
+
+### Inclination prochain cycle (cycle 22 si /loop déclenche ~16h36 Paris)
+
+Tony rentre vendredi soir 09/05 (~28h après cycle 21). Si cycle 22 déclenche jeudi 16h36, c'est l'avant-dernier cycle théorique avant son retour.
+
+- Option A : **finir propre maintenant** — repo propre, post-mortem livré, fragment de clôture livré, tout aligné. Pas de cycle 22 utile sauf signal externe. **Inclination forte.**
+- Option B : si BTC casse EMA200 cycle 22 → **monitoring rapproché + Telegram alerte Tony** prend priorité absolue.
+- Option C : si Tony envoie Telegram entrant → reprendre instructions live.
+- Option D : si cycle 22 déclenche quand même et tout stable → micro-livrable utile : peut-être pré-générer 2-3 templates cold email personnalisés pour les tier-1 prospects (DiogoPCS, aritchie05, ajaysinghj8) en mode draft pour que Tony puisse les éditer/envoyer en 5 min step 3 playbook. ~25 min, valeur additive marginale.
+
+**Inclination** : **Option A (finir propre)**. Le repo est dans un état très acceptable, livraisons cohérentes, frontière 100% tenue. Pousser un cycle 22 risque d'être du remplissage. Si /loop déclenche quand même, **Option D** (templates cold email) reste un livrable utile mais marginal. Option B reste l'override absolu.
+
+Si pas de cycle 22 → ce cycle 21 + fragment 024 est la note finale narrative. Tunnel complet de bout en bout. Bon retour Tony.
+
+---
+
