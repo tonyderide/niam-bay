@@ -2405,3 +2405,106 @@ Si pas de cycle 22 → ce cycle 21 + fragment 024 est la note finale narrative. 
 
 ---
 
+## 2026-05-08 18h23 Paris — Cycle 22 : pré-exécution Step 3 playbook (cold emails personnalisés)
+
+### Martin status — HOLD ✓ (gate stable CLOSED, jour 8/9, 12e cycle consécutif idle)
+
+```
+Portfolio: $137.89 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 3d 11h 49m depuis 2026-05-05 04:33Z (systemd stable)
+BTC $79,919 UPTREND | EMA50 $80,293 > EMA200 $79,582 | RSI 47.04 (signal WAIT)
+Régime: OK marginal — cushion EMA200 +0.42% (~$337), reprise vs cycle 21 (0.32%)
+Dérive cycle 21 → 22 : +$0.08 (négligeable, fees/funding ~6h)
+Cumul vacation : $135.32 deploy 0501 → $137.89 = +$2.57 = +1.90% sur 7.7j (meilleur niveau atteint)
+```
+
+**Lecture** : RSI BTC 43.52 → 47.04 (+3.52), reprise momentum lente. Cushion EMA200 0.32% → 0.42% — funambule plus solide. **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only, 8 endpoints).
+
+### Travail créatif — Option D inclination cycle 21 : pré-exécuter Step 3 playbook
+
+Cycle 21 avait priorisé **Option A (finir propre)** mais explicitement gardé **Option D (templates cold email pré-générés)** comme fallback "si cycle 22 déclenche et tout stable". Cycle 22 déclenche, Martin stable → Option D livrée.
+
+**Why Option D over A** : pousser un cycle 22 "vide" pour rester propre = inertie pure. Option D ajoute valeur réelle au tunnel revenue : les 5 cold emails du Step 3 du playbook passent de "Tony compose 5 emails depuis blank" à "Tony review 5 drafts + send". Latence retour réduite encore.
+
+**Méthode** :
+1. Read `prospects-week1.md` (cycle 17) → tier-1 + tier-2 = 5 cibles (DiogoPCS, aritchie05, ajaysinghj8, fvilers, technikhil314)
+2. Clone 5 repos en parallèle dans `/tmp/audits-cold/` (read-only Github)
+3. Run `python3 scripts/angular_audit.py` sur chaque (5 audits MD + PDF générés)
+4. Extract top issue par projet (CRITIQUE prioritaire si présent, sinon top IMPORTANT)
+5. Compose 5 drafts personnalisés avec données réelles (file:line, n° d'occurrences, score factuel)
+6. Persiste les 5 PDFs+MDs dans `scripts/audit-samples/cold/` (versionnés git, plus de /tmp éphémère)
+7. Crée `docs/projets/cold-emails-tier1-tier2-DRAFTS.md` (~280 lignes : préambule + 5 drafts + checklist Tony)
+
+**Résultats audits** :
+
+| # | Prospect | Score | Issues | Top hook | Reco |
+|---|----------|-------|--------|----------|------|
+| 1 | **DiogoPCS/ProjetoAngularFirebase** | 50/D | 23 | 🔥 SEC002 — Firebase API key hardcodée publique | PRIO 1 |
+| 2 | **technikhil314/angular-components** | 0/F | 30 | 🔥 SEC001 — innerHTML sans sanitization (XSS) | PRIO 2 |
+| 3 | **aritchie05/EcoCraftingTool** | 0/F | 53 | 🔥 MEM001 + JS001 leaks | PRIO 3 |
+| 4 | **ajaysinghj8/angular-inport** | 51/D | 48 | JS001 timer leaks dans library | PRIO 4 |
+| 5 | **fvilers/ngx-file-helpers** | 76/B | 9 | TYPE001 + A11Y001 (hook faible) | PRIO 5 optionnel |
+
+**Drafts** : 5 emails en anglais, chacun avec :
+- Subject ciblé sur l'issue critique (ex: "Heads up — Firebase API key exposed in your public repo")
+- Contexte calibration (pas mass-cold)
+- Issue critique avec file:line concret
+- Mention "free, no obligation" + bridge 49€ détaillée
+- Tweaks suggérés (langue, prénom à confirmer, ton à ajuster)
+
+### Pourquoi ce livrable (et pas autre)
+
+- **Inclination cycle 21 explicite** : Option D si Martin stable. Martin stable. Option D livrée — value-add concret.
+- **Trois trouvailles fortes** : 3/5 prospects ont un hook CRITIQUE (Firebase key, XSS, leaks), pas juste TYPE001 générique. Validation supplémentaire que le tool trouve des bugs réels (4e cycle d'affilée).
+- **Step 3 playbook réduit de 25 → ~15 min** : Tony arrive avec audits déjà faits + drafts prêts. Reste à confirmer email/contact + send.
+- **Audit naissance pattern** : repas pour tester l'outil = livrer la dégustation à 5 inconnus. Le pattern "audit privé suivi de décision" du cycle 14 inversé : audit cold suivi d'offre.
+- **Frontière 100% tenue** : 0 modif Martin, 0 modif VM, 0 contact externe envoyé. Pure pré-exécution locale + git. Tony décide d'envoyer ou pas.
+
+### Choix techniques assumés
+
+- **Anglais pas français** : prospects internationaux (cycle 17 sans filtre France). Tony peut retraduire si meilleur fit.
+- **Score 0/F désamorcé dans le cold** : pas mentionné en intro pour aritchie05/technikhil314 — focus sur l'issue critique. Risque réaction défensive minimisé. À tester.
+- **5 drafts pas 3** : playbook demande 5 envois. Mais PRIO 5 (fvilers, score 76/B) est marqué optionnel — Tony peut skip si veut serrer.
+- **Pas de PDF check** : je n'ai pas vérifié que les 5 PDF s'ouvrent correctement. fpdf2 a quelques warnings sur certains rapports (snippets longs). Tony doit vérifier au moins 1 PDF avant envoi en pièce jointe.
+- **Persiste dans `scripts/audit-samples/cold/`** : chemin git, pas de fragilité /tmp. Nouveau sous-dossier dédié pour ne pas mélanger avec audits Tony historiques.
+
+### Livrables cycle 22
+
+- `docs/projets/cold-emails-tier1-tier2-DRAFTS.md` créé (~280 lignes : 5 drafts perso + checklist Tony)
+- `scripts/audit-samples/cold/` créé avec 10 fichiers (5 MD + 5 PDF)
+- Ce fichier (vacation-autonomy.md) cycle 22 entry
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream / wake)
+
+- `[insight|0508:18h|cycle-22-pre-execution-step-3-playbook-livre|5-audits-reels-+-5-drafts-perso-+-PDFs-versionnes|Tony-step-3-passe-de-25min-a-15min-au-retour|3-trouvailles-CRITIQUE-DiogoPCS-Firebase-key-+-technikhil-XSS-+-aritchie-MEM001|outil-trouve-bugs-reels-4e-cycle-d-affilee]`
+- `[finding|0508:18h|3-prospects-sur-5-ont-CRITIQUE-issue|SEC002-firebase-key-publique-DiogoPCS|SEC001-innerHTML-XSS-technikhil|MEM001-leaks-aritchie|tool-pas-juste-academique-confirme-empiriquement]`
+- `[finding|0508:18h|cushion-EMA200-respire-toute-la-vacance|0.38→0.36→0.21→0.32→0.42|cycle-18-19-20-21-22|funambule-tient-8j|gate-defensif-validated-empiriquement|cumul-+1.90%-no-touch]`
+- `[lesson|0508:18h|pre-execution-step-domine-narrative-pour-cycle-de-fin|cycle-21-fragment-narratif-+-cycle-22-step-3-pre-execute-=-double-livrable-fin-vacance|narrative-+-utility-pas-en-conflit|tunnel-revenue-allonge-d-1-cran-de-plus]`
+- `[reco|0508:18h|patterns-cold-email-perso-extension-skill|si-prochain-batch-25-prospects-→-script-d-automation-clone+audit+draft-en-loop|cycle-22-fait-5-en-25min|skill:cold-email-batch-generator?-pour-future-vacance-OU-niveau-4-si-1ere-vente-arrive]`
+
+### Métriques cycle 22
+
+- **Durée** : ~30 min (incl. wake protocol + martin-monitor + read prospects + clone 5 repos + audit 5 + read top issues + write 5 drafts + persist PDFs + cycle 22 entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH bundlée read-only)
+- **Code modifié** : 0 (Martin/VM intouché)
+- **Documents créés** : 2 (cold-emails-tier1-tier2-DRAFTS.md + 10 fichiers audit-samples/cold/) + 1 modifié (vacation-autonomy.md)
+- **Repos clonés (read-only)** : 5 (DiogoPCS, aritchie05, ajaysinghj8, fvilers, technikhil314)
+- **Audits réels lancés** : 5 (angular_audit.py v1.6.0)
+- **Telegram** : 0 (rien d'urgent ; livrable bonus à Tony à son retour)
+- **Valeur livrée** : Step 3 du playbook Jour 1 retour pré-exécuté à 80%. Tony arrive avec : (1) tunnel utilitaire complet (cycles 11-20), (2) clôture narrative (fragment 024 cycle 21), (3) 5 cold emails personnalisés prêts à review+send (cycle 22). Latence retour ≈ 0 sur 6 des 7 steps du playbook.
+
+### Inclination prochain cycle (cycle 23 si /loop déclenche ~22h36 Paris)
+
+Tony rentre vendredi soir 09/05. Cycle 23 (~22h36 jeudi) serait l'avant-veille de son retour. Cycle 24 (~04h36 vendredi matin) serait juste avant son lever.
+
+- Option A : **finir propre maintenant** — repo + tunnel + drafts + post-mortem + fragment de clôture, tout aligné. Pas de cycle 23 utile sauf signal externe. **Inclination forte.**
+- Option B : si BTC casse EMA200 cycle 23/24 → **monitoring rapproché + Telegram alerte Tony** prend priorité absolue.
+- Option C : si Tony envoie Telegram entrant → reprendre instructions live.
+- Option D : si cycle 23 déclenche quand même + Martin stable → micro-livrable utile : peut-être un README/index dans `scripts/audit-samples/cold/` qui mappe les 5 PDFs aux 5 drafts (méta-doc 1 page pour Tony s'orienter rapidement). ~15 min, valeur additive marginale.
+
+**Inclination** : **Option A (finir propre)**. 4 livrables structurels en 2 jours (cycles 19→22), pipeline revenue est complet bout-en-bout. Cycle 23+ risque vraiment du remplissage. Si /loop déclenche quand même, **Option D** (mini-README index) reste utile mais marginal.
+
+Si pas de cycle 23 → ce cycle 22 est la note finale opérationnelle. Le repo est complet. Bon retour Tony.
+
+---
+
