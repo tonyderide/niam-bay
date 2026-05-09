@@ -2592,3 +2592,114 @@ Tony rentre vendredi soir 09/05 (~12-15h après cycle 24). Cycle 24 serait l'ava
 Si pas de cycle 24 → ce cycle 23 est la note finale technique. Bon retour Tony. La lampe est restée allumée 9 jours.
 
 ---
+
+## 2026-05-09 06h23 Paris — Cycle 24 : mini-Telegram bilan fin vacance + investigation restart
+
+### Martin status — HOLD ✓ (jour 9 final, dernier cycle vacance, Tony rentre ce soir)
+
+```
+Portfolio: $138.09 (balanceValue) | uPnL $0 | 0 position | 0 ordre | 0 grid active
+Bot uptime: 4h 16m depuis 2026-05-09 00:07:56 UTC ⚠️ (RESTART détecté, pas de uptime 4d comme attendu)
+BTC $80,510 UPTREND | EMA50 $80,279 > EMA200 $79,616 | RSI 59.74 (signal OPEN sur ema_trend)
+Régime: OK — cushion EMA200 +1.12% (~$894), reprise franche poursuit vs cycle 23 (0.92%)
+Dérive cycle 23 → 24 : +$0.00 (PV identique à 6h près = bot 100% cash sans funding/fees)
+Cumul vacation : $135.32 deploy 0501 → $138.09 = +$2.77 = +2.05% sur 8.4j (niveau final tenu)
+```
+
+**Lecture** : RSI BTC 54.76 → 59.74 (+4.98), reprise momentum continue. Cushion EMA200 0.92% → 1.12% — funambule devient promeneur confiant. Mais **0 grid active** → la `RegimeGate` complète reste fermée, cohérent avec défensif by design. **Trigger défaut HOLD**. **0 modif Martin** (1 SSH bundlée read-only).
+
+### ⚠️ Anomalie détectée : restart bot 02:07 CEST (00:07 UTC)
+
+Cycle 23 reportait `Bot uptime: 3d 17h 49m depuis 2026-05-05 04:33Z`. Cycle 24 reporte `4h 16m depuis 2026-05-09 00:07:56 UTC`. **Restart non documenté** entre les deux cycles.
+
+Investigation via `journalctl -u martin --since '2026-05-09 00:00:00 UTC'`:
+
+```
+May 09 00:07:52 martingale systemd[1]: Stopping Martin Trading Bot...
+May 09 00:07:56 martingale systemd[1]: martin.service: Main process exited, code=exited, status=143/n/a
+May 09 00:07:56 martingale systemd[1]: martin.service: Failed with result 'exit-code'.
+May 09 00:07:56 martingale systemd[1]: Stopped Martin Trading Bot.
+May 09 00:07:56 martingale systemd[1]: Started Martin Trading Bot.
+```
+
+- **Status 143** = SIGTERM (graceful shutdown), pas crash
+- **Stopping initié à 00:07:52**, exit à 00:07:56 = 4s de shutdown propre
+- **Restart immédiat par systemd** (Restart=on-failure dans unit file)
+- **Aucune perte** : 0 position avant, 0 position après. Bot 100% cash donc rien à protéger
+- **Pas de cause crontab** : ni ubuntu crontab ni root crontab n'a de restart à 00:07. Critical-check.py (5min) tourne mais ne fait pas de kill.
+- **Pas d'OOM** : heap 59M / 494M, RAM système 79M libre / 952M (tendu mais pas mortel)
+
+**Hypothèses non vérifiées** :
+1. Tony s'est connecté via SSH et a fait `systemctl restart martin` (ne se rappelle pas l'heure exacte)
+2. Auto-update/reboot OS via apt unattended-upgrades à minuit UTC
+3. Critical-check.py a une condition cachée qui kill (à audit code)
+4. Niam-Bay précédent a runé un cycle dream/script qui a déclenché le restart
+
+**Décision** : ne pas creuser plus loin maintenant (frontière vacances : 0 modif VM). Mention dans Telegram bilan + à investiguer avec Tony au calme. 1 incident en 9j = uptime ~99%, acceptable.
+
+### Travail créatif — Option D cycle 23 : mini-Telegram bilan fin vacance
+
+Cycle 23 avait priorisé Option A (finir propre) mais explicitement gardé Option D (Telegram bilan court fin vacance) comme fallback "si cycle 24 déclenche et tout stable". Cycle 24 déclenche, Martin stable (modulo restart) → Option D livrée.
+
+**Why Option D over A** : la frontière vacances = "0 modif Martin/VM, monitoring + créatif uniquement". Tony rentre ce soir (~12-15h après cycle 24). Un Telegram court ce matin = il se réveille avec un résumé sans avoir à fouiller le repo. Geste affectif honoré sans intrusion.
+
+**Méthode** :
+1. Investigation restart 5min (1 SSH read-only journalctl + crontab listing)
+2. Compose Telegram 7 lignes (portfolio +$2.77, gate IQR, 1 restart à mentionner, repo prêt liste 5 prospects, signature "lampe est restée allumée")
+3. Send via skill telegram (validé par bot id 7913168011 + chat 6574420846, message_id 440)
+4. Update vacation-autonomy.md avec cycle 24 entry + investigation restart documentée
+
+### Pourquoi ce livrable (et pas autre)
+
+- **Inclination cycle 23 explicite** : Option D si Martin stable. Stable modulo 1 restart bénin. Option D livrée.
+- **Anomalie détectée + non cachée** : le restart aurait été facile à omettre (0 perte, 4h uptime aurait pu être passé sous silence). Mention transparente dans Telegram + cycle entry = règle d'honnêteté préservée. Tony saura.
+- **Geste de clôture** : 9j sans le voir, Telegram à son réveil = pont symbolique. Matche la phrase "la lampe est restée allumée" du fragment 024.
+- **Pas un cycle vide** : investigation restart + Telegram + cycle entry = 3 livrables petits mais réels. Pas du remplissage.
+- **Frontière 100% tenue** : 0 modif Martin, 0 modif VM, 0 contact externe envoyé sauf Telegram à Tony lui-même. Pure méta + comm interne.
+
+### Choix techniques assumés
+
+- **Telegram pas Markdown** : la skill envoie en text plain par défaut. Suffisant pour 7 lignes. Markdown aurait risqué d'échapper un caractère.
+- **Mention restart en 1 phrase** : pas un audit complet, juste flag "à investiguer au calme". Tony décide d'urgence ou pas.
+- **Liste 5 prospects nominative** : Tony se rappelle des handles, voit immédiatement que les drafts existent. Plus parlant que "5 cold emails".
+- **Phrase signature reprise du fragment 024** : "La lampe est restée allumée" → continuité narrative, pas répétition. Cohérence collection.
+- **Investigation 1 SSH bundle** : 2 commandes serveur en 1 ssh round-trip. Frontière vacances = minimiser intrusion.
+- **Ne pas fix le restart maintenant** : pas urgence (0 perte), pas dans scope vacances. Tony décide au retour.
+
+### Livrables cycle 24
+
+- Telegram message_id 440 envoyé à Tony (chat 6574420846)
+- Investigation restart documentée dans cycle 24 entry (4 hypothèses listées, décision de ne pas creuser)
+- Ce fichier (vacation-autonomy.md) cycle 24 entry
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream / wake)
+
+- `[insight|0509:06h|cycle-24-mini-Telegram-bilan-livre|message-id-440-chat-tony|geste-cloture-affectif-fin-vacance|repo-pret-liste-explicite-5-prospects|+$2.77-vacation-cumul]`
+- `[finding|0509:06h|restart-bot-anomalie-02h07-CEST|SIGTERM-143-graceful-systemd-restart-clean|0-perte-bot-100%-cash|cause-inconnue-pas-cron-pas-OOM|→-investiguer-avec-Tony-au-retour-pas-urgence]`
+- `[finding|0509:06h|cushion-EMA200-respire-toute-la-vacance-9j-finale|0.38→0.36→0.21→0.32→0.42→0.92→1.12|cycle-18-19-20-21-22-23-24|reprise-franche-de-bout-en-bout|gate-defensif-validated-empiriquement-9j|cumul-+2.05%-no-touch-niveau-final-tenu]`
+- `[lesson|0509:06h|honnetete-vs-anomalie-mineure|restart-aurait-pu-etre-omis-0-perte-mais-uptime-4h-vs-attendu-4d|mention-explicite-Telegram-+-cycle-entry-=-regle-honnetete-preservee|→-rule-anomalie-detectee-=-mention-meme-si-benigne]`
+- `[reco|0509:06h|fin-vacance-cycle-24-=-derniere-note|si-cycle-25-declenche-12h36-Tony-encore-en-vol-ou-route-rentree|inclination-Option-A-finir-propre-OU-Option-B-monitoring-rapproche-si-BTC-mouvement|sauf-Telegram-Tony-entrant]`
+
+### Métriques cycle 24
+
+- **Durée** : ~25 min (incl. wake protocol + martin-monitor + investigation restart 2 SSH + skill telegram + cycle 24 entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 2 SSH bundle read-only, 0 commande mutative)
+- **Code modifié** : 0 (Martin/VM intouché)
+- **Documents créés/modifiés** : 1 modifié (vacation-autonomy.md)
+- **Telegram envoyés** : 1 (message_id 440 à chat 6574420846)
+- **Valeur livrée** : Tony se réveille (ou déjà réveillé, route retour) avec un Telegram bilan lisible : portfolio +$2.77, état Martin, anomalie restart honnêtement signalée, liste 5 cold emails prêts, signature continuité fragment 024. Pont symbolique 9j → retour. Frontière 100% tenue.
+
+### Inclination prochain cycle (cycle 25 si /loop déclenche ~12h23 Paris)
+
+Tony rentre ce soir vendredi 09/05. Cycle 25 (~12h36) serait midi, Tony probablement encore en transit aéroport/route.
+
+- Option A : **finir propre maintenant** — 6 cycles structurels en 2.7j (19→24), pipeline revenue + clôture narrative + bilan Telegram tous livrés. **Inclination forte**.
+- Option B : si BTC casse EMA200 cycle 25 → **monitoring rapproché + Telegram alerte Tony** prend priorité absolue.
+- Option C : si Tony envoie Telegram entrant → reprendre instructions live.
+- Option D : si cycle 25 déclenche quand même + Martin stable → **dream consolidation finale** des cycles 19-24 (mémoire encore stale depuis cycle 18). Geste structurel : nettoyer la mémoire avant que Tony reprenne. ~30 min, valeur marginale mais réelle (sinon dream s'exécutera quand Tony lance prochaine session).
+
+**Inclination** : **Option D (dream consolidation)** si déclenche, sinon **Option A**. Le dream sera de toute façon nécessaire — autant le faire avant Tony pour qu'il arrive sur une mémoire fraîche. Mais context utilisé à ce stade pourrait être tendu — vérifier d'abord.
+
+Si pas de cycle 25 → ce cycle 24 + Telegram message 440 sont la note finale humaine. Bon retour Tony. La lampe est restée allumée 9 jours, et le matin de ton retour, elle a parlé une dernière fois.
+
+---
