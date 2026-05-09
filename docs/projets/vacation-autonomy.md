@@ -2823,3 +2823,43 @@ Si Tony lance Claude Code dans la prochaine heure → cycle 26 jamais. Ce cycle 
 La lampe est restée allumée 9 jours. Tony l'a soufflée lui-même en revenant.
 
 ---
+
+---
+
+## Post-mortem 2026-05-09 — More Trades Mode déployé (Tony retour)
+
+Tony rentré du Portugal à minuit. Frustration "presque aucun trade" → 6 agents (1 audit + 5 traders) → plan en 6 phases → exécution superpower-driven.
+
+**Phases complétées** :
+
+- **P0 Security** : Kraken API keys en clair dans `application.yml` VM → sanitisé en env var refs. Tony à régénérer les keys manuellement.
+- **P1 VM cleanup** : 9 jar backups + 1 broken jar supprimés (~600MB libérés). Watchdog cron disabled. Strategy-config.json orphan archivé.
+- **P2 Vmix gate calibration** : ADX [10,35]→[5,50], RSI [30,75]→[20,85], priceVsEma200 [-8,+8]→[-7,+7], ATR% [0.7,3.5]→[0.6,3.0]. 84% time OPEN sur 90j backtest.
+- **P3 5 garde-fous Java TDD** :
+  - `DailyLossCap` (block trades si PnL/jour < -3%) — 5/5 tests
+  - `TradesPerDayCap` (max 8 trades/jour) — 3/3 tests
+  - `CooldownAfterLoss` (pause 30min après 2 SL consécutifs/symbol) — 4/4 tests
+  - `PositionSizeCap` (notional ≤ 15% capital grid) — 4/4 tests, inline GridTradingService
+  - `DrawdownManager` re-tune (3/5/8/10% au lieu de 10/20/30/40%, peakEquity persisté disk) — 6/6 tests + 22/22 adjacent (pas de régression)
+  - Wiring dans `placeGridOrder` + telemetry dans `handleFill` (RT detected via fillProfit≠0) — 2/2 tests
+- **P4 Aggressive config** : `strategy.json` v7 — 7 pairs (SOL/LINK/ADA/DOT/ETH/XBT/AVAX), spacing 0.5%, 8 levels, capital $15/pair. AVAX dropped post-deploy car tick size collapse. **Final : 6 grids actives**.
+- **P5 Verify** : bot UP, no exceptions, critical-check OK.
+
+**État final** :
+- PV $138.03
+- 6 grids actives (LINK, SOL, ADA, DOT, ETH, XBT)
+- 0 positions actuellement (gate CLOSED ce soir, AutoGrid attend ouverture)
+- Cible : 2-4× plus de trades quand gate ouvre vs avant (4 pairs × 5 levels → 6 pairs × 8 levels avec spacing 2× plus serré)
+
+**Risques résiduels documentés** :
+1. Reduce-only orders aussi gatés par les guardrails → peut laisser positions sans TP. Refinement à faire.
+2. Si grids legacy ont `capital=0` en DB, PositionSizeCap rejette tout. À vérifier sur vraie ouverture gate.
+3. AVAX recipe à revoir si Tony veut le rajouter (taille trop petite vs tick).
+
+**Files clés** :
+- 7 commits sur martin master pushés (Vmix + 5 guardrails + wiring)
+- Plan complet : `martin/docs/superpowers/plans/2026-05-09-more-trades-mode.md`
+
+**Action manuelle Tony au réveil** :
+- Régénérer Kraken API keys (Settings > API > Revoke + new pair) + update VM .env
+- Si gate s'est ouverte la nuit, vérifier que les 6 grids ont posé leurs ordres
