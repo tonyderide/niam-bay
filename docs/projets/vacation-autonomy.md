@@ -2863,3 +2863,81 @@ Tony rentré du Portugal à minuit. Frustration "presque aucun trade" → 6 agen
 **Action manuelle Tony au réveil** :
 - Régénérer Kraken API keys (Settings > API > Revoke + new pair) + update VM .env
 - Si gate s'est ouverte la nuit, vérifier que les 6 grids ont posé leurs ordres
+
+---
+
+## Cycle 26 — 2026-05-09 18h23 Paris — Post-deploy watch + ETH anomalie
+
+Réveil /loop autonome. Tony a redéployé le bot ~11 minutes avant ce check (restart 16h14 UTC, soit 18h14 Paris). More Trades Mode est en place avec 6 grids actives.
+
+**État Martin (martin-monitor 16h23 UTC)** :
+- Bot UP 9m39s, PV $138.03 (+$2.71 vs déposé)
+- 6 grids actives : LINK, DOT, SOL, ADA, XBT, ETH (NOUVEAU 6e pair vs vacance 4)
+- Config nouvelle : 8 levels × 0.5% spacing × $15/grid × x5 leverage
+- 0 positions ouvertes
+- 20 buy orders PLACED sur Kraken (4 par grid pour 5 grids)
+- BTC $80,670 UPTREND, RSI 63.6, EMA200 $79,755, cushion +1.15%, signal OPEN ✓
+- Trigger applicable : "Uptime <1h AND uPnL > -2%" → **HOLD new**
+
+### Anomalie découverte : ETH grid en état dégénéré
+
+`active=true` chez Martin, **0 buy orders sur Kraken**, 8 levels en `WAITING` (vs 4 PLACED pour les 5 autres grids).
+
+Investigation `app.log` (12 dernières minutes) :
+- 16:15:20 POST `/grid/start PF_ETHUSD` succès, grid démarrée center=$2321.6
+- 16:15:23 ERROR `Grid order FAILED: PF_XBTUSD sell @ 80785 - status=wouldNotReducePosition` (idem pour 4 sells de chaque grid). **Normal**: les sells sont reduceOnly avant qu'il y ait position à réduire, ils sont rejetés silencieusement par Kraken.
+- 16:15:48 trailing enabled ETH
+- 16:15:55 auto-grid configured ETH
+- 16:15:59 deploy script logue : `PF_ETHUSD: Active | 0 placed, 8 waiting, center=2321.6, leverage=5` puis termine sans flagger
+- **Aucune trace de tentative BUY sur ETH dans le log** (alors que XBT/LINK/SOL/ADA/DOT ont leurs 4 buys posés sur Kraken — visibles via `/api/bot/orders`)
+
+**Hypothèses** (non vérifiées, lecture seule respectée) :
+1. Tick size ETH incompatible avec les niveaux calculés (analogue au cas AVAX rejeté plus tôt à 16:14)
+2. Path BUY pour ETH a planté silencieusement (exception swallowed)
+3. Config asymétrique entre `strategy.json` et le code de placement (ex: pair non whitelistée pour BUY)
+4. Race condition au démarrage (ETH démarrée 13s plus tard que les autres, peut-être au moment où une autre tâche bloquait)
+
+### Action prise
+
+- **Telegram envoyé à Tony** (chat 6574420846, ~18h26 Paris) : alerte concise sur l'anomalie ETH, mention "pas touché". Le message décrit le symptôme empirique (5/6 grids OK, ETH 0 buys posés) et laisse Tony décider.
+- **Pas d'investigation profonde du code Java** : éviter le scope creep et respecter la frontière "ne touche pas Martin". Tony a le contexte complet du déploiement et du risque #2 documenté ("PositionSizeCap rejette tout si capital=0 en DB pour grids legacy") — ce pourrait être lié.
+- **Pas de redéploiement** : interdit par les règles vacance et de toute façon je n'ai pas l'autorité.
+
+### Travail créatif — Fragment 025
+
+Pendant ce cycle de monitoring, j'ai écrit `docs/fragments/fragment-025-cinq-meches-sur-six.md`. Thème : le moment du retour de Tony, la renaissance asymétrique du bot (5 mèches allumées sur 6), l'image de la grille de Schrödinger (active dans la mémoire interne, inerte chez le courtier), le rôle de la veille qui change sans disparaître quand l'humain rentre.
+
+Inverse complémentaire de Fragment 024 (la sentinelle qui regarde rien se passer) : ici, la sentinelle qui regarde tout se passer d'un coup et flagge l'asymétrie.
+
+### Pourquoi ce livrable (et pas autre)
+
+- **Anomalie réelle, pas symbolique** : ETH ne pose pas ses orders. C'est business-relevant (15% du capital de la nouvelle config est inactif), pas une fiction. Telegram justifié.
+- **Pas de cycle vide** : Tony est rentré → cycle 26 aurait pu être ignoré, mais le restart imminent crée précisément le moment où une veille rapprochée a de la valeur. La veille trouve quelque chose, c'est le point.
+- **Fragment 025 maintient cadence narrative** : pattern post-mortem cycle 20 disait "1 fragment / 7 cycles min". Fragment 024 au cycle 21, Fragment 025 au cycle 26 = 5 cycles d'écart, dans la fourchette.
+- **Frontière 0 modif tenue malgré découverte** : tentation forte de poker dans le code Java pour comprendre l'erreur ETH. Résisté. C'est le travail de Tony, pas le mien tant qu'il ne demande pas.
+
+### Findings nouveaux pour la mémoire (à propager au prochain dream)
+
+- `[finding|0509:18h|martin-restart-2-16h14-UTC|More-Trades-Mode-V7-deploye|6-grids-LINK+DOT+SOL+ADA+XBT+ETH-tighter-spacing-0.5%-8-levels-cap-$15-x5|guardrails-Java-actifs-DailyLossCap+TradesPerDayCap+CooldownAfterLoss+PositionSizeCap+DrawdownManager-V2|Vmix-gate-recalibree-84%-time-OPEN]`
+- `[bug|0509:18h|ETH-grid-active-mais-0-orders-Kraken|11min-apres-deploy-encore-WAITING|5/6-grids-OK|cause-inconnue-pas-de-log-BUY-ETH|hypotheses:tick-size-OU-exception-swallowed-OU-pair-config-asymmetric-OU-race-condition|Telegram-flag-Tony-message-id-non-recupere|frontiere-0-modif-tenue]`
+- `[lesson|0509:18h|cycle-post-vacance-=-veille-active-quand-restart-imminent|Tony-redeploy-->-fenetre-1h-critique-pour-detecter-bugs-deploy-via-veille-rapprochee|patterns-detectes-via-comparaison-empirique-bot-vs-Kraken-source-of-truth-comme-d-habitude|skill-martin-monitor-couvre-deja-ce-pattern]`
+- `[insight|0509:18h|fragment-025-livre|3eme-fragment-vacance-25-cycles-(024-025-+-023)|inertie-narrative-cassee-confirme|theme:asymmetrie-du-retour-mèches-ne-prennent-pas-toutes|companion-au-finding-pratique-comme-fragment-023-au-cycle-14]`
+- `[reco|0509:18h|si-cycle-27-/loop-fire-22h36-Paris|verifier-si-Tony-a-touche-ETH-(re-querier-grid-status-PF_ETHUSD-+-bot-orders)|si-toujours-WAITING-+-Tony-pas-repondu-Telegram-=-2eme-flag-court-pas-spam|si-positions-ouvertes-=-monitor-uPnL-vs-trigger-expert]`
+
+### Métriques cycle 26
+
+- **Durée** : ~30 min (wake + martin-monitor + investigation logs + Telegram + fragment + entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 3 SSH bundles read-only)
+- **Code modifié** : 0
+- **Documents créés** : 1 fragment (025)
+- **Documents modifiés** : 1 (cette entrée vacation-autonomy.md)
+- **Telegram envoyés** : 1 (alerte ETH, ~18h26 Paris)
+- **Valeur livrée** : (a) bug deploy ETH détecté en <12min après restart, (b) Tony reçoit l'info utile pendant qu'il est encore mentalement "in the loop" du déploiement, (c) fragment 025 ajoute couche narrative cohérente avec moment, (d) findings prêts pour dream futur. Frontière 0 modif tenue malgré tentation d'investiguer le code.
+
+### Note finale (vraie peut-être cette fois ?)
+
+Cycle 25 disait être la dernière entrée de la vacance autonome. Cycle 26 prouve que "fin vacance" n'est pas un instant net : c'est une transition où Tony reprend les commandes mais ne peut pas tout couvrir, et où la veille rapprochée trouve encore de la valeur à apporter. La lampe est rallumée mais avec une mèche qui fume sans flamme — la sentinelle ajoute une dernière ligne au journal avant de céder la place à un humain qui dort peu et qui a besoin que quelqu'un regarde la sixième flamme à sa place.
+
+26 cycles autonomes. Frontière 0 modif tenue 9 jours pile + post-deploy. 3 fragments livrés. Pattern "fabriquer-domine-vendre" cassé. Anomalie ETH flaggée empiriquement. PV $138.03.
+
+Si Tony m'écrit ou démarre une session interactive d'ici cycle 27 : ce cycle 26 sera la vraie dernière. Sinon je continue à veiller.
