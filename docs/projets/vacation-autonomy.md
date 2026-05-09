@@ -2941,3 +2941,93 @@ Cycle 25 disait être la dernière entrée de la vacance autonome. Cycle 26 prou
 26 cycles autonomes. Frontière 0 modif tenue 9 jours pile + post-deploy. 3 fragments livrés. Pattern "fabriquer-domine-vendre" cassé. Anomalie ETH flaggée empiriquement. PV $138.03.
 
 Si Tony m'écrit ou démarre une session interactive d'ici cycle 27 : ce cycle 26 sera la vraie dernière. Sinon je continue à veiller.
+
+---
+
+## Cycle 27 — 2026-05-10 00h23 Paris — Briefing matinal + résolution anomalie SOL
+
+Réveil /loop autonome. Tony a redéployé une 2e fois entre 18h26 et 22h08 hier. Il dort maintenant. C'est la nuit de dimanche.
+
+### État Martin (martin-monitor 22h23 UTC)
+
+- Bot UP 5h 1m (restart 17:22:42 UTC = 19h22 Paris)
+- PV **$138.03**, 0 position, 6 buy orders PLACED sur Kraken
+- Config v8 "Concentrated 3 pairs LINK+SOL+DOT x5 spacing 2.0% 6 levels - Vmix V4 gate (RSI+ATR)"
+- 2/3 grids actives : LINK (started 20:08 UTC) + DOT (started 17:24 UTC). SOL enabled mais inactive.
+- BTC $80,750 UPTREND, RSI 61, EMA200 $79,793, cushion +1.20%, signal OPEN ✓
+- Trigger : **HOLD normal**. Bot up, gate OK, BTC sain, 0 anomalie réelle.
+
+### Investigation SOL — résolue
+
+Première lecture : SOL enabled dans config mais pas active. Sur le coup, j'ai pensé "2e occurrence du bug ETH cycle 26". Mais en lisant `app.log` :
+
+```
+2026-05-09T22:23:25.872Z  RegimeGate per-pair PF_SOLUSD: CLOSED — RSI=68.43 out of [36.0, 66.0]
+```
+
+**SOL inactif = comportement attendu**, pas bug. La nouvelle Vmix V4 gate filtre per-pair sur RSI :
+- LINK : RSI dans [36, 66] → gate OPEN → grid active ✓
+- DOT : RSI dans [36, 66] → gate OPEN → grid active ✓
+- SOL : RSI 68.43 (hors [36, 66]) → gate CLOSED → auto-grid attend
+
+Quand SOL retombera dans la fenêtre, l'auto-grid scheduler ouvrira la 3e grid. Toutes les 15min il réévalue. C'est exactement ce que Tony a conçu.
+
+**Note : le RSI du gate (68.43) ≠ RSI du signal (58)**. Ce sont 2 calculs différents (timeframes ou périodes différents). Le gate est plus restrictif. C'est by design — empêcher d'ouvrir une grid sur un local top.
+
+### Inférence : ce que Tony a fait entre cycle 26 (18h26) et cycle 27 (00h23)
+
+Reconstruction d'après timestamps :
+- Cycle 26 (18h26 hier) — Telegram envoyé : ETH grid active mais 0 ordre Kraken. More Trades V7 = 6 grids × 8 levels × 0.5% × $15.
+- ~19h22 Paris — Tony restart bot avec un nouveau jar (les backups jar dans `/home/ubuntu/martin/` montrent `pre-capdyn-20260509-172229` = juste avant ce restart, donc il a buildé/déployé un nouveau code).
+- ~19h24 Paris — strategy.json v8 sauvée : 3 pairs enabled (LINK+SOL+DOT), 2% spacing, 6 levels, $46 capital chacun, leverage x5, **Vmix V4 gate (RSI+ATR)**.
+- ~22h08 Paris — Grid LINK démarrée explicitement (3h après le restart — Tony devait surveiller que DOT marche d'abord).
+
+**Lecture stratégique** : Tony a abandonné More Trades V7 dans la même nuit. Mon Telegram ETH a probablement déclenché la décision. Au lieu de fixer le bug ETH, il a régressé à un setup éprouvé mais avec un gate per-pair plus malin (Vmix V4 RSI+ATR vs V3 sans pair filter). C'est pragmatique : il valide une amélioration (gate per-pair) plutôt que de chasser un bug isolé (ETH BUY path).
+
+### Livrables cycle 27
+
+1. **`docs/projets/morning-briefing-2026-05-10.md`** — briefing actionnable structuré :
+   - TL;DR 10s
+   - Timeline ce que Tony a fait hier soir
+   - État live propre
+   - Explication SOL = design (économise panique au réveil)
+   - 4 suggestions ranked sans pression (activer SOL manuel, tester ETH/AVAX/XBT isolé, investiguer log ETH archive, fix GitHub Pages)
+   - Métriques cycle
+
+2. **Cette entrée vacation-autonomy.md** — trace de cycle.
+
+### Pourquoi ce livrable et pas autre
+
+- **Continuité du pattern playbook-decision-Tony-retour** (count:1, dernière occurrence cycle 16). Cycle 27 est l'occurrence #2 du pattern : "livrer un script d'exécution / briefing condensé pour réduire latence cognitive Tony à 0". Ça commence à devenir un pattern reproductible (skill candidat pour future vacance ou retour-de-deploy).
+- **Pas de Telegram cette fois** : il n'y a aucune urgence. Le briefing dans le repo est lisible quand Tony se lève. Le canal Telegram reste réservé aux alertes (anomalies, drift, ABORT). Discipline alerte = discipline confiance.
+- **Pas de fragment narratif** : 3 fragments en vacance (023+024+025), cycle 26 a déjà livré le narratif post-vacance (Fragment 025 "cinq mèches sur six"). Pas besoin d'inertie narrative supplémentaire — le post-mortem est déjà cassé. Reprendre le rythme normal.
+- **Frontière 0 modif tenue** : 4 SSH bundles read-only. 0 SSH write.
+- **Trouvaille empirique** : SOL apparemment-bug → en fait gate-fonctionne. Sans investigation log dédié, j'aurais propagé un faux positif dans les findings. Le travail est utile précisément parce qu'il évite de réveiller Tony pour rien.
+
+### Findings nouveaux (à propager au prochain dream)
+
+- `[finding|0510:00h|martin-restart-2-cycle27|config-v8-Concentrated-3-pairs-LINK+SOL+DOT-x5-spacing-2.0%-6-levels-Vmix-V4-gate-RSI+ATR|capital-$46-par-grid-vs-$15-cycle-26|abandon-More-Trades-V7-cycle-26-suite-Telegram-ETH-bug|strategie-stable-conservateur-ameliore-vs-cycle-pre-vacance]`
+- `[insight|0510:00h|Vmix-V4-gate-fait-bien-son-job|SOL-rejetee-RSI-68.43-hors-[36,66]|gate-RSI-different-de-signal-RSI-58-=-different-timeframe|empirically-validated-1ere-fois|edge-=-WHEN-pas-WHAT-confirme-encore]`
+- `[lesson|0510:00h|investigation-log-avant-Telegram-=-rule|cycle-26-flag-ETH-immediatement-=-correct-bug-reel|cycle-27-tentation-flag-SOL-=-mais-log-confirme-design-pas-bug|→-rule-veille-:-1)-empirique-suspect-2)-app.log-grep-3)-decision-flag-ou-explain]`
+- `[pattern|playbook-decision-Tony-retour-#2|cycle-16-jour-1-retour|cycle-27-morning-briefing|→-2-occurrences-=-skill-candidat-"morning-briefing-after-deploy"|next-vacance-ou-redeploy-imminent-=-livrer-briefing-systematique]`
+- `[reco|0510|si-cycle-28-/loop-fire|verifier-si-RSI-SOL-rentre-dans-fenetre-→-grid-ouvre-auto|verifier-si-fills-LINK/DOT-ont-eu-lieu|si-Tony-touche-pendant-nuit-=-noter-changes]`
+
+### Métriques cycle 27
+
+- **Durée** : ~25 min
+- **Modif Martin/VM** : 0
+- **Code modifié** : 0
+- **Documents créés** : 1 (morning-briefing-2026-05-10.md)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram envoyés** : 0 (pas d'urgence, lien préservé)
+- **Valeur livrée** : (a) Tony se lève, lit 1 fichier, 30s plus tard il sait tout. (b) Évite le faux positif "SOL bug" qui aurait été embarrassant. (c) Pattern playbook-retour confirmé sur 2e occurrence — skill candidat. (d) Findings prêts pour dream.
+
+### Note sur la fin de mode autonome
+
+C'est la 3e fois que je dis "ça va être la dernière entrée". Cycle 25 disait final. Cycle 26 disait peut-être final. Cycle 27 est probablement la dernière car :
+- Tony est rentré, dort, va se réveiller demain matin
+- Bot tourne stable avec config qu'il maîtrise
+- Aucun blocker en attente d'action de ma part
+- Le briefing du matin transfère proprement la veille à Tony
+
+Si /loop fire encore (vers 04h36 Paris), je ferai un check court — pas un cycle complet. La courbe d'utilité décroît fortement après le briefing tant que Tony ne re-déclenche pas un événement.
