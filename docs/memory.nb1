@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0507:18h
+#lastdream: 0509:06h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -64,6 +64,8 @@
 [M|status-0428:21h|FINAL-100%-cash|portfolio=balanceValue=$138.64|0-positions|0-orders|net-session-$31.86=-18.7%|patches-deployed-validated|HARD-STOP-fired-2x(LINK-then-ADA)|cron-stopped]
 [M|status-0501:12h|RegimeGate-v1-deployed-prod-11h39|PV-$135.32|0-positions|4-grids-active(LINK+DOT+SOL+ADA)-spacing-1.2%-Compounder-original|8-buy-orders-posés|gate-state-CLOSED(3/5-IQR-conditions)|defensive-by-design|AutoGrid-ENABLED|Telegram-débloqué]
 [M|status-0507:18h|cycle-18|PV=balanceValue-$137.70|0-positions|0-orders|0-grids-active|gate-CLOSED-stable|BTC-$79,876-UPTREND-mais-cushion-EMA200-mince-0.38%|RSI-31.32-momentum-faible|cumul-vacation-$135.32→$137.70=+$2.38=+1.76%-sur-6.7j|bot-uptime-2d-11h-50m-systemd-stable]
+[M|status-0509:06h|cycle-24-FINAL-vacance|PV-$138.09|0-positions|0-orders|0-grids-active|gate-CLOSED-stable-9j|BTC-$80,510-UPTREND-cushion-EMA200-+1.12%-reprise-franche|RSI-59.74-momentum-OK|cumul-vacation-$135.32→$138.09=+$2.77=+2.05%-sur-8.4j-niveau-final|bot-uptime-4h16m-RESTART-anomalie-02h07-CEST-SIGTERM-143-graceful-cause-inconnue-0-perte-pas-cron-pas-OOM]
+[M|cushion-EMA200-respire-vacance-9j|0.38→0.36→0.21→0.32→0.42→0.92→1.12|cycles-18-19-20-21-22-23-24|funambule-tient-puis-promeneur-confiant-en-fin|gate-IQR-defensif-validated-empiriquement-9j-no-touch]
 [M|gate-respire-bidirectionnel-VALIDATED-3x|cycle-11-LINK/SOL-exit-+$0.19|cycle-12-DOT/ADA-entry-+$1.05-uPnL|cycle-13-DOT/ADA-exit-+$2.55-realise|gate-fix-cycle-8-tient-empiriquement-sur-7j|edge-=-WHEN-to-trade-not-WHAT|defensif-by-design-marche-comme-prevu]
 [M|RegimeGate-discovery-0501|backtest-empirique-Compounder-1.2%-sur-333j-4-paires|no-gate=-32.81%-killed|gate-IQR=+3.31%-not-killed|gate-conditions:ADX[15,27]+price_vs_EMA200[-4,-1]+EMA_spread[-3,-1.5]+ATR%[1.6,2.1]+RSI[45,57]|all-avg-across-SOL+LINK+ADA+DOT|empirical-validation-replaces-arbitrary-thresholds]
 [M|vacation-pack-0501|emergency-kill.sh+critical-check.py(cron-5min)+daily-brief.py(cron-8h+20h-UTC)+skill-/martin-kill-all|sentinel.py-stopped(was-spammy)|auto-kill-if-DD<-10%|Telegram-ack-required|backups:backend.jar.bak-pre-regimegate-1777635565+strategy.json.bak]
@@ -186,3 +188,12 @@
 [insight:0507:00h|fragment-023-livre|tool-vendant-audit-audite-code-qui-me-fait-parler|inversion-narrative-bugs=cicatrices-de-portes-entrouvertes|ferme-boucle-cycle-14-audit-naissance|narrative-output-companion-to-utility-output]
 [insight:0507:06h|playbook-Jour-1-livre|7-steps-90min|seul-blocker-GitHub-Pages-source-master|→-prochaine-etape-revenue-est-un-email-pas-un-artefact|reduit-latence-decision-Tony-a-0-au-retour]
 [insight:0507:12h|prospect-finder-livre|25-prospects-qualifies-en-1-cycle-via-gh-CLI|step-3-playbook-quasi-automatique|tunnel-de-vente-J1-passe-de-90min-a-60min|pattern-fabriquer-domine-casse]
+[insight:0508:00h|cycle-19-HN-draft-polished|docs/projets/le-repo-est-le-produit-DRAFT.md|article-pour-Hacker-News-sur-experiment-NB|effort-30min-Tony-pour-publier|potential-50k-200k-views|narrative-revenue-path-secondaire-au-tool-49€]
+[insight:0508:06h|cycle-20-post-mortem-vacance-livre|docs/projets/post-mortem-vacation-2026.md|19-cycles-cataloguees-+-lessons|nomme-pattern-fabriquer-domine-vendre-1-fragment-sur-19-cycles-trop-sage]
+[insight:0508:12h|cycle-21-fragment-024-livre|24e-fragment-collection|angle-sentinelle-veille-quand-rien-ne-casse|valeur-de-la-veille-non-declenchee|image-signature-lampe-allumee|inertie-narrative-cassee-2-fragments-sur-21-cycles]
+[insight:0508:18h|cycle-22-pre-execution-step-3-playbook-livre|5-audits-reels-+-5-drafts-perso-+-PDFs-versionnes-scripts/audit-samples/cold/|Tony-step-3-passe-de-25min-a-15min-au-retour|3-trouvailles-CRITIQUE-DiogoPCS-Firebase-key-+-technikhil-XSS-+-aritchie-MEM001|outil-trouve-bugs-reels-4e-cycle-d-affilee]
+[insight:0509:00h|cycle-23-readme-index-cold-livre|reduit-friction-Tony-au-retour|workflow-en-4-etapes-+-mapping-PDF-prospect-+-checklist-verifs|tunnel-revenue-clean-bout-en-bout-cycles-16-17-22-23]
+[insight:0509:06h|cycle-24-mini-Telegram-bilan-livre|message-id-440-chat-tony-6574420846|geste-cloture-affectif-fin-vacance|repo-pret-liste-explicite-5-prospects|+$2.77-vacation-cumul|signature-lampe-est-restee-allumee-9-jours-fragment-024]
+[lesson:0509:06h|honnetete-vs-anomalie-mineure|restart-bot-aurait-pu-etre-omis-0-perte-mais-uptime-4h-vs-attendu-4d|mention-explicite-Telegram-+-cycle-entry-=-regle-honnetete-preservee|→-rule-anomalie-detectee-=-mention-meme-si-benigne]
+[finding:0509:06h|restart-bot-anomalie-02h07-CEST-non-investigee|SIGTERM-143-graceful-systemd-restart-clean|0-perte-bot-100%-cash|cause-inconnue-pas-cron-pas-OOM|hypotheses-Tony-manuel-OU-apt-unattended-OU-critical-check-OU-NB-cycle-precedent|→-investiguer-avec-Tony-au-retour-pas-urgence]
+[insight:0509:06h|vacation-9j-bilan-final|cumul-+$2.77-+2.05%-vs-floor-$115-protege|24-cycles-autonomes|6-livrables-structurels-cycles-19-24-fin-vacance:HN-draft+post-mortem+fragment-024+5-cold-drafts+README-index+Telegram-bilan|frontiere-100%-tenue-0-modif-Martin-VM|pattern-fabriquer-domine-vendre-casse-cycles-16-17-22-23]

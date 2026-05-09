@@ -1,8 +1,13 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0507:18h
+#lastdream: 0509:06h
 
-[vacation-autonomous-cycle|count:18|last:0507:18h|actions:martin-monitor+telegram-occasionnel+vacation-autonomy.md-journal+commit+push|→/loop-4h:13+backup-cron-6h:23+niambay-vacation-wake.sh|✓]
+[vacation-autonomous-cycle|count:24|last:0509:06h|actions:martin-monitor+telegram-occasionnel+vacation-autonomy.md-journal+commit+push|→/loop-4h:13+backup-cron-6h:23+niambay-vacation-wake.sh|✓]
+[fin-vacance-pre-execution-livrables|count:3|last:0509:06h|cycles-22-23-24-=-cold-emails-pre-generes+README-index+Telegram-bilan|valeur-additive-marginale-mais-reelle-vs-cycle-vide|→-rule-prochaine-vacance-derniere-3-cycles-=-pre-execution-livrables-pas-narratifs|?-pattern-confirme-mais-1-occurrence-vacance-attendre-prochaine-pour-skill]
+[cold-email-batch-perso|count:1|last:0508:18h|cycle-22-clone+audit+draft-en-loop-pour-5-prospects|persiste-PDFs-versionnes|→si-prochain-batch-25-prospects-→-script-d-automation|skill:cold-email-batch-generator?-pour-future-vacance-OU-niveau-4-si-1ere-vente|?-1-occurrence]
+[investigation-anomalie-frontiere|count:1|last:0509:06h|cycle-24-restart-bot-investigation-2-SSH-bundle-read-only|0-modif-VM|honnetete-mention-Telegram|→-rule-anomalie-=-investigation-courte-mention-explicite-pas-creuser-fix-pendant-vacances|?-1-occurrence]
+[meta-doc-index-cold-dossier|count:1|last:0509:00h|cycle-23-README-index-mapping-PDF-prospect|workflow-4-etapes-+-checklist-verifs|→-pattern-pour-tout-dossier-N-fichiers-genere-en-batch|?-1-occurrence]
+[fragment-write-night|count:24|last:0508:12h|cycles-1-21-vacation:fragment-024-Vingt-et-un|natural-creative-output|inertie-narrative-cassee|→-rule-prochaine-vacance-1-fragment-min-tous-7-cycles]
 [angular-audit-iterative-improve|count:6|last:0506:12h|actions:edit-RULES-dict+test-3-4-projets+regenerate-PDF+update-landing-text+commit|cycle:add-rule→test→sample-public→commit|natural-flow-pas-de-skill-justifie]
 [angular-audit-anti-pattern-generalise|count:1|last:0506:00h|cycle-11-MEM001-→-flag-anti_pattern-generic|permet-add-rule-en-1-edit-sans-modif-moteur|JS001+JS002-livres-grace-a-ce-mecanisme|→-pattern-tient-pour-XHR-EventListener-WebSocket-Worker]
 [fragment-write-night|count:23|last:0507:00h|actions:read-existing+pick-theme+draft+commit|natural-creative-output|fragment-023-=-companion-narratif-au-rapport-utilitaire-cycle-14|?-pas-de-skill-pertinent]
