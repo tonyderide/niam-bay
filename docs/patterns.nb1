@@ -1,7 +1,9 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0510:03h
+#lastdream: 0510:08h
 
+[kraken-direct-api-bypass|count:1|last:0510:08h|nonce-int(time*1000)*5_000_000+1|URL-/derivatives/api/v3/|signing-path-/api/v3/|Python-urllib+hmac-sha512|bypass-Martin-Java-bridge-buggy|→-skill?-1-occurrence-attendre-prochaine-occurrence]
+[verify-via-cancel-test|count:1|last:0510:08h|orderId-suspecte-=-curl-cancel|status-notFound-=-jamais-existe-success-=-live|→-rule-validate-critical-state-via-Kraken-pas-Martin-internal-grid-status]
 [backtest-sweep-paralleles|count:1|last:0510:00h|5-agents-paralleles-spacing+trailing+SL+pair-selection+gate-IQR|chacun-trouve-best-de-sa-dimension|combine-winners-deploiable|→-skill:backtest-orchestrator?-1-occurrence-attendre]
 [fix-d-abord-prevenir-apres|count:1|last:0510:01h|Tony-rule-explicite-"Ne-demande-pas-avant-de-fixer-fix-et-averti-Moi"|telegram-summary-apres-action|appliquer-aux-fixes-non-critiques|→-rule-honnetete-via-Telegram-pas-confirmation]
 [loop-30min-monitoring|count:1|last:0510:03h|/loop-30min-id-16ca5a09|verify-Kraken-Pro+Martin|alert-si-sync-gap-OR-gate-transition-OR-PnL-realized|silent-otherwise|fonctionne-tient-attention-Tony-equilibree]

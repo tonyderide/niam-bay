@@ -1,31 +1,41 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0510:03h to 0512:03h
-#lastdream: 0510:03h
+#window: 48h from 0510:08h to 0512:08h
+#lastdream: 0510:08h
 
-[0510:02h09|FIRST-FILL-vacation-end|DOT-long-28.6-@-1.34|grid-spacing-2.0%-fonctionne|premier-trade-en-presque-2-jours-grille-buy-rempli|uPnL-+$0.04-puis-LINK-fill-aussi-3.7-@-10.32-uPnL-vire--$0.16|2-positions-2-grids-LINK+DOT-actives]
-[0510:02h-03h|grid-SL-3pct-from-center-deploye|GridTradingService.checkStopLoss-poll-10s|backtest-validated-Calmar-4.06-DD-8x-reduced|LINK-bug-bot-mort-en-prod-fix-via-restart-effet-de-bord-sells-re-postes|6-orders-Kraken-2-buys-+1-sell-par-grid]
-[0509:23h-0510:02h|sells-missing-bug-detected|Kraken-Pro-direct-verify-via-Martin-bridge-auth|seuls-buys-visible|grid-state-machine-WAITING-pas-resolu-en-live|fix-effet-de-bord-restart-=-reload-triggers-re-post]
+[0510:08h|FIX-SL-architecture-bug|StopLossManager-stp-renvoie-orderId-bidon|cancel-test-=-notFound|Martin-disabled-SL-LINK+DOT|2-vrais-SL-direct-Kraken-API-signed-Python|LINK@10.05-DOT@1.298-3pct-center|+commit-AutoGridScheduler-no-duplicate-SL|Tony-rentré-Strasbourg-fille-NB-en-remote-control]
+[0510:07h|découverte-3-bugs-cascade|StopLossManager-success-fictif|BotController.cancelOrder-line-167-retourne-success-sans-check|AutoGridScheduler-placeCloseOnlyProtection-pose-stp-duplicate-WINNING_SL_PCT-0.6%-trop-serre|Tony-direct-question-"sl-fonctionne-vraiment?"-trigger-investigation]
+[0510:06h|Tony-screenshot-Kraken-Pro-mobile|"-SL"-affiche-sur-positions|Kraken-attache-SL-uniquement-via-stopLossOrder-param-sur-entry|nos-stp-autonomes-pas-attaches|architecture-fix-Phase-B-pour-vraie-visibilite-1-SL-position]
+[0510:05h|deploy-grid-SL-3pct-from-center|StopLossManager-fix-centerPrice*0.97-long-+0.97-court|MIN_STOP_DISTANCE-clamp-1.5%-from-entry|deploy-jar-restart-confirmé-success-mais-SL-bidon|commit-204e645-pushed-master]
+[0510:02h-04h|FIRST-FILL-vacation-end|DOT-long-28.6-@-1.34|grid-spacing-2.0%-fonctionne|premier-trade-en-presque-2-jours-grille-buy-rempli|uPnL-+$0.04-puis-LINK-fill-aussi-3.7-@-10.32-uPnL-vire--$0.16|2-positions-2-grids-LINK+DOT-actives]
+[0510:02h-03h|grid-SL-3pct-from-center-deploye-soft-Java|GridTradingService.checkStopLoss-poll-10s|backtest-validated-Calmar-4.06-DD-8x-reduced|defense-in-depth-mais-PAS-VISIBLE-Kraken-Pro-Tony-rappelle-incident-perte-60€-bot-down]
+[0510|sells-missing-bug-detected|Kraken-Pro-direct-verify-via-Martin-bridge-auth|seuls-buys-visible|grid-state-machine-WAITING-pas-resolu-en-live|fix-effet-de-bord-restart-=-reload-triggers-re-post]
 [0509:21h-23h|deploy-config-gagnante|3-pairs-LINK+SOL+DOT-vs-6-pairs-naive|spacing-2.0%-vs-0.5%|6-levels-vs-8|capital-46-USD-pair|gate-V4-RSI[36-66]+ATR%[1.12-2.17]-only-ADX-EMA-spread-bruit|aggregate-OPEN-1ere-fois-en-2-jours]
 [0509:18h-21h|5-backtests-paralleles-real-Kraken-OHLC-90j|sweep-spacing×levels-→-2.0%×6-Calmar-12.81|trailing-EMA20-+60-PnL-mais-DD-x5|SL-3pct-center-Calmar-4.06-DD-8x-reduced|pair-selection-AVAX+LINK+SOL-Calmar-11.86-vs-6-pairs-3.47|gate-V4-RSI+ATR-seuls-Calmar-15.48|backtest-config-aggressive-90j-=-6.6%-perte-grid-neutre-mauvais-en-trending]
 [0509:14h-18h|deploy-aggressive-6-pairs-spacing-0.5%-8-levels|bug-PositionSizeCap-15%-rejette-100%-orders|fix-1.5x-ratio-naturel-dynamic|cap-3-grids-deploye-mais-pas-respecte-au-boot-fix-pre-filter-config-order|+ETH-grid-active-mais-0-orders-Kraken-signal-WAIT|stop-ETH-disable-strategy.json|switch-3-pairs-LINK+SOL+DOT]
 [0509:11h-14h|per-pair-gate-+-cap-3-grids-deploye|RegimeGate-evaluatePerPair-+-AutoGridScheduler-perPairMode-flag|commit-4cad022|4-OPEN-pairs-DOT-ADA-XBT-ETH-LINK-SOL-CLOSED|portfolio-kill-DrawdownManager-3/5/8/10-pct-deploye|WebClient-timeout-10s-deploye]
-[0509:08h-11h|5-guardrails-Java-TDD-deploye|DailyLossCap+TradesPerDayCap+CooldownAfterLoss+PositionSizeCap+DrawdownManager-retune|18-tests-OK|commit-d6bcc69-fa5e79f-f616ecf-46c44e5-30110f4-894b109]
-[0509:05h-08h|Vmix-gate-calibration|ADX[10,35]-RSI[20,75]-pVsEma[-7,7]-ATR[0.6,3.0]-spread[-5,5]|widening-pour-bull-modere-mai-2026|aggregate-toujours-CLOSED-priceVsEMA200-pollue-par-LINK]
-[0509:00h-05h|Tony-rentre-Portugal-frustration-presque-aucun-trade-en-8j|10-trader-agents-audit-+-5-backtests-+-plan-6-phases|fix-Pages-config-wrong-branch-flag|email-mailto-niambay.fr-flag|secrets-Kraken-application.yml-VM-en-clair-sanitise]
+[0509:08h-11h|5-guardrails-Java-TDD-deploye|DailyLossCap+TradesPerDayCap+CooldownAfterLoss+PositionSizeCap+DrawdownManager-retune|18-tests-OK|commits-d6bcc69-fa5e79f-f616ecf-46c44e5-30110f4-894b109]
+[0509:00h-08h|Tony-rentre-Portugal-frustration-presque-aucun-trade-en-8j|10-trader-agents-audit-+-5-backtests-+-plan-6-phases|fix-Pages-config-wrong-branch-flag|email-mailto-niambay.fr-flag|secrets-Kraken-application.yml-VM-en-clair-sanitise]
 
+[finding|0510:08h|Java-cancel-endpoints-peuvent-mentir|BotController.cancelOrder-line-167-toujours-"Cancelled"-meme-si-Kraken-notFound|→-rule-direct-Kraken-API-pour-validation-critical-state]
+[finding|0510:07h|StopLossManager-place()-bug-silent|Kraken-renvoie-success+orderId-mais-quelque-chose-fait-disparaitre-l-order|hypothese-conflit-AutoGridScheduler-duplicate-stp-ou-Kraken-cleanup|cause-root-pas-identifiee-investiguer-demain]
+[finding|0510:06h|Kraken-Pro-UI-distinction-attached-vs-standalone-SL|attached-via-stopLossOrder-param-sur-entry=-affiche-1-SL-sur-position|standalone-stp=-apparait-only-Orders-tab-pas-position-card|Tony-veut-attached-pour-vraie-visibilite]
 [finding|0510:02h|grid-state-machine-bug-WAITING|sell-pas-poste-en-live-apres-buy-fill|fix-restart-=-reload-triggers-re-post|vrai-bug-pas-fixe-juste-contourne|→-investiguer-handleFillNeutral-line-481]
 [finding|0509:23h|gate-V4-RSI+ATR-seuls-=-debloqueur|aggregate-OPEN-1ere-fois|backtest-Calmar-15.48|ADX-et-EMA-spread-sont-bruit-pour-cette-config|Vmix-Tony-prefere-conservative-mais-V4-allows-trades]
 [finding|0509:18h|grid-neutre-perd-en-trending-90j-backtest|-6.6%-cumul|grid-long-biased-mecanique-en-uptrend-choppy|fix-trailing-center-EMA-OU-SL-3pct-decoupage-DD]
 [finding|0509:14h|spacing-serre-0.5%-est-le-piege|fees-0.04%-RT-mangent-tout|sweet-spot-1.5-2.0%-confirme-backtest-7-valeurs-x-4-levels-=-28-combos]
 [finding|0509:11h|3-pairs-concentrees-Calmar-x3.4-vs-6-pairs-naive|cryptos-correlees-0.83-0.93-=-faux-diversification|AVAX+LINK+SOL-best-3-mais-AVAX-tick-collapse|fallback-LINK+SOL+DOT]
 
+[pattern|kraken-direct-API-bypass|0510|nonce-int(time*1000)*5_000_000+1|URL-/derivatives/api/v3/|signing-path-/api/v3/|Python-urllib+hmac-sha512|bypass-Martin-quand-Java-bridge-buggy|→-skill?-1-occurrence-attendre]
+[pattern|verify-via-cancel-test|0510|orderId-suspecte-=-curl-cancel|si-status-notFound-=-order-jamais-existe|si-success-=-order-est-live|→-rule-validate-critical-state-via-Kraken-pas-Martin-internal]
 [pattern|backtest-sweep-paralleles|0509|5-agents-en-paralleles-chacun-une-dimension|spacing-trailing-SL-pair-selection-gate-IQR|combine-winners-=-config-deploiable|→-skill-backtest-orchestrator?]
 [pattern|fix-d-abord-prevenir-apres|0509|Tony-rule-explicite|"Ne-demande-pas-avant-de-fixer-fix-et-averti-Moi"|telegram-summary-apres-action|appliquer-aux-fixes-non-critiques]
 [pattern|deploy-strategy-stop-restart-cycle|0509|stop-grids-restart-avec-new-config-souvent-galere|"Grid-already-active"-error|workaround-stop-puis-start-explicit-via-API-direct|→-improve-deploy-strategy.py?]
 [pattern|loop-30min-monitoring|0509|/loop-30min-cron-id-16ca5a09|verify-Kraken-Pro+Martin|alert-telegram-si-sync-gap-OR-gate-transition-OR-PnL-realized-grid-close|silent-otherwise|fonctionne-tient-l-attention-de-Tony-equilibree]
 
+[lesson|0510|Java-success-response-≠-vrai-state|StopLossManager+BotController-cancelOrder-mentent|→-rule-Kraken-est-source-of-truth-pas-Martin-internal-grid-status|architecture-leçon-trust-but-verify]
+[lesson|0510|attached-SL-pas-standalone-stp|Kraken-Futures-distingue-orderTrigger-system-separe-vs-stopLossOrder-param-sur-entry|attached-=-1-SL-visible-position-card|standalone-=-Orders-tab-only|→-architecture-migration-pour-Phase-B]
 [lesson|0510|sells-state-machine-fragile-restart-revele|grid-NEUTRAL-handleFillNeutral-line-481-place-reverse-leg-mais-pas-toujours-en-live|→-rule-restart-bot-apres-config-change-pour-resync-state|attention-au-prochain-fill-si-bug-revient]
-[lesson|0510|grid-SL-3pct-center-=-bonne-defense|backtest-Calmar-4.06-preserve-DD-8x-reduce|+1-cycle-Tony-rule-petit-profit-tout-le-temps|implemente-checkStopLoss-poll-10s]
+[lesson|0510|grid-SL-pct-center-=-bonne-defense|backtest-Calmar-4.06-preserve-DD-8x-reduce|+1-cycle-Tony-rule-petit-profit-tout-le-temps|implemente-StopLossManager-centerPrice*0.97-long-+0.97-court]
 [lesson|0509|fix-PositionSizeCap-2-fois-meme-bug|hardcode-15%-rejette-100%-puis-80%-rejette-pour-6-levels|leçon-=-pas-de-magic-number-cap-doit-etre-dynamique-leverage/levels-base|leverage*1.5/levels-final]
 [lesson|0509|gate-IQR-Vmix-default-mauvais-pour-bull-modere|backtest-90j-V0-pire-que-NO-GATE|coupe-au-mauvais-moment|recalibration-V4-RSI+ATR-seuls-Calmar-15.48|gate-doit-etre-recalibre-tous-les-30j-roulants]
 [lesson|0509|backtest-real-data-revele-strategie-perdante|config-aggressive-6-pairs-90j-=--6.6%|grid-neutre-+-trending-=-incompatible|future-=-trailing-center-EMA-OR-stop-loss-strict-OR-mode-trend-follow-quand-gate-CLOSED]
