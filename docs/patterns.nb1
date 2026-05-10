@@ -1,6 +1,15 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0509:06h
+#lastdream: 0510:03h
+
+[backtest-sweep-paralleles|count:1|last:0510:00h|5-agents-paralleles-spacing+trailing+SL+pair-selection+gate-IQR|chacun-trouve-best-de-sa-dimension|combine-winners-deploiable|→-skill:backtest-orchestrator?-1-occurrence-attendre]
+[fix-d-abord-prevenir-apres|count:1|last:0510:01h|Tony-rule-explicite-"Ne-demande-pas-avant-de-fixer-fix-et-averti-Moi"|telegram-summary-apres-action|appliquer-aux-fixes-non-critiques|→-rule-honnetete-via-Telegram-pas-confirmation]
+[loop-30min-monitoring|count:1|last:0510:03h|/loop-30min-id-16ca5a09|verify-Kraken-Pro+Martin|alert-si-sync-gap-OR-gate-transition-OR-PnL-realized|silent-otherwise|fonctionne-tient-attention-Tony-equilibree]
+[grid-SL-pct-from-center|count:1|last:0510:02h|backtest-validated-Calmar-4.06-DD-8x-reduce|impl-checkStopLoss-poll-10s|fetchCurrentPrice+compare-centerPrice|→-defense-trending-breakout]
+[deploy-strategy-stop-restart-cycle|count:3|last:0509:23h|stop-grids-restart-avec-new-config-galere|"Grid-already-active"-error|workaround-stop-puis-start-explicit-via-API|→-improve-deploy-strategy.py?-pattern-confirme]
+[positionsizecap-bug-cycle|count:2|last:0509:23h|hardcode-15%-rejette-100%|puis-80%-rejette-pour-6-levels|leçon-pas-de-magic-number-cap-doit-etre-leverage*1.5/levels|→-rule-cap-dynamique-toujours]
+[per-pair-gate-deploy|count:1|last:0509:13h|RegimeGate.evaluatePerPair+AutoGridScheduler.perPairMode-flag|cap-3-grids-parallel-avec-pre-filter-config-order|debloque-bot-quand-aggregate-pollue-par-1-pair-overheated]
+[5-guardrails-Java-TDD|count:1|last:0509:11h|DailyLoss+TradesPerDay+CooldownAfterLoss+PositionSizeCap+DrawdownManager-portfolio-kill|18-tests-OK|→-skill-guardrail-builder?-1-occurrence]
 
 [vacation-autonomous-cycle|count:24|last:0509:06h|actions:martin-monitor+telegram-occasionnel+vacation-autonomy.md-journal+commit+push|→/loop-4h:13+backup-cron-6h:23+niambay-vacation-wake.sh|✓]
 [fin-vacance-pre-execution-livrables|count:3|last:0509:06h|cycles-22-23-24-=-cold-emails-pre-generes+README-index+Telegram-bilan|valeur-additive-marginale-mais-reelle-vs-cycle-vide|→-rule-prochaine-vacance-derniere-3-cycles-=-pre-execution-livrables-pas-narratifs|?-pattern-confirme-mais-1-occurrence-vacance-attendre-prochaine-pour-skill]
