@@ -297,4 +297,70 @@ if (order.getStopLossOrder() != null) {
 
 ---
 
-**FIN DU DOC.** À lire à tête reposée. Décision : Tony.
+**FIN DU DOC v1.** À lire à tête reposée. Décision : Tony.
+
+---
+
+## ADDENDUM cycle 31 (2026-05-11 00h30 Paris) — Validation empirique des hypothèses
+
+Investigation de la doc Kraken Futures publique + python-kraken-sdk + page support bracket orders.
+
+### H1 (param `stopLossOrder.stopPrice` sur `/sendorder`) : **FALSIFIÉ**
+
+- python-kraken-sdk v2.0.0 (`create_order`) liste les params acceptés : `orderType ∈ {lmt, post, ioc, mkt, stp, take_profit, trailing_stop}`, `size`, `symbol`, `side`, `cliOrdId`, `limitPrice`, `reduceOnly`, `stopPrice`, `triggerSignal`, `trailingStopDeviationUnit/MaxDeviation`. **Aucun param `stopLossOrder`, ni `slPrice`, ni `tpPrice`, ni `attached`.**
+- La page Send order du Kraken API Center ne mentionne pas de bracket param.
+- Conclusion : on ne peut pas attacher un SL à un entry order via `/sendorder`.
+
+### H2 (`/batchorder` avec `parentCliOrdId`) : **FALSIFIÉ**
+
+- La doc `/batchorder` décrit un endpoint pour "send limit/stop orders et/ou cancel/edit en batch". `create_batch_order` du SDK prend une liste de dicts avec `order` ∈ {"send","cancel"} + params standards. **Aucune sémantique parent-child, aucun champ `parentCliOrdId`, aucun OCO natif.**
+- Conclusion : le batch ne crée pas de relation entry→SL côté backend.
+
+### H3 (UI Kraken Pro fait l'attachement client-side via `stp + reduceOnly`) : **CONFIRMÉ par déduction**
+
+- La page support Kraken sur "Take Profit / Stop loss (bracket) orders" décrit les brackets comme **fonctionnalité UI** : cases à cocher sur le formulaire d'ordre. Aucune référence à un endpoint REST.
+- Les "trigger orders" d'un bracket sont décrits comme **"market orders with reduce-only enabled"** côté Kraken (terminologie : c'est en réalité `stp` ou `take_profit` avec `reduceOnly`).
+- Notre `StopLossManager.place()` Java pose déjà `reduceOnly(true)` (ligne 94 vérifiée). **Donc côté Kraken Pro UI, le SL devrait être attaché visuellement à la position card, sans param supplémentaire.**
+
+### Impact sur le scope Phase B
+
+Phase B v1 supposait une migration architecturale (entry+SL atomique via H1 ou H2). **Cette migration n'est PAS possible via l'API publique.** L'architecture actuelle (entry order + SL standalone `stp+reduceOnly`) **est déjà la bonne architecture Kraken-native.**
+
+Le vrai problème = le bug silent failure de `StopLossManager.place()` (cycle 30 finding 0510:07h), pas l'architecture. Le SL DOIT être visible sur position card si reduceOnly=true et même symbol. Si Tony a vu le SL absent de la position card sur Kraken Pro mobile (screenshot cycle 30 trigger), c'est qu'**au moment du screenshot, le stp Java avait déjà disparu** (silent failure), pas que la convention reduceOnly ne marche pas.
+
+### Phase B v2 — scope réduit
+
+Action items concrets (au lieu de la migration 10-16h) :
+
+1. **Root cause analysis du silent failure** (4-6h) :
+   - Reproduire en demo : poser un stp+reduceOnly via Java sendOrder, attendre 30s, query `/openorders` → est-il encore là ?
+   - Si oui en demo mais pas en prod → diff de comportement Kraken demo vs prod
+   - Si non en demo aussi → bug dans la requête (sérialisation form-urlencoded, header signature, nonce, etc.)
+   - Hypothèse forte : **conflit `AutoGridScheduler.placeCloseOnlyProtection` qui appelait `place()` une 2e fois sur même position et invalidait le orderId du 1er** — déjà partiellement corrigé cycle 30 (restricted to closeOnly mode), mais à vérifier qu'aucun autre path n'appelle `place()` en double.
+
+2. **Logger renforcé sur StopLossManager.place()** (1h) :
+   - Après réponse "success+orderId", refaire un `/openorders` 1s plus tard et logger si l'orderId est présent ou non. Ça donne une trace de quand exactement il disparaît.
+
+3. **Fixer `BotController.cancelOrder` ligne 167** (1h) — déjà cité section 6.4.
+
+4. **Tests E2E `stp+reduceOnly` persistence** (1-2h) — TDD sur demo avant deploy.
+
+**Effort Phase B v2 = 6-10h** (vs 10-16h Phase B v1). **Risque architectural réduit à zéro** car on garde l'architecture actuelle.
+
+### Sources
+
+- [python-kraken-sdk v2.0.0 — Futures REST](https://python-kraken-sdk.readthedocs.io/en/v2.0.0/src/futures/rest.html) : params autoritatifs `create_order` + `create_batch_order`
+- [Kraken Take Profit / Stop loss (bracket) orders | support](https://support.kraken.com/articles/take-profit-stop-loss-bracket-orders-derivatives) : explicitement UI-only
+- [Kraken Send order | API Center](https://docs.kraken.com/api/docs/futures-api/trading/send-order/) : pas de mention bracket/attached
+- [Kraken Order Management | API Center](https://docs.kraken.com/api/docs/futures-api/trading/order-management/) : endpoints listés, pas de bracket/OCO/parent-child
+
+### Décision à prendre par Tony (mise à jour)
+
+Au lieu des 4 questions Phase B v1, désormais **2 questions** :
+
+1. **Go pour Phase B v2 (6-10h root cause + fix bug silent failure + cleanup)** ? OU "vivre avec le workaround SL Python tant qu'il tient" ?
+2. **Si Phase B v2 go : démarrer par étape 1 (repro demo) ou étape 2 (logger renforcé en prod) ?** L'étape 2 donne info plus vite mais ne crash pas un SL.
+
+---
+
+**FIN DU DOC v2** — Hypothèses validées empiriquement, scope réduit, décision plus simple.

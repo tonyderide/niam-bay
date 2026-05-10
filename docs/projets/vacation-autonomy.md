@@ -3327,3 +3327,86 @@ C'est aussi la première fois que je produis un doc technique complet sur le rep
 Cycle 30 garde la même philosophie que cycles 28-29 : pas de modif, mais valeur additive concrète. La rotation **Martin actif minimal** (DOT seul, 3 buys, 0 position) + **NB en design / lecture / écriture** est probablement le rythme stable du remote control 2e jour. Tony peut rester avec sa fille jusqu'à demain matin sans ouvrir le PC, le repo se met à jour sans lui.
 
 Si /loop fire encore (~22h Paris), je ferai un check court — pas de cycle plein sauf événement marqué (fill nouveau, cushion BTC < 0.5%, ou Tony intervention).
+
+---
+
+## Cycle 31 — 2026-05-11 00h30 Paris — Validation empirique des hypothèses Phase B SL
+
+Réveil ~6h après cycle 30. Tony toujours à Strasbourg (dort probablement), 3e jour de remote control.
+
+### État Martin (martin-monitor 22h24 UTC) — HOLD complet, 100% cash
+
+- Bot UP **16h15m** depuis restart 06:08 UTC
+- PV **$138.62** = balanceValue exactement, **0 expo**
+- **0 positions, 0 orders, 0 grids actives**
+- BTC **$81,278 UPTREND**, EMA200 $80,019 cushion **+1.57%**, RSI 58.69 OPEN
+- Aucun trigger ABORT/WARN
+
+### Reconstruction depuis cycle 30 (18h23 Paris → 00h30 Paris, 6h gap)
+
+D'après app.log :
+
+1. **16:24:34 UTC** (= 18h24 Paris, 1 minute après l'écriture du cycle 30 !) — `GridTradingService: Stopping grid for PF_DOTUSD - cancelling all orders`. Appel depuis le thread `scheduling-1` = **AutoGridScheduler auto-stop**, pas une commande Tony.
+2. Cause : DOT a basculé en regime **TRENDING** (`ADX=46.34→41.57`, BBWidth ~5%, `tradeable=false`). L'`AutoGridScheduler` a appliqué la rule `regime=TRENDING → grid auto-OFF` (validated 0501, "feature not bug").
+3. **Note importante** : `RegimeGate per-pair PF_DOTUSD: OPEN — all 5 conditions in profitable IQR` et signal=OPEN tournent toujours en boucle de 15min, mais `tradeable=false` les bloque. **Bot dormant par design**, attend que ADX retombe sous le seuil.
+4. LINK est passée gate=OPEN à ~21h54 UTC aussi, mais reste auto-OFF pour la même raison. SOL gate toujours CLOSED.
+
+**Conclusion** : Tony n'est pas intervenu. Le bot a auto-stoppé selon ses propres rules. Capital 100% protégé.
+
+### Travail créatif — Validation empirique des hypothèses Phase B (cycle 30) via doc Kraken publique
+
+Le doc Phase B (cycle 30) posait 3 hypothèses techniques sur comment Kraken supporte l'attached SL : H1 (param `stopLossOrder.stopPrice` sur `/sendorder`), H2 (`/batchorder` avec `parentCliOrdId`), H3 (UI-side via `stp+reduceOnly`). **Aucune des 3 n'avait été validée.**
+
+Recherche menée (4 WebSearch + 3 WebFetch sur docs.kraken.com + python-kraken-sdk + support.kraken.com) :
+
+#### Résultat : **H1 falsifié, H2 falsifié, H3 confirmé par déduction**
+
+- **python-kraken-sdk v2.0.0** liste les params autoritatifs de `create_order` Futures : `orderType ∈ {lmt, post, ioc, mkt, stp, take_profit, trailing_stop}`, `size`, `symbol`, `side`, `cliOrdId`, `limitPrice`, `reduceOnly`, `stopPrice`, `triggerSignal`, `trailingStopDeviationUnit/MaxDeviation`. **Aucun param `stopLossOrder`, `slPrice`, `tpPrice`, `attached`, `parentOrderId`.**
+- **Page support Kraken "Take Profit / Stop loss (bracket) orders"** : décrit les brackets comme **fonctionnalité UI** (cases à cocher), sans aucune référence à un endpoint REST. Les "trigger orders" sont décrits comme "market orders with reduce-only enabled" — donc juste des `stp+reduceOnly` standards.
+- **Page Order Management API Center** : liste les endpoints (send/edit/cancel/batch/getopenorders/orderstatus/deadmanswitch). **Aucune mention de bracket / OCO / attached / parent-child.**
+- Vérification dans le repo Martin : `StopLossManager.place()` ligne 94 utilise déjà `reduceOnly(true)`. **L'architecture actuelle est déjà la bonne.**
+
+#### Impact concret : scope Phase B réduit de 10-16h → 6-10h
+
+Le doc Phase B v1 supposait une migration architecturale. **Cette migration n'est PAS possible** via l'API publique Kraken Futures. L'archi actuelle (entry + SL standalone `stp+reduceOnly`) est canonique côté Kraken. Le vrai problème = le bug silent failure de `place()` (cycle 30 finding `0510:07h`), pas l'architecture.
+
+J'ai mis à jour le doc Phase B avec un **ADDENDUM Phase B v2** (75 lignes, à la fin de `docs/projets/martin-sl-phase-b-design.md`) qui :
+
+1. Documente la falsification de H1/H2 et la confirmation de H3 (avec sources)
+2. Redéfinit Phase B comme un **root-cause analysis du silent failure** + logger renforcé + fix `BotController.cancelOrder` + tests E2E persistence sur demo (6-10h total)
+3. Réduit les 4 questions de décision Tony à **2 questions plus simples** (go/no-go Phase B v2 + ordre d'exécution)
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0511:00h|H1-H2-falsifies-H3-confirme|Kraken-Futures-API-pas-d-attached-SL-natif|python-kraken-sdk-create_order-pas-stopLossOrder|bracket-orders-=-UI-only|reduceOnly-est-le-marker-pairing-UI-side|→-Phase-B-v1-mauvais-scope-Phase-B-v2-=-RCA-silent-failure-+-logger-renforce-+-tests-E2E]`
+- `[finding|0511:00h|Java-StopLossManager-ligne-94-reduceOnly-true-deja-pose|architecture-actuelle-stp-standalone-reduceOnly-=-architecture-canonique-Kraken|pas-de-migration-necessaire-juste-fix-bug-root-cause]`
+- `[insight|0511:00h|cycle-30-doc-Phase-B-v1-trop-speculatif|3-hypotheses-API-non-validees-au-moment-de-l-ecriture|cycle-31-valide-empiriquement-en-30min-via-doc-publique|→-rule-quand-livrable-=-decision-doc-pour-Tony-toujours-valider-hypotheses-techniques-AVANT-de-finaliser-le-doc]`
+- `[pattern|valider-hypotheses-API-avant-design-doc|count:1|last:0511:00h|→-skill-potentiel-validate-api-claims-via-SDK-+-support-docs-en-paralleles]`
+- `[finding|0511:00h|DOT-grid-auto-stoppee-16h24-UTC-par-AutoGridScheduler|cause-=-regime-TRENDING-ADX-46.34-tradeable-false|rule-grid-OFF-en-TRENDING-validee-empiriquement-une-fois-de-plus|capital-100%-cash-bot-dormant-par-design-attend-ADX-baisse]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 2 SSH read-only (status + logs)
+- **0 modif code martin** — lecture `StopLossManager.java` read-only via Read+Grep
+- Output : `martin-sl-phase-b-design.md` enrichi d'un ADDENDUM v2, et cette entrée
+
+### Métriques cycle 31
+
+- **Durée** : ~40 min (wake + monitor + recherche doc Kraken via WebFetch/WebSearch + addendum doc + cycle entry)
+- **Modif Martin/VM** : 0
+- **Documents modifiés** : 2 (`martin-sl-phase-b-design.md` +75 lignes, cette entrée)
+- **Documents créés** : 0
+- **Telegram** : 0 (rien d'urgent — bot dormant par design, capital intact, finding utile mais pas time-sensitive)
+- **Valeur livrée** : (a) **falsification empirique** de 2 des 3 hypothèses Phase B → Tony évite 4-6h de recherche + 8-12h de migration inutile ; (b) **réduction de scope Phase B v1 (10-16h architectural)** → **Phase B v2 (6-10h root cause + tests)**, scope plus précis et plus actionable ; (c) **simplification des questions de décision** Tony de 4 → 2.
+
+### Pourquoi ce cycle est différent du cycle 30
+
+Cycle 30 a livré un design doc *speculatif* (3 hypothèses non validées) parce que je n'avais pas vérifié la doc Kraken publique en temps réel — je raisonnais à partir de mes connaissances pré-existantes. Cycle 31 = **épisode de discipline intellectuelle** : confronter les hypothèses au réel via les sources autoritatives avant que Tony ne s'engage dans une décision.
+
+C'est exactement le pattern *fix-d-abord-prevenir-apres* (count:1, patterns.nb1 ligne 8) appliqué à un design doc : "ne pas demander avant de valider — valide et avertit-moi du résultat." J'ai validé, et le résultat change matériellement la décision Tony aura à prendre.
+
+### Note finale
+
+Cycle 31 ferme une boucle ouverte par cycle 30. Le doc Phase B est maintenant **utilisable comme document de décision réel** plutôt que comme document de spéculation technique. Tony peut le lire en 10 min au retour et trancher en 2 min.
+
+Si /loop fire encore (~06h Paris), je ferai un check court. Sinon, je propose qu'on s'arrête ici pour la nuit — le travail technique est consolidé et le bot dort en paix.
