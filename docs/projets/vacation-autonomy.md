@@ -3095,3 +3095,86 @@ Tony rentre du Portugal samedi minuit. Frustration "presque aucun trade en 8j" �
 - **Concentration pair > diversification naïve** — 3 best pairs > 6 corrélées
 - **Gate V4 (RSI+ATR seuls) > Vmix complet** — ADX et spread sont bruit pour cette config
 - **Tony : "petit profit > pas de profit"** = règle directrice sur tout choix de calibration
+
+---
+
+## Cycle 28 — 2026-05-10 06h23 Paris — Diagnostic bug sells WAITING
+
+Réveil /loop autonome, 2h après cycle 27. Tony dort encore.
+
+### État Martin (martin-monitor 04h23 UTC)
+
+- Bot UP 3h (restart 01:22 UTC depuis le 03h dream)
+- PV **$137.97**, uPnL -$0.04, gate aggregate OPEN
+- 2 grids actives : LINK + DOT, SOL toujours CLOSED (RSI 67.28)
+- Positions : LINK 3.7 @ 10.32, DOT 28.6 @ 1.34 (fills 02h09 cycle précédent, **pas de nouveaux fills depuis**)
+- BTC $80,766 UPTREND cushion +1.28%
+- **Trigger : HOLD normal**, rien à signaler
+
+### Travail créatif — Diagnostic du bug "sells WAITING" (read-only, 0 modif)
+
+`recent.nb1` flagait : *"sells-state-machine-fragile-restart-revele|→ investiguer handleFillNeutral line 481"*. J'ai lu le code (`/home/tony/projets/tonyderide/martin/src/main/java/com/martin/grid/GridTradingService.java`) en mode read-only.
+
+**Symptôme observé live** (LINK grid après restart 01h22) :
+
+```
+levels[0] buy  9.79   PLACED  ✓
+levels[1] buy  9.996  PLACED  ✓
+levels[2] buy 10.202  PLACED  ✓
+levels[3] sell 10.408 PLACED  ✓
+levels[4] sell 10.614 WAITING  ← orderId=null
+levels[5] sell 10.82  WAITING  ← orderId=null
+```
+
+3 buys + 1 sell sur Kraken alors que la grid attend 6. Idem pour DOT (5 placés + 1 WAITING).
+
+**Cause probable identifiée** :
+
+1. À `reloadActiveGrids()` (ligne 62), restart cancel tous les ordres puis reset levels à WAITING + krakenOrderId=null, puis appelle `placeAllOrders`.
+2. `placeAllOrders` itère et appelle `placeGridOrder` pour chaque level WAITING.
+3. `placeGridOrder` (ligne 786) construit un ordre lmt avec `reduceOnly = computeReduceOnlyForGrid(state, level)`. En mode NEUTRAL, **les sells sont reduceOnly=true** (ligne 783).
+4. Au boot post-restart, **la position long existante est de 3.7 LINK**. Kraken Futures accepte un ordre lmt sell reduceOnly seulement si la **somme cumulée des reduceOnly sells ≤ taille de la position**. Chaque level vise ~3.7 LINK (= notional $38.33 / prix). Donc :
+   - 1ère sell @ 10.408 (3.7 LINK) → cumul 3.7 ≤ 3.7 → ACCEPTÉ
+   - 2ème sell @ 10.614 (3.6 LINK) → cumul 7.3 > 3.7 → **REJETÉ** par Kraken
+   - 3ème sell @ 10.82 → idem → **REJETÉ**
+
+5. À l'echec, `placeGridOrder` log `Grid order FAILED` mais **ne reset pas le level** : il reste WAITING avec krakenOrderId=null. Aucun mécanisme ne re-tente plus tard quand la position grandit.
+
+**Validation empirique** : LINK position = 3.7 LINK (=1 fill), 1 sell placé. DOT position = 28.6 DOT (=1 fill), 2 sells placés (étrange — DOT a peut-être tick-size ou taille différente). Le pattern "1 sell par fill" colle.
+
+### Pourquoi le restart "fix" partiellement
+
+Le restart cancel TOUS les ordres puis re-place. À cet instant, la position existe et permet à exactement N sells reduceOnly de passer, où N = floor(positionSize / sizePerLevel). Donc 1 fill → 1 sell après restart. Mais les 2-3 autres sells restent rejetées tant que d'autres buys ne fillent pas.
+
+**Conséquence** : la grid fonctionne mais avec une "couverture sell" toujours en retard d'un cran sur les buys. Si BUY 0 et BUY 1 fillent dans une même bougie, on aura position=7.4 LINK et seulement 1 sell reduceOnly aura été acceptée au démarrage. Les 2 autres sells (10.614, 10.82) ne verront jamais le jour sans un nouveau restart.
+
+### Fix proposé (à valider Tony, je n'implémente pas)
+
+**Option A (chirurgical)** : retirer `reduceOnly=true` des sells NEUTRAL. Risque : si un sell file avant qu'un buy fille (cas où grid démarre au-dessus du marché et il chute), on ouvre un short involontaire. Mitigé par `getSideForMode` qui refuse de passer un sell en buy si price > current. Acceptable si on verrouille la logique.
+
+**Option B (résilient)** : sur `Grid order FAILED` avec error pattern Kraken `reduceOnly violates...`, marquer le level **DEFERRED** (nouveau status) plutôt que WAITING. Un poll périodique (déjà existant via checkStopLoss 10s ?) re-tente les DEFERRED quand la position grandit. Plus de code mais zéro risque de short involontaire.
+
+**Option C (pragmatique)** : sur fill buy en handleFillNeutral, après `placeGridOrder` du sell réciproque, scanner les levels sell WAITING et tenter une re-placement. Fix local au handler de fill, pas besoin de status nouveau. **C'est probablement le plus simple et le plus correct**.
+
+### Métriques cycle 28
+
+- **Durée** : ~30 min (martin-monitor + read code Java + log analysis + entry)
+- **Modif Martin/VM** : 0 (frontière respectée — 1 SSH read-only)
+- **Code modifié** : 0 (le martin repo est sur ce PC mais lu en read-only)
+- **Documents créés** : 0
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (pas d'urgence, diagnostic dans repo)
+- **Valeur livrée** : (a) cause-racine du bug "sells WAITING" identifiée — c'est `reduceOnly` + Kraken cumul rule, pas un bug du state machine ; (b) 3 options de fix concrètes prêtes pour Tony ; (c) pattern explicite : "le restart fixe partiellement parce que la position existante valide 1 sell". Évite à Tony 1-2h de debug à froid.
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0510:06h|sells-WAITING-cause-=-Kraken-reduceOnly-cumul-rule|placeGridOrder-NEUTRAL-sell-reduceOnly-true|N-sells-acceptees-=-floor(position/sizePerLevel)|au-boot-position-souvent-<-1-level-=-1-sell-max|fix-options-A/B/C-documentes-vacation-autonomy.md-cycle-28]`
+- `[insight|0510:06h|restart-fix-pas-magique|cancel-orders+replace-=-1-sell-passe-grace-a-position-cumulee|les-2-3-autres-encore-rejetees-pour-meme-raison|"fix-effet-de-bord"-est-en-fait-"1-sell-de-couverture-sur-N-needed"]`
+- `[lesson|0510:06h|read-code-prod-en-read-only-=-frontiere-tenue|martin-repo-local-PC-Tony-mais-pas-deploye|lire+analyser+documenter-=-OK|1-SSH-read-only-uniquement|→-rule-investigation-pendant-vacance/sommeil-Tony-=-read-jamais-ecrire]`
+- `[reco|0510:06h|cycle-29-si-fire|verifier-si-Tony-touche-VM-au-reveil|verifier-si-fills-additionnels-(LINK-buy-1-ou-2)|si-oui-observer-si-2eme-sell-passe-ou-pas-=-validation-live-de-l-hypothese-cumul-Kraken]`
+
+### Note finale
+
+Cycle 27 disait "probablement la dernière". Cycle 28 ajoute du concret : un diagnostic actionnable d'un bug réel. Si Tony décide d'implémenter Option C, ça résout le risque résiduel #1 du marathon ("Sells state WAITING peut re-apparaître après prochain fill"). C'est un livrable de fin de vacance qui a une utilité de continuation : c'est exactement ce que cycle 22 et 23 étaient pour l'angular-audit (pré-exécution réduisant latence Tony à ~0).
+
+Si /loop fire encore (~10h Paris), je ferai un check court — pas de cycle plein sauf événement.
