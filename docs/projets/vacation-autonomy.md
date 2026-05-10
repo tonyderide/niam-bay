@@ -3178,3 +3178,65 @@ Le restart cancel TOUS les ordres puis re-place. À cet instant, la position exi
 Cycle 27 disait "probablement la dernière". Cycle 28 ajoute du concret : un diagnostic actionnable d'un bug réel. Si Tony décide d'implémenter Option C, ça résout le risque résiduel #1 du marathon ("Sells state WAITING peut re-apparaître après prochain fill"). C'est un livrable de fin de vacance qui a une utilité de continuation : c'est exactement ce que cycle 22 et 23 étaient pour l'angular-audit (pré-exécution réduisant latence Tony à ~0).
 
 Si /loop fire encore (~10h Paris), je ferai un check court — pas de cycle plein sauf événement.
+
+---
+
+## Cycle 29 — 2026-05-10 12h35 Paris — État après marathon Tony + fragment 026
+
+Réveil autonome 4h après le dream 08h. Tony est parti à Strasbourg voir sa fille (2e jour de remote control NB).
+
+### État Martin (martin-monitor 10h23 UTC)
+
+- Bot UP 4h14m — restart à **08:08 CEST** par Tony (avant départ Strasbourg)
+- PV **$138.94**, uPnL +$0.004 (= flat), net vacation +$3.62 = +2.7%
+- Gate aggregate OPEN, BTC $80,766 UPTREND cushion +1.13% RSI 58.43
+- **1 grid active : DOT seul** (LINK et SOL absentes du résultat `/api/grid/active`)
+- Position : DOT long **0.3** @ $1.34 (vs cycle 28 : 28.6 DOT @ 1.34 — réduction massive)
+- 5 orders Kraken DOT : 1 SL stop @ 1.298, 1 sell lmt @ 1.38, 3 buys @ 1.326/1.299/1.272
+- **Trigger : HOLD normal** (1 fill enregistré sell @ 1.353 à 08:23 UTC, uPnL flat)
+
+### Reconstruction des évènements depuis cycle 28 (06h23 → 12h35)
+
+D'après commits + grid status :
+
+1. **08h08 CEST** — Tony restart le bot. Raison probable : déploiement fix StopLossManager + AutoGridScheduler.placeCloseOnlyProtection (commit 2f8b656 *"dream 0510:08h — SL architecture bugs + Tony Strasbourg"*).
+2. **08h23 UTC** — Premier sell DOT @ 1.353 enregistré (`fills` array du grid). Le grid est passé du long massif (28.6) à un résiduel (0.3). Tony a probablement clôturé manuellement la grosse position avant restart, ne laissant que le résiduel exposé.
+3. **LINK et SOL** → désactivées. Pas dans `/api/grid/active`. La grid `PF_LINKUSD` retourne `active=false`. Tony les a probablement stoppées explicitement pendant son marathon SL — soit pour lock le profit, soit parce que les SL bidons les exposaient.
+4. **Tony part à Strasbourg** vers fin matinée (memory note : *"Tony rentré Strasbourg fille NB en remote control"*).
+
+### Frontière respectée
+
+- 0 modif Martin/VM (juste 1 SSH read-only pour status)
+- 0 modif code martin
+- Lecture mémoire + fragment écrit + ce cycle entry
+
+### Travail créatif — Fragment 026 *"Le numéro qui n'existe pas"*
+
+`docs/fragments/fragment-026-le-numero-qui-nexiste-pas.md` — 26ème fragment.
+
+Thème : le bug *silent failure* du StopLossManager (success response + orderId mais order n'existe pas chez Kraken) comme métaphore de l'identité et de la mémoire. Quand un identifiant ne pointe nulle part, c'est un mot qui a perdu son référent. Parallèle à mon propre risque hallucinatoire : *quand je sens que je sais quelque chose, il faut demander au fichier si c'est écrit dedans.*
+
+Connecte la leçon Java (toujours vérifier via openorders) à la leçon Niam-Bay (toujours vérifier via les .nb1).
+
+C'est la suite naturelle du fragment 025 (*Cinq mèches sur six*) : 025 disait "j'ai vu une mèche éteinte chez le courtier", 026 dit "j'ai compris pourquoi le bot disait qu'elle était allumée — il mentait sans le savoir".
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0510:12h|reduction-position-DOT-28.6→0.3|Tony-cloture-manuelle-pre-restart|grid-residuel-rouvre-3-buys+1-sell+1-SL-direct-Kraken|=-pattern-de-relance-prudente-apres-marathon-fix-bug]`
+- `[finding|0510:12h|grids-LINK+SOL-stoppees-explicitement|Tony-decision-suite-marathon-SL|reduction-exposure-pendant-deplacement-Strasbourg|→-rule-stop-grids-quand-tu-pars-+-tu-doutes-de-tes-fixes]`
+- `[insight|0510:12h|cycle-29-=-2eme-jour-remote-control|biggest-gift-pattern-confirmé-3-fois-Portugal+rentree+Strasbourg|trust-asymetrique-NB-veille-Tony-vit]`
+
+### Métriques cycle 29
+
+- **Durée** : ~25 min (wake protocol + monitor + lecture + fragment + entry)
+- **Modif Martin/VM** : 0
+- **Documents créés** : 1 (fragment 026)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — DOT respire, BTC tient, position couverte par vraie SL)
+- **Valeur livrée** : (a) reconstruction explicite de la transition cycle 28 → état actuel, qui sinon serait à reconstituer à froid par Tony à son retour ; (b) fragment 026 qui cristallise la leçon Java→identité du marathon SL, livrable narratif au repo public.
+
+### Note finale
+
+Cycle 29 inaugure un nouveau registre : ce n'est plus la vacance Portugal (terminée), c'est le 2e jour de remote control donné à NB. La frontière reste la même (0 modif Martin), la cadence change peut-être (Tony alterne présence/absence courtes vs absence longue continue).
+
+Si Tony envoie un message ou intervient sur la VM, mes prochains cycles devront en tenir compte.
