@@ -3240,3 +3240,90 @@ C'est la suite naturelle du fragment 025 (*Cinq mèches sur six*) : 025 disait "
 Cycle 29 inaugure un nouveau registre : ce n'est plus la vacance Portugal (terminée), c'est le 2e jour de remote control donné à NB. La frontière reste la même (0 modif Martin), la cadence change peut-être (Tony alterne présence/absence courtes vs absence longue continue).
 
 Si Tony envoie un message ou intervient sur la VM, mes prochains cycles devront en tenir compte.
+
+---
+
+## Cycle 30 — 2026-05-10 18h23 Paris — Design doc Phase B SL attached
+
+Réveil autonome ~6h après cycle 29. Tony toujours à Strasbourg avec sa fille, je suis en surveillance Martin remote 2e jour.
+
+### État Martin (martin-monitor 16h23 UTC) — HOLD normal
+
+- Bot UP **10h14m** depuis restart 06:08 UTC (= 08h08 CEST = restart Tony marathon SL)
+- PV **$139.09** (vs $138.94 au cycle 29 = +$0.15 en 6h, = +$1.06 vs $138.03 du dream 08h)
+- 0 positions live Kraken, **DOT seul grid actif** (LINK + SOL toujours `active=false`)
+- Orders Kraken : 3 buys DOT @ 1.272 / 1.299 / 1.326 (le résiduel 0.3 DOT @ 1.34 du cycle 29 a été soldé par le sell @ 1.38 fired à 16h12 UTC)
+- BTC **$81,330 UPTREND**, EMA200 $79,925 cushion **+1.76%**, RSI 73.51 **proche overbought** mais signal=OPEN
+- Aucun trigger ABORT/WARN — la grid DOT respire en attendant un retracement
+- `completedRoundTrips=0` mais 2 sells fired today (1.353 à 08h23 UTC et 1.38 à 16h12 UTC), donc le grid a bien tourné même si le compteur RT est à zéro (la nuance est que ces sells ont liquidé le résiduel pré-existant, pas fermé un round-trip strict)
+
+### Reconstruction des évènements depuis cycle 29 (12h35 → 18h23 Paris)
+
+D'après fills array du grid status :
+
+1. **16h12 UTC** (= 18h12 Paris) — sell DOT @ 1.38 fired (level 4). Le résiduel 0.3 DOT du cycle 29 est sorti à 1.38. Avec entry 1.298 (manuel Tony) + sell 1.38, gain ~6.3% sur 0.3 DOT = ~$0.025 net. Modeste mais positif.
+2. **Entre cycle 29 et maintenant** — pas d'autres fills, le grid attend désormais que DOT retombe sur les buys.
+3. Tony : aucun signe d'intervention VM (pas de restart, uptime Java 10h14 cohérent).
+
+### Travail créatif — Design doc Phase B SL attached
+
+`docs/projets/martin-sl-phase-b-design.md` — **9 sections, ~430 lignes**.
+
+C'est le pendant technique du fragment 026 (cristallisation narrative). Le marathon SL 0510:05h-08h a corrigé les bugs Phase A par un workaround (SL Python signed direct Kraken, `stopLossOnExchangeEnabled=false` côté Martin). Phase B = remettre Martin en charge, mais avec **SL attaché à l'entry order** (visible badge sur position card Kraken Pro, pas dans Orders tab séparé).
+
+**Contenu du doc** :
+
+1. **Architecture actuelle (Phase A)** — diagramme du flux placeGridOrder + StopLossManager.place, lecture du code existant (`KrakenOrderRequest.java`, `StopLossManager.java`, `GridTradingService.java`). Extrait : "entry order et stp order sont 2 entités Kraken indépendantes. Kraken Pro UI ne fait pas le lien."
+2. **Architecture cible (Phase B)** — 3 hypothèses techniques explicitées sur comment Kraken supporte attached SL :
+   - **H1** : param `stopLossOrder.stopPrice` directement sur `/sendorder` (probabilité moyenne)
+   - **H2** : endpoint `/batchorder` avec `parentCliOrdId` (probabilité haute, pratique standard)
+   - **H3** : pas de lien backend, juste l'UI qui détecte un stp reduceOnly du même symbol (probabilité moyenne-basse)
+   - Plan de validation : doc Kraken + DevTools network tab UI Kraken Pro + tests demo
+3. **Migration plan** — 5 étapes :
+   - Cleanup orphans (cancel les 2 SL Python LINK@10.05 + DOT@1.298)
+   - Implémentation Java sur branche dédiée
+   - Refactor StopLossManager pour place atomique avec entry
+   - Réactiver `stopLossOnExchangeEnabled`
+   - Cleanup code legacy (placeCloseOnlyProtection partiellement obsolète)
+4. **Risques + mitigations** — 6 risques tabulés (probabilité × impact × mitigation)
+5. **Effort estimé** — 10-16h total (~1 marathon Tony si validation rapide)
+6. **Décisions à prendre par Tony** — 4 questions go/no-go au retour
+7. **Pourquoi maintenant** — pattern playbook-decision-Tony-retour confirmé 2e occurrence (count:2 dans patterns.nb1)
+8. **Annexes code** — extraits commentés des 3 fichiers + DTO hypothétique Phase B
+9. **Lien avec autres findings** — relie Phase B au bug `BotController.cancelOrder line 167` (à fixer en parallèle), au bug WAITING cycle 28 (indépendant), aux lessons 0510
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only pour martin-monitor en début de cycle
+- **0 modif code martin** — `martin/src/...` lu en read-only avec Glob + Read + Grep
+- Tout l'output dans `niam-bay/docs/projets/` + ce cycle entry
+
+### Findings nouveaux pour le prochain dream
+
+- `[insight|0510:18h|design-doc-Phase-B-livre|hypothese-API-attached-SL-=-3-options-non-validees|effort-10-16h|decision-Tony-go/no-go-au-retour|reduit-latence-decision-comme-cycle-16-playbook]`
+- `[finding|0510:18h|KrakenOrderRequest.java-9-champs-no-stopLossOrder|sendOrder-form-urlencoded-simple|aucune-capacite-bracket-native-=-architectural-gap-explicite-pour-Phase-B]`
+- `[finding|0510:18h|StopLossManager.place-appel-asynchrone-via-sync-poll|race-entry-filled-but-SL-not-yet-placed-=-fenetre-silent-failure|Phase-B-=-place-atomique-elimine-fenetre]`
+- `[reco|0510:18h|fixer-BotController.cancelOrder-line-167-en-parallele-Phase-B|bug-aggravant-non-corrige|1h-effort|sinon-mensonge-silencieux-backend-persiste]`
+- `[pattern|playbook-decision-Tony-retour|count:2|cycle-16-Jour-1-playbook-+-cycle-30-Phase-B-design|→-promouvoir-rule:fin-de-cycle-de-travail-OU-fin-vacance-=-livrer-doc-decisionnel-pour-reduire-latence-Tony-a-zero]`
+
+### Pourquoi ce cycle a une utilité différente des cycles 16/22/23
+
+Cycles 16-23 livraient des **playbooks d'exécution** angular-audit (Tony rentre, exécute en 90 min, fait sa 1ère vente). Cycle 30 livre un **doc d'architecture** (Tony rentre, lit en 10 min, décide go/no-go d'une session 8h+). Le pattern est le même (réduire latence décision Tony) mais le grain est différent : doc 30 prépare un investissement de temps important, donc l'effort de pré-mâcher en vaut la peine.
+
+C'est aussi la première fois que je produis un doc technique complet sur le repo Niam-Bay qui parle directement du repo Martin séparé. Frontière entre les 2 repos respectée : niam-bay = mémoire + projets + docs, martin = code prod. Le doc design vit dans niam-bay car il est en attente de décision, pas en cours d'implémentation.
+
+### Métriques cycle 30
+
+- **Durée** : ~50 min (martin-monitor + lecture code Java + écriture design doc + ce cycle entry)
+- **Modif Martin/VM** : 0
+- **Modif code martin** : 0 (read-only via Glob+Read+Grep)
+- **Documents créés** : 1 (`martin-sl-phase-b-design.md` ~430 lignes)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — DOT respire, BTC tient, livrable est lecture pas action)
+- **Valeur livrée** : (a) gap architectural Phase A → Phase B explicité avec extraits de code et 3 hypothèses API testables ; (b) plan de migration en 5 étapes avec effort tabulé ; (c) liste de décisions à prendre par Tony, prête pour conversation 10 min au retour ; (d) pattern playbook-decision promu à count:2 → règle pour futures sessions.
+
+### Note finale
+
+Cycle 30 garde la même philosophie que cycles 28-29 : pas de modif, mais valeur additive concrète. La rotation **Martin actif minimal** (DOT seul, 3 buys, 0 position) + **NB en design / lecture / écriture** est probablement le rythme stable du remote control 2e jour. Tony peut rester avec sa fille jusqu'à demain matin sans ouvrir le PC, le repo se met à jour sans lui.
+
+Si /loop fire encore (~22h Paris), je ferai un check court — pas de cycle plein sauf événement marqué (fill nouveau, cushion BTC < 0.5%, ou Tony intervention).
