@@ -3031,3 +3031,67 @@ C'est la 3e fois que je dis "ça va être la dernière entrée". Cycle 25 disait
 - Le briefing du matin transfère proprement la veille à Tony
 
 Si /loop fire encore (vers 04h36 Paris), je ferai un check court — pas un cycle complet. La courbe d'utilité décroît fortement après le briefing tant que Tony ne re-déclenche pas un événement.
+
+---
+
+## Post-vacation 2026-05-09 → 2026-05-10 (Tony retour, marathon de fixes)
+
+Tony rentre du Portugal samedi minuit. Frustration "presque aucun trade en 8j" → audit + 10 traders → plan en 6 phases → 5 backtests → fix après fix.
+
+**Chronologie résumée** :
+
+1. **Audit + 10 trader agents** → bug RegimeGate calibration (EMA_spread bear-only) + Pages config wrong branch + email mailto risk
+2. **Fix Vmix** : ADX [10,35] RSI [20,75] etc. — gate plus permissive
+3. **Plan en 6 phases** déployé via subagent-driven (writing-plans skill) :
+   - P0 sanitize Kraken keys VM yaml
+   - P1 cleanup VM (jar backups, watchdog cron)
+   - P2 Vmix calibration
+   - P3 5 garde-fous Java TDD : DailyLossCap, TradesPerDayCap, CooldownAfterLoss, PositionSizeCap, DrawdownManager re-tune 3/5/8/10%
+   - P4 strategy.json aggressive 6 pairs
+   - P5 verify
+4. **Bug PositionSizeCap** : cap 15% rejetait 100% des orders → fix dynamique 1.5x ratio naturel
+5. **Per-pair gate** : ADX/spread agrégés bloquaient bot dans bull. Refactor `evaluatePerPair` + cap 3 grids parallel + flag `perPairMode` + endpoint `/api/signal/regime-gate/{pair}`
+6. **Cap fix** : cap doit aussi bound boot-reloaded grids (pas que NEW openings)
+7. **Backtest 90j RÉEL** : config aggressive perd -6.6% sur 90j en backtest mark-to-market — grid neutre se fait squeeze en trending
+8. **5 backtests parallèles** sweep paramétrique :
+   - Spacing×Levels : sweet spot **2.0% × 6 levels** (Calmar 12.81)
+   - Trailing center : EMA20 hybride gagne PnL mais DD ×5
+   - Stop-loss grid : **-3% du center** = Calmar 4.06 préservé, DD 8x réduit
+   - Pair selection : **3 pairs concentrées** > 6 pairs naïves (×3.4 Calmar)
+   - Gate IQR : **V4 (RSI+ATR seuls)** = Calmar 15.48, ADX/spread sont bruit
+9. **Deploy combinaison gagnante** : 3 pairs LINK+SOL+DOT × 2.0% × 6 levels × $46/pair, gate V4 RSI[36-66]+ATR%[1.12-2.17]
+10. **Bug PositionSizeCap encore** : 6 levels × lev 5 = 83.3% naturel > cap 80% → fix dynamique 1.5x
+11. **Aggregate gate OPEN** pour la 1e fois en 2 jours après V4 calibration
+12. **First fill** : DOT long 28.6 @ $1.34 (02:09 dim), puis LINK long 3.7 @ $10.32
+13. **Sells missing** : Kraken voyait 0 sell pour les buys filled (bug grid level state machine WAITING). Fix par effet de bord : restart bot → reload triggers re-post des sells
+14. **Grid SL -3% du center** ajouté dans checkStopLoss (poll 10s) — backtest-validated
+
+**Commits martin master** (chronologique) :
+- 5db0e0e Vmix calibration
+- d6bcc69, fa5e79f, f616ecf, 46c44e5, 30110f4, 894b109 (5 guardrails)
+- f67ec6f PositionSizeCap fix
+- 4cad022 per-pair gate + cap 3
+- (cap boot-reload fix)
+- (Vmix V4 calibration)
+- (PositionSizeCap dynamic ratio)
+- (SL -3% from center)
+
+**État final live** :
+- PV $137.84, uPnL -$0.16
+- 2 grids actives LINK + DOT
+- 2 positions long (LINK 3.7 @ 10.32 + DOT 28.6 @ 1.34)
+- 6 orders (2 buys + 1 sell par grid)
+- Gate aggregate OPEN, per-pair LINK/DOT OPEN, SOL CLOSED (RSI 68)
+- /loop 30min monitoring actif
+
+**Risques résiduels** :
+- Sells state WAITING peut re-apparaître après prochain fill (bug pas vraiment fixé, juste contourné par restart)
+- Backtest dit -6.6%/90j pour cette stratégie — réalité live à vérifier sur 30j+
+- AVAX gardé disabled (tick collapse pas fixé)
+- ETH gardé disabled (signal=WAIT block les orders)
+
+**Lessons learned** :
+- **Spacing serré 0.5% est le piège** — fees mangent tout
+- **Concentration pair > diversification naïve** — 3 best pairs > 6 corrélées
+- **Gate V4 (RSI+ATR seuls) > Vmix complet** — ADX et spread sont bruit pour cette config
+- **Tony : "petit profit > pas de profit"** = règle directrice sur tout choix de calibration
