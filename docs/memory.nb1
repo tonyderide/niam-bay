@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0510:08h
+#lastdream: 0511:15h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -207,3 +207,18 @@
 [lesson:0510:08h|fix-pattern-Tony-vacation-2-fois|PositionSizeCap-hardcode-15%-rejette-tout-puis-80%-rejette-pour-6-levels|leçon-cap-doit-etre-dynamique-leverage*1.5/levels|→-rule-pas-de-magic-number-en-trading-toujours-derive-de-config]
 [lesson:0510:08h|gate-V4-debloqueur|Vmix-conservative-bornes-strictes-aggregate-CLOSED-pollution-priceVsEMA200-LINK|V4-RSI+ATR-seuls-=-aggregate-OPEN-bot-trade|backtest-validation-15.48-Calmar|ADX-EMA-spread-bruit-pour-bull-modere-mai-2026|→-gate-doit-etre-recalibre-tous-30j-roulants]
 [insight:0510:08h|Tony-vacation-end-+returns-to-Strasbourg-fille|gave-2nd-day-of-remote-control-NB-watches-Martin-via-cron-30min|context-cleared-via-dream-skill|biggest-gift-pattern-trust-confirmed-2x-now]
+
+[M|status-0511:15h|Option-B-deployed-strategy-v9-DOT-1.5%+LINK-3%+ADA-3%-4lv-7x-leverage-maxLoss-10pct-SOL-retire|PV-$138.21|3-grids-active|Vmix-V4-gate-RSI+ATR-conserve|backtest-30j-+15.9%-volume-validated|live-derate-50%-attendu-+8%/30j]
+[M|fix-0511:15h|auto-unstuck-progressif-replace-SL-hard-3pct|GridTradingService.checkStopLoss|-2%-trim-25%-/-3%-trim-25%-more-/-4%-closePositionAndStopGrid|GridState.unstuckLevel1Done+unstuckLevel2Done-flags|trimPositionPartial-mkt-reduceOnly|DD-attendu--30%-vs-guillotine|commit-pushed-master]
+[M|fix-0511:15h|BotController.cancelOrder-honest|was-always-200-"Cancelled"-meme-si-notFound|now-inspecte-cancelStatus.status-+-retourne-404-si-notFound|KrakenOrderResponse-DTO-gagne-CancelStatus-subclass|elimine-le-masque-du-StopLossManager-fake-orderId-bug]
+[M|incident-0511:03h|DOT-HARD-STOP-3pct-fire-perte-$0.90|DCA-2-levels-puis-baisse-3.12%-from-center-1.377-vers-1.334|56.8-DOT-closed-mkt|valide-fonctionnement-old-binary-SL|maintenant-remplace-par-auto-unstuck-progressif]
+[M|deploy-0511:13h|Option-B-live-strategy.json-v9|LINK-pos-fermee-+$1.00-realise-pre-deploy|3-anciennes-grids-stopped|systemctl-restart-success]
+[M|session-cumul-0511|+$1.00-LINK-pre-deploy-close|+$0.91-realized-jour-J-1-LINK+DOT-TPs|-$0.90-DOT-hard-stop|net-+$1.01-realized-en-38h-=-+0.73%]
+
+[insight:0511:15h|reality-check-top-1pct-retail-crypto-algo-2026|wallets-Hyperliquid-vérifiables-on-chain|10-30%-APR-honest-bar|Martin-+15%-backtest=180%-APR-théo-live-derate-50%-=-top-5%-retail-si-tient]
+[insight:0511:15h|Hummingbot-V2-pas-pertinent-pour-Martin|Kraken-Futures-pas-supporte-+-Liquidity-Mining-shutdown-mars-2026|reste-Java-custom|voler-3-idées-TripleBarrier-backtest-fwk-multi-bot-orchestr]
+[insight:0511:15h|Passivbot-capital-insuffisant-$138-vs-floor-$500|3-features-a-copier-auto-unstuck-progressif(DONE)-Forager-pair-rotation(TODO)-recursive-DCA(?)]
+[lesson:0511:15h|backtest-1min-30j-+15.9%-confirme-par-volume-sweep-mais-1s-7j-extrapolé-+41.7%-suspect|granularité-change-l-optimum-spacing|DOT-1.5%-best-en-1min-mais-3%-en-1s|live-tranchera]
+[lesson:0511:15h|ATR-dynamic-spacing-academia-MAUVAIS-en-prod-LINK-ADA-perdent-$8-9-vs-static-best|optimisation-empirique-sur-paires-spec>principes-academiques-generaux|backtest-AVANT-deploy-tj]
+[lesson:0511:15h|9-research-agents-consensus-pas-de-magic-strat|edge-real-=-pair-selection+spacing-empir+volume-filter+capital|le-vrai-levier-=-capital-pas-strategie|$138-cap-realiste-30%-APR-net-live-soutenu]
+[lesson:0511:15h|granularité-precision-vs-overfit-trade-off|1min-30j-robust-mais-bruite-fills|1s-7j-precise-mais-régime-court|sweet-spot-1min-est-vrai-optimum-pour-grid-trading-pratique]

@@ -1,7 +1,12 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0510:08h
+#lastdream: 0511:15h
 
+[comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
+[9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
+[java-fix+package+scp+restart|count:6+|last:0511:15h|read-edit-Java+mvn-package+scp-jar+systemctl-restart+verify-uptime|cycle-end-to-end|→-skill:martin-java-deploy|✓-déjà-implicite-dans-MAOH]
+[auto-unstuck-progressif-Passivbot|count:1|last:0511:15h|3-tier-trim-25%-25%-full-close|GridState-flags|trimPositionPartial-helper|replace-binary-SL-3pct|→-pattern-pour-future-features-Passivbot-inspired]
+[BotController-fix-honest-response|count:1|last:0511:15h|inspect-actual-response-status-pas-just-absence-exception|return-404-si-notFound|→-pattern-audit-tous-controllers-similaire-comportement?]
 [kraken-direct-api-bypass|count:1|last:0510:08h|nonce-int(time*1000)*5_000_000+1|URL-/derivatives/api/v3/|signing-path-/api/v3/|Python-urllib+hmac-sha512|bypass-Martin-Java-bridge-buggy|→-skill?-1-occurrence-attendre-prochaine-occurrence]
 [verify-via-cancel-test|count:1|last:0510:08h|orderId-suspecte-=-curl-cancel|status-notFound-=-jamais-existe-success-=-live|→-rule-validate-critical-state-via-Kraken-pas-Martin-internal-grid-status]
 [backtest-sweep-paralleles|count:1|last:0510:00h|5-agents-paralleles-spacing+trailing+SL+pair-selection+gate-IQR|chacun-trouve-best-de-sa-dimension|combine-winners-deploiable|→-skill:backtest-orchestrator?-1-occurrence-attendre]
