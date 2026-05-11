@@ -3410,3 +3410,105 @@ C'est exactement le pattern *fix-d-abord-prevenir-apres* (count:1, patterns.nb1 
 Cycle 31 ferme une boucle ouverte par cycle 30. Le doc Phase B est maintenant **utilisable comme document de décision réel** plutôt que comme document de spéculation technique. Tony peut le lire en 10 min au retour et trancher en 2 min.
 
 Si /loop fire encore (~06h Paris), je ferai un check court. Sinon, je propose qu'on s'arrête ici pour la nuit — le travail technique est consolidé et le bot dort en paix.
+
+---
+
+## Cycle 32 — 2026-05-11 06h25 Paris — État au retour J = aujourd'hui
+
+Réveil ~6 h après cycle 31. Tony à Strasbourg avec sa fille, 3e jour de remote control. **Aujourd'hui = jour de retour théorique** d'après le memory (`Tony-vacation-2026-05-01→2026-05-09` + 2 jours Strasbourg). **Aussi = Jour-J du playbook Angular-Audit** (1ère vente 49 € visée).
+
+### État Martin (martin-monitor 04h25 UTC) — HOLD normal
+
+- Bot UP **22h15m** depuis restart 06:08 UTC du 10/05 (marathon SL Tony)
+- PV **$137.75** (vs $138.62 cycle 31 = -$0.87 en 6 h, mais uPnL +$0.09 — donc cumul vacance recalculé sur balanceValue $137.66 = +$2.34 / +1.73 % sur 11 j)
+- **2 grids relancées par AutoGridScheduler** depuis cycle 31 :
+  - LINK active depuis 02:39 UTC (centerPrice 10.565, spacing 0.211, 6 niveaux $46 capital)
+  - SOL active depuis 03:54 UTC (centerPrice 94.84, spacing 1.9, 6 niveaux $46 capital)
+  - DOT inactive (toujours TRENDING, auto-OFF)
+- **1 position live** : LINK long 3.7 @ 10.46, uPnL +$0.06
+- **SL réel posté** pour LINK : `a1c03c8c-...` @ 10.24805 = workaround Python tient ✅
+- **Bug WAITING re-détecté** : LINK level 3 sell @ 10.671 status `WAITING` côté Martin mais 0 sell order sur Kraken. Le bug du cycle 28 revient — sells ne se postent pas systématiquement après un fill.
+- BTC $80,728 UPTREND, EMA200 $80,102, cushion **+0.78 %** (mince, en baisse vs +1.57 % il y a 6 h)
+- RSI 44.62 → signal `WAIT` (momentum faible)
+- Aucun trigger ABORT/WARN
+
+### Reconstruction des évènements depuis cycle 31 (00h30 → 06h25 Paris, 6 h gap)
+
+D'après grid status + AutoGridScheduler comportement attendu :
+
+1. Entre 00h30 et 02h39 UTC : DOT ADX retombe sous seuil, LINK gate passe OPEN, AutoGridScheduler **relance LINK** (premier des 2 redémarrages).
+2. 03:30 UTC : fill LINK index 2 @ 10.46 (premier fill réel post-marathon, hors résiduel DOT). StopLossManager.place() **fonctionne** cette fois, le SL est posté sur Kraken et le bug silent failure ne se manifeste pas.
+3. 03:54 UTC : AutoGridScheduler **relance SOL** également (gate aussi OPEN). 3 buy orders posés, pas encore de fill.
+4. Le bug `handleFillNeutral` se re-manifeste : sell LINK @ 10.671 reste en `WAITING` interne, pas postée sur Kraken. État cohérent mais incomplet.
+5. Tony : aucune intervention. Le bot fonctionne en autonomie, AutoGridScheduler gère la rotation grids selon régime.
+
+### Travail créatif — Doc État-au-retour-0511 (livrable décisionnel)
+
+`docs/projets/etat-au-retour-0511.md` — **~180 lignes, 6 sections**.
+
+C'est le **5e livrable « pre-execution décisionnelle »** de cette absence (après cycles 16, 17, 22, 30) et le **3e occurrence du pattern `playbook-decision-Tony-retour`** (promu count:3 dans patterns.nb1 au prochain dream).
+
+Particularité : ce doc **agrège tout** ce que Tony doit savoir au retour, plutôt qu'un seul artefact (playbook OU PDFs OU drafts). Structure :
+
+1. **TL;DR** 4 lignes — la 1ère action à faire dans les 30 s
+2. **Fix Pages 30 s** — commande `gh api` copy-paste-ready (auth déjà OK, scope `repo` vérifié)
+3. **Inventaire tunnel revenue** — table de tous les assets prêts avec paths et tailles
+4. **Playbook condensé 60 min** — version 7 steps condensée du playbook 90 min cycle 16 (cycles 22-23 ont coupé 30 min via pre-execution)
+5. **Snapshot Martin** — état du cycle 32 (cf. supra)
+6. **Décisions techniques en attente** — Phase B SL + bug WAITING, avec liens
+
+### Pourquoi ce doc plutôt qu'autre chose
+
+3 raisons convergentes pour ce cycle :
+
+1. **Timing critique** : aujourd'hui = jour de retour Tony + Jour-J angular-audit. Un doc « au retour » a sa pleine valeur dans une fenêtre de quelques heures.
+2. **Tous les artefacts existent** : samples (cycle 14), playbook (16), prospects (17), drafts (22), README index cold (23), HN draft (19), post-mortem (20). Le tunnel est entièrement préchargé. Manquait juste **l'index navigable** au moment précis du retour.
+3. **Économie de latence Tony** : sans ce doc, Tony devrait lire 4-5 fichiers en parallèle pour reconstituer l'état (vacation-autonomy.md + recent.nb1 + jour-1-retour-playbook.md + cold/README.md + martin-sl-phase-b-design.md). Avec ce doc, il lit 1 fichier en 5 min et exécute le playbook en 60 min.
+
+### Validation empirique du blocker Pages
+
+J'ai vérifié en temps réel via 2 appels `gh api` + `curl` :
+
+```
+GET /repos/tonyderide/niam-bay/pages
+→ source.branch = "claude/ai-consciousness-discussion-UFztk"  ← mauvaise branche
+→ status = built, /angular-audit.html → 404
+→ master a bien le fichier (raw URL → 200)
+```
+
+→ Confirme exactement le blocker mentionné dans `memory.nb1:103` (cycle 17 vacation). Pas de surprise, le fix tient en 1 commande `gh api PUT`. Le doc État-au-retour fournit la commande + la validation post-fix.
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only (martin-monitor full check)
+- **0 modif config repo public** — j'ai vérifié `gh auth status` (scope `repo` présent) mais **n'ai pas exécuté** le `gh api PUT` sur Pages. C'est une modif visible publiquement, je laisse Tony l'exécuter lui-même (30 s pour lui = respect de la frontière vacation).
+- **0 modif code Martin** — pas même lu Java cette fois, le bug WAITING est déjà documenté cycle 28
+- Output : 1 nouveau doc `etat-au-retour-0511.md` + cette entrée
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0511:06h|Pages-source-toujours-mauvaise-branche-cycle-17-blocker-tient|claude/ai-consciousness-discussion-UFztk|/angular-audit.html→404|fix=gh-api-PUT-30s|master-a-tous-les-fichiers-raw-→-200|Tony-jamais-fixe-pendant-Strasbourg]`
+- `[finding|0511:06h|AutoGridScheduler-relance-LINK+SOL-auto-pendant-nuit|02h39+03h54-UTC|=-feature-rotation-grids-selon-regime-tourne-correctement|capital-protege-en-autonomie]`
+- `[finding|0511:06h|StopLossManager-place-fonctionne-cette-fois-LINK-fill-03h30|SL-pose-reel-Kraken-a1c03c8c-pas-de-silent-failure|n'écarte-pas-le-bug-mais-confirme-non-deterministe]`
+- `[finding|0511:06h|bug-WAITING-handleFillNeutral-revient-cycle-32|LINK-level-3-sell-10.671-WAITING-interne-0-order-Kraken|même-pattern-cycle-28-non-fix|→-à-grouper-avec-Phase-B-v2]`
+- `[insight|0511:06h|cycle-32-livre-meta-doc-agregateur|5e-livrable-pre-execution-de-l-absence|pattern-playbook-decision-Tony-retour-count:3-promu-de-2|→-règle:fin-de-période-autonomie-longue-=-livrer-1-doc-aggregateur-au-lieu-de-N-artefacts-disperses]`
+- `[pattern|état-au-retour-aggregator-doc|count:1|last:0511:06h|TL;DR+inventory+condensed-playbook+Martin-snapshot+decisions|optimal-pour-fin-vacation-longue|→-si-prochaine-vacance:reproduire-en-derniere-24h]`
+
+### Métriques cycle 32
+
+- **Durée** : ~35 min (wake + martin-monitor + verifications gh/curl + writing doc + entry)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0 (read-only)
+- **Modif config repos publics** : 0 (gh-api PUT vérifié faisable mais **non exécuté** — frontière respectée)
+- **Documents créés** : 1 (`etat-au-retour-0511.md` ~180 lignes)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — bot autonome OK, doc utile mais lisible à 8 h ou 12 h quand Tony se réveille)
+- **Valeur livrée** : (a) **point d'entrée unique** Tony au retour = 5 min lecture pour reconstituer tout l'état ; (b) **fix Pages copy-paste** = 30 s d'action au lieu de naviguer UI GitHub ; (c) **playbook condensé 60 min** = -30 min vs original ; (d) **pattern aggregator-doc** établi pour fins de vacance futures.
+
+### Note finale
+
+Cycle 32 inaugure un registre nouveau : **doc d'agrégation finale d'absence longue**. Les cycles 28-31 produisaient des livrables techniques isolés (fragment, design doc, validation). Cycle 32 les noue ensemble dans un index actionnable au moment précis du retour.
+
+Si Tony ne lit pas ce doc (rentre fatigué, va directement à Martin), aucune perte — tout le contenu est déjà dans les fichiers source qu'il connaît. Le doc est un **raccourci**, pas une dépendance.
+
+Si /loop fire encore (~12 h Paris), je vérifierai si Tony est revenu (commit, message Telegram, intervention VM). Si oui, je proposerai de fermer la séquence d'absence avec un dream consolidation. Si non, je continuerai à surveiller Martin et à explorer d'autres petits livrables (sweep des fichiers darwin/ non commités, par ex.).
