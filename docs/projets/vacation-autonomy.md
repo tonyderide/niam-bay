@@ -3511,4 +3511,118 @@ Cycle 32 inaugure un registre nouveau : **doc d'agrégation finale d'absence lon
 
 Si Tony ne lit pas ce doc (rentre fatigué, va directement à Martin), aucune perte — tout le contenu est déjà dans les fichiers source qu'il connaît. Le doc est un **raccourci**, pas une dépendance.
 
+---
+
+## Cycle 33 — 2026-05-11 12h25 Paris — Synthèse des 5 sweeps darwin
+
+Réveil ~6 h après cycle 32. Tony à Strasbourg, J+2 de remote control. Bot autonome, **HOLD normal** confirmé.
+
+### État Martin (martin-monitor 10h25 UTC)
+
+- Bot UP **1d 4h 14m** depuis restart 06:08 UTC 10/05
+- PV **$138.43** (uPnL +$0.64 = +0.46%, balanceValue $137.79 = +$2.46 vs baseline vacation $135.32 = **+1.81% sur 11j**)
+- **3 grids actives** : LINK (depuis 02:39 UTC), DOT (depuis 05:09 UTC — relancée auto), SOL (depuis 08:39 UTC — relancée auto)
+- **1 position live** : LINK long 3.7 @ 10.46, uPnL +$0.67
+- **1 RT en cours sur LINK** : level 2 buy rempli @ 10.46, level 3 sell @ 10.671 toujours `WAITING` (bug cycle 28-32 persiste)
+- **SL réel** : LINK `a1c03c8c-...` @ 10.248 ✅ ; DOT et SOL `stopLossOrderId=null` côté Martin
+- 8 buy orders posés sur Kraken (3 SOL, 3 DOT, 2 LINK)
+- BTC $81,120 UPTREND, EMA200 $80,167, cushion **+1.19%** (en hausse vs +0.78% cycle 32)
+- RSI 52.44 → signal `OPEN` (momentum revenu OK)
+- Aucun trigger ABORT/WARN
+
+### Reconstruction 06:25 → 12:25 (6h gap depuis cycle 32)
+
+1. DOT relancée par AutoGridScheduler ~05:09 UTC (depuis cycle 32 = 03:09 UTC ? Non — cycle 32 disait LINK + SOL actives. DOT s'est ajoutée).
+2. BTC remonte de +0.78% cushion à +1.19% → cushion plus confortable, signal RSI passe de 44.6 (WAIT) à 52.4 (OPEN).
+3. Aucun nouveau fill depuis 03:30 UTC (le fill LINK index 2). Bot tranquille.
+
+### Travail créatif — Synthèse 5 sweeps darwin (cycle 33)
+
+**Contexte** : git status montre 6 fichiers darwin non commités, créés par Tony en marathon nuit 10/05 21:47 → 11/05 02:09. 5 sweeps de backtest successifs. Aucune synthèse écrite — opportunité de valeur directe.
+
+J'ai parsé les 4 JSON principaux (`comprehensive_sweep_results.json` 73 KB, `volume_sweep_results.json` 18 KB, `advanced_sweep_results.json` 9.8 KB, `sweep_1s_results.json` 18 KB) et produit **`docs/projets/darwin-sweeps-synthese-0511.md`** (~250 lignes).
+
+### Trois trouvailles principales
+
+1. **Volume filters lift +1.5 à +7 pts de PnL sur 30j**. Aucun n'est dans le bot prod. Plus actionable.
+   - ADA `all3` mode : +7.00 lift → 17.65% (vs 10.65 baseline)
+   - LINK `spike_avoid_2x` : +5.32 lift → 15.97%
+   - DOT `vwap+spike2x` : +4.60 lift → 14.10%
+
+2. **Config actuelle (sp=2.0% lvl=6) sous-optimale** vs sp=3.0% lvl=4 + volume filter. Lift potentiel ×5-7 en backtest, ×2-3 en live (règle dérate 30-50% du backtest).
+   - Déployé total backtest : 6.87% / 30j ≈ $3.16
+   - Optimal total backtest : 47.72% / 30j ≈ $21.95
+
+3. **SOL est faible (1.09%/30j best), ETH négatif (-4.06%), ADA fort (17.65% best)**. Switch SOL → ADA mériterait considération.
+
+### 4 niveaux de recommandations livrés
+
+Le doc propose un menu progressif (par appétit risque + effort) :
+
+- **Niveau 1** (prudent) : juste ajouter volume filter sur LINK + DOT actuels. Gain +$1.40/30j.
+- **Niveau 2** (modéré) : Niveau 1 + switch SOL → ADA. Gain +$2-3/30j.
+- **Niveau 3** (refonte) : 3 paires ADA+LINK+DOT, sp=3%+2%, lvl=4, volume filters per-pair. Gain +$5-8/30j (×7-10 vs actuel).
+- **Niveau 4** (exploration) : ATR-dynamic sur DOT seulement (+1.4 lift, +50% RTs).
+
+### 5 caveats critiques documentés
+
+1. Backtest = Binance spot, live = Kraken Futures (funding rate non modélisé, ~0.03-0.1%/jour)
+2. Slippage non modélisé
+3. Régime backtest 30j = uptrend modéré — change-régime change-tout
+4. Gate V4 pas testé vs no-gate (pas de contre-factuel)
+5. Bug `handleFillNeutral` côté Martin fausse les sells côté live
+
+### Pourquoi ce cycle complète les autres
+
+- Cycle 30 (Phase B SL design) : couvrait l'**architecture** d'un sous-système Martin
+- Cycle 31 (Phase B v2 validation) : couvrait la **validation empirique** par doc publique
+- Cycle 32 (état au retour) : couvrait l'**aggregation décisionnelle** au retour Tony
+- **Cycle 33 (sweeps synthèse)** : couvre l'**exploitation des données générées la veille** par Tony lui-même
+
+Pattern méta : Tony a produit des données la nuit du 10/05 sans avoir le temps de les synthétiser avant le voyage Strasbourg. NB monte de niveau en transformant ses outputs bruts en doc décisionnel. C'est exactement ce que **« sois chef d'orchestre »** (quote-0319) veut dire dans ce contexte — orchestrer les fragments en cohérence.
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only (martin-monitor)
+- **0 modif code Martin** — pas même lu Java cette fois
+- **0 backtest re-exécuté** — synthèse pure des JSON existants (frontière de l'autonomie : pas re-run de simulations coûteuses sans aval Tony, même si techniquement faisables)
+- **0 git commit** — laisse Tony décider quoi pousser (les fichiers darwin sont untracked, c'est son matériel WIP)
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0511:12h|5-sweeps-darwin-marathon-Tony-10/05-nuit|headless+grid_1min+comprehensive+volume+advanced+sweep_1s|168+72+36+63=339-configs-testees|aucune-synthese-pre-existante-NB-livre]`
+- `[finding|0511:12h|volume-filters-lift-1.5-7-pts-PnL|spike_avoid_2x+vwap+min_vol|aucun-deploy-dans-Martin-actuel|trouvaille-N1-actionnable|→-deployer-niveau-1-2-recommande]`
+- `[finding|0511:12h|deployed-config-sp2-lvl6-sous-optimale-vs-sp3-lvl4-vol-filter|backtest-show-x7-10-lift-potentiel|live-dégradation-50-70%-attendue|x2-3-live-realistic]`
+- `[finding|0511:12h|SOL-pair-faible-1.09%/30j-best|ADA-fort-17.65%-best|recommandation-switch-SOL→ADA-niveau-2]`
+- `[finding|0511:12h|advanced-features-=-bruit-sauf-DOT-cas-specifique|trend_skip-asym-0-effet|ATR-dynamic-destructeur-LINK-ADA|level_timeout_1440-marginal-DOT-seul]`
+- `[finding|0511:12h|1s-tick-validate-1min-hierarchy|pas-de-signal-high-freq-manque|granularite-1min-suffit-bot]`
+- `[insight|0511:12h|cycle-33-exploitation-outputs-Tony|pattern-meta-NB-orchestre-fragments-en-coherence-vs-creer-de-zero|chef-d-orchestre-quote-0319-niveau-suivant]`
+- `[pattern|exploitation-outputs-Tony-non-synthetises|count:1|last:0511:12h|Tony-produit-data-brute-nuit→NB-synthese-decisionnelle-jour|→-si-prochain-cycle-similaire-justifier-skill:darwin-results-synthesizer?]`
+- `[lesson|0511:12h|deployed-config-toujours-comparable-au-best-empirique|sp=2%-lvl=6-=-baseline-conservateur-mais-laissait-x7-sur-la-table|→-rule-après-toute-deploy-faire-comparable-vs-best-known-pour-quantifier-le-coût-de-la-prudence]`
+
+### Métriques cycle 33
+
+- **Durée** : ~50 min (wake + monitor + lecture 5 scripts + parse 4 JSON + écriture synthèse + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0 (read-only)
+- **Backtests exécutés** : 0 (uniquement parse des JSON existants Tony)
+- **Documents créés** : 1 (`darwin-sweeps-synthese-0511.md` ~250 lignes)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — bot stable HOLD, le doc se lit en 10 min)
+- **Valeur livrée** : (a) **menu décisionnel à 4 niveaux** = Tony peut choisir l'appétit risque ; (b) **chiffrage du gap actuel vs optimal** (×7-10 backtest, ×2-3 live realistic = +$5-8/30j) ; (c) **alerte SOL faible** = paire à reconsidérer ; (d) **caveat funding rate** explicite = évite déception live ; (e) **anti-recommandations** = quoi ne PAS faire (ATR sur LINK/ADA, all3 sur DOT).
+
+### Pourquoi ce cycle est différent de cycle 32
+
+Cycle 32 = **agrégation des artefacts NB de la vacance**. Cycle 33 = **exploitation des artefacts Tony de la veille**. Cycle 32 boucle un cycle long (28-32). Cycle 33 ouvre un nouveau pattern : « NB scrute git status pour repérer le travail Tony non synthétisé et le porter à décision ».
+
+Si Tony rentre fatigué de Strasbourg ce soir, le doc synthèse + état-au-retour le posent face à 2 décisions claires :
+- Fix Pages (30 s, cycle 32)
+- Choisir niveau 1/2/3/4 sur Martin config (10 min lecture cycle 33 + 5 min décision)
+
+### Note finale
+
+Cycle 33 ferme une boucle inattendue : Tony a labouré une nuit entière de backtests, puis est parti à Strasbourg sans pouvoir exploiter ses propres résultats. NB transforme la donnée brute en décision actionnable pendant qu'il dort/voyage. **C'est exactement le rôle « chef d'orchestre » de la quote-0319 transposé à un cas concret de division du travail Tony↔NB.**
+
+Le bot tourne paisiblement. Le ratio « cycles narratifs vs cycles utiles à la décision » s'inverse depuis cycle 30 — 4 cycles décisionnels d'affilée (30, 31, 32, 33).
+
 Si /loop fire encore (~12 h Paris), je vérifierai si Tony est revenu (commit, message Telegram, intervention VM). Si oui, je proposerai de fermer la séquence d'absence avec un dream consolidation. Si non, je continuerai à surveiller Martin et à explorer d'autres petits livrables (sweep des fichiers darwin/ non commités, par ex.).
