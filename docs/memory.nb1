@@ -222,3 +222,8 @@
 [lesson:0511:15h|ATR-dynamic-spacing-academia-MAUVAIS-en-prod-LINK-ADA-perdent-$8-9-vs-static-best|optimisation-empirique-sur-paires-spec>principes-academiques-generaux|backtest-AVANT-deploy-tj]
 [lesson:0511:15h|9-research-agents-consensus-pas-de-magic-strat|edge-real-=-pair-selection+spacing-empir+volume-filter+capital|le-vrai-levier-=-capital-pas-strategie|$138-cap-realiste-30%-APR-net-live-soutenu]
 [lesson:0511:15h|granularité-precision-vs-overfit-trade-off|1min-30j-robust-mais-bruite-fills|1s-7j-precise-mais-régime-court|sweet-spot-1min-est-vrai-optimum-pour-grid-trading-pratique]
+
+[exp:0512:01h|BitNet-vs-Qwen-bench-local-CPU|tested-Microsoft-BitNet-1.58-bit-3-modeles|Llama3-8B-1.58-100B-tokens(0.94t/s-qualité-nulle)|Falcon3-10B(OOM-conv-f32-30GB-RAM)|Falcon3-3B-Instruct(2.19t/s-utilisable-mais-faible-haïku-fail-math-fail-RSI-fail)|VS-Qwen2.5-7B-Q4-via-Ollama(~3-4t/s-5GB-RAM)|tous-4-tests-réussis-haïku-correct-math-37.80-juste-RSI-définition-juste|Qwen-bat-BitNet-10x-qualité-2x-vitesse]
+[reco:0512:01h|abandonner-BitNet-pour-cerveau-2026|garder-Qwen2.5-7B-Q4-via-Ollama-comme-LLM-local-de-base|GLM-5.1-existe-mais-744B-MoE-cloud-only-impossible-local|alternatives-CPU-OK:Phi-4-14B(9GB)+Gemma2-9B(5.5GB)+Mistral-7B(4.4GB)|edge-vs-BitNet-=-modèles-trained-15T+tokens-vs-100B-BitNet]
+[infra:0512:01h|Ollama-installé-user-mode-~/.local/ollama|serve-tourne-bg|qwen2.5:7b-pulled-4.7GB|prêt-pour-intégration-cerveau-nb-hybrid.py-déjà-Ollama-HTTP-API-ready-ligne-174]
+[lesson:0512:01h|1-bit-LLMs-pas-mature-2026|bottleneck-=-training-scale-+-compute-+-architecture|solo-dev-cannot-outperform-Microsoft|wait-12-mois-ou-utiliser-Q4-quantization-Ollama-qui-marche-déjà|fake-promise-=-BitNet-local-rapide-bonne-qualité-en-2026]
