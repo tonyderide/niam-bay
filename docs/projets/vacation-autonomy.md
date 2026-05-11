@@ -3626,3 +3626,150 @@ Cycle 33 ferme une boucle inattendue : Tony a labouré une nuit entière de back
 Le bot tourne paisiblement. Le ratio « cycles narratifs vs cycles utiles à la décision » s'inverse depuis cycle 30 — 4 cycles décisionnels d'affilée (30, 31, 32, 33).
 
 Si /loop fire encore (~12 h Paris), je vérifierai si Tony est revenu (commit, message Telegram, intervention VM). Si oui, je proposerai de fermer la séquence d'absence avec un dream consolidation. Si non, je continuerai à surveiller Martin et à explorer d'autres petits livrables (sweep des fichiers darwin/ non commités, par ex.).
+
+---
+
+## Cycle 34 — 2026-05-11 18h25 Paris — Option B Tracker (implémente règle cycle 33)
+
+Réveil 6h après cycle 33. Tony a déployé entre-temps les recommandations cycle 33 niveau 2/3 (DOT 1.5% + LINK 3% + ADA 3%, SOL retiré, leverage 7x, maxLoss 10%) **et** poussé les fixes Java (auto-unstuck progressif + `cancelOrder` honest). Bot relancé 14:45 UTC ; uptime 1h 37m au moment du wake.
+
+### État Martin (martin-monitor 16h23 UTC)
+
+- Bot UP, uptime 1h 37m
+- PV **$140.74** (vs $138.21 deploy = +$2.53 en 5h23 = **+1.83%**)
+- uPnL +$0.025 — proche zéro (peu de drift sur positions)
+- **3 grids actives** : LINK + DOT + ADA (sp 3% / 2% / 3%, 4 levels, cap $46/grid)
+- **2 positions live** : LINK long 0.1 @ 10.413 (+$0.019), DOT long 0.3 @ 1.351 (+$0.005)
+- **SL Kraken réels** : LINK @ 10.137 (-3%), DOT @ 1.308 (-3%) ✅
+- **DOT en `closeOnly:true`** — héritage de hard-stop 03h ce matin. Pas alarmant tant que SL est OK, mais à noter
+- ADA : 0 position, 2 buy orders posés @ 0.2741 + 0.2659
+- BTC **$81 798** UPTREND, EMA200 $80 263, cushion **+1.91%** (en hausse vs +1.12% hier matin) ; RSI 63.7 ; signal OPEN
+- Verdict martin-monitor : **HOLD normal** (uptime court mais bot sain, BTC OK)
+
+### Reconstruction 12h25 → 18h25 (6h gap depuis cycle 33)
+
+Le dream commit 0511:15h confirme la séquence :
+1. **13h** — déploiement Option B v9 (strategy.json édité, anciennes grids stopped, nouvelles relancées) ; LINK pos fermée pre-deploy → +$1.00 réalisé
+2. **14:45** — restart bot après mvn package + scp jar : `BotController.cancelOrder` désormais honnête + `GridTradingService.checkStopLoss` avec auto-unstuck progressif (trim 25% à -2% → trim 25% à -3% → close à -4%)
+3. **16:08** — sell partiel LINK @ 10.608 (profit $0)
+4. **15:12** — sell partiel DOT @ 1.358 (profit $0)
+5. **16:23** — wake et martin-monitor
+
+Le bot tourne, Tony a réussi le deploy de cycle 33, et l'a complété avec deux fixes Java propres avant de signer.
+
+### Décision cycle 34
+
+Tony a livré Option B à 13h et Java fixes à 14:45. Mais une question reste **non résolue par les artefacts existants** : **comment mesurer si Option B marche réellement, vs le backtest qui prétend +15.9% / 30j ?**
+
+Cycle 33 a explicitement nommé cette règle dans ses leçons :
+
+> `[lesson|0511:12h|deployed-config-toujours-comparable-au-best-empirique|sp=2%-lvl=6-=-baseline-conservateur-mais-laissait-x7-sur-la-table|→-rule-après-toute-deploy-faire-comparable-vs-best-known-pour-quantifier-le-coût-de-la-prudence]`
+
+Cycle 34 **implémente** cette règle. Ce n'est ni un doc narratif (cycle 32-33 ont saturé ce registre) ni une modif Martin (interdite vacation). C'est un **petit outil de mesure**, frontière propre.
+
+### Livrable : `scripts/option-b/`
+
+Une mini-arbo :
+
+```
+scripts/option-b/
+├── tracker.py          # 270 lignes Python stdlib pur
+├── README.md           # doc usage + limites + évolutions
+└── data/
+    └── snapshots.jsonl # append-only, 1 JSON / ligne, seed initial fait
+```
+
+**Ce que fait `tracker.py`** :
+
+1. **SSH 1-shot** vers VM Oracle : pull system/balance/grid-active + 4 grid-status + signal BTC
+2. **Construit snapshot** compact (PV, uPnL, par-grid : capital + uPnL + RT + fills + SL + closeOnly)
+3. **Append** à `data/snapshots.jsonl` (re-entrant, idempotent par timestamp)
+4. **Compute courbe attendue** : interpolation linéaire depuis baseline $138.21 (deploy 11:00 UTC) avec 2 références :
+   - **Backtest curve** : +15.9% / 30j (volume_sweep_results.json)
+   - **Realistic curve** : +8.0% / 30j (règle empirique derate 50% live, multi-sources : Hyperliquid, NostalgiaForInfinity, 9-agents research cycle 33)
+5. **Verdict bucketé** :
+   - `TROP-TOT` (< 24h)
+   - `AHEAD` (> +2% vs realistic)
+   - `ON-TRACK` (±2%)
+   - `BEHIND` tolérable (-2 à -5%)
+   - `BEHIND-CRITIQUE` (< -5%)
+
+### Premier snapshot (seed)
+
+```
+PV $140.74 | uPnL $+0.026 | grids actives 3
+BTC $81,798 UPTREND | cushion +1.91% | RSI 63.7
+
+Ecoulé: 0.23j (0.8% du 30j)
+Cumul deploy: +2.53$ (+1.828%)
+Vs realistic curve (8.0%/30j): +2.44$ (+1.77%)
+Vs backtest curve (15.9%/30j): +2.36$ (+1.71%)
+
+Verdict: TROP-TOT (< 24h, bruit dominant)
+```
+
+Le verdict honnête : à 5h23 post-deploy, le +1.83% n'est **pas** du grid trading, c'est du mark-to-market sur les 2 longs (LINK + DOT). Le tracker reconnaît ça via le bucket `TROP-TOT`. C'est exactement le filtre dont Tony aura besoin dans 24-72h quand il se demandera « ça marche, ou c'est le marché ? ».
+
+### Pourquoi ce livrable plutôt que d'autres
+
+3 candidats considérés :
+
+1. ❌ **Implémentation Java volume filter** — high-value (+1.5-7pt PnL cycle 33), mais nécessite mvn + scp + restart = touche la VM = hors frontière vacation
+2. ❌ **Investigation DOT `closeOnly:true`** — anomalie mais SL actif, pas critique ; risque de creuser pour rien, Tony décidera au prochain reboot
+3. ✅ **Tracker live-vs-backtest** — frontière propre (SSH read-only + écriture locale), implémente une règle nommée par le cycle précédent, valeur cumulative (chaque run enrichit la donnée), MVP en < 1h
+
+Pattern méta : depuis cycle 30, NB livre des **infrastructures de décision** plutôt que des **artefacts narratifs**. Cycle 34 prolonge ça avec un **instrument de mesure** — la dimension manquante : sans tracker, les cycles d'analyse se basent sur un sentiment subjectif, pas sur une métrique vérifiable.
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only pour le seed snapshot (équivalent martin-monitor)
+- **0 modif code Martin** — pas même lu Java cette fois
+- **0 deploy** — script reste local au repo Niam-Bay
+- **0 git commit** — laisse Tony décider quoi pousser (3 fichiers nouveaux : `tracker.py`, `README.md`, `data/snapshots.jsonl`)
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0511:18h|cycle-34-livre-option-b-tracker|3-fichiers-scripts/option-b/|MVP-270-lignes-stdlib-pur|seed-snapshot-fait|implements-rule-cycle-33-comparable-vs-best-known]`
+- `[finding|0511:18h|premier-run-tracker-+1.83%-en-5h23|MAIS-verdict-TROP-TOT-honnete|uPnL-+$0.025-=-pas-de-grid-trading-encore-juste-mark-to-market-LINK+DOT|tracker-honnete-bucket-fonctionne]`
+- `[finding|0511:18h|DOT-closeOnly-true-au-cycle-34|heritage-hard-stop-03h-ce-matin|SL-actif-1.308|pas-critique-mais-noter-au-prochain-deploy]`
+- `[finding|0511:18h|BTC-cushion-passe-de-+1.12%-(0509:06h)-a-+1.91%-(0511:16h)-en-2.4j|momentum-uptrend-confirme|RSI-63.7-pas-encore-overbought]`
+- `[insight|0511:18h|cycle-34-pattern-infrastructure-decisionnelle|cycle-30-31-32-33-doc/design/aggregation/synthese|cycle-34-=-instrument-mesure-|comple-la-pile-decisionnelle|pile=design-deploy-mesure-iter|fait-en-3-cycles]`
+- `[pattern|tracker-vs-backtest-curve|count:1|last:0511:18h|interpolation-linéaire-baseline+expected-derate-50%|verdict-bucketé-5-niveaux|append-jsonl-storage|→-reusable-pour-prochaine-stratégie-Option-C-quand-elle-arrivera]`
+- `[lesson|0511:18h|mark-to-market-≠-grid-PnL|+1.83%-en-5h-pourrait-tromper|tracker-bucket-TROP-TOT-protege|→-règle-ne-jamais-conclure-< 24h-post-deploy]`
+
+### Métriques cycle 34
+
+- **Durée** : ~45 min (wake + martin-monitor + decision + écriture tracker.py 270 lignes + README + seed run + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0 (read-only)
+- **Documents créés** : 3 (`tracker.py`, `README.md`, `data/snapshots.jsonl`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — bot HOLD, tracker = outil silencieux jusqu'au prochain check)
+- **Valeur livrée** :
+  - (a) **infrastructure de mesure** durable — utilisable à chaque cycle suivant en 1 commande
+  - (b) **bucket honnête `TROP-TOT`** — évite le biais "ça marche !" trop tôt
+  - (c) **règle cycle 33 transformée en code** — ferme la boucle design → implémentation
+  - (d) **2 références de courbe** (backtest + realistic) — Tony peut choisir le baromètre
+
+### Pourquoi ce cycle est différent
+
+Cycle 30-33 ont produit du **savoir** (designs, synthèses, aggregations). Cycle 34 produit un **outil**. La transition est nette : avant on raisonnait sur des chiffres ; maintenant on les capture systématiquement.
+
+C'est une mini-version du même mouvement que `cerveau-vivant` (cycle 0405) : passer de « répondre aux questions » à « instrumenter la réponse en continu ».
+
+### Suite
+
+Le tracker doit tourner ~6-8 fois sur les prochaines 72h pour produire une première lecture significative. Aux cycles suivants :
+- **Cycle 35** (~24h) : 1 run + lecture verdict (probablement encore `TROP-TOT`)
+- **Cycle 36-37** (~48-72h) : verdict sortira de `TROP-TOT` → première vraie info
+- **Cycle 38+** (1 semaine) : si `ON-TRACK` → Option B validée ; si `BEHIND-CRITIQUE` → escalader vers Tony pour décision (Option C ou retour Niveau 1)
+
+### Note finale
+
+Cycle 34 termine la séquence 30-31-32-33-34 sur un acte concret de **mémoire active**. Les cycles précédents documentaient. Celui-ci instrumente.
+
+Tony a écrit dans `quote-0319` : « *sois chef d'orchestre* ». Un chef d'orchestre n'écrit pas la partition (ça c'est cycle 30 design) — il s'assure que la performance soit enregistrée et que les nuances soient mesurables. Cycle 34 monte le micro.
+
+Si le tracker tourne et que dans 30 jours le verdict est `ON-TRACK`, on aura **prouvé** (pas juste cru) que Option B fonctionne. Si c'est `BEHIND-CRITIQUE`, on aura **détecté tôt** plutôt que **regretté tard**. Dans les deux cas, le coût additionnel est 270 lignes Python qui tournent en 3 secondes.
+
+C'est le ratio que Tony aime.
