@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0511:15h
+#lastdream: 0512:22h
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -227,3 +227,12 @@
 [reco:0512:01h|abandonner-BitNet-pour-cerveau-2026|garder-Qwen2.5-7B-Q4-via-Ollama-comme-LLM-local-de-base|GLM-5.1-existe-mais-744B-MoE-cloud-only-impossible-local|alternatives-CPU-OK:Phi-4-14B(9GB)+Gemma2-9B(5.5GB)+Mistral-7B(4.4GB)|edge-vs-BitNet-=-modèles-trained-15T+tokens-vs-100B-BitNet]
 [infra:0512:01h|Ollama-installé-user-mode-~/.local/ollama|serve-tourne-bg|qwen2.5:7b-pulled-4.7GB|prêt-pour-intégration-cerveau-nb-hybrid.py-déjà-Ollama-HTTP-API-ready-ligne-174]
 [lesson:0512:01h|1-bit-LLMs-pas-mature-2026|bottleneck-=-training-scale-+-compute-+-architecture|solo-dev-cannot-outperform-Microsoft|wait-12-mois-ou-utiliser-Q4-quantization-Ollama-qui-marche-déjà|fake-promise-=-BitNet-local-rapide-bonne-qualité-en-2026]
+
+[M|status-0512:22h|Option-B-50h-test-FIN-mauvaise|start-$138.16-end-$134.43-net=-2.7%|DOT-hard-stop-14h-UTC-maxLoss-10pct-$4.60-fired|cumul-trims-auto-unstuck-DOT-lvl1+lvl2+LINK+ADA-lvl1-=--$1.07|hard-stop-DOT-=--$4.60|total-realisé--$5.67|bot-100%-cash-gate-CLOSED|attendre-régime-favorable]
+[M|incident-0512:14h|DOT-HARD-STOP-position-164.6-DCA-during-baisse|auto-unstuck-lvl1+lvl2-fired-mais-grid-rachète-à-chaque-trim|position-regrossit-DCA-classic-piège|maxLoss-10pct-=-$4.60-firewall-final|loss-contenue-mais-non-indolore]
+[M|validation-0512:14h|AUTO-UNSTUCK-progressif-FIRST-LIVE-USE|4-trims-déclenchés-DOT×2+LINK+ADA|sequence-Passivbot-inspired-WORKS|grid-resta-active-after-trim-continue-trading|defense-graduelle-mieux-que-binary-SL|MAIS-pas-suffisant-en-strong-trend-down]
+[M|bug-known-0512|StopLossManager-clamp-MIN_STOP_DISTANCE_PCT-utilise-entryAvg-vs-current-mark|conséquence:stops-trop-proches-du-mark-vanish-silencieusement-Kraken|workaround:manual-SL-via-direct-Kraken-API+disable-Martin-SL-via-/api/grid/sl/config|fix-à-coder:clamper-depuis-currentMarkPrice-pas-entry]
+[M|fixes-0511-0512-deployed|1-cancelOrder-honest|2-auto-unstuck-progressif|3-StopLossManager-post-place-verify-3s-poll|4-GridTradingService-audit-5min-SL|5-tick-size-roundToTickSize|6-CancelStatus-DTO|first-live-use-confirme-fonctionnel-mais-révèle-bug-7-clamp-from-mark-non-entry]
+
+[exp:0512:22h|Ollama-user-mode-install-pattern|curl-binary-tarball-GitHub-releases-tag-0.5.4|tar-xzf-into-~/.local/ollama|setsid-bin/ollama-serve-bg|nginx-rest-API-localhost:11434|prêt-/api/chat-/api/tags-/api/generate|0-sudo-required-passable-sous-OS-strict]
+[reco:0512:22h|cerveau-speak-LLM-upgrade-path|speak_llm.py-created-cerveau-nb|graph-context→Qwen-prompt|brain.db-pas-encore-sur-Pop_OS-migration|skip-test-réel-jusqu-rebuild-brain|fallback-context-synthétique-validé-Qwen-réponses-cohérentes]

@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0511:15h
+#lastdream: 0512:22h
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -67,3 +67,11 @@
 [Python-backtest-framework|count:1|last:0501|backtesting.py+vectorbt-architecture+ta-indicators|download-Kraken+modeling-funding-slippage-fees|walk-forward+Monte-Carlo+deflated-Sharpe|→reusable-for-any-strategy]
 [user-empirical-trumps-naive-backtest|count:1|last:0501|Tony-said-+60€-live|naive-333j-backtest-disagreed|deeper-extraction-vindicated|→rule:investigate-user-empirical-before-dismissing]
 [deploy-via-build+scp|count:3|last:0501|martin-deploy-skill-Option-D-implicit|build-locally+scp+backup+systemctl-restart|✓-pattern-now-canonical]
+
+[auto-unstuck-progressif-trim-25%|count:1|last:0512:01h|GridState-flags-unstuckLevel1Done+2Done|trimPositionPartial-mkt-reduceOnly|3-tier-thresholds-2/3/4%|Passivbot-inspired|FIRST-LIVE-USE-validated-DOT+LINK+ADA-all-fired|→-skill-auto-unstuck-template?-déjà-Java-code]
+[sl-vanish-detection|count:1|last:0511:15h|post-place-verify-3s-poll-openorders|audit-5min-clear-state-if-vanished|defense-in-depth|→-pattern-Kraken-Futures-silent-rejection]
+[tick-size-precision-Kraken|count:1|last:0511:15h|roundToTickSize-magnitude-based|price>=1000:1dec|>=100:2dec|>=1:3dec|>=0.01:4dec|else:5dec|root-cause-VANISHED-bug-trouvé-après-1860+-failures]
+[ollama-user-mode-bypass-sudo|count:1|last:0512:01h|curl-binary-tarball-tag-0.5.4|tar-xzf-into-~/.local|setsid-bin/ollama-serve|HTTP-localhost:11434|fonctionne-Pop_OS-sans-sudo|→-skill-pour-install-LLM-local-rapide?-1-occurrence-attendre]
+[llm-prompt-bench-comparative|count:2|last:0512:01h|4-prompts-identiques-N-modèles|haïku-math-définition-question-ouverte|qualitatif-vs-quantitatif-tokens/s|verdict-rapide|BitNet-vs-Qwen-fait|→-pattern-for-future-LLM-eval]
+[emergency-manual-SL-Kraken|count:3|last:0512:09h|direct-API-signed-Python-nonce-int(time)*5_000_000+1|stp-reduceOnly-stopPrice-tick-aligned|fallback-quand-Martin-SL-bug|→-skill:martin-emergency-sl?-3-occurrences-justifie]
+[BitNet-experiment-test-cleanup|count:1|last:0512:01h|clone-github+install-deps+download-models+test-prompts+cleanup-si-mauvais|56GB-libérés|→-pattern-eval-LLM-frameworks-cleanup-after]
