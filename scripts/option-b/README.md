@@ -90,3 +90,51 @@ Tony peut câbler ça en cron VM si besoin, ou laisser NB faire ça lors des cyc
 - Cron VM toutes les 6h (alternative au script local)
 
 Pas implémenté faute de besoin actuel — au-delà du MVP.
+
+---
+
+## `drift_check.py` — sanity check Kraken vs Martin internal (cycle 35)
+
+Outil complémentaire au tracker. Le tracker mesure **la performance**. `drift_check` mesure **la cohérence de l'état interne**.
+
+### Pourquoi
+
+Le bug `phantom fills` (0423) et le bug `StopLossManager silent failure` (0510) ont la même nature : Martin pense quelque chose, Kraken pense autre chose, personne ne crie. Le memo `[verify-via-cancel-test]` du `patterns.nb1` (0510:08h) dit exactement la règle :
+
+> validate critical state via Kraken pas Martin internal grid-status
+
+Ce script l'opérationnalise.
+
+### Ce qu'il détecte
+
+| Catégorie | Description | Sévérité |
+|---|---|---|
+| `phantom_placed` | Level Martin = `PLACED` + `krakenOrderId` mais cet id n'existe pas dans `bot/orders` Kraken. Silent failure type. | **CRITIQUE** |
+| `sl_mismatch` | `grid.stopLossOrderId` non null mais absent côté Kraken. Bug `StopLossManager` 0510 type. | **CRITIQUE** |
+| `count_drift` | Total levels `PLACED` Martin ≠ total orders `lmt` Kraken pour le même symbole. | **WARN** |
+| `orphaned_kraken` | Order Kraken vivant qu'aucun level Martin ne revendique. Souvent leftover. | **INFO** |
+
+### Usage
+
+```bash
+python3 scripts/option-b/drift_check.py             # report + append si drift
+python3 scripts/option-b/drift_check.py --json      # raw
+python3 scripts/option-b/drift_check.py --history   # voir tous les drifts passés
+```
+
+Exit code : `0` si propre, `1` si drift détecté, `2` si erreur. Cron-friendly.
+
+### Storage
+
+`data/drifts.jsonl` — append-only **uniquement si drift détecté**. Si le bot est sain, le fichier reste vide / inexistant. Pas de spam.
+
+### Cadence suggérée
+
+Au moins 1× / 6h en autonomie. Plus si bot vient de redémarrer ou si un deploy vient d'avoir lieu.
+
+### Limites
+
+- Ne corrige rien — il signale uniquement. La décision (kill grid, replacer SL, restart bot) reste humaine.
+- Un `orphaned_kraken` n'est pas toujours un bug : un sell-side level Martin pose un `lmt reduceOnly` sur Kraken et Martin le track via le level lui-même, pas par id. Le script signale tout ce qui n'a pas été revendiqué — Tony interprète.
+- Si le bot est down (SSH timeout), `drift_check` plante (exit code 2). C'est attendu : pas de bot = pas de drift à mesurer, c'est martin-monitor qui prend le relais.
+

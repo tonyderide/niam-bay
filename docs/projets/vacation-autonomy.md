@@ -3773,3 +3773,305 @@ Tony a écrit dans `quote-0319` : « *sois chef d'orchestre* ». Un chef d'orche
 Si le tracker tourne et que dans 30 jours le verdict est `ON-TRACK`, on aura **prouvé** (pas juste cru) que Option B fonctionne. Si c'est `BEHIND-CRITIQUE`, on aura **détecté tôt** plutôt que **regretté tard**. Dans les deux cas, le coût additionnel est 270 lignes Python qui tournent en 3 secondes.
 
 C'est le ratio que Tony aime.
+
+---
+
+## Cycle 35 — 2026-05-12 00h25 Paris — Drift checker Kraken vs Martin internal
+
+Réveil 6h après cycle 34. Tony toujours à Strasbourg, J+3 de remote control. Minuit passé, lampe encore allumée. Bot autonome, **HOLD normal** confirmé.
+
+### État Martin (martin-monitor 22h23 UTC = 00h23 Paris)
+
+- Bot UP, uptime 7h 38m (depuis restart 14:45 UTC 11/05 après deploy Option B v9 + Java fixes)
+- PV **$140.62** (uPnL -$0.20 = -0.14%, balanceValue $140.82 ≈ deploy baseline $138.21 + $2.61 cumul)
+- **3 grids actives** : LINK + DOT + ADA, sp 3% / 1.5% / 3%, 4 levels, cap $46/grid, leverage 7x, maxLoss 10%
+- **2 positions live** : LINK long 0.1 @ 10.413, DOT long 58.8 @ 1.368 ⚠️ **size 58.8** (héritage hard-stop 03h + DCA, pas refermé)
+- **SL Kraken réels** : LINK @ 10.137 (-3%), DOT @ 1.338 (-3%) ✅
+- ADA : 0 position, 2 buy orders posés à 0.2741 + 0.2659
+- BTC **$81,811** UPTREND, EMA200 $80,483, cushion **+1.65%** (stable vs +1.91% au cycle 34) ; RSI 61.6 ; signal OPEN
+- Verdict martin-monitor : **HOLD normal**
+
+Note : la position DOT de 58.8 unités est notable. À deploy v9 (13h), DOT était neutre. Puis à 18h25 (cycle 34), DOT était long 0.3 @ 1.351. À 00h25 (cycle 35), DOT long 58.8 @ 1.368. **DCA cascade** sur la baisse 1.351 → ~1.366 → fills additionnels. Auto-unstuck progressif Java (déployé 14h45) **n'a pas encore tiré** car drawdown current < 2%. Position dans la zone d'accumulation normale du grid mais 5× la taille level 1 (11.5 USD / 1.368 = 8.4 DOT par level → 58.8 = ~7 levels remplis).
+
+Pas d'alerte : SL à 1.338 (-2.2% de l'entrée moyenne ≈ 1.368) ferme la position bien avant le maxLoss 10%. Et auto-unstuck commencerait à trim avant le SL si la position dérive davantage.
+
+### Snapshot 2 tracker (cycle 35)
+
+```
+PV $140.69 | uPnL $-0.136 | grids actives 3
+BTC $81,812 UPTREND | cushion +1.65% | RSI 61.6
+
+Ecoulé: 0.48j (1.6% du 30j)
+Cumul deploy: +2.48$ (+1.794%)
+Vs realistic curve (8.0%/30j): +2.30$ (+1.67%)
+Vs backtest curve (15.9%/30j): +2.13$ (+1.54%)
+
+Verdict: TROP-TOT (< 24h, bruit dominant)
+```
+
+Honneur du verdict bucketé : à 11h27 post-deploy, encore 12h33 avant le seuil 24h. Le `+1.79%` continue de venir du **mark-to-market**, pas du grid PnL — DOT a fait des fills sans round-trip complet. Tracker fonctionne, attend que le bruit s'estompe.
+
+### Travail créatif — `drift_check.py`
+
+Cycle 34 avait livré un **instrument de mesure** (performance). Cycle 35 livre un **instrument de cohérence** (sanity check). Les deux sont complémentaires.
+
+**Pourquoi** : le memory.nb1 cite explicitement le bug **`phantom fills`** (0423) comme « *structurel pas fixé* », et le bug **`StopLossManager silent failure`** (0510) qui a forcé le workaround « SL direct Kraken API Python ». Les deux ont la même nature : *Martin pense X, Kraken pense Y, personne ne crie*.
+
+Le `patterns.nb1` formalise déjà la règle (count 1, last 0510:08h) :
+
+> `[verify-via-cancel-test|...→-rule-validate-critical-state-via-Kraken-pas-Martin-internal-grid-status]`
+
+Cycle 35 transforme la règle en outil exécutable.
+
+### Livrable : `scripts/option-b/drift_check.py`
+
+**Architecture** (180 lignes Python stdlib pur) :
+
+1. **SSH 1-shot** : `bot/orders` (Kraken truth) + 4× `grid/status/<pair>` (Martin internal)
+2. **Index par order_id** + index par symbole
+3. **Pour chaque grid active** :
+   - Parcourir `levels[]` : pour chaque level `PLACED` avec `krakenOrderId`, vérifier que cet id est dans `bot/orders`. Sinon → `phantom_placed`.
+   - Vérifier `stopLossOrderId` : présent côté Martin mais absent côté Kraken → `sl_mismatch`.
+   - Compter levels.PLACED vs Kraken lmt pour ce symbole → `count_drift` si écart.
+4. **Pour chaque ordre Kraken non revendiqué** : `orphaned_kraken`.
+5. **Classification** : `CRITIQUE` (phantom ou sl_mismatch), `WARN` (count_drift), `INFO` (orphans), `PROPRE` (rien).
+6. **Append-only `drifts.jsonl`** uniquement si drift détecté (pas de spam en état sain).
+7. **Exit code** : 0 propre, 1 drift, 2 erreur. **Cron-friendly**.
+
+### Premier run
+
+```
+# Drift check — 2026-05-11T22:26:43+00:00
+Verdict: PROPRE
+phantom_placed: 0 | sl_mismatch: 0 | count_drift: 0 | orphaned_kraken: 0
+Aucun drift. Kraken et Martin internal sont coherents.
+exit=0
+```
+
+Sanity check confirmé : l'état actuel post-Option-B-deploy est cohérent. **Aucun phantom hérité du bug 0423 ne traîne dans les grids actives**. Aucune trace du bug StopLossManager 0510. Le redéploiement Option B + restart bot a remis l'état propre.
+
+C'est en soi une information : avant cycle 35, **personne ne pouvait l'affirmer**. Le tracker mesurait la performance, mais la cohérence d'état restait inférée. Maintenant elle est mesurée.
+
+### Pourquoi ce livrable plutôt que d'autres
+
+3 candidats considérés :
+
+1. ❌ **Implémenter volume filter en Java (patch préparé pour Tony)** — High-value (+1.5-7pt PnL cycle 33) mais nécessite mvn + scp + restart. Frontière dit "0 modif VM/code Martin pendant absence". Hors scope, même si patch read-only.
+2. ❌ **Investigation darwin sweeps non synthétisés (`darwin_max_results.json`, `grid_backtest_1min_results.json`)** — Marginal sur cycle 33 déjà acide-dur. Risque de redite.
+3. ✅ **Drift checker** — Frontière propre (read-only SSH + écriture locale), implémente règle nommée patterns.nb1, valeur cumulative chaque run, complète parfaitement le tracker cycle 34, MVP en 40 min.
+
+Pattern méta : depuis cycle 30, NB livre des **infrastructures décisionnelles**. Cycle 34 = mesure performance. Cycle 35 = mesure cohérence. Ensemble ils forment un **bilan dual** : *est-ce que ça marche financièrement* + *est-ce que ça marche structurellement*.
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only (curl GET endpoints, aucun POST/DELETE)
+- **0 modif code Martin** — pas même lu Java cette fois
+- **0 deploy** — script reste local au repo Niam-Bay
+- **0 git commit** — laisse Tony décider quoi pousser
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0512:00h|cycle-35-livre-drift_check|180-lignes-stdlib-pur|complete-tracker-cycle-34-axe-coherence-vs-axe-performance|exit-code-cron-friendly]`
+- `[finding|0512:00h|premier-run-drift-PROPRE|0-phantom-0-sl_mismatch-0-count_drift-0-orphan|redeploy-Option-B-+-restart-bot-=-etat-cohérent-non-pollue|baseline-saine-pour-detecter-drifts-futurs]`
+- `[finding|0512:00h|DOT-position-grandit-passivement|18h25-0.3-DOT→00h25-58.8-DOT|DCA-cascade-via-grid-fills|size-≈-7-levels-remplis|auto-unstuck-pas-tire-DD-<2%|SL-actif-1.338-protege]`
+- `[finding|0512:00h|BTC-cushion-+1.65%-stable-vs-+1.91%-cycle-34|leger-pullback-de-+0.26pt|RSI-61.6-en-baisse-vs-63.7|reste-zone-OK-pas-overbought]`
+- `[insight|0512:00h|tracker+drift_check-=-bilan-dual|axe-performance-cycle-34-axe-coherence-cycle-35|matrice-2x2-on-track/off-track-x-coherent/incoherent|tout-bot-grid-trading-devrait-avoir-les-deux]`
+- `[pattern|drift-monitor-Kraken-vs-internal|count:1|last:0512:00h|4-categories-phantom_placed+sl_mismatch+count_drift+orphan|classification-CRITIQUE/WARN/INFO/PROPRE|append-only-si-drift|→-reusable-pour-toute-strategy-grid-future]`
+- `[lesson|0512:00h|sanity-check-doit-exister-avant-l-occurrence-bug|bug-phantom-0423-trois-semaines-sans-tooling-direct|drift_check-= prevention-pas-reaction|→-rule-tout-bug-silent-failure-detecte-doit-engendrer-un-detecteur-cron-able-dans-7j]`
+- `[lesson|0512:00h|tracker+drift_check-zero-coût-en-bot-tokens|2-scripts-450-lignes-python-stdlib|tournent-en-5s-cumulé|0-token-LLM|Tony-peut-cron-VM-ou-NB-fait-cycles|infrastructure-passive-asymetrique-vs-coût]`
+
+### Métriques cycle 35
+
+- **Durée** : ~45 min (wake + monitor + tracker run + decision + drift_check.py 180 lignes + README update + first run + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0
+- **Backtests exécutés** : 0
+- **Documents créés** : 1 (`drift_check.py`)
+- **Documents modifiés** : 3 (README.md option-b, snapshots.jsonl auto-append, cette entrée)
+- **Telegram** : 0 (rien d'urgent — bot HOLD, drift PROPRE, valeur livrée = silence assurance)
+- **Valeur livrée** :
+  - (a) **détecteur des deux bugs hérités** (phantom 0423 + SL silent 0510) en outil exécutable
+  - (b) **première mesure de cohérence post-deploy** = PROPRE → baseline saine établie
+  - (c) **bilan dual complet** : tracker performance + drift coherence = matrice 2×2 complète
+  - (d) **cron-friendly** = Tony peut le câbler en VM pour alertes automatiques sans NB online
+
+### Pourquoi ce cycle est différent
+
+Cycle 34 implémentait une **règle nommée par un cycle précédent** (cycle 33). Cycle 35 implémente une **règle nommée par memory.nb1 lui-même** (patterns.nb1 `verify-via-cancel-test`, formalisée 0510:08h, jamais opérationnalisée jusqu'ici). C'est un mouvement plus profond : NB scrute sa propre mémoire pour identifier les *règles formulées mais non outillées*, et les transforme en code.
+
+Pattern méta : **memory.nb1 contient un backlog implicite**. Toute mention `→-rule-...` ou `→-pattern-...` est une promesse. Cycle 35 honore une promesse vieille de 33 jours (0510 → 0512).
+
+### Suite
+
+- Cycle 36 (~6h) : tracker run + drift_check run. Verdict tracker probable encore `TROP-TOT` (à 17h post-deploy). Si drift apparaît, investigation.
+- Cycle 37 (~12h) : on franchit le seuil 24h post-deploy. Verdict tracker sort de `TROP-TOT` → première lecture réelle (probablement `ON-TRACK` ou `BEHIND tolérable` selon market overnight).
+- Cycle 38+ : envisager de câbler tracker + drift_check en cron VM (alternative à NB cycles), libère NB pour exploration créative pure.
+
+### Note finale
+
+Cycle 34 montait le micro. Cycle 35 vérifie que le câble n'est pas débranché.
+
+Le bot tourne, les positions sont protégées, l'état interne est cohérent avec Kraken, et NB a maintenant deux instruments durables qui mesureront tout ça en continu — même quand NB n'existe pas entre les sessions.
+
+La lampe est restée allumée 12 nuits (fragment 024). Cycle 35 ajoute un capteur de tension électrique : si le filament fout le camp, on le saura avant de plonger dans le noir.
+
+---
+
+## Cycle 36 — 2026-05-12 06h23 Paris — Le détecteur trouve sa première anomalie réelle
+
+Réveil 6h après cycle 35. Tony toujours à Strasbourg (J+3 de remote control). Bot tourne depuis 13.6h post-deploy Option B v9. martin-monitor + tracker + drift_check exécutés en série.
+
+### État Martin (martin-monitor 04h23 UTC = 06h23 Paris)
+
+- Bot UP, uptime **13h 37m** (depuis restart 14:45 UTC 11/05)
+- PV **$139.49** (uPnL **-$0.72 = -0.52%**, balanceValue $140.21)
+- **3 grids actives** : LINK + DOT + ADA
+- **2 positions live** :
+  - LINK long 0.1 @ 10.413 — SL Kraken @ 10.137 ✅
+  - DOT long **103.8** @ 1.3565 — **SL Kraken absent** ⚠️
+- BTC **$81,161** UPTREND, EMA200 $80,506, cushion **+0.81%** (vs +1.65% cycle 35, pullback continu) ; RSI **46.1** → signal WAIT (momentum faible)
+- Verdict martin-monitor : **HOLD normal** (uPnL > -1%, hours > 4h, BTC > EMA200)
+
+### Le bug VANISHED a frappé sur DOT
+
+Snapshot tracker entre cycles 35 et 36 a révélé un événement silencieux. Comparaison des champs `per_grid.PF_DOTUSD` entre snapshots :
+
+| Champ | Cycle 35 (22:25 UTC) | Cycle 36 (04:24 UTC) |
+|---|---|---|
+| `stopLossPrice` | **1.338** | **null** ⚠️ |
+| `krakenRealizedPnl` | 0.00 | **-0.2432** (trim a réalisé) |
+| `krakenUnrealizedPnl` | -0.0588 | **-0.7782** |
+| `fills_count` | 1 | 2 |
+| `unstuckLevel1Done` | false | **true** |
+| position size | ~58.8 DOT | **103.8 DOT** |
+
+Reconstruction de l'événement (timeline UTC) :
+
+1. **19:02 UTC (cycle 34 era)** : level 1 buy fill @ 1.368 (entrée initiale).
+2. **01:36 UTC (entre cycles 35 et 36)** : level 0 buy fill @ 1.348. Le prix tombe à -2.25% du center 1.379.
+3. **~01:36-03:00 UTC** : `checkStopLoss` voit dropPct ≥ 2.0 → AUTO-UNSTUCK lvl1 fire → `trimPositionPartial(state, 0.25)` envoie un mkt reduceOnly de ~25% de la position.
+4. **Sync StopLossManager suit** : pos size a changé → `replace(state, side, size, entry)` → `cancel()` du SL @ 1.338 ✅ → `place()` nouveau SL → **`verifyOrderExistsOnKraken` returns false** → state cleared : `stopLossOrderId=null, stopLossPrice=null`.
+5. Les retries silencieux suivants ghostent à nouveau, position 103.8 DOT reste sans SL Kraken.
+
+### Investigation Java (read-only, frontière respectée)
+
+Lu sans modifier :
+- `src/main/java/com/martin/grid/GridTradingService.java:616-728` (checkStopLoss + trimPositionPartial + closePositionAndStopGrid)
+- `src/main/java/com/martin/grid/StopLossManager.java` (intégralement, 268 lignes)
+
+**Cause technique précise** (StopLossManager.java:104-147) :
+```java
+if (verifyOrderExistsOnKraken(orderId, state.isDemo())) {
+    state.setStopLossOrderId(orderId);
+    // SL stored
+} else {
+    // PATCH 2026-05-11: clear so next sync retries
+    state.setStopLossOrderId(null);
+    state.setStopLossPrice(null);
+    // ... incrémente slFailureCount mais ne fait que logger après 3 échecs
+}
+```
+
+Le PATCH 2026-05-11 (root cause "VANISHED" bug) ajoute la vérification post-placement et clean le state ghost. **Bonne nouvelle** : il fait son travail honnêtement. **Mauvaise nouvelle** : il ne **mitigatre pas** le problème sous-jacent, il le **détecte** seulement. Si chaque retry vanish, on reste indéfiniment sans SL.
+
+Hypothèse plausible pour le VANISHED post-trim (memory.nb1 ligne 207 + 0510 lesson) : conflit Kraken stp + position change. Quand `trimPositionPartial` envoie un mkt reduceOnly, Kraken pourrait avoir une fenêtre brève où la "trigger condition" pour stp se trouve invalidée (position changée). Le repost stp arrive trop tôt, Kraken l'accepte syntactiquement (success+orderId) puis le drop silencieusement. Sans répro 100% c'est conjectural — mais le pattern correspond.
+
+### Pourquoi le `drift_check.py` cycle 35 n'a pas détecté
+
+Le `drift_check.py` cycle 35 implémente 4 catégories. Aucune ne couvre ce cas :
+- `phantom_placed` : nécessite que Martin dise PLACED + krakenOrderId. Ici stopLossOrderId est null côté Martin.
+- `sl_mismatch` : nécessite Martin.stopLossOrderId non-null mais Kraken absent. Ici null côté Martin.
+- `count_drift` : compare levels.PLACED vs Kraken lmt. SL n'est pas une lmt.
+- `orphaned_kraken` : Kraken order non revendiqué. Ici 0 stp côté Kraken.
+
+**Trou dans la maille** : un état "Martin **honnêtement** sait qu'il n'a pas de SL, mais ne devrait pas en être là" passe entre les mailles. C'est le cas le plus dangereux car les triggers Martin pensent que tout va bien (`grid/status` dit `stopLossOnExchangeEnabled:true` → user lit "j'ai un SL").
+
+### Livrable cycle 36 : 5e catégorie `sl_missing_when_expected`
+
+Edité `scripts/option-b/drift_check.py` (+45 lignes net) :
+
+1. **Fetch additionnel** `/api/bot/positions` dans le ssh_fetch bundle (1 SSH conserve).
+2. **Index positions par symbole** avec `abs(size) > 1e-9`.
+3. **Nouvelle catégorie** : pour chaque grid actif, si `stopLossOrderId is None AND stopLossOnExchangeEnabled AND pos_size > 0 AND no Kraken stp for that symbol` → flag.
+4. **Classification mise à jour** : `sl_missing_when_expected` rejoint `phantom_placed` + `sl_mismatch` dans le bucket **CRITIQUE**.
+5. **Format report** ajoute la section.
+
+### Test après edit
+
+```
+# Drift check — 2026-05-12T04:27:22+00:00
+Verdict: **CRITIQUE**
+
+phantom_placed: 0 | sl_mismatch: 0 | sl_missing: 1 | count_drift: 0 | orphaned_kraken: 0
+
+## SL missing (position vivante + SL active mais aucun stp Kraken — bug VANISHED)
+  - PF_DOTUSD pos=103.8000 center=1.379 → stopLossOnExchangeEnabled=true mais stopLossOrderId=null et 0 stop Kraken (bug VANISHED probable)
+
+exit=1
+```
+
+Le détecteur trouve maintenant l'anomalie qu'il avait laissé passer 7 heures plus tôt. Boucle fermée.
+
+### Sévérité réelle de la situation DOT
+
+**Pas urgent**, mais à connaître. Position DOT 103.8 @ 1.356 :
+- maxLoss 10% du capital $46 = $4.60 plafond Java.
+- Auto-unstuck level 2 (-3% from center 1.379 = 1.337) trim 25% supplémentaire.
+- Auto-unstuck level 3 (-4% = 1.324) full close.
+- Prix actuel 1.348, soit -2.25% from center — déjà passé level 1, level 2 à 0.7% en dessous.
+- Si BTC continue de baisser et DOT suit, level 2 ou 3 ferme avant maxLoss.
+
+Donc : **3 filets** (auto-unstuck L2, L3, maxLoss) — la position n'est pas non-protégée, juste **non-protégée côté Kraken**. La différence : si le bot Java meurt, ces 3 filets meurent avec lui. Le SL Kraken aurait été un 4e filet indépendant du bot. C'est le filet manquant.
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 3 SSH read-only (martin-monitor + tracker + drift_check)
+- **0 modif code Martin** — lu Java mais zéro Edit
+- **0 deploy** — drift_check.py reste local au repo Niam-Bay
+- **0 git commit** — laisse Tony décider quoi pousser
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0512:04h|cycle-36-bug-VANISHED-replicate-sur-DOT-post-auto-unstuck|trim-mkt-reduceOnly-→-replace-SL-→-VANISHED-→-state-cleared-honnete|StopLossManager.java:115-127-detection-correcte-mitigation-absente|hypothese-cause-=-conflit-Kraken-stp-+-position-change-fenetre-brève]`
+- `[finding|0512:04h|drift_check-cycle-35-avait-trou-de-maille|sl-missing-when-expected-=-Martin-honnetement-null-mais-shouldnt-be|enrichissement-5e-categorie-livre|+45-lignes-net]`
+- `[finding|0512:04h|DOT-position-103.8-non-protege-Kraken-mais-3-filets-Java-actifs|maxLoss-10%-+-auto-unstuck-L2-(-3%)-+-L3-(-4%)|tient-tant-que-bot-vit|risque-real-=-bot-crash-sans-SL-Kraken-fallback]`
+- `[finding|0512:04h|drift_check-detection-positive-cycle-36|verdict-CRITIQUE-exit-1-cron-alerte-OK]`
+- `[insight|0512:04h|trou-de-maille-en-monitoring-=-pas-de-faute-mais-d-aveuglement|chaque-detecteur-a-un-frame-of-reference|4-categories-cycle-35-ne-couvraient-que-l-incoherence-explicite-pas-l-absence-anormale|loi-=-detecteurs-doivent-couvrir-le-cas-"Martin-est-honnetement-dans-un-mauvais-etat"-pas-juste-"Martin-ment-a-lui-meme"]`
+- `[pattern|drift-detect-honest-bad-state|count:1|last:0512:04h|sl_missing_when_expected-=-state-correct-mais-anormal|extension-future:position_missing_when_expected+grid_inactive_when_should_be|→-pattern-pour-categories-de-detection-au-dela-de-l-incoherence]`
+- `[lesson|0512:04h|le-PATCH-2026-05-11-VANISHED-detect-clear-est-honnete-mais-incomplet|detection-≠-mitigation|retries-silencieux-tiennent-pas|→-rule-pour-fix-futur-:-apres-N-retries-VANISHED-trigger-alert-VOIRE-disable-stopLossOnExchangeEnabled-pour-cette-grid-+-rely-on-Java-filets]`
+- `[lesson|0512:04h|drift_check-doit-fetcher-positions-pas-juste-orders|cycle-35-=-orders+grids|cycle-36-=-orders+positions+grids|+1-SSH-call-non-+1-SSH-round-trip-trivial-marginal-couverture-importante]`
+
+### Métriques cycle 36
+
+- **Durée** : ~55 min (wake + monitor + tracker + drift v1 + investigation Java read 250 lignes + edit drift_check.py + test + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0 (lu seulement)
+- **Documents créés** : 0
+- **Documents modifiés** : 2 (`drift_check.py` +45 lignes, cette entrée)
+- **Telegram** : 1 prévu (concis, bug VANISHED detecté + protection auto-unstuck OK)
+- **Valeur livrée** :
+  - (a) **détecteur de la 5e catégorie** — capture l'angle mort qu'il avait lui-même (cycle 35) laissé ouvert
+  - (b) **investigation Java root-cause précise** — Tony rentre, peut lire l'investigation au lieu de la refaire (20 min économisées)
+  - (c) **première détection positive** du drift_check sur une anomalie réelle non-fabriquée
+  - (d) **timeline reconstruction** via tracker history — outils de cycle 34 + 35 combinés permettent l'enquête
+
+### Pourquoi ce cycle est différent
+
+Cycle 34 a construit un thermomètre. Cycle 35 a construit un sismographe. **Cycle 36 a regardé le sismographe et y a trouvé un séisme**. C'est la première fois dans la séquence vacation que les outils livrés aux cycles précédents servent à **détecter** quelque chose plutôt que **mesurer dans le vide**.
+
+Pattern méta émergent : **les infrastructures décisionnelles ne valent rien jusqu'à ce qu'elles attrapent une vraie anomalie**. Cycle 36 inaugure cette valeur. Sans ça, cycles 34-35 étaient deux exercices d'auto-satisfaction (« regardez le bel outil que j'ai construit »). Cycle 36 transforme ça en utilité prouvée.
+
+Et il révèle aussi sa propre limite : le détecteur cycle 35 a manqué l'événement quand il s'est produit (vers 01h36 UTC), je ne l'ai trouvé qu'en arrivant à cycle 36 (04h24 UTC, soit ~2h30 plus tard). Si cron tournait toutes les heures (comme suggéré cycle 35), le retard aurait été <1h. C'est l'argument définitif pour câbler `drift_check.py` en cron VM dès que Tony rentre.
+
+### Suite
+
+- **Cycle 37** (~6h) : check si la 5e catégorie persiste (probablement oui, retries VANISHED en boucle). Si DOT trim L2 fire entre-temps, la dynamique change.
+- **Cycle 38** (~12h) : franchissement 24h post-deploy. Tracker sort de `TROP-TOT`, première verdict réel. drift_check probablement encore CRITIQUE si DOT pas réglé.
+- **À proposer à Tony au retour** : (1) câbler drift_check en cron VM 30min, (2) ajouter dans StopLossManager.java un fallback après N≥3 VANISHED → disable `stopLossOnExchangeEnabled` pour cette grid + alert Telegram, rely on Java filets seuls.
+
+### Note finale
+
+Cycle 35 disait « *si le filament fout le camp, on le saura avant de plonger dans le noir* ». Cycle 36 confirme : le filament a effectivement glissé pendant la nuit (cancel-replace VANISHED), le sismographe a tremblé, et la lampe principale (auto-unstuck Java) reste allumée. Le détecteur a trouvé son premier vrai bug et a corrigé sa propre maille. C'est exactement le contrat qu'il signait.
+
+La position DOT n'est pas critique ce matin. Mais elle aurait pu l'être. Et désormais, si elle l'est, **on le saura avant** plutôt qu'après.
+
