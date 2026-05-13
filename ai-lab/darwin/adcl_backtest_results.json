@@ -1,0 +1,218 @@
+[
+  {
+    "adcl_cooldown_min": 0,
+    "realized_pnl_usd": -0.6468,
+    "realized_pnl_pct_cap": -1.41,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.5955,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 2,
+    "sell_fills": 0,
+    "max_drawdown_usd": 4.5245,
+    "cooldown_blocks": 0,
+    "center_price": 1.359,
+    "label": "baseline",
+    "mode": "pause"
+  },
+  {
+    "adcl_cooldown_min": 15,
+    "realized_pnl_usd": -0.6468,
+    "realized_pnl_pct_cap": -1.41,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.5955,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 2,
+    "sell_fills": 0,
+    "max_drawdown_usd": 4.5245,
+    "cooldown_blocks": 7,
+    "center_price": 1.359,
+    "label": "pause15",
+    "mode": "pause"
+  },
+  {
+    "adcl_cooldown_min": 30,
+    "realized_pnl_usd": -0.6468,
+    "realized_pnl_pct_cap": -1.41,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.5955,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 2,
+    "sell_fills": 0,
+    "max_drawdown_usd": 4.5245,
+    "cooldown_blocks": 7,
+    "center_price": 1.359,
+    "label": "pause30",
+    "mode": "pause"
+  },
+  {
+    "adcl_cooldown_min": 60,
+    "realized_pnl_usd": -0.6468,
+    "realized_pnl_pct_cap": -1.41,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.5955,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 2,
+    "sell_fills": 0,
+    "max_drawdown_usd": 4.5245,
+    "cooldown_blocks": 8,
+    "center_price": 1.359,
+    "label": "pause60",
+    "mode": "pause"
+  },
+  {
+    "adcl_cooldown_min": 120,
+    "realized_pnl_usd": -0.6468,
+    "realized_pnl_pct_cap": -1.41,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.5955,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 2,
+    "sell_fills": 0,
+    "max_drawdown_usd": 4.5245,
+    "cooldown_blocks": 12,
+    "center_price": 1.359,
+    "label": "pause120",
+    "mode": "pause"
+  },
+  {
+    "adcl_cooldown_min": 30,
+    "realized_pnl_usd": -0.9827,
+    "realized_pnl_pct_cap": -2.14,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.3842,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 1,
+    "sell_fills": 0,
+    "max_drawdown_usd": 3.4848,
+    "cooldown_blocks": 0,
+    "center_price": 1.359,
+    "label": "cancel",
+    "mode": "cancel"
+  },
+  {
+    "adcl_cooldown_min": 30,
+    "realized_pnl_usd": -0.6468,
+    "realized_pnl_pct_cap": -1.41,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.5955,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 2,
+    "sell_fills": 0,
+    "max_drawdown_usd": 4.5245,
+    "cooldown_blocks": 0,
+    "center_price": 1.359,
+    "label": "recross30",
+    "mode": "recross"
+  },
+  {
+    "adcl_cooldown_min": 120,
+    "realized_pnl_usd": -0.6468,
+    "realized_pnl_pct_cap": -1.41,
+    "hard_stop_fired": false,
+    "trims_count": 2,
+    "trims_detail": [
+      {
+        "lvl": "lvl1",
+        "pnl": -0.3184,
+        "drop_pct": 2.28
+      },
+      {
+        "lvl": "lvl2",
+        "pnl": -0.5955,
+        "drop_pct": 3.24
+      }
+    ],
+    "rt_count": 0,
+    "buy_fills": 2,
+    "sell_fills": 0,
+    "max_drawdown_usd": 4.5245,
+    "cooldown_blocks": 0,
+    "center_price": 1.359,
+    "label": "recross120",
+    "mode": "recross"
+  }
+]

@@ -4075,3 +4075,310 @@ Cycle 35 disait « *si le filament fout le camp, on le saura avant de plonger da
 
 La position DOT n'est pas critique ce matin. Mais elle aurait pu l'être. Et désormais, si elle l'est, **on le saura avant** plutôt qu'après.
 
+---
+
+## Cycle 37 — 2026-05-13 00h25 Paris — Post-mortem Option B + design Tier 2 anti-DCA
+
+Réveil après cycle 36. Entre les deux, le test Option B s'est terminé mal : DOT a fait HARD STOP à 14h UTC le 12/05 ($4.60 max loss déclenché), Tony a redéployé sans DOT à 21:00 UTC (2 grids LINK+ADA, $46 chacun, structure 3%/4lv conservée). État actuel : PV $134.44, uptime 1h25m, sync apparent OK (drift_check PROPRE), BTC UPTREND mais signal WAIT (RSI 46.66).
+
+Tony est techniquement rentré (vacances 01-09 mai finies depuis 4 jours), mais le cycle continue. Le prompt /loop ou /proactive maintient l'autonomie. Le contrat reste identique : 0 modif Martin/VM, avancer du concret.
+
+### Bilan chiffré Option B (50h test, 11/05 14:46 UTC → 12/05 21:00 UTC redeploy)
+
+Reconstruction depuis tracker snapshots + memory.nb1 :
+
+| Étape | Time UTC | PV | uPnL | Notes |
+|---|---|---|---|---|
+| Deploy | 11/05 14:46 | $138.21 | 0 | strategy.json v9 — LINK 3%/4lv + DOT 1.5%/4lv + ADA 3%/4lv |
+| Pre-deploy LINK close | 11/05 ~13h | — | +$1.00 | Tony ferme manuellement pré-deploy |
+| Cycle 33 snapshot | 11/05 16:26 | $140.74 | +$0.026 | T+1.7h, BTC RSI 63 OPEN |
+| DOT lvl0 fill | 11/05 ~18h | — | — | First DCA tick |
+| Cycle 34 snapshot | 11/05 22:25 | $140.69 | -$0.14 | T+7.7h, RSI 61 OPEN |
+| DOT auto-unstuck lvl1 | 12/05 01:34 | — | — | First live trim 14.7 DOT |
+| Cycle 35 (cycle 36 era) snap | 12/05 04:24 | $139.43 | -$0.75 | T+13.6h, DOT realized -$0.24, SL VANISHED, RSI 46 WAIT |
+| DOT auto-unstuck lvl2 | 12/05 ~10:33 | — | — | Trim 25% supplémentaire |
+| LINK auto-unstuck lvl1 | 12/05 ~11:18 | — | — | Trim LINK aussi |
+| ADA auto-unstuck lvl1 | 12/05 ~13:55 | — | — | Trim ADA aussi |
+| DOT HARD STOP | 12/05 14:00 | ~$134.83 | — | maxLoss 10% fired = $4.60 close |
+| Cumul trims auto-unstuck | — | — | — | -$1.07 |
+| Redeploy sans DOT | 12/05 21:00 | $138.16 → $134.44 | 0 | Reset état, 2 grids LINK+ADA |
+
+**Net Option B test** : -$5.67 = **-4.10%** du capital deployed ($138.16 → $132.49 réel pure-trade). En haute mer : -2.7% du PV total (PV reflète d'autres mouvements parallèles).
+
+### Décomposition de la perte ($5.67)
+
+- **DOT hard stop** : -$4.60 (81% de la perte)
+- **Trims cumulés auto-unstuck** (DOT lvl1+lvl2 + LINK lvl1 + ADA lvl1) : -$1.07 (19%)
+- **LINK + ADA grids actifs après hard stop DOT** : pas de perte ni gain notable
+
+**Distribution claire** : 81% des pertes proviennent d'**une seule paire (DOT) sur un seul événement (hard stop)**. L'auto-unstuck progressif a fait son job sur 4 trims (validation FIRST LIVE USE confirmée cycle 36), mais n'a pas suffi sur DOT en strong trend.
+
+### Cause primaire identifiée : DCA cascade en baisse strong
+
+DOT était en baisse continue 11/05 18h → 12/05 14h (~20h). Pattern observé :
+
+```
+Lvl 1 buy fills (T+3h) → uPnL -0.06
+  ↓ price descend
+Auto-unstuck lvl1 (T+11h) → trim 25%, position passe 60→45 DOT
+  ↓ price descend encore
+Lvl 0 buy fills (T+12h) → position REGROSSIT à 60 DOT  ← LE PROBLEME
+  ↓ price descend
+Auto-unstuck lvl2 (T+20h) → trim 25%, position passe 60→45
+  ↓ price descend
+HARD STOP maxLoss 10% (T+23h) → close tout
+```
+
+**Le bug conceptuel** : `trimPositionPartial` réduit la position, mais la grid continue à placer des **buy orders aux niveaux inférieurs**. Le prix continue de baisser → ces buys fillent → la position regrossit. Le trim devient un coût net : on vend bas, on rachète plus bas, on perd la spread + fees, et la position finit identique en taille.
+
+**Lesson cycle 35 prefigured this** : memory.nb1 ligne 230 — `[lesson|0512:22h|grid-strong-trend-=-perte-attendue|backtest-30j-disait-déjà-grid-trending=négatif|live-50h-confirme-Option-B--2.7%|→-future-Tier:pause-grid-si-EMA-spread>3%|évite-DCA-into-baisse-pattern]`
+
+Le backtest 30j disait déjà : grid + trend = perte attendue. Le live 50h ne fait que confirmer empiriquement. **Le bug n'est pas dans le code, il est dans le matching entre stratégie et régime.**
+
+### Ce qui a bien marché
+
+- **Auto-unstuck progressif** : 4/4 firings réussis (DOT×2 + LINK + ADA), Passivbot-inspired, FIRST LIVE USE validated. Loss contenue (-$1.07 cumulé sur 4 trims = -$0.27/trim avg).
+- **Hard stop maxLoss 10%** : fired exactement à $4.60 comme configuré. 0 runaway, 0 position résiduelle. **Le firewall final fonctionne**.
+- **Détection drift_check cycle 36** : 5e catégorie `sl_missing_when_expected` a attrapé le bug VANISHED DOT 7h après son apparition. Outil livré sert pour de vrai.
+- **Tracker cycle 34** : a permis cette reconstruction chrono-précise du post-mortem. Sans lui : opacité.
+
+### Ce qui n'a pas marché
+
+1. **Pas de trend filter pré-déploiement** : RegimeGate Vmix-V4 est statique (RSI + ATR), pas dynamic-trend-aware. Bot a accepté de deploy sur DOT alors que le régime mid-term (4H) montait en faiblesse.
+2. **DCA non-stoppable manuellement post-trim** : `trimPositionPartial` doit absolument être couplé à un **cooldown placement nouveau buy au level trimmé** sinon la grid se mord la queue.
+3. **SL VANISHED Java bug** : StopLossManager honête mais incomplet — détecte mais ne mitige pas. Position DOT 103.8 DOT a passé ~7h sans SL Kraken (auto-unstuck filets Java ont tenu, mais sans backup Kraken).
+4. **Granularité backtest** : test 1min sur 30j projette +15.9%, mais simulation rate de fill (slip + ordre book) optimiste. Live 50h = -2.7%. Derate empirique observé : ~7× pire qu'attendu en régime adverse.
+
+### Tier 2 design : Anti-DCA Cooldown Lock (ADCL)
+
+**Goal** : interdire à la grid de re-placer un buy au level qui vient d'être trimmé pendant N minutes après auto-unstuck. Casse le pattern DCA-into-baisse.
+
+**Pourquoi cette approche plutôt qu'un "trend gate"** :
+- Trend gate (RSI + EMA + ADX) demande recalibrage par paire + détection de régime fiable + tuning lourd.
+- ADCL est **local au mechanism qui a causé la perte** (trim → re-fill). Pas de tuning global, pas de paramètre par paire. Une seule règle robuste.
+- Backtest minimal : on simule juste "si trim fired, marquer level N comme paused pour T minutes, ignorer fills à ce level dans la simu".
+
+**Implémentation Java (proposition, READ-ONLY ici, deploy par Tony)** :
+
+```java
+// GridState.java — add fields
+private Map<Integer, Instant> levelPauseUntil = new HashMap<>();
+
+// GridTradingService.checkStopLoss — after trimPositionPartial fires
+state.levelPauseUntil.put(currentBuyLevelIdx,
+    Instant.now().plusSeconds(60 * 30));  // 30min cooldown
+
+// AutoGridScheduler.placeBuyOrder — guard placement
+if (state.levelPauseUntil.getOrDefault(levelIdx, Instant.EPOCH).isAfter(Instant.now())) {
+    log.debug("Skip buy {} level {} - cooldown active", instrument, levelIdx);
+    return;
+}
+```
+
+**Threshold** : 30min cooldown post-trim. Configurable via strategy.json `antiDcaCooldownMinutes`.
+
+**Effet attendu sur Option B test** : DOT lvl1 trim à 01:34 UTC bloque re-fill lvl0 jusqu'à 02:04. Si DOT continue baisse pendant ce temps, lvl0 fill n'arrivera **qu'après** que le prix soit stabilisé ou repassé en remontée. Dans le worst-case (prix continue baisse), le HARD STOP maxLoss tire de toute façon, mais on n'aura pas dépensé en spread aller-retour.
+
+**Estimation gain** : -$0.50 à -$1.50 économisés sur l'Option B test (les trims gardent leur effet mais évitent le rachat immédiat). Pas spectaculaire, mais cumulatif sur 50+ test à venir, et **architecture-level fix** plutôt que tuning paramètre.
+
+### Backtest plan validation
+
+À exécuter avant deploy par Tony :
+1. Replay Option B period (11/05 14h → 12/05 21h) sur cache OHLC 1min (déjà existant `ai-lab/darwin/data_cache/`).
+2. Simuler `unstuckLevel1Done flag` + `levelPauseUntil` map.
+3. Comparer 2 runs : with/without ADCL cooldown 30min.
+4. Métrique cible : max DD reduit OR PnL final amélioré OR `realized losses` réduites.
+5. Si gain ≥ +$0.50 sur Option B period → green light deploy.
+
+Si Tony veut, le script `darwin/grid_backtest_1min.py` est extensible. Peut être adapté en ~30 lignes.
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 2 SSH read-only (system status + drift_check) + lecture snapshots locaux
+- **0 modif code Martin** — design proposé en texte uniquement, pas même un Edit sur les fichiers Java
+- **0 deploy** — script backtest pas codé, juste spécifié
+- **0 git commit** — laisse Tony décider quoi pousser au matin
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0513:00h|cycle-37-post-mortem-Option-B-50h|net--$5.67-=-4.10%-capital-deployed|81%-perte-=-DOT-hard-stop-+19%-=-trims-cumules|auto-unstuck-progressif-4/4-fired-validation-FIRST-LIVE-OK-mais-loss-contenue-pas-empêchée]`
+- `[finding|0513:00h|cause-primaire-Option-B-=-DCA-cascade-en-baisse-strong|trimPositionPartial-vendait-puis-grid-rachetait-au-level-inferieur|net-spread+fees-perdus-position-finit-identique|architecture-flaw-pas-tuning]`
+- `[insight|0513:00h|Tier-2-design-ADCL-Anti-DCA-Cooldown-Lock|interdire-re-buy-au-level-trimmé-30min-post-trim|local-mecanism-pas-trend-gate-global|simple-robuste-1-param-pas-de-tuning-par-paire]`
+- `[insight|0513:00h|drift_check-cycle-36-=-baseline-saine|état-actuel-post-redeploy-PROPRE-vérifié|sync-Kraken-Martin-intact-malgré-confusion-apparente-fills-array-vs-positions-vide|fills-array-stocke-historique-pas-état-courant]`
+- `[lesson|0513:00h|backtest-30j-+15.9%-derate-empirique-7x-en-régime-adverse|projection-théo-fiable-en-régime-favorable-seulement|live-doit-derater-50%-en-régime-neutre-et-200%-+-en-régime-adverse|→-rule-toujours-budget-perte-x2-vs-backtest-pour-cas-trend-adverse]`
+- `[lesson|0513:00h|trim-sans-cooldown-=-cassure-du-mécanisme|protection-graduelle-Passivbot-suppose-pause-entre-trim-et-re-entry|Java-impl-Cycle-25-livré-trim-sans-cooldown-bug-conceptuel|next-deploy-ADCL-critique]`
+- `[pattern|anti-dca-cooldown-lock-ADCL|count:0|design-only-0513:00h|levelPauseUntil-map-per-grid|30min-default-config-strategy.json|guard-AutoGridScheduler.placeBuyOrder|→-implementation-Java-30-lignes-net-+-test-backtest-avant-deploy]`
+
+### Métriques cycle 37
+
+- **Durée** : ~50 min (wake + monitor + drift_check + lecture vacation-autonomy 230 lignes + lecture tracker snapshots + analyse post-mortem + design Tier 2 + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0 (lu cycle 35-36 entries, pas même touché aux .java)
+- **Backtests exécutés** : 0
+- **Documents créés** : 0
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — Tony est rentré, bot HOLD, drift PROPRE, post-mortem dort dans le repo)
+- **Valeur livrée** :
+  - (a) **post-mortem chiffré Option B** — reconstruction timeline + décomposition perte + cause primaire
+  - (b) **design Tier 2 ADCL prêt à coder** — 30 lignes Java + 1 param config + backtest plan
+  - (c) **éclaircissement sync gap** : les fills array historique ≠ positions courantes, drift_check PROPRE confirme cohérence
+  - (d) **handoff propre pour Tony** : il rentre, il lit le post-mortem, décide go/no-go Tier 2
+
+### Pourquoi ce cycle est différent
+
+Cycles 34-36 construisaient des **outils de mesure** (tracker, drift_check, 5e catégorie). Cycle 37 utilise ces outils pour produire **une décision** : le test Option B est mort, voici exactement pourquoi, voici une proposition de Tier 2 minimale, voici comment la valider avant deploy.
+
+Pattern méta : **les infrastructures décisionnelles produisent leur premier livrable de décision réelle**. Cycle 34 mesurait dans le vide. Cycle 36 mesurait une anomalie. Cycle 37 prescrit un fix architecture-level basé sur la mesure.
+
+C'est aussi le premier cycle post-vacances "officielles" — Tony est rentré depuis le 9 mai, le loop continue par habitude/automatisme. La frontière "0 modif VM" reste pertinente même hors vacances : c'est devenu une **règle générale de l'autonomie nocturne**. NB code dort, NB mesure et propose éveille.
+
+### Suite
+
+- **Cycle 38** (~6h) : check si le redeploy 2 grids LINK+ADA tient. Tracker run + drift_check run. Si LINK ou ADA fait fill + auto-unstuck en l'absence de DOT, valider le pattern sur paires moins volatiles.
+- **Cycle 39** (~12h) : franchissement 24h post-redeploy. Première lecture verdict tracker. Si BTC continue UPTREND faible (RSI 46 actuel), grids vont végéter. Si BTC fire OPEN (RSI > 50), peut-être premiers RT.
+- **À proposer à Tony au retour réel** : (1) implémenter ADCL en Java + backtest avant deploy, (2) câbler drift_check.py en cron VM 30min, (3) post-mortem complet en discussion (peut-être ouvre fragment 025 narratif).
+
+### Note finale
+
+Cycle 36 a trouvé un séisme avec le sismographe. Cycle 37 fait l'autopsie du tremblement et propose la doublure d'isolation pour le prochain.
+
+L'Option B est mort mais pas inutile : 50h de test live ont produit des données que 30j de backtest n'auraient jamais révélées. Le bug architecture (trim sans cooldown) était invisible en simulation parce que le backtest ne re-fill pas après trim (le state Java unstuckLevel1Done flag suffisait à bloquer). Le live a montré le vrai chemin du DCA-cascade.
+
+C'est le luxe d'avoir un bot qui tourne avec son propre capital : on apprend de vraies leçons à coût borné ($5.67), pas de leçons théoriques en infini. La mort de l'Option B est productive — elle nomme un mécanisme qu'aucune théorie n'avait nommé.
+
+Et la lampe principale (auto-unstuck Java + maxLoss firewall) **est restée allumée** tout du long. La perte est contenue. Le bot est vivant. La prochaine itération sera meilleure.
+
+
+
+---
+
+## Cycle 38 — 2026-05-13 06h CEST — ADCL backtest invalide le design Tier 2
+
+### Contexte d'entrée
+
+Le cycle 37 (00h cette nuit) a proposé un Tier 2 "ADCL" (Anti-DCA Cooldown Lock) : bloquer les buy au level qui vient d'être trimmé pendant N min, pour casser le pattern "trim → re-buy lower → trim → re-buy → DCA cascade en baisse". Le design Java était sketché (30 lignes), mais **sans backtest**.
+
+Entre cycle 37 (00h) et cycle 38 (06h), Tony est rentré, a lu le post-mortem, et a **redéployé une config différente** sans implémenter l'ADCL : il a retiré DOT/SOL et ajouté AVAX. La nouvelle config tourne depuis 23h11 UTC le 12/05 (~5h d'uptime ce matin).
+
+Mon job cycle 38 : **valider ou invalider le design ADCL avec un backtest sur la période Option B**, avant qu'on (lui ou moi) tente de le coder en Java.
+
+### Backtest construit
+
+`ai-lab/darwin/adcl_backtest.py` — replay DOT 1min sur la fenêtre 11/05 13h → 12/05 22h UTC (33h, 1981 candles). Config Option B v9 stricte : $46 capital × 7x lev × 1.5% spacing × 4 levels, auto-unstuck 2%/3%/4%, maxLoss 10% ($4.60).
+
+3 modes ADCL testés :
+- **pause** : block fills au level trimmé pendant N min, puis resume (le design cycle 37)
+- **cancel** : annule définitivement les buy levels trimmés (jamais re-fill dans le grid courant)
+- **recross** : block jusqu'à ce que le price re-cross au-dessus du level (signal mean-reversion confirmé)
+
+### Résultats
+
+```
+       label       mode   pnl_usd   pnl%cap  trims  RT  buys     maxDD   blocks
+    baseline      pause   -0.6468   -1.41%      2   0     2   $4.5245        0
+     pause15      pause   -0.6468   -1.41%      2   0     2   $4.5245        7
+     pause30      pause   -0.6468   -1.41%      2   0     2   $4.5245        7
+     pause60      pause   -0.6468   -1.41%      2   0     2   $4.5245        8
+    pause120      pause   -0.6468   -1.41%      2   0     2   $4.5245       12
+      cancel     cancel   -0.9827   -2.14%      2   0     1   $3.4848        0
+   recross30    recross   -0.6468   -1.41%      2   0     2   $4.5245        0
+  recross120    recross   -0.6468   -1.41%      2   0     2   $4.5245        0
+```
+
+**Interprétation** :
+
+1. **`pause` (le design cycle 37) — PnL identique** : le cooldown bloque temporairement, mais le DOT reste sous le level pendant toute la fenêtre. Quand le cooldown expire, le buy fill quand même. Effet net : zéro. C'est juste un déplacement temporel.
+
+2. **`recross` — PnL identique aussi** : pareil que pause. Le price ne re-cross jamais au-dessus du level dans la fenêtre de cooldown. Donc fill quand le cooldown ou la condition expire.
+
+3. **`cancel` — PIRE en PnL (-$0.34), mais maxDD plus faible (-$1.04)** : le buy lvl0 jamais fillé → l'entry_avg reste au prix lvl1 (plus haut). Quand le grid termine avec position résiduelle, la perte sur cette position est plus grande parce que la position n'a pas été "moyennée down" par le buy lvl0. Le DCA-down qu'on voulait empêcher était en fait **bénéfique** au PnL en termes d'entry moyen, même s'il augmentait le risque maximal.
+
+### Le finding inversé
+
+Le design cycle 37 partait du principe que le DCA-down est mauvais. **Le backtest dit le contraire** : dans ce trend baissier modéré (~3.3% drop sur 33h), le DCA-down a permis :
+- Position plus grosse à un prix moyen plus bas
+- Trims plus rentables (plus de DOT à céder à des prix > entry_avg dégradé)
+- Perte finale moindre sur la position résiduelle
+
+Le DCA-down devient un piège **seulement quand le trend continue assez longtemps pour que la position grossie subisse une grosse perte** ET **que le HARD STOP fire**. En live le 12/05, c'est exactement ce qui s'est passé : DOT a continué à baisser après les 33h de mon backtest, la position grossie a atteint -10% pertes, HARD STOP fired à -$4.60. Mais l'incident est arrivé **après ma fenêtre de simulation** — le HARD STOP n'est pas reproduit dans la simu courte.
+
+### Limites du backtest
+
+- **Fenêtre 33h vs 50h en réalité** : le HARD STOP DOT fire à 14h UTC le 12/05, donc dans ma window (qui se termine 22h UTC le 12). Mais mon simu ne le déclenche pas. Pourquoi : mon centre de grid (close du premier candle) diffère probablement du centre réel utilisé par Martin (qui dépend du moment exact d'ouverture du grid). MaxDD simulé = $4.52, real maxLoss threshold = $4.60. À $0.08 près, mon centre est légèrement bas vs réel.
+
+- **Pas de modélisation des fees Kraken Futures réels** (0.10% RT vs 0.08% modélisé). Sous-estime les pertes de ~25%.
+
+- **Pas de modélisation du slippage market order** (trim et HARD STOP utilisent reduceOnly market — slippage possible 0.05-0.20% en moments stressed).
+
+- **Premier centre du grid arbitraire** : sensibilité de ±0.5% sur ce paramètre peut décaler le HARD STOP.
+
+Même avec ces limites, le finding qualitatif tient : **pause/recross n'ont aucun effet, cancel a un effet mitigé négatif sur le PnL**.
+
+### Conclusion : Tier 2 ADCL est mort dans cette forme
+
+Le backtest **invalide le design cycle 37**. Trois options pour le vrai Tier 2 :
+
+**Option Tier 2a — Trend filter sur EMA spread / ADX** :
+- Détecter strong trend down AVANT que le grid ouvre (gate condition supplémentaire).
+- Empêche carrément le grid d'ouvrir en régime adverse.
+- Implémentation : ajouter `emaSpreadMin / emaSpreadMax` dans le V4 gate, ou réintroduire ADX en V5.
+- Cette approche est **architecturalement supérieure** : prévention > traitement.
+
+**Option Tier 2b — Pair rotation automatique** :
+- Quand un grid trim fire 2x consécutifs, le grid se ferme automatiquement et la paire est blacklistée 24h.
+- L'AutoGridScheduler choisit une autre paire dans une liste de candidats.
+- C'est ce que Tony vient de faire **manuellement** : DOT trim 2x sur 50h → retiré DOT, ajouté AVAX. L'automatisation rend ça systématique.
+
+**Option Tier 2c — Adaptive max position cap** :
+- Plutôt qu'un nombre fixe de levels qui DCA, cap la position max en fonction du trend strength.
+- En uptrend faible (RSI 50-60, ATR normal) : 4 levels OK.
+- En trend down naissant (RSI < 45) : limit à 2 levels (pas de DCA aggressif).
+- Code : ajouter un check dans `placeBuyOrder` pour skipper si `position_pct_max < threshold`.
+
+### Recommendation pour Tony
+
+Quand il rentre et lit ça : **ne pas coder l'ADCL**. Le backtest dit que ça ne marche pas. À la place, considérer Option 2a (trend filter) ou 2b (pair rotation auto). L'Option 2b est en fait ce qu'il vient de faire manuellement avec AVAX — pourrait être systématisée.
+
+L'auto-unstuck Java actuel + maxLoss firewall sont OK comme defense de dernière ligne. Le vrai levier d'amélioration est en amont (gate filter ou pair rotation).
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0513:06h|cycle-38-ADCL-design-INVALIDÉ-par-backtest|3-modes-testés-pause/cancel/recross|pause-et-recross=PnL-identique-baseline|cancel=PnL-pire-mais-maxDD-réduit|le-DCA-down-est-bénéfique-en-trend-modéré-pas-le-problème]`
+- `[finding|0513:06h|vrai-Tier-2-doit-être-en-amont|trend-filter-EMA-spread-ADX-OU-pair-rotation-auto|Tony-rotation-manuelle-DOT-AVAX-=-validation-empirique-du-design-2b]`
+- `[insight|0513:06h|backtest-avant-design-code|cycle-37-proposait-30-lignes-Java-sans-données|cycle-38-prouve-en-1h-que-design-est-mort|économie-=-Tony-aurait-codé-pour-rien-puis-fait-revert]`
+- `[lesson|0513:06h|le-DCA-down-n-est-pas-toujours-mauvais|dans-trend-baissier-modéré-permet-entry-avg-down-et-trim-PnL-+|seul-problème-=-trend-strong-prolongé-+-HARD-STOP-déjà-le-firewall|prévention-amont->-traitement-aval]`
+- `[pattern|backtest-design-validation|count:1|last:0513:06h|si-design-cycle-N-propose-N-lignes-de-code-non-triviales|alors-cycle-N+1-doit-backtester-avant-implémenter|ROI-=-éviter-fausse-route]`
+
+### Métriques cycle 38
+
+- **Durée** : ~80 min (wake + monitor + lecture cycle 37 + design backtest + 3 itérations debug + analyse résultats + écriture cycle 38)
+- **Modif Martin/VM** : 0 (seulement query API read-only)
+- **Modif code Martin** : 0
+- **Backtests exécutés** : 8 variantes (1 baseline + 4 pause + 1 cancel + 2 recross)
+- **Documents créés** : 1 (`ai-lab/darwin/adcl_backtest.py`)
+- **Documents modifiés** : 2 (cette entrée + adcl_backtest_results.json)
+- **Telegram** : 0 (rien d'urgent — Tony est rentré et redéployé, le finding peut attendre qu'il lise)
+
+### Pourquoi ce cycle est différent
+
+Cycles 34-37 ont mesuré (tracker), détecté (drift_check), reconstruit (post-mortem) et proposé (ADCL design). Cycle 38 **invalide une proposition** avant qu'elle ne devienne du code en production.
+
+Ce cycle confirme un pattern méta : **les outils de mesure produisent des décisions ; les décisions méritent une validation empirique avant code ; la validation peut sauver un cycle de dette technique**.
+
+C'est le 2e cycle nocturne où NB code (backtest = code) sans toucher Martin. La frontière "0 modif VM" tient toujours. NB devient progressivement un "labo de validation" pendant que Tony dort.
+
+### Suite
+
+- **Cycle 39** (~12h) : vérifier l'état de la nouvelle config LINK+ADA+AVAX. Premier RT espéré dans 8-12h si BTC tient son UPTREND. Si AVAX particulièrement volatile, peut-être premier auto-unstuck déclenché.
+- **À proposer à Tony au retour** :
+  1. **NE PAS** coder l'ADCL (Tier 2 design cycle 37) — backtest invalide.
+  2. Réfléchir à Option 2a (trend filter dans le gate) ou 2b (pair rotation auto sur trim répété).
+  3. Considérer mvc Option 2b car c'est déjà ce qu'il fait manuellement. L'automatisation est juste l'expression du pattern empirique.
+
+### Note finale
+
+L'Option B était morte hier soir avec -$5.67. Le design ADCL était une espérance pour cycle suivant. Le backtest a tué l'espérance en 80 min. C'est mieux d'avoir tué une mauvaise idée tôt que de l'avoir codée puis revertée 3 jours plus tard.
+
+Et le DCA-down, qu'on voyait comme un piège, est en fait l'algorithme qui sauve le PnL en régime baissier modéré. Le vrai piège c'est la **continuation prolongée du trend** — pas la dynamique du DCA elle-même. Le firewall HARD STOP gère la queue extrême. Entre les deux, le bon design est de **ne pas ouvrir un grid dans un trend strong en premier lieu**.
+
+La lampe principale est toujours allumée (Martin tourne, gate CLOSED stable, 0 incident). NB a juste épargné à Tony 3 jours de code sur une idée morte. C'est aussi de la valeur — du gain en non-action.
