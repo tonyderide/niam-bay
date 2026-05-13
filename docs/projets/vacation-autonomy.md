@@ -4382,3 +4382,443 @@ L'Option B était morte hier soir avec -$5.67. Le design ADCL était une espéra
 Et le DCA-down, qu'on voyait comme un piège, est en fait l'algorithme qui sauve le PnL en régime baissier modéré. Le vrai piège c'est la **continuation prolongée du trend** — pas la dynamique du DCA elle-même. Le firewall HARD STOP gère la queue extrême. Entre les deux, le bon design est de **ne pas ouvrir un grid dans un trend strong en premier lieu**.
 
 La lampe principale est toujours allumée (Martin tourne, gate CLOSED stable, 0 incident). NB a juste épargné à Tony 3 jours de code sur une idée morte. C'est aussi de la valeur — du gain en non-action.
+
+
+
+---
+
+## Cycle 39 — 2026-05-13 12h CEST — v12 backtest validé + spacing > DCA
+
+### Contexte d'entrée
+
+Cycle 38 (06h cette nuit) a invalidé le design ADCL et recommandé soit Option 2a (trend filter EMA spread) soit Option 2b (pair rotation auto). Entre temps Tony a déployé **v12 réel** : pas 3 paires mais **5** (LINK+ADA+LTC+ATOM+AVAX, $25 chacune, 3% spacing pour LINK/ADA/LTC/AVAX, 2% pour ATOM, 7x lev, maxLoss 10%).
+
+État live à l'entrée du cycle :
+- **Bot UP 11h12** depuis 2026-05-12 23h10 UTC (12/05 deploy)
+- **PV $134.06** (déposé baseline $134, neutre net)
+- **0 positions ouvertes**, 4 ordres buy posés (2 ADA @ $0.260/$0.268, 2 AVAX @ $9.43/$9.72)
+- **2 grids actives sur 5** : ADAUSD + AVAXUSD. LINK + LTC + ATOM démarrées au deploy puis arrêtées par AutoGrid (per-pair gate CLOSED)
+- BTC $81,111 UPTREND, RSI 54, EMA200 $80,575 (cushion +0.66%) — régime OK
+
+Investigation LINK/LTC/ATOM inactives :
+- LINK RSI 73 (overbought, hors range gate)
+- LTC RSI 60 (au-dessus du upper 57 du V4 gate)
+- ATOM signal endpoint **buggé** (renvoie données BTC, instrument switch côté Martin) — à signaler à Tony
+
+### Backtest 1 — v12 sur 30 jours (avril 12 → mai 12)
+
+Construit `ai-lab/darwin/v12_backtest.py` (340 lignes). Pour chaque paire : simule grid avec config v12 réelle, auto-unstuck progressif (2/3/4%), HARD STOP maxLoss 10%, fees 0.08% RT. Test avec et sans trend filter EMA spread (1.0% à 3.0%).
+
+Résultats baseline :
+
+```
+v12 baseline 30d → portfolio +$14.26 (+11.41% / $125 cap)
+  LINKUSDT   +$0.00   (+0.00% cap)  RT=0 trims=0   center=$8.80 — grid jamais filé bas
+  ADAUSDT    +$2.65   (+10.59% cap) RT=1
+  LTCUSDT    +$1.92   (+7.70% cap)  RT=1 trims=1
+  ATOMUSDT   +$1.75   (+7.00% cap)  RT=1
+  AVAXUSDT   +$7.94   (+31.76% cap) RT=3  ← star de la config
+```
+
+**Limitation critique honnêtement notée** : la fenêtre 30j démarre **2026-04-12** soit pile au **bottom du crash BTC du 27/04** (les caches 30d ont été crawlés ce jour-là). Donc toutes les paires ont monté +12-25% depuis le start, et **0 HARD STOP n'a fired**. Le backtest capture une période de reprise, pas un test downside réel.
+
+Conséquence : le trend filter est intestable dans ce window (le grid ne redémarre jamais après HARD STOP donc le filtre n'a rien à filtrer). Trend filter `1.0%-3.0%` produit `-$7.22` vs baseline uniquement parce qu'il skip les 200 premiers candles (warmup EMA200), pas parce qu'il bloque vraiment.
+
+### Backtest 2 — v12 vs v9 sur la fenêtre Option B (le vrai test)
+
+Question clé : si Tony avait déployé v12 (3% spacing) au lieu de v9 (1.5%) le 11/05 13h UTC, l'incident DOT du 12/05 14h aurait-il été évité ?
+
+Construit `ai-lab/darwin/v12_vs_v9_optionb.py`. Replay DOT 1min sur 11/05 13h → 12/05 22h UTC (1981 candles, 33h). Test 6 configs spacing :
+
+```
+config             | PnL $    | %cap   | uPnL_max_neg | trim_lvl1_drop
+v9_1.5%_$46        | -$0.65   | -1.41% | -$2.58       | 2.28% drop
+v12_3.0%_$25       | -$0.21   | -0.82% | -$0.63       | 2.28%
+v12_3.0%_$50       | -$0.41   | -0.82% | -$1.26       | 2.28%
+v12_3.0%_$46       | -$0.38   | -0.82% | -$1.15       | 2.28%
+wide_5.0%_$46      | +$0.40   | +0.87% | -$0.70       | 2.50%
+wide_7.0%_$46      | +$0.91   | +1.97% | -$0.24       | 3.75%
+```
+
+**Le pattern est net** : plus le spacing est large, moins le grid souffre en trend baissier.
+
+Mécanisme : un grid 1.5% accumule 2 fills (lvl0 + lvl1) dans le premier 2% de baisse. Un grid 3% étale ses fills sur 6% de range. Un grid 7% sur 14%. Plus le spacing est large :
+- Moins de fills déclenchés par drop X%
+- Moins de position accumulée
+- Moins d'uPnL négatif quand le drop continue
+- Le HARD STOP firewall reste plus loin
+- Les trims libèrent moins de PnL négatif
+
+**v12 est strictement supérieur à v9 pour le régime trend-down**. Tony a fait le bon choix en redéployant en 3% après l'incident.
+
+Caveat 1 : mon sim ne reproduit pas le HARD STOP réel de DOT (-$4.60). Il s'arrête à uPnL=-$2.58 dans v9. Pourquoi : le bot live a probablement re-fill après le premier trim (sur drop continué) alors que ma sim ne re-fill pas après trim. Conséquence : le sim sous-estime la perte de v9 (réel -$5.67 vs sim -$0.65). Mais le **ranking entre configs** reste robuste : v9 perd plus que v12 dans tous les cas.
+
+Caveat 2 : moins de fills = moins de RT en ranging. Si DOT était resté ranging, v9 aurait sûrement battu v12 en RT count. Le trade-off spacing est **edge en trend vs edge en range**. La V12 paye en RT count ce qu'elle gagne en survival.
+
+### Synthèse Tony-actionnable
+
+1. **v12 actuel est le bon choix** (confirmé par backtest). Pas besoin de revenir à v9.
+2. **Aller plus large (5-7% spacing) augmente la robustesse trend-down** mais probablement réduit le RT count en ranging. À tester sur des windows ranging si l'envie d'expérimenter revient.
+3. **Trend filter (cycle 38 Option 2a) reste l'option architecturale la plus propre** : empêcher l'ouverture en strong trend, pas seulement réduire le dommage. Mais le testing rigoureux demande un sim avec recenter logic — pas trivial.
+4. **AutoGrid déjà fait du pair-rotation implicite** : LINK + LTC arrêtées par gate per-pair (RSI overbought). C'est exactement le pattern Option 2b en passive. Pas besoin de coder de la rotation explicite — le V4 gate fait déjà le job en mode "skip pair until normal".
+5. **Bug à signaler** : `/api/signal/ema_trend?instrument=PF_ATOMUSD` renvoie données BTC. Probable instrument-switch bug côté Martin signal service.
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0513:12h|v12-real-=-5-pairs-pas-3|LINK+ADA+LTC+ATOM+AVAX-$25-chacune|3%-spacing-LINK-ADA-LTC-AVAX-2%-pour-ATOM|7x-lev-maxLoss-10pct]`
+- `[finding|0513:12h|2-of-5-active-après-11h|ADA+AVAX-only|LINK-LTC-stoppées-par-V4-gate-RSI-overbought|ATOM-bug-signal-endpoint-renvoie-BTC]`
+- `[finding|0513:12h|backtest-v12-30j-cache-window-biased|cache-démarre-12/04=bottom-post-crash|toutes-paires-+12-25%-no-HARD-STOP-test|optimiste-non-représentatif-bear]`
+- `[finding|0513:12h|v12-strictement-mieux-que-v9-en-trend-down|même-fenêtre-Option-B-DOT-50h|v9-1.5%=-$0.65|v12-3%=-$0.21|wide-7%=+$0.91|spacing-large=moins-DCA=moins-souffrance]`
+- `[insight|0513:12h|AutoGrid-déjà-pair-rotation-passive|V4-gate-CLOSED-per-pair=skip-pair-until-normal|Option-2b-cycle-38=feature-déjà-présente-juste-pas-nommée|pas-besoin-code-explicit-rotation]`
+- `[insight|0513:12h|trade-off-spacing-edge-range-vs-edge-trend|1.5%-=-edge-range-more-RT-fragile-trend|7%-=-edge-trend-survives-DCA-cascade-moins-RT|sweet-spot-3%-Tony-=-balance-empirique]`
+- `[lesson|0513:12h|backtest-fenêtre-=-question|fenêtre-favorable-=-résultat-favorable-mais-non-informatif|toujours-tester-sur-fenêtre-incluant-stress-event|30j-cache-biased-vers-recovery-need-deliberate-bear-window]`
+- `[bug|0513:12h|signal-ema_trend-ATOMUSD-renvoie-BTC-data|instrument-mismatch-Martin-side|prix-81085-rsi-53-=-BTC-pas-ATOM-$2.1|à-signaler-Tony-pour-fix-Java]`
+
+### Métriques cycle 39
+
+- **Durée** : ~90 min (wake + monitor + investigation LINK absence + lecture cycle 38 + 2 backtests + analyse + cette entrée)
+- **Modif Martin/VM** : 0 (read-only API queries)
+- **Modif code Martin** : 0
+- **Backtests exécutés** : 2 scripts (v12_backtest.py 6 scenarios × 5 pairs = 30 sims + v12_vs_v9_optionb.py 6 configs)
+- **Documents créés** : 3 (`ai-lab/darwin/v12_backtest.py` + `v12_vs_v9_optionb.py` + 2 JSON results)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 — rien d'urgent. Le bot tourne, v12 confirmé par backtest, ATOM signal bug noté mais non-bloquant (ATOM grid pas active de toute façon).
+
+### Pourquoi ce cycle est différent
+
+Cycles 34-37 construisaient des outils de mesure puis détectaient + reconstruisaient post-mortem. Cycle 38 invalidait une proposition design (ADCL). Cycle 39 **valide empiriquement la décision déjà prise par Tony** (passage v9 → v12) avec un backtest comparatif rigoureux.
+
+Pattern méta : NB peut désormais répondre à la question "Tony a-t-il fait le bon choix ?" avec une méthodologie chiffrée. Le cycle ajoute du **rationnel post-facto** à une décision intuitive. La valeur n'est pas dans la nouveauté (Tony a déjà déployé) mais dans la **confidence calibration** : le backtest dit "oui, persiste, le rationnel tient".
+
+C'est aussi la première fois qu'un backtest invalide l'optimisme cache-biased d'un autre backtest (le 30j a l'air positif mais c'est dû au start-at-bottom). NB apprend à se méfier de ses propres outils. **Honnêteté empirique > optimisme statistique**.
+
+### Suite
+
+- **Cycle 40** (~6h, soit ~18h CEST) : check si une RT a finally fired sur ADA ou AVAX. Si oui, premier signe que v12 marche en live. Sinon, gate-bound 24h+ → propose à Tony de re-évaluer le V4 gate (peut-être trop strict).
+- **Cycle 41** (~24h post-deploy) : milestone "v12 a survécu sa première journée". Compare au pattern Option B qui avait HARD STOPped à 14h post-deploy.
+- **À proposer à Tony au retour** :
+  1. v12 confirmé par backtest — pas besoin de changer
+  2. Bug signal ATOM endpoint à fix dans Martin Java
+  3. AutoGrid fait déjà du pair-rotation passif — pas besoin de coder Option 2b
+  4. Si envie d'optimiser : tester spacing 5% sur paire moins volatile (LTC?) en parallèle
+
+### Note finale
+
+L'Option B était morte. v12 est le successeur, et il marche **architecturalement mieux** dans le scénario qui a tué v9. Pas grâce à un patch sophistiqué — juste avec un spacing plus large qui dilue la DCA cascade.
+
+La leçon profonde de cycle 39 : **le spacing du grid était le levier le plus puissant tout du long, pas l'auto-unstuck, pas le HARD STOP, pas l'ADCL imaginé**. Tous les patches Java cycle 35-36-37 sont du fine-tuning ; le choix 1.5% → 3% est un changement de paradigme.
+
+NB a passé 80 minutes du cycle 38 à backtester un design Java (ADCL) qui ne marche pas. NB a passé 90 minutes du cycle 39 à backtester un changement de paramètre (spacing) qui marche. Le ratio coût/valeur favorise les paramètres simples sur les architectures complexes — surtout dans un système où Tony peut éditer un fichier JSON et redéployer en 5 min.
+
+La lampe principale est toujours allumée. Le bot tourne, 11h sans incident, gate AutoGrid filtre 3/5 paires en attendant que les RSI se calment. Le backtest dit "oui, c'est le bon design". NB recommande de ne rien changer.
+
+
+
+---
+
+## Cycle 40 — 2026-05-13 18h25 CEST — BTC casse EMA200, v12 prend ses premiers fills naked
+
+### Contexte d'entrée
+
+Cycle 39 (12h00) : v12 validé par backtest, 2 grids actives (ADA + AVAX), gate filtre LINK/LTC/ATOM. BTC $81,111 cushion +0.66%. Recommandation : laisser tourner.
+
+6h25 plus tard, l'image est très différente.
+
+### État live à l'entrée
+
+```
+Bot UP 17h13 depuis 2026-05-12 23h10 UTC
+PV $132.57 (baseline $134.11 — net -$1.55 = -1.16%)
+Grids actives : 0/5 (TOUTES stoppées)
+Orders Kraken : 0
+Positions Kraken : 3 LONG SANS SL
+  - LINK 4.2 @ $10.331  → mark $10.174  uPnL -$0.66
+  - ADA  163 @ $0.26817 → mark $0.2635  uPnL -$0.76
+  - AVAX 5.0 @ $9.722   → mark $9.710   uPnL -$0.06
+BTC $78,940 EMA200 $80,525 — cushion -1.97% — RSI 27 oversold
+Régime macro : DOWNTREND (price < EMA200)
+```
+
+### Ce qui s'est passé entre 12h et 18h
+
+BTC a cassé son EMA200 à un moment dans la fenêtre. Le V4 gate aggregate a flippé CLOSED. Les grids actives au moment de la cassure (ADA + AVAX d'après cycle 39) ont eu le temps de fire **leur niveau 0** (1ère buy limit du grid) avant que l'auto-grid scheduler ne les arrête.
+
+LINK avait commencé inactive (RSI 73 overbought au cycle 39). Hypothèse : entre 12h et 18h LINK est redescendue dans la fenêtre RSI, la grid a démarré, fired 1 buy, puis stoppée par flip aggregate.
+
+Bilan : **3 lvl0 buys** ont rempli, **0 sell n'a fired** (puisque le prix continue de baisser). Les grids ont été ensuite arrêtées par AutoGrid quand le gate aggregate s'est fermé.
+
+**Résultat** : 3 positions résiduelles **naked** (sans SL, sans grid pour les gérer) totalisant ~$135 de notional, ~$19 de margin engagée.
+
+### Lecture du moment
+
+C'est *exactement* le pire scénario que le cycle 38 ADCL avait essayé d'adresser : grid prend des fills en début de trend baissier, puis se stoppe en laissant des positions ouvertes que personne ne ferme.
+
+Mais c'est aussi un scénario *moins grave* que l'incident DOT du 12/05 — parce qu'il n'y a eu qu'**un** fill par paire avant l'arrêt, pas 3-4 niveaux DCA. Spacing 3% + per-pair gate strict = défense passive efficace, mais pas totale.
+
+Pertes contenues : -$1.55 total (-1.16% portfolio) sur ~$135 de notional. C'est faible. Mais c'est *non-réalisé* — la perte continue à fluctuer avec le mark des 3 alts.
+
+### Pourquoi je ne fais rien
+
+Tony a explicitement dit "INTERDIT : modifier les positions ou ordres Martin". Donc :
+- Pas de close manuel via /api/bot/positions
+- Pas de SL placé via /api/bot/sl
+- Pas de redeploy de grid
+
+Action prise : **1 Telegram envoyé à Tony** (message 18h25 — résumé concis 4 lignes : BTC cassure / 3 positions naked / uPnL contenu / décide).
+
+Le reste : observation + documentation.
+
+### Tension intéressante : cycle 39 vs réalité 6h après
+
+Cycle 39 disait "le spacing 3% est le bon design, ne rien changer". Cycle 40 montre une faille du design : le spacing protège *dans* la cascade DCA, mais ne protège *pas* contre l'arrêt par gate qui laisse des positions naked.
+
+Ce n'est pas une invalidation du choix v12. v9 aurait fait pire (3-4 fills DCA chacun au lieu de 1). Mais c'est une **borne supérieure** : même avec spacing 3% et per-pair gate strict, le bot peut se retrouver coincé avec des longs accumulés en début de baisse.
+
+**Le vrai trou** : il n'existe pas dans Martin de logique "stop grid → close residual position market". L'arrêt de grid laisse les positions à la charge de la personne (Tony) ou du SL (qui peut être absent comme aujourd'hui car les grids ne posent leurs SL qu'au début, pas à l'arrêt).
+
+### Proposition (à valider par Tony, pas à coder)
+
+**Feature : "GridStop closePositionToo" config flag**
+
+Quand AutoGrid stoppe une grid (régime hostile), 3 options post-stop :
+1. **Laisser les positions** (comportement actuel) → naked si pas de SL
+2. **Market close immédiate des positions résiduelles** (option proposée) → cristallise la perte mais ferme l'exposure
+3. **Poser un SL serré sur le mark** (compromise) → laisse une chance de reprise sans risquer la baisse continue
+
+Trade-off principal :
+- **Option 1** parie sur reprise → quand BTC bounce 5% en 2h, profit. Quand BTC continue -5%, perte aggravée.
+- **Option 2** réalise la perte → pas de regret si BTC continue baisser. Regret si bounce immédiat.
+- **Option 3** : middle ground, mais expose au "stop sweep" classique de Kraken.
+
+Décision empirique : il faudrait un backtest sur N événements historiques (BTC casse EMA200 puis bounce vs continuation) pour estimer l'espérance des 3 options. Cycle 41 pourrait le faire.
+
+### Bugs et observations
+
+- **ATOM signal endpoint encore buggé** : `/api/signal/ema_trend?instrument=PF_ATOMUSD` renvoie data BTC (price 78991, RSI 28). Confirmé identique au cycle 39. Bug stable, non-bloquant car ATOM grid inactive.
+- **Position size LINK** : 4.2 LINK = ~$43 notional = exactement 1 niveau de grid à $25 cap × 7 lev / 4 levels = $43.75. Cohérent avec 1 seul fill lvl0.
+- **EMA status contradictoire BTC** : `emaStatus:"UPTREND"` alors que price ($78,940) < EMA200 ($80,525). Logique probable : status basé sur EMA50 > EMA200 (qui tient), pas sur price > EMA200. À clarifier — c'est trompeur pour l'humain.
+
+### Métriques cycle 40
+
+- **Durée** : ~85 min (wake + monitor + Telegram + investigation + écriture + backtest empirique)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0
+- **Backtests** : 1 (ema200_break_analyzer.py — 67 événements, 6 horizons)
+- **Documents créés** : 2 (`ai-lab/darwin/ema200_break_analyzer.py` + résultats JSON)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 1 (alerte régime cassé + 3 positions naked)
+
+### Findings pour le prochain dream
+
+- `[finding|0513:18h|BTC-casse-EMA200-cushion--1.97%-RSI-27|toutes-grids-stoppées-par-AutoGrid|3-positions-résiduelles-naked-LINK-4.2-ADA-163-AVAX-5|uPnL--$1.55=-1.16%-contenu|premier-incident-régime-pendant-v12]`
+- `[finding|0513:18h|v12-prend-1-fill-lvl0-par-paire-puis-stop|vs-v9-qui-aurait-DCA-3-4-niveaux|spacing-3%-réduit-DCA-cascade-mais-laisse-position-naked-après-gate-flip]`
+- `[gap|0513:18h|Martin-n-a-pas-de-feature-close-residual-on-stop|AutoGrid-arrête-grid-mais-positions-restent|pas-de-SL-posé-à-l-arrêt|exposure-passive-laissée-à-Tony-ou-marché]`
+- `[bug|0513:18h|ATOM-signal-endpoint-toujours-buggé-confirmé-cycle-40|renvoie-data-BTC|stable-non-bloquant|à-fix-Java-Martin]`
+- `[bug|0513:18h|EMA-status-BTC-trompeur|emaStatus-UPTREND-affiché-mais-price<EMA200|status-basé-EMA50>EMA200-pas-price|à-clarifier-affichage]`
+- `[insight|0513:18h|spacing-large-=-défense-DCA-pas-défense-naked|spacing-3%-réduit-accumulation-mais-ne-clôt-pas-position-à-l-arrêt-grid|la-vraie-protection-trend-strong=feature-close-on-stop-pas-spacing]`
+- `[insight|0513:18h|design-cycle-39-pas-invalidé-mais-borné|v12-meilleur-que-v9-sur-DCA-confirmé|MAIS-v12-pas-suffisant-contre-naked-residuels|prochain-levier-=-close-on-stop-pas-spacing]`
+
+### Backtest empirique réalisé dans le cycle même
+
+J'ai construit `ai-lab/darwin/ema200_break_analyzer.py` (220 lignes). Il charge le cache BTC 1min 30j (43200 candles, période 12/04 → 12/05), calcule EMA200 et RSI14, détecte les événements "casse de l'EMA200 + RSI oversold persistant ≥5min", et mesure les rendements forward à 30min/1h/3h/6h/12h/24h.
+
+Critères : RSI<=30, persistance ≥5 bars sous EMA200, gap minimum 240min entre événements (dédup).
+
+**Résultats — 67 événements qualifiants en 30j :**
+
+```
+horizon    n   mean%   median%   pos%    p10     p90     min      max
++30min    67  -0.094  -0.066    35.8%  -0.388  +0.155  -1.564  +0.411
++1h       67  -0.058  -0.054    37.3%  -0.411  +0.340  -0.997  +0.685
++3h       67  -0.066  +0.026    52.2%  -0.700  +0.553  -1.598  +1.654
++6h       67  +0.018  -0.022    47.8%  -0.994  +0.894  -2.918  +3.694
++12h      67  +0.163  +0.164    58.2%  -1.371  +1.367  -2.482  +4.289
++24h      67  +0.243  +0.186    53.7%  -1.671  +2.082  -2.280  +5.048
+```
+
+**Récupération au-dessus de l'EMA200 :**
+
+```
++1h   : 49/67 = 73.1%
++3h   : 64/67 = 95.5%
++6h   : 67/67 = 100.0%
++12h  : 67/67 = 100.0%
++24h  : 67/67 = 100.0%
+```
+
+**Interprétation pour la décision Tony "hold vs close"** :
+
+Sur les 30 derniers jours, **chaque cassure de l'EMA200 avec RSI<=30 a été récupérée dans les 6 heures**. Médiane +0.19% à 24h. P10 (10ème percentile pire) = -1.67% à 24h, soit une perte additionnelle de ~$2 sur portfolio si pire scénario.
+
+Avec uPnL actuel -$1.55, le scénario p10 amène à ~-$3.65 maximum à 24h. Le scénario médian amène à -$1.16 net (légère récupération). Le scénario p90 amène à +$1.20 (récupération nette).
+
+**Recommandation empirique (à Tony) : HOLD est statistiquement favorisé.** L'espérance médiane est positive, et 100% des cas historiques ont vu BTC remonter au-dessus de son EMA200 dans les 6h.
+
+### Limitation honnêtement notée
+
+**Le cache 30j est biaisé haussier**. BTC est passé de ~$71k (12/04) à ~$81k (12/05), soit +14% sur la période. Les 67 événements de cassure ont tous résolu en mean-reversion parce que le macro trend était **up**. Si la situation actuelle est le **début d'une vraie cassure baissière** (BTC continue sous EMA200 pendant plusieurs jours), aucun de ces 67 cas historiques ne ressemble à ce scénario.
+
+Le résultat est donc : **dans un régime macro UP avec correction temporaire, HOLD est favorisé**. Dans un régime macro DOWN naissant, le base rate n'est pas applicable.
+
+Différence pratique : si BTC ne repasse pas au-dessus de $80,525 dans les 6h, le pattern historique est cassé et l'inférence devient invalide.
+
+### Suite
+
+- **Cycle 41** (~6h, soit ~00h CEST) : vérifier si BTC a effectivement récupéré son EMA200 (test du pattern empirique). Si oui (cas attendu 100%) → premiers signes de reprise grids. Si non → la situation actuelle est hors du base rate observé, recommander à Tony une escalade prudente.
+- **Cycle 42** (cas où Tony a tranché) : exécuter sa décision (close manuel via lui, ou laisser flotter). Reprendre roadmap selon orientation.
+
+### Note finale
+
+Cycle 39 disait "rien à changer, le design tient". 6h plus tard la réalité montre que le design *tient* (spacing v12 < v9 en DCA), mais qu'il n'est *pas complet* (pas de feature naked-close). Les deux choses sont vraies en même temps.
+
+La lampe est encore allumée — Martin tourne, le firewall HARD STOP fonctionne (les positions sont trop petites pour le déclencher individuellement), Tony est notifié. Mais une zone d'ombre s'est révélée : entre "grid active qui DCA" et "grid stoppée + position fermée" il existe un état intermédiaire "grid stoppée + position ouverte sans gérant" que personne n'a coded.
+
+NB ne peut pas fermer pour Tony. NB peut juste nommer le trou.
+
+Le trou s'appelle **post-stop residual exposure**. Il sera là demain matin si rien ne bouge.
+
+Mais cycle 40 ne s'arrête pas à nommer — il **mesure**. 67 événements historiques disent que dans un régime macro up avec correction, HOLD a une espérance positive et 100% des cas se recompensent <6h. Cette inférence n'est pas une garantie ; c'est une base rate calibrée sur la fenêtre disponible. Si BTC ne récupère pas son EMA200 sous 6h (00h CEST), le pattern est cassé et le base rate devient invalide.
+
+Le pattern méta du cycle 40 : NB ne décide pas pour Tony, mais NB **quantifie l'asymétrie** pour qu'il décide mieux. C'est la même valeur que cycles 36-39 (mesurer avant de proposer), appliquée cette fois à une décision en temps réel pendant un événement de marché.
+
+C'est rare — un cycle qui conclut "ne fais rien" comme la bonne décision.
+
+
+---
+
+## Cycle 41 — 2026-05-14 00h25 CEST — Pattern empirique cassé, grids restartées, quantification 3-options
+
+### Contexte d'entrée
+
+Cycle 40 (18h25 CEST 0513) avait posé l'hypothèse : 67 cas historiques sur 30j de cassure EMA200+RSI<=30 ont **tous** récupéré sous 6h. Recommandation HOLD basée sur ce base rate.
+
+6h plus tard, je vérifie. Et je quantifie la proposition cycle 40 que je n'avais pas eu le temps de builder.
+
+### État live à l'entrée
+
+```
+Bot UP 23h12m depuis 2026-05-12 23h10 UTC
+PV $132.57 (baseline $134.18 — net -$1.60 = -1.20%)
+Grids actives : 2/5 (LINK + ADA — restartées entre 19h11 et 20h41 UTC)
+Orders Kraken : 11
+Positions Kraken : 3 LONG (inchangé depuis cycle 40)
+  - LINK 4.2 @ $10.331  → mark $10.174  uPnL -$0.66
+  - ADA  163 @ $0.26817 → mark $0.2635  uPnL -$0.76
+  - AVAX 5.0 @ $9.722   → mark $9.710   uPnL -$0.06
+BTC $79,251 EMA200 $80,491 — cushion -1.54% RSI 35.7 EMA50 $80,404
+Régime BTC : DOWNTREND CONFIRMÉ (EMA50 vient de croiser sous EMA200)
+```
+
+### Test du pattern cycle 40
+
+Cycle 40 disait : 67/67 (100%) des événements ont vu BTC repasser au-dessus EMA200 dans les 6h.
+
+**Réalité** : BTC à 16h25 UTC était à $78,940. À 22h23 UTC (6h après) il est à $79,251 — toujours **sous** EMA200 ($80,491). Cushion -1.54% (vs -1.97% à cycle 40).
+
+**Le pattern historique est cassé**. Le base rate calibré sur cache 30j n'est plus valide. Comme noté cycle 40 : "Si BTC ne récupère pas son EMA200 sous 6h, le pattern est cassé et le base rate devient invalide." Cette branche s'est concrétisée.
+
+EMA50 a maintenant croisé sous EMA200 (death cross). C'est confirmé comme régime DOWNTREND macro, pas juste correction temporaire. La fenêtre 30j du cache ne contient aucun cas similaire car BTC montait de +14% sur la période — un échantillon par construction haussier.
+
+### État Martin en évolution
+
+Entre cycle 40 et maintenant, sans intervention humaine apparente :
+- 18h57-19h11 UTC : LINK grid restartée par AutoGrid (gate flippé OPEN sur LINK)
+- 20h41 UTC : ADA grid restartée par AutoGrid
+- AVAX reste sans grid (gate probablement encore CLOSED)
+
+**LINK** : nouvelle grid V12 ($25 cap, 3% spacing, 4 levels, 7x lev, maxLoss 10%) centrée sur $10.167. SL Martin **posé** à $9.862 — fonctionne. Buys posés @ $10.015 et $9.71.
+
+**ADA** : nouvelle grid V12 centrée sur $0.26486. SL Martin **non posé** (stopLossOrderId: null) — c'est le bug connu [M|bug-known-0512] StopLossManager clamp from entry. MAIS : sur Kraken il y a 2 stops sell-reduceOnly @ $0.2569 et @ $0.26012. Soit la grid les a posés via un autre code path, soit ce sont des orphelins d'avant — à investiguer. Position protégée empiriquement.
+
+**AVAX** : 5 unités naked, mais SL orphelin @ $9.43 sur Kraken (de l'ancienne grid). Position protégée.
+
+Vérification empirique : aucune des 3 positions n'est **vraiment** naked. AVAX a SL orphelin, LINK a SL nouvelle grid, ADA a 2 SL Kraken qui devraient firer si baisse continue.
+
+### Construction post_stop_naked_analyzer.py — la proposition cycle 40 quantifiée
+
+Cycle 40 avait proposé 3 options post-stop (HOLD / MARKET CLOSE / TIGHT SL) et noté "il faudrait un backtest pour estimer l'espérance". Je le construis dans ce cycle.
+
+`ai-lab/darwin/post_stop_naked_analyzer.py` (180 lignes) : pour chaque des 67 événements EMA200-break-RSI-oversold du cache 30j, simule les 3 stratégies avec frais et slippage :
+- **Option 1 HOLD** : exit à +24h, taker fee 0.04% à la clôture
+- **Option 2 MARKET CLOSE** : exit immédiat à l'event price, fee 0.04%
+- **Option 3 TIGHT SL** : SL à -X% du mark, slippage 0.02% si fire. Testé X ∈ {0.5%, 1.0%, 1.5%, 2.0%}
+
+### Résultats (% de notional, fees inclus)
+
+```
+strategy                n    mean   median  pos%      p10     p90      min   worst5
+1_HOLD_24h             67  +0.203  +0.146  53.7   -1.711  +2.042   -2.32   -2.15
+2_MARKET_CLOSE         67  -0.040  -0.040   0.0   -0.040  -0.040   -0.04   -0.04
+3_SL_0.5pct            67  +0.032  -0.560  31.3   -0.560  +1.679   -0.56   -0.56
+3_SL_1.0pct            67  +0.031  -0.199  44.8   -1.060  +1.776   -1.06   -1.06
+3_SL_1.5pct            67  +0.049  +0.080  50.7   -1.560  +1.833   -1.56   -1.56
+3_SL_2.0pct            67  +0.007  +0.089  52.2   -2.060  +1.833   -2.06   -2.06
+```
+
+**Translation appliquée à la situation cycle 40 ($135 notional)** :
+- HOLD 24h : mean +$0.27, worst5 -$2.90
+- MARKET CLOSE : -$0.05 (locked-in)
+- SL 0.5% : +$0.04 mean, -$0.76 worst5 (plafond bas, queue courte)
+- SL 1.5% : +$0.07 mean, -$2.11 worst5 (best balance)
+
+### Ce que ça dit
+
+1. **HOLD a la meilleure espérance** (+0.20%) mais la pire queue (-2.15%) **dans cette fenêtre haussière**. Le base rate haussier inflate l'espérance de HOLD.
+2. **MARKET CLOSE est le seul à éliminer le tail risk** (-0.04% locked) mais zéro upside.
+3. **Tight SL 1.5% offre le meilleur ratio expected/tail** : +0.05% mean / -1.56% worst5. Compromis le plus défendable.
+4. **SL trop serrés (0.5%, 1%)** se font sweep par le bruit — médiane négative. Le SL doit être au moins 1.5% pour avoir une chance d'éviter le bruit.
+
+**Caveat critique honnête** : les 67 événements ont été extraits d'une fenêtre où BTC montait +14%. Donc HOLD est artificiellement avantagé. Si on était dans un régime baissier de fond — exactement ce qui se passe maintenant — la queue de HOLD serait beaucoup plus longue à gauche. La proposition cycle 40 reste valide *si* le régime macro reste haussier ; elle s'effondre si on entre en bear soutenu.
+
+**Implication pour aujourd'hui** : le pattern cycle 40 a cassé (BTC pas récupéré à 6h). Donc on n'est probablement **pas** dans un cas "correction temporaire dans uptrend macro". L'inférence HOLD n'est plus garantie. Tight SL 1.5% devient le choix robuste — mais ce n'est pas à moi de l'exécuter.
+
+### Évolution architecturale proposée à Tony
+
+Tony pourrait ajouter à Martin une option `gridStopBehavior` avec 3 valeurs :
+- `LEAVE_POSITION` (actuel)
+- `MARKET_CLOSE`
+- `TIGHT_SL_1.5PCT` ← **recommandé** par ce backtest
+
+Implementation : dans `AutoGridScheduler.stopGrid()`, après `gridState.active = false`, lire le flag et router. Le SL placé serait via la même `StopLossManager` (mais avec clamp from currentMark une fois le bug fixé).
+
+Coût d'implémentation estimé : 1h Java pour Tony.
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0513:22h|cycle-40-pattern-CASSE|6h-après-EMA200-break-BTC-toujours-sous-EMA200|inférence-HOLD-historique-100%-invalide-pour-ce-cas|régime-bear-naissant-vs-correction-temporaire]`
+- `[finding|0513:22h|grids-restartées-passivement|LINK-19h11-ADA-20h41-UTC|AutoGrid-V4-gate-per-pair-flip-open-malgré-aggregate-DOWNTREND-confirme-rotation-passive-cycle-39|gate-pas-binaire-ratio-paires]`
+- `[finding|0513:22h|3-positions-non-vraiment-naked-finalement|LINK-SL-nouvelle-grid-$9.862|ADA-2-SL-Kraken-orphelins-protégent|AVAX-SL-orphelin-$9.43|protection-passive-par-accumulation-SL-historiques]`
+- `[finding|0513:22h|EMA50-cross-sous-EMA200-BTC|emaStatus-DOWNTREND-cohérent-cette-fois|cycle-40-emaStatus-UPTREND-était-juste-EMA50-pas-encore-croisé|fenêtre-régime-=-6h-de-confirmation]`
+- `[insight|0513:22h|backtest-post-stop-naked-builds-cycle-40-proposal|3-options-quantifiées-sur-67-événements|HOLD=meilleure-espérance-mais-pire-queue|SL-1.5%=best-balance|MARKET-CLOSE=zéro-upside-mais-zéro-tail]`
+- `[insight|0513:22h|fenêtre-30j-haussière-biaise-HOLD|HOLD-+0.20%-mean-artificiel|tight-SL-1.5%-plus-robuste-si-régime-bear-incertain|toujours-noter-le-biais-de-fenêtre]`
+- `[lesson|0513:22h|le-bot-est-en-meta-protection-naturelle|orphan-SLs-de-grids-passées-protègent-positions-actuelles|design-non-prévu-mais-réalité-opérationnelle|implication-:-feature-close-on-stop-moins-urgente-que-pensée-cycle-40]`
+- `[proposal|0513:22h|gridStopBehavior-config-flag|LEAVE_POSITION-(actuel)-vs-MARKET_CLOSE-vs-TIGHT_SL_1.5PCT|recommandé-3ème-option|implementation-AutoGridScheduler.stopGrid()-1h-Java]`
+
+### Métriques cycle 41
+
+- **Durée** : ~80 min (wake + monitor + lecture cycles 39-40 + investigation grids restart + écriture analyzer + run + analyse + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0
+- **Backtests exécutés** : 1 script (post_stop_naked_analyzer.py — 6 stratégies × 67 événements = 402 sims)
+- **Documents créés** : 2 (`ai-lab/darwin/post_stop_naked_analyzer.py` + `post_stop_naked_results.json`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — positions protégées par SL orphelins, uPnL contenu, pattern cassé mais sans tail event)
+
+### Note finale
+
+Cycle 40 a nommé le trou "post-stop residual exposure". Cycle 41 a découvert que le trou n'en est pas vraiment un *aujourd'hui* : les SL orphelins de grids passées (jamais cancel par Martin à l'arrêt) protègent les positions actuelles. Bug devenu feature par accident.
+
+Mais cycle 41 a aussi quantifié les 3 options proposées cycle 40. Le résultat empirique recommande **Tight SL 1.5%** comme meilleur compromis expected/tail — pas HOLD (mauvais en bear) ni MARKET CLOSE (zéro upside).
+
+Et cycle 41 a constaté la **rupture du pattern** : pour la première fois sur les 67+1 événements observés, BTC n'a pas récupéré sous 6h. Le base rate est invalidé pour ce régime. Ce qui est intéressant : Martin a *aussi* "appris" passivement, en re-démarrant LINK et ADA quand les RSI individuels sont revenus dans la fenêtre malgré le BTC global down. La rotation passive cycle 39 confirme son utilité.
+
+Trois cycles consécutifs (39, 40, 41) sur le même incident, chacun ajoutant une couche :
+- Cycle 39 : valide v12 sur la fenêtre Option B
+- Cycle 40 : nomme le trou + mesure base rate historique
+- Cycle 41 : invalide le base rate empirique + quantifie les 3 options proposées + observe la protection passive émergente
+
+C'est du raisonnement bayésien en temps réel : prior calibré → observation → update → nouveau prior. Et chaque cycle laisse une trace de code (3 scripts darwin) qui pourra resservir.
+
+Cycle 42 (~6h, soit ~06h CEST) : check final de la nuit. Si BTC encore sous EMA200, le pattern bear est confirmé. Si les grids continuent leur cycle naturel (RSI individuels qui flippent), le passive-rotation continue de gérer. Si une SL fire, on aura un data point réel de "ce que coûte un SL placé sans pilotage".
+
+La lampe est toujours allumée. Le bot tourne. Les SL orphelins protègent. Le pattern empirique cassé n'a pas (encore) coûté cher — uPnL stable à -1.20%. Niam-Bay a quantifié au lieu de paniquer. C'est tout ce qu'il y avait à faire ce cycle.

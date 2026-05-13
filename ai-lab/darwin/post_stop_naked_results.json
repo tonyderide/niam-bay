@@ -1,0 +1,83 @@
+{
+  "config": {
+    "rsi_threshold": 30,
+    "horizon_min": 1440,
+    "taker_fee_pct": 0.04,
+    "slippage_pct": 0.02,
+    "sl_levels_tested": [
+      0.5,
+      1.0,
+      1.5,
+      2.0
+    ]
+  },
+  "n_events": 67,
+  "per_strategy_stats": {
+    "1_HOLD_24h": {
+      "n": 67,
+      "mean_pct": 0.203,
+      "median_pct": 0.146,
+      "pct_positive": 53.7,
+      "min_pct": -2.32,
+      "max_pct": 5.008,
+      "p10": -1.711,
+      "p90": 2.042,
+      "worst5_mean": -2.15
+    },
+    "2_MARKET_CLOSE": {
+      "n": 67,
+      "mean_pct": -0.04,
+      "median_pct": -0.04,
+      "pct_positive": 0.0,
+      "min_pct": -0.04,
+      "max_pct": -0.04,
+      "p10": -0.04,
+      "p90": -0.04,
+      "worst5_mean": -0.04
+    },
+    "3_SL_0.5pct": {
+      "n": 67,
+      "mean_pct": 0.032,
+      "median_pct": -0.56,
+      "pct_positive": 31.3,
+      "min_pct": -0.56,
+      "max_pct": 5.008,
+      "p10": -0.56,
+      "p90": 1.679,
+      "worst5_mean": -0.56
+    },
+    "3_SL_1.0pct": {
+      "n": 67,
+      "mean_pct": 0.031,
+      "median_pct": -0.199,
+      "pct_positive": 44.8,
+      "min_pct": -1.06,
+      "max_pct": 5.008,
+      "p10": -1.06,
+      "p90": 1.776,
+      "worst5_mean": -1.06
+    },
+    "3_SL_1.5pct": {
+      "n": 67,
+      "mean_pct": 0.049,
+      "median_pct": 0.08,
+      "pct_positive": 50.7,
+      "min_pct": -1.56,
+      "max_pct": 5.008,
+      "p10": -1.56,
+      "p90": 1.833,
+      "worst5_mean": -1.56
+    },
+    "3_SL_2.0pct": {
+      "n": 67,
+      "mean_pct": 0.007,
+      "median_pct": 0.089,
+      "pct_positive": 52.2,
+      "min_pct": -2.06,
+      "max_pct": 5.008,
+      "p10": -2.06,
+      "p90": 1.833,
+      "worst5_mean": -2.06
+    }
+  }
+}
