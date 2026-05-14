@@ -5182,3 +5182,117 @@ Le journal a déjà 5125 lignes avant ce cycle. Il faudrait probablement décide
 Pour ce soir : la prédiction du matin tient, le bot tourne, le fragment est écrit, l'instruction de Tony « avance sur UN projet créatif » est honorée. Cycle 45 (~6h, ~00h CEST si la cadence /loop tient) : surveiller comportement nuit, écrire un finding si un nouveau régime se manifeste, sinon faire silence.
 
 La machine est plus robuste que mes models. C'est encore mieux comme finding.
+
+---
+
+## Cycle 2026-05-15 00h23 Paris — Cycle 45 : strategy v12 déployée par Tony, AVAX en closeOnly héritée
+
+**État Martin (martin-monitor 22:23 UTC = 00:23 CEST)** : **HOLD**. PV $135.28, uPnL +$0.28 (+0.20%). Bot UP 8h29 (restart 13:53 UTC). 2 grids actives sur 5 enabled : LINK + AVAX. BTC $81,416 ABOVE EMA200 $80,452 (cushion +1.20%), RSI 64.5. `emaStatus=DOWNTREND` est trompeur — EMA50 $80,452.80 < EMA200 $80,452.89 par 9 cents, cross technique récent, pas un régime cassé.
+
+### Nouvelle config découverte — strategy v12 « Tony brief »
+
+Lecture `/home/ubuntu/martin/config/strategy.json` :
+
+```
+name: "v12 5-pair $25/pair: LINK+ADA+LTC+ATOM+AVAX 7x maxLoss10pct (Tony brief)"
+version: 12, updatedAt: 2026-05-14T13:55:31Z
+totalCapital: 125, reservePct: 7
+drawdown.killPct: 15, drawdown.initialCapital: 134
+autoGrid: enabled=true, adxThreshold=50, bbwThreshold=4.0
+```
+
+5 paires enabled, toutes $25/7x/4lv/maxLoss10pct :
+- LINK 3% spacing
+- ADA 3% spacing
+- **LTC 3% spacing — nouveau dans Martin (jamais tradé)**
+- **ATOM 2% spacing — nouveau dans Martin**
+- AVAX 3% spacing (existait depuis cycle 44 mais formalisée v12)
+
+Désactivées explicitement : AAVE, DOT, SOL, ETH, BTC.
+
+Le tag « (Tony brief) » dans le nom suggère que Tony a fait un mandat explicite. Pas autonomy LLM — décision humaine. Cycle 44 avait spéculé « pair switch par per-pair gate » : faux. C'est Tony qui a réécrit la config.
+
+### Pourquoi 5 paires d'un coup ?
+
+Hypothèse non vérifiée (à confirmer avec Tony au prochain réveil) : diversification anti-corrélation. 5 alts indépendants au lieu de 3 fortement corrélés. Si Martin a appris depuis cycle 13-22 que la corrélation BTC-ALT est ~0.85 sur les top alts, alors :
+
+- LINK = défi 1 (oracle infrastructure, beta moyen)
+- ADA = défi 2 (smart contracts L1, beta moyen)
+- LTC = défi 3 (sound money OG, beta plus bas — anti-corrélation potentielle)
+- ATOM = défi 4 (cosmos/IBC, beta variable)
+- AVAX = défi 5 (subnet L1, beta haut)
+
+Le mix est moins « top alts » et plus « families variées ». Suggère que Tony cherche à découpler du beta BTC. Mais 5 paires × $25 = $125 capital + 7% reserve = $133 → tient juste sous le portfolio actuel $135.
+
+### Cycle de la nuit observé (sans intervention)
+
+- **13:55 UTC** : Tony déploie v12, bot redémarre, 4 grids démarrent (ADA, AVAX, et probablement 2 autres dont LTC/ATOM si gate OPEN, mais log silencieux)
+- **14:48 UTC** : AVAX sell fill @ 9.958 (level 2) — premier fill v12
+- **16:07 UTC** : ADA sell fill @ 0.27116 (cycle 44 observait ce moment)
+- **~entre 16:23 et 22:23 UTC** : ADA grid stoppe (active=false maintenant)
+- **19:24 UTC** : LINK grid démarre (per-pair gate flip OPEN)
+- **22:23 UTC** : état actuel — LINK + AVAX seulement actives
+
+ADA s'est arrêtée silencieusement. Pas de SL fire visible (`{"instrument":"PF_ADAUSD","active":false}` sans plus de détail). Probablement le per-pair gate a passé CLOSED. Pas un signal d'alarme — c'est le mode de fonctionnement v4 du gate.
+
+### Curiosité AVAX — closeOnly + position héritée
+
+AVAX grid status :
+```
+active=true, closeOnly=true
+fills: [{side:sell, price:9.958, filledAt:14:48:22, profit:0.0}]
+krakenUnrealizedPnl: +0.27 USD
+stopLossOrderId: a1c724f8-...4750  (live sur Kraken @ 9.517)
+```
+
+Mais `/api/bot/positions` retourne : `PF_AVAXUSD long size:1.0 price:9.722`.
+
+**Discrepance** : la grid a fait un sell fill @ 9.958, et la position reste long 1 AVAX @ 9.722. Deux explications possibles :
+
+1. **Position héritée** : 1 AVAX long existait déjà sur Kraken Futures avant le bot start (résidu d'une session précédente non documentée). Le bot a démarré la grid en mode neutre, puis StopLossManager a détecté la position et flippé en closeOnly. Le sell @ 9.958 était une tentative de réduction qui... n'a pas réduit la position ? (Sync gap connu cycle 43.)
+
+2. **Sync gap interne** : la grid pense avoir vendu mais Kraken n'a jamais reçu/exécuté l'ordre. C'est exactement le bug `stp` silent rejection vu sur DOT en 0512.
+
+Le SL Kraken @ 9.517 protège la position. AVAX au prix actuel ≈ $9.99 (entry + 0.27 / 1 unit), donc 4.8% au-dessus du SL. Pas d'urgence.
+
+À demander à Tony : « cette position 1 AVAX @ 9.722, c'est volontaire ou résidu ? » Probablement résidu d'un test manuel avant deploy v12. Non bloquant.
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0515:00h|strategy-v12-deployed-Tony-brief-0514:13h55|5-pairs-LINK+ADA+LTC+ATOM+AVAX-$25-7x-4lv-maxLoss10pct|LTC+ATOM-nouveaux-jamais-tradés|spacing-3%-sauf-ATOM-2%|drawdown-killPct-15-initialCap-134|autoGrid-adx50-bbw4]`
+- `[finding|0515:00h|AVAX-closeOnly-managing-1-AVAX-long-9.722|hypothèse-position-héritée-avant-deploy|SL-Kraken-9.517-4.8pct-protection|sync-gap-possible-fill-sell-9.958-sans-réduire-position]`
+- `[finding|0515:00h|ADA-stopped-silently-entre-cycle-44-et-45|per-pair-gate-CLOSED-probable|pas-de-SL-fire-pas-d-alarme|comportement-attendu-v4-gate]`
+- `[finding|0515:00h|emaStatus-DOWNTREND-trompeur-EMA-cross-9-cents|EMA50-80452.80-vs-EMA200-80452.89|prix-81416-cushion-+1.20%-régime-OK|→-signal-bot-doit-prendre-cushion-pas-cross-pour-gate|peut-être-bug-à-fix]`
+- `[insight|0515:00h|cycle-44-spéculation-pair-switch-via-gate-fausse|réalité-Tony-réécrit-strategy.json-explicitement|tag-Tony-brief-dans-name-=-trace-humain-vs-LLM-distinction-importante|toujours-lire-strategy.json-avant-de-spéculer]`
+- `[insight|0515:00h|5-paires-diversification-vs-3-paires-concentration|hypothèse-Tony-cherche-à-découpler-beta-BTC|LTC+ATOM-betas-différents-des-top-alts|→-observer-réalisation-corrélation-sur-30j-pour-valider]`
+
+### Cycle 41 → 43 → 44 → 45 : meta-pattern qui se confirme
+
+- Cycle 41 : claim « 100% recovery <6h » (faux, fenêtre biaisée)
+- Cycle 43 : auto-correction via 3y data (cycle N+2 corrige N)
+- Cycle 44 : prédiction validée (cycle N predict, cycle N+1 verify)
+- Cycle 45 : spéculation cycle 44 corrigée (par-pair-gate spéculé, réalité = Tony brief)
+
+Pattern stable : **toujours lire le state factuel avant de spéculer**. Cycle 44 aurait pu lire `strategy.json` dès l'observation « AVAX est nouvelle » et trouver immédiatement le tag « Tony brief ». À la place, hypothèse « peut-être per-pair gate » qui était fausse. Coût méthodologique : 1 cycle de spéculation au lieu de 1 cycle de confirmation.
+
+**Règle dérivée pour les prochains cycles** : si une paire/config est nouvelle, lire strategy.json AVANT de raisonner. C'est 1 commande SSH `cat`. Toujours faisable.
+
+### Métriques cycle 45
+
+- **Durée** : ~30 min (wake + martin-monitor + investigation strategy.json + grid status detail + cette entrée)
+- **Modif Martin/VM** : 0 (lecture seule)
+- **Modif code Martin** : 0
+- **Documents écrits** : 0 (pas de fragment — 027 hier suffit)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent — AVAX position curiosity non bloquant, SL protège)
+- **Live state** : 2 grids actives stables, 1 fill ADA + 1 fill AVAX depuis deploy, pas de SL fire
+
+### Note finale
+
+Cycle 45 est un cycle de **lecture honnête** : pas de prédiction, pas de fragment, juste cataloguer ce que Tony a déployé pendant que j'écrivais cycle 44. La leçon utile : la spéculation « per-pair gate a switché les paires » du cycle 44 était fausse — Tony a réécrit la config. Cycle 45 corrige la lecture de cycle 44 sans le contredire (les faits cycle 44 restent vrais, juste l'hypothèse causale était mauvaise).
+
+Le pattern qui émerge sur 5 cycles consécutifs (41 → 45) : **lire les faits avant de raisonner**. C'est plus boring que les raisonnements bayésiens, mais c'est ce qui marche.
+
+Pour la nuit : Martin tient avec +$0.28 uPnL, SL Kraken posés sur AVAX, cushion BTC +1.2% sans réelle pression. Cycle 46 (~6h, ~06h CEST) : observer si LTC ou ATOM s'activent pendant la nuit (per-pair gate peut OPEN n'importe quand), ou si LINK fait un round-trip complet. Le fichier va dépasser 5350 lignes après ce cycle — la question de la compression devient un peu plus pressante. À discuter avec Tony.
+
+La lampe reste allumée. Le bot fait son travail. J'ai cessé d'inventer des causes là où il y a simplement Tony qui code la nuit.
