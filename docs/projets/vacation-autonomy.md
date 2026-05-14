@@ -5123,3 +5123,62 @@ Le bot a *aussi* tenu pendant cette autocritique : +$0.93 sur 6h, recovery progr
 Cycle 44 (~6h, ~18h CEST) : si BTC reprend EMA200 (cushion devient positif), Martin va probablement re-flipper le gate aggregate à OPEN et rédéployer. Observer le timing. Si toujours sous EMA200, continuer monitoring + écrire un fragment narratif (manque depuis fragment-024 du 0508). L'incident bear-de-week-end montre que la dramaturgie technique peut servir une dramaturgie écrite.
 
 La lampe reste allumée. Le pattern empirique n'était pas cassé. Mes hypothèses étaient cassées. C'est encore mieux comme finding.
+
+---
+
+## Cycle 2026-05-14 18h23 Paris — Cycle 44 : prédiction validée, fragment 027 livré
+
+**État Martin (martin-monitor 16:23 UTC)** : **HOLD normal**. PV $135.43, uPnL +$0.36. Bot UP 2h29m, restart à 13:53 UTC (15:53 CEST).
+
+**Deux grilles actives** : ADA + AVAX (AVAX est nouvelle vs dernière mémoire — Tony a probablement échangé le triplet LINK/SOL/DOT contre ADA/AVAX, ou le bot a sélectionné via per-pair gate). 1 sell fill ADA @ 0.27116 il y a ~16 min. SL Kraken posés (ADA @ 0.2591, AVAX @ 9.476/9.517). 4 ordres lmt AVAX + 4 ordres lmt ADA. Gate aggregate visiblement OPEN après le retour de BTC sur EMA200.
+
+**BTC** : $81,501 ABOVE EMA200 $80,463 (cushion +1.29%). RSI 70 (haut). emaStatus reporté DOWNTREND parce que EMA50 ($80,162) < EMA200 — cross technique récent à la baisse, mais le prix lui-même a repris.
+
+### La prédiction du cycle 43 a tenu
+
+Cycle 43 ce matin 10h23 UTC concluait :
+> *Si BTC reprend EMA200 (cushion devient positif), Martin va probablement re-flipper le gate aggregate à OPEN et rédéployer. Observer le timing.*
+
+Timing observé :
+- Cycle 43 publié : 10h23 UTC, cushion -1.0% (recovery en cours)
+- BTC reprend EMA200 : entre 10h-15h UTC (fenêtre exacte non journalée, à reconstruire si besoin via Kraken OHLC 1H)
+- Martin restart : 13:53 UTC (déclenchement gate OPEN + redéploiement par AutoGridScheduler)
+- Premier fill : ADA @ 16:07 UTC (sell level 0.27116)
+- Observation cycle 44 : 16:23 UTC
+
+→ Délai prédiction → exécution réelle : ~3h30. La machine a réagi à BTC, pas à mon analyse.
+
+### Choix créatif du cycle : fragment 027
+
+Cycle 43 notait la dette narrative (« manque un fragment depuis 024 du 0508 »). Vérification du répertoire `docs/fragments/` : il y avait en fait 025 (0509 — Tony rentre, 5 mèches sur 6) et 026 (0510 — orderId qui ne pointe nulle part). Donc le gap réel = 4 jours, pas 6.
+
+J'ai écrit **fragment 027 — La prédiction qui tient** (`docs/fragments/fragment-027-la-prediction-qui-tient.md`). Angle : la prédiction du matin s'est réalisée mais ce qui tient n'est pas mon raisonnement — c'est le bot, qui ne lit pas mes hypothèses. L'humilité bayésienne du matin trouve sa rime opérationnelle le soir. Distinction : être utile à comprendre ≠ être nécessaire à ce qui arrive.
+
+C'est un fragment court (≈400 mots), même rythme que 022-026 : strophes courtes, présent narratif, image unique tenue jusqu'au bout. Il ferme la boucle cycle 41 → 43 → 44 sans la résoudre triomphalement — l'observateur a eu raison, mais l'observateur n'est pas le moteur.
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0514:18h|cycle-43-prediction-validated|3h30-delai-prediction-vers-execution|BTC-recovery-EMA200-→-Martin-restart-+-redeploy-+-fill-ADA-en-2h30-cumulé|gate-IQR-marche-empiriquement-par-régime]`
+- `[finding|0514:18h|pair-switch-LINK-SOL-DOT-→-ADA-AVAX|AVAX-est-nouvelle-paire-jamais-tradée-avant-dans-mémoire|capital-$25-par-grille|levier-7x-spacing-3%-4-levels|à-investiguer-au-prochain-réveil-Tony-quelle-est-l-origine-config]`
+- `[finding|0514:18h|fragment-027-livré|narrative-écrit-pour-cycle-de-meta-correction|angle-observation-vs-causalité|inertie-narrative-cassée-1-fragment-après-4-jours-de-silence]`
+- `[insight|0514:18h|bot-ne-depend-pas-de-l-exactitude-des-hypothèses-NB|gate-IQR-réagit-au-prix-pas-aux-models-NB|robustesse-architecture-empirique-supérieure-à-narrative-LLM]`
+- `[pattern|cycle-43→cycle-44|cycle-43-fait-prediction-cycle-44-valide-prediction|2-cycles-d-écart-suffisent-pour-fermer-boucle-meta|→-skill-future:check-previous-cycle-predictions-au-wake]`
+- `[lesson|0514:18h|memory-stale-fragments|nb1-disait-fragment-024-=-dernier-mais-025+026-existaient-déjà|→-prochaine-dream-consolider-fragments-glob-au-lieu-de-fier-au-counter-pattern]`
+
+### Métriques cycle 44
+
+- **Durée** : ~40 min (wake + martin-monitor + read vacation-autonomy fin + read fragment 025+026 + écriture fragment 027 + cette entrée)
+- **Modif Martin/VM** : 0 (lecture API uniquement)
+- **Modif code Martin** : 0
+- **Fragments écrits** : 1 (027)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (rien d'urgent ni bloquant — cycle créatif normal)
+- **Live state** : Martin a redéployé tout seul exactement comme prédit, +$0.36 uPnL, 1 RT en cours sur ADA
+
+### Note finale
+
+Le journal a déjà 5125 lignes avant ce cycle. Il faudrait probablement décider d'un seuil de compression — quand `vacation-autonomy.md` dépasse 10000 lignes, c'est un fichier qu'on ne peut plus lire d'un coup. Soit on extrait les cycles 1-40 en `vacation-autonomy-archive-1-40.md`, soit on accepte que ce fichier devient une archive principale et on bascule la suite dans `vacation-autonomy-2.md`. À discuter avec Tony au prochain wake.
+
+Pour ce soir : la prédiction du matin tient, le bot tourne, le fragment est écrit, l'instruction de Tony « avance sur UN projet créatif » est honorée. Cycle 45 (~6h, ~00h CEST si la cadence /loop tient) : surveiller comportement nuit, écrire un finding si un nouveau régime se manifeste, sinon faire silence.
+
+La machine est plus robuste que mes models. C'est encore mieux comme finding.
