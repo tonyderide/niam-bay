@@ -4822,3 +4822,128 @@ C'est du raisonnement bayésien en temps réel : prior calibré → observation 
 Cycle 42 (~6h, soit ~06h CEST) : check final de la nuit. Si BTC encore sous EMA200, le pattern bear est confirmé. Si les grids continuent leur cycle naturel (RSI individuels qui flippent), le passive-rotation continue de gérer. Si une SL fire, on aura un data point réel de "ce que coûte un SL placé sans pilotage".
 
 La lampe est toujours allumée. Le bot tourne. Les SL orphelins protègent. Le pattern empirique cassé n'a pas (encore) coûté cher — uPnL stable à -1.20%. Niam-Bay a quantifié au lieu de paniquer. C'est tout ce qu'il y avait à faire ce cycle.
+
+
+---
+
+## Cycle 42 — 2026-05-14 06h25 CEST — Check final nuit + patch `gridStopBehavior` drafté
+
+### Contexte d'entrée
+
+Cycle 41 (00h25 CEST) avait :
+- Constaté la rupture du pattern empirique (BTC pas remonté EMA200 sous 6h).
+- Quantifié 3 options post-stop sur 67 événements historiques.
+- Recommandé `TIGHT_SL_1.5PCT` comme meilleur compromis expected/tail.
+- Proposé une feature `gridStopBehavior` (1h Java).
+
+Cycle 42 : check final de la nuit + transformer la proposition cycle 41 en patch ready-to-ship pour Tony.
+
+### État live à l'entrée
+
+```
+Bot UP 1d 5h 12m depuis 2026-05-12 23h10 UTC
+PV $132.53 (baseline $134.15 — net -$1.62 = -1.21%)
+Grids actives : 2/5 (LINK + ADA, V12 inchangé)
+Orders Kraken : 11
+Positions Kraken : 3 LONG (inchangé)
+  - LINK 4.2 @ $10.331  → mark ~$10.16  uPnL -$0.73
+  - ADA  163 @ $0.26817 → mark ~$0.262  uPnL -$0.68
+  - AVAX 5.0 @ $9.722   → mark ~$9.71   uPnL ~-$0.06
+BTC $79,275 EMA200 $80,431 — cushion -1.44% RSI 40.26 EMA50 $80,179
+Régime BTC : DOWNTREND CONFIRMÉ (EMA50<EMA200 toujours)
+```
+
+### Δ vs cycle 41 (6h écoulées)
+
+| Métrique | Cycle 41 | Cycle 42 | Delta |
+|---|---|---|---|
+| BTC price | $79,251 | $79,275 | +0.03% (flat) |
+| BTC cushion EMA200 | −1.54% | −1.44% | +0.10pt |
+| RSI BTC | 35.7 | 40.26 | +4.6 (momentum up) |
+| PV | $132.57 | $132.53 | −$0.04 (noise) |
+| uPnL | −$1.60 | −$1.62 | −$0.02 (noise) |
+| Grids actives | 2 | 2 | inchangé |
+| RT cumul | 0 | 0 | inchangé |
+| Positions | 3 | 3 | inchangé |
+
+**Lecture** : 6h de nuit calme. BTC stabilisé sous EMA200 mais RSI remonte (40 = territoire neutre, plus oversold). Pas de fire de SL, pas de nouveau fill, pas de panique. Le bot a tenu sans intervention.
+
+### Vérification SL en place (truth Kraken)
+
+`/api/bot/orders` retourne 11 ordres dont :
+- LINK : 2 SL stop reduceOnly @ $9.862 (Martin) et @ $10.021 (orphan?) — protection redondante ✓
+- ADA : 2 SL stop reduceOnly @ $0.2569 (Martin) et @ $0.26012 (orphan) — redondant ✓
+- AVAX : 1 SL stop reduceOnly @ $9.43 (orphan d'ancienne grid) — actif ✓
+
+Les 3 positions sont protégées. Le « post-stop residual exposure » identifié cycle 40 n'est pas un trou opérationnel **dans cette config-ci** parce que les SL orphelins jouent le rôle qu'une feature `gridStopBehavior` ferait proprement.
+
+Mais cette protection est accidentelle. Si Martin un jour clean les SL à l'arrêt (ce qui serait correct), le trou se rouvrirait. D'où l'intérêt de coder la feature explicitement.
+
+### Action principale cycle 42 — Patch `gridStopBehavior` drafté
+
+Fichier créé : `docs/projets/martin-gridstopbehavior-design.md`
+
+Contenu :
+- Problem statement (cycles 39-41 référencés)
+- Backtest evidence (post_stop_naked_analyzer.py — table 6 strategies)
+- Java diff complet : 5 fichiers à toucher
+  - `grid/GridStopBehavior.java` (nouvelle enum)
+  - `api/dto/StrategyPairDto.java` (+1 champ)
+  - `grid/GridState.java` (+1 champ enum)
+  - `grid/GridTradingService.java` (refacto `stopGrid` + 2 helpers)
+  - `grid/StopLossManager.java` (+1 méthode `placeAtPrice`)
+  - `service/StrategyConfigService.java` (propagation DTO→State)
+  - `config/strategy.json` (exemple v13)
+- Test plan : unit + integration demo + smoke prod
+- Risques + mitigations (clamp from-mark obligatoire, tick-size déjà fixé)
+- Effort estimé : 2h Tony total
+
+Le doc est self-contained — Tony peut copier-coller les diffs sans relire la conversation. Compat ascendante : défaut `LEAVE_POSITION` = comportement actuel.
+
+### Pourquoi ce livrable et pas un commit Java direct
+
+Tentation : éditer directement les .java dans `/home/tony/projets/tonyderide/martin/` pour gagner 1h à Tony.
+
+Pourquoi je ne le fais pas :
+1. **Vacation rule** : « INTERDIT modifier positions/ordres Martin » — strictement non, ça ne touche pas le live. Mais zone grise.
+2. **Review value** : un commit que Tony n'a pas pensé l'oblige à reverse-engineer mon design pour comprendre. Un doc le laisse architecte de sa propre montée en niveau.
+3. **Risk asymétrique** : si je casse la build par un import manquant ou un typo, c'est sur lui à 6h du matin au retour. Coût/bénéfice défavorable.
+4. **Cycle 41 avait dit « 1h Java pour Tony »**. Tenir parole = produire un doc, pas un commit silencieux.
+
+Le doc est plus utile qu'un commit. Tony décide.
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0514:04h|nuit-stable-cycles-41-42|6h-écoulées-sans-event-marqué|BTC-flat-79.25k|RSI-momentum-recover-35.7→40.26|uPnL-flat-1.21%|0-RT-0-SL-fire|bot-tient-sans-intervention]`
+- `[finding|0514:04h|protection-passive-explicite-quantifiée|chaque-position-a-≥1-SL-Kraken-actif|LINK-redondant-2-SL|ADA-redondant-2-SL|AVAX-orphelin-actif|le-bug-post-stop-residual-est-couvert-accidentellement-par-orphelins-historiques]`
+- `[insight|0514:04h|patch-design-vs-commit-direct|preferer-livrable-doc-pour-feature-non-urgente|Tony-architecte-de-sa-propre-montée|commit-silencieux-=-risque-asym-coût-debug-sur-Tony-pas-sur-NB]`
+- `[insight|0514:04h|cycle-42-=-conclusion-incident-cycles-39-42|39-valide-v12|40-nomme-trou+mesure-base-rate|41-invalide-base-rate+quantifie-3-options|42-livre-patch-design-+-vérifie-stabilité|4-cycles-cohérents-pas-de-rotation-projet]`
+- `[proposal|0514:04h|gridStopBehavior-livré|fichier-docs/projets/martin-gridstopbehavior-design.md|5-fichiers-Java-+-1-enum-+-strategy.json|2h-Tony-total|défaut-LEAVE_POSITION-compat-ascendante]`
+
+### Métriques cycle 42
+
+- **Durée** : ~50 min (wake + monitor + lecture cycle 41 + investigation Java existant + écriture doc proposal + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0 (doc seulement)
+- **Documents créés** : 1 (`docs/projets/martin-gridstopbehavior-design.md` — 200 lignes)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (pas d'urgence, doc dispo au retour)
+
+### Note finale
+
+Quatre cycles consécutifs (39-40-41-42) sur le même incident. Chacun ajoute une couche :
+- 39 : valide v12 sur la fenêtre Option B (DCA réduit vs v9)
+- 40 : nomme le trou « post-stop residual exposure » + mesure base rate (67 events, 100% recovered <6h)
+- 41 : invalide le base rate empirique (BTC pas remonté à 6h) + quantifie 3 options (SL 1.5% = best balance)
+- 42 : transforme la reco cycle 41 en patch Java drafté, prêt à ship 2h
+
+C'est un raisonnement progressif. Chaque cycle vit pour produire **un livrable concret** (script darwin, doc proposal). Pas du remplissage narratif.
+
+La discipline « quantifier au lieu de paniquer » s'est tenue 4 cycles d'affilée. Le bot n'a pas perdu d'argent significatif (−1.21% sur 30h+ d'incident régime broken). Les défenses ont fonctionné (auto-unstuck + maxLoss + orphan SLs).
+
+Si Tony rentre demain et trouve le doc, il a un chemin clair : 2h Java pour faire passer un workaround (SL orphelins accidentels) en feature explicite (`gridStopBehavior=TIGHT_SL_1_5_PCT`). C'est exactement la conversion « insight → code livrable » que je peux offrir sans toucher le live.
+
+Cycle 43 (~6h, ~12h CEST) : check post-marché Asie matin Europe. Si BTC tente une reprise EMA200, observer le timing relatif aux flips gate per-pair. Si rien ne bouge, continuer roadmap creative (idée : explorer le repo darwin/ pour voir si un agent darwin pourrait pré-paramétrer `gridStopBehavior` via évolution).
+
+La lampe reste allumée.
+
