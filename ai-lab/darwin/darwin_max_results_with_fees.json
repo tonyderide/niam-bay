@@ -1,0 +1,653 @@
+{
+  "generated_at": "2026-05-10T22:39:13.732098",
+  "config": {
+    "pop_size": 100,
+    "generations": 100,
+    "mutation_rate": 0.25,
+    "kill_ratio": 0.3,
+    "init_skills": 6,
+    "data_source": "binance_1min_30d",
+    "pairs": [
+      "LINK",
+      "SOL",
+      "DOT"
+    ]
+  },
+  "cross_top10": [
+    {
+      "label": "DOT",
+      "positive_quarters": 3,
+      "total_pnl": 14.4497,
+      "skills": {
+        "buy-on-dip-0.5pct": 0.59,
+        "sell-on-pump-2pct": 0.5652121510331223,
+        "hold-in-low-volume": 0.52,
+        "never-buy-in-downtrend": 0.88
+      },
+      "quarters": {
+        "Q1": 4.2008,
+        "Q2": -4.4286,
+        "Q3": 0.2943,
+        "Q4": 14.3832
+      }
+    },
+    {
+      "label": "SOL",
+      "positive_quarters": 3,
+      "total_pnl": 13.8295,
+      "skills": {
+        "take-profit-5pct": 0.9018122992061417,
+        "take-profit-2pct": 0.31024075544795127,
+        "buy-on-dip-0.5pct": 0.9156029864148412,
+        "buy-on-dip-2pct": 0.39
+      },
+      "quarters": {
+        "Q1": 6.3895,
+        "Q2": 0.0,
+        "Q3": 3.7534,
+        "Q4": 3.6866
+      }
+    },
+    {
+      "label": "LINK",
+      "positive_quarters": 3,
+      "total_pnl": 12.0644,
+      "skills": {
+        "take-profit-5pct": 0.93,
+        "take-profit-2pct": 0.6245361478341432,
+        "hold-in-low-volume": 0.2962819865379932,
+        "buy-on-dip-1pct": 0.91,
+        "buy-on-dip-2pct": 0.6,
+        "sell-on-pump-2pct": 0.33,
+        "buy-on-dip-0.5pct": 0.4
+      },
+      "quarters": {
+        "Q1": 5.4104,
+        "Q2": 2.4704,
+        "Q3": -1.4945,
+        "Q4": 5.6781
+      }
+    }
+  ],
+  "per_symbol_runs": [
+    {
+      "label": "LINK",
+      "candle_count": 43200,
+      "agents": [
+        {
+          "agent_id": "agent-fa50ae",
+          "skills": {
+            "take-profit-5pct": 0.93,
+            "take-profit-2pct": 0.6245361478341432,
+            "hold-in-low-volume": 0.2962819865379932,
+            "buy-on-dip-1pct": 0.91,
+            "buy-on-dip-2pct": 0.6,
+            "sell-on-pump-2pct": 0.33,
+            "buy-on-dip-0.5pct": 0.4
+          },
+          "quarters": {
+            "Q1": 5.4104,
+            "Q2": 2.4704,
+            "Q3": -1.4945,
+            "Q4": 5.6781
+          },
+          "positive_quarters": 3,
+          "total_pnl": 12.0644,
+          "trade_count_q4": 6
+        },
+        {
+          "agent_id": "agent-e11e0f",
+          "skills": {
+            "take-profit-2pct": 0.6567933628691254,
+            "sell-on-pump-1pct": 0.35560369810023623,
+            "buy-on-big-red-body": 0.65,
+            "buy-green-after-red": 0.43
+          },
+          "quarters": {
+            "Q1": 4.8298,
+            "Q2": -2.6059,
+            "Q3": -2.222,
+            "Q4": 19.0294
+          },
+          "positive_quarters": 2,
+          "total_pnl": 19.0313,
+          "trade_count_q4": 19
+        },
+        {
+          "agent_id": "agent-12b957",
+          "skills": {
+            "buy-when-close-near-low": 0.5681053061880981,
+            "sell-on-pump-1pct": 0.93,
+            "hold-in-low-volume": 0.95,
+            "buy-on-dip-1pct": 0.83
+          },
+          "quarters": {
+            "Q1": 4.3762,
+            "Q2": -2.5037,
+            "Q3": -2.1293,
+            "Q4": 18.2046
+          },
+          "positive_quarters": 2,
+          "total_pnl": 17.9478,
+          "trade_count_q4": 1
+        },
+        {
+          "agent_id": "agent-79d6b4",
+          "skills": {
+            "buy-when-close-near-low": 0.9635447167053286,
+            "buy-on-dip-1pct": 0.4587280070078863,
+            "buy-green-after-red": 0.95
+          },
+          "quarters": {
+            "Q1": 4.3762,
+            "Q2": -2.6059,
+            "Q3": -2.1293,
+            "Q4": 18.2046
+          },
+          "positive_quarters": 2,
+          "total_pnl": 17.8456,
+          "trade_count_q4": 1
+        },
+        {
+          "agent_id": "agent-934492",
+          "skills": {
+            "buy-on-dip-0.5pct": 0.34040612352757643,
+            "take-profit-2pct": 0.510447439628493,
+            "buy-when-low-touches-support": 0.7224292739336995,
+            "buy-when-close-near-low": 0.4693062149266319,
+            "sell-on-pump-1pct": 0.52,
+            "buy-on-dip-1pct": 0.66
+          },
+          "quarters": {
+            "Q1": 4.713,
+            "Q2": -2.6059,
+            "Q3": -2.222,
+            "Q4": 16.8529
+          },
+          "positive_quarters": 2,
+          "total_pnl": 16.738,
+          "trade_count_q4": 17
+        },
+        {
+          "agent_id": "agent-787c6d",
+          "skills": {
+            "buy-on-dip-1pct": 0.3496712747494999,
+            "buy-on-dip-2pct": 0.33086058283703623,
+            "take-profit-2pct": 0.8872602041541036,
+            "hold-in-low-volume": 0.46,
+            "buy-on-big-red-body": 0.4
+          },
+          "quarters": {
+            "Q1": 4.1834,
+            "Q2": -2.5037,
+            "Q3": -2.222,
+            "Q4": 17.1117
+          },
+          "positive_quarters": 2,
+          "total_pnl": 16.5694,
+          "trade_count_q4": 19
+        },
+        {
+          "agent_id": "agent-0bb99a",
+          "skills": {
+            "sell-on-pump-1pct": 0.8805334699700114,
+            "trailing-stop-3pct": 0.6418978163333182,
+            "sell-on-pump-2pct": 0.63,
+            "buy-green-after-red": 0.8903977076863102,
+            "hold-in-low-volume": 0.73,
+            "buy-on-big-red-body": 0.71,
+            "buy-on-dip-1pct": 0.95
+          },
+          "quarters": {
+            "Q1": 4.1492,
+            "Q2": -3.3987,
+            "Q3": -2.6226,
+            "Q4": 16.925
+          },
+          "positive_quarters": 2,
+          "total_pnl": 15.0529,
+          "trade_count_q4": 9
+        },
+        {
+          "agent_id": "agent-b00bf5",
+          "skills": {
+            "buy-on-big-red-body": 0.8660883712018332,
+            "buy-on-dip-1pct": 0.4650359191160148,
+            "sell-on-pump-0.5pct": 0.99,
+            "sell-on-pump-2pct": 0.42,
+            "buy-green-after-red": 0.43
+          },
+          "quarters": {
+            "Q1": 3.0274,
+            "Q2": -3.4995,
+            "Q3": -2.113,
+            "Q4": 17.387
+          },
+          "positive_quarters": 2,
+          "total_pnl": 14.8019,
+          "trade_count_q4": 7
+        },
+        {
+          "agent_id": "agent-eb9260",
+          "skills": {
+            "never-buy-in-downtrend": 1.0,
+            "buy-green-after-red": 0.8195482533846452,
+            "take-profit-5pct": 0.678682112576017,
+            "buy-on-big-red-body": 0.35,
+            "trailing-stop-3pct": 0.96,
+            "buy-on-dip-2pct": 0.75
+          },
+          "quarters": {
+            "Q1": 3.9864,
+            "Q2": -3.2776,
+            "Q3": -2.518,
+            "Q4": 15.723
+          },
+          "positive_quarters": 2,
+          "total_pnl": 13.9138,
+          "trade_count_q4": 17
+        },
+        {
+          "agent_id": "agent-5eb0d8",
+          "skills": {
+            "buy-on-dip-0.5pct": 0.7135960350801316,
+            "take-profit-5pct": 0.48653971032512694,
+            "buy-on-dip-2pct": 0.6357309636977698,
+            "trailing-stop-3pct": 0.5580186052041509,
+            "sell-on-pump-0.5pct": 0.45174959336583603,
+            "sell-on-pump-1pct": 0.33415831398711404,
+            "buy-when-low-touches-support": 0.37,
+            "buy-on-dip-1pct": 0.5802489353124305,
+            "buy-on-big-red-body": 0.29327837331924356
+          },
+          "quarters": {
+            "Q1": 3.5901,
+            "Q2": -3.9672,
+            "Q3": -2.5017,
+            "Q4": 15.9845
+          },
+          "positive_quarters": 2,
+          "total_pnl": 13.1057,
+          "trade_count_q4": 15
+        }
+      ]
+    },
+    {
+      "label": "SOL",
+      "candle_count": 43200,
+      "agents": [
+        {
+          "agent_id": "agent-ef9bee",
+          "skills": {
+            "take-profit-5pct": 0.9018122992061417,
+            "take-profit-2pct": 0.31024075544795127,
+            "buy-on-dip-0.5pct": 0.9156029864148412,
+            "buy-on-dip-2pct": 0.39
+          },
+          "quarters": {
+            "Q1": 6.3895,
+            "Q2": 0.0,
+            "Q3": 3.7534,
+            "Q4": 3.6866
+          },
+          "positive_quarters": 3,
+          "total_pnl": 13.8295,
+          "trade_count_q4": 4
+        },
+        {
+          "agent_id": "agent-d79d9a",
+          "skills": {
+            "buy-on-big-red-body": 0.36,
+            "buy-on-dip-0.5pct": 0.7901309719951393
+          },
+          "quarters": {
+            "Q1": 3.0886,
+            "Q2": -2.5525,
+            "Q3": -2.317,
+            "Q4": 14.0489
+          },
+          "positive_quarters": 2,
+          "total_pnl": 12.268,
+          "trade_count_q4": 1
+        },
+        {
+          "agent_id": "agent-aaeee5",
+          "skills": {
+            "buy-on-big-red-body": 0.39829491792923755,
+            "hold-in-low-volume": 0.39,
+            "buy-when-close-near-low": 0.6888723868228099,
+            "sell-on-pump-1pct": 0.34
+          },
+          "quarters": {
+            "Q1": 3.0282,
+            "Q2": -2.5525,
+            "Q3": -2.2373,
+            "Q4": 14.0082
+          },
+          "positive_quarters": 2,
+          "total_pnl": 12.2466,
+          "trade_count_q4": 1
+        },
+        {
+          "agent_id": "agent-abf91e",
+          "skills": {
+            "buy-on-dip-2pct": 0.8778077449055555,
+            "sell-on-pump-1pct": 0.94,
+            "buy-when-close-near-low": 0.8
+          },
+          "quarters": {
+            "Q1": 3.0282,
+            "Q2": -2.5525,
+            "Q3": -2.2373,
+            "Q4": 14.0082
+          },
+          "positive_quarters": 2,
+          "total_pnl": 12.2466,
+          "trade_count_q4": 1
+        },
+        {
+          "agent_id": "agent-91233f",
+          "skills": {
+            "sell-on-pump-0.5pct": 0.9649329883136943,
+            "buy-on-big-red-body": 0.51,
+            "sell-on-pump-2pct": 0.49
+          },
+          "quarters": {
+            "Q1": 2.9724,
+            "Q2": -3.3393,
+            "Q3": -2.317,
+            "Q4": 13.3361
+          },
+          "positive_quarters": 2,
+          "total_pnl": 10.6522,
+          "trade_count_q4": 3
+        },
+        {
+          "agent_id": "agent-81ac17",
+          "skills": {
+            "sell-on-pump-1pct": 0.2984712819387859,
+            "buy-when-low-touches-support": 0.8514258862665577,
+            "buy-when-close-near-low": 0.2956349065601589,
+            "take-profit-2pct": 0.3773001868752911,
+            "hold-in-low-volume": 0.9,
+            "buy-on-dip-1pct": 0.4479924635905741,
+            "buy-green-after-red": 0.5941288857942194,
+            "buy-on-dip-2pct": 0.39
+          },
+          "quarters": {
+            "Q1": 3.245,
+            "Q2": -2.619,
+            "Q3": -2.3658,
+            "Q4": 11.9933
+          },
+          "positive_quarters": 2,
+          "total_pnl": 10.2535,
+          "trade_count_q4": 13
+        },
+        {
+          "agent_id": "agent-08b2b9",
+          "skills": {
+            "buy-green-after-red": 1.0,
+            "buy-on-dip-2pct": 0.30844821719630733,
+            "take-profit-2pct": 0.3313283163907331
+          },
+          "quarters": {
+            "Q1": 2.957,
+            "Q2": -2.619,
+            "Q3": -2.4665,
+            "Q4": 12.0763
+          },
+          "positive_quarters": 2,
+          "total_pnl": 9.9478,
+          "trade_count_q4": 13
+        },
+        {
+          "agent_id": "agent-1b2ed5",
+          "skills": {
+            "trailing-stop-3pct": 0.9135568295130645,
+            "buy-green-after-red": 0.44176024038614803,
+            "buy-when-low-touches-support": 0.43,
+            "buy-on-big-red-body": 0.45,
+            "never-buy-in-downtrend": 0.43
+          },
+          "quarters": {
+            "Q1": 1.4883,
+            "Q2": -3.4181,
+            "Q3": -2.7385,
+            "Q4": 13.795
+          },
+          "positive_quarters": 2,
+          "total_pnl": 9.1267,
+          "trade_count_q4": 3
+        },
+        {
+          "agent_id": "agent-b7e249",
+          "skills": {
+            "buy-on-dip-1pct": 0.9539656412593064,
+            "buy-on-dip-2pct": 1.0,
+            "take-profit-2pct": 0.972223930115677,
+            "sell-on-pump-0.5pct": 0.12431931442827054,
+            "sell-on-pump-1pct": 1.0,
+            "buy-on-big-red-body": 0.5421564669337101
+          },
+          "quarters": {
+            "Q1": 2.4991,
+            "Q2": -3.4059,
+            "Q3": -2.3897,
+            "Q4": 12.3613
+          },
+          "positive_quarters": 2,
+          "total_pnl": 9.0648,
+          "trade_count_q4": 13
+        },
+        {
+          "agent_id": "agent-bc1a59",
+          "skills": {
+            "buy-when-close-near-low": 1.0,
+            "trailing-stop-3pct": 0.4480432265995683,
+            "sell-on-pump-0.5pct": 0.3,
+            "buy-on-dip-0.5pct": 0.95
+          },
+          "quarters": {
+            "Q1": 1.9041,
+            "Q2": -3.9075,
+            "Q3": -2.8793,
+            "Q4": 12.7139
+          },
+          "positive_quarters": 2,
+          "total_pnl": 7.8312,
+          "trade_count_q4": 5
+        }
+      ]
+    },
+    {
+      "label": "DOT",
+      "candle_count": 43200,
+      "agents": [
+        {
+          "agent_id": "agent-16e5bf",
+          "skills": {
+            "buy-on-dip-0.5pct": 0.59,
+            "sell-on-pump-2pct": 0.5652121510331223,
+            "hold-in-low-volume": 0.52,
+            "never-buy-in-downtrend": 0.88
+          },
+          "quarters": {
+            "Q1": 4.2008,
+            "Q2": -4.4286,
+            "Q3": 0.2943,
+            "Q4": 14.3832
+          },
+          "positive_quarters": 3,
+          "total_pnl": 14.4497,
+          "trade_count_q4": 1
+        },
+        {
+          "agent_id": "agent-2d1554",
+          "skills": {
+            "sell-on-pump-1pct": 0.3014258071491781,
+            "take-profit-2pct": 0.45893755778747025,
+            "buy-on-dip-0.5pct": 0.8657525604263576,
+            "sell-on-pump-2pct": 0.31282852580406817,
+            "sell-on-pump-0.5pct": 0.34
+          },
+          "quarters": {
+            "Q1": 2.2365,
+            "Q2": -3.8632,
+            "Q3": 0.0554,
+            "Q4": 3.8843
+          },
+          "positive_quarters": 3,
+          "total_pnl": 2.313,
+          "trade_count_q4": 4
+        },
+        {
+          "agent_id": "agent-8beff9",
+          "skills": {
+            "buy-on-dip-0.5pct": 1.0,
+            "buy-when-low-touches-support": 0.6799049418323286,
+            "sell-on-pump-0.5pct": 0.1,
+            "sell-on-pump-2pct": 0.87,
+            "hold-in-low-volume": 0.8339507787817448,
+            "buy-on-dip-2pct": 0.77,
+            "never-buy-in-downtrend": 0.9,
+            "take-profit-5pct": 0.46
+          },
+          "quarters": {
+            "Q1": 1.8609,
+            "Q2": -6.0142,
+            "Q3": -2.4024,
+            "Q4": 14.6366
+          },
+          "positive_quarters": 2,
+          "total_pnl": 8.0809,
+          "trade_count_q4": 11
+        },
+        {
+          "agent_id": "agent-c2ff68",
+          "skills": {
+            "buy-when-close-near-low": 0.68,
+            "buy-on-dip-0.5pct": 0.95
+          },
+          "quarters": {
+            "Q1": 0.3298,
+            "Q2": -5.9502,
+            "Q3": -2.1283,
+            "Q4": 14.9463
+          },
+          "positive_quarters": 2,
+          "total_pnl": 7.1976,
+          "trade_count_q4": 1
+        },
+        {
+          "agent_id": "agent-94e663",
+          "skills": {
+            "sell-on-pump-0.5pct": 0.5828281085045608,
+            "buy-on-dip-1pct": 0.55
+          },
+          "quarters": {
+            "Q1": 0.3111,
+            "Q2": 0.0,
+            "Q3": 0.3902,
+            "Q4": 0.0
+          },
+          "positive_quarters": 2,
+          "total_pnl": 0.7013,
+          "trade_count_q4": 0
+        },
+        {
+          "agent_id": "agent-0b3b7a",
+          "skills": {
+            "sell-on-big-green-body": 0.7047861099045201,
+            "buy-on-dip-1pct": 0.91,
+            "sell-on-pump-0.5pct": 0.8052768120165497
+          },
+          "quarters": {
+            "Q1": 0.3111,
+            "Q2": 0.0,
+            "Q3": 0.3902,
+            "Q4": 0.0
+          },
+          "positive_quarters": 2,
+          "total_pnl": 0.7013,
+          "trade_count_q4": 0
+        },
+        {
+          "agent_id": "agent-00c358",
+          "skills": {
+            "buy-on-big-red-body": 0.6057899932616716,
+            "sell-on-pump-0.5pct": 0.656834152031819,
+            "sell-on-pump-2pct": 0.46
+          },
+          "quarters": {
+            "Q1": -0.5383,
+            "Q2": -6.738,
+            "Q3": -1.9463,
+            "Q4": 14.6988
+          },
+          "positive_quarters": 1,
+          "total_pnl": 5.4762,
+          "trade_count_q4": 7
+        },
+        {
+          "agent_id": "agent-a41aa0",
+          "skills": {
+            "buy-on-dip-2pct": 0.329825411873708,
+            "sell-when-close-near-high": 0.7410850910956954,
+            "sell-on-big-green-body": 0.62
+          },
+          "quarters": {
+            "Q1": 1.2478,
+            "Q2": 0.0,
+            "Q3": 0.0,
+            "Q4": 0.0
+          },
+          "positive_quarters": 1,
+          "total_pnl": 1.2478,
+          "trade_count_q4": 0
+        },
+        {
+          "agent_id": "agent-464e3f",
+          "skills": {
+            "take-profit-2pct": 0.96,
+            "buy-on-dip-2pct": 0.7358630165727398,
+            "sell-on-pump-1pct": 0.6467653726870581,
+            "sell-on-pump-0.5pct": 0.5,
+            "sell-red-after-green": 0.54,
+            "sell-on-pump-2pct": 0.41
+          },
+          "quarters": {
+            "Q1": 0.3111,
+            "Q2": 0.0,
+            "Q3": 0.0,
+            "Q4": 0.0
+          },
+          "positive_quarters": 1,
+          "total_pnl": 0.3111,
+          "trade_count_q4": 0
+        },
+        {
+          "agent_id": "agent-a9d4f1",
+          "skills": {
+            "buy-on-dip-1pct": 0.2553949459926696,
+            "sell-on-pump-0.5pct": 0.92,
+            "buy-on-big-red-body": 0.97,
+            "buy-when-close-near-low": 0.33,
+            "take-profit-5pct": 0.6,
+            "buy-green-after-red": 0.88,
+            "trailing-stop-3pct": 0.6
+          },
+          "quarters": {
+            "Q1": -4.8715,
+            "Q2": -8.1672,
+            "Q3": -2.3452,
+            "Q4": 12.408
+          },
+          "positive_quarters": 1,
+          "total_pnl": -2.9759,
+          "trade_count_q4": 17
+        }
+      ]
+    }
+  ]
+}

@@ -25,3 +25,7 @@ backups/*.tar.gz
 cerveau-nb/brain.db
 cerveau-nb/brain.db
 memory/vectordb/chroma.sqlite3
+ai-lab/darwin/data_cache/
+ai-lab/darwin/*_results.json
+ai-lab/darwin/*.log
+memory/vectordb/*.sqlite3
