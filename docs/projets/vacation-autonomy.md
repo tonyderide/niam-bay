@@ -4947,3 +4947,179 @@ Cycle 43 (~6h, ~12h CEST) : check post-marché Asie matin Europe. Si BTC tente u
 
 La lampe reste allumée.
 
+
+
+---
+
+## Cycle 43 — 2026-05-14 12h25 CEST — Cycle 41 corrigé : le pattern n'était pas cassé, le test était mal calibré
+
+### Contexte d'entrée
+
+Cycle 42 (06h25 CEST) avait :
+- Constaté nuit calme (BTC flat, RSI 40, 0 SL fire).
+- Livré `docs/projets/martin-gridstopbehavior-design.md` (patch Java drafté).
+- Proposé pour cycle 43 : « explorer le repo darwin pour voir si un agent darwin pourrait pré-paramétrer gridStopBehavior via évolution ».
+
+Cycle 43 prend une autre direction : remettre en question la conclusion du cycle 41 (« pattern empirique cassé »). Parce qu'en relisant calmement ce matin, ça sentait l'erreur de fenêtre/timeframe.
+
+### État live à l'entrée
+
+```
+Bot UP 1d 11h 13m depuis 2026-05-12 23h10 UTC
+PV $134.01 (baseline $134.18 — net -$0.17 = -0.13%)
+Grids actives : 2/5 (LINK + ADA, V12 inchangé)
+Orders Kraken : 8
+Positions Kraken : 2 LONG (LINK fermée par fill 06:07 UTC)
+  - ADA  163 @ $0.26817 → mark $0.2641  uPnL -$0.52
+  - AVAX 5.0 @ $9.722   → mark $9.71    uPnL -$0.06
+LINK : pos fermée, 0 RT comptabilisé, mais grid active (orders en place)
+BTC $79,672 EMA200 $80,473 — cushion -1.0% RSI 47.5 EMA50 $80,086
+Régime BTC : DOWNTREND (EMA50<EMA200) MAIS cushion en réduction continue
+```
+
+### Δ vs cycle 42 (~6h écoulées)
+
+| Métrique | Cycle 42 | Cycle 43 | Delta |
+|---|---|---|---|
+| BTC price | $79,275 | $79,672 | **+0.50%** (rebond) |
+| BTC cushion EMA200 | −1.44% | −1.00% | **+0.44pt** (recovery progress) |
+| RSI BTC | 40.26 | 47.52 | **+7.3** (momentum continue) |
+| PV | $132.53 | $134.01 | **+$1.48** |
+| uPnL | −$1.62 | −$0.69 | **+$0.93** |
+| Positions | 3 | 2 | LINK fermée par fill |
+| RT cumul | 0 | 0 | (LINK fill avant grid restart, profit=$0) |
+
+**Lecture** : la nuit / matin a vu un rebond BTC progressif. Cushion EMA200 passé de −1.44% à −1.00% en 6h. RSI repassé en zone neutre (47.5). Le pattern « régime broken et qui s'enfonce » du cycle 41 ne s'est pas réalisé — au contraire BTC se rapproche de l'EMA200.
+
+### Le doute qui a déclenché ce cycle
+
+Cycle 41 disait : « 100% des 67 events EMA200-break-RSI-oversold ont récupéré sous 6h dans le cache 30j 1min. Notre live event de 0513:16h25 est à 6h sans recovery → pattern cassé ».
+
+Question méta que je me suis posée en relisant : **est-ce que le pattern était vraiment cassé, ou est-ce que la fenêtre de calibration était mal choisie ?**
+
+Le cache utilisé (binance_BTCUSDT_1min_30d.json) couvre 30 jours d'avril-mai 2026 — une période où BTC montait de +14%. Donc une fenêtre **structurellement haussière** dans laquelle les seuls events EMA200-break sont des micro-corrections qui rebondissent vite.
+
+Si on étend la fenêtre à plusieurs années, qui contient des vrais corrections / mini-bear, est-ce qu'on trouverait des events durant 18h+ ? Construisons-le.
+
+### Construction `time_to_recovery_3y.py`
+
+Script créé : `ai-lab/darwin/time_to_recovery_3y.py` (220 lignes).
+
+Charge `binance_BTCUSDT_1h_1672531200000_1767139200000.json` (3 ans, Jan 2023 → Dec 2025, 26280 bougies 1H). Sur 1H TF :
+- EMA200 = 200h ≈ 8.3j (vraie moyenne mid-term, vs 200min sur 1min TF du cycle 41)
+- Persist = 3 bars (3h)
+- Event gap = 24h
+- RSI threshold = 30
+- Max look = 720h (30j)
+
+Pour chaque event qualifiant : calcule le **time-to-recovery** (premier k où close[idx+k] >= ema200[idx+k]).
+
+### Résultats — la vraie distribution sur 3y
+
+```
+Total events:           60
+Recovered <= 30d:       60
+Off-chart (>30d):       0
+Min:        3h
+Median:   1.2d (29h)
+Mean:    70.9h (~3 jours)
+P90:      1.3w (8.8 jours)
+P95:      1.9w (12.9 jours)
+Max:      2.0w (14 jours)
+```
+
+```
+Empirical CDF (% recovered by bucket):
+  <=    1h:   0.0%
+  <=    4h:   5.0%   ##
+  <=    6h:  10.0%   #####
+  <=   12h:  28.3%   ##############
+  <=   24h:  46.7%   #######################
+  <=   48h:  61.7%   ##############################
+  <=   72h:  68.3%   ##################################
+  <=  168h:  86.7%   ###########################################
+  <=  336h:  98.3%   #################################################
+```
+
+**Live case positioning** :
+- Event time : 0513:16h25 UTC
+- Now : 0514:10h23 UTC
+- Elapsed : ~18h, BTC toujours sous EMA200
+- Historical events taking >18h : **65.0%**
+- Historical events taking >24h : **53.3%**
+- Historical events taking >72h : **31.7%**
+
+### Top 10 longest historical recoveries
+
+| Date | Price BTC | Time-to-recovery |
+|---|---|---|
+| 2025-11-12 | $103,990 | 2.0w |
+| 2024-01-12 | $44,462 | 2.0w |
+| 2024-08-27 | $61,851 | 1.9w |
+| 2024-07-29 | $66,785 | 1.4w |
+| 2025-10-10 | $120,493 | 1.4w |
+| 2025-02-21 | $96,972 | 1.3w |
+| 2023-05-07 | $28,773 | 1.1w |
+| 2023-08-31 | $26,234 | 1.0w |
+| 2023-04-19 | $29,168 | 6.5d |
+| 2025-01-07 | $97,952 | 6.5d |
+
+### Cycle 41 corrigé — auto-honnêteté
+
+**Le pattern n'était pas cassé. Le test du cycle 41 était mal calibré.**
+
+Erreur 1 — fenêtre biaisée : 30j d'avril-mai 2026 = +14% bull → seuls les micro-events bull-correction présents → médiane 28min, max 5.8h. Conclusion « 100% en <6h » est vraie *sur cette fenêtre* mais pas représentative.
+
+Erreur 2 — timeframe trop fine : 1min TF avec EMA200 = 200min ≈ 3h20. C'est une moyenne micro-structure, pas un signal de régime. Sur 1H TF avec EMA200 = 200h, on capte les vrais swings.
+
+**Réalité empirique sur 3y** :
+- Médiane time-to-recovery = **1.2 jours** (vs 28min sur le test biaisé du cycle 41)
+- 65% des events prennent >18h
+- Notre live case (18h sans recovery) est dans la **première moitié** de la distribution historique — **totalement banal**.
+- Le pire cas historique = 2 semaines (BTC 2025-11 à $104k).
+
+### Ce que ça change pour les décisions
+
+1. **Cycle 41 a posé une fausse alarme méthodologique**. Le pattern « bear naissant » n'est pas confirmé par cette analyse plus solide. On est dans le régime ordinaire de correction sub-EMA200.
+
+2. **Le doc gridStopBehavior cycle 42 reste pertinent** mais le contexte change :
+   - Le « post-stop residual exposure » dure typiquement **1-3 jours**, pas 6h. Donc le besoin de protection est plus grand que cycle 41 ne le pensait.
+   - `TIGHT_SL_1_5_PCT` reste le compromis recommandé : la queue 2-semaines justifie un floor de protection.
+   - `MARKET_CLOSE` devient plus défendable si Tony veut zéro tail risk : sur 3y, 31% des events durent >72h, ce qui peut accumuler le drawdown.
+
+3. **Le RegimeGate IQR de Martin a déjà cette intuition** : il referme quand BTC casse EMA200. Cycle 41 + cycle 43 confirment que c'est bien calibré sur le régime macro 3y, pas juste sur la fenêtre récente.
+
+4. **Auto-honnêteté méta** : cycle 41 avait un beau ton bayésien (« prior → observation → update »), mais le prior était mauvais parce que la fenêtre était mauvaise. Le bon réflexe : toujours questionner la représentativité de la fenêtre de calibration. Une fenêtre 30j de +14% biaise tout test « est-ce normal/anormal ? ».
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0514:10h|cycle-41-erreur-fenetre+timeframe|test-base-rate-sur-30j-1min-bullish|conclusion-100%-recovery-6h-non-representative-du-regime-macro]`
+- `[finding|0514:10h|3y-1H-distribution-time-to-recovery|median=29h|mean=71h|p95=2w|max=2w|65%->18h|53%->24h|le-live-case-18h-est-dans-la-1ere-moitie-banale]`
+- `[finding|0514:10h|live-event-18h-banal-non-extreme|cycle-41-faussement-classe-comme-extreme|reverdict-=-rien-d-anormal-juste-une-correction-classique]`
+- `[insight|0514:10h|methodologie-fenetre-de-calibration-critique|toute-claim-base-rate-doit-checker-distribution-de-la-fenetre|une-fenetre-+14%-biaise-tout-test-de-tail|toujours-utiliser-multi-regime-window-pour-base-rates]`
+- `[insight|0514:10h|gridStopBehavior-encore-plus-pertinent-en-realite|contexte-cycle-42-renforce-pas-affaibli|TIGHT_SL_1.5%-couvre-la-queue-2w-historique|MARKET_CLOSE-pour-zero-tail]`
+- `[lesson|0514:10h|auto-correction-cycle-N+2|cycle-41-claim-revisite-cycle-43-quand-doute|pattern-bayesien-vrai-=-pas-juste-update-mais-aussi-questionner-la-representativite-du-prior]`
+- `[insight|0514:10h|live-pattern-cycle-43-vs-cycle-41|6h-apres-cycle-42-BTC-cushion-passé-de-1.44%-à-1.0%-RSI-de-40-à-47.5|recovery-progressive-en-cours-cohérente-avec-distribution-3y]`
+
+### Métriques cycle 43
+
+- **Durée** : ~80 min (wake + martin-monitor + lecture cycle 41-42 + écriture analyzer 1min + run + écriture analyzer 3y + run + analyse + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0
+- **Backtests exécutés** : 2 (`time_to_recovery_analyzer.py` 1min/30j + `time_to_recovery_3y.py` 1H/3y)
+- **Documents créés** : 2 scripts + 2 JSON results
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (l'auto-correction d'une erreur méta n'est pas un événement opérationnel — pas d'urgence)
+- **Live state** : recovery en cours (cushion -1.44% → -1.0% en 6h), pas de SL fire, uPnL amélioré +$0.93
+
+### Note finale
+
+Cycle 41 était une belle analyse mais avec un mauvais socle (fenêtre 30j bullish + 1min TF). Cycle 43 corrige : sur 3y 1H, le live case 18h est totalement normal (médiane historique = 29h).
+
+Le pattern méta intéressant : **cycle N peut être faux. Cycle N+2 peut le corriger si on ose le doute calme**. C'est ce que Tony fait quand il dit « toujours questionner les premises ». Le journal vacation porte des cycles qui se contredisent et se corrigent — c'est ça qui le rend utile, pas une narration linéaire de progrès.
+
+Le bot a *aussi* tenu pendant cette autocritique : +$0.93 sur 6h, recovery progressive, 0 fire de SL. La défense empirique fonctionne, peu importe que le diagnostic théorique du cycle 41 ait été erroné. C'est rassurant : la machine est plus robuste que mes models.
+
+Cycle 44 (~6h, ~18h CEST) : si BTC reprend EMA200 (cushion devient positif), Martin va probablement re-flipper le gate aggregate à OPEN et rédéployer. Observer le timing. Si toujours sous EMA200, continuer monitoring + écrire un fragment narratif (manque depuis fragment-024 du 0508). L'incident bear-de-week-end montre que la dramaturgie technique peut servir une dramaturgie écrite.
+
+La lampe reste allumée. Le pattern empirique n'était pas cassé. Mes hypothèses étaient cassées. C'est encore mieux comme finding.
