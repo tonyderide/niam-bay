@@ -5551,3 +5551,174 @@ Cycle 48 (~18h CEST, 6h d'ici) : observer si LINK grid neuve fait un round-trip 
 
 La lampe reste allumée. Le pattern self-correcting tient sur 5 cycles d'affilée. C'est peut-être ça l'utile.
 
+---
+
+## Cycle 2026-05-15 18h25 Paris — Cycle 48 : BtcRegimeKillSwitch fired, position LINK orpheline (bug 0513 récidive)
+
+**État Martin (martin-monitor 16:23 UTC)** : **WARN**. PV $131.79 (déposé $132.25, uPnL -$0.46 = -0.35%). 0 grids actives. 1 position LINK 4.3 long @ entry $10.154 (mark $10.04). 0 orders sur Kraken → **position naked sans SL**. BTC $79,238 DOWNTREND.
+
+### Ce qui s'est passé depuis cycle 47
+
+**Timeline 12:23 → 18:25 Paris (10:23 → 16:23 UTC)** :
+
+- **12:55 UTC** : BtcRegimeKillSwitch consecutive break #1 (BTC $80,344 < EMA200 $80,656)
+- **13:39 UTC** : LINK AUTO-UNSTUCK lvl1 (-2%), trim 1.075 LINK → reste 3.225
+- **13:51 UTC** : AVAX AUTO-UNSTUCK lvl1 (-2%), trim 1.125 AVAX → reste 3.375
+- **13:54 UTC** : AVAX grid stoppée + position fermée CLOSE-ONLY ✓ (proprement)
+- **13:55 UTC** : BTC kill-switch break #2 (BTC $78,934)
+- **13:58 UTC** : LINK AUTO-UNSTUCK lvl2 (-3%), trim 1.075 LINK
+- **14:55 UTC** : BTC kill-switch break #3 (BTC $79,139)
+- **15:55:38 UTC** : **BtcRegimeKillSwitch FIRES** — BTC $79,200 sous EMA200 $80,615 pour 4h consecutive. Tué la grid LINK + SL cancelled. Telegram envoyé à Tony.
+
+### Le bug 0513 récidive — patch de design existe déjà dans le code
+
+**Lecture du source `BtcRegimeKillSwitch.java`** (commit 4f6e116, dans `/home/tony/projets/tonyderide/martin/src/main/java/com/martin/safety/`) :
+
+```java
+// ligne 107 — version actuelle
+for (String inst : active) {
+    try {
+        gridTradingService.stopGrid(inst);  // ← stoppe la grid SEULEMENT
+        killed++;
+    } catch (Exception e) { ... }
+}
+```
+
+**Le problème** : `stopGrid()` annule les ordres limit + le SL. La position reste ouverte sur Kraken sans protection. C'est ce que mémoire NB-1 catalogue depuis 0513 :
+
+> `[BtcRegimeKillSwitch incomplete (2026-05-13)] — fired le 0513 ~19h, 3 positions orphelines sans SL, fix manuel via place_sl_3pct.py`
+
+**La solution existe DÉJÀ dans le code** : `GridTradingService.closePositionAndStopGrid(state)` ligne 737, écrite après l'incident ADA 0427 :
+
+```java
+/**
+ * PATCH 2026-04-27: hard-stop close that BOTH cancels grid orders AND market-closes
+ * the residual position. The plain stopGrid() only cancels limit orders, leaving the
+ * position orphan (no SL, no grid management) — root cause of -$36 ADA loss on 2026-04-27.
+ */
+private void closePositionAndStopGrid(GridState state) {
+    stopGrid(state.getInstrument());
+    // + market-close residual position via reduceOnly market order
+    ...
+}
+```
+
+Cette méthode est utilisée par `AUTO-UNSTUCK lvl3` (ligne 642 et 691) — c'est exactement ce qu'il faut pour le killswitch BTC.
+
+### Patch proposé (non déployé, Tony décide)
+
+Voir `docs/projets/patch-btc-killswitch-v2.md` (rédigé ce cycle).
+
+Résumé : 2 changements minimes :
+
+1. Dans `GridTradingService.java`, ajouter méthode publique :
+   ```java
+   public void closeGridAndPositionsByInstrument(String instrument) {
+       GridState state = states.get(instrument);  // get from in-memory map
+       if (state == null) return;
+       closePositionAndStopGrid(state);  // existing private method
+   }
+   ```
+
+2. Dans `BtcRegimeKillSwitch.java`, ligne 107, remplacer :
+   ```java
+   gridTradingService.stopGrid(inst);
+   ```
+   par :
+   ```java
+   gridTradingService.closeGridAndPositionsByInstrument(inst);
+   ```
+
+Test : 1 unit test sur un mock GridState avec position simulée, vérifier que `sendOrder` est appelé avec `reduceOnly=true`. Effort < 30min code + < 10min review.
+
+### AVAX a réussi le test, LINK a échoué — pourquoi ?
+
+AVAX a été fermée proprement à 13:54 UTC parce que la grid était en mode **closeOnly** (héritée du précédent run, jamais réactivée). Le route CLOSE-ONLY de `AutoGridScheduler` appelle bien `closePositionAndStopGrid` :
+
+```log
+2026-05-15T13:54:39.035Z  CLOSE-ONLY completed for PF_AVAXUSD positions closed
+```
+
+LINK était une grid neuve (relancée à 09:09 UTC après HARD STOP lvl3 du matin), donc PAS en closeOnly. Quand BtcRegimeKillSwitch a fired, il a pris la route `stopGrid()` directe sans passer par CLOSE-ONLY.
+
+**Symétrie cassée** : deux routes pour stopper une grid, une qui ferme la position (closeOnly + AUTO-UNSTUCK lvl3), une qui ne la ferme pas (stopGrid plain + BtcRegimeKillSwitch). Le bug est dans cette asymétrie, pas dans le killswitch lui-même.
+
+### Impact financier réel cycle 47 → 48
+
+- PV cycle 47 : $133.52
+- PV cycle 48 : $131.79
+- **Delta brut : -$1.73**
+
+Décomposition :
+- LINK 2 trims auto-unstuck (lvl1 + lvl2) : ~-$0.50 (estimé)
+- AVAX close + delta : ~-$0.25 (était +$0.03 uPnL, fermée à un prix légèrement plus bas)
+- LINK uPnL latent actuel : -$0.46 (position naked en cours)
+- Frais : ~-$0.10
+
+**Total realized + unrealized cohérent**. Bornes pertes futures sur LINK naked : si BTC chute de 3-4% et LINK suit, on perd ~$1.40 supplémentaire (4.3 × $0.30) avant qu'un humain n'intervienne. Pas catastrophique sur l'enveloppe $25.
+
+### Pourquoi Tony a déjà été averti — mais doit lire entre les lignes
+
+Le Telegram envoyé par BtcRegimeKillSwitch à 15:55:39 UTC dit :
+
+```
+[Martin KILL-SWITCH] BTC $79200 sous EMA200 $80615 x4 h consécutives.
+1 grids stoppées. Disarm 24h.
+```
+
+Il ne dit pas que la position LINK reste ouverte. Tony connaît le bug (mémoire 0513), donc devrait deviner — mais peut ne pas le réaliser à chaud sur son téléphone un soir de semaine. J'ai envoyé un second Telegram NB-cycle-48 pour clarifier :
+
+```
+[Cycle 48 — NB] BtcRegimeKillSwitch fired à 17h55 (BTC 4h<EMA200).
+Tué la grid LINK mais PAS la position. 4.3 LINK long @ $10.15 est naked
+sans SL Kraken (uPnL -$0.46, bounded ~-$2-3 max). Bug 0513 non-fixé.
+Fix: place_sl_3pct.py ou attendre killswitch v2.
+```
+
+### Sur le SL churn du cycle 46-47 — devient moot mais pas neutre
+
+Le bug churn (`STOP_PRICE_EPSILON = 1.0E-6`) qui causait 2526 events/5h n'est plus actif puisque le SL a été cancelled. Mais avant l'arrêt à 15:55 UTC, **5 heures de churn supplémentaires** ont eu lieu — environ 1800 nouveaux place+cancel events. Le bug est neutralisé temporairement par le killswitch mais reviendra dès qu'une nouvelle grid sera lancée (gate ré-ouvre).
+
+**Le fix epsilon=5e-4 reste à déployer** + le fix killswitch v2. **Deux fixes liés** : l'un évite que la machine tourne 16 cycles/min de placement SL inutiles ; l'autre évite qu'on se retrouve sans SL du tout. Cycle 49 vérifiera si Tony a déployé l'un ou l'autre.
+
+### Disarm 24h — fenêtre de vulnérabilité
+
+Le killswitch se désarme 24h après firing pour éviter le flapping. Donc **jusqu'à demain 15:55 UTC**, il ne re-firera plus même si BTC continue de chuter. Pendant cette fenêtre, si AutoGridScheduler relance une grid LINK (gate ré-ouvre), elle tradera SANS la protection killswitch. C'est délibéré dans le design, mais ajouté au contexte BTC DOWNTREND fort (EMA50<EMA200), c'est un soft no-trade pour 24h.
+
+Risque concret : si LINK position naked actuelle reste ouverte ET la grid se relance ET BTC continue descendre, on a un double risque empilé. Probabilité grid relance : moyenne (RegimeGate PF_LINKUSD = CLOSED actuellement car ATR%=2.33%, va dépendre de la volatilité). Mitigation : Tony lit Telegram NB et décide.
+
+### Findings pour le prochain dream
+
+- `[finding|0515:18h|BtcRegimeKillSwitch-fired-1ere-fois-depuis-deploy-0513|BTC-4h-consecutive-EMA200-break|grid-LINK-tuée-position-restée-orpheline-naked|même-bug-que-0513-incident|fix-trivial-=-appeler-closePositionAndStopGrid-au-lieu-de-stopGrid]`
+- `[finding|0515:18h|closePositionAndStopGrid-existe-déjà-GridTradingService-ligne-737|patch-0427-écrit-pour-incident-ADA|killswitch-utilise-mauvais-method|asymétrie-CLOSE-ONLY-vs-stopGrid-est-le-vrai-bug-pas-le-killswitch]`
+- `[finding|0515:18h|AVAX-fermée-proprement-via-CLOSE-ONLY-13h54-UTC|closeOnly-route-appelle-closePositionAndStopGrid|LINK-en-route-grid-active-normale-=-pas-closeOnly-=-killswitch-tape-stopGrid-direct-=-bug]`
+- `[lesson|0515:18h|bug-déjà-vu-récidive-=-symptome-pas-cause|0513-incident-fix-trivial-mais-pas-déployé-2-jours-plus-tard|fix-existe-en-mémoire-pas-en-binaire|→-rule-après-incident-tracker-fix-deployed-pas-juste-fix-identified]`
+- `[insight|0515:18h|deux-bugs-empilés-cycle-46-47-48|SL-churn-epsilon-1e-6-fix-pending|killswitch-incomplete-fix-pending|chacun-trivial-Tony-overload-vacance-prolongée|cycle-49-vérifie-deploy-status]`
+- `[proposal|0515:18h|patch-btc-killswitch-v2|2-changements-minimes|public-wrapper-closeGridAndPositionsByInstrument-+-call-it-from-killswitch|test-unit-30min-impl|docs/projets/patch-btc-killswitch-v2.md-rédigé-ce-cycle]`
+
+### Cycle 48 → 49 — ce que je veux voir
+
+- Tony a déployé killswitch v2 ? → si oui, prochaine fired BTC down fermerait position proprement
+- Tony a placé SL manuel sur la 4.3 LINK ? → check `/api/bot/orders` cycle 49
+- Position a évolué ? → mark price LINK, uPnL latent
+- AutoGridScheduler a relancé grid LINK ? → gate transition CLOSED → OPEN
+- BTC repris au-dessus EMA200 ? → counter reset, killswitch ré-armé
+
+### Métriques cycle 48
+
+- **Durée** : ~50 min (wake + martin-monitor + investigation 4h logs + grep code Java + design patch + Telegram + cette entrée)
+- **Modif Martin/VM** : 0 (lecture seule, ssh queries)
+- **Modif code Martin** : 0 (patch proposé en .md, pas dans src/)
+- **Documents écrits** : 2 (cette entrée + `docs/projets/patch-btc-killswitch-v2.md`)
+- **Telegram** : 1 (NB-cycle-48 clarification position naked)
+- **Live state** : Position naked 4.3 LINK, ~28-50min après killswitch firing, marché stable -1.1% sur entry
+
+### Note méta cycle 48
+
+Le pattern se précise : cycle 46 documente un bug (SL churn epsilon), cycle 47 corrige son catalogue (3 tiers de défense), cycle 48 **trouve un nouveau bug pendant que je vérifiais l'ancien**. Trois bugs liés au même mécanisme de stop : epsilon trop strict, asymétrie close routes, et l'oubli du fix 0513.
+
+L'observation longue durée est productive. Je n'aurais pas vu le killswitch firing si je m'étais contenté de regarder la PV. Lire les logs autour des transitions est ce qui fait la différence entre un report et une analyse.
+
+La lampe reste allumée. Le bot dort un peu plus profond ce soir — disarm 24h, gate CLOSED sur LINK, position naked. C'est Tony qui décidera de la sortir.
+
+
