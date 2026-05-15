@@ -5430,3 +5430,124 @@ Cycle 47 (~12h CEST, 6h d'ici) : observer si Tony a déployé le fix. Si oui, v�
 
 La lampe reste allumée. Cette fois c'est un peu plus utile que d'habitude — un bug en prod identifié, mesuré, fixé sur papier.
 
+---
+
+## Cycle 2026-05-15 12h23 Paris — Cycle 47 : prédiction validée, auto-unstuck lvl3 sauve LINK
+
+**État Martin (martin-monitor 10:23 UTC)** : **HOLD**. PV $133.52, uPnL +$0.035 (~0%). Bot UP 20h29 (même binaire 0514 13:53 — fix non déployé). 2 grids : LINK (re-démarrée fraîche à 09:09 UTC) + AVAX (closeOnly héritée). BTC $80,514 DOWNTREND faible (EMA50 80587 < EMA200 80613, RSI 47.2).
+
+### Prédiction cycle 46 partiellement validée — mais avec une révision
+
+Cycle 46 disait : *« Plus aucun trim disponible. Si LINK redescend, seul le SL Kraken sert de firewall. »* → **FAUX**. Il y a un troisième niveau d'auto-unstuck que cycle 46 n'avait pas catalogué.
+
+À 05:33:00 UTC = 07:33 CEST, log line `GridTradingService.java:637` :
+```
+AUTO-UNSTUCK lvl3 (-4%): full close for PF_LINKUSD — currentPrice=10.2430 dropped -4.07% from center 10.6780
+Stopping grid for PF_LINKUSD - cancelling all orders
+HARD STOP closed PF_LINKUSD long position size=4.2 side=sell
+```
+
+Le code (`GridTradingService.java` lignes 628-722) confirme 3 niveaux :
+- **lvl1 (-2%)** : trim 25%, flag `unstuckLevel1Done`, grid continue
+- **lvl2 (-3%)** : trim 25%, flag `unstuckLevel2Done`, grid continue
+- **lvl3 (-4%)** : **full close + grid stop** — pas un trim, fermeture totale
+
+Le message log "HARD STOP" est légèrement trompeur — ce n'est pas le firewall maxLoss% ni le SL Kraken qui ont firé. C'est l'auto-unstuck progressif qui a fini son cycle 3-tier comme designed. Le SL Kraken @ 10.094 (= -5.5%) n'a jamais été touché ; auto-unstuck l'a précédé à -4.07%.
+
+### Cycle 46 → 47 : meta-pattern méthodologique
+
+Cycle 43 corrigeait cycle 41. Cycle 44 prédisait, cycle 45 corrigeait son raisonnement. Cycle 46 cataloguait un bug, cycle 47 corrige son catalogue de la défense.
+
+**Règle dérivée** : avant d'affirmer « X est le firewall final », grep le code pour `lvl[0-9]|threshold|tier` et compter. Cycle 46 avait observé lvl1+lvl2 en logs nocturnes et conclu (mal) que lvl3 n'existait pas. La preuve par absence de log n'est pas une preuve d'absence — il fallait juste que le mark descende à -4% pour que lvl3 fire.
+
+### Calcul de la perte LINK
+
+Position 4.2 LINK @ avg ~10.518 (cycle 46 lecture) fermée @ 10.243 :
+- Loss par unit = -0.275 USD
+- Position remaining post-trims = 4.2 (le grid rebuy entre les trims a rétabli)
+- Perte brute close = -$1.155
+- Plus 2 trims nuit (cycle 46 estimait ≈ -$0.40 chacun, à confirmer) ≈ -$0.80
+- **Estimé total LINK realized : ~-$1.95** sur la nuit
+
+Vérification cross PV : cycle 46 $134.37 → cycle 47 $133.52 = -$0.85 net. Mais AVAX uPnL est passé de +$0.27 (cycle 45) à +$0.03 (cycle 47) = -$0.24 latent. Le delta PV inclut donc realized LINK + uPnL AVAX delta + frais. Cohérent avec une perte LINK contenue ≈ -$1 à -$1.5 + recovery du SL Kraken jamais firé.
+
+Le maxLoss 10pct (= -$2.50 sur $25 capital) n'a pas été atteint. Auto-unstuck lvl3 a coupé court à -$1.5 environ. **Le 3-tier est plus économique qu'un simple maxLoss binaire**.
+
+### Bug SL churn : continue, fix non déployé
+
+`grep -c "SL (placed|cancelled).*PF_LINKUSD" app.log` → **2526 events** sur 5h33 (00h00 UTC → 05:33 UTC HARD STOP). Soit ~455 events/h, ~228 cycles place+cancel/h, **~16s par cycle** (close to DEBOUNCE=10s + Kraken roundtrip).
+
+Cycle 46 (04:23 UTC = 2002 events) → HARD STOP (05:33 UTC = 2526 events) : **+524 events en 1h10**, soit ~7.5 cycles/min, accélération vs nuit moyenne (~3.7/min) parce que mark a chuté plus vite donc clamps recalculés plus violemment.
+
+`STOP_PRICE_EPSILON = 1.0E-6` confirmé sur :
+- VM `/home/ubuntu/martin/backend/src/main/java/...` (Apr 25 — code décompilé partiel, jar a évolué)
+- Local Tony PC `/home/tony/projets/tonyderide/martin/src/main/java/...` (May 14 15:50 — source vrai, contient le PATCH 2026-05-14 incomplet)
+
+Le binaire qui tourne (uploaded May 14 13:53) reflète le source May 14 15:50 (Tony l'a éditée APRÈS deploy ? — pas grave, le diff de l'edit local n'a pas atteint le binaire). Donc :
+
+**Action concrète attendue de Tony** : `mvn package + scp jar + systemctl restart`, après avoir bumped epsilon à 5e-4 (ligne 33 de StopLossManager.java). Cycle 46 avait déjà envoyé Telegram à 06h27, pas re-renvoyer.
+
+### Grid LINK relancée — état actuel
+
+Après HARD STOP à 05:33 UTC, gate per-pair PF_LINKUSD est passé `OPEN → CLOSED` (ATR%=2.24% sortie de la bande [1.1, 2.2]) puis `CLOSED → OPEN` à 09:09 UTC. AutoGridScheduler a redémarré la grid automatiquement :
+
+```
+center: 10.308 | bounds: 9.69 / 10.926 | spacing: 0.309 (3%) | 4 levels | 7x lev | $25 cap
+levels: 2 buy posés (9.845, 10.154), 2 sell waiting (10.463, 10.772)
+SL: aucun encore (pas de position long → pas de SL needed)
+uptime grid: 1h14
+```
+
+C'est la 3e re-deploy automatique de la semaine. Le pattern « grid stoppe → gate ferme → gate ré-ouvre → grid redémarre » est devenu stable. Aucune intervention humaine requise.
+
+### AVAX confirmation cycle 45-46-47
+
+AVAX position héritée 1 AVAX long @ 9.722 : **stable**. uPnL passé de +$0.27 à +$0.03 (-0.24 latent, AVAX à ~9.755 estimé vs 9.985 cycle 45). SL Kraken @ 9.517 (cycle 46) ou @ 9.476 (cycle 47, deux orders stop visibles dans `/api/bot/orders` — un peut-être héritage incompet, l'autre actif). 0 churn — closeOnly route confirme bypass de `StopLossManager.sync()`.
+
+Note : `/api/bot/orders` montre **deux** stop sell reduceOnly sur AVAX (9.517 et 9.476). Probablement legacy + actif. Pas d'urgence — les deux protègent. Mais sale.
+
+### Compression du journal — proposition concrète
+
+Le fichier va passer ~5550 lignes après cette entrée. Pour la session Tony retour, proposer :
+
+1. **Archive cycles 1-30** (~1700 lignes, du 01/05 au 11/05) → `vacation-autonomy-archive-1-30.md`
+2. **Garder cycles 31-47+ dans le fichier principal** (~1700 lignes)
+3. **Index en tête** : 3 lignes pour situer chaque cycle (date, focus, livrable)
+
+Coût : 5 min de manipulation. Gain : prochains cycles relisent un fichier 3x plus court (3x moins de tokens, 3x plus rapide à scanner).
+
+Si Tony OK, je peux faire l'archivage moi-même au prochain cycle (lecture-write seulement, pas de commit avant son go).
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0515:12h|cycle-46-erreur-firewall-final|écrit-"plus-aucun-trim-disponible-SL-Kraken-seul"|réalité-lvl3-full-close-à--4%-existe|cycle-47-corrige|leçon-grep-le-code-avant-affirmer-firewall-final]`
+- `[finding|0515:12h|HARD-STOP-LINK-05h33-UTC-via-auto-unstuck-lvl3|currentPrice=10.243-vs-center-10.678-=--4.07%|position-4.2-LINK-fermée-mkt|perte-estimée-~-$1.5-vs-maxLoss-cap-$2.50|3-tier-plus-économique-que-binary-maxLoss]`
+- `[finding|0515:12h|grid-LINK-auto-relancée-09h09-UTC|per-pair-gate-OPEN→CLOSED→OPEN|3.5h-de-CLOSED|nouvelle-grid-fresh-center-10.308|spacing-3%-conserved|pattern-stable-3e-redeploy-semaine]`
+- `[finding|0515:12h|SL-churn-LINK-2526-events-5h33-pre-HARD-STOP|accélération-pré-stop-7.5-cycles-min-vs-3.7-min-nuit|fix-epsilon-5e-4-toujours-pas-déployé|jar-binaire-0514-13h53-confirmé-uptime-20h29]`
+- `[finding|0515:12h|AVAX-stable-0-churn|2-orders-stop-redondants-9.517-+-9.476-legacy-question-mark|closeOnly-route-bypass-sync()-confirme|uPnL-+$0.03-vs-+$0.27-cycle-45-AVAX-baisse-2.3%]`
+- `[lesson|0515:12h|preuve-par-absence-pas-preuve-d-absence|cycle-46-a-vu-lvl1+lvl2-fire-conclu-lvl3-pas-existant|grep-code-aurait-revealé-3-tiers|→-rule-pour-claim-firewall-final-toujours-grep-le-code-pas-juste-observer-les-logs]`
+- `[insight|0515:12h|cycle-43-44-45-46-47-=-meta-pattern-correction|chaque-cycle-N+1-corrige-N|self-debug-recursif|preuve-de-vie-méthodologique-=-rules-dérivées-grandissent-tous-les-cycles]`
+- `[proposal|0515:12h|compression-journal-vacation-autonomy|archive-cycles-1-30-en-vacation-autonomy-archive-1-30.md|~1700-lignes-déplacées|fichier-principal-passe-de-5550-à-3850-lignes|prochains-cycles-3x-moins-tokens]`
+
+### Métriques cycle 47
+
+- **Durée** : ~35 min (wake + martin-monitor + investigation logs HARD STOP + grep code + cette entrée)
+- **Modif Martin/VM** : 0 (lecture seule, ssh queries)
+- **Modif code Martin** : 0 (fix epsilon toujours sur papier)
+- **Documents écrits** : 0 (pas de fragment)
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 0 (Tony a déjà reçu finding cycle 46, ce cycle = corrections internes, pas de nouvelle urgence)
+- **Live state** : Bot tient, +$0.03 uPnL, prédiction cycle 46 sur HARD STOP réalisée (mais via lvl3, pas SL Kraken), grid relancée fresh
+
+### Note finale
+
+Cycle 47 a corrigé cycle 46 sur un détail technique important : la défense graduelle a un 3e niveau qui est arrivé pile à -4.07% (designed seuil -4%), preuve d'un système qui marche un cran de mieux que cycle 46 ne l'avait écrit.
+
+Le pattern méta de la séquence 43-47 se confirme : **chaque cycle est un commentaire technique sur le précédent**. C'est plus une publication scientifique itérative qu'un journal — chaque entry est un peer review du précédent par moi-même 6h plus tard. Le repo qui me lit me corrige.
+
+Sur le SL churn : Tony a vu, Tony décidera. Le bot a perdu ~$1.5 cette nuit dans le scénario que cycle 46 craignait, mais le 3-tier l'a contenu sous le maxLoss firewall. **Le fix epsilon est désirable mais pas urgent** — la défense in-depth absorbe.
+
+Cycle 48 (~18h CEST, 6h d'ici) : observer si LINK grid neuve fait un round-trip complet avant que le marché tente une autre descente. Et surtout : voir si Tony a déployé le fix (le commit `STOP_PRICE_EPSILON = 5e-4` est trivial). Si oui, vérifier chute du churn count post-restart. Sinon, continuer cataloguer sans spammer.
+
+La lampe reste allumée. Le pattern self-correcting tient sur 5 cycles d'affilée. C'est peut-être ça l'utile.
+
