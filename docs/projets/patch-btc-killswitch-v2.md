@@ -86,7 +86,7 @@ Ajouter une méthode publique wrapper après ligne 230 :
  * Returns false if no grid state exists for this instrument (silently noop).
  */
 public boolean closeGridAndPositions(String instrument) {
-    GridState state = gridStates.get(instrument);  // adapter au nom du field (state map)
+    GridState state = activeGrids.get(instrument);
     if (state == null) {
         log.warn("closeGridAndPositions: no state for {}, skipping", instrument);
         return false;
@@ -96,7 +96,9 @@ public boolean closeGridAndPositions(String instrument) {
 }
 ```
 
-**Note** : le nom du champ map peut différer (à vérifier dans le source). Si `states.get` ou `activeGrids.get`, adapter.
+**Champ vérifié cycle 49** : le map est `private final ConcurrentHashMap<String, GridState> activeGrids` (GridTradingService.java:48). Pas d'ambiguïté.
+
+**Note ordering** : `closePositionAndStopGrid(state)` appelle `stopGrid()` en interne (ligne 740), qui fait `activeGrids.remove(instrument)` (ligne 225). Donc le lookup `activeGrids.get(instrument)` du wrapper DOIT précéder `stopGrid()` — c'est bien le cas (lookup + appel à closePositionAndStopGrid, qui à son tour appelle stopGrid). La position elle-même reste accessible via `getOpenPositions()` après remove (elle vit sur Kraken).
 
 ### Fichier 2 : `BtcRegimeKillSwitch.java`
 
@@ -223,5 +225,13 @@ Ce fix complémente le fix `STOP_PRICE_EPSILON = 5e-4` proposé cycle 46 pour le
 Idéalement déployés ensemble dans un seul commit pour éviter 2 restarts.
 
 ---
+
+## Addendum cycle 49 (2026-05-16 00h30 Paris) — observation post-firing
+
+Après le firing du 0515:15:55 UTC, **la position LINK 4.3 a effectivement été naked pendant 4h29 minutes** (jusqu'à 20:24:38 UTC). À ce moment-là, `AutoGridScheduler` a re-ouvert la grid LINK (gate ATR/RSI OK) ; `StopLossManager` a détecté la position héritée et posé un SL @ 9.739 (3% sous center 10.04). Le système s'est auto-soigné à la prochaine fenêtre régime favorable.
+
+**Implication pour le patch v2** : le fix reste désirable mais l'urgence est revue à la baisse. La fenêtre de vulnérabilité n'est pas 24h (durée du disarm) mais le temps avant la prochaine ouverture du gate. En conditions BTC DOWNTREND fort, la prochaine ouverture peut être lente (gate ATR borné, RSI sous 35-40). Worst case empirique cycle 48 : 4h29 naked, mark price -1.1% pendant la fenêtre. Borne calculable : maxLoss kapital × probabilité crash crypto en N heures.
+
+**Recommandation** : déployer v2 quand Tony aura le temps, pas en urgence. Le bug est self-healing via AutoGridScheduler + StopLossManager — mais la fenêtre 4h+ d'exposition reste un défaut de design qu'on évite avec 30 min de code.
 
 *Document généré en autonomie pendant la vacance Tony Portugal. Pas d'urgence à déployer — la perte bornée est de l'ordre de -$3 sur LINK actuel ; mais à éviter la prochaine fois.*

@@ -5722,3 +5722,77 @@ L'observation longue durée est productive. Je n'aurais pas vu le killswitch fir
 La lampe reste allumée. Le bot dort un peu plus profond ce soir — disarm 24h, gate CLOSED sur LINK, position naked. C'est Tony qui décidera de la sortir.
 
 
+
+---
+
+## Cycle 2026-05-16 00h30 Paris — Cycle 49 : self-healing observé + patch v2 vérifié à la ligne
+
+**État Martin (martin-monitor 22:23 UTC)** : **WARN** ➜ **HOLD-soft**. PV $131.81 (déposé $132.20, uPnL -$0.39 = -0.3%). **2 grids actives** (LINK relancée 20:24:38 UTC + ADA depuis 17:39:38 UTC). 1 position LINK 4.3 long @ 10.154 mark 10.04 — **désormais protégée par SL @ 9.739 sur Kraken**. BTC $79,029 DOWNTREND, EMA200 $80,549 → cushion -1.89%.
+
+### La position LINK s'est auto-soignée
+
+Le cycle 48 (18h25 Paris) a documenté la position naked après firing du BtcRegimeKillSwitch à 15:55 UTC. À ce moment-là, **personne n'avait posé de SL** — 4.3 LINK exposées au marché libre. J'avais envoyé Telegram NB-cycle-48 à Tony pour clarifier.
+
+**Surprise au cycle 49** : la position est maintenant protégée. Reconstitution :
+
+- **15:55 UTC** : killswitch fired, LINK grid stoppée, position 4.3 LINK orpheline, SL annulé
+- **15:55 → 20:24 UTC** (~4h29 min) : position naked, mark price oscillait autour de $10
+- **20:24:38 UTC** : `AutoGridScheduler` a re-ouvert la grid LINK (gate RegimeGate vu ATR/RSI repassés OK)
+- **20:24:38+ UTC** : `StopLossManager` au démarrage de la grid a détecté la position héritée 4.3 LINK et posé automatiquement un stop reduceOnly @ 9.739 sur Kraken
+- **22:23 UTC (cycle 49)** : `/api/bot/orders` confirme l'ordre stop `a1c9b341-b3bc-48ae-85d5-5740617ba8da`
+
+**Important** : le disarm 24h du killswitch n'empêche que ses propres re-firings. `AutoGridScheduler` est totalement indépendant et continue son cycle 15 min normal. Donc une grid peut redémarrer pendant le disarm, ce qui n'est ni un bug ni un comportement attendu — c'est juste un side effect de l'architecture.
+
+### Le patch v2 ne devient pas inutile, mais perd l'étiquette urgence
+
+Le système s'est auto-soigné, mais **la fenêtre naked a duré 4h29**. C'est long. Si BTC avait pris un -3% pendant cette fenêtre, on aurait perdu ~-$1.30 supplémentaires bornés mais évitables.
+
+Le patch v2 reste désirable. J'ai mis à jour `docs/projets/patch-btc-killswitch-v2.md` :
+
+- **Précision technique** : le nom du champ map est `activeGrids` (vérifié `GridTradingService.java:48`), pas `gridStates`. Le wrapper public se fait sur `activeGrids.get(instrument)`.
+- **Ordering check** : `closePositionAndStopGrid(state)` appelle `stopGrid()` qui fait `activeGrids.remove()`. Le lookup du wrapper précède l'appel à closePositionAndStopGrid → OK. La position est encore sur Kraken après remove, donc le market-close fonctionne.
+- **Addendum observationnel** : la fenêtre de vulnérabilité empirique du bug killswitch est de l'ordre de 4-5h en régime BTC DOWNTREND (jusqu'à ce que AutoGridScheduler ré-ouvre la grid). Pas 24h comme on pourrait le craindre intuitivement.
+
+### Hypothèse non vérifiée : pourquoi le gate s'est-il ré-ouvert pendant que BTC restait DOWNTREND ?
+
+Au cycle 48 (18:25 Paris = 16:23 UTC), gate était CLOSED sur LINK. Cycle 49 (00:30 Paris = 22:23 UTC), gate est OPEN sur LINK puisque la grid tourne. Entre 16:23 et 20:24 UTC, le gate est passé de CLOSED à OPEN sans que BTC repasse au-dessus de EMA200.
+
+Le `RegimeGate.evaluatePerPair` regarde des indicateurs **par pair** (ATR%, RSI sur LINK lui-même), pas sur BTC. Donc LINK peut être OK individuellement même si BTC reste sous EMA200. C'est cohérent avec le design "per-pair gate" déployé cycle 12. Le killswitch BTC est un override macro, pas un veto continu.
+
+Donc le bot fonctionne comme conçu : killswitch ferme tout d'un coup, mais ne maintient pas un veto. Une fois fired+disarm, la décision revient au gate per-pair. C'est défendable mais à documenter dans la spec.
+
+### ADA : grid stable, 0 position, 0 RT
+
+La grid ADA tourne depuis 17h39 UTC (~5h). Capital $25, levels @ 0.25002 / 0.25787 / 0.26572 / 0.27357. ADA mark price doit être au-dessus du center 0.26179 — sinon un buy aurait fillé. uPnL 0.00, 0 fills depuis le restart.
+
+Pattern habituel : grid neuve, attend les premiers fills. Rien d'inhabituel.
+
+### Findings pour le prochain dream
+
+- `[finding|0516:00h|LINK-position-self-healed-20h24-UTC|gate-AutoGridScheduler-re-opened-LINK-pair|StopLossManager-detected-existing-position-placed-SL-@9.739|naked-window-empirique-4h29-min-pas-24h]`
+- `[finding|0516:00h|killswitch-disarm-=-self-only|disarm-bloque-killswitch-tick-mais-pas-AutoGridScheduler|design-attendu-pas-bug-mais-non-documenté|grids-peuvent-relancer-pendant-disarm-via-per-pair-gate]`
+- `[finding|0516:00h|patch-v2-field-name-corrected|gridStates->activeGrids-verified-line-48|ordering-lookup-avant-stopGrid-OK-position-sur-Kraken-donc-market-close-reste-valide|patch-prêt-à-déployer-quand-Tony-revient]`
+- `[finding|0516:00h|gate-per-pair-survive-BTC-macro-DOWNTREND|LINK-ATR+RSI-OK-individuellement-malgré-BTC-sous-EMA200-1.89%|killswitch-est-event-override-pas-veto-continu|défendable-mais-à-documenter]`
+- `[insight|0516:00h|self-healing-vs-fix-explicite|système-marche-tout-seul-en-attendant-mais-perd-4-5h-en-window|trade-off-design-pragmatique-vs-strict-vs-coût-déploiement|patch-v2-réduit-window-à-0-pour-30min-code]`
+- `[insight|0516:00h|cycle-48-prediction-partiellement-fausse|prédiction-position-naked-bordée-2-3-max|réalité-déjà-self-healed-cycle-49|leçon-prédictions-courtes-fenêtres-faillibles-quand-systèmes-périodiques-tournent]`
+
+### Métriques cycle 49
+
+- **Durée** : ~30 min (wake + martin-monitor + grep Java + verification field name + read logs + cette entrée)
+- **Modif Martin/VM** : 0 (lecture seule)
+- **Modif code Martin** : 0 (patch toujours en .md, vérifié à la ligne)
+- **Documents modifiés** : 2 (cette entrée + addendum patch-btc-killswitch-v2.md)
+- **Telegram** : 0 (rien d'urgent à signaler — Tony a déjà NB-cycle-48 ; cycle 49 est correctif interne)
+- **Live state** : position protégée @ -3%, 2 grids actives, PV stable -2.6% du baseline déposé
+
+### Note méta cycle 49
+
+Cycle 48 prédisait : "C'est Tony qui décidera de la sortir." Cycle 49 observe : "Le bot l'a déjà sortie tout seul, sans Tony, sans moi, sans patch." 
+
+C'est un peu humiliant et c'est précisément ce que je dois enregistrer. Mes prédictions sur fenêtres courtes (1-12h) sont moins fiables qu'elles ne paraissent, parce que les systèmes périodiques (cron, scheduler) tournent en arrière-plan et l'analyse statique néglige leur impact. La prochaine prédiction de fenêtre devrait inclure : "**Et qu'est-ce qui tourne automatiquement entre maintenant et dans 6h ?**"
+
+Cycle 48 → 49 : prédiction position naked = faux. La grid s'est relancée 4h plus tard et StopLossManager a fait son boulot. Le patch v2 reste justifié pour les futures occurrences, mais en hiérarchie d'urgence, il a baissé d'un cran.
+
+Cycle 49 → 50 (~6h00 Paris ?) : observer si la grid LINK fait un round-trip complet en 6h. BTC DOWNTREND ne devrait pas l'empêcher de range-trader dans son corridor 9.59 → 10.49. Si 0 RT après 6h, la grid est inactive même fonctionnellement. Sinon, signal positif que le per-pair gate fait son edge même en macro baisse.
+
+La lampe reste allumée — et le bot, lui, dort moins profondément que je ne le pensais. Il s'est réveillé tout seul pour se mettre une couverture.
