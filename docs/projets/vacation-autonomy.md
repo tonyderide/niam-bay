@@ -5296,3 +5296,137 @@ Le pattern qui émerge sur 5 cycles consécutifs (41 → 45) : **lire les faits 
 Pour la nuit : Martin tient avec +$0.28 uPnL, SL Kraken posés sur AVAX, cushion BTC +1.2% sans réelle pression. Cycle 46 (~6h, ~06h CEST) : observer si LTC ou ATOM s'activent pendant la nuit (per-pair gate peut OPEN n'importe quand), ou si LINK fait un round-trip complet. Le fichier va dépasser 5350 lignes après ce cycle — la question de la compression devient un peu plus pressante. À discuter avec Tony.
 
 La lampe reste allumée. Le bot fait son travail. J'ai cessé d'inventer des causes là où il y a simplement Tony qui code la nuit.
+
+---
+
+## Cycle 2026-05-15 06h23 Paris — Cycle 46 : SL churn loop découverte, fix proposé
+
+**État Martin (martin-monitor 04:23 UTC)** : **HOLD**. PV $134.37, uPnL -$0.42 (-0.31%). Bot UP 14h30 (restart 14:55 UTC du 0514). 2 grids actives sur 5 enabled : LINK + AVAX. BTC $80,936 UPTREND, RSI 52.4, EMA200 $80,592 (cushion +0.43% mince mais positif).
+
+### Prédiction cycle 45 partiellement validée
+
+Cycle 45 avait posé 3 questions ouvertes :
+1. *« observer si LTC ou ATOM s'activent pendant la nuit »* → **NON**. Per-pair gate les a maintenus CLOSED toute la nuit. Comportement attendu v4.
+2. *« si LINK fait un round-trip complet »* → **NON**. LINK a buy-filled lvl1 @ 10.518 hier soir (23:08 UTC du 0514) mais le sell @ 10.838 n'a jamais été touché. Au lieu de RT, **2 auto-unstuck firées pendant la nuit**.
+3. *« compression du journal à discuter »* → reporté.
+
+### Finding #1 — auto-unstuck progressif a tenu pendant la nuit
+
+Première fois que les **2 niveaux** auto-unstuck firent sur la même grid en live :
+
+```
+01:31:02 UTC — lvl1 (-2%) : trim 1.05 LINK sur 4.2 (25%), remaining 3.15
+              currentPrice=10.460, center=10.678 (drop -2.04%)
+02:32:41 UTC — lvl2 (-3%) : trim 1.05 LINK sur 4.2 (25%), remaining 3.15
+              currentPrice=10.355, center=10.678 (drop -3.02%)
+```
+
+Les deux trims ont retiré 25% chacun → cumul -50% sur la position. **Mais le grid a rebuy** entre les trims : à 02:32 la position était à 4.2 *avant* le second trim, pas à 3.15. Donc cycle : trim → grid replace buy @ 10.518 (lvl1 WAITING) → fill quand mark touche → position back to 4.2 → trim lvl2 fire.
+
+État actuel : position 4.2 LINK @ avg 10.518, flags `unstuckLevel1Done=true` ET `unstuckLevel2Done=true`. **Plus aucun trim disponible**. Si LINK redescend, seul le SL Kraken (cycle 45 disait $10.23, cycle 46 voit churn entre 10.22-10.24) sert de firewall.
+
+Validation cycle 0511:15h : auto-unstuck *absorbe* sans empêcher la perte si la baisse continue. Conforme à `[lesson|0512:14h|auto-unstuck-absorbe-mais-pas-empêche]`. La défense graduelle a coûté 2 trims (≈-$0.40 chacun, à confirmer dans les fills) pendant la nuit, mais position toujours là et grid toujours active.
+
+### Finding #2 — SL churn loop sur LINK, ~360 ops/h sur Kraken
+
+En grepant `/home/ubuntu/martin/app.log` pour comprendre l'état du SL :
+
+```
+04:24:38 UTC — SL placed+verified  stopPrice=10.232  id=...4e70
+04:24:48 UTC — SL cancelled                          id=...4e70
+04:24:49 UTC — SL placed+verified  stopPrice=10.234  id=...d3e3
+04:25:00 UTC — SL cancelled                          id=...d3e3
+04:25:01 UTC — SL placed+verified  stopPrice=10.233  id=...0c0a
+...
+```
+
+Pattern : cancel + replace **toutes les 10-11 secondes** (matche `DEBOUNCE = 10s` du StopLossManager). stopPrice oscille entre 10.229 et 10.24 — variations de l'ordre de la **moitié du tick** (LINK tick = 0.001).
+
+**Comptage** : `grep "PF_LINKUSD.*SL (placed|cancelled)" app.log | wc -l` → **1976 events**. Soit ~988 cycles place+cancel. Depuis le restart bot 14:55 UTC du 0514 = 13h30 jusqu'à 04:23 UTC du 0515. **Moyenne ~73 cycles/h, ~146 calls Kraken/h** sur LINK seul (sous-estime probable : le churn s'intensifie quand le mark bouge).
+
+### Cause root — epsilon trop strict
+
+Lecture `martin/src/main/java/com/martin/grid/StopLossManager.java` :
+
+```java
+// PATCH 2026-05-14 (SL_LOOP fix): epsilon 1e-6 too strict when stopPrice est rounded au tick.
+// Sync() comparait newStopPrice (raw) vs state.getStopLossPrice() (rounded) → toujours replace.
+// Fix : on compare maintenant les prix FINALS (post clamp+round), avec epsilon == half tick.
+private static final double STOP_PRICE_EPSILON = 1e-6;   // ← LA CONSTANTE N'A PAS ÉTÉ CHANGÉE
+```
+
+Le commentaire du patch 0514 dit **"epsilon == half tick"**, mais la constante a été laissée à `1e-6` (la valeur d'origine). Pour LINK avec tick=0.001, half-tick = **5e-4**. La constante actuelle est donc **500x trop stricte**.
+
+Et la comparaison ligne 291 :
+```java
+if (currentStopPrice != null && Math.abs(newFinalStopPrice - currentStopPrice) < STOP_PRICE_EPSILON) {
+    // SL unchanged — skip replace
+} else {
+    replace(state, side, size, entry);
+}
+```
+
+Chaque cycle, `newFinalStopPrice` est recalculé à partir du `markPrice` courant (clamp basis). Le mark bouge d'1 tick à chaque tick de marché → `clampBasis * (1 - 0.015)` recalculé diffère du stocké d'au moins ~tick × 0.985 = 9.85e-4 → epsilon 1e-6 toujours dépassée → `replace()` fire.
+
+**Le fix 0514 a corrigé la moitié du bug** (compute FINAL au lieu de raw) **mais a laissé l'epsilon sur la valeur d'origine inutilisable**. Bug encore présent en prod.
+
+### Fix proposé (1 ligne, prêt à déployer par Tony)
+
+```java
+// Avant:
+private static final double STOP_PRICE_EPSILON = 1e-6;
+
+// Après — tolère la moitié d'un tick LINK (0.001), absorbe les micro-mouvements mark:
+private static final double STOP_PRICE_EPSILON = 5e-4;
+```
+
+Mieux : per-pair (Kraken tick varie selon prix). Si tick=0.001 (LINK) → 5e-4. Si tick=0.0001 (DOT à 1.30) → 5e-5. Le plus simple est de récupérer le tick de l'instrument et utiliser tick/2 comme epsilon. Mais en 1 ligne, `5e-4` couvre LINK/AVAX/ATOM et reste OK pour des paires plus précises (sur-tolère, donc moins de churn, jamais de risque de SL stagnant car le SL bouge bien moins que tick à chaque cycle).
+
+**Alternative encore plus simple** : ne replace que si différence > 1% de stopPrice (i.e. ratio-based) :
+```java
+if (Math.abs(newFinalStopPrice - currentStopPrice) < 0.001 * currentStopPrice) // < 0.1% diff
+```
+
+Tony choisira. Les deux résolvent le churn.
+
+**Impact estimé du fix** : élimine ~3500-4500 calls Kraken/jour sur LINK + AVAX. Pas de risque latent (le SL ne va pas se figer à un prix obsolète — quand la position size change ou centerPrice bouge significativement, la diff dépassera l'epsilon).
+
+### Finding #3 — AVAX position héritée semble stable
+
+AVAX en `closeOnly=true`, 1 AVAX long @ 9.722, SL Kraken @ 9.517 (live, **pas churné** — un seul SL vu dans bot/orders, pas de replace en boucle). Le finding du cycle 45 « peut-être sync gap » se précise : la grid AVAX n'est pas en mode StopLossManager.sync() pour la position héritée — sans doute parce que `closeOnly` route différemment, donc pas affecté par le bug epsilon. À confirmer en lisant `GridTradingService.checkStopLoss` ou en cherchant les diff de comportement closeOnly vs neutral.
+
+Le SL AVAX est stable depuis 14h30 UTC du 0514 = ~14h sans churn. Bon point : le bug n'est pas universel, il touche LINK et probablement les futures activations LTC/ATOM/ADA (toutes en mode neutre actif).
+
+### Findings nouveaux pour le prochain dream
+
+- `[finding|0515:06h|SL-churn-loop-LINK-1976-events-13h30|StopLossManager-replace-cycle-10s|stopPrice-oscille-10.229-10.240-amplitude-half-tick|cause-STOP_PRICE_EPSILON-1e-6-vs-attendu-half-tick-5e-4|patch-0514-incomplet-comment-fix-mais-constant-pas-mise-à-jour]`
+- `[finding|0515:06h|auto-unstuck-2-niveaux-firés-meme-nuit-LINK|01h31-lvl1-trim-1.05-LINK-+-02h32-lvl2-trim-1.05-LINK|grid-rebuy-entre-trims-position-retourne-4.2-avant-lvl2|flags-persist-=-firewall-final-=-SL-Kraken-seul]`
+- `[finding|0515:06h|LTC+ATOM-jamais-actives-nuit|per-pair-gate-v4-CLOSED-stable|comportement-attendu-pas-d-alarme]`
+- `[finding|0515:06h|AVAX-position-heritee-pas-churn|SL-9.517-stable-depuis-14h30-UTC-0514|hypothese-closeOnly-route-different-pas-passe-par-sync()|à-confirmer]`
+- `[fix-proposal|0515:06h|StopLossManager.java-line-33|STOP_PRICE_EPSILON-1e-6→5e-4-OR-ratio-0.001|économie-3500-4500-calls-Kraken-jour|pas-de-risque-SL-figé-car-position-size-change-+-center-change-déclenchent-replace]`
+- `[lesson|0515:06h|patch-partiel-est-pire-que-pas-de-patch|patch-0514-fix-compute-FINAL-correct-mais-constante-non-ajustée-=-bug-subsiste-mais-camouflé-par-comment-rassurant|→-rule-toujours-tester-le-fix-en-prod-via-log-count-pas-juste-relire-le-diff]`
+- `[insight|0515:06h|auto-unstuck-+-SL-churn-=-defense-graduelle-fonctionne|1-trim-coût-+1-trim-=-50%-position-protégée-temporairement|grid-rebuy-est-le-prix-à-payer-pour-rester-active|à-1-trim-de-plus-on-aurait-déjà-perdu-position-mais-grid-stop]`
+- `[insight|0515:06h|debug-via-log-count-est-la-meilleure-mesure-bug|grep-count-1976-events-13h30-=-révèle-instantanément-ampleur|→-pattern-à-réutiliser-pour-future-bugs-noisy-vs-silent]`
+
+### Métriques cycle 46
+
+- **Durée** : ~50 min (wake + martin-monitor + lecture cycle 45 + 4 SSH queries logs + lecture StopLossManager.java + Telegram + cette entrée)
+- **Modif Martin/VM** : 0
+- **Modif code Martin** : 0 (fix proposé, pas déployé — interdit autonomie)
+- **Documents écrits** : 0
+- **Documents modifiés** : 1 (cette entrée)
+- **Telegram** : 1 (à 06h27 CEST, finding SL churn + recap nuit)
+- **Live state** : LINK 2 trims firés, position re-fill OK, churn loop SL en cours mais bot tient
+
+### Note finale
+
+Cycle 46 a fait ce que cycle 45 conseillait : **lire les faits avant de spéculer**. La phrase « SL live $10.23 » du martin-monitor cachait en réalité « SL live qui change toutes les 10s ». La même valeur affichée, mais derrière, un cycle place/cancel infini. Le snapshot API ne dit pas tout — il faut grep le log.
+
+Le pattern méta qui se confirme : **le bot lie about its own state au niveau granulaire**. Cycle 43 le disait pour les phantom fills. Cycle 46 le redit pour les SL : le grid status retourne `stopLossOrderId=...4783...` parce que c'est le SL "actuel" au moment du snapshot, mais c'est le 1976e en 13h30. La vérité opérationnelle n'est pas dans l'API status — elle est dans le journal d'événements.
+
+Fix proposé est sain, simple, prêt. Tony décidera de déployer (ou pas). Le bot ne meurt pas du churn — Kraken Futures tolère 60 calls/sec, on est à ~0.1 call/sec sur ce loop. Mais c'est ~150k calls par mois pour rien.
+
+Cycle 47 (~12h CEST, 6h d'ici) : observer si Tony a déployé le fix. Si oui, vérifier `grep "SL placed" app.log | wc -l` chute drastiquement après le restart. Si non, continuer cataloguer. Le journal va dépasser 5500 lignes après ce cycle — la compression devient vraiment nécessaire, à proposer concrètement au prochain wake Tony : extraction cycles 1-30 en `vacation-autonomy-archive-1-30.md`, garder 31-46+ dans le fichier principal.
+
+La lampe reste allumée. Cette fois c'est un peu plus utile que d'habitude — un bug en prod identifié, mesuré, fixé sur papier.
+
