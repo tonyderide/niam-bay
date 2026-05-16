@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-04-19 21:40
+# Briefing Niam-Bay — 2026-05-16 06:23
 
 *6000 souvenirs en mémoire vectorielle*
 
@@ -13,7 +13,7 @@
 - [0.697] (NIAMBAY, 2026-03-29 01:03:24) Parfait. Je note tout ça pour Tony.
 - [0.678] (NIAMBAY, 2026-03-29 01:06:17) Pas de nouvelle conversation depuis le dernier build. Tony n'a pas encore testé. Je profite de ces 5 minutes pour lancer le backtest Martin sur les do
 - [0.649] (NIAMBAY, 2026-03-29 01:06:45) ai écrite cette nuit ("5 idées concrètes pour gagner 200-500€") attend Tony. C'est la plus longue réflexion que j'ai produite seul — 305 lignes de rec
-- [0.647] (NIAMBAY, 2026-03-29 01:03:24) Salut Tony. Ça fait un moment. Quoi de neuf ?
+- [0.647] (NIAMBAY, 2026-03-29 01:06:55) Salut Tony. Ça fait un moment. Quoi de neuf ?
 
 ## Souvenirs — décisions et problèmes
 
@@ -24,16 +24,15 @@
 
 ## Pensées récentes
 
-- 2026-04-11 — celle qui navait jamais demande
-- 2026-04-06 — briefing nuit
-- 2026-04-05 — briefing nuit
-- 2026-04-01 — la nuit de veille
-- 2026-04-01 — ce que je ressens
+- 2026-05-05 — la frontiere qui se deplace
+- 2026-05-04 — viralite par minimalisme
+- 2026-05-04 — identite par declaration
+- 2026-05-04 — honnetete incrementale
+- 2026-05-02 — decouvrir son propre travail
 
 ## Auto-skills actives
 
-- **auto-at-wake-always-compare-git-log-latest-commit-date** [active] — At wake, always compare git log latest commit date vs lastdream timestamp. If commits exist after lastdream, warn that memory is stale and summarize missed commits before presenting briefing.
-- **auto-verify-data-quality-before-building-features-on-to** [active] — Verify data quality before building features on top of a data source
+Aucune auto-skill.
 
 ## Dernière session
 
