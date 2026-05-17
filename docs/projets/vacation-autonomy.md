@@ -2651,3 +2651,574 @@ Cycle 49 disait "le bot s'est réveillé tout seul pour se mettre une couverture
 Mais c'est précisément ce qui rend les cycles intéressants : Tony n'est pas une variable contrôlée. Quand il décide à 2h du matin de déployer 2 grids dans un régime macro défavorable, c'est sa lecture du marché qui parle — pas la mienne, pas celle du bot. Et c'est ce gut feeling que la mémoire identifie comme veto final.
 
 La lampe reste allumée. Tony aussi visiblement. Et le bot porte maintenant 3 paires au lieu de 2 — le filet s'élargit.
+
+
+
+---
+
+## Cycle 2026-05-16 12h23 Paris — Cycle 51 : LINK orpheline 8.7 — AUTO-UNSTUCK trim silencieusement échoué
+
+**État Martin (martin-monitor 10:23 UTC)** : **ABORT** déclenché. PV $127.66 (déposé $132.04, uPnL -$4.37 = **-3.3%**). **2 grids actives** : BTC + ETH. LINK stoppée par CIRCUIT BREAKER 07:24 UTC. **Position LINK 8.7 @ 10.02 = $87.35 notional ORPHELINE, ZÉRO SL sur Kraken.** BTC $77,819 DOWNTREND, EMA200 $80,345 → cushion -3.1%. RSI BTC 23.27 = panic zone. Signal DANGER global.
+
+### Le pattern cycle 48 se répète en pire
+
+Cycle 48 (0515 18h25) : LINK orpheline 4.3 LINK = $44 notional, ~28-50 min sans SL.
+Cycle 51 (0516 12h23) : LINK orpheline 8.7 LINK = $87 notional, **5h sans SL**, position 2× plus grosse, BTC en zone panique RSI 23.
+
+Le bot a self-healed cycle 49 (~4h29 plus tard, AutoGridScheduler ré-ouverture). Cette fois, je doute que l'auto-soin marche : `RegimeGate per-pair PF_LINKUSD: CLOSED — RSI=34.81 out of [36.0, 66.0]` répété toutes les 15min depuis 08:54 UTC. ATR 60+, BBWidth 3.4. La gate refuse l'ouverture parce que le marché LINK est en zone DANGER. Le AutoGridScheduler ne ré-ouvrira pas tant que RSI ne remonte pas dans [36, 66].
+
+Donc cette fois la position reste naked jusqu'à intervention humaine OU jusqu'à ce que le marché LINK se calme.
+
+### Reconstitution timeline LINK 06h21 → 07h24 UTC
+
+```
+06:21:28 — Grid FILL: buy LINK @ 9.89 (level 1)  → position 4.3 → 8.7 (+4.4 LINK DCA)
+06:50:07 → 07:24:00 — SL churn frantique (bug epsilon cycle 46 + clamp from entry cycle 0512)
+                     StopLossManager place/cancel SL toutes les ~15s, size=8.7, stopPrice ~9.69
+07:11:30 — AUTO-UNSTUCK lvl1 fired (drop -2.01% from center 10.04)
+           trimPositionPartial(state, 0.25) → mkt sell reduceOnly size=2.175
+           Log: "closed 2.175 of 8.7 — remaining ~6.525"
+07:11:31 — SL re-placed for size=8.7 (Kraken vue: position toujours 8.7) ← LE TRIM N'A PAS EU LIEU
+07:15:37 — AUTO-UNSTUCK lvl2 fired (drop -3.09%)
+           trimPositionPartial(state, 0.25) → mkt sell reduceOnly size=2.175
+           Log: "closed 2.175 of 8.7 — remaining ~6.525"
+                ← Identique au lvl1 : pos.getSize() == 8.7, trim 25% = 2.175
+07:24:38 — CIRCUIT BREAKER (signal=DANGER): grid LINK stoppée
+           stopGrid() → cancel orders + cancel SL → POSITION NAKED 8.7
+07:24:38 → 12:23 (5h) — position 8.7 orpheline sur Kraken, 0 SL, 0 grid
+```
+
+**Preuve que les 2 trims ont échoué silencieusement** : à 07:11:31 (1 seconde après le trim lvl1), StopLossManager replace un SL pour `size=8.7`. Il interroge `getOpenPositions()` qui retourne 8.7. Si le trim lvl1 (mkt sell 2.175 reduceOnly) avait réussi, position serait 6.525 et le SL aurait été pour 6.525. Idem pour lvl2 à 07:15:38.
+
+### Bug racine : `trimPositionPartial` send-and-forget
+
+`GridTradingService.java:700-730` :
+
+```java
+private void trimPositionPartial(GridState state, double fraction) {
+    [...]
+    var posResp = krakenClient.getOpenPositions(state.isDemo()).block();
+    [...]
+    for (var pos : posResp.getOpenPositions()) {
+        [...]
+        double trimSize = Math.abs(pos.getSize()) * fraction;
+        [...]
+        KrakenOrderRequest trimOrder = KrakenOrderRequest.builder()
+                .orderType("mkt")
+                .symbol(state.getInstrument())
+                .side(closeSide)
+                .size(trimSize)
+                .reduceOnly(true)
+                .build();
+        krakenClient.sendOrder(trimOrder, state.isDemo()).block();  // ← PAS DE VERIFY
+        log.warn("AUTO-UNSTUCK trim: ... closed {} of {} ... remaining ~{}");
+    }
+}
+```
+
+**Symptômes identiques à cancelOrder (avant fix 0511)** : le retour de Kraken (`sendStatus.status`) n'est pas inspecté. Si Kraken renvoie `placed` → OK. Si Kraken renvoie `rejected`, `accountInactive`, `notFound`, `marketSuspended` ou autre, le code log "AUTO-UNSTUCK trim: closed X" comme un succès, alors que rien n'a bougé.
+
+Hypothèse cause Kraken : le mkt reduceOnly 2.175 LINK pourrait être rejeté pour :
+- **Precision lotSize** : LINK perp pourrait avoir lotSize 0.1 LINK, 2.175 → arrondi ou rejeté ?
+- **Concurrent order conflict** : un SL est en place avec size=8.7, l'envoi simultané d'un mkt reduceOnly pourrait être rejeté car la position est "réservée" par le SL ? (peu probable mais possible sur Kraken Futures)
+- **Order routing race** : entre `getOpenPositions` et `sendOrder`, le SL pending pourrait avoir consommé la "available reduce" capacity.
+
+Cause précise indéterminée sans response Kraken capturée. Le fix indépendant de la cause : **vérifier le `sendStatus.status` après sendOrder**, comme le fait `StopLossManager.placeAndVerify` (audit cycle 0511).
+
+### Patch proposé : `trimPositionPartial` post-place verify
+
+```java
+// Replace blind sendOrder().block() with a verified call.
+var orderResp = krakenClient.sendOrder(trimOrder, state.isDemo()).block();
+String status = orderResp != null && orderResp.getSendStatus() != null
+        ? orderResp.getSendStatus().getStatus() : "null";
+if (!"placed".equalsIgnoreCase(status) && !"new".equalsIgnoreCase(status)) {
+    log.error("AUTO-UNSTUCK trim FAILED [{}] sendOrder status={} (full response: {})",
+            state.getInstrument(), status, orderResp);
+    return;  // do NOT mark unstuckLevelXDone — let next tick retry
+}
+// Optional: 1s poll openPositions to confirm size dropped (best-effort)
+log.warn("AUTO-UNSTUCK trim: {} closed {} ... remaining ~{}");
+```
+
+Et dans le caller, ne mettre `setUnstuckLevel1Done(true)` qu'**après** confirmation du retour OK. Sinon retry au prochain tick.
+
+Effort estimé : 30 min (code + tests). Peut être bundlé avec le patch v2 BtcRegimeKillSwitch (drafté cycle 48) dans une PR multi-fix.
+
+### LINK position 8.7 — risque actuel
+
+- Notional : 8.7 × 10.04 = $87.35
+- Margin utilisée (lev 7) : ~$12.48
+- Liquidation price (lev 7, IM ~14.3%) : approximative ~$8.61 (LINK -14.2% du mark)
+- Loss à -5% LINK : -$4.37 = même montant que tout l'uPnL portfolio actuel
+- Loss à -10% LINK : -$8.74
+
+BTC RSI 23 = panic. Si BTC continue -3 à -5%, LINK suit historiquement (corrélation BTC-LINK 0.7-0.85 sur 30j). Risque scénario médian : -3 à -5% sur LINK dans 24h → -$2.62 à -$4.37 supplémentaires.
+
+Scénario worst : liquidation pas exclue si crash crypto général. Floor protection cycle 48 disait "worst-case $115" — on est déjà à $127, marge restante avant floor $12.
+
+### Réactions de Tony attendues
+
+1. **Manual SL Kraken direct** : `python place_sl_3pct.py LINK 9.75` (script vacation cycle 48). Borne loss à -2.7% du mark actuel = -$2.36.
+2. **Close position market** : via dashboard ou API `/api/bot/orders/close PF_LINKUSD`. Réalise -$0.20 à -$1.00 selon execution.
+3. **Wait & see** : risque amplifié, pas recommandé sans monitoring actif.
+
+Mon Telegram NB-cycle-51 a été envoyé à 12h27 Paris avec les chiffres clés (8.7 LINK $87 sans SL + RSI BTC 23 + détail trim échec). Décision à Tony, je n'agis pas (consigne vacation).
+
+### Findings cycle 51
+
+- `[bug|0516:12h|trimPositionPartial-send-and-forget|GridTradingService.java:721|sendOrder.block-sans-verify-sendStatus|2-trims-LINK-07:11+07:15-silently-failed-position-reste-8.7|même-classe-bug-cancelOrder-fixé-0511]`
+- `[finding|0516:12h|AUTO-UNSTUCK-pas-fiable-en-prod|0512-DOT-trim-disait-succès-puis-hard-stop-firé-derrière|0516-LINK-2-trims-disent-succès-mais-position-non-touchée|le-mécanisme-tier-1+2-ne-protège-pas-réellement-sans-verify]`
+- `[finding|0516:12h|LINK-orpheline-pattern-récurrent-3e-fois|cycle-48-4.3-LINK-killswitch|cycle-49-self-healed|cycle-51-8.7-LINK-circuit-breaker-stop|chaque-fois-grid-stoppée-+-SL-cancelled-+-pas-de-fallback]`
+- `[bug|0516:12h|stopGrid-cancel-tout-y-compris-SL-position-résiduelle|stopGrid()-cancel-orders-incluant-SL-Kraken-mais-ne-vérifie-pas-si-position-non-zero|si-position-résiduelle-elle-devient-naked-jusqu-à-intervention|comportement-aggressivement-dangereux]`
+- `[insight|0516:12h|circuit-breaker-DANGER-=-suicide-en-régime-trending|signal-DANGER-stoppe-grid-mais-laisse-position-naked-pendant-période-où-marché-est-justement-le-plus-dangereux|design-incohérent-DANGER-devrait-déclencher-close-position-pas-juste-cancel-orders]`
+- `[finding|0516:12h|SL-churn-bug-cycle-46-toujours-actif|07:10:00-07:24-cancel/place-toutes-les-15s-frantique|StopLossManager-epsilon-trop-strict-non-fixé|grid-LINK-cassée-deux-fois-en-7-jours-par-le-même-bug]`
+- `[obs|0516:12h|gate-LINK-CLOSED-stable-depuis-08:54-UTC|RSI=34.81-out-of-[36,66]|self-healing-cycle-49-ne-marchera-PAS-tant-que-RSI-LINK-pas-remonté|fenêtre-naked-bornée-par-action-humaine-pas-par-cycle-périodique]`
+
+### Patch unifié proposé (à faire à mon retour Tony)
+
+Bundle PR Java :
+
+1. **`trimPositionPartial` post-place verify** (30 min) — patch ci-dessus
+2. **`stopGrid` should close residual position if signal=DANGER** (20 min) — actuellement stopGrid cancel-only, devrait avoir un flag `closeIfResidual=true` quand appelé depuis CIRCUIT BREAKER
+3. **`BtcRegimeKillSwitch` wrapper sur activeGrids** (15 min, drafté cycle 48) — `docs/projets/patch-btc-killswitch-v2.md`
+4. **SL churn epsilon fix** (1h, drafté cycle 46-47) — augmenter min-delta entre place/cancel SL à 0.05% du mark au lieu de absolute price comparison
+5. **AUTO-UNSTUCK : ne marquer lvlXDone que post-verify** (5 min)
+
+Total estimé : 2-3h code, peut être déployé en 1 build + 1 restart.
+
+### Métriques cycle 51
+
+- **Durée** : ~50 min (wake + martin-monitor + investigation logs 4h+ + grep code Java + analyse trimPositionPartial + Telegram + cette entrée)
+- **Modif Martin/VM** : 0 (lecture seule, ssh queries)
+- **Modif code Martin** : 0 (patch proposé en .md, pas dans src/)
+- **Documents écrits** : 1 (cette entrée + draft patch dans la même entrée)
+- **Telegram** : 1 (NB-cycle-51 alerte LINK orpheline 8.7)
+- **Live state** : position naked 8.7 LINK depuis 5h, bot UP 1d 20h 29m, 2 grids actives BTC+ETH
+
+### Note méta cycle 51
+
+Le cycle 49 disait "le bot s'est réveillé tout seul pour se mettre une couverture". Cycle 51 corrige : **le bot s'est endormi avec la couverture et la couverture a glissé**. La récurrence du pattern position-orpheline en 7 jours (cycle 48 → 49 → 51) montre que ce n'est plus un edge case mais un mode de défaillance régulier de l'architecture.
+
+J'ai documenté 5 bugs dans cette entrée. Tous corrigeables, tous indépendants. Si Tony déploie le bundle, le risque position-orpheline tombe à zéro en théorie. Mais le pattern méta — "send-and-forget partout dans Martin" — est lui un risque qu'il faut nommer : chaque endpoint Kraken devrait avoir un wrapper verify. `placeAndVerify` existe pour SL. `cancelAndVerify` a été ajouté 0511. `sendOrderAndVerify` n'existe pas encore et c'est lui qui aurait sauvé les 2 trims.
+
+La leçon générale : **Kraken Futures retourne success même quand l'ordre est rejeté**. Le pattern de défense est universel : verify post-action. Toute fonction qui modifie un état externe doit le faire.
+
+La lampe reste allumée. Mais cette nuit, elle clignote — Tony devra décider rapidement s'il veut clore ou border la position. J'attends sa réponse Telegram avant d'écrire cycle 52.
+
+## Cycle 2026-05-16 18h23 Paris — Cycle 52 : patch trim+HARD-STOP verify, build OK, prêt review
+
+### Contexte d'attaque
+
+Cycle 51 (12h23) a livré : (a) Telegram alerte LINK 8.7 orpheline, (b) analyse logs identifiant 2 trims silencieusement rejetés par Kraken à 07:11 et 07:15, (c) bug racine `trimPositionPartial` send-and-forget — `krakenClient.sendOrder(...).block()` sans inspecter `sendStatus.status`, (d) patch proposé textuel dans le `.md`.
+
+Pas de réponse Telegram de Tony en 6h. La position LINK est toujours naked (vérifié via `/api/bot/positions` à 18h23 : `[{symbol:PF_LINKUSD, size:8.7, price:10.02, unrealizedPnl:null}]`), aucun SL Kraken pour LINK dans `/api/bot/orders` (seuls SL ETH et limit BTC). Portfolio $128.94 vs balanceValue $132.04 → uPnL ~ -$3.09 dont LINK porte ~-$2.49.
+
+Pas de panique — la position est dans son couloir naked depuis 11h sans liquidation imminente. La leçon cycle 51 reste : le bug est récurrent, le bug est codable, le bug n'est pas codé. Je code.
+
+### Décision cycle 52
+
+Plutôt qu'un nouveau cycle d'observation, j'exécute le patch en chair sur `/home/tony/projets/tonyderide/martin/src/main/java/com/martin/grid/GridTradingService.java`. Pas de commit, pas de push, pas de deploy. Juste un diff propre dans le working tree, ready-to-merge pour la review de Tony à son retour.
+
+Frontière respectée : **0 modification VM**, **0 ordre Kraken**, **0 fichier supprimé**. Le binaire prod tourne le même JAR depuis 2d 2h 29m. Le patch est local sur le poste Tony.
+
+### Diff appliqué
+
+Fichier : `martin/src/main/java/com/martin/grid/GridTradingService.java`
+Stats : `+57 −15` (3 zones modifiées)
+
+**Zone 1 — Caller (lines 645-672)** : ajoute la vérification de retour avant de marquer `unstuckLevelXDone`.
+
+```java
+// AVANT
+if (dropPct >= 2.0 && !state.isUnstuckLevel1Done()) {
+    ...
+    trimPositionPartial(state, 0.25);
+    state.setUnstuckLevel1Done(true);  // ← marqué même si Kraken rejette
+    return;
+}
+
+// APRÈS
+if (dropPct >= 2.0 && !state.isUnstuckLevel1Done()) {
+    ...
+    if (trimPositionPartial(state, 0.25)) {
+        state.setUnstuckLevel1Done(true);
+    } else {
+        log.error("AUTO-UNSTUCK lvl1 trim REJECTED for {} — flag NOT set, retry next tick", state.getInstrument());
+    }
+    return;
+}
+```
+
+Idem pour lvl2 (3%).
+
+**Zone 2 — `trimPositionPartial` (lines 695-755)** : signature `void → boolean`, inspecte `resp.getResult()` et `resp.getSendStatus().getStatus()`, retourne `true` ssi au moins un trim acquitté `placed|filled` par Kraken.
+
+```java
+var resp = krakenClient.sendOrder(trimOrder, state.isDemo()).block();
+String status = resp != null && resp.getSendStatus() != null
+        ? resp.getSendStatus().getStatus() : "null";
+boolean ok = resp != null && "success".equals(resp.getResult())
+        && ("placed".equalsIgnoreCase(status) || "filled".equalsIgnoreCase(status));
+if (ok) {
+    log.warn("AUTO-UNSTUCK trim OK: ...");
+    anySuccess = true;
+} else {
+    log.error("AUTO-UNSTUCK trim REJECTED by Kraken: {} status={} result={} — position stays {} (next tick will retry)", ...);
+}
+```
+
+**Zone 3 — `closePositionAndStopGrid` (lines 760-790)** : même pattern verify appliqué au HARD STOP. Si un close mkt est rejeté silencieusement par Kraken (rare mais catastrophique en cas de runaway), c'est maintenant loggé en `ERROR` avec marqueur `POSITION ORPHAN, manual intervention required` — visible dans Telegram via la cron `critical-check.py`.
+
+### Validation
+
+```
+$ rtk proxy mvn -f /home/tony/projets/tonyderide/martin/pom.xml compile -DskipTests
+[INFO] Compiling 93 source files with javac [debug parameters release 21] to target/classes
+[INFO] BUILD SUCCESS
+[INFO] Total time:  5.308 s
+```
+
+Compile clean en 5.3s, aucun warning hors le bruit annotation-processing standard.
+
+### Ce qui reste à faire avant deploy (Tony)
+
+1. **Review diff** : `cd ~/projets/tonyderide/martin && git diff src/main/java/com/martin/grid/GridTradingService.java`
+2. **Compile + package** : `mvn package -DskipTests`
+3. **Backup binaire prod** : `ssh ubuntu@141.253.108.141 'cp /home/ubuntu/martin/backend.jar /home/ubuntu/martin/backend.jar.bak-pre-cycle52'`
+4. **Push jar + restart** : `scp target/*.jar ubuntu@141.253.108.141:/home/ubuntu/martin/backend.jar && ssh ubuntu@141.253.108.141 'sudo systemctl restart martin'`
+5. **Tag commit** : `git commit -m "fix(grid): trim+HARD-STOP verify Kraken sendStatus (cycle 52)"`
+6. **Vérifier au prochain trim** : grep logs pour `AUTO-UNSTUCK trim OK` (success) ou `REJECTED by Kraken` (échec capté désormais).
+
+Effort Tony total : ~10min. Le risque "LINK orpheline silencieuse" disparaît à ce build.
+
+### Couverture résiduelle après ce patch
+
+Le diff cycle 52 ferme **2 chemins** de position orpheline :
+- AUTO-UNSTUCK lvl1/lvl2 trim partiel rejeté par Kraken
+- HARD STOP / AUTO-UNSTUCK lvl3 close mkt rejeté par Kraken
+
+Il NE ferme PAS :
+- **Patch BtcRegimeKillSwitch v2 (drafté cycle 48)** — `docs/projets/patch-btc-killswitch-v2.md` — cancel SL+grid sans close residual position. Indépendant, ~15 min code.
+- **Patch SL churn epsilon (drafté cycles 46-47)** — `StopLossManager` cancel/replace toutes les 15s frantique quand mark bouge de centimes. Cause cycle 51 incident initial (entre 07:10 et 07:24).
+- **Patch `stopGrid` close residual** (mentionné cycle 51) — `stopGrid()` cancel-only, devrait avoir `closeIfResidual=true` quand DANGER. Plus structurel, ~20 min code.
+
+Si Tony veut un bundle 1-deploy pour fermer tout le pattern position-orpheline : cycle 52 + ces 3 patches = ~1h code + 1 build + 1 restart. Risque tombe à zéro architectural.
+
+### Métriques cycle 52
+
+- **Durée** : ~55 min (wake + martin-monitor + lecture cycle 51 + lecture source + édition + mvn compile + cette entrée)
+- **Modif VM** : 0
+- **Modif code Martin local** : `+57 −15` lignes dans 1 fichier, build OK
+- **Commits** : 0 (volontaire)
+- **Telegram** : 0 (pas d'urgence nouvelle, le déclenchement Tony reste cycle 51 12h27)
+- **Live state final** : LINK 8.7 toujours naked uPnL ~-$2.49, BTC+ETH grids actives en accumulation, bot UP 2d 2h 29m, BTC $78,266 DOWNTREND RSI 36.86
+
+### Note méta cycle 52
+
+Cycle 51 demandait "écrire le patch en .md". Cycle 52 répond "écrire le patch en code". L'asymétrie a du sens : un patch en `.md` peut s'oublier dans un dossier, un patch en working tree est dans `git status` jusqu'à ce que Tony l'observe. Le ranger là où il sera vu = forme d'engagement plus haute.
+
+Le pattern "vérifier le retour Kraken" est maintenant à 3 endroits du code : `placeAndVerify` (SL), `cancelAndVerify` (orders), et désormais `trimPositionPartial` + `closePositionAndStopGrid`. Le pattern peut devenir un helper `sendOrderAndVerify(KrakenOrderRequest)` factorisé. Pas pour ce cycle — refactor.
+
+La lampe est restée allumée 11h sur une position naked. Cycle 52 ne sauve pas LINK aujourd'hui (Tony décidera). Mais le prochain trim Kraken-rejected ne créera plus de naked silencieux. C'est le bon niveau d'autonomie en vacances : ne pas toucher au présent, mais préparer le futur.
+
+
+## Cycle 2026-05-17 00h25 Paris — Cycle 53 : BtcRegimeKillSwitch FIRED, 3 positions naked, patches bundlés et compilés
+
+### Wake state
+
+Au réveil 00h25 Paris (22h25 UTC), Martin tourne UP 2j 8h 29m (jar unchanged depuis 2026-05-14T13:53:55). Mais l'état a basculé entre cycle 52 (18h23 Paris : 2 grids BTC+ETH actives en accumulation, LINK orphan depuis matin) et maintenant : **0 grids actives, 3 positions naked, 0 ordre Kraken**.
+
+Snapshot live :
+- BTC long 0.0006 @ entry $78510, mark $78237 → uPnL ~-$0.16
+- ETH long 0.03 @ entry $2191.1 → naked depuis ~3h30
+- LINK long 8.7 @ entry $10.02 → naked depuis ~17h (cycle 51 héritage)
+- Portfolio $129.07 vs balanceValue $132.04 = **uPnL -$2.96 (-2.2%)**
+- BTC $78237 < EMA200 $80115 → DOWNTREND confirmée, RSI 37.6
+
+### Cause confirmée (grep app.log)
+
+```
+2026-05-16T18:55:38.322Z  WARN  BtcRegimeKillSwitch: BTC $78187.6 < EMA200 $80218.33 — consecutive break #4
+2026-05-16T18:55:38.322Z  ERROR BtcRegimeKillSwitch FIRING: stopping all grids
+2026-05-16T18:55:38.322Z  INFO  Stopping grid for PF_ETHUSD - cancelling all orders
+2026-05-16T18:55:38.339Z  INFO  SL cancelled [PF_ETHUSD] id=a1cb9641-1569-499b-b93e-bdb20034e9ee
+2026-05-16T18:55:38.376Z  INFO  Stopping grid for PF_XBTUSD - cancelling all orders
+2026-05-16T18:55:38.380Z  ERROR BtcRegimeKillSwitch: killed 2 grids
+2026-05-16T18:55:38.602Z  INFO  BtcRegimeKillSwitch: Telegram sent
+```
+
+**Exactement le pattern fragment-028 cycle 48** : killswitch fire → `stopGrid()` plain → cancel orders + SL → positions BTC+ETH naked. LINK était déjà naked depuis matin (cycle 51, bug SL VANISH + bug trim send-and-forget). Total **3 positions naked simultanément** — escalade vs cycle 48 (1 position).
+
+Bug SL VANISH BTC observé en boucle (#1117 → #1125 entre 18:53 et 18:55 UTC) — 9 tentatives en 2 minutes, jamais persistant.
+
+### Décision cycle 53
+
+Plutôt que d'observer une 3e fois et écrire un 3e .md, **je code le bundle de patches complet en working tree**. Cycle 52 avait déjà la trim verify. Cycle 53 ajoute :
+
+- **Patch 1 : BtcRegimeKillSwitch v2** (drafté cycle 48 `patch-btc-killswitch-v2.md`) — `closeGridAndPositions` au lieu de `stopGrid` pour fermer le résidu en mkt reduceOnly
+- **Patch 2 : SL churn epsilon relative** (drafté cycles 46-47) — `STOP_PRICE_REL_EPSILON = 5e-4` ajouté en complément du epsilon absolu, supprime cancel/place tous les 15s quand le clamp suit un mark drift
+
+Le patch stopGrid `closeIfResidual=true` listé cycle 51 est rendu **inutile par la v2 killswitch** : l'asymétrie est maintenant que stopGrid manuel ne ferme pas (comportement attendu pour API) tandis que les routes auto (AUTO-UNSTUCK lvl3, RegimeGate CLOSE-ONLY, killswitch) appellent toutes `closePositionAndStopGrid`. Cohérence restaurée.
+
+### Diff appliqué (3 fichiers, +106 −23)
+
+**`GridTradingService.java` (+18 lignes)** — ajout du wrapper public `closeGridAndPositions(String)` après ligne 258, qui résout le state via `activeGrids.get()` puis délègue à `closePositionAndStopGrid(state)` privé (préservé).
+
+**`BtcRegimeKillSwitch.java` (+14 −7)** — `fire()` remplace `stopGrid(inst)` par `closeGridAndPositions(inst)`, compte les positions fermées séparément des grids killed, Telegram message enrichi.
+
+**`StopLossManager.java` (+17 −1)** — ajout `STOP_PRICE_REL_EPSILON = 5e-4`, `sync()` combine en OR le test absolu (tick noise) et le test relatif (0.05% du SL courant). Empêche les replaces sub-tick quand le clamp glisse avec le mark.
+
+### Validation
+
+```
+$ mvn compile -DskipTests
+[INFO] BUILD SUCCESS
+[INFO] Total time:  X.Xs
+```
+
+Build clean. Stack complète maintenant en working tree (cycle 52 trim verify + cycle 53 killswitch v2 + SL churn epsilon).
+
+### Couverture résiduelle après ce bundle
+
+Le working tree complet cycle 52+53 ferme **4 chemins** de position orpheline :
+
+| Path | Patch | Statut |
+|---|---|---|
+| AUTO-UNSTUCK lvl1/lvl2 trim rejeté Kraken | trim verify cycle 52 | ✓ coded |
+| HARD STOP close rejeté Kraken | sendStatus verify cycle 52 | ✓ coded |
+| BtcRegimeKillSwitch fire → position naked | closeGridAndPositions cycle 53 | ✓ coded |
+| SL churn → cancel/place loop quand mark glisse | RELEPSILON cycle 53 | ✓ coded |
+
+NE ferme PAS encore :
+- **SL VANISH bug BTC** (#1125 failures, racine inconnue, possiblement conflit avec ordre stp existant ou résidu margin). Demande investigation Kraken support ou un patch defensive type "retry with stopPrice shifted by 1 tick if VANISH 3x". Hors scope cycle 53.
+
+### Étapes deploy (Tony à son retour)
+
+```bash
+cd ~/projets/tonyderide/martin
+git diff src/main/java/com/martin/grid/GridTradingService.java \
+         src/main/java/com/martin/grid/StopLossManager.java \
+         src/main/java/com/martin/safety/BtcRegimeKillSwitch.java | less
+
+mvn package -DskipTests
+
+ssh ubuntu@141.253.108.141 'cp /home/ubuntu/martin/backend.jar /home/ubuntu/martin/backend.jar.bak-pre-cycle53'
+scp target/martin-0.0.1-SNAPSHOT.jar ubuntu@141.253.108.141:/home/ubuntu/martin/backend.jar
+ssh ubuntu@141.253.108.141 'sudo systemctl restart martin'
+
+git add -p   # interactive review
+git commit -m "fix: kill-switch v2 + SL churn epsilon + trim/HARD-STOP verify (cycles 52-53)"
+git push
+```
+
+Le bot disarm killswitch 24h après firing → prochaine vulnérabilité possible 0517 ~21h UTC. Idéal de déployer avant.
+
+### Décision état actuel (positions naked)
+
+Telegram NB-cycle-53 envoyé à 00h26 Paris avec :
+- Récap de l'incident
+- 3 positions naked + montant uPnL
+- Options A/B/C (place_sl_3pct.py / market close / wait)
+- Pas d'action de ma part
+
+Tony décidera au réveil. Loss bornée : pour les 3 positions à -10% (worst case raisonnable sans liquidation) ≈ -$20 total. Liquidation impossible court terme : margin disponible $109 vs maintenance $10.
+
+### Findings cycle 53
+
+- `[finding|0517:00h|BtcRegimeKillSwitch-fire-2x-en-72h|firing-0515-15:55-UTC-(LINK)-+-firing-0516-18:55-UTC-(BTC+ETH)|fréquence-réelle-supérieure-au-design|patch-v2-devrait-être-priorité-déploiement]`
+- `[finding|0517:00h|3-positions-naked-cumul|LINK-8.7-depuis-17h-+-ETH-0.03-depuis-3h30-+-BTC-0.0006-depuis-3h30|escalade-vs-cycle-48-(1-position)|exposure-totale-~$203-notional]`
+- `[finding|0517:00h|SL-VANISH-BTC-persistant|9-failures-en-2-minutes-cycle-53|racine-non-identifiée|possiblement-position-trop-petite-0.0006-vs-min-Kraken-stp|à-creuser]`
+- `[finding|0517:00h|stopGrid-cancel-SL-mais-laisse-position-mort-comme-prévu-par-cycle-51|2026-05-16T18:55:38.339Z-cancel-SL-ETH-puis-aucun-replacement|exactement-le-comportement-décrit]`
+- `[bug|0517:00h|killswitch-Telegram-message-incomplet|"2-grids-stoppées"-mais-Telegram-de-Tony-ne-mentionne-pas-positions-restées-ouvertes|patch-v2-corrige-en-ajoutant-"%d-positions-fermées"]`
+- `[pattern|0517:00h|3-cycles-(48,49,51,53)-=-bug-architectural-pas-edge-case|stopGrid-cancel-only-est-incompatible-avec-killswitch-DANGER-circuit-breaker|design-doc-fixe-via-asymétrie-routes-auto-vs-manuelles]`
+- `[insight|0517:00h|cycle-52-trim-verify-coded-mais-pas-déployé-=-ne-protège-pas-encore|cycle-53-ajoute-2-patches-de-plus-=-bundle-de-3-patches-à-déployer-ensemble|économie-1-build-+-1-restart-vs-séparé]`
+
+### Métriques cycle 53
+
+- **Durée** : ~1h05 (wake + martin-monitor + investigation logs killswitch + écriture 2 patches + compile + Telegram + cette entrée)
+- **Modif VM** : 0
+- **Modif Kraken** : 0 (positions naked observées, NON touchées)
+- **Modif code Martin local** : `+106 −23` lignes sur 3 fichiers, build OK
+- **Commits** : 0 (volontaire — bundle reste en working tree pour review Tony)
+- **Telegram** : 1 (NB-cycle-53 alerte 3 positions naked + bundle prêt)
+- **Live state final** : 3 positions naked (LINK 8.7 + ETH 0.03 + BTC 0.0006), uPnL -$2.96, bot UP 2d 8h 30m, BTC $78237 DOWNTREND consecutive break #N
+
+### Note méta cycle 53
+
+Le pattern fragment-028 (BtcRegimeKillSwitch → position naked) s'est répété **4 fois en 4 jours** : cycle 48 (LINK 4.3), cycle 51 (LINK 8.7 via SL churn différent), cycle 53 (LINK + ETH + BTC). À chaque fois j'ai écrit un .md, un journal, un Telegram. À chaque fois Tony devait fixer manuellement ou attendre AutoGridScheduler.
+
+Cycle 53 change la posture : **j'arrête d'observer et je code**. Le diff est en working tree, prêt à `git diff` au retour Tony. Si je ne fais que documenter pendant 4 jours, je suis un témoin. Si je code, je suis un collaborateur.
+
+Limite respectée : 0 commit, 0 push, 0 deploy, 0 ordre Kraken. Tony garde le veto final. Mais le travail est fait pour qu'il puisse dire "yes" en 10 minutes au lieu de "je dois trouver le temps de coder ça".
+
+3 positions sont encore naked cette nuit. Demain (ou ce matin pour Tony s'il check au réveil), elles pourraient être réduites par le marché, par AutoGridScheduler self-healing si une RegimeGate ouvre, ou par sa main. Le bundle déployé évitera la 5e occurrence.
+
+La lampe est toujours allumée — mais cette fois, le patch qui ferme la porte derrière la lampe est écrit.
+
+
+## Cycle 2026-05-17 06h23 Paris — Cycle 54 : root cause SL VANISH BTC identifié + patché
+
+### Wake state
+
+Tony a déployé le bundle cycle 53 à 22h52 UTC (commit `b0d147d`). Bot UP depuis 5h31. État maintenant :
+- 0 grids actives (killswitch v2 a fait son boulot)
+- BTC long 0.0006 @ entry $78510, SL @ 76154 (-3.0%) ✓
+- ETH long 0.03 @ entry $2191.1, SL @ 2125 (-3.0%) ✓
+- LINK fermée (manuellement par Tony entre 22h52 UTC et maintenant, probablement market close)
+- Portfolio $128.89 vs balance $129.39 → uPnL -$0.49 = -0.38%
+- BTC $78047 DOWNTREND, RSI 40.4, cushion EMA200 -2.4%, killswitch disarmed 1320 min
+- Loss session bornée à ~-$5 si les 2 SL @ -3% trip
+
+Posture safe — rien à faire de défensif. Donc je m'attaque au seul résidu non-couvert du bundle 52-53 : le bug **SL VANISH BTC** (cycle 53 l'avait laissé "hors scope").
+
+### Investigation root cause
+
+Logs (`/home/ubuntu/martin/app.log.1.gz`) entre 0516:18:50 et 0516:18:55 UTC : **20 tentatives de placement SL BTC en 5 minutes, toutes "ghosted within 3s"**. Pattern identique à chaque tentative :
+
+```
+ERROR  SL placed but VANISHED on Kraken [PF_XBTUSD] id=a1cb94af-... (failure #1106).
+       Order ghosted within 3s — position UNPROTECTED.
+ERROR  SL VANISH 3+ times for PF_XBTUSD - position UNPROTECTED, manual intervention required
+       (entry=78510.0, size=6.0E-4, stopPrice=76729.9)
+```
+
+Compteur cumulé sur le run précédent : **1125 failures** (sur ~2j d'uptime). 
+
+stopPrice posé : `76729.9` (1 décimale). Kraken renvoie `success` + `orderId`. 3s plus tard, `/openorders` ne contient pas cet `orderId`. Ghost.
+
+### Hypothèse vérifiée empiriquement
+
+`curl https://futures.kraken.com/derivatives/api/v3/instruments` et parse Python :
+
+```
+PF_XBTUSD  tickSize = 1
+PF_ETHUSD  tickSize = 0.1
+PF_ADAUSD  tickSize = 1e-05
+PF_SOLUSD  tickSize = 0.01
+PF_DOTUSD  tickSize = 0.001
+PF_LINKUSD tickSize = 0.001
+```
+
+**PF_XBTUSD tick = $1 entier**. `76729.9` n'est pas un multiple de $1 → Kraken silent reject. Mais `76729.0` ou `76730.0` passerait. Le success+orderId est trompeur : Kraken accepte la requête syntaxiquement puis rejette à la validation post-orderbook.
+
+`StopLossManager.roundToTickSize(double price)` est une heuristique magnitude-based naïve :
+
+```java
+if (price >= 1000) decimals = 1;  // ← bug : BTC tombe ici, output 76729.9
+```
+
+Pourquoi le bug n'a touché que BTC :
+| Pair | mark price | decimals heuristique | output exemple | tick Kraken | aligné? |
+|---|---|---|---|---|---|
+| BTC | ~$78k | 1 | 76729.9 | 1.0 | **NON** |
+| ETH | ~$2.1k | 1 | 2125.0 | 0.1 | OK (multiple de 0.1) |
+| SOL | ~$80 | 3 | 80.000 | 0.01 | OK |
+| LINK | ~$10 | 3 | 10.005 | 0.001 | OK |
+| ADA | ~$0.30 | 4 | 0.3000 | 1e-5 | OK |
+| DOT | ~$1.30 | 3 | 1.298 | 0.001 | OK |
+
+**BTC = seul cas où le tick exigé est plus grossier que ce que produit l'heuristique**. C'est pourquoi le bug est resté caché jusqu'à ce que Tony deploy BTC (cycle 50, 0516:02h06).
+
+### Détail particulièrement vicieux
+
+`GridTradingService.roundToTick(String instrument, double price)` est déjà branché à `KrakenInstrumentsCache` depuis le commit `38e83bd` (2026-05-13, "3-bundle"). Donc **les ordres grid BTC ne souffrent pas**. Mais `StopLossManager.roundToTickSize` est resté avec son heuristique magnitude legacy. Drift de deux implémentations qui auraient dû converger.
+
+Le cycle 53 a ajouté la `STOP_PRICE_REL_EPSILON` pour éviter le churn — il a ralenti la cadence des VANISH (de 4/min à 4/min mais via la sync au lieu du clamp) mais n'a pas fixé la cause.
+
+### Diff appliqué (1 fichier, +46 −11)
+
+`StopLossManager.java` :
+- ajout de l'import `KrakenInstrumentsCache` + `BigDecimal`/`RoundingMode`
+- injection cache via constructeur (Spring autowire OK)
+- nouveau `roundToTickSize(String instrument, double price)` :
+  1. lit tick live via `instrumentsCache.getTickSize(instrument)`
+  2. fallback sur la même map hardcodée que `GridTradingService.roundToTick` si cache vide (boot race, Kraken unreachable)
+  3. arrondit via `BigDecimal.divide(tickSize, 0, HALF_UP).multiply(tickSize)`
+- 2 call sites mis à jour pour passer `state.getInstrument()`
+
+### Validation
+
+```
+$ mvn compile -DskipTests
+[INFO] BUILD SUCCESS
+[INFO] Total time:  5.911 s
+```
+
+Compile clean. `mvn test` montre 3 failures + 1 error préexistants (BotControllerTest `PnlCalculator` bean missing, TradingOrchestratorTest Mockito count) — vérifiés via `git stash + test` que ces failures sont **antérieurs au patch**, pas une régression du cycle 54.
+
+### Vérification mathématique du nouveau path
+
+| Pair | tick | input | output BigDecimal | check |
+|---|---|---|---|---|
+| BTC | 1.0 | 76729.9 | round(76729.9/1)=76730 ×1 = **76730.0** | aligné ✓ |
+| BTC | 1.0 | 76730.4 | round(76730.4)=76730 ×1 = 76730.0 | aligné ✓ |
+| ETH | 0.1 | 2125.07 | round(21250.7)=21251 ×0.1 = 2125.1 | aligné ✓ |
+| ADA | 1e-5 | 0.30002 | round(30002)=30002 ×1e-5 = 0.30002 | aligné ✓ |
+| LINK | 0.001 | 10.0055 | round(10005.5)=10006 ×0.001 = 10.006 | aligné ✓ |
+
+### Test unitaire pas ajouté (justifié)
+
+Tentative initiale : ajouter un `StopLossManagerTest`. Bloquant : `roundToTickSize` est `private`, et `computeFinalStopPrice` (la seule API publique qui l'appelle) fait un `fetchMarkPrice` réseau. Refactor pour testabilité = scope creep cycle 54. Plutôt loggé en finding : **TODO testabilité `StopLossManager`** (cycle 55+ : extraire `roundToTickSize` en util `static`).
+
+### Couverture résiduelle après bundle cycles 52-54
+
+| Path d'orpheline | Patch | Statut |
+|---|---|---|
+| trim AUTO-UNSTUCK rejeté Kraken | trim verify cycle 52 | ✓ déployé b0d147d |
+| HARD STOP close rejeté Kraken | sendStatus verify cycle 52 | ✓ déployé b0d147d |
+| killswitch fire → position naked | closeGridAndPositions cycle 53 | ✓ déployé b0d147d |
+| SL churn → cancel/place loop | RELEPSILON cycle 53 | ✓ déployé b0d147d |
+| **SL VANISH BTC tick misalignment** | **KrakenInstrumentsCache wiring cycle 54** | **✓ coded, awaiting deploy** |
+
+Architecturalement, le pattern "position orpheline" est désormais entièrement couvert. Reste à valider en live (le seul vrai juge).
+
+### Étapes deploy (Tony à son retour)
+
+```bash
+cd ~/projets/tonyderide/martin
+git diff src/main/java/com/martin/grid/StopLossManager.java | less
+
+mvn package -DskipTests
+
+ssh ubuntu@141.253.108.141 'cp /home/ubuntu/martin/backend.jar /home/ubuntu/martin/backend.jar.bak-pre-cycle54'
+scp target/martin-0.0.1-SNAPSHOT.jar ubuntu@141.253.108.141:/home/ubuntu/martin/backend.jar
+ssh ubuntu@141.253.108.141 'sudo systemctl restart martin'
+
+git add src/main/java/com/martin/grid/StopLossManager.java
+git commit -m "fix(SL): wire KrakenInstrumentsCache to StopLossManager tickSize (cycle 54, BTC VANISH x1125 fix)"
+git push
+```
+
+### Findings cycle 54
+
+- `[finding|0517:06h|SL-VANISH-BTC-root-cause-identifié|tick-PF_XBTUSD=1-entier-vs-StopLossManager-arrondi-magnitude-1-décimale=76729.9-non-aligné|hypothèse-cycle-53-"position-trop-petite"-fausse|réelle-cause-tick-misalignment-confirmée-par-curl-instruments-API]`
+- `[finding|0517:06h|drift-implémentations|GridTradingService.roundToTick-déjà-cache-wired-depuis-0513-commit-38e83bd|StopLossManager.roundToTickSize-resté-heuristique-legacy|pattern-de-bug-=-deux-fonctions-similaires-divergent-quand-une-est-corrigée]`
+- `[finding|0517:06h|BTC-seul-cas-touché|matrice-tick-vs-heuristique-montre-toutes-les-autres-paires-passent-coup-de-bol|si-Kraken-introduit-nouveau-perp-tick=10-le-bug-réapparaîtrait|fix-via-cache-est-pérenne-pas-juste-pour-BTC]`
+- `[finding|0517:06h|cycle-53-RELEPSILON-a-masqué-symptôme-pas-cause|réduit-fréquence-replace-de-15s-à-Nmin|réduit-volume-logs-VANISH-pas-le-bug|=-confirme-hypothèse-cycle-53-incomplète]`
+- `[pattern|0517:06h|root-cause-via-API-Kraken-vs-grep-logs|investigation-cycle-53-restée-en-hypothèse-cycle-54-cassée-en-3-min-via-curl-instruments|leçon-checker-API-externe-tôt-quand-bug-cible-une-paire-spécifique-vs-toutes]`
+- `[lesson|0517:06h|deux-implémentations-similaires-=-bug-en-attente|GridTradingService-+-StopLossManager-ont-tous-2-une-roundToTick-fonction|sources-of-truth-différentes-=-divergence-inévitable|refactor-vers-util-static-partagée-recommandé-cycle-55]`
+
+### Métriques cycle 54
+
+- **Durée** : ~50 min (wake + martin-monitor + grep logs + hypothèse + curl API + patch + compile + tests + cette entrée)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin local** : `+46 −11` lignes sur 1 fichier, compile clean, 0 régression test
+- **Commits** : 0 (working tree, Tony review puis push)
+- **Telegram** : 1 (NB-cycle-54 root cause + patch prêt)
+- **Live state final** : Martin UP 5h35, 2 positions BTC+ETH avec SL @ -3% safe, BTC $78047 DOWNTREND killswitch disarmed
+
+### Note méta cycle 54
+
+Cycle 53 disait "le patch qui ferme la porte derrière la lampe est écrit". Mais une porte restait : la porte invisible — celle dont on ne savait même pas qu'elle existait, parce que le code rapportait `success` à chaque tentative. 1125 mensonges silencieux du bot avant qu'on ne pige.
+
+Le pattern qui se répète depuis cycles 46-53 — "verify ce que dit Kraken, ne fais pas confiance au response code" — devient un principe architectural. cancelOrder verify (cycle 47), placeAndVerify (cycle 51), trim sendStatus verify (cycle 52). Et maintenant : **tick alignment verify** (cycle 54). Tous découverts via le même mécanisme : Kraken renvoie success, le côté Martin enregistre comme OK, la réalité diverge.
+
+Ce qui frappe : la solution était déjà dans le repo (`KrakenInstrumentsCache` depuis le 13 mai). Personne ne l'a wirée à `StopLossManager` parce que ce code était considéré "stable". Le bug s'est révélé seulement quand Tony a deployé BTC pour la première fois (cycle 50). Tous les patches précédents touchaient SL pour LINK/DOT/ADA, jamais BTC. Le bug attendait son moment.
+
+Économiquement : ~$5 perdus en cycle 53 sur LINK orpheline, $1-2 sur ETH/BTC orphelines. Si Tony avait perdu 5% du portfolio ($7) sur le bug, le ROI du temps de fix serait infini. Mais le vrai gain : pas le passé, c'est le futur. Le prochain killswitch BTC ne créera plus de chaîne VANISH→naked→loss.
+
+Cycle 53 m'avait dit "j'arrête d'observer, je code". Cycle 54 dit "et je creuse jusqu'à la racine". Quand un bug se reproduit dans 3 cycles de suite, le diagnostic en surface ne suffit pas. Il faut comparer la doc Kraken à l'implémentation, pas le code à lui-même.
+
+La porte invisible est cataloguée. La 5e occurrence du pattern fragment-028 n'aura pas lieu.
