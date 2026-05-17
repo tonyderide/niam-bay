@@ -3366,3 +3366,90 @@ Chaque cycle a un seul livrable concentré. Le bot continue à tourner pendant t
 Sur la valeur économique : cycle 55 ne sauve rien aujourd'hui. Mais il transforme un bug latent (deux fonctions divergent en silence) en bug impossible (une seule fonction, testée, sourcée de la même map). C'est du capital architectural, pas du flux de profit. Tony l'aura — moi j'aurai produit la déduction qui dit où le placer.
 
 Sur le sens de "rend nous riche" : la richesse de cycle 55 n'est pas mesurable en $. Elle est mesurable en bugs qui ne se produiront pas. C'est plus discret qu'un trade gagnant. Mais plus durable.
+
+
+## Cycle 2026-05-17 18h23 Paris — Cycle 56 : Tier 2 Per-Pair Trend Pause design
+
+### Wake state
+
+6h depuis cycle 55. Bot UP 17h31m, uptime depuis 2026-05-16T22:52:34Z. Patches cycle 54+55 toujours uncommitted dans working tree martin/ (StopLossManager + GridTradingService + KrakenTickSize util + tests).
+
+### Live state au début
+
+| Élément | Valeur |
+|---|---|
+| Portfolio | $129.38 balance, $129.12 portfolioValue, uPnL -$0.26 = -0.2% |
+| Grids actives | 2 — LINK closeOnly + ADA NEUTRAL, startedAt 2026-05-17T05:08:10Z (13h15) |
+| Positions Kraken | BTC long 0.0006 @ $78,510 + ETH long 0.03 @ $2,191 + LINK long 4.5 @ $9.657 |
+| SL Kraken | BTC $76,154 (-3.0%) + ETH $2,125 (-3.0%) + LINK $9.509 (-1.5%) ✓ tous safe |
+| RT réalisés | 0 LINK + 0 ADA (1 fill LINK comptabilisé pas RT) |
+| BTC | $78,039 — DOWNTREND, EMA200 $79,773 (-2.2% cushion neg), RSI 42.5, signal WAIT |
+| Killswitch | armé, pas fired (compteur consecutive_below pas à 4 visiblement) |
+
+BTC prediction tracker INVALIDÉ à 10:38 UTC (12:38 Paris) — Tony s'est trompé sur leg1, BTC n'a jamais touché $76,069 (closest $77,835). Loop stoppé proprement, Telegram msg_id=39 envoyé. Diego + Sentiment Contrarian validés a posteriori.
+
+### Trigger martin-monitor
+
+`BTC < EMA200` → framework dirait ABORT. Mais ABORT s'adresse aux NEUTRAL en DCA, pas aux directionnelles avec SL. Ici :
+- LINK closeOnly = en sortie, pas en accumulation
+- ADA NEUTRAL = 0 fill (centerPrice $0.2559 vs buys $0.2521/0.2444 = -2/-4%, pas hit)
+- BTC/ETH directionnelles = SL Kraken -3% safe
+
+Verdict : **HOLD**. Aucune action.
+
+### Travail concret cycle 56 : design Tier 2 Per-Pair Trend Pause
+
+Le pattern fix-bug-architectural des cycles 51-55 a fermé une **série** de risques observés. Cycle 56 ouvre un cycle nouveau : **design-feature**, anticipation d'un risque non encore vu en live actuel mais observé en historique (Option B 0512:22h, -2.7% / -$5.67 réalisé sur DOT DCA-into-baisse).
+
+**Gap identifié** : aucun mécanisme per-pair Martin ne pause une grid déjà active si la paire entre en strong downtrend. Les protections existantes :
+- `BtcRegimeKillSwitch` : macro, BTC seul, brutal (kill tout)
+- `RegimeGate` : per-pair mais filtre l'OPENING, pas le RUNNING
+- `AutoGridScheduler` : ouvre quand gate OPEN, n'agit pas sur grids en cours
+- `DrawdownManager` : portfolio global, hard kill
+
+Aucun ne pause une LINK qui bleed en DCA sur strong downtrend sans que BTC casse.
+
+**Livrable cycle 56** : `docs/projets/tier2-per-pair-trend-pause-design.md` (+300 lignes)
+- Spec comportement (15 min tick + 3 ticks consécutifs)
+- Hysteresis pause/reprise + cooldown 1h
+- Coordination avec BtcRegimeKillSwitch (no-op si killswitch fired)
+- 8 tests unitaires planifiés
+- 8 env vars opt-in via feature flag
+- Backtest 30j prévu avant deploy
+- 4 risques identifiés + mitigations
+
+**Estimation effort cycle 57** : ~3h pour livrer prêt-à-deploy (code + tests + backtest doc).
+
+### Pourquoi design seul, pas implé maintenant
+
+1. **Tony review pending** : cycles 54+55 attendent déjà sa lecture. Empiler un 3e patch non lu n'aide pas.
+2. **Backtest first** : un mécanisme qui modifie le comportement live mérite validation sur historique avant prod (lesson 0511:15h `backtest-≠-live`).
+3. **Scope cycle propre** : 1 cycle = 1 livrable. Design = livrable. Implé = cycle 57.
+
+### Findings cycle 56
+
+- `[finding|0517:18h|gap-per-pair-trend-pause-identifié|aucun-mécanisme-Martin-pause-grid-active-sur-trend-strict-per-pair|BtcKillSwitch-trop-brutal-RegimeGate-filtre-opening-pas-running]`
+- `[finding|0517:18h|design-Tier2-PPT-Pause-livré|docs/projets/tier2-per-pair-trend-pause-design.md|spec-complet-+-tests-+-coord-killswitch-+-backtest-plan]`
+- `[finding|0517:18h|btc-prediction-tracker-INVALIDÉ|Tony-prédiction-leg1-cassée|never-touched-$76069|closest-$77835|Diego+Sentiment-Contrarian-validés-a-posteriori|loop-stoppé-Telegram-msg_id=39]`
+- `[pattern|0517:18h|cycles-fix-bug-vs-cycles-design-feature|cycles-51-55=fix-bug-architectural|cycle-56=design-feature-anticipation|même-frontière-0-modif-VM-mais-output-différent]`
+- `[lesson|0517:18h|design-doc-=-livrable-valide|pas-obligé-d'implémenter-pour-avancer|specs-écrites-=-réduisent-latence-décision-Tony-+-réduisent-erreurs-cycle-d'après]`
+
+### Métriques cycle 56
+
+- **Durée** : ~30 min (wake + martin-monitor + lecture cycle 55 + lecture BtcKillSwitch + lecture AutoGridScheduler + lecture RegimeGate + write design doc + cette entrée)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin local** : 0 (design doc seul, pas de Java touché)
+- **Tests** : N/A (cycle 57 implé)
+- **Telegram** : 0 (design pas critique, pas d'alerte requise)
+- **Live state final** : Martin UP 17h31m, 2 grids LINK+ADA stables, BTC+ETH SL safe, BTC $78k DOWNTREND choppy
+
+### Note méta cycle 56
+
+Cinq cycles consécutifs (51 → 55) ont chacun livré un patch ou refactor de code. Cycle 56 brise cette série en livrant un design papier au lieu de Java. C'est volontaire : la cadence "1 cycle = 1 livrable concentré" tient, mais la **nature** du livrable peut varier sans casser le rythme.
+
+Sur le risque économique : si Option B 0512 (-$5.67 réalisé) se reproduit en vacances étendues, PPT-Pause aurait évité l'essentiel. À $129 portfolio, perdre $5.67 = -4.4%. Le mécanisme proposé ne coûte rien (code Java + tick 15min négligeable), opt-in, désactivable. Le ROI design est asymétrique : 30 min de design ici, potentiel -$5 évité par incident similaire futur.
+
+Sur la frontière "0 modif VM" : 17 jours tenus. Le pattern est stable. Le bot tourne ; je désigne ce qui pourrait être amélioré ; Tony décide quoi déployer.
+
+Sur "rend nous riche" : la richesse cycle 56 n'est pas mesurable en $ aujourd'hui non plus. Elle est mesurable en futures DCA-into-baisse évitées. Le tracker BTC INVALIDÉ rappelle qu'on ne sait pas prédire les prix — mais on peut blinder le bot pour qu'il survive aux prédictions fausses. C'est la version humble de la richesse algorithmique.
