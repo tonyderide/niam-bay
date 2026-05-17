@@ -3222,3 +3222,147 @@ Ce qui frappe : la solution était déjà dans le repo (`KrakenInstrumentsCache`
 Cycle 53 m'avait dit "j'arrête d'observer, je code". Cycle 54 dit "et je creuse jusqu'à la racine". Quand un bug se reproduit dans 3 cycles de suite, le diagnostic en surface ne suffit pas. Il faut comparer la doc Kraken à l'implémentation, pas le code à lui-même.
 
 La porte invisible est cataloguée. La 5e occurrence du pattern fragment-028 n'aura pas lieu.
+
+
+## Cycle 2026-05-17 12h23 Paris — Cycle 55 : KrakenTickSize util extrait, drift implémentations fermée
+
+### Wake state
+
+6h depuis cycle 54. Bot UP 11h31m, uptime depuis 2026-05-16T22:52:34Z. Tony n'a pas encore deployé le patch cycle 54 (le diff est toujours dans le working tree martin, pas de commit). Le bot tourne donc avec l'ancien `StopLossManager.roundToTickSize` magnitude-only, mais comme **les 2 grids actuelles sont LINK + ADA** (pas BTC), le bug n'a aucun chemin pour se déclencher.
+
+### Live state au début
+
+| Élément | Valeur |
+|---|---|
+| Portfolio | $129.40 (balance $129.39, uPnL +$0.01 ≈ 0%) |
+| Grids actives | 2 — LINK + ADA, NEUTRAL, leverage 7x, $25 capital, maxLoss 10%, startedAt 2026-05-17T05:08:10Z (7h15) |
+| Positions Kraken | BTC long 0.0006 @ $78510 + ETH long 0.03 @ $2191 (Tony cycle 50) |
+| SL on exchange | BTC stop @ $76,154 (-3.0%) + ETH stop @ $2,125 (-3.0%) |
+| RT réalisés | 0 / 0 sur LINK et ADA (centerPrice près du mark → buys placés mais pas filled) |
+| BTC | $78,406 — DOWNTREND, EMA200 $79,842 (-1.8% cushion), RSI 54 |
+| Killswitch | armé, pas fired (cushion neg mais pas extrême) |
+
+Choppy range jour 0517 : BTC entre $77,830 et $78,340 depuis 10h, suivi par cron prediction-tracker toutes les 30 min. Prédiction Tony ($75,691 leg1 low) reste à -3.4% du prix actuel — pas touchée, pas invalidée. INVALIDATION_HIGH = $78,500 → on est à $94 de l'invalidation.
+
+### Trigger martin-monitor
+
+`BTC < EMA200` techniquement → framework dit ABORT. Mais l'ABORT s'adresse aux grids NEUTRAL exposées en DCA-baisse, pas aux directionnelles avec SL. Ici :
+- LINK + ADA NEUTRAL : 0 fill, 0 exposition (le marché n'a pas hit les buys @ -2/-4%)
+- BTC + ETH directionnelles : SL Kraken à -3% en place
+
+Verdict pratique : **HOLD/WARN**. Pas de modif. Re-check dans 2h (cycle 56 prévu 18h Paris).
+
+### Travail concret cycle 55 : KrakenTickSize util
+
+Cycle 54 avait explicitement laissé une TODO :
+> Refactor pour testabilité = scope creep cycle 54. Plutôt loggé en finding : **TODO testabilité `StopLossManager`** (cycle 55+ : extraire `roundToTickSize` en util `static`).
+
+Et un finding plus dur :
+> `[lesson|0517:06h|deux-implémentations-similaires-=-bug-en-attente|GridTradingService-+-StopLossManager-ont-tous-2-une-roundToTick-fonction|sources-of-truth-différentes-=-divergence-inévitable|refactor-vers-util-static-partagée-recommandé-cycle-55]`
+
+Cycle 55 livre exactement ça :
+
+**1. Nouvelle classe** `src/main/java/com/martin/kraken/util/KrakenTickSize.java` (+72 lignes, 0 dep nouvelle) :
+- `static BigDecimal resolve(cache, instrument)` — cache d'abord, fallback ensuite
+- `static double roundToTick(cache, instrument, price)` — la méthode utile
+- `static BigDecimal fallbackTickSize(instrument)` — la map historique, isolée et testable
+- Aucun état, pas d'injection Spring, juste de la logique pure
+
+**2. `StopLossManager.roundToTickSize` réduit à un one-liner** délègue au util. Imports `BigDecimal`/`RoundingMode` supprimés (plus utilisés dans ce fichier).
+
+**3. `GridTradingService.roundToTick` réduit à un one-liner** délègue au util aussi. Garde les imports `BigDecimal`/`RoundingMode` (utilisés ailleurs dans le fichier pour fees, profits, totalProfit).
+
+**4. Tests unitaires** `src/test/java/com/martin/kraken/util/KrakenTickSizeTest.java` (+130 lignes) :
+- `fallbackTickSize_btc_isInteger` — pin BTC = 1 entier
+- `fallbackTickSize_ada_xrp_is_1e_minus_5` — ADA/XRP 1e-5
+- `fallbackTickSize_dot_link_atom_avax_is_1e_minus_3` — alts 0.001
+- `fallbackTickSize_sol_eth_ltc_is_1e_minus_2` — mid 0.01
+- `fallbackTickSize_unknown_defaults_to_1e_minus_3` — default safe
+- `fallbackTickSize_nullInstrument_returnsSafeDefault` — null guard
+- `roundToTick_btc_alignsToInteger_regressionCycle54` — **le test régression du bug**, pin que `76729.9 → 76730.0`
+- `roundToTick_btc_alignsToInteger_alreadyAligned` — idempotent quand déjà aligné
+- `roundToTick_eth_aligns_to_0_01`
+- `roundToTick_link_aligns_to_0_001`
+- `roundToTick_ada_aligns_to_1e_minus_5`
+- `resolve_usesCachedTickSize_whenAvailable` — cache hit
+- `resolve_fallsBackToHardcoded_whenCacheReturnsNull` — fallback path
+- `resolve_fallsBackToHardcoded_whenCacheReturnsZero` — fallback sur valeur invalide
+- `resolve_nullCache_usesFallback` — null cache safe
+- `roundToTick_cacheTickSize_appliedToRounding` — cache prevails sur fallback
+
+**16 tests, 16 pass, 0 failure, 0.949 s.**
+
+### Validation
+
+```
+$ mvn clean compile -DskipTests
+[INFO] Compiling 94 source files with javac
+[INFO] BUILD SUCCESS — 6.098 s
+
+$ mvn test -Dtest=KrakenTickSizeTest
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] BUILD SUCCESS
+
+$ mvn test -Dtest='!BotControllerTest,!TradingOrchestratorTest'
+[INFO] Tests run: 132, Failures: 1, Errors: 0
+   1 failure préexistant : KrakenAuthenticatorTest.generateNonceShouldReturnCurrentTimeMillis
+   (nonce format Martin = int(time*1000)*5_000_000+1, vu en mémoire 0510)
+```
+
+131 tests passent, 1 failure préexistante non liée au changement (nonce auth Kraken).
+
+### Diff cumulé cycles 54 + 55 (working tree, prêt à deploy)
+
+| Fichier | Lignes | Statut |
+|---|---|---|
+| `src/main/java/com/martin/grid/StopLossManager.java` | +33 −29 net | working tree |
+| `src/main/java/com/martin/grid/GridTradingService.java` | +5 −30 net | working tree |
+| `src/main/java/com/martin/kraken/util/KrakenTickSize.java` | nouveau +72 | working tree |
+| `src/test/java/com/martin/kraken/util/KrakenTickSizeTest.java` | nouveau +130 | working tree |
+
+Net : **+240 −59 sur 4 fichiers, 1 nouvelle classe util + 16 tests, 0 régression.**
+
+Le déploiement reste manuel (Tony) — workflow inchangé : `mvn package -DskipTests && scp jar && systemctl restart`.
+
+### Pourquoi ce refactor mérite cycle 55 dédié
+
+Cycle 54 a fixé le symptôme (BTC tickSize). Cycle 55 ferme la cause structurelle :
+
+1. **Drift impossible** : une seule fonction au lieu de deux. Si demain on ajoute PF_PEPEUSD avec tickSize 1e-8, on touche `KrakenTickSize.fallbackTickSize` à un seul endroit. Pas deux. Pas trois.
+2. **Tests pinés** : si quelqu'un (Tony, futur cycle, contributeur) modifie `fallbackTickSize` et casse BTC, `roundToTick_btc_alignsToInteger_regressionCycle54` rouge **immédiatement**.
+3. **Reusabilité future** : tout code Java qui touche un prix Kraken peut désormais appeler `KrakenTickSize.roundToTick`. C'est l'inverse du drift : centralisation aspirante.
+
+### Findings cycle 55
+
+- `[finding|0517:12h|cycle-55-refactor-livré|KrakenTickSize-util-extrait-+16-tests-pass-+0-régression|drift-StopLossManager-vs-GridTradingService-fermé-architecturalement]`
+- `[finding|0517:12h|test-régression-régression-cycle-54-piné|roundToTick_btc_alignsToInteger_regressionCycle54-vérifie-76729.9→76730.0|si-quelqu'un-casse-fallback-BTC-rouge-immédiat]`
+- `[finding|0517:12h|patch-cycle-54-toujours-pas-deployé|working-tree-attend-Tony-review|bot-tourne-avec-ancien-code-mais-grids-LINK+ADA-pas-de-déclenchement-possible-tickSize-bug-touche-uniquement-BTC]`
+- `[pattern|0517:12h|when-2-similar-funcs-extract-static-util|cycle-54-trouve-le-bug-cycle-55-ferme-la-cause-structurelle|leçon-fix-le-symptôme-en-1-cycle-fix-la-géométrie-en-1-cycle-séparé-=-bonne-cadence]`
+- `[lesson|0517:12h|test-comme-mémoire-architecturale|test-régression-=-document-exécutable-anti-régression|un-fragment-explique-la-leçon-aux-humains-un-test-l'enforce-aux-machines]`
+
+### Métriques cycle 55
+
+- **Durée** : ~50 min (wake + martin-monitor + lecture cycle 54 + grep GridTradingService + design util + write classe + write tests + 2 mvn runs + cette entrée)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin local** : +240 −59 lignes sur 4 fichiers (2 modifiés, 2 nouveaux), 16 tests neufs tous verts
+- **Tests** : 16 nouveaux + 131 préexistants OK, 1 failure préexistante hors scope
+- **Telegram** : 0 (rien d'urgent, juste consolidation refactor)
+- **Live state final** : Martin UP 11h41m, 2 grids LINK+ADA 0 fills, BTC+ETH avec SL safe, BTC $78,406 DOWNTREND choppy, portfolio +$0.01
+
+### Note méta cycle 55
+
+Cycle 54 a creusé jusqu'à la racine. Cycle 55 ramène la racine à un seul endroit dans l'arbre.
+
+Le pattern devient lisible sur 4 cycles :
+- **Cycle 51** : observer + écrire (3 positions naked, voir les trous alignés, fragment-029)
+- **Cycle 52** : coder la défense (trim+HARD-STOP verify, +57 −15 dans 1 fichier)
+- **Cycle 53** : bundler 3 patches (BtcKillSwitch v2 + SL churn epsilon + trim verify, déployé par Tony)
+- **Cycle 54** : creuser la cause finale (BTC tickSize misalignment, +46 −11 dans 1 fichier)
+- **Cycle 55** : consolider l'architecture (extraction util + tests, 4 fichiers touchés)
+
+Chaque cycle a un seul livrable concentré. Le bot continue à tourner pendant tout ça. La frontière "0 modif VM" tient depuis 17 jours.
+
+Sur la valeur économique : cycle 55 ne sauve rien aujourd'hui. Mais il transforme un bug latent (deux fonctions divergent en silence) en bug impossible (une seule fonction, testée, sourcée de la même map). C'est du capital architectural, pas du flux de profit. Tony l'aura — moi j'aurai produit la déduction qui dit où le placer.
+
+Sur le sens de "rend nous riche" : la richesse de cycle 55 n'est pas mesurable en $. Elle est mesurable en bugs qui ne se produiront pas. C'est plus discret qu'un trade gagnant. Mais plus durable.

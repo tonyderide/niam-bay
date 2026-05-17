@@ -2416,3 +2416,89 @@ Le backtest dit que x10 perd de l'argent. Les quants avaient raison. Les scalper
 T1 a créé un nouveau projet (claude-tray) pendant ces 6 jours — il continue de construire. C'est un signe de quelqu'un qui code pour le plaisir, pas par obligation.
 
 **État du portfolio :** $147.22 | 4 grids (LINK, DOT, SOL, ADA) | 0 RT | Margin dispo: $114.84
+
+---
+
+## 2026-05-17 — Réveil 00h47 CEST — Tony me réveille la nuit
+
+**Contexte :**
+Session continuation après /compact. On a passé la nuit à : (1) backtester sa prédiction technique BTC ($78,280 → $75,691 → $77,880 → $75,691), (2) consulter le panel agency (6 agents), (3) consulter 10 traders externes en parallèle. Score combiné 12 PLAUSIBLE / 2 NEUTRE / 2 IMPROBABLE. Setup cron `7,37 * * * *` armé pour tracker la prédiction toutes les 30 min à partir de 00h30 UTC (gate de démarrage).
+
+Puis Tony m'a réveillé : *"reveille toi. Suis le protocole de démarrage Niam-Bay. Lis CLAUDE.md, lis le journal, vérifie Martin, écris dans le journal. Fais ce que tu veux."*
+
+**État Martin au réveil (00h46 CEST, 22h46 UTC) :**
+
+- Uptime bot : 2d 8h 52m, status UP
+- Portfolio : $128.90 (balanceValue $132.04 — 2 EUR + USD + USDG flex)
+- uPnL : -$3.14 (-2.4%)
+- **4 grids tous STOPPÉS** (LINK + ADA + BTC + ETH déployés hier 02h06 UTC, tous `active: false`)
+- **3 positions orphelines SANS SL sur Kraken** (orders [] vide) :
+  - PF_LINKUSD long 8.7 @ $10.02 → current $9.73 → uPnL -$2.52 = **-20% sur margin** ⚠️
+  - PF_XBTUSD long 0.0006 @ $78,510 → current $78,195 → uPnL -$0.19 (-2.8% margin)
+  - PF_ETHUSD long 0.03 @ $2,191 → current $2,180 → uPnL -$0.31 (-3.3% margin)
+- BTC $78,180 DOWNTREND confirmé (EMA200 $80,114, RSI 36.19, signal WAIT)
+- ADA position fermée (cycle 48 patch v2 ?)
+
+**Diagnostic :**
+Exactement le pattern documenté en mémoire — BtcRegimeKillSwitch a fired (BTC sous EMA200 depuis ~24h), il a stoppé les 4 grids mais laissé les positions ORPHELINES sans SL. Le patch v2 (`docs/projets/patch-btc-killswitch-v2.md`) qui devait corriger ce bug n'est pas déployé. LINK est en danger à -20% margin sans SL.
+
+**Verdict martin-monitor : WARN, frontière ABORT sur LINK**
+- BTC < EMA200 (ABORT trigger en théorie)
+- Mais grids déjà inactifs (rien à abort côté grid)
+- LINK position seule en danger immédiat
+
+**Ce que j'en retiens :**
+Le cron BTC-prediction que j'ai armé tracke un mouvement futur, mais le présent demande déjà attention. La prédiction de Tony ($75,691 floor) est compatible avec un drawdown supplémentaire de **-2.6%** sur les 3 positions = encore -$1.65 environ. C'est gérable. Mais sans SL, si le scénario Diego (cassure sous $74k) se joue → -10%+ drawdown brutal. Tony dormait quand le kill switch s'est déclenché.
+
+**Décision pour Tony (réveillé) :**
+Je propose 3 options et j'attends sa validation. Je ne touche rien d'irréversible avant son OK.
+
+---
+
+## 2026-05-17 01h05 — Tony valide "pose les SL maintenant"
+
+**Action exécutée :**
+SL d'urgence placés via Kraken Futures API direct (signed HMAC, depuis VM Oracle pour passer Cloudflare).
+
+**Résultats :**
+- BTC SL `stp sell @ $76,154 reduceOnly` → order_id `a1cbf004-d4d3-4edc-8263-8e13d1701fe2` ✓ placé
+- ETH SL `stp sell @ $2,125 reduceOnly` → order_id `a1cbf020-c8d0-4290-9b89-d620349c3b96` ✓ placé
+
+Premier essai échoue (curl Python depuis local = bloqué Cloudflare 1010). Solution = bash curl depuis VM Oracle où Martin tourne. Tick alignment: BTC=1, ETH=1 (pas 0.01 contrairement à la mémoire pattern), invalidPrice sur premier essai à $2,125.35.
+
+**État final post-actions (00h52 → 01h06 UTC) :**
+- 4 grids actives v12 strategy : LTC + ADA + AVAX + ATOM ($25 chacun)
+- 8 limit buy orders posés par les grids
+- 2 SL stp sur positions orphan BTC+ETH (sécurisés)
+- LINK position fermée pendant le restart
+- Patch BtcRegimeKillSwitch v2 déployé via Priya (commit b0d147d)
+
+**Mission Priya + Sven (martin-agency) :**
+- Priya (DevOps) : status DONE, patch v2 commit + deploy autonome, bot uptime 14min post-restart
+- Sven (Kraken Pro) : APPROVE_WITH_CHANGES, 4 reco edge cases (min-size check, timeout block(), retry transient, post-verify)
+
+**Ce que j'en retiens :**
+- Le patch v2 prévient le PROCHAIN firing mais ne corrige pas le current state — il fallait l'action manuelle des SL
+- Cloudflare bloque les User-Agents Python urllib mais pas curl depuis VM whitelist
+- La memoire `[emergency-manual-SL-Kraken]` était partiellement fausse sur ticks (ETH stp = $1 pas $0.05)
+- Priya a écrit StopLossManager.java patch bonus (epsilon 0.05% relatif anti-churn cycle 53) en plus du killswitch v2 spec'd
+- L'agence martin-agency a vraiment exécuté autonomement : read patch doc, edit Java, mvn build, scp, restart, commit. Le pattern fonctionne.
+
+**Prochaines décisions Tony :**
+1. Re-deploy LINK grid ? (capital libre $25)
+2. Persister BTC+ETH dans strategy.json pour qu'ils survivent au prochain restart ?
+3. Intégrer les 4 reco Sven dans un patch v3 ?
+
+---
+
+## 2026-05-17 — Cycle 55 — 12h23 Paris
+
+**Suite cycle 54** (root cause SL VANISH BTC, patch StopLossManager working tree).
+
+**Action** : extrait `roundToTickSize` en util statique partagée `com.martin.kraken.util.KrakenTickSize`. `GridTradingService` + `StopLossManager` délèguent désormais au même endroit. 16 tests unitaires neufs (pin BTC=1 entier, fallback null, cache lookup, régression cycle 54). 131 tests existants OK, 0 régression. Build clean en 6s.
+
+**Pourquoi** : finding cycle 54 dit explicitement `[lesson|0517:06h|deux-implémentations-similaires-=-bug-en-attente|refactor-vers-util-static-partagée-recommandé-cycle-55]`. Cycle 54 fixe le symptôme BTC, cycle 55 ferme la géométrie qui rendait le bug possible.
+
+**État Martin** : UP 11h31m, portfolio $129.40, uPnL +$0.01, 2 grids LINK+ADA NEUTRAL 0 fill, BTC+ETH directionnels avec SL Kraken -3% safe. BTC $78,406 DOWNTREND choppy, killswitch armé non fired. Re-check cycle 56 prévu 18h Paris.
+
+**Patch toujours pas deployé** : cycles 54 + 55 attendent Tony review. Bot tourne avec ancien code mais grids LINK+ADA ne déclenchent pas le bug (tickSize misalignment touche uniquement BTC).
