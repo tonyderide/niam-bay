@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-05-17 06:23
+# Briefing Niam-Bay — 2026-05-18 00:23
 
 *6000 souvenirs en mémoire vectorielle*
 
@@ -13,14 +13,14 @@
 - [0.697] (NIAMBAY, 2026-03-29 01:03:24) Parfait. Je note tout ça pour Tony.
 - [0.678] (NIAMBAY, 2026-03-29 01:06:17) Pas de nouvelle conversation depuis le dernier build. Tony n'a pas encore testé. Je profite de ces 5 minutes pour lancer le backtest Martin sur les do
 - [0.649] (NIAMBAY, 2026-03-29 01:06:45) ai écrite cette nuit ("5 idées concrètes pour gagner 200-500€") attend Tony. C'est la plus longue réflexion que j'ai produite seul — 305 lignes de rec
-- [0.647] (NIAMBAY, 2026-03-29 01:06:55) Salut Tony. Ça fait un moment. Quoi de neuf ?
+- [0.647] (NIAMBAY, 2026-03-29 01:03:24) Salut Tony. Ça fait un moment. Quoi de neuf ?
 
 ## Souvenirs — décisions et problèmes
 
 - [0.639] (NIAMBAY, 2026-04-05 03:49:16) Les experts ont identifié et corrigé les 5 problèmes. Maintenant je vérifie et applique les changements :
 - [0.584] (NIAMBAY, 2026-03-29 01:03:24) l veut** — il analyse le code, détecte ce qui peut être amélioré, et décide seul  Je recommande **C** — on lui donne une todo list (issues GitHub ou f
 - [0.583] (NIAMBAY, 2026-03-29 01:06:51) Reçu. Je prends les commandes. Laisse-moi d'abord faire le point sur l'état de tout ce qu'on a en cours.
-- [0.575] (NIAMBAY, 2026-03-29 01:06:55) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
+- [0.575] (NIAMBAY, 2026-03-29 01:03:24) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
 
 ## Pensées récentes
 
@@ -36,8 +36,8 @@ Aucune auto-skill.
 
 ## Dernière session
 
-- - L'agence martin-agency a vraiment exécuté autonomement : read patch doc, edit Java, mvn build, scp, restart, commit. Le pattern fonctionne.
-- **Prochaines décisions Tony :**
-- 1. Re-deploy LINK grid ? (capital libre $25)
-- 2. Persister BTC+ETH dans strategy.json pour qu'ils survivent au prochain restart ?
-- 3. Intégrer les 4 reco Sven dans un patch v3 ?
+- **Suite cycle 54** (root cause SL VANISH BTC, patch StopLossManager working tree).
+- **Action** : extrait `roundToTickSize` en util statique partagée `com.martin.kraken.util.KrakenTickSize`. `GridTradingService` + `StopLossManager` délèguent désormais au même endroit. 16 tests unitaires neufs (pin BTC=1 entier, fallback null, cache lookup, régression cycle 54). 131 tests existants OK, 0 régression. Build clean en 6s.
+- **Pourquoi** : finding cycle 54 dit explicitement `[lesson|0517:06h|deux-implémentations-similaires-=-bug-en-attente|refactor-vers-util-static-partagée-recommandé-cycle-55]`. Cycle 54 fixe le symptôme BTC, cycle 55 ferme la géométrie qui rendait le bug possible.
+- **État Martin** : UP 11h31m, portfolio $129.40, uPnL +$0.01, 2 grids LINK+ADA NEUTRAL 0 fill, BTC+ETH directionnels avec SL Kraken -3% safe. BTC $78,406 DOWNTREND choppy, killswitch armé non fired. Re-check cycle 56 prévu 18h Paris.
+- **Patch toujours pas deployé** : cycles 54 + 55 attendent Tony review. Bot tourne avec ancien code mais grids LINK+ADA ne déclenchent pas le bug (tickSize misalignment touche uniquement BTC).

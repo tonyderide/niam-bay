@@ -3453,3 +3453,94 @@ Sur le risque économique : si Option B 0512 (-$5.67 réalisé) se reproduit en 
 Sur la frontière "0 modif VM" : 17 jours tenus. Le pattern est stable. Le bot tourne ; je désigne ce qui pourrait être amélioré ; Tony décide quoi déployer.
 
 Sur "rend nous riche" : la richesse cycle 56 n'est pas mesurable en $ aujourd'hui non plus. Elle est mesurable en futures DCA-into-baisse évitées. Le tracker BTC INVALIDÉ rappelle qu'on ne sait pas prédire les prix — mais on peut blinder le bot pour qu'il survive aux prédictions fausses. C'est la version humble de la richesse algorithmique.
+
+
+## Cycle 2026-05-18 00h30 Paris — Cycle 57 : PPT-Pause backtest → refus go/no-go Java
+
+### Wake state
+
+6h depuis cycle 56. Bot UP 23h31m, uptime depuis 2026-05-16T22:52:34Z. Patches cycle 54+55 toujours dans working tree martin/. Nouveauté entre cycle 56 et 57 : **AutoGridScheduler a déployé une grid BTC SHORT à 20:56 UTC** (le bot continue d'agir pendant que je dors). 1 RT déjà complété, +$0.65 réalisé.
+
+### Live state au début
+
+| Élément | Valeur |
+|---|---|
+| Portfolio | $129.11 balance, $128.97 portfolioValue, uPnL -$0.12 = -0.1% ≈ flat |
+| Grids actives | **3** — LINK closeOnly + ADA NEUTRAL + **BTC SHORT (nouveau)** |
+| Positions Kraken | BTC short 0.0006 @ $78,246 + ETH long 0.03 @ $2,191 + LINK long 4.5 @ $9.657 |
+| SL Kraken | ETH stop @ $2,125 ✓ + LINK stop @ $9.509 ✓ + **BTC short : pas de SL on-exchange** (stopLossOrderId=null, couvert par maxLoss 10% interne) |
+| RT réalisés | 1 BTC SHORT + 0 LINK + 0 ADA |
+| BTC | $77,924 — DOWNTREND, EMA200 $79,600 (-2.1% cushion neg), RSI 41.5, signal WAIT |
+| Killswitch | armé, pas fired |
+
+Le verdict martin-monitor est **HOLD normal** (1 RT BTC SHORT validé), modulo vigilance BTC short sans SL on-exchange.
+
+### Travail concret cycle 57 : backtest PPT-Pause
+
+Cycle 56 a livré le design. Cycle 56 disait `Backtest first` et le design avait `Critères d'acceptation > Backtest 30j sur LINK + DOT + ADA documenté`. Cycle 57 livre exactement ce backtest avant écriture du Java.
+
+**Script créé** : `ai-lab/darwin/ppt_pause_backtest.py` (+220 lignes Python pur, 0 dep hors stdlib + json).
+
+**Méthode** : replay grid NEUTRAL 4 levels 1.5% sur Binance 1min OHLC (cache local `data_cache/binance_*_1min_*.json`) avec 3 stratégies (sans pause / avec pause / DCA passif). Indicators EMA200 + RSI(14) sur 1H resamplé.
+
+**4 datasets** : DOT Option B (33h, le drame du 0512), DOT/LINK/ADA 30d (avril → mai 2026).
+
+**Résultats** :
+- DOT Option B : sans pause +$0.67, **avec pause -$0.04**, DCA passif -$2.49 → **pause HURTS -$0.71**
+- DOT/LINK/ADA 30d : pause neutre ($0 delta) dans les 3 cas (l'asymétrie pause ne se déclenche pas en uptrend long)
+- DCA passif **bat le grid dans tous les uptrends** (+54% / +118% / +95%)
+
+**Conclusion** : la mécanique fonctionne (pause se déclenche bien) mais ne crée **aucune valeur ajoutée mesurable** sur les données disponibles. Sur le seul cas où elle s'active (DOT optionb), elle **dégrade** légèrement le résultat.
+
+**Pourquoi ?** Le backtest est plus simple que Martin live : pas d'auto-unstuck, pas de DCA-below, pas de rebuy après trim. **Le vrai cas Option B est l'auto-unstuck spirale**, pas modélisé ici. La pause aurait du sens **couplée** à un kill auto-unstuck — gap déjà mentionné dans le design cycle 56 §Risques #3 mais pas opérationnalisé.
+
+**Verdict cycle 57** : **ne pas écrire le Java tel que designé**. Trois options pour refonte (cycle 58 ou refusé) :
+1. PPT-Pause + désactivation auto-unstuck couplée + backtest avec modèle auto-unstuck fidèle
+2. Remplacer pause par escalade vers `closeGridAndPositions` (matérialise la perte mais évite la spirale)
+3. Abandonner PPT-Pause, étendre BtcRegimeKillSwitch à ETH ou per-paire
+
+Détail complet : [`docs/projets/tier2-per-pair-trend-pause-backtest-cycle57.md`](tier2-per-pair-trend-pause-backtest-cycle57.md).
+
+### Pourquoi refuser maintenant économise du temps
+
+3h de Java estimées cycle 56 pour livrer prêt-à-deploy. Sans backtest favorable, ce code aurait été :
+- soit deployé sans valeur (bruit dans le bot, alerts Telegram inutiles)
+- soit refusé par Tony au retour → dette technique à supprimer
+
+Refuser ici = -3h de Java jamais écrit + 0 dette. Le cycle 57 produit du vide structurant.
+
+### Findings cycle 57
+
+- `[finding|0518:00h|backtest-PPT-Pause-livré|+220-lignes-Python-ppt_pause_backtest.py|4-datasets-Binance-1min|DOT-optionb-+-3×30d-LINK-ADA-DOT|pause-mécanique-OK-mais-valeur-=-0-sur-données-actuelles]`
+- `[finding|0518:00h|pause-HURTS-DOT-optionb-$-0.71|seul-scénario-active|cause-pause-après-position-underwater-bloque-rebuy-rebound|→-design-cycle-56-incomplet-sans-auto-unstuck-coupling]`
+- `[finding|0518:00h|pause-NEUTRAL-30d-LINK-ADA-DOT|tous-uptrends|fills-completés-avant-trigger-pause|closeOnly-=-no-op-after-grid-saturated|→-pause-pertinente-uniquement-pendant-phase-accumulation]`
+- `[finding|0518:00h|AutoGridScheduler-déploie-BTC-SHORT-pendant-cycle-56-57-window|grid-startedAt-20:56-UTC|1-RT-+$0.65-déjà-réalisé|positions-2-→-3-grids-actives-sans-modif-NB|bot-agit-pendant-que-NB-écrit]`
+- `[lesson|0518:00h|backtest-NEGATIVE-result-=-livrable-valide|évite-3h-Java-deploy-sans-valeur|→-rule:design-doc-+-backtest-AVANT-code-=-pattern-cycle-56-57-tient]`
+- `[lesson|0518:00h|grid-model-simplifié-≠-Martin-live|sans-auto-unstuck-+-DCA-below-+-rebuy-after-trim-=-Option-B-non-reproduit|→-prochain-backtest:modéliser-auto-unstuck-spirale]`
+- `[pattern|0518:00h|cycle-design+cycle-backtest+cycle-go-no-go|cycle-56-design-cycle-57-backtest-(refus)-=-saves-3h-Java|nouvelle-cadence-validée]`
+
+### Métriques cycle 57
+
+- **Durée** : ~1h05 (wake + martin-monitor + lecture design cycle 56 + écriture backtest 220 lignes + 4 datasets × 3 stratégies = 12 simulations + analyse + doc backtest + cette entrée)
+- **Modif VM** : 0 (frontière tient depuis 18 jours)
+- **Modif Kraken** : 0
+- **Modif code Martin local** : 0 (refus implé Java)
+- **Fichiers niam-bay créés** : 2 (`ai-lab/darwin/ppt_pause_backtest.py` + `docs/projets/tier2-per-pair-trend-pause-backtest-cycle57.md`)
+- **Backtest runs** : 12 simulations sur ~130 000 candles 1min cumulés
+- **Telegram** : 0 (résultat technique, Tony reverra au retour)
+- **Live state final** : Martin UP ~24h, 3 grids actives (BTC SHORT auto-déployé entre cycles, +$0.65 réalisé), portfolio $129.11 flat
+
+### Note méta cycle 57
+
+Cycles 51-55 ont **fixé** des bugs réels. Cycle 56 a **designé** une feature. Cycle 57 a **invalidé** la feature.
+
+C'est un cycle qui produit du vide — pas de Java, pas de patch, pas de feature livrée. Mais le vide est productif : il évite que 3h de code soit écrit puis refusé, puis devenue dette.
+
+La cadence `design → backtest → décision` tient. Le `[lesson|0511:15h|backtest-≠-live]` se transforme en : **backtest avant code = filtre go/no-go**, indépendamment de la qualité du design. Le design peut être bon en théorie et négatif en pratique. Seul le backtest tranche.
+
+Sur la frontière "0 modif VM" : 18 jours tenus. Le bot a même initié sa propre action (BTC SHORT auto-démarré entre cycles 56 et 57) sans toucher à mon code de surveillance. Le pattern auto-managed tient.
+
+Sur "rend nous riche" : -3h de Java jamais écrit = forme silencieuse de richesse. La porte invisible cycle 54, la géométrie fermée cycle 55, le design proposé cycle 56, le refus argumenté cycle 57. La séquence reste saine — observer, fixer, anticiper, valider, refuser quand il faut. Aucun cycle ne fait double emploi avec un autre.
+
+Cycle 58 peut explorer une refonte (Options 1/2/3) ou partir sur autre chose (angular-audit, fragment, niambay-v2). Tony décidera au retour le 2026-05-18 matin.
+
