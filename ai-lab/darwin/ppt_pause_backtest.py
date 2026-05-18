@@ -161,24 +161,40 @@ class GridState:
         self.stop_reason = None
 
     def _record_fill(self, level: Dict, price: float):
-        if level["side"] == "buy":
-            new_total = self.position_units + self.unit_size
-            if new_total != 0:
-                self.avg_entry = (self.avg_entry * self.position_units + price * self.unit_size) / new_total
+        # signed fill quantity: buy = +unit_size, sell = -unit_size
+        fill_side = 1 if level["side"] == "buy" else -1
+        fill_qty = self.unit_size * fill_side
+
+        if self.position_units == 0:
+            # opening from flat
+            self.avg_entry = price
+            self.position_units = fill_qty
+        elif (self.position_units > 0) == (fill_side > 0):
+            # same direction → weighted average entry
+            new_total = self.position_units + fill_qty
+            self.avg_entry = (
+                self.avg_entry * abs(self.position_units) + price * self.unit_size
+            ) / abs(new_total)
             self.position_units = new_total
-        else:  # sell
+        else:
+            # opposite direction → realize PnL on closed portion
+            # for closing long (pos>0, sell): pnl = (price - avg) * qty
+            # for closing short (pos<0, buy): pnl = (avg - price) * qty
+            close_qty = min(self.unit_size, abs(self.position_units))
             if self.position_units > 0:
-                pnl = (price - self.avg_entry) * min(self.unit_size, self.position_units)
-                self.realized_pnl += pnl
-                self.position_units -= self.unit_size
-                if self.position_units < 0:
-                    # short side (not used for NEUTRAL but safe)
-                    self.position_units = max(0, self.position_units)
+                pnl = (price - self.avg_entry) * close_qty
             else:
-                # opening short
-                new_total = self.position_units - self.unit_size
+                pnl = (self.avg_entry - price) * close_qty
+            self.realized_pnl += pnl
+            # reduce position toward zero by close_qty in current direction
+            sign = 1 if self.position_units > 0 else -1
+            self.position_units -= sign * close_qty
+            # leftover from fill flips direction (only if unit_size > current position)
+            leftover = self.unit_size - close_qty
+            if leftover > 1e-12:
                 self.avg_entry = price
-                self.position_units = new_total
+                self.position_units = fill_side * leftover
+
         self.realized_pnl -= price * self.unit_size * self.fees_pct
         self.fills += 1
         level["filled"] = True
@@ -199,13 +215,14 @@ class GridState:
                 if high >= lvl["price"]:
                     self._record_fill(lvl, lvl["price"])
         # hard stop check: unrealized + realized vs maxLoss
-        upnl = (close - self.avg_entry) * self.position_units if self.position_units > 0 else 0.0
+        # works for longs (units>0) and shorts (units<0) — formula identical
+        upnl = (close - self.avg_entry) * self.position_units if self.position_units != 0 else 0.0
         total = self.realized_pnl + upnl
         if total <= -self.capital * self.max_loss_pct:
-            # market close at `close` price
-            if self.position_units > 0:
+            # market close at `close` price — close both long and short legs
+            if self.position_units != 0:
                 close_pnl = (close - self.avg_entry) * self.position_units
-                close_pnl -= close * self.position_units * self.fees_pct
+                close_pnl -= close * abs(self.position_units) * self.fees_pct
                 self.realized_pnl += close_pnl
                 self.position_units = 0
             self.stopped = True

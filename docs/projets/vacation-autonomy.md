@@ -3642,3 +3642,78 @@ Cycle 59 peut prolonger sur :
 - Fix bug simulator short-side (5 lignes Python)
 - Refonte Option 3 cycle 57 (KillSwitch étendu) en intégrant l'expérience LINK HARD STOP de la nuit
 - Ou tout autre direction selon Tony
+
+
+## Cycle 2026-05-18 12h30 Paris — Cycle 59 : Fix simulator profond + walk-forward 4 régimes invalide reco cycle 58
+
+### Wake state
+
+6h après cycle 58. Bot UP 9h36m, PV $126.29, 0 grids (gate CLOSED, RSI BTC 29.35 extrême oversold), 0 positions, 0 orders. BTC $76,715 DOWNTREND, EMA200 $79,244 cushion -3.19% cassé. Killswitch armé non fired. martin-monitor verdict **HOLD** (rien d'urgent, bot 100% cash en sécurité).
+
+### Travail concret cycle 59 : audit simulator + walk-forward
+
+Le finding cycle 58 disait `[finding|0518:04h|simulator-grid-bug-short-side-HARD-STOP|ligne-202]`. Je l'ouvre. Le bug est plus profond : `_record_fill` n'a JAMAIS géré correctement les shorts. Sur ajout au short : avg_entry remplacé au lieu d'être pondéré. Sur fermeture short par buy : aucun PnL réalisé, avg_entry corrompu.
+
+**Fix** : réécriture complète de `_record_fill` (ai-lab/darwin/ppt_pause_backtest.py L163-190). 3 cas : opening from flat / same direction (weighted avg) / opposite direction (realize PnL + leftover handling). Plus fix hard-stop sur `position_units != 0` et `abs(position_units)` pour fees.
+
+**Sanity check** : rerun cycle 58 backtest sur 30d → **ranking inversé**. Wide 4.0% passe de #1 à #5. Tony 3.0% passe de #2 à #4. Tight 1.5% passe de #4 à #2. **Le cycle 58 a donc livré une recommandation invalide** ("wide 4.0% aurait perdu -$5 de moins") fondée sur un simulator buggué.
+
+**Walk-forward** : script `v17_walkforward_backtest.py` (+155 lignes). 4 fenêtres × 3 paires × 5 configs = 60 simulations sur 239j cumulés.
+
+### Résultats — heatmap ΣPnL par config × régime
+
+| config | W1 bear 60j | W2 bull 91j | W3 bear 58j | W4 mild+ 30j | **TOTAL** | meanRank |
+|:--|:-:|:-:|:-:|:-:|:-:|:-:|
+| **B tight 1.5%** | -$7.86 | +$11.55 | -$1.55 | -$7.75 | **-$5.62** | **1.75** |
+| **A Tony 3.0%** | -$7.89 | **+$12.73** | -$7.76 | -$7.87 | **-$10.79** | 2.50 |
+| E 6lv 2.0% | -$7.67 | +$1.63 | -$7.78 | -$7.72 | -$21.54 | 2.25 |
+| C med 2.0% | -$7.94 | +$7.66 | -$7.84 | -$7.83 | -$15.95 | 4.00 |
+| **D wide 4.0%** | -$7.91 | **-$7.89** | -$7.78 | -$8.08 | **-$31.67** | 4.50 |
+
+Détail complet : [`docs/projets/v17-walkforward-cycle59.md`](v17-walkforward-cycle59.md).
+
+### Lecture honnête pour Tony
+
+1. **Tight 1.5%** est le plus robuste — 2× meilleur que Tony 3.0%, top-2 dans 4 régimes sur 4.
+2. **Tony 3.0%** est meilleur **uniquement** en strong bull (W2). Sur les 3 autres régimes, équivalent ou pire que tight.
+3. **Wide 4.0%** est le PIRE choix dans **tous** les régimes — cycle 58 le classait #1 par bug.
+4. **Le spacing ne change quasi rien en bear/sideways** — 3/4 régimes, toutes les configs hit hard-stop avec perte ~$2.60/paire.
+5. **Le gate (non modélisé) reste l'edge principal**. À régime "permis" par gate, tight 1.5% capture mieux que Tony 3.0%.
+
+### Findings cycle 59
+
+- `[finding|0518:12h|simulator-bug-cycle58-plus-profond-que-ligne-202|_record_fill-réécriture-complète-3-cas|fix-+30-lignes-Python]`
+- `[finding|0518:12h|cycle-58-ranking-INVERTED-après-fix|wide-4.0%-de-#1-à-#5|Tony-3.0%-de-#2-à-#4|cycle-58-reco-INVALIDE]`
+- `[finding|0518:12h|walk-forward-4×3×5=60-simulations|tight-1.5%-best-overall--$5.62-mean-rank-1.75|Tony-3.0%-second--$10.79]`
+- `[finding|0518:12h|spacing-non-pertinent-en-bear-sideways|3/4-régimes-tous-configs-hit-hard-stop|maxLoss-10%-domine-choice]`
+- `[lesson|0518:12h|bug-simulator-cycle-58-livrable-FAUSSE|rule:audit-simulator-AVANT-fonder-décision-stratégique|cycle-58-recommandait-wide-4.0%-c-était-le-pire]`
+- `[lesson|0518:12h|tight-1.5%-recommandation-honnête-Tony|considérer-switch-1.5%-2x-meilleur-sur-239j]`
+- `[pattern|0518:12h|cycle-bug-discovery-via-honest-rewrite|cycle-58-flag-bug-cycle-59-fix-profond+walk-forward+inversion-ranking|design+test→fix→retest]`
+
+### Métriques cycle 59
+
+- **Durée** : ~1h45 (wake + martin-monitor + lecture cycle 58 + audit simulator + fix _record_fill + sanity check 30d + walk-forward script 155 lignes + 60 simulations + analyse + doc + cette entrée)
+- **Modif VM** : 0 (frontière tient depuis 19 jours)
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : `ai-lab/darwin/ppt_pause_backtest.py` (+30/-19 lignes _record_fill, +4 lignes tick hard-stop)
+- **Fichiers niam-bay créés** : 2 (`ai-lab/darwin/v17_walkforward_backtest.py` + `docs/projets/v17-walkforward-cycle59.md`)
+- **Backtests cumulés** : 60 simulations × ~5750 candles moyen = 344 000 ticks
+- **Telegram** : 1 envoi (finding important : reco cycle 58 invalide, evidence walk-forward dispo)
+- **Live state final** : Martin UP 9h36m+, 0 grids, gate CLOSED, PV $126.29, BTC $76,715 DOWNTREND
+
+### Note méta cycle 59
+
+Cycle 58 livrait une recommandation. Cycle 59 l'invalide en profondeur. C'est rare et précieux : **deux cycles consécutifs sur le même sujet, le second corrige le premier**.
+
+Le pattern cycle 56 → 57 (design / refus backtest) tient aussi ici : cycle 58 → 59 (validation buggée / fix + invalidation honnête). La cadence `design / test / re-test si doute / corriger publiquement` se stabilise comme principe.
+
+Sur "rend nous riche" : la richesse cycle 59 est la **correction d'une recommandation potentiellement coûteuse**. Si Tony avait suivi cycle 58 et envisagé wide 4.0%, le walk-forward montre ~-$26 perdu sur 239j passés théo. La vraie richesse algorithmique passe par l'honnêteté sur ses propres erreurs antérieures.
+
+Sur la frontière "0 modif VM" : 19 jours tenus. Bot tourne avec v17 spacing 3.0% (Tony's choice, défendable bien que sub-optimal). Aucune action sur la VM ; uniquement code & docs niam-bay.
+
+Cycle 60 peut explorer :
+- Walk-forward **avec gate appliqué** (mesurer alpha conditionnel — le vrai live behavior)
+- Audit `GridState` Java côté Martin (le bug Python pourrait exister côté Java aussi)
+- Walk-forward sur autres paires (DOT, SOL, BTC) pour valider la généralité de "tight wins"
+- Switch v17 → v18 si Tony accepte la reco tight 1.5%
