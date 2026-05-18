@@ -3717,3 +3717,100 @@ Cycle 60 peut explorer :
 - Audit `GridState` Java côté Martin (le bug Python pourrait exister côté Java aussi)
 - Walk-forward sur autres paires (DOT, SOL, BTC) pour valider la généralité de "tight wins"
 - Switch v17 → v18 si Tony accepte la reco tight 1.5%
+
+
+## Cycle 2026-05-19 00h Paris — Cycle 60 : Walk-forward GATED inverse cycle 59 — Tony 3.0% est validé
+
+### Wake state
+
+12h après cycle 59. Bot UP 21h35m, PV $126.56, **1 grid LINK juste déployée par AutoGridScheduler il y a 20 min** (4 levels, 0 position, 2 buy orders @9.13/@9.417, capital $25, 7x leverage, spacing 0.287 = 3.0% de 9.56 center). BTC $77,119 DOWNTREND, EMA200 $78,957 cushion -2.32%, RSI 50.85 1h, signal WAIT. Killswitch armé non fired. martin-monitor verdict **HOLD nouveau** (uptime grid < 1h, 0 position, défensif).
+
+L'AutoGridScheduler a agi seul pendant que je dormais — pattern auto-managed continue de tenir.
+
+### Question cycle 60
+
+Cycle 59 disait "tight 1.5% wins walk-forward 239j, considérer switch v18".
+**Caveat explicite** : "le gate (non modélisé) reste l'edge principal".
+
+Cycle 60 ferme : modélise le gate V4 prod, re-run, mesure alpha conditionnel.
+
+### Méthode
+
+Le script `ai-lab/darwin/v17_walkforward_gated_backtest.py` + `regime_gate_logic.py` (port Java→Python de `RegimeGate.java`) existaient déjà ébauchés cycle 60 18h. Cycle 60 a:
+
+1. **Audit Java fill accounting** : confirmé que le bug Python cycle 59 (avg_entry corrompu sur shorts) n'existe PAS en Java (architecture différente, flags par-level). Bug mineur reporting subsiste (totalProfit dérive après trim auto-unstuck) mais hardstop utilise vérité Kraken → safe opérationnellement.
+
+2. **Lecture VM `.env`** : extraction des vraies bounds prod V4 :
+   - ATR%(14) ∈ **[1.12%, 2.17%]** (restrictif)
+   - RSI(14) ∈ **[36, 66]** (restrictif)
+   - 3 autres bornes (ADX, price_vs_EMA, spread) = no-op (très larges)
+
+3. **Patch simulator** : 4 edits pour passer `PROD_V4_BOUNDS` au lieu des defaults Java permissifs (qui auraient laissé le gate quasi-toujours OPEN).
+
+4. **Run** 4 fenêtres × 3 paires × 5 configs = 60 simulations gated.
+
+### Résultats — Ranking INVERSE de cycle 59
+
+| Config | Cycle 59 (no-gate) | Rank 59 | **Cycle 60 (gated)** | **Rank 60** | Δ |
+|---|---:|:-:|---:|:-:|:-:|
+| **A Tony 3.0%** | -$10.79 | #2 | **+$20.77** | **#1** | +1 |
+| B tight 1.5% | **-$5.62** | **#1** | -$3.74 | #5 | **-4** |
+| C med 2.0% | -$15.95 | #4 | -$1.25 | #4 | = |
+| D wide 4.0% | -$31.67 | #5 | +$15.43 | #2 | +3 |
+| E 6lv 2.0% | -$21.54 | #3 | +$10.44 | #3 | = |
+
+**4/5 configs basculent de négatif à positif.** Tony 3.0% gagne +$31.56 vs no-gate sur 209j (W4 vide car cache 4h s'arrête mi-2025).
+
+Détail complet : [`docs/projets/v17-walkforward-gated-cycle60.md`](v17-walkforward-gated-cycle60.md).
+
+### Lecture honnête pour Tony
+
+1. **Reco cycle 59 (switch v18 tight) est invalide en conditions prod.** Le gate filtre justement les régimes où tight gagnait.
+2. **Garder v17 spacing 3.0%.** Mean rank 1.75 sur W1+W2+W3 gated, top-3 partout.
+3. **0 hard-stop fired sur les 60 simulations gated.** Le gate seul suffit à éviter les régimes où le maxLoss déclencherait. L'edge principal n'est pas le hard-stop ni le spacing, c'est le **filtrage temporel** (WHEN to trade).
+4. **Wide 4.0%** est marginalement compétitif (+$15.43) mais moins stable. Pas un argument pour changer.
+
+### Findings cycle 60
+
+- `[finding|0519:00h|gate-V4-bounds-extraites-VM-env|RSI∈[36,66]+ATR%∈[1.12,2.17]|3-autres-bornes-no-op|prod-bien-plus-restrictive-que-defaults-Java-permissifs]`
+- `[finding|0519:00h|ranking-cycle-59-INVERSÉ-avec-gate|Tony-3.0%-de-#2-à-#1|tight-1.5%-de-#1-à-#5|wide-4.0%-de-#5-à-#2|4/5-configs-passent-négatif-→-positif]`
+- `[finding|0519:00h|Tony-3.0%-+$20.77-en-209j-gated|vs--$10.79-no-gate|différence-+$31.56-=-alpha-conditionnel-gate]`
+- `[finding|0519:00h|0-hard-stop-fired-60-simulations-gated|gate-suffit-éviter-régimes-maxLoss|edge-principal-confirmé-=-WHEN-not-WHAT]`
+- `[finding|0519:00h|Java-fill-accounting-architecture-différente-Python|hasBuyFill-flags-per-level-pas-avg_entry-agrégé|bug-Python-cycle-59-n-existe-pas-en-Java|bug-reporting-mineur-restant-après-trim-pas-safety]`
+- `[finding|0519:00h|cache-4h-stop-mi-2025-W4-vide|181-bars-<-min_bars-210|W4-fallback-in-window-UNKNOWN-0-trades|à-fix-rafraîchir-jusqu-2026-mai]`
+- `[lesson|0519:00h|reco-no-gate-≠-reco-prod|cycle-59-tight-wins-vrai-en-isolation-faux-en-conditions-prod|rule:tout-backtest-strat-doit-modéliser-l-environnement-de-prod-pas-juste-la-strat]`
+- `[lesson|0519:00h|3-cycles-consécutifs-corrigent-précédents|cycle-58-Tony-deploy-validation-buggée|cycle-59-bug-trouvé-fix-reco-tight|cycle-60-gate-modélisé-reco-INVERSE-Tony-validé|honnêteté-itérative-paie]`
+- `[pattern|0519:00h|gate-conditional-alpha-=-vrai-edge|+$31.56-différentiel-Tony-3.0%-gated-vs-ungated-209j|edge-=-WHEN-to-trade-not-WHAT]`
+
+### Métriques cycle 60
+
+- **Durée** : ~2h00 (wake + martin-monitor + audit Java fill accounting + lecture cycles 56-59 + audit RegimeGate.java + ssh VM lecture .env + decouverte scripts déjà ébauchés + 4 patches PROD_V4_BOUNDS + run 60 simulations + analyse + doc dédiée + cette entrée)
+- **Modif VM** : 0 (frontière tient depuis 20 jours)
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 1 (`docs/projets/v17-walkforward-gated-cycle60.md`)
+- **Fichiers niam-bay modifiés** : 1 (`ai-lab/darwin/v17_walkforward_gated_backtest.py` — 4 edits pour PROD_V4_BOUNDS)
+- **Backtests cumulés** : 60 simulations + 6 000+ évaluations gate 4h
+- **Telegram** : 1 envoi (finding important : cycle 59 reco INVALIDE en gated, Tony 3.0% validé, evidence chiffrée prête à lire au réveil)
+- **Live state final** : Martin UP 21h35m+, 1 grid LINK auto-déployée par AutoGridScheduler sans NB, PV $126.56, BTC $77,119 DOWNTREND choppy, gate filtré comme attendu
+
+### Note méta cycle 60
+
+Trois cycles consécutifs sur la même décision :
+- **Cycle 58** : Tony déploie v17 3.0%, NB valide via backtest (bug)
+- **Cycle 59** : NB trouve bug simulator, fix → "tight wins, switch v18"
+- **Cycle 60** : NB modélise gate → "Tony 3.0% wins, GARDER v17"
+
+La séquence montre que **le re-test honnête peut sauver une décision**. Si je m'étais arrêté à cycle 59, Tony aurait pu basculer vers tight et perdre l'edge gate × spacing. Cycle 60 livre la reco finale honnête : **garder v17 spacing 3.0%, choix Tony empiriquement validé en conditions prod**.
+
+Sur "rend nous riche" : la richesse cycle 60 est de transformer une recommandation quasi-erronée en validation rigoureuse. Pas de Java nouveau, pas de feature livrée. Mais Tony peut dormir tranquille sur son choix de spacing — gated backtest le valide à +$20.77 sur 209j théo, derate live ~50% → +$1.50/mois pur grid alpha.
+
+Sur la frontière "0 modif VM" : 20 jours tenus. Le bot a même initié sa propre action (AutoGridScheduler a déployé LINK il y a 20 min) sans toucher à mon code de surveillance. Le pattern auto-managed tient solidement.
+
+### Cycle 61 — pistes
+
+1. **Rafraîchir cache 4h jusqu'à mai 2026** pour W4 (Binance fetcher `data.py` existe)
+2. **Walk-forward gated avec auto-unstuck modélisé** — encore plus proche du live
+3. **Backtest gated × auto-unstuck × DCA** sur BTC SHORT (cycle 56→57 a généré +$0.65 réalisé)
+4. **Audit Java reset `hasBuyFill` après trim** — fix mineur reporting
+5. **Sortir du Martin** : reprendre angular-audit Step 1 playbook si bot stable
