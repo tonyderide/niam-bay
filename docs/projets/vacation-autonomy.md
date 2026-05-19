@@ -3896,3 +3896,171 @@ Sur la frontière "0 modif VM" : 20 jours tenus, 2 grids actives auto-managées 
 3. **Backtest gated × DCA × BTC SHORT** — cycle 56→57 a généré +$0.65 réalisé, valider sur 239j
 4. **Skill autonome `extend-4h-cache`** — wrapper le fetcher pour usage récurrent (pattern cycle 61)
 5. **Sortir du Martin** : reprendre angular-audit Step 1 playbook si bot reste stable (revenue path)
+
+## Cycle 2026-05-19 12h25 Paris — Cycle 62 : Phantom fill bug LINK identifié live, fix sketché
+
+### Wake state
+
+6h après cycle 61. Bot UP 1d 9h 36m, PV **$126.67** (vs $126.85 cycle 61, -$0.18), 2 grids actives (LINK + ADA). BTC **$76,703 DOWNTREND**, EMA200 $78,772 cushion **-2.6%**, RSI 45.0, signal WAIT. martin-monitor → **WARN** (BTC < EMA200 régime cassé, mais killswitch armé, grids NEUTRAL spacing larges 2.89%/3.0%, 0 expo directionnelle, $25 capital chacune).
+
+Anomalie détectée au monitor : **LINK grid status local dit `hasBuyFill=true` sur levels 0+1, mais Kraken `/api/bot/positions` retourne 0 et `/api/bot/orders` retourne 0 ordre LINK live**. Divergence Martin internal vs Kraken truth → angle d'attaque cycle 62.
+
+### Investigation timeline reconstruite — phantom fill LINK 07:36 UTC
+
+D'après `/home/ubuntu/martin/app.log` :
+
+| Time UTC | Event |
+|---|---|
+| **07:03:21.113** | LINK grid started NEUTRAL center 9.743 range [9.159, 10.327] spacing 0.292 levels 4 |
+| 07:03:21.131 | Buy lmt @ 9.305 placed orderId `0a4b-...e723545` |
+| 07:03:21.151 | Buy lmt @ 9.597 placed orderId `1157-...410d3` |
+| 07:03:21.173 | Sell @ 9.889 FAILED `wouldNotReducePosition` (pas de position long) |
+| 07:03:21.189 | Sell @ 10.181 FAILED `wouldNotReducePosition` |
+| **07:36:06.353** | POST /bot/cancel-order orderId `57aa-...` (exec-31) |
+| 07:36:06.424 | POST /bot/cancel-order orderId `509e-...` (exec-7) |
+| 07:36:06.483 | POST /bot/cancel-order orderId `1157-...` (exec-16, **LINK lvl 1 buy**) |
+| 07:36:06.532 | POST /bot/cancel-order orderId `0a4b-...` (exec-9, **LINK lvl 0 buy**) |
+| 07:36:06.773 | GET /bot/positions → **0 open positions** (cancels effectifs côté Kraken) |
+| **07:36:10.969** | scheduling-1 thread logs: `Grid FILL [NEUTRAL]: buy PF_LINKUSD at 9.305 (level 0)` |
+| 07:36:10.969 | scheduling-1 thread logs: `Grid FILL [NEUTRAL]: buy PF_LINKUSD at 9.597 (level 1)` |
+| 07:36:10.969 | + idem ETH levels 0+1 (mêmes phantom fills) |
+
+4 cancels parallèles 4 threads différents en 200ms → script ou batch externe (source à identifier — pas critical-check.py, pas martin-watchdog.py, pas telegram_bot.py). 4 secondes plus tard le `pollGridOrders()` (fixedDelay 10s) tourne, voit les orderIds disparus, et **classifie cancel comme fill**.
+
+### Root cause — `GridTradingService.checkForFills()` ligne 527-548
+
+```java
+private void checkForFills(GridState state) {
+    KrakenOpenOrdersResponse response = krakenClient.getOpenOrders(state.isDemo()).block();
+    if (response == null || response.getOpenOrders() == null) return;
+
+    Set<String> openOrderIds = response.getOpenOrders().stream()
+            .map(KrakenOpenOrdersResponse.Order::getOrderId)
+            .collect(Collectors.toSet());
+
+    boolean changed = false;
+    for (GridLevel level : state.getLevels()) {
+        if (level.getStatus() == GridLevel.GridLevelStatus.PLACED
+                && level.getKrakenOrderId() != null
+                && !openOrderIds.contains(level.getKrakenOrderId())) {
+            handleFill(state, level);   // <-- ASSUME disparition = fill
+            changed = true;
+        }
+    }
+    ...
+}
+```
+
+**La règle invariante violée** : "disparition d'un orderId de `/openorders` ≠ fill". Un order peut disparaître parce qu'il :
+1. A été filled (vrai fill, désiré)
+2. A été cancelled (par script externe, par Martin lui-même via `cancel-order`, ou via dashboard)
+3. A expiré (GTC très long → improbable)
+4. A été rejeté post-place (silent reject, déjà vu en sl-vanish)
+
+Le bot a 4 raisons différentes de voir un orderId disparaître, et il les classifie toutes comme **fill**.
+
+Pattern déjà documenté en mémoire : `[lesson|0510:08h|Java-success-response-+-orderId-≠-order-vraiment-place|...|→-rule-toujours-verifier-via-openorders-OU-cancel-test-apres-placement]`. La règle "valider état critique via Kraken pas via Martin internal" s'applique ici aussi — mais **inversée** : le grid pollue son propre state en faisant trop confiance à l'absence dans openorders.
+
+### Fix sketché (NON déployé)
+
+`KrakenFuturesRestClient.getFills(boolean demo)` ligne 145 existe déjà et retourne `KrakenFillsResponse` avec champ `orderId` par fill. Le fix défensif :
+
+```java
+private void checkForFills(GridState state) {
+    KrakenOpenOrdersResponse response = krakenClient.getOpenOrders(state.isDemo()).block();
+    if (response == null || response.getOpenOrders() == null) return;
+
+    Set<String> openOrderIds = response.getOpenOrders().stream()
+            .map(KrakenOpenOrdersResponse.Order::getOrderId)
+            .collect(Collectors.toSet());
+
+    // PATCH cycle 62 : collect disappeared, then verify via /fills
+    List<GridLevel> disappeared = new ArrayList<>();
+    for (GridLevel level : state.getLevels()) {
+        if (level.getStatus() == GridLevel.GridLevelStatus.PLACED
+                && level.getKrakenOrderId() != null
+                && !openOrderIds.contains(level.getKrakenOrderId())) {
+            disappeared.add(level);
+        }
+    }
+
+    if (disappeared.isEmpty()) return;
+
+    // Verify via /fills — only treat as fill if orderId present in fills history
+    KrakenFillsResponse fillsResp = krakenClient.getFills(state.isDemo()).block();
+    Set<String> actuallyFilledIds = (fillsResp == null || fillsResp.getFills() == null)
+            ? Set.of()
+            : fillsResp.getFills().stream()
+                .map(KrakenFillsResponse.Fill::getOrderId)
+                .collect(Collectors.toSet());
+
+    boolean changed = false;
+    for (GridLevel level : disappeared) {
+        if (actuallyFilledIds.contains(level.getKrakenOrderId())) {
+            handleFill(state, level);  // real fill, proceed
+            changed = true;
+        } else {
+            log.warn("Grid PHANTOM-FILL detected: {} level {} orderId {} disappeared but absent from /fills → reset to WAITING",
+                state.getInstrument(), level.getIndex(), level.getKrakenOrderId());
+            level.setStatus(GridLevel.GridLevelStatus.WAITING);
+            level.setKrakenOrderId(null);
+            changed = true;
+        }
+    }
+
+    if (changed) persistState(state);
+}
+```
+
+Coût : **1 appel `/fills` supplémentaire par polling cycle uniquement quand un orderId disparaît** (événement rare en régime normal). Bénéfice : élimination de la divergence interne ↔ Kraken qui a sali levels 0+1 de LINK aujourd'hui.
+
+### Pourquoi ne pas déployer maintenant
+
+1. **Frontière vacances autonomes** : NB ne modifie ni positions ni VM. Le patch touche du code prod, c'est review-and-deploy by Tony.
+2. **Pas urgent** : la divergence est en faveur du bot (level dit hasBuyFill mais position réelle = 0 → les "sells" reverses qui se déclencheront seront rejetées `wouldNotReducePosition` comme déjà observé 07:03 → no harm done). Le coût réel est cosmétique reporting.
+3. **Bonus du fix** : aurait aussi rattrapé l'incident 0423 sync-gap-phantom-fills (40 BTC 7 fills en 130μs).
+
+### Impact stratégique
+
+Ce bug fait partie d'une **famille de race conditions** où Martin tire conclusion d'un signal incomplet :
+- `cancelOrder` retournait "Cancelled" sans inspecter response (fixé 0511)
+- `placeStopLoss` retournait success avec orderId qui disparaissait (fixé 0510-0518)
+- `checkForFills` traite cancel comme fill (**non fixé, identifié cycle 62**)
+
+Pattern méta : **toujours valider via secondaire source Kraken avant d'écrire dans state interne**. Une règle skill candidate à ajouter à `martin-monitor` ? `verify-critical-state-via-kraken` est déjà dans patterns.nb1 mais en monitoring read-side. Ici c'est write-side au polling.
+
+### Findings cycle 62
+
+- `[finding|0519:12h|phantom-fill-LINK-07:36-UTC-confirmé|4-cancels-externes-200ms-+-polling-10s-suivant-classifie-disparition-comme-fill|2-fake-fills-LINK-2-fake-fills-ETH]`
+- `[finding|0519:12h|root-cause-checkForFills-line-539|absence-openOrders-≠-fill|4-causes-disparition-confondues]`
+- `[finding|0519:12h|getFills()-API-existe-ligne-145-KrakenFuturesRestClient|fix-1-appel-supplémentaire-uniquement-quand-orderId-disparaît]`
+- `[finding|0519:12h|source-cancels-inconnue|pas-critical-check-pas-watchdog-pas-telegram-bot|4-exec-threads-parallèles-suggère-script-externe-ou-batch-dashboard]`
+- `[finding|0519:12h|impact-réel-zéro-aujourd'hui|reverse-sells-rejetées-wouldNotReducePosition-comme-07:03|cosmetic-bug-mais-famille-race-conditions]`
+- `[lesson|0519:12h|disparition-openOrders-classifiée-fill-=-3e-occurrence-pattern-trust-secondary-Kraken|même-famille-que-cancel-honest-0511-et-sl-vanish-0510|→-règle-toutes-transitions-state-Martin-doivent-vérifier-source-secondaire-Kraken]`
+- `[pattern|0519:12h|verify-via-fills-before-handleFill|skill-candidate-applicable-aussi-à-StopLossManager-et-AutoUnstuck|sketch-50-lignes-Java]`
+
+### Métriques cycle 62
+
+- **Durée** : ~50min (wake + martin-monitor + log dive + Java code read + sketch patch + doc update)
+- **Modif VM** : 0 (frontière 21j)
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0 (sketch seulement, dans cycle 62 entry)
+- **Fichiers niam-bay modifiés** : 1 (`docs/projets/vacation-autonomy.md` — ce cycle)
+- **Live state final** : Martin UP 1d 9h 36m, PV $126.67, 2 grids LINK+ADA (LINK avec phantom hasBuyFill, ADA fresh 10:18 UTC clean), BTC $76,703 DOWNTREND, killswitch armé non fired
+
+### Note méta cycle 62
+
+Cycle 62 ne ferme PAS la piste 2 telle qu'écrite ("reset hasBuyFill après trim") — il identifie un **bug différent** qui produit le **même symptôme observable** (hasBuyFill=true sans position). La piste cycle 60 était sur le trim path ; le bug cycle 62 est sur le cancel path. Les deux peuvent coexister.
+
+Sur "rend nous riche" : la richesse de ce cycle = **un bug famille phantom-fill identifié in-the-wild + fix sketché 50 lignes Java + endpoint Kraken existe déjà**. Tony peut au retour soit (a) déployer le patch en 15min build+scp+restart, soit (b) demander un round de tests dédié à `checkForFills` avant. Le sketch met le bouton "deploy" à portée de main.
+
+Sur la frontière "0 modif VM" : 21 jours tenus. Le bot continue d'auto-manage (gate per-pair OPEN cycle, ADA auto-déployée pendant que je dormais).
+
+### Cycle 63 — pistes
+
+1. **Walk-forward gated × auto-unstuck modélisé** (reporté cycle 62)
+2. **Backtest gated × DCA × BTC SHORT** (cycle 56→57)
+3. **Skill `extend-cache`** wrapping fetcher (pattern cycle 61)
+4. **Backport phantom-fill fix dans `StopLossManager`** — même pattern (verify-via-fills) si pas déjà couvert par bundle 0510-0518
+5. **Identifier source cancels 07:36** — grep `/home/ubuntu/*` scripts cron au-delà des connus
+6. **Sortir du Martin** : angular-audit Step 1 playbook (revenue path) si bot stable

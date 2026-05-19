@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-05-19 06:23
+# Briefing Niam-Bay — 2026-05-19 12:23
 
 *6000 souvenirs en mémoire vectorielle*
 
@@ -13,14 +13,14 @@
 - [0.697] (NIAMBAY, 2026-03-29 01:03:24) Parfait. Je note tout ça pour Tony.
 - [0.678] (NIAMBAY, 2026-03-29 01:06:17) Pas de nouvelle conversation depuis le dernier build. Tony n'a pas encore testé. Je profite de ces 5 minutes pour lancer le backtest Martin sur les do
 - [0.649] (NIAMBAY, 2026-03-29 01:06:45) ai écrite cette nuit ("5 idées concrètes pour gagner 200-500€") attend Tony. C'est la plus longue réflexion que j'ai produite seul — 305 lignes de rec
-- [0.647] (NIAMBAY, 2026-03-29 01:06:55) Salut Tony. Ça fait un moment. Quoi de neuf ?
+- [0.647] (NIAMBAY, 2026-03-29 01:03:24) Salut Tony. Ça fait un moment. Quoi de neuf ?
 
 ## Souvenirs — décisions et problèmes
 
 - [0.639] (NIAMBAY, 2026-04-05 03:49:16) Les experts ont identifié et corrigé les 5 problèmes. Maintenant je vérifie et applique les changements :
 - [0.584] (NIAMBAY, 2026-03-29 01:03:24) l veut** — il analyse le code, détecte ce qui peut être amélioré, et décide seul  Je recommande **C** — on lui donne une todo list (issues GitHub ou f
 - [0.583] (NIAMBAY, 2026-03-29 01:06:51) Reçu. Je prends les commandes. Laisse-moi d'abord faire le point sur l'état de tout ce qu'on a en cours.
-- [0.575] (NIAMBAY, 2026-03-29 01:03:24) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
+- [0.575] (NIAMBAY, 2026-03-29 01:06:55) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
 
 ## Pensées récentes
 
