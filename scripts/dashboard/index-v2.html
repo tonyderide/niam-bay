@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#0b0d12">
+<title>Martin · Niam-Bay</title>
+<style>
+  :root{
+    --bg:#0b0d12; --panel:#131722; --line:#1f2430; --muted:#6b7280;
+    --text:#e6e8ee; --dim:#9aa3b2;
+    --green:#16c784; --amber:#f7b731; --red:#ea3943;
+    --cyan:#19c2ff;
+    --radius:12px; --ff:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica Neue,Arial;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:var(--ff);-webkit-font-smoothing:antialiased}
+  body{padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(80px + env(safe-area-inset-bottom)) env(safe-area-inset-left);}
+
+  .wrap{max-width:520px;margin:0 auto;padding:12px}
+
+  /* Status pill */
+  .status{display:flex;align-items:center;justify-content:space-between;
+          padding:14px 18px;border-radius:var(--radius);font-weight:600;
+          transition:background .3s;min-height:56px}
+  .status.green{background:linear-gradient(135deg,#0e3b26,#16c784);color:#071a10}
+  .status.amber{background:linear-gradient(135deg,#3d2b05,#f7b731);color:#1a1000}
+  .status.red{background:linear-gradient(135deg,#3b0f13,#ea3943);color:#1a0406}
+  .status.grey{background:#1f2430;color:var(--dim)}
+  .status .left{display:flex;align-items:center;gap:10px;font-size:17px}
+  .status .right{font-family:var(--mono);font-size:13px;opacity:.85}
+  .dot{width:10px;height:10px;border-radius:50%;background:currentColor;box-shadow:0 0 0 4px rgba(255,255,255,.15)}
+
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-top:10px}
+
+  .row{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .row .label{color:var(--dim);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+  .row .val{font-family:var(--mono);font-size:20px;font-weight:600}
+  .row.small .val{font-size:15px}
+
+  .spark{display:block;height:26px;width:100%;margin-top:6px}
+
+  .bar{height:8px;border-radius:999px;background:#1f2430;overflow:hidden;margin-top:6px}
+  .bar>i{display:block;height:100%;border-radius:999px;background:var(--green);transition:width .4s}
+  .bar>i.warn{background:var(--amber)}
+  .bar>i.bad{background:var(--red)}
+
+  .grid-row{display:grid;grid-template-columns:58px 1fr 60px 60px 32px;gap:10px;align-items:center;padding:10px 4px;border-top:1px solid var(--line)}
+  .grid-row:first-of-type{border-top:none}
+  .grid-row .name{font-family:var(--mono);font-size:13px;color:var(--text)}
+  .grid-row .pnl{font-family:var(--mono);font-size:13px;font-weight:600;text-align:right}
+  .grid-row .pnl.g{color:var(--green)} .grid-row .pnl.r{color:var(--red)}
+  .grid-row .buffer{font-family:var(--mono);font-size:12px;color:var(--dim);text-align:right}
+  .grid-row .chip{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:4px 8px;border-radius:999px;background:#0e1420;border:1px solid var(--line)}
+  .chip .d{width:6px;height:6px;border-radius:50%}
+  .chip.g .d{background:var(--green)} .chip.a .d{background:var(--amber)} .chip.r .d{background:var(--red)}
+  .grid-row button.kill{background:transparent;border:1px solid var(--line);color:var(--red);font-size:14px;width:30px;height:30px;border-radius:8px;cursor:pointer;transition:background .15s}
+  .grid-row button.kill:active{background:rgba(234,57,67,.15)}
+
+  .regime{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:13px;color:var(--dim)}
+  .regime b{color:var(--text)}
+  .regime .pill{font-size:11px;padding:3px 8px;border-radius:999px;background:#0e1420;border:1px solid var(--line);color:var(--cyan)}
+
+  .heartbeat{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:12px;color:var(--dim)}
+
+  /* Emergency footer */
+  .emerg-footer{position:fixed;left:0;right:0;bottom:0;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,rgba(11,13,18,.95) 40%);z-index:50}
+  .emerg{display:block;width:100%;max-width:520px;margin:0 auto;padding:14px 16px;border-radius:var(--radius);
+         background:var(--red);color:#fff;font-weight:700;font-size:15px;letter-spacing:.02em;
+         border:none;cursor:pointer;box-shadow:0 6px 18px rgba(234,57,67,.3);transition:transform .1s}
+  .emerg:active{transform:scale(.98)}
+
+  /* Modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:none;align-items:flex-end;justify-content:center;z-index:100}
+  .modal-bg.on{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line);border-radius:16px 16px 0 0;max-width:520px;width:100%;padding:20px 18px calc(18px + env(safe-area-inset-bottom));animation:slideUp .2s ease}
+  @keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+  .modal h3{margin:0 0 10px;font-size:18px;color:var(--red)}
+  .modal .details{font-family:var(--mono);font-size:13px;color:var(--dim);line-height:1.7;margin:12px 0 18px;padding:12px;background:#0e1420;border-radius:8px}
+  .modal .details b{color:var(--text)}
+  .modal .btns{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .modal button{padding:14px;border-radius:10px;font-weight:600;font-size:15px;cursor:pointer;border:1px solid var(--line)}
+  .modal .cancel{background:transparent;color:var(--text)}
+  .modal .confirm{background:var(--red);color:#fff;border-color:var(--red)}
+  .modal .confirm:disabled{opacity:.4;cursor:not-allowed}
+
+  /* Toast */
+  .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--green);color:#071a10;padding:12px 18px;border-radius:10px;font-weight:600;font-size:14px;z-index:200;opacity:0;pointer-events:none;transition:opacity .2s}
+  .toast.on{opacity:1}
+  .toast.err{background:var(--red);color:#fff}
+
+  .foot{text-align:center;color:var(--muted);font-size:11px;margin-top:14px;padding:8px}
+  .foot a{color:var(--cyan);text-decoration:none}
+
+  /* Token prompt */
+  .auth-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:300}
+  .auth-overlay.off{display:none}
+  .auth-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;max-width:360px;width:90%}
+  .auth-box h2{margin:0 0 12px;font-size:16px}
+  .auth-box input{width:100%;padding:12px;background:#0e1420;border:1px solid var(--line);border-radius:8px;color:var(--text);font-family:var(--mono);font-size:14px}
+  .auth-box button{margin-top:10px;width:100%;padding:12px;background:var(--cyan);color:#041017;border:none;border-radius:8px;font-weight:600;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-box">
+    <h2>Kill-switch PIN</h2>
+    <p style="color:var(--dim);font-size:13px;margin:0 0 12px">Entre le PIN pour activer les actions (kill). Les lectures sont libres.</p>
+    <input type="password" id="authInput" placeholder="PIN" autocomplete="off" inputmode="numeric">
+    <button onclick="authSubmit()">Debloquer</button>
+    <p style="color:var(--muted);font-size:11px;margin:10px 0 0;text-align:center">Skip pour mode lecture seule</p>
+    <button style="background:transparent;color:var(--dim);margin-top:6px" onclick="authSkip()">Lecture seule</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <!-- Status pill -->
+  <div class="status grey" id="status">
+    <div class="left"><span class="dot"></span><span id="statusLabel">CONNECTING</span></div>
+    <div class="right" id="statusSub">...</div>
+  </div>
+
+  <!-- Portfolio card -->
+  <div class="card">
+    <div class="row">
+      <div class="label">Portfolio</div>
+      <div class="val" id="pv">$--</div>
+    </div>
+    <svg class="spark" id="pvSpark" viewBox="0 0 200 26" preserveAspectRatio="none"></svg>
+    <div class="row small" style="margin-top:10px">
+      <div class="label">Margin libre</div>
+      <div class="val" id="marginPct">--%</div>
+    </div>
+    <div class="bar"><i id="marginBar" style="width:0%"></i></div>
+    <div class="row small" style="margin-top:8px">
+      <div class="label">Unrealized PnL</div>
+      <div class="val" id="upnl">$--</div>
+    </div>
+  </div>
+
+  <!-- Grids -->
+  <div class="card" id="gridsCard">
+    <div class="row" style="margin-bottom:10px">
+      <div class="label">Grids actives</div>
+      <div class="val" id="gridCount" style="font-size:14px;color:var(--dim)">0</div>
+    </div>
+    <div id="gridsList"><div style="color:var(--muted);font-size:13px;padding:6px 0">Chargement...</div></div>
+  </div>
+
+  <!-- Pairs configurees -->
+  <div class="card" id="pairsCard">
+    <div class="row" style="margin-bottom:10px">
+      <div class="label">Paires configurees</div>
+      <div class="val" id="pairsCount" style="font-size:14px;color:var(--dim)">--</div>
+    </div>
+    <div id="pairsList"><div style="color:var(--muted);font-size:13px;padding:6px 0">Chargement...</div></div>
+  </div>
+
+  <!-- Regime -->
+  <div class="card">
+    <div class="regime">
+      <div>BTC · <b id="btcPrice">$--</b></div>
+      <div><span class="pill" id="btcTrend">--</span></div>
+      <div>RSI <b id="btcRsi">--</b></div>
+    </div>
+  </div>
+
+  <!-- Heartbeat -->
+  <div class="card">
+    <div class="heartbeat">
+      <div>Dernier fill</div>
+      <div id="lastFill" style="color:var(--dim)">--</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span id="updatedAt">--</span> · <a href="#" onclick="refresh();return false">refresh</a> · <a href="#" onclick="lockAuth();return false">lock</a>
+  </div>
+</div>
+
+<!-- Emergency footer -->
+<div class="emerg-footer">
+  <button class="emerg" id="emergBtn" onclick="openKillAllModal()" disabled>KILL ALL GRIDS</button>
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="modal">
+  <div class="modal">
+    <h3 id="modalTitle">KILL GRIDS?</h3>
+    <div class="details" id="modalDetails">...</div>
+    <div class="btns">
+      <button class="cancel" onclick="closeModal()">Cancel</button>
+      <button class="confirm" id="modalConfirm" onclick="confirmKill()">CONFIRM</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API = ""; // same origin (nginx proxies /api/ -> Martin)
+const POLL_MS = 10000;
+const PIN_KEY = "nb_killswitch_pin";
+const PV_HISTORY_KEY = "nb_pv_history";
+
+let state = { pv_history: JSON.parse(localStorage.getItem(PV_HISTORY_KEY)||"[]"), auth: localStorage.getItem(PIN_KEY)||"", readonly: false };
+let pendingKill = null;
+
+function $(id){return document.getElementById(id)}
+function toast(msg, err=false){ const t=$('toast'); t.textContent=msg; t.classList.toggle('err',err); t.classList.add('on'); setTimeout(()=>t.classList.remove('on'),2500); }
+
+async function j(path, opt={}){
+  try{
+    const r = await fetch(API+path, opt);
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return await r.json();
+  }catch(e){ return {_error:e.message} }
+}
+
+// Auth
+function authSubmit(){
+  const v = $('authInput').value.trim();
+  if(!v){ return }
+  state.auth = v;
+  localStorage.setItem(PIN_KEY, v);
+  state.readonly = false;
+  $('authOverlay').classList.add('off');
+  $('emergBtn').disabled = false;
+  refresh();
+}
+function authSkip(){
+  state.readonly = true;
+  $('authOverlay').classList.add('off');
+  refresh();
+}
+function lockAuth(){
+  localStorage.removeItem(PIN_KEY);
+  state.auth = "";
+  state.readonly = false;
+  $('authOverlay').classList.remove('off');
+}
+window.authSubmit=authSubmit; window.authSkip=authSkip; window.lockAuth=lockAuth;
+
+// Status computation
+function computeStatus(pv, marginRatio, grids, unrealizedPct){
+  if(pv === null) return {color:'grey', label:'OFFLINE', sub:'API injoignable'};
+  const reasons=[];
+  let color='green', label='OK';
+  if(marginRatio < 0.15){ color='red'; label='ACT'; reasons.push('margin <15%') }
+  else if(marginRatio < 0.25){ color='amber'; label='WATCH'; reasons.push('margin <25%') }
+  if(unrealizedPct < -5){ color='red'; label='ACT'; reasons.push(`uPnL ${unrealizedPct.toFixed(1)}%`) }
+  else if(unrealizedPct < -2 && color==='green'){ color='amber'; label='WATCH'; reasons.push(`uPnL ${unrealizedPct.toFixed(1)}%`) }
+  if(grids.length === 0 && color==='green'){ color='amber'; label='IDLE'; reasons.push('0 grids actives') }
+  const sub = reasons.length ? reasons.join(' · ') : 'Tout va bien';
+  return {color, label, sub};
+}
+
+function sparkline(svg, values){
+  if(!values || values.length<2){ svg.innerHTML=''; return }
+  const min=Math.min(...values), max=Math.max(...values), r=max-min||1;
+  const w=200, h=26;
+  const pts = values.map((v,i)=>`${(i/(values.length-1))*w},${h-((v-min)/r)*h}`).join(' ');
+  const last = values[values.length-1], first = values[0];
+  const color = last >= first ? '#16c784' : '#ea3943';
+  svg.innerHTML = `<polyline fill="none" stroke="${color}" stroke-width="1.5" points="${pts}"/>`;
+}
+
+function gridBuffer(g){
+  // margin-to-death: distance % prix vs borne la plus proche
+  const p = g.currentPrice || 0, l = g.lowerBound || 0, u = g.upperBound || 0;
+  if(!p || !l || !u) return null;
+  const dL = (p-l)/p*100, dU = (u-p)/p*100;
+  return Math.min(dL, dU);
+}
+
+function gridStatusColor(g){
+  const b = gridBuffer(g);
+  const pnl = g.krakenTotalPnl || 0, cap = g.capital || 1;
+  const lossPct = pnl < 0 ? Math.abs(pnl)/cap*100 : 0;
+  if(lossPct >= 10 || (b !== null && b < 1)) return 'r';
+  if(lossPct >= 5 || (b !== null && b < 2.5)) return 'a';
+  return 'g';
+}
+
+async function refresh(){
+  // system
+  const sysP = j('/api/system/status');
+  const balP = j('/api/bot/balance');
+  const activeP = j('/api/grid/active');
+  const btcP = j('/api/signal/ema_trend?instrument=PF_XBTUSD');
+
+  const [sys, bal, active, btc] = await Promise.all([sysP, balP, activeP, btcP]);
+
+  if(sys._error || bal._error){
+    setStatus(null, 0, [], 0);
+    $('updatedAt').textContent = 'erreur: '+(sys._error||bal._error);
+    return;
+  }
+
+  const flex = (bal.accounts||{}).flex||{};
+  const pv = +(flex.portfolioValue||0);
+  const am = +(flex.availableMargin||0);
+  // uPnL at portfolio level computed by summing each grid's Kraken unrealized (populated later)
+  let uf = 0;
+  const marginRatio = pv>0 ? am/pv : 0;
+  let unrealizedPct = 0;
+
+  $('pv').textContent = '$'+pv.toFixed(2);
+  $('marginPct').textContent = (marginRatio*100).toFixed(0)+'%';
+  const mb = $('marginBar');
+  mb.style.width = (marginRatio*100)+'%';
+  mb.className = marginRatio<0.15?'bad':(marginRatio<0.25?'warn':'');
+  // upnl is set after grids fetch (sum of grid.krakenUnrealizedPnl)
+
+  // sparkline history
+  state.pv_history.push(pv);
+  if(state.pv_history.length > 60) state.pv_history.shift();
+  localStorage.setItem(PV_HISTORY_KEY, JSON.stringify(state.pv_history));
+  sparkline($('pvSpark'), state.pv_history);
+
+  // grids
+  const grids = Array.isArray(active) ? active : [];
+  $('gridCount').textContent = grids.length + ' actives';
+  const gridDetails = await Promise.all(grids.map(p => typeof p==='string' ? j('/api/grid/status/'+p) : Promise.resolve(p)));
+  const validGrids = gridDetails.filter(g => g && !g._error && g.active);
+
+  // Compute portfolio uPnL as sum of each grid's live Kraken unrealized
+  uf = validGrids.reduce((s,g) => s + (+(g.krakenUnrealizedPnl||0)), 0);
+  unrealizedPct = pv>0 ? uf/pv*100 : 0;
+  $('upnl').textContent = (uf>=0?'+':'')+'$'+uf.toFixed(2);
+  $('upnl').style.color = uf>=0?'var(--green)':'var(--red)';
+
+  const list = $('gridsList');
+  if(validGrids.length === 0){
+    list.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:6px 0">Aucune grid active</div>';
+  }else{
+    list.innerHTML = validGrids.map(g => {
+      // Use unrealizedPnl (live open-position value, NOT polluted by prior deployments)
+      // and totalProfit (internal Martin tracking since grid.startedAt, clean).
+      // Avoid krakenTotalPnl — it aggregates all historical trades on the symbol.
+      const upnl = g.krakenUnrealizedPnl || 0;
+      const realizedSince = g.totalProfit || 0;
+      const rt = g.completedRoundTrips || 0;
+      const buf = gridBuffer(g);
+      const clr = gridStatusColor(g);
+      const upnlClass = upnl >= 0 ? 'g' : 'r';
+      const upnlTxt = (upnl>=0?'+':'')+'$'+upnl.toFixed(2);
+      const realizedTxt = realizedSince !== 0 ? ' · R:' + (realizedSince>=0?'+':'') + '$' + realizedSince.toFixed(2) : '';
+      const bufTxt = buf === null ? '--' : buf.toFixed(1)+'%';
+      return `<div class="grid-row">
+        <span class="chip ${clr}"><span class="d"></span>${g.instrument.replace('PF_','').replace('USD','')}</span>
+        <span class="name">RT ${rt}${realizedTxt}</span>
+        <span class="pnl ${upnlClass}">${upnlTxt}</span>
+        <span class="buffer">${bufTxt}</span>
+        <button class="kill" title="Kill grid" onclick="openKillOneModal('${g.instrument}')" ${state.readonly?'disabled':''}>×</button>
+      </div>`;
+    }).join('');
+  }
+
+  // BTC regime
+  if(!btc._error){
+    $('btcPrice').textContent = '$'+(+btc.price||0).toFixed(0);
+    $('btcTrend').textContent = btc.emaStatus||'--';
+    $('btcRsi').textContent = (+btc.rsi||0).toFixed(0);
+  }
+
+  // status pill
+  setStatus(pv, marginRatio, validGrids, unrealizedPct);
+
+  // last fill (look across all grids, take latest)
+  let lastFill = null;
+  for(const g of validGrids){
+    for(const f of (g.fills||[])){
+      if(!lastFill || f.filledAt > lastFill.filledAt) lastFill = {...f, pair:g.instrument};
+    }
+  }
+  if(lastFill){
+    const ago = Math.floor((Date.now() - new Date(lastFill.filledAt).getTime())/60000);
+    $('lastFill').textContent = `${lastFill.pair.replace('PF_','').replace('USD','')} ${lastFill.side} @ ${lastFill.price} · il y a ${ago}min`;
+  } else {
+    $('lastFill').textContent = 'aucun fill récent';
+  }
+
+  const now = new Date();
+  $('updatedAt').textContent = 'maj ' + now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+
+  // Pairs panel (independent fetch — shows disabled pairs too)
+  refreshPairs();
+}
+
+async function refreshPairs(){
+  const pairs = await j('/api/strategy/pairs');
+  const el = $('pairsList');
+  if(pairs._error || !Array.isArray(pairs)){
+    el.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:6px 0">endpoint indisponible</div>';
+    $('pairsCount').textContent = '--';
+    return;
+  }
+  $('pairsCount').textContent = pairs.length;
+  el.innerHTML = pairs.map(p => {
+    const short = (p.instrument||'').replace('PF_','').replace('USD','');
+    const cls = p.enabled ? 'g' : 'r';
+    const stateTxt = p.enabled ? 'ON' : 'OFF';
+    const toggleLabel = p.enabled ? 'Disable' : 'Enable';
+    const disabled = state.readonly ? 'disabled' : '';
+    return `<div class="grid-row" style="grid-template-columns: 58px 1fr 70px 90px 32px">
+      <span class="chip ${cls}"><span class="d"></span>${short}</span>
+      <span class="name">$${p.capital||'--'} x${p.leverage||'--'} ${p.gridSpacingPct||'--'}%</span>
+      <span class="buffer" style="color:${p.enabled?'var(--green)':'var(--dim)'}">${stateTxt}</span>
+      <button class="kill" style="width:auto;padding:0 8px;color:var(--cyan);border-color:var(--line);font-size:11px" onclick="togglePair('${p.instrument}', ${!p.enabled})" ${disabled}>${toggleLabel}</button>
+      <button class="kill" title="Remove" onclick="removePair('${p.instrument}')" ${disabled}>×</button>
+    </div>`;
+  }).join('');
+}
+
+async function togglePair(instrument, enable){
+  if(state.readonly){ toast('Mode lecture seule', true); return }
+  const verb = enable ? 'enable' : 'disable';
+  const r = await j(`/api/strategy/pairs/${instrument}/${verb}`, { method: 'POST' });
+  if(r._error){ toast('erreur: '+r._error, true); return }
+  toast(`${instrument.replace('PF_','').replace('USD','')} ${verb}d`);
+  refresh();
+}
+
+async function removePair(instrument){
+  if(state.readonly){ toast('Mode lecture seule', true); return }
+  if(!confirm(`Retirer ${instrument} ?\n\nLa grid est stoppee + retiree du config. Positions naked sur Kraken NE SERONT PAS fermees automatiquement.`)) return;
+  const r = await j(`/api/strategy/pairs/${instrument}`, { method: 'DELETE' });
+  if(r._error){ toast('erreur: '+r._error, true); return }
+  toast(`${instrument.replace('PF_','').replace('USD','')} retiree`);
+  refresh();
+}
+window.togglePair = togglePair; window.removePair = removePair;
+
+function setStatus(pv, mr, grids, upct){
+  const s = computeStatus(pv, mr, grids, upct);
+  const el = $('status');
+  el.classList.remove('green','amber','red','grey');
+  el.classList.add(s.color);
+  $('statusLabel').textContent = s.label;
+  $('statusSub').textContent = s.sub;
+}
+
+// Kill actions
+function openKillOneModal(pair){
+  if(state.readonly){ toast('Mode lecture seule', true); return }
+  pendingKill = {type:'one', pair};
+  $('modalTitle').textContent = 'KILL '+pair+'?';
+  $('modalDetails').innerHTML = `<b>Action:</b> cancel orders + close position if any<br><b>Grid:</b> ${pair}<br><br>Appuie CONFIRM pour executer.`;
+  $('modal').classList.add('on');
+}
+
+async function openKillAllModal(){
+  if(state.readonly){ toast('Mode lecture seule', true); return }
+  const active = await j('/api/grid/active');
+  const grids = Array.isArray(active) ? active : [];
+  if(grids.length === 0){ toast('Aucune grid active', true); return }
+  pendingKill = {type:'all', pairs:grids};
+  $('modalTitle').textContent = `KILL ALL GRIDS (${grids.length})?`;
+  $('modalDetails').innerHTML = `<b>Grids:</b> ${grids.join(', ')}<br><b>Action:</b> cancel orders + close positions<br><br>Appuie CONFIRM pour tout tuer.`;
+  $('modal').classList.add('on');
+}
+
+function closeModal(){
+  $('modal').classList.remove('on');
+  pendingKill = null;
+}
+
+async function confirmKill(){
+  if(!pendingKill) return;
+  const btn = $('modalConfirm');
+  btn.disabled = true; btn.textContent = 'KILLING...';
+
+  const pairs = pendingKill.type === 'one' ? [pendingKill.pair] : pendingKill.pairs;
+  let ok = 0, fail = 0;
+  for(const p of pairs){
+    const r = await fetch(`/api/grid/stop/${p}`, {method:'POST', headers:{'X-Kill-PIN': state.auth}});
+    if(r.ok) ok++; else fail++;
+  }
+
+  btn.disabled = false; btn.textContent = 'CONFIRM';
+  closeModal();
+
+  if(fail === 0) toast(`${ok} grid(s) killed`);
+  else toast(`${ok} OK, ${fail} ECHEC`, true);
+
+  setTimeout(refresh, 500);
+}
+
+window.openKillOneModal = openKillOneModal;
+window.openKillAllModal = openKillAllModal;
+window.closeModal = closeModal;
+window.confirmKill = confirmKill;
+window.refresh = refresh;
+
+// Init
+if(state.auth){
+  $('authOverlay').classList.add('off');
+  $('emergBtn').disabled = false;
+}
+refresh();
+setInterval(refresh, POLL_MS);
+</script>
+</body>
+</html>
