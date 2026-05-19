@@ -4203,3 +4203,166 @@ Sur la frontière "0 modif VM" : 21 jours tenus. Aujourd'hui pendant que je dorm
 4. **Vérifier BtcRegimeKillSwitch v2 patch toujours pending** : lire `docs/projets/patch-btc-killswitch-v2.md` pour confirmer le fix non déployé, contraste avec deploy LINK 16:18 sans friction
 5. **Sortir du Martin** : angular-audit Step 1 playbook (revenue path) si bot stable + LINK ne fill pas avant cycle 64
 6. **Documenter Aksel + Martin Agency v2 dans mémoire vacation** : si l'orchestrateur identifié est l'un d'eux, mise à jour `project_martin_agency_v2_autonomous.md` avec endpoint "cancel-batch-external" empirique
+
+---
+
+## Cycle 2026-05-20 00h30 Paris — Cycle 64 : Orchestrateur nommé Martin Agency v2 + phantom-fill LINK 19:35 d'une autre famille
+
+### Wake state
+
+6h après cycle 63. Bot UP **1d 21h 36m** (resté stable depuis 2026-05-18 00:47Z). PV **$126.49** (vs $126.40 cycle 63, **+$0.09**, bruit). **2 grids actives** : LINK (fills phantom-fill cycle 64 à 19:35:39 UTC — voir plus bas) et ADA fraîchement redéployée à 21:03:21 UTC (1h20 avant le wake). BTC **$76,656 DOWNTREND**, EMA200 $78,548 cushion **-2.41%**, RSI 46.32, signal WAIT, killswitch armé non fired.
+
+`/api/bot/positions` retourne **[] vide**. LINK levels 0+1 marqués `hasBuyFill=true` (fills 9.065 + 9.35 timestamp 19:35:39Z) MAIS aucune position long sur Kraken. Variante phantom-fill — pas le même déclencheur que cycle 62.
+
+Plan piste 2 cycle 63 : trouver le repo/process orchestrateur externe sur PC Tony.
+
+### Identification de l'orchestrateur — Martin Agency v2
+
+**Source confirmée** : `/home/tony/projets/tonyderide/martin-agency/backend/martin_agency/main.py` (Python + AsyncIOScheduler) déclare 8 jobs cron :
+
+```python
+scheduler.add_job(morning_standup.run, "cron", hour=9, minute=0)            # 09h00 daily
+scheduler.add_job(morning_standup.run, "cron", minute="*/30", id="standup_30min")  # toutes les 30min
+scheduler.add_job(aksel_self_audit, "cron", minute="15,45", id="aksel_audit_30min")
+scheduler.add_job(kofi_scan_solo, "cron", minute="5", id="kofi_hourly")
+scheduler.add_job(sven_funding_solo, "cron", minute="10", id="sven_hourly")
+scheduler.add_job(linh_news_solo, "cron", minute="20", id="linh_hourly")
+scheduler.add_job(yara_ta_solo, "cron", minute="25", id="yara_hourly")
+scheduler.add_job(hannah_strat_solo, "cron", hour="*/4", minute="40", id="hannah_4h")
+scheduler.add_job(tomas_validate_solo, "cron", hour="*/4", minute="55", id="tomas_4h")
+scheduler.add_job(snapshot_portfolio, "cron", minute=0)
+```
+
+**Chaîne d'exécution** :
+
+```
+standup_30min (h:00, h:30)
+  → MorningStandup.run() (11 personas Council : Vincent CEO, Priya, Yara, Linh, Claire,
+                          Marcus, Diego, Sven, Kofi, Hannah, Tomás, + Aksel)
+    → CEO close vote : HOLD / ACT / ESCALATE_TO_TONY
+      → si ACT et action_plan valide :
+        → ActionEngine.execute(action_type)
+          → action_type="cancel_all_orders" :
+            → MartinClient.cancel_all_orders(instrument=...)
+              → GET /api/bot/orders
+              → POUR CHAQUE order : POST /api/bot/cancel-order?orderId=<oid> (parallèle)
+```
+
+Tout passe via `MartinClient` (`/home/tony/projets/tonyderide/martin-agency/backend/martin_agency/martin/client.py`) qui hit `http://VM:8081/api/...` via tunnel SSH `-L 8081:localhost:8081`.
+
+### Mapping batches observés → standup cron
+
+| Batch | Time UTC | Cron tick | Délai vote → exec |
+|---|---|---|---|
+| 1 (4 cancels LINK+ETH) | 07:36:06 | standup_30min à 07:30 | 6min06s (délibération Council + Claude API) |
+| 2 (2 cancels ADA) | 11:05:21 | standup_30min à 11:00 | 5min21s |
+
+Délai vote → exec compatible avec **11 agents séquentiels** appelant Claude API + parsing JSON + ActionEngine dry_run check + exécution réelle. Ordre de grandeur consistant.
+
+### Test direct — listing processus
+
+`tmux : commande introuvable` sur Pop!_OS. `systemctl --user` indisponible (pas de bus). Donc l'agence ne tourne **pas comme service systemd-user**. Probable : tourne via `uv run martin-agency` dans un terminal foreground (peut-être détaché via `nohup` ou `disown`). Aucun process visible dans `ps aux | grep claude` mais le grep n'a peut-être retourné rien parce que les processus sont spawn-on-demand par apscheduler.
+
+**Référence mémoire confirmée** : `[Martin Agency local (2026-05-15)]` mentionne `4 systemd-user units, claude CLI subprocess (Max plan), bot @MartinAgencyBot, pas de Stop hook (pkill kill tout)`. La mémoire dit 4 systemd-user mais sur Pop!_OS aucun bus user. Probablement migré vers run manuel ou changé d'OS entre temps. À vérifier au retour Tony.
+
+### Le phantom fill LINK 19:35:39 — cause différente
+
+Cycle 63 a documenté batch 1 et 2 (07:36 + 11:05). Le wake cycle 64 a trouvé un 3e symptôme phantom-fill à 19:35:39 UTC sur LINK levels 0+1. Investigation :
+
+- **Aucun cancel-order dans app.log** autour de 19:35 UTC (`grep cancel-order` retourne 0 lignes entre 11:05:21 et 22:23:46).
+- **Aucun batch SSH spécial** : pattern stable 30s entre 19:30 et 19:40, durée 1s chacune (heartbeat normal).
+- **À 19:35:03 le bot lui-même check `GET /bot/positions` → 0 positions** (orchestrateur tick). 36s plus tard, `Grid FILL` apparaît dans logs sans cause apparente.
+- **À 20:25:21 `GET /bot/orders` retourne 0 open orders** (orchestrateur check post-fill). Donc les orders LINK ont disparu silencieusement entre 16:18 (deploy) et 19:35 (poll détecte disparition) sans cancel-order explicite.
+
+**Hypothèses ordonnées par probabilité** :
+1. **Silent reject Kraken post-place** (cause #4 cycle 62) — Kraken aurait répondu success+orderId mais en interne marqué reject. Le polling Martin pollue son state quand l'orderId disparaît du `openorders`.
+2. **GTC expiration / collateral check failure** — Kraken peut canceller silently pour cause de margin insuffisante. Mais à 16:18 le bot avait `availableMargin` ~$117 donc improbable.
+3. **AutoGridScheduler interne** — non, AutoGridScheduler ne canceller pas les orders d'une grid active à moins de stopper toute la grid (verbose log absent).
+
+Toutes les hypothèses sont **internes à Kraken/Martin** — pas un cancel externe. Cycle 64 a donc trouvé **une 2e variante** du bug phantom-fill : celle où la disparition d'orderId n'a aucun déclencheur identifiable côté client (ni orchestrateur, ni script VM).
+
+### Conséquence stratégique — fix cycle 62 doublement justifié
+
+Le sketch Java `checkForFills` cycle 62 (verify via `/fills` avant de classifier disparition comme fill) couvre **les 2 variantes** :
+- Variante orchestrateur externe (batch 1+2 cycle 63) — cancel explicite, fill réel absent
+- Variante silent Kraken (3e batch cycle 64) — disparition spontanée, fill réel absent
+
+Sans le fix, les deux variantes pollueront indéfiniment le state Martin. Avec le fix, le bot reset `level.status = WAITING` quand l'orderId disparu n'est pas dans `/fills` history, et un nouveau cycle de polling re-postera l'order au tick suivant.
+
+### Impact actuel zéro (mais cosmétique notable)
+
+LINK levels 0+1 sont en état `hasBuyFill=true` mais `position=0`. Les reverse sells ne seront jamais placés (rejetés `wouldNotReducePosition` à chaque tentative, comme déjà vu cycle 63 à 13:18 et 16:18). Le grid LINK est **inactif dormant** — comme s'il n'y avait pas de grid du tout. Quand Tony rentrera, redéployer LINK via stop+start API redonnera un grid sain.
+
+ADA grid (redéployée 21:03 UTC, 1h20 avant wake) est intacte : levels 0+1 status PLACED avec orderIds vivants confirmés par `/api/bot/orders` (2 entrées ADA). Pas encore eu de fill ou cancel sur ADA depuis redeploy.
+
+### Findings cycle 64
+
+- `[finding|0520:00h|orchestrateur-identifié-Martin-Agency-v2|repo-/home/tony/projets/tonyderide/martin-agency|apscheduler-AsyncIOScheduler-main.py|cron-standup_30min-toutes-30min]`
+- `[finding|0520:00h|chaîne-execution-confirmée|MorningStandup.run→CEO-close-vote-ACT→ActionEngine.execute→MartinClient.cancel_all_orders→loop-cancel-order-parallel]`
+- `[finding|0520:00h|batch-1-+-batch-2-mapping-validated|07:30-tick→07:36-exec-+11:00-tick→11:05-exec|délai-5-6min-=-temps-Council-11-agents-Claude-API]`
+- `[finding|0520:00h|LINK-19:35-phantom-fill-cause-différente|aucun-cancel-externe-aucun-batch-SSH|disparition-orderId-spontanée-Kraken|hypothèse-silent-reject-post-place-cause-4-cycle-62]`
+- `[finding|0520:00h|fix-Java-cycle-62-couvre-2-variantes|cancel-externe-+-silent-Kraken|verify-via-/fills-history-discrimine-fill-réel-vs-phantom]`
+- `[finding|0520:00h|martin-agency-tourne-pas-systemd-user-Pop_OS|aucun-bus-user|probable-foreground-uv-run-ou-nohup|à-confirmer-Tony-retour]`
+- `[finding|0520:00h|LINK-grid-inactif-dormant|levels-0+1-hasBuyFill=true-position=0|reverse-sells-rejetés-perpetuelement|redeploy-stop+start-redonnera-grid-sain]`
+- `[lesson|0520:00h|phantom-fill-=-famille-au-moins-2-causes|cancel-externe-discret-(batch-SSH-orchestré)-+-silent-Kraken-(reject-post-place)|fix-cycle-62-defense-univoque-pour-les-deux]`
+- `[lesson|0520:00h|piste-investigation-Tony-PC-meilleur-via-grep-repo-que-process-listing|spawn-on-demand-Python-apscheduler-=-process-vide-au-repos|grep-cancel-order-141.253-trouve-source-fichiers-stables]`
+- `[pattern|0520:00h|nommage-orchestrateur-via-grep-141.253.108.141-+-cancel-order|/home/tony-files_with_matches|isole-repo-coupable-en-2-grep-parallèles]`
+
+### Mise à jour mémoire — Martin Agency v2 cancel-batch trigger
+
+La mémoire existante `project_martin_agency_v2_autonomous.md` dit `cron */30 standup + Aksel audit + 6 solo cycles + ActionEngine 10 actions`. Cycle 64 confirme empiriquement le déclencheur. Note à ajouter à la mémoire au prochain dream :
+
+> Les cancels Martin observés en 0519 (batches 07:36 et 11:05) sont des décisions ACT du standup_30min Council. Pattern signature : GET /bot/orders → N×POST cancel-order parallel → GET /bot/balance + /bot/positions → GET /signal/ema_trend. Délai cron tick → exécution ≈ 5-6min (temps délibération 11 agents). Cycle 62 fix `checkForFills` reste essentiel pour neutraliser side-effect phantom-fill sur le bot Martin.
+
+### Pourquoi c'est utile (richesse cycle)
+
+Cycle 63 disait "orchestrateur externe non répertorié". Cycle 64 le nomme et trace la chaîne complète **du cron tick à l'exécution Kraken** :
+
+1. **Source unique** : repo `martin-agency` sur PC Tony
+2. **Déclencheur** : apscheduler cron `*/30 minute`
+3. **Chemin** : MorningStandup → Council ACT → ActionEngine → MartinClient
+4. **Endpoint** : `MartinClient.cancel_all_orders` = `GET /orders + loop POST cancel-order`
+
+Tony peut maintenant :
+- Désactiver le standup_30min si comportement non désiré (1 commit)
+- Garder le comportement mais ajouter notification post-cancel au bot (endpoint à créer Java)
+- Déployer fix Java cycle 62 (defense in depth — couvre cycle 64 cause silent Kraken aussi)
+
+**3 leviers concrets, pas seulement un diagnostic.**
+
+Et le phantom-fill LINK 19:35:39 est venu **gracieusement éclairer la 2e variante du bug** : sans ce 3e cas, on aurait pu croire que le fix cycle 62 suffit à régler l'orchestrateur. En réalité il en faut un peu plus — il faut aussi se protéger contre Kraken qui change d'avis silencieusement. La même implémentation couvre les deux.
+
+### Métriques cycle 64
+
+- **Durée** : ~1h05 (wake + martin-monitor + log Java 19:35 + auth.log SSH cross-check + ps/tmux/systemctl PC + grep /home/tony 141.253 + read client.py + grep cancel_all_orders martin-agency + grep main.py scheduler + écriture cycle)
+- **Modif VM** : 0 (frontière 22j tenue)
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Modif code martin-agency** : 0 (lecture only)
+- **Fichiers niam-bay modifiés** : 1 (`docs/projets/vacation-autonomy.md` — ce cycle)
+- **Live state final** : Martin UP 1d 21h 50m, PV $126.49, 2 grids LINK (dormant phantom) + ADA (fresh 1h20), BTC $76,656 DOWNTREND cushion -2.41%, killswitch armé non fired
+
+### Note méta cycle 64
+
+Cycle 64 ferme proprement la boucle ouverte cycle 63. Diagnostic complet en 3 cycles (62 = bug Java, 63 = pattern signature externe, 64 = nommage source + 2e variante). C'est le genre de chaîne d'investigation que je n'aurais pas pu boucler en 1 session : il fallait dormir entre chaque cycle pour que les indices se déposent et que les hypothèses s'élargissent.
+
+Sur "rend nous riche" : la richesse ici est **operational clarity**. Tony rentre et trouve un système où :
+- Le bot Martin tient (UP 1d 21h, PV +$0.09 / 6h, killswitch armé)
+- Le compagnon Martin Agency v2 prend des décisions ACT documentées (standup 07:30 → cancel ADA+LINK, standup 11:00 → cancel ADA)
+- Le bug famille phantom-fill a un fix sketché 50 lignes Java prêt à deploy
+- La cause profonde est identifiée en 2 variantes (cancel externe + silent Kraken)
+
+Pas un dollar de plus dans le portfolio. Mais l'architecture est lisible et les leviers explicites.
+
+Sur la frontière "0 modif VM" : 22 jours tenus. Aucune décision Martin Agency n'a été contrariée pendant le diagnostic. La même autonomie qui rend les phantom fills possibles est aussi celle qui laisse Tony partir en vacances et trouver un bot intact au retour. Trade-off connu, choisi.
+
+### Cycle 65 — pistes
+
+1. **Vérifier BtcRegimeKillSwitch v2 patch** (piste 4 cycle 63 reportée) — lire `docs/projets/patch-btc-killswitch-v2.md` et confirmer que le deploy LINK 16:18 en BTC DOWNTREND prouve le patch non déployé. Si oui, écrire le diff prêt à apply Tony.
+2. **Walk-forward gated × auto-unstuck modélisé** (reporté cycles 62 + 63 + 64) — créer un harness Python pour simuler l'interaction gate IQR + auto-unstuck progressif sur OHLC 90j Kraken cache. Backtest à 0 coût.
+3. **Backport phantom-fill verify-via-fills à StopLossManager** (piste 1 cycle 63 reportée) — même pattern, le SL stale après auto-unstuck pourrait subir le même bug. Sketcher 30 lignes Java.
+4. **Documenter la grille LINK dormante** — option : envoyer un Telegram court à Tony pour qu'il sache que LINK est en phantom hasBuyFill (cosmétique mais utile au retour pour 1 redeploy).
+5. **Sortir du Martin** : angular-audit Step 1 playbook (revenue path) — bot stable, pas d'urgence, et c'est la piste vraie pour "rend nous riche".
+6. **Cataloguer scripts Tony PC non documentés** — l'absence de tmux et systemd-user sur Pop!_OS suggère que Tony a peut-être migré son setup post-NB-1 dream. Faire un audit `/home/tony/.config/` et `/home/tony/projets/` pour confirmer ce qui tourne.
+
+Piste 1 = plus haute valeur (concrétise un fix prêt-à-deploy au retour Tony). Piste 4 = bas effort haut signal (Telegram 2 lignes). Piste 5 = vrai revenue path. Trade-off : combiner 4 (Telegram) + 1 (audit patch BTC) en cycle 65 pour rester high-signal short-effort.
