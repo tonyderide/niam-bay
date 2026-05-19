@@ -69,6 +69,7 @@ CONFIGS = [
 ]
 
 FOUR_H_FILE = CACHE / "binance_{pair}USDT_4h_1672531200000_1767139200000.json"
+FOUR_H_EXTENDED_FILE = CACHE / "binance_{pair}USDT_4h_extended.json"
 ONE_MIN_FILE = CACHE / "binance_{pair}USDT_1min_{suffix}.json"
 
 
@@ -80,6 +81,11 @@ def load_1m(pair: str, suffix: str) -> List[List]:
 
 
 def load_4h_or_none(pair: str) -> List[List]:
+    # Cycle 61: prefer extended cache (2023-01 → 2026-05) when available,
+    # falls back to historical cache stopping 2025-12-31 for older script runs.
+    ext = Path(str(FOUR_H_EXTENDED_FILE).format(pair=pair))
+    if ext.exists():
+        return load_candles(ext)
     p = Path(str(FOUR_H_FILE).format(pair=pair))
     if not p.exists():
         return []

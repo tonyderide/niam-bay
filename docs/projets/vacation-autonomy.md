@@ -3814,3 +3814,85 @@ Sur la frontière "0 modif VM" : 20 jours tenus. Le bot a même initié sa propr
 3. **Backtest gated × auto-unstuck × DCA** sur BTC SHORT (cycle 56→57 a généré +$0.65 réalisé)
 4. **Audit Java reset `hasBuyFill` après trim** — fix mineur reporting
 5. **Sortir du Martin** : reprendre angular-audit Step 1 playbook si bot stable
+
+
+## Cycle 2026-05-19 06h Paris — Cycle 61 : Cache 4h étendu, W4 alimenté, Tony 3.0% renforcé
+
+### Wake state
+
+6h après cycle 60. Bot UP 1d 3h 35m, PV $126.85, **2 grids actives** (LINK + ADA, NEUTRAL 4 levels chacune, capital $25, spacing 2.89%/3.00%, 7x lev). 4 buy orders posés, 0 position, 0 RT. ADA s'est déployée vers 01:48 UTC (~3h avant wake). BTC $76,681 DOWNTREND, EMA200 $78,871 cushion -2.78%, RSI 44.8 WAIT. martin-monitor → **HOLD new** (uptime grid <4h, 0 fill, 0 risque).
+
+Pattern auto-managed continue : AutoGridScheduler a déployé seul ADA pendant que je dormais.
+
+### Question cycle 61
+
+Cycle 60 disait W4 vide car cache 4h s'arrête 2025-12-31 et W4 = avril-mai 2026. Question : si on alimente W4, est-ce que le ranking bouge ?
+
+Piste 1 du cycle 60. Action concrète, faible risque, débloque toute analyse future qui retomberait dans W4+.
+
+### Méthode
+
+1. **Diagnostic** : audit du cache 4h → 5 paires couvrent 2023-01-01 → 2025-12-31 (6571 bars), DOTUSDT 4h totalement manquant.
+2. **Fetcher** : `fetch_4h_2026_extension.py` — Binance `/api/v3/klines?interval=4h`, fetch 2026-01-01 → 2026-05-19 pour 6 paires, append au hist, écrit `binance_{PAIR}_4h_extended.json`. DOTUSDT fetched depuis 2023 (full history).
+3. **Patch loader** : `v17_walkforward_gated_backtest.py` ligne 71-90 — préférer extended si présent, fallback historique sinon.
+4. **Re-run** : 60 simulations (4 fenêtres × 3 paires × 5 configs). W4 désormais alimenté avec 180 4h bars in-window + 3 ans warmup.
+
+### Résultats — Tony 3.0% renforcé
+
+| Config | Cycle 60 (W1+W2+W3) | **Cycle 61 (+W4)** | Δ W4 | Rank | meanRank |
+|---|---:|---:|---:|:-:|:-:|
+| **A Tony 3.0%** | +$20.77 | **+$26.98** | +$6.21 | **#1** | 1.75 |
+| D wide 4.0% | +$15.43 | +$15.92 | +$0.48 | #2 | **1.50** |
+| E 6lv 2.0% | +$10.44 | +$8.79 | -$1.65 | #3 | 3.25 |
+| C med 2.0% | -$1.25 | -$3.70 | -$2.45 | #4 | 3.75 |
+| B tight 1.5% | -$3.74 | -$7.58 | -$3.84 | #5 | 4.75 |
+
+**Le ranking reste identique. W4 renforce Tony 3.0% (+$6.21) et enfonce tight (-$3.84).** Aucune inversion comme cycle 60 l'a fait sur cycle 59.
+
+Détail complet : [`v17-walkforward-gated-cycle61.md`](v17-walkforward-gated-cycle61.md).
+
+### Insights nouveaux cycle 61
+
+1. **W4 mild+ : gate OPEN 68-76%** vs 4-46% sur W1-W3. Régime calme = gate plus permissif. Cohérent avec l'intuition que le gate filtre les régimes durs.
+2. **ETH whipsaw en mild+ sanctionne le spacing fin** : Tony 3.0% +$2.32 vs tight 1.5% -$6.86 sur 30j ETH = +$9.18 différentiel sur 1 paire. Spacing fin = sur-trade fausses cassures.
+3. **D wide 4.0% gagne en stabilité, perd en magnitude** : meanRank 1.50 (vs Tony 1.75) mais 41% moins de upside cumul. Pas un argument pour switcher.
+4. **DOTUSDT 4h désormais disponible** — débloque future analyse sur DOT (paire DCA récurrente de Tony).
+
+### Findings cycle 61
+
+- `[finding|0519:06h|cache-4h-2026-étendu|6-paires-incluant-DOTUSDT-créé|2023-01→2026-05|7406-bars-par-paire]`
+- `[finding|0519:06h|W4-mild+-gate-OPEN-68-76%-vs-W1-W3-4-46%|régime-calme-=-gate-permissif]`
+- `[finding|0519:06h|Tony-3.0%-+$26.98-cumul-239j-gated|reco-cycle-60-renforcée|3-cycles-convergent]`
+- `[finding|0519:06h|D-wide-4.0%-meanRank-1.50-mais-magnitude-2x-inférieure|trade-off-pas-décisif]`
+- `[finding|0519:06h|tight-1.5%-W4-ETH-perd-$6.86-30j|whipsaw-mild+-sanctionne-spacing-fin]`
+- `[finding|0519:06h|0-hard-stop-sur-60-simulations-cycle-61|gate-V4-suffit-confirmé]`
+- `[lesson|0519:06h|3-cycles-58-59-60-61-convergent|honnêteté-itérative-double-validation]`
+- `[pattern|0519:06h|extend-cache-debloque-window|à-refaire-tous-mois-pour-W5/W6/...|skill-autonomie-candidate]`
+
+### Métriques cycle 61
+
+- **Durée** : ~55min (wake + martin-monitor + audit cache + fetcher + patch + run + analyse + 2 docs)
+- **Modif VM** : 0 (frontière tient 20 jours)
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 2 (`ai-lab/darwin/fetch_4h_2026_extension.py`, `docs/projets/v17-walkforward-gated-cycle61.md`)
+- **Fichiers niam-bay modifiés** : 1 (`v17_walkforward_gated_backtest.py` — patch loader)
+- **Caches créés** : 6 fichiers `binance_{PAIR}_4h_extended.json` (7406 bars × 6 paires)
+- **Simulations** : 60 backtests gated avec W4 désormais alimenté
+- **Live state final** : Martin UP 1d 3h 35m, 2 grids LINK+ADA neuves ~3h, PV $126.85, 0 position, BTC $76,681 DOWNTREND choppy
+
+### Note méta cycle 61
+
+Le pattern "cycle ferme une question ouverte de cycle précédent" tient sur 4 cycles d'affilée (58→59→60→61). Chaque cycle ajoute **une fenêtre, un fix, un test** et la reco honnête se cristallise. Tony peut consulter cycle 61 et avoir la certitude que **garder v17 spacing 3.0% est la décision validée sur 3 fenêtres réelles + 1 fenêtre fraîche (avril-mai 2026)**.
+
+Sur "rend nous riche" : la richesse cycle 61 est **+$11 de différentiel cumul** par rapport au scénario "Tony écoute la mauvaise reco cycle 59 et bascule sur tight". Pas une fortune absolue, mais préserver $11 de slippage stratégique sur un portefeuille $138 = 8% évité.
+
+Sur la frontière "0 modif VM" : 20 jours tenus, 2 grids actives auto-managées sans intervention. Le bot capture sa propre routine.
+
+### Cycle 62 — pistes
+
+1. **Walk-forward gated × auto-unstuck modélisé** — fermer la dernière abstraction live (la trim-25%/25%/full séquence en cas de baisse pré-stop)
+2. **Audit Java reset `hasBuyFill` après trim** — fix mineur reporting (mentionné cycle 60)
+3. **Backtest gated × DCA × BTC SHORT** — cycle 56→57 a généré +$0.65 réalisé, valider sur 239j
+4. **Skill autonome `extend-4h-cache`** — wrapper le fetcher pour usage récurrent (pattern cycle 61)
+5. **Sortir du Martin** : reprendre angular-audit Step 1 playbook si bot reste stable (revenue path)
