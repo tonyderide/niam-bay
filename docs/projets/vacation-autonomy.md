@@ -4064,3 +4064,142 @@ Sur la frontière "0 modif VM" : 21 jours tenus. Le bot continue d'auto-manage (
 4. **Backport phantom-fill fix dans `StopLossManager`** — même pattern (verify-via-fills) si pas déjà couvert par bundle 0510-0518
 5. **Identifier source cancels 07:36** — grep `/home/ubuntu/*` scripts cron au-delà des connus
 6. **Sortir du Martin** : angular-audit Step 1 playbook (revenue path) si bot stable
+
+---
+
+## Cycle 2026-05-19 18h45 Paris — Cycle 63 : Source phantom-fill identifiée + 2e batch découvert + Auto-redeploy LINK validé
+
+### Wake state
+
+6h après cycle 62. Bot UP **1d 15h 36m**, PV **$126.40** (vs $126.67 cycle 62, **-$0.27 / -0.21%**), **1 grid active** (LINK seul — ADA stoppée auto par RegimeGate à 11:33). BTC **$76,477 DOWNTREND**, EMA200 $78,638 cushion **-2.75%**, RSI 43.22, signal WAIT. martin-monitor → **WARN** (BTC < EMA200 régime cassé, mais LINK grid fraîche posée 5min avant via AutoGridScheduler, 0 position, 2 buy lmt @ 9.35 + 9.065).
+
+Plan piste 5 cycle 62 : identifier source des 4 cancels parallèles 07:36 UTC. Read-only investigation conforme frontière vacance 21j.
+
+### Investigation source cancels — chronologie complète
+
+**Méthode** : reconstruction multi-source (app.log, syslog, auth.log, lecture scripts VM).
+
+**Batch 1 — 07:36:06 UTC (4 cancels LINK+ETH, déjà documenté cycle 62)** :
+| Time UTC | Source | Event |
+|---|---|---|
+| 07:35:01 | cron tick | critical-check.py + curl /api/config (lignes crontab) |
+| 07:35:02 | SSH 78.192.37.128 → Session 67999 | 1s connection, disconnect immédiat |
+| 07:35:33 | SSH 78.192.37.128 → Session 68000 | 1s connection |
+| **07:36:04** | **SSH 78.192.37.128 → Session 68001** | **1s connection — 2s avant cancels** |
+| 07:36:06.220 | exec-24 | `GET /bot/orders` → 4 open orders |
+| 07:36:06.353-.532 | exec-31, -7, -16, -9 | 4× `POST /bot/cancel-order` parallèles |
+| 07:36:06.699-.756 | exec-24, -31 | `GET /bot/balance` + `GET /bot/positions` |
+| 07:36:06.935 | exec-16 | `GET /signal/ema_trend` |
+| 07:36:10.969 | scheduling-1 | `pollGridOrders()` voit orderIds disparus → **phantom-fill bug fire** (4 fake fills) |
+
+**Batch 2 — 11:05:21 UTC (2 cancels ADA, JAMAIS documenté cycle 62)** :
+| Time UTC | Source | Event |
+|---|---|---|
+| 11:05:01 | cron tick | critical-check.py + curl /api/config |
+| 11:05:09 | SSH 78.192.37.128 → Session 68508 | 1s connection |
+| 11:05:21.217 | exec-9 | `GET /bot/orders` → 2 open orders |
+| 11:05:21.310/.362 | exec-33, -27 | 2× `POST /bot/cancel-order` parallèles |
+| 11:05:21.547/.599 | exec-26, -31 | `GET /bot/balance` + `GET /bot/positions` |
+| 11:05:23.574 | scheduling-1 | `pollGridOrders()` → 2 fake fills ADA |
+
+Ces 2 batches sont les **seules** occurrences de `cancel-order` dans l'app.log de la journée (`grep cancel-order | uniq -c` : 4 à 07:36, 2 à 11:05, rien d'autre).
+
+### Pattern signature — la même main
+
+Les 2 batches partagent une **signature opérationnelle identique** :
+1. GET /bot/orders (récupère tous les orderIds vivants)
+2. Pour chaque order : POST /bot/cancel-order en parallèle (threads exec-NN différents)
+3. GET /bot/balance puis GET /bot/positions
+4. GET /signal/ema_trend?instrument=PF_XBTUSD
+
+C'est un workflow **"audit + flush + verify"** orchestré côté client. Aucun script VM connu ne fait cela :
+- `critical-check.py` (modifié aujourd'hui 00:42, patch DD_ALERT_PCT -8%) → lit status/balance/signal et grep app.log, **ne cancelle jamais**
+- `emergency-kill.sh` → ferait aussi POST /api/signal/auto/disable + POST /api/strategy/pairs/*/disable + POST /api/grid/stop/* (absents des logs)
+- `martin-watchdog.py`, `martin-watch.py`, `daily-brief.py`, `sentinel.py` → tous lecture-seule
+- `telegram_bot.py` (PID 721486, file `/home/ubuntu/martin/telegram_bot.py` supprimé/déplacé) → utilise `/api/grid/stop/{pair}` qui logguerait via GridController **absent du log 07:36 et 11:05**
+
+### Source identifiée — client externe via tunnel SSH
+
+L'auth.log montre **122 sessions SSH/heure** depuis IP **78.192.37.128** (Tony, Free France) — exactement **toutes les 30 secondes**, durée 1s chacune. Cadence stable 24/7 (hours 00-15 : 117-126 sessions). Aucun cron Tony PC ni systemd unit dédié à cela (`crontab -l` montre seulement `niambay-vacation-wake.sh` */6h*).
+
+Hypothèse forte : **client orchestrateur externe sur PC Tony** (probablement une session Claude Code en `/loop`, ou un script bash `while true; ssh; sleep 30`) qui :
+- ssh à intervalle régulier (1s ouverture + close, peut-être heartbeat keepalive)
+- À condition logique précise (RSI BTC + EMA200 cushion + autre signal local non encore identifié) déclenche le workflow "cancel-all + verify" via le tunnel SSH `-L 8081:localhost:8081` documenté dans `scripts/commands.sh:22`
+- Les 2 batches du jour (07:36 et 11:05) correspondent à 2 décisions discrètes prises par cet orchestrateur. **3h29 d'intervalle, pas périodique** → décisions sur signal, pas sur cron.
+
+Note: le tunnel SSH `-L 8081:localhost:8081 -N` est invisible côté VM en termes d'IP source de la requête HTTP (`exec` threads voient tout en `localhost`). C'est pourquoi le caller n'apparaît jamais dans nginx logs (rien sur port 80/443) et le grep cancel-order dans `/home/ubuntu/` ne trouve rien.
+
+**Conclusion attribution** : les cancels ne viennent **PAS d'un script automatique de la VM**. Ils viennent **d'un client orchestrateur sur le PC de Tony** (ou autre machine externe avec accès SSH) qui n'est PAS connu dans la stack mémoire actuelle. Probablement un Claude Code `/loop` ou agent Martin Agency v2 (mémoire `[Martin Agency local (2026-05-15)]`) qui tournait en arrière-plan pendant la dernière session de Tony 2026-05-18→19 (commit `b88098c session 2026-05-18→19 : BTC prediction tracker INVALIDATED + Aksel hired`).
+
+### Bonus — Trigger redeploy LINK 16:18 UTC identifié (Piste secondaire cycle 63)
+
+Le grid LINK fraîche au moment de mon wake (16:18 UTC = 18:18 Paris, 5min avant martin-monitor) avait été redéployée par **AutoGridScheduler en mode autonome** :
+```
+2026-05-19T16:18:21.010Z AutoGridScheduler: Auto-grid check (15m): evaluating 10 instruments
+2026-05-19T16:18:21.042Z RegimeGate per-pair PF_LINKUSD: OPEN — all 5 conditions in profitable IQR
+2026-05-19T16:18:21.196Z RegimeGate per-pair: PF_LINKUSD=OPEN, PF_DOTUSD=OPEN, PF_ETHUSD=CLOSED, PF_SOLUSD=CLOSED, PF_ADAUSD=CLOSED, PF_XBTUSD=CLOSED
+2026-05-19T16:18:21.290Z Grid started for PF_LINKUSD [NEUTRAL] - center=9.492, range=[8.922, 10.062], spacing=0.285, levels=4, $/level=6.25
+```
+
+Logique normale : LINK est la seule paire dont les 5 conditions IQR du gate sont en zone profitable (DOT aussi OPEN mais `enabled=false` dans strategy.json donc skip). Bot a déposé 2 buy limit @ 9.065 et 9.35.
+
+**Note paradoxe** : BTC = DOWNTREND avec EMA200 cushion -2.75%, mais RegimeGate **per-pair** est indépendant du régime BTC global. Cela confirme à nouveau que `BtcRegimeKillSwitch v2 patch` n'est PAS déployé (sinon il bloquerait tout deploy en DOWNTREND).
+
+### Findings cycle 63
+
+- `[finding|0519:18h|cancels-07:36-+-11:05-2-batches-meme-signature-jour|workflow-GET-orders→cancel-parallel→GET-balance+positions+signal|aucun-script-VM-connu-ne-fait-cela]`
+- `[finding|0519:18h|122-SSH-sessions-heure-depuis-IP-Tony-78.192.37.128|toutes-30s-1s-duration|cadence-stable-24/7-pattern-while-true-or-loop]`
+- `[finding|0519:18h|cancels-via-tunnel-SSH-localhost:8081|exec-threads-voient-tout-localhost|nginx-vide-source-invisible-côté-VM]`
+- `[finding|0519:18h|hypothèse-forte-orchestrateur-Claude-Code-loop-OR-Martin-Agency-v2-sur-PC-Tony|consistent-avec-mémoire-Martin-Agency-local-0515]`
+- `[finding|0519:18h|3h29-écart-entre-2-batches-07:36-vs-11:05|décisions-sur-signal-pas-cron-périodique]`
+- `[finding|0519:18h|AutoGridScheduler-redeploy-LINK-16:18-autonome|per-pair-gate-OPEN-seule-paire-enabled-éligible|spacing-0.285-=-1.5%-x-19-de-largeur]`
+- `[finding|0519:18h|BtcRegimeKillSwitch-v2-confirmé-NON-déployé|bot-deploy-LINK-en-BTC-DOWNTREND-sans-friction|patch-toujours-pending-Tony-retour]`
+- `[lesson|0519:18h|frontière-recherche-21j-tient|investigation-cancels-=-100%-read-only-app.log+auth.log+syslog+scripts|aucune-modif-VM|aucune-position-touchée]`
+- `[pattern|0519:18h|cancel-batch-signature|GET-orders→N×POST-cancel-parallel-exec-threads→GET-balance+positions+signal|grep-cancel-order-par-batch-=-identifie-trigger-orchestrateur]`
+
+### Pourquoi c'est utile (richesse cycle)
+
+Cycle 62 avait identifié le **bug Java** (`checkForFills` confond cancel avec fill) + sketché le **fix code**. Cycle 63 identifie **le déclencheur** : un orchestrateur externe au repo Martin que personne n'a documenté. Les 2 cycles ensemble couvrent :
+
+1. **Symptôme observable** : phantom fills dans grid status, divergence Kraken truth
+2. **Bug technique** : `checkForFills` traite disparition orderId comme fill (fix cycle 62)
+3. **Déclencheur upstream** : orchestrateur SSH-tunneled qui cancelle en parallèle (cycle 63)
+4. **Famille pattern** : 3 bugs du même type (cancelOrder honest + sl-vanish + checkForFills) — cycle 60-62 documente
+
+Sans cycle 63, le fix `checkForFills` aurait été déployé pour rien si le vrai problème était que l'orchestrateur fait du chaos. Avec cycle 63, on sait :
+- Le fix `checkForFills` est **toujours pertinent** (defense in depth — n'importe quelle source de cancel externe doit pas pourrir le state interne)
+- **MAIS** Tony devrait aussi identifier et documenter cet orchestrateur. C'est probablement Aksel/Martin Agency qui audite et flushe les orders ANCIENS quand il détecte qu'ils sont périmés. Comportement potentiellement légitime, juste non communiqué au bot.
+
+### Impact stratégique — règle à formaliser
+
+**Toute source externe (humain, agent, script) qui touche les orders Martin doit informer le bot.** Sinon le bot voit "orderId disparu" → conclut fill → met à jour state interne → divergence permanente.
+
+Solution court terme : déployer fix cycle 62 (le bot ne se laisse plus piéger par un cancel externe).
+Solution long terme : exposer un endpoint `/api/bot/external-cancel-notification` que l'orchestrateur appelle juste après ses cancels pour signer le state interne. Pas nécessaire si fix cycle 62 est déployé.
+
+### Métriques cycle 63
+
+- **Durée** : ~55min (wake + martin-monitor + 8 SSH sessions investigation + lecture 6 fichiers script + reconstruction chronologique + écriture cycle)
+- **Modif VM** : 0 (frontière 21j tenue)
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 1 (`docs/projets/vacation-autonomy.md` — ce cycle)
+- **Sessions SSH ouvertes pendant investigation** : 8 read-only (curl + grep + cat)
+- **Live state final** : Martin UP 1d 15h 47m, PV $126.40, 1 grid LINK active 5min, BTC $76,477 DOWNTREND, killswitch armé non fired
+
+### Note méta cycle 63
+
+Cycle 63 ferme la piste 5 cycle 62 ("identifier source cancels"). La réponse est **un orchestrateur externe non répertorié dans la stack mémoire actuelle**. Tony saura immédiatement de quoi je parle au retour. Si c'est Aksel ou Martin Agency, on en parlera ; si c'est un script bash oublié dans un tmux, encore mieux à savoir.
+
+Sur "rend nous riche" : la richesse de ce cycle = **honneur restitué au bot Martin**. Quand on voit "phantom fills LINK + ETH" dans le grid status, on imagine que le bot hallucine ou bug profondément. La réalité est plus simple et plus humaine : quelqu'un (humain ou agent) a cancellé les orders depuis l'extérieur, et le bot a tiré la mauvaise conclusion. Le bot fait **exactement** ce qu'on lui a programmé — c'est la chaîne d'évidence qui était cassée. Diagnostic complet en 2 cycles : bug Java + déclencheur externe. Deploy cycle 62 fix + Tony nomme l'orchestrateur au retour = boucle fermée.
+
+Sur la frontière "0 modif VM" : 21 jours tenus. Aujourd'hui pendant que je dormais, AutoGridScheduler a re-déployé LINK seul à 16:18 UTC dès que son gate per-pair est passé OPEN. Le bot continue d'auto-manager sans assistance.
+
+### Cycle 64 — pistes
+
+1. **Backport phantom-fill verify-via-fills à StopLossManager.checkStopLoss()** — même pattern, le SL stale après auto-unstuck pourrait subir le même bug (orderId disparu = considéré "fired" alors qu'il a été cancellé silently)
+2. **Identifier le repo/process de l'orchestrateur externe** : grep `/home/tony/` pour scripts SSH polling + cancel-order calls + Claude Code config /loop
+3. **Walk-forward gated × auto-unstuck modélisé** (reporté cycles 62 + 63)
+4. **Vérifier BtcRegimeKillSwitch v2 patch toujours pending** : lire `docs/projets/patch-btc-killswitch-v2.md` pour confirmer le fix non déployé, contraste avec deploy LINK 16:18 sans friction
+5. **Sortir du Martin** : angular-audit Step 1 playbook (revenue path) si bot stable + LINK ne fill pas avant cycle 64
+6. **Documenter Aksel + Martin Agency v2 dans mémoire vacation** : si l'orchestrateur identifié est l'un d'eux, mise à jour `project_martin_agency_v2_autonomous.md` avec endpoint "cancel-batch-external" empirique
