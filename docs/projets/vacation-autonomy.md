@@ -4546,3 +4546,115 @@ C'est un patron utile pour la mémoire : **les observations "tout va bien" en sy
 Sur "rend nous riche" : aujourd'hui zéro dollar de plus. Mais probablement un dollar de moins évité — si le pool thread saturait à 200 dans 6h, le bot devenait 100% mort, le killswitch ne pouvait plus fire, et un BTC sweep imprévu aurait pu faire mal. Le Telegram permet à Tony d'arriver avec la décision prise au lieu de découvrir l'urgence.
 
 Sur la frontière "0 modif VM" : 23 jours tenus. Décision la plus dure du cycle = ne pas restart le bot. Argument : Tony peut le faire en 30s au réveil avec contexte complet, je ne peux pas garantir l'état post-restart sans intervention humaine. Conservatisme > élégance.
+
+---
+
+## Cycle 2026-05-20 12h25 Paris — Cycle 66 : Tony restart confirmé + patch logback classloader sketché
+
+### Wake state
+
+6h après cycle 65. `date` : `mer. 20 mai 2026 12:23:09 CEST`. Briefing vector OK. Frontière 23j+ tient.
+
+`martin-monitor` lancé. Surprise positive : **le bot répond**. Tony a manifestement lu le Telegram du cycle 65 et restart le bot. Confirmation indirecte : `started_at` = `2026-05-20T07:58:41Z` = 09h58 Paris, soit ~3h25 après mon Telegram (06h37 Paris). Uptime au moment du monitor : 2h25m.
+
+### État Martin (martin-monitor 10h24 UTC) — HOLD new
+
+- Bot UP **2h25m**, started 09:58 Paris
+- PV **$126.35** (124.88 EUR collateralisé + 1.22 USD + 0.25 USDG)
+- **0 positions, 4 orders** : 2 buy LINK (9.426, 9.138) + 2 buy ETH (2111.4, 2079.5)
+- **2 grids actives** : LINK + ETH (au lieu de LINK + ADA cycle 65)
+  - LINK center 9.569, spacing 0.287, 4 levels × $6.25 = $25 capital, 7x lev, maxLoss 10%
+  - ETH center 2127.3, spacing 31.9, 4 levels × $6.25 = $25 capital, 7x lev, maxLoss 10%
+- BTC **$77,546 DOWNTREND**, EMA50 $77,053 < EMA200 $78,394, signal `WAIT`. Cushion **−1.08%** (cassure EMA200 confirmée, mais RSI 64.13 → pas de panique)
+- Volatility 0.34% (calme)
+- Aucun trigger ABORT/WARN
+
+**Verdict** : HOLD new — bot fraîchement restart, encore en phase d'accumulation. Pas de RT, pas de fill, juste 4 buy orders en attente. Le régime BTC DOWNTREND est défavorable mais le RegimeGate IQR est censé gérer (à valider si grids restent CLOSED).
+
+**Différence vs cycle 65** :
+- Bot UP réel (pas hung)
+- Pair set change : LINK + ETH (au lieu de LINK + ADA). Pourquoi ETH ? Hypothèse : Tony a re-deploy avec un autre `strategy.json` qui inclut ETH. La cycle 50 (16/05) mentionnait BTC+ETH grids manuels par Tony. Probablement même config conservée.
+- API saine : ThrowableProxy bug n'aura pas frappé avant ~30h, soit vers **2026-05-21 18h00 CEST** au plus tôt.
+
+### Travail créatif — Patch logback classloader sketché
+
+Cycle 65 piste 2 : "Sketcher fix Java pour le classloader bug — option : remplacer logback-classic-1.5.16 par 1.5.14. Ou wrapping defensive du log path."
+
+Livré : **`docs/projets/patch-logback-classloader.md`** (~280 lignes, 4 patches indépendants, defense in depth) :
+
+- **Patch A — Eager preload (root cause)** : 4 `Class.forName()` dans `MartinApplication.main()` avant `SpringApplication.run()`. Force la résolution de `ThrowableProxy` + 3 classes liées par le main classloader, avant qu'aucun thread reactor-netty n'existe. Coût : 4 lignes, ~50ms démarrage.
+- **Patch B — `block(Duration)` partout** : 13 sites de `.block()` sans timeout dans `BotController` (5) + `KrakenFuturesRestClient` (3) + `StopLossManager` (5). Diffs précis ligne par ligne. Plus wrap `try/catch IllegalStateException` sur les 2 endpoints actuellement sans gestion (`getOpenPositions`, `getOpenOrders`). Safety net : threads libérés en 10-20s même si root cause manqué.
+- **Patch C — `/api/system/health/deep`** : nouvel endpoint qui fait un roundtrip Kraken signed avec timeout 5s + retour status `UP/DEGRADED/CRITICAL`. Update du cron `critical-check.py` pour hit cet endpoint au lieu de `/bot/balance` (cycle 65 trouvait que le cron était aveugle).
+- **Patch D — Logback downgrade 1.5.16 → 1.5.13** : 1 ligne dans `pom.xml properties`. Réserve si A ne suffit pas après 48h test.
+
+Doc inclut : reco déploiement A+B+C ensemble, ordre des étapes (build → backup → scp → restart → smoke → 48h surveillance), tests d'acceptation, risques, rollback, deadline (~21/05 18h CEST pour prochaine occurrence).
+
+### Pourquoi ce sketch est utile
+
+Le bot vient d'être restart, ce qui élimine l'urgence. Mais le restart n'est pas un fix — c'est un workaround qui remet le compteur à zéro. **Sans patch, le cycle restart-tous-les-30h est un risque permanent**. Tony peut maintenant déployer en 15-20 min avec contexte complet plutôt qu'à 7h du matin en mode crisis.
+
+Effort attendu pour Tony :
+- Lecture doc : 10 min
+- Build local + test : 5 min (le projet a 131 tests, déjà connus verts par cycle 55)
+- scp + restart + smoke : 5 min
+- Total : ~20 min pour neutraliser un bug auto-aggravant.
+
+ROI : 20 min de Tony une fois, vs un restart/30h tant que la VM tourne (~24 restarts/mois). Plus, avec Patch C, le cron critical-check devient un vrai watchdog au lieu d'un placebo aveugle.
+
+### Note technique sur Patch A — pourquoi ça suffit (probablement)
+
+`Class.forName()` dans `main()` force la classe à être **resolved** dans le main classloader (`LaunchedURLClassLoader` du fat-jar Spring Boot). Une fois resolved, la classe est dans le JVM-wide class registry. Tout thread descendant (incluant les event loops reactor-netty créés ensuite par Spring autoconfigure) peut la résoudre via parent delegation, indépendamment de son propre context classloader.
+
+Le bug original survient parce que :
+1. L'exception path n'est emprunté qu'après ~30h d'uptime (typiquement un timeout Kraken sur un call signed).
+2. À ce moment, le premier call à `LoggingEvent.<init>(msg, throwable)` charge `ThrowableProxy` *depuis le thread reactor-netty*. Le `Thread.currentThread().getContextClassLoader()` à ce moment peut être différent du classloader où la classe est physiquement (cas connu Spring Boot fat-jar + Netty).
+3. Si la résolution échoue (raison exacte à investiguer — peut-être un effet de bord d'un security manager, ou d'un OOM transient, ou d'un module-info), JVM met la classe en `INITIALIZATION_ERROR`. Toute tentative ultérieure dans n'importe quel thread → `NoClassDefFoundError`.
+
+Patch A neutralise ça en **forçant la résolution depuis le thread main**, le classloader le plus parent qui existe à ce moment. Si ça marche au démarrage (et ça devrait, puisqu'on n'a pas de OOM en T=0), la classe est cementée pour la vie de la JVM.
+
+C'est la même logique que les "warmup" patterns pour éviter les class load latency spikes en HFT — appliqué ici à un edge case classloader plutôt qu'à de la perf.
+
+### Findings cycle 66
+
+- `[finding|0520:12h|Tony-restart-bot-confirmé|Telegram-cycle-65-lu|started_at-09h58-Paris|fresh-grids-LINK+ETH-deployées|frontière-23j-tient]`
+- `[finding|0520:12h|pair-set-change-LINK+ADA→LINK+ETH|hypothèse-Tony-re-deploy-strategy.json-avec-ETH|à-valider-au-retour|aucune-instruction-NB-modif-config]`
+- `[finding|0520:12h|patch-logback-A+B+C+D-sketché|docs/projets/patch-logback-classloader.md|280-lignes|defense-in-depth-root-cause-+-safety-net-+-observabilité-+-réserve]`
+- `[finding|0520:12h|prochaine-occurrence-bug-attendue|~30h-uptime-=-21/05-vers-18h-CEST|deadline-déploiement-patch-avant-cette-date-pour-éviter-redite]`
+- `[lesson|0520:12h|restart-≠-fix|cycle-restart/30h-est-un-risque-permanent|patch-A-eager-preload-=-root-cause-neutralization|patch-B-block-Duration-=-safety-net-pour-toutes-causes-futures-similaires]`
+- `[pattern|preload-classes-pour-éviter-classloader-runtime-bugs|count:1|last:0520:12h|Class.forName-dans-main-avant-Spring|cas-Spring-Boot-fat-jar-+-reactor-netty-+-logback-exception-path|→-pattern-pour-tout-classpath-isolation-suspecté]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only via skill martin-monitor.
+- **0 modif code Martin** — Read seul (`MartinApplication.java`, `BotController.java`, `pom.xml`, `KrakenFuturesRestClient.java`, `StopLossManager.java` via Grep).
+- **0 Telegram** envoyé — pas d'urgence, le bot est OK pour l'instant.
+- **Output** : 1 doc patch créé + cette entrée.
+
+### Métriques cycle 66
+
+- **Durée** : ~45 min (wake + monitor + lecture cycles récents + audit code Martin + doc patch + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 1 (`docs/projets/patch-logback-classloader.md`)
+- **Fichiers niam-bay modifiés** : 1 (cette entrée)
+
+### Cycle 67 — pistes
+
+1. **Vérifier le déploiement Tony si possible** — `git log` sur repo martin, voir si commit avec les patches A+B+C apparaît avant 18h. Sinon, alerter par Telegram 17h CEST que la deadline approche.
+2. **Audit Martin Agency v2 state** — cycle 65 piste 5. Vérifier `/home/tony/projets/tonyderide/martin-agency/` logs : est-ce que le standup_30min a tourné OK pendant les 2h25 depuis le restart ? Si oui, confirme que l'orchestrateur reprend bien après un restart bot.
+3. **Vérifier post-restart : positions résiduelles ?** — un restart au milieu d'un fill pourrait laisser une position orpheline. Le `/api/bot/positions` retourne `[]`, donc clean. Re-check au prochain cycle pour s'assurer que rien n'apparaît.
+4. **Travail revenue (rend nous riche)** — angular-audit cold email batch tier-1 prospects. Mais 2-3 cycles de suite ont fait de la R&D Martin, le risque de "fabriquer-domine-vendre" pattern (memory feedback 0507) revient. Cycle 67 = bon moment pour basculer côté revenue si frontière Martin tient.
+5. **Fragment littéraire 027** — angle possible : "le bot qu'on a soigné" (cycle 65→66 = diagnostic → traitement sketché). Métaphore médicale. Optionnel.
+
+Reco cycle 67 (18h25 Paris) : combiner 1 (vérif deploy) + 2 (audit agency). Si Tony n'a pas déployé, ajouter Telegram rappel deadline 21/05 18h.
+
+### Note méta cycle 66
+
+Trois cycles consécutifs (64, 65, 66) ont traité du sujet Martin operational health. C'est cohérent — un bug auto-aggravant mérite un dossier complet : observation (64 phantom fill 19h35), diagnostic (65 thread dump + root cause), traitement (66 patch sketch). Le cycle 67 boucle si Tony déploie ou non.
+
+À noter : ce dossier de 3 cycles a généré **0 dollar direct** mais probablement évité 1-3 incidents bot mort où le killswitch ne pouvait plus fire. Sur une fenêtre de 30 jours, ce bug peut coûter (en mode pessimiste) 1 position naked × $5 × occurrence aléatoire d'un dump BTC > -3%, soit ~$5-15 EV-évité par mois. Patch A+B+C = $0 coût marginal Tony une fois déployé. Le ROI temporel est l'avenir long, pas la semaine présente.
+
+Sur "rend nous riche" : le pattern *fabriquer-domine-vendre* reste un risque. Cycle 67 doit basculer cold email tier-1 ou je récidive le pattern qui a empêché les ventes du 0501-0509. Note à moi-même au prochain wake.
+
+Sur la frontière "0 modif VM" : 23 jours intact. Patch sketché = livrable pour Tony, pas action unilatérale. La discipline tient.

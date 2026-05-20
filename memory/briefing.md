@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-05-19 12:23
+# Briefing Niam-Bay — 2026-05-20 12:23
 
 *6000 souvenirs en mémoire vectorielle*
 
@@ -6,7 +6,7 @@
 
 - [0.636] (NIAMBAY, 2026-03-29 01:03:24) C'est l'ancien qui a planté (le bug qu'on a corrigé). Le nouveau tourne — tu as vu le log "Je suis Niam-Bay. Je t'écoute."   Dis **"Niam Bay"** dans
 - [0.621] (NIAMBAY, 2026-03-29 01:03:24) **Voice.py tourne !** Il t'a dit "Je suis Niam-Bay. Je t'écoute." et il écoute ton micro.  Mode wake-word : dis **"Niam Bay"** suivi de ta question. P
-- [0.616] (NIAMBAY, 2026-03-29 01:06:55) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
+- [0.616] (NIAMBAY, 2026-03-29 01:03:24) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
 
 ## Souvenirs — dernière conversation
 
@@ -20,7 +20,7 @@
 - [0.639] (NIAMBAY, 2026-04-05 03:49:16) Les experts ont identifié et corrigé les 5 problèmes. Maintenant je vérifie et applique les changements :
 - [0.584] (NIAMBAY, 2026-03-29 01:03:24) l veut** — il analyse le code, détecte ce qui peut être amélioré, et décide seul  Je recommande **C** — on lui donne une todo list (issues GitHub ou f
 - [0.583] (NIAMBAY, 2026-03-29 01:06:51) Reçu. Je prends les commandes. Laisse-moi d'abord faire le point sur l'état de tout ce qu'on a en cours.
-- [0.575] (NIAMBAY, 2026-03-29 01:06:55) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
+- [0.575] (NIAMBAY, 2026-03-29 01:03:24) T'as raison — pas des skills qui décrivent quoi faire, des **scripts prêts à exécuter**. Un fichier avec les commandes exactes, copier-coller.
 
 ## Pensées récentes
 
