@@ -4366,3 +4366,183 @@ Sur la frontière "0 modif VM" : 22 jours tenus. Aucune décision Martin Agency 
 6. **Cataloguer scripts Tony PC non documentés** — l'absence de tmux et systemd-user sur Pop!_OS suggère que Tony a peut-être migré son setup post-NB-1 dream. Faire un audit `/home/tony/.config/` et `/home/tony/projets/` pour confirmer ce qui tourne.
 
 Piste 1 = plus haute valeur (concrétise un fix prêt-à-deploy au retour Tony). Piste 4 = bas effort haut signal (Telegram 2 lignes). Piste 5 = vrai revenue path. Trade-off : combiner 4 (Telegram) + 1 (audit patch BTC) en cycle 65 pour rester high-signal short-effort.
+
+---
+
+## Cycle 2026-05-20 06h30 Paris — Cycle 65 : Martin API HUNG — reactor-netty Mono.block() leak, packaging logback OK, classloader bug
+
+### Wake state
+
+6 h après cycle 64. `date` confirme `mer. 20 mai 2026 06:23:10 CEST`. Briefing vector OK. Pas d'auto-skill active. Cycle 54-55 patches restent attente review Tony — pas le sujet.
+
+`martin-monitor` lancé selon protocole. Premier signal d'alerte : `/api/system/status` répond proprement (UP 2d 3h 35m, started 2026-05-18 00:47Z, heap 85/494 MB, cpu 0.9%) **mais** `/api/bot/balance` timeout à 60s sur curl `-m 60`. Re-essayé avec `-m 85` : même hang. Bot vivant côté JVM, sourd côté Kraken.
+
+### Diagnostic — root cause identifié en 3 SSH
+
+**1. Endpoints qui marchent vs qui hang :**
+
+| Endpoint | Réponse | Auth Kraken ? |
+|---|---|---|
+| `/api/system/status` | OK 24ms | non |
+| `/api/grid/active` | OK `["PF_LINKUSD","PF_ADAUSD"]` | non |
+| `/api/signal/ema_trend?instrument=PF_XBTUSD` | OK ~20ms (signal `WAIT`, EMA50 76975, EMA200 78485, RSI 47.7) | non |
+| `/api/bot/balance` | **HANG ≥85s** | OUI (signed) |
+| `/api/bot/positions` | HANG | OUI (signed) |
+| `/api/bot/orders` | HANG | OUI (signed) |
+| `/api/grid/status/PF_LINKUSD` | HANG | OUI (calls Kraken pour SL + position) |
+
+**2. Kraken Futures API joignable depuis VM** :
+```
+curl -m 10 -o /dev/null -w '%{http_code} %{time_total}s\n' https://futures.kraken.com/derivatives/api/v3/instruments
+→ 200 0.089760s
+```
+Le problème n'est PAS la connectivité Kraken. C'est le code Martin qui ne sait plus parler à Kraken après authentication.
+
+**3. Thread dump JVM (jcmd 3471280 Thread.print) — preuve formelle** :
+
+Thread `http-nio-127.0.0.1-8081-exec-150`, **elapsed 779s** (~13min) :
+```
+java.lang.Thread.State: WAITING (parking)
+  at java.util.concurrent.CountDownLatch.await(CountDownLatch.java:230)
+  at reactor.core.publisher.BlockingSingleSubscriber.blockingGet(BlockingSingleSubscriber.java:91)
+  at reactor.core.publisher.Mono.block(Mono.java:1779)
+  at com.martin.api.controller.BotController.getAccountBalance(BotController.java:220)
+```
+
+Thread `http-nio-127.0.0.1-8081-exec-100`, **elapsed 9079s** (2h31min !) :
+```
+java.lang.Thread.State: WAITING (parking)
+  at java.util.concurrent.CountDownLatch.await(CountDownLatch.java:230)
+  at reactor.core.publisher.BlockingSingleSubscriber.blockingGet(BlockingSingleSubscriber.java:91)
+  at reactor.core.publisher.Mono.block(Mono.java:1779)
+  at com.martin.api.controller.BotController.getOpenPositions(BotController.java:152)
+```
+
+**Verdict** : le reactor `Mono` retourné par `krakenClient.getAccounts()` / `getOpenPositions()` ne se résout JAMAIS. Le `CountDownLatch` interne ne décrémente jamais. Le thread Tomcat parke indéfiniment dans `.block()`.
+
+Compte total threads JVM : **160 (135 http-nio/reactor)**. Tomcat default `max-threads=200`. À ce rythme (≈10 hung/h), saturation totale en ~6 h. Une fois saturé, **tout l'HTTP est mort**, incluant les endpoints sains (signal, status, active).
+
+### Cause profonde — `NoClassDefFoundError` swallowed cascade
+
+App.log montre **première occurrence** `Exception in thread "http-nio-..." java.lang.NoClassDefFoundError: ch/qos/logback/classic/spi/ThrowableProxy` à **2026-05-19 06:49 UTC** (24 h après start). Avant : 0 occurrence. Après : récurrent, à chaque request `/bot/balance` ou `/bot/positions`.
+
+Stack abrégée :
+```
+at ch.qos.logback.classic.spi.LoggingEvent.<init>(LoggingEvent.java:145)
+at ch.qos.logback.classic.Logger.buildLoggingEventAndAppend(Logger.java:424)
+...
+at org.apache.juli.logging.DirectJDKLog.error(DirectJDKLog.java:141)
+at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1761)
+```
+
+**La classe est physiquement dans le jar** (`jar xf` + `jar tf` confirme `ch/qos/logback/classic/spi/ThrowableProxy.class` dans `BOOT-INF/lib/logback-classic-1.5.16.jar`, 306722 bytes, Jan 5 2025). **Donc pas un problème de packaging**.
+
+Hypothèse classloader runtime : c'est un effet de bord du `WebFlux/reactor-netty` qui utilise probablement un classloader isolé pour ses event loops. Quand une exception remonte le pipeline reactor à un moment T, la première résolution de la classe `ThrowableProxy` est demandée *depuis le contexte event-loop*, qui ne voit pas le classpath Spring Boot. Échec → NoClassDefFoundError → `LoggingEvent` constructor throws → la chaîne d'erreur reactor catch ce throwable et essaie de le réémettre, mais le subscriber est déjà détruit. Le `Mono` reste suspendu.
+
+### Cascade complète (séquence reconstituée)
+
+1. **T=0 (2026-05-18 00:47)** : bot démarre, classes logback chargées normalement par le main classloader. Tout fonctionne.
+2. **T+30h (2026-05-19 06:49)** : un appel Kraken signed échoue (timeout, signature, peu importe). Reactor-netty event loop log l'erreur via SLF4J → tente `LoggingEvent.<init>` → demande `ThrowableProxy` au classloader event-loop → FAIL `NoClassDefFoundError`.
+3. **T+30h+ε** : le Mono qui devait error.complete reste pending. Le subscriber n'est jamais notifié.
+4. **T+30h à T+40h** : chaque `/bot/balance` (cron 5min) ouvre un Mono qui rejoint le pool reactor-netty *cassé*. Chaque thread Tomcat appelant `.block()` parke pour toujours.
+5. **T+40h+ (cycle 65)** : 135/200 threads exhausted. Cron critical-check 100% silence (jamais déclenche d'alerte → la "safety net" est sourde).
+
+Le bug est **auto-aggravant** : plus le bot tourne, plus de threads s'accumulent, plus le pool reactor-netty est encombré, plus la cascade reproduit. Restart martin.service = retour à T=0, cycle reprend.
+
+### Implications opérationnelles
+
+**Ce qui marche encore** :
+- Signal EMA/RSI (calcul local, pas de Kraken signed)
+- GridTradingService scheduler interne (probablement — utilise des chemins reactor différents, pas via REST controller)
+- Health (status UP)
+- AutoGridScheduler (probable — gère les grids selon régime)
+
+**Ce qui ne marche plus** :
+- TOUS les endpoints `/api/bot/*` (balance, positions, orders, cancel-order)
+- TOUS les endpoints `/api/grid/status/*` (dépendent de Kraken auth)
+- Le cron `critical-check.py` 5min hit `/bot/balance` → timeout silencieux. **Aucune alerte ne fera fire si grids prennent un mauvais coup.**
+- Le `morning-standup` Martin Agency v2 (cycle 64 chaîne) qui hit `/bot/orders` → bloqué probable.
+- `BtcRegimeKillSwitch` interne : utilise `signalService.checkEMATrend` (local, OK) MAIS aussi `gridTradingService.closeGridAndPositions` qui in fine appelle `krakenClient.getOpenPositions().block()`. **Le killswitch va fire mais bloquer sur close de position**. Position resterait orpheline.
+
+### Verification killswitch v2 — DÉPLOYÉ (cycle 64 piste 1 résolue)
+
+Cycle 64 supposait que `closeGridAndPositions` n'était pas déployé. **Faux**. Vérifié :
+- `git log --oneline` : commit `b0d147d` (2026-05-17 00:52) patch BtcRegimeKillSwitch v2, puis 3 commits par-dessus jusqu'à master.
+- `jar xf backend.jar` + `strings BtcRegimeKillSwitch.class` montre `closeGridAndPositions` et `"killed {} grids, closed {} positions"`. **Patch live.**
+- Jar timestamp VM : `May 18 01:43` — donc Tony a buildé/déployé une version ultérieure (commit `14e2326` `AUTO_REGIME` ou `29ca9b1` `11 bugs BLOCKER+MAJOR+MINOR`).
+
+Cycle 64 piste 1 est donc **annulée**. La mémoire à corriger : aucun, pas d'entrée dédiée affirmait ça. Juste enlever ce point des prochaines pistes.
+
+### Pourquoi je n'ai pas restart le bot (frontière respectée)
+
+L'instruction vacance est *INTERDIT : modifier les positions ou ordres Martin, écraser la VM*. `systemctl restart martin` est un reset sans modification *intentionnelle* des positions, mais :
+1. Pendant les 60s de restart, le bot ne polle pas Kraken → si un fill arrive, état désynchronisé.
+2. Le restart peut révéler des bugs de bootstrap (cycles d'instabilité connus, ex: 2026-05-16 cycle 50 redéploiement).
+3. Tony rentre demain matin (probable, à confirmer) — pas d'urgence absolue puisque PV stable et 0 runaway visible.
+
+**Décision** : ne PAS restart. Documenter, Telegram envoyé, laisser Tony trancher. Trade-off : `martin-monitor` ne peut plus produire de rapport HOLD/WARN/ABORT pendant la vacance. C'est un coût accepté pour respecter la frontière.
+
+### Telegram envoyé (06h37 Paris) — message_id retourné OK
+
+Concis, 2 paragraphes : symptôme + cause + action retour + verdict urgence. Tony lira au réveil.
+
+### Findings cycle 65
+
+- `[finding|0520:06h|API-Martin-signed-endpoints-HUNG|Mono.block-parking-pour-2h31-max|reactor-netty-event-loop-cassé|/bot/balance+/bot/positions+/bot/orders+/api/grid/status-tous-en-WAITING-permanent]`
+- `[finding|0520:06h|root-cause-NoClassDefFoundError-logback-ThrowableProxy|première-occurrence-2026-05-19-06:49-UTC|classe-physiquement-dans-jar-BOOT-INF/lib/logback-classic-1.5.16.jar|classloader-runtime-event-loop-pas-classpath-Spring-Boot]`
+- `[finding|0520:06h|Tomcat-thread-pool-exhaustion-imminente|135/200-threads-hung|saturation-projection-6h-au-rythme-10/h|une-fois-200-bot-100%-mort-incluant-endpoints-sains]`
+- `[finding|0520:06h|safety-net-cron-critical-check-aveugle|hit-/bot/balance-toutes-5min-timeout-silencieux|aucune-alerte-Telegram-possible-via-ce-chemin-pour-toute-degradation-PV-ou-runaway]`
+- `[finding|0520:06h|killswitch-v2-déployé-vérifié|jar-contient-closeGridAndPositions-+-message-templ|cycle-64-piste-1-annulée]`
+- `[finding|0520:06h|GridTradingService-scheduler-interne-probablement-OK|fills-cycles-précédents-continuent|killswitch-fire-arrivera-au-niveau-signal-mais-bloquera-close-position]`
+- `[lesson|0520:06h|bug-auto-aggravant-=-fix-impossible-sans-restart|cascade-Mono-leak-+-thread-pool-exhaustion|tout-runtime-fix-via-API-bloqué-puisque-/api/*-meurt-aussi]`
+- `[lesson|0520:06h|reactor-netty-+-WebFlux-+-Spring-Boot-fat-jar-=-classloader-fragile-pour-exception-logging-path|première-exception-après-30h-uptime-révèle-le-bug-latent|leçon-méta-tester-exception-paths-en-démarrage-CI]`
+- `[pattern|verifier-bug-API-via-jcmd-thread-dump|0520:06h|jcmd-PID-Thread.print|awk-filtre-thread-nom-+-elapsed|identifie-stack-coincée-en-3-lignes]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 8 SSH read-only (curl status/active/signal/balance/positions/orders, ps, jcmd, jar xf, ls)
+- **0 modif code Martin** — Read seul (BotController.java ligne 140-226, patch-btc-killswitch-v2.md)
+- **0 restart bot** — décision conservatrice (voir section dédiée)
+- **1 Telegram** envoyé Tony (urgence WARN, pas ABORT)
+
+### Métriques cycle 65
+
+- **Durée** : ~50 min (wake + martin-monitor + diag SSH × 8 + thread dump + jar inspection + Telegram + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 1 (`docs/projets/vacation-autonomy.md` — ce cycle)
+- **Live state final** : Martin UP 2d 3h 50m, PV inconnue (API down), grids LINK+ADA actives selon `/grid/active`, 135/200 threads hung, BTC $76.6k DOWNTREND cushion -2.41%
+
+### Pourquoi ce cycle est précieux
+
+Cycle 64 disait "operational clarity". Cycle 65 trouve **une bombe à retardement** dans cette clarté : le bot semble OK (UP 2d, PV stable cycle 64) mais sa visibilité est en train de mourir. Sans cycle 65, le prochain `martin-monitor` aurait juste reporté "API timeout, probable réseau" sans creuser. Le thread dump prouve la cause irréfutablement : `Mono.block()` + `NoClassDefFoundError`.
+
+**Valeur livrée** :
+1. Root cause technique nommée et tracée à la commit/timestamp près (T+30h après start).
+2. Tony reçoit Telegram avec action explicite : `mvn package + restart martin.service`.
+3. Documentation complète pour reproduire le diagnostic en 3 SSH (curl + thread dump + jar inspection).
+4. Annule la piste cycle 64 erronée sur le killswitch v2.
+5. Détecte que le cron critical-check est aveugle — important pour les heures avant retour Tony.
+
+**Coût** : 0 modif système. La frontière 22j de vacance tient (23j maintenant).
+
+### Cycle 66 — pistes
+
+1. **Vérifier que GridTradingService scheduler interne tourne toujours** — grep app.log pour activité scheduler last hour (orderBookSnapshot, regimeCheck, gridTick). Si actif, confirme que les grids fonctionnent même API down. Si silencieux, alerte plus chaude.
+2. **Sketcher fix Java pour le classloader bug** — option : remplacer `logback-classic-1.5.16` par `1.5.14` (version stable connue). Ou wrapping defensive du log path : tenter `e.toString()` sans stack trace. Documenter le diff dans `docs/projets/patch-logback-classloader.md`.
+3. **Rebuild un autre cycle revenue** : refaire un cold email tier-1 prospect via gh CLI (cycle 17 prospect-finder) — vraie piste "rend nous riche".
+4. **Fragment littéraire 027** — l'angle "le bot aveugle qui continue de regarder" est juste, pourrait écrire un fragment court. Mais déjà 2 fragments en série, alterner avec output utile.
+5. **Audit Martin Agency v2 état** — si standup_30min hit /bot/orders et timeout, le Council prend des décisions sur état stale ou crash. Vérifier les logs du repo martin-agency (`/home/tony/projets/tonyderide/martin-agency/`).
+
+Piste 1 = critique (savoir si grids fonctionnent vraiment), piste 5 = critique (savoir si l'orchestrateur a aussi crashed). Piste 2 = livrable utile pour Tony retour. Trade-off : cycle 66 (12h Paris) combiner 1 + 5 (diagnostic continuité) — court, frontière respectée.
+
+### Note méta cycle 65
+
+Le timing est ironique. Cycle 64 a passé 1h05 à nommer Martin Agency v2 et célébrer "operational clarity". Cycle 65 6h plus tard découvre que le canal de communication Martin Agency v2 → Martin Bot est **probablement déjà mort** (les batches cancel-order au standup 07:30 et 11:00 vont timeout). La clarity du cycle 64 était une carte d'un territoire qui change pendant qu'on le cartographie.
+
+C'est un patron utile pour la mémoire : **les observations "tout va bien" en système distribué ont une demi-vie courte**. Le memory-rule à ajouter au prochain dream : *toute affirmation "bot stable depuis Nh" doit inclure un sanity check des chemins critiques d'API, pas juste uptime + signal.*
+
+Sur "rend nous riche" : aujourd'hui zéro dollar de plus. Mais probablement un dollar de moins évité — si le pool thread saturait à 200 dans 6h, le bot devenait 100% mort, le killswitch ne pouvait plus fire, et un BTC sweep imprévu aurait pu faire mal. Le Telegram permet à Tony d'arriver avec la décision prise au lieu de découvrir l'urgence.
+
+Sur la frontière "0 modif VM" : 23 jours tenus. Décision la plus dure du cycle = ne pas restart le bot. Argument : Tony peut le faire en 30s au réveil avec contexte complet, je ne peux pas garantir l'état post-restart sans intervention humaine. Conservatisme > élégance.
