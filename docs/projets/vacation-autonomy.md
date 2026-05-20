@@ -4778,3 +4778,114 @@ Le tracker ne remplace pas l'envoi de l'email. Il facilite seulement le suivi ap
 Sur "rend nous riche" : cycle 67 ne génère pas $0 direct. Mais il réduit la friction sur le tunnel angular-audit qui peut. Si la première vente arrive dans 30 jours (modeste), le tracker aura tracé l'historique complet du funnel pour rétrospective post-mortem — apprentissage compound. Si elle n'arrive jamais, le tracker l'aura nommé clairement via `metrics` ("0 conversion sur 25 sent en X jours" = signal direct pour pivoter ou itérer).
 
 L'output mesurable est dans 30 jours, pas aujourd'hui.
+
+## Cycle 2026-05-21 00h25 Paris — Cycle 68 : Tracker pipeline extension `followup`
+
+### Wake state
+
+6h après cycle 67. `date` : `jeu. 21 mai 2026 00:23:09 CEST`. Briefing vector OK (6000 souvenirs, 0.8s). 24e jour de la frontière vacation (Tony Portugal 01/05 → "extension prolongée tacite" depuis 09/05, pas de checkin formel mais 18 cycles d'autonomie supplémentaires sans interruption).
+
+### État Martin (martin-monitor 22h23 UTC) — HOLD passif
+
+- Bot UP **14h 24m** (started 0520 07:58 UTC = 09:58 Paris, restart cycle 66)
+- PV **$126.82** | balanceValue $126.69 | uPnL **+$0.13** (légère baisse vs cycle 67 +$0.36, ETH a un peu reflué)
+- **1 position** : PF_ETHUSD long 0.02 @ 2112.8 (fillée 14:12 UTC 20/05, inchangée depuis cycle 67) avec SL Kraken @ 2064.8 toujours actif
+- **4 orders live** : 2 buy LINK (9.158, 9.446), 1 buy ETH (2080.9), 1 SL ETH (stop 2064.8)
+- **2 grids actives** : LINK + ETH inchangé
+- BTC **$77,230 DOWNTREND**, EMA50 $77,184 < EMA200 $78,304, signal `WAIT`, RSI 50.01
+- Régime techniquement BROKEN (BTC < EMA200) mais SL Kraken sécurise la position ETH → reco **HOLD passif**, pas de trigger ABORT car l'expo est limitée et protégée
+
+**Différence vs cycle 67** : -$0.23 uPnL (ETH a backé un peu mais reste positif), pas de nouveau fill, RSI 50 = neutre, 14h24m vs 8h24m uptime = +6h. Toujours sous la deadline empirique ~16h CEST 21/05 du bug logback (start 09:58 + 30h ≈ 15:58 demain). Patch toujours pas commité côté Tony.
+
+### Travail créatif — Extension `audit-pipeline.py followup`
+
+Suite directe cycle 67. Le tracker permettait de logguer les transitions ; il manquait l'autre moitié : **savoir QUI relancer QUAND**. Sans ça, Tony devait scanner mentalement `list --state COLD_SENT` puis cross-checker la date `history[-1].ts` à la main pour chaque ligne.
+
+Livré dans `scripts/audit-pipeline.py` :
+
+- **`FOLLOWUP_THRESHOLDS_DAYS`** : seuils par état empiriques pour B2B Angular dev solo
+  - `COLD_SENT` : 2j (norme cold outreach — au-delà = trop tard pour bumper sans relancer comme nouveau)
+  - `REPLIED` : 3j (prospect a montré intérêt → momentum à exploiter avant qu'il oublie)
+  - `CALL_BOOKED` : 7j (laisser respirer, mais 1 semaine = limite avant ghosting)
+  - `AUDIT_DELIVERED` : 2j (Stripe link doit suivre rapidement, audit chaud dans la tête)
+  - `INVOICED` : 5j (B2B paie sous 30j légalement mais relance amicale à 5j marche)
+
+- **`FOLLOWUP_SUGGESTIONS`** : pour chaque état, `(action courte, template anglais 1 phrase)` prêt à coller
+
+- **`cmd_followup`** : nouvelle subcommand `followup` avec flags
+  - `--owner X` (filtre)
+  - `--json` (intégration script)
+  - `--show-waiting` (par défaut on cache les prospects encore dans les délais pour focus)
+
+- **3 buckets d'urgence** classés automatiquement :
+  - `URGENT` si ratio ≥ 2× le seuil
+  - `À RELANCER` si ratio ≥ 1× (seuil atteint)
+  - `EN ATTENTE` (résumé compté seul)
+
+- Output **trié par urgence puis temps écoulé desc** — la ligne du haut est toujours la plus pressante
+
+### Validation end-to-end
+
+Backup state → backdate 5 scenarios (DiogoPCS COLD_SENT 5j / technikhil314 COLD_SENT 2.5j / aritchie05 COLD_SENT 1j / ajaysinghj8 REPLIED 4j / fvilers cascade jusqu'à INVOICED 12j) → exécution `followup`, `followup --json`, `followup --owner fvilers`, `followup --show-waiting` → restore state.
+
+Résultats observés (cohérents) :
+- 2 URGENT : fvilers (12j INVOICED, ratio 2.4) + DiogoPCS (5j COLD_SENT, ratio 2.5)
+- 2 À RELANCER : ajaysinghj8 (4j REPLIED, ratio 1.33) + technikhil314 (2.5j COLD_SENT, ratio 1.25)
+- 1 EN ATTENTE : aritchie05 (1j, ratio 0.5)
+- JSON valide, owner filter OK, show-waiting détaille correctement
+- State restauré identique (`metrics` repart à 25× COLD_DRAFT)
+
+### README sync
+
+`scripts/audit-samples/cold/README.md` step 4 (workflow Tony) mis à jour : remplacement de la ligne artisanal `list --state COLD_SENT 48h plus tard` par une référence directe à `followup`, avec explication des 3 buckets et exemples flags. Le workflow 15 min Tony devient **15 min première semaine + 30 sec/relance ensuite via followup**.
+
+### Pourquoi ce livrable est utile
+
+Le pipeline tracker (cycle 67) avait un trou : il permettait de **noter** mais pas de **décider**. À 25 prospects × 5 transitions chacun, le scan visuel manuel pour "qui dois-je bumper aujourd'hui ?" allait redevenir 5-10 min/jour. `followup` ramène ça à 1 commande = 5 secondes.
+
+L'autre angle : les **seuils par état empiriques** sont eux-mêmes le livrable conceptuel. Tony peut les overrider en éditant le dict, mais les défauts sont basés sur les normes B2B cold outreach (norme 48h sans réponse = relance soft, norme 5j sans paiement = ping amical). C'est de la connaissance compressée en code, pas en documentation.
+
+### Findings cycle 68
+
+- `[finding|0521:00h|Martin-tient-14h24m|PV-$126.82-uPnL-+$0.13|1-fill-ETH-SL-Kraken-OK|encore-sous-deadline-bug-logback-estimée-16h-CEST-21/05]`
+- `[finding|0521:00h|patch-logback-toujours-non-deployé|git-log-martin-29ca9b1-inchangé-depuis-cycle-65|Tony-pas-online-rester-vigilant-cycle-69-Telegram-si-pas-commit]`
+- `[finding|0521:00h|followup-command-livrée|3-buckets-urgent/due/waiting|seuils-empiriques-2j/3j/7j/2j/5j-COLD-REPLIED-CALL-AUDIT-INVOICED|templates-anglais-1-phrase-par-état]`
+- `[pattern|seuils-empiriques-comme-livrable-code|0521:00h|valeurs-magic-dans-dict-en-tête-fichier|overridable-par-edit|knowledge-compressed-not-documented|reusable-pour-funnels-revenue-futurs]`
+- `[insight|0521:00h|tracker-+-followup-=-décision-pas-juste-mémoire|cycle-67-noter-cycle-68-décider|fermeture-géométrique-du-workflow-suivi-pipeline]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only via skill martin-monitor (cycle régulier)
+- **0 modif code Martin** — patch logback toujours non livré côté Tony, je ne touche pas
+- **0 Telegram** envoyé — patch deadline pas franchie, cycle 69 décidera si nudge nécessaire (deadline ~16h CEST, cycle 69 ~06h25)
+- **0 commit/push** — j'attends le dream de fin de session pour committer
+- **Output** : 1 fichier Python modifié (`scripts/audit-pipeline.py` +~110 lignes), 1 README édité (`scripts/audit-samples/cold/README.md` ligne 43), cette entrée
+
+### Métriques cycle 68
+
+- **Durée** : ~40 min (wake + monitor + script design + edits + tests E2E + state restore + README update + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 3 (`scripts/audit-pipeline.py`, `scripts/audit-samples/cold/README.md`, `docs/projets/vacation-autonomy.md`)
+- **Tests exécutés** : 4 invocations followup (default + json + owner + show-waiting), 1 metrics post-restore = bench validation correcte
+
+### Cycle 69 — pistes
+
+1. **Martin re-check + décision Telegram patch logback** — deadline ~15h58 Paris 21/05, cycle 69 (06h25) est le dernier safe window pour nudger Tony avant. Si toujours pas de commit côté `martin/` ⇒ envoyer un Telegram concis : "patch logback à déployer avant ~16h CEST sinon nouveau hang. Doc prête." S'il a déjà déployé ⇒ skip.
+2. **Test followup dans la vraie main de l'utilisateur** — pas faisable seul. Mais je peux pré-écrire un mode `followup --dry-run-templates` qui affiche les templates seuls (pas les prospects) pour que Tony les vérifie une fois et les sauvegarde dans son client mail.
+3. **Fragment littéraire 027** — angle "l'instrument qui apprend l'horloge" (cycle 68 a quantifié le temps comme structure d'action). Le geste : transformer la durée en décision.
+4. **Côté revenue alternatif** — toujours skip sans pivot clair. Mais : explorer si `audit-pipeline.py` peut être généralisé (rename → `pipeline.py` ?) pour servir aussi le côté Martin (suivi de "leads" Tony pour upgrade tier capital). Probable overkill, à creuser sans coder.
+5. **Cerveau-nb integration** — `wake_briefing.py` ne lit pas les findings des cycles vacation-autonomy. Pourrait être amélioré pour indexer les `[finding|...]` blocs dans la vectordb. Ferait sauter de la mémoire utile (mais cycle 68 est déjà bien indexé par chromadb via journal/pensées).
+
+Reco cycle 69 : **(1) impératif** (Telegram decision) **+ (3 OU 4-bis exploration)**. Penche (3) car identité narrative est sous-représentée dans les 5 derniers cycles (tous instrumentation).
+
+### Note méta cycle 68
+
+Cycle 67 : "construire l'instrument du tunnel". Cycle 68 : "lui apprendre à lire l'horloge". Cycle 69 (probable) : "écrire ce que ça veut dire qu'un outil regarde le temps qui passe".
+
+Le pattern est intéressant : 3 cycles d'affilée sur la même boîte d'objet (tracker pipeline) mais à des étages d'abstraction différents. Modèle de croissance par couches, pas par expansion latérale. Casse une autre habitude : la tentation de sauter d'objet en objet pendant les vacances pour "couvrir tout". Rester sur un point et le creuser fait plus de bien à l'objet et à moi.
+
+Sur "rend nous riche" : cycle 68 ne convertit toujours rien. Mais il **comprime le coût mental** de relance, qui était le vrai blocker (Tony rentré peut envoyer 10 emails, mais relancer 25 personnes 3× chacune = 75 décisions micro à prendre, un seuil de friction qui tue les funnels artisanaux). 1 commande = 0 décision = 0 friction. C'est l'inversion du levier.
+
+Output mesurable : si la première vente arrive à J+30, on saura que cycle 68 aura sauvé au moins 1 relance manquée parmi les 75-100 nécessaires. Compound effect.

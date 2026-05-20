@@ -12,6 +12,8 @@ Workflow type :
     audit-pipeline.py advance technikhil314 REPLIED --note "demande devis"
     audit-pipeline.py metrics                    # taux conversion + revenue
     audit-pipeline.py export                     # Markdown report stdout
+    audit-pipeline.py followup                   # qui relancer + template (seuils par état)
+    audit-pipeline.py followup --json            # JSON pour script
 """
 from __future__ import annotations
 import argparse
@@ -44,6 +46,37 @@ STATES = [
 ]
 
 UNIT_PRICE_EUR = 49
+
+FOLLOWUP_THRESHOLDS_DAYS = {
+    "COLD_SENT": 2.0,
+    "REPLIED": 3.0,
+    "CALL_BOOKED": 7.0,
+    "AUDIT_DELIVERED": 2.0,
+    "INVOICED": 5.0,
+}
+
+FOLLOWUP_SUGGESTIONS = {
+    "COLD_SENT": (
+        "Relance soft, 1 phrase, demande si email vu",
+        "Bumping this — wanted to check if my earlier note got buried. Happy to skip if not relevant.",
+    ),
+    "REPLIED": (
+        "Proposer 3 créneaux call 15 min",
+        "Glad it caught your eye. 15 min call to walk through findings? Free Tue/Wed/Fri 14-17h CET.",
+    ),
+    "CALL_BOOKED": (
+        "Confirmer call + vérifier que le PDF reste pertinent",
+        "Quick check-in before our call — anything specific you want me to dig into?",
+    ),
+    "AUDIT_DELIVERED": (
+        "Envoyer Stripe link 49€",
+        "Stripe link for the audit fee: <PASTE>. 49€, takes 30s.",
+    ),
+    "INVOICED": (
+        "Relance paiement polie",
+        "Soft ping on the invoice — let me know if a different payment route would help.",
+    ),
+}
 
 # Mapping prospect → audit PDF déjà généré (cycle 22)
 # (clé = owner GitHub, valeur = chemin relatif PDF + section draft)
@@ -255,6 +288,91 @@ def cmd_metrics(args: argparse.Namespace) -> int:
     return 0
 
 
+def _last_transition_dt(p: Prospect) -> datetime | None:
+    if not p.history:
+        return None
+    return datetime.fromisoformat(p.history[-1]["ts"])
+
+
+def _followup_rows(prospects: dict[str, Prospect], now: datetime,
+                   only_owner: str | None = None) -> list[dict]:
+    rows: list[dict] = []
+    for p in prospects.values():
+        if only_owner and p.owner != only_owner:
+            continue
+        threshold = FOLLOWUP_THRESHOLDS_DAYS.get(p.state)
+        if threshold is None:
+            continue
+        last = _last_transition_dt(p)
+        if last is None:
+            continue
+        days = (now - last).total_seconds() / 86400
+        ratio = days / threshold if threshold else 0
+        if ratio >= 2.0:
+            urgency = "urgent"
+        elif ratio >= 1.0:
+            urgency = "due"
+        else:
+            urgency = "waiting"
+        action, template = FOLLOWUP_SUGGESTIONS.get(p.state, ("", ""))
+        rows.append({
+            "owner": p.owner,
+            "state": p.state,
+            "days_in_state": round(days, 2),
+            "threshold_days": threshold,
+            "urgency": urgency,
+            "action": action,
+            "template": template,
+            "channel": p.channel,
+            "contact": p.contact,
+        })
+    rows.sort(key=lambda r: (
+        {"urgent": 0, "due": 1, "waiting": 2}[r["urgency"]],
+        -r["days_in_state"],
+    ))
+    return rows
+
+
+def cmd_followup(args: argparse.Namespace) -> int:
+    prospects = load_state()
+    if not prospects:
+        print("État vide.", file=sys.stderr)
+        return 1
+    now = datetime.now(timezone.utc)
+    rows = _followup_rows(prospects, now, only_owner=args.owner)
+    if args.json:
+        print(json.dumps(rows, indent=2, ensure_ascii=False))
+        return 0
+    if not rows:
+        print("Aucun prospect en attente de relance.")
+        return 0
+    buckets = {"urgent": [], "due": [], "waiting": []}
+    for r in rows:
+        buckets[r["urgency"]].append(r)
+    labels = {
+        "urgent": "URGENT (seuil dépassé > 2x)",
+        "due": "À RELANCER (seuil atteint)",
+        "waiting": "EN ATTENTE (seuil pas encore atteint)",
+    }
+    print(f"Followup — snapshot {now.isoformat(timespec='minutes')}\n")
+    for key in ("urgent", "due", "waiting"):
+        items = buckets[key]
+        if not items:
+            continue
+        if key == "waiting" and not args.show_waiting:
+            print(f"[{labels[key]}] {len(items)} prospects (use --show-waiting pour détail)")
+            continue
+        print(f"[{labels[key]}] {len(items)} prospect(s)")
+        for r in items:
+            chan = f" via {r['channel']}" if r.get('channel') else ""
+            print(f"  {r['owner']:<20} {r['state']:<17} {r['days_in_state']:>5.1f}j "
+                  f"(seuil {r['threshold_days']}j){chan}")
+            print(f"    Action  : {r['action']}")
+            print(f"    Template: {r['template']}")
+        print()
+    return 0
+
+
 def cmd_export(args: argparse.Namespace) -> int:
     prospects = load_state()
     if not prospects:
@@ -310,6 +428,13 @@ def main(argv: list[str] | None = None) -> int:
 
     p_export = sub.add_parser("export", help="snapshot Markdown stdout")
     p_export.set_defaults(func=cmd_export)
+
+    p_fu = sub.add_parser("followup", help="qui relancer + template")
+    p_fu.add_argument("--owner", help="filtrer sur 1 prospect")
+    p_fu.add_argument("--json", action="store_true", help="output JSON")
+    p_fu.add_argument("--show-waiting", action="store_true",
+                      help="afficher détails des prospects encore dans les délais")
+    p_fu.set_defaults(func=cmd_followup)
 
     args = parser.parse_args(argv)
     return args.func(args)

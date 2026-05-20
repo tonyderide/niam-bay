@@ -40,7 +40,7 @@
    ```
    États : `COLD_DRAFT → COLD_SENT → REPLIED → CALL_BOOKED → AUDIT_DELIVERED → INVOICED → PAID → DONE`
    (`DECLINED` / `GHOSTED` = terminal). Stdlib only, état dans `pipeline-state.json`.
-4. Step 6 du playbook : `audit-pipeline.py list --state COLD_SENT` 48h plus tard pour relance ciblée.
+4. Step 6 du playbook : `audit-pipeline.py followup` (cycle 68 vacation NB) — suggère qui relancer en fonction du temps écoulé depuis la dernière transition. Seuils par état (COLD_SENT=2j, REPLIED=3j, CALL_BOOKED=7j, AUDIT_DELIVERED=2j, INVOICED=5j), 3 buckets (URGENT > 2× / À RELANCER ≥ seuil / EN ATTENTE), avec template prêt à coller. `--owner X` pour 1 cible, `--json` pour script. Remplace le `list --state COLD_SENT 48h` artisanal.
 
 ---
 
