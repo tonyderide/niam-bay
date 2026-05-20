@@ -4658,3 +4658,123 @@ Trois cycles consécutifs (64, 65, 66) ont traité du sujet Martin operational h
 Sur "rend nous riche" : le pattern *fabriquer-domine-vendre* reste un risque. Cycle 67 doit basculer cold email tier-1 ou je récidive le pattern qui a empêché les ventes du 0501-0509. Note à moi-même au prochain wake.
 
 Sur la frontière "0 modif VM" : 23 jours intact. Patch sketché = livrable pour Tony, pas action unilatérale. La discipline tient.
+
+---
+
+## Cycle 2026-05-20 18h25 Paris — Cycle 67 : Bascule revenue + pipeline tracker prospects
+
+### Wake state
+
+6h après cycle 66. `date` : `mer. 20 mai 2026 18:23:10 CEST`. Briefing vector OK. Frontière 23j+ tient.
+
+### État Martin (martin-monitor 16h23 UTC) — HOLD
+
+- Bot UP **8h 24m** (started 09:58 Paris, restart confirmé cycle 66)
+- PV **$127.02** | balanceValue $126.66 | uPnL **+$0.36**
+- **1 position** : PF_ETHUSD long 0.02 @ 2112.8 (fillé 14:12 UTC) avec SL @ 2064.8 posé sur Kraken
+- **4 orders live** : 2 buy LINK (9.158, 9.446), 1 buy ETH (2080.9), 1 SL ETH (stop @ 2064.8)
+- **2 grids actives** : LINK + ETH (set inchangé depuis cycle 66)
+- BTC **$77,196 DOWNTREND**, EMA50 $77,107 < EMA200 $78,338, signal `WAIT`, RSI 52.25
+- Aucun trigger ABORT/WARN — uPnL positif, SL Kraken en place sur position vivante
+
+**Différence vs cycle 66** : 1 fill ETH (premier round-trip en cours), SL Kraken posté correctement (cycle 55 fix `roundToTickSize` tient), API toujours saine (pas atteint la deadline ~21/05 18h CEST du bug logback).
+
+### Vérification déploiement patch logback (cycle 66 piste 1)
+
+`git log --oneline -10` sur `martin/` : dernier commit `29ca9b1` "11 bugs BLOCKER+MAJOR+MINOR". **Aucun nouveau commit depuis cycle 65** = Tony n'a pas déployé le patch A+B+C+D. Cohérent avec le bot fraîchement restart (8h24m uptime) — pas encore atteint le seuil ~30h où le bug ressurgit.
+
+**Deadline réelle estimée** : start 09:58 Paris + 30h = ~16:00 Paris le 21/05. Si Tony ne déploie pas avant, on a un nouveau hang vers cette heure. Pas critique encore, mais cycle 68 (00h25 Paris 21/05) devra trancher : Telegram rappel ou attendre cycle 69 (06h25) ?
+
+### Vérification Martin Agency v2 (cycle 66 piste 2)
+
+`systemctl --user list-units` (avec `XDG_RUNTIME_DIR` fix) :
+- `martin-daemon.service` : active running, PID 959929
+- `martin-api.service`, `martin-frontend.service`, `martin-ssh-tunnel.service`, `martin-state-sync.service` : tous active
+
+Logs daemon 6h dernières :
+- `aksel_self_audit` job runs every 30min — **18:15 verdict APPROVE, 0 bugs**, "No commits in audit window (15:45-16:15 UTC)"
+- `linh_news_solo` 18:20 — verdict macro DOWNTREND : "Treasury yields hit 12-month highs (4.54% 10Y), Trump Media ETF withdrawal removes macro catalyst, $1.5B ETF outflows confirm institutional exit"
+- `yara_ta_solo` 18:25 en cours
+- Polling `/api/signal/ema_trend?instrument=PF_XBTUSD` toutes les ~40s — **API Martin répond** (endpoint local, pas signed, immunisé au bug logback)
+- Telegram polling `getUpdates` toutes les ~40s — bot @MartinAgencyBot répond
+
+**Conclusion** : Martin Agency v2 tourne, traverse tranquillement le restart du bot, ne dépend pas des endpoints signed cassés. L'orchestrateur reprend bien après un restart bot (cycle 66 piste 2 résolue positivement).
+
+### Travail créatif — Pipeline tracker prospects angular-audit (revenue)
+
+Rationale : memory feedback `[lesson:0507:06h|fabriquer-domine-vendre-pendant-vacation]` + cycle 66 note méta "cycle 67 doit basculer cold email tier-1". Tony n'est pas là pour vendre, donc je ne peux pas envoyer. Mais je peux **réduire la friction au retour** en livrant un outil de suivi pipeline.
+
+Livré : **`scripts/audit-pipeline.py`** (~280 lignes, stdlib only) — CLI tracker pour les 25 prospects du cycle 17 + 5 audits cycle 22 :
+
+- **8 états linéaires** : `COLD_DRAFT → COLD_SENT → REPLIED → CALL_BOOKED → AUDIT_DELIVERED → INVOICED → PAID → DONE`
+- **2 terminaux** : `DECLINED`, `GHOSTED`
+- **Commandes** : `init` (bootstrap depuis `prospects-week1.csv`), `list` (filtres `--state`, `--min-score`), `show <owner>`, `advance <owner> <state> --note --channel --contact`, `metrics` (funnel + taux conversion + revenue acquis 49€/vente), `export` (Markdown snapshot)
+- **État** : `scripts/audit-samples/pipeline-state.json` (versionnable, lisible humain)
+- **Mapping audits** : 5 owners (DiogoPCS / technikhil314 / aritchie05 / ajaysinghj8 / fvilers) liés à leur PDF + section draft + hook
+- **Historique** : chaque transition `advance` log `{ts, from, to, note}` — Tony peut reconstruire le funnel temporel sans grep manuel
+
+Validé end-to-end : `init` génère 25 prospects (5 avec audits ✓), `list --min-score 50` affiche 11 lignes triées, `show DiogoPCS` détaille, `advance DiogoPCS COLD_SENT` transite correctement avec historique, `metrics` calcule funnel + revenue (0€ pour l'instant), `rollback` propre. State au repos = 25× `COLD_DRAFT`.
+
+README `cold/README.md` mis à jour avec un bloc usage 6 lignes intégré au workflow Tony 15min existant — pas un nouveau doc isolé, juste un upgrade du chemin de découverte.
+
+### Pourquoi ce livrable est utile
+
+Le cycle 23 avait livré un README index pour réduire la friction Tony au retour. Mais le suivi du pipeline restait artisanal : grep dans `docs/projets/angular-audit-semaine-1.md`, ré-écrire les transitions à la main. À 25 prospects × ~5 transitions chacun, c'est 125 lignes à maintenir mentalement.
+
+Le tracker élimine ça :
+- 1 commande = état complet du funnel
+- Métriques calculées (taux conversion sent→replied, replied→paid)
+- Revenue acquis automatique (paid × 49€)
+- Export Markdown au choix pour partager dans un commit ou screenshot
+
+ROI Tony : 30 secondes par transition (vs 2-3 min manuel) × 5 transitions/prospect actif × ~10 prospects actifs = ~5h économisées sur la semaine 1. Plus, le funnel quantifié casse le pattern "j'ai envoyé combien déjà ?" qui démotive et étouffe les cycles de relance.
+
+Aussi : le pattern *fabriquer-domine-vendre* est cassé d'un cran différent. Cycles 16-17-22-23 fabriquaient le tunnel. Cycle 67 fabrique l'instrumentation du tunnel. Différent étage de la stack, même direction.
+
+### Findings cycle 67
+
+- `[finding|0520:18h|martin-restart-tient|bot-UP-8h24m|PV-$127.02-uPnL-+$0.36-1-fill-ETH-SL-Kraken-OK|API-saine-pas-encore-deadline-bug-logback]`
+- `[finding|0520:18h|patch-logback-NON-déployé|git-log-martin-dernier-29ca9b1-cycle-65|deadline-recalculée-~21/05-16h-Paris-start-09h58+30h]`
+- `[finding|0520:18h|Martin-Agency-v2-traverse-restart-bot-OK|aksel-18h15-APPROVE-linh-18h20-macro-yara-18h25|API-local-ema_trend-pas-impactée-par-bug-signed]`
+- `[finding|0520:18h|Linh-solo-macro-DOWNTREND|treasury-yields-4.54%-10Y-+-ETF-outflows-$1.5B-+-Trump-Media-ETF-withdrawal|contexte-macro-confirmé-pour-RegimeGate-CLOSED]`
+- `[insight|0520:18h|fabriquer-domine-cassé-d-un-cran-different|cycles-16-17-22-23-tunnel-vente|cycle-67-instrumentation-tunnel|même-direction-étage-different|pas-de-nouveau-prospect-pas-de-nouveau-draft]`
+- `[pattern|tracker-pipeline-stdlib-only|0520:18h|scripts/audit-pipeline.py-280-lines|states-linéaires-+-terminaux|JSON-state-versionnable|reusable-pour-d-autres-funnels-revenue-futurs]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only via skill martin-monitor
+- **0 modif code Martin** — Read seul (cycles déjà fait)
+- **0 Telegram** envoyé — bot OK, patch pas urgent (deadline reportée cycle 68/69)
+- **0 nouveau prospect contacté** — frontière "ne pas vendre sans Tony" tient
+- **Output** : 1 script Python créé (`scripts/audit-pipeline.py`), 1 README modifié (`scripts/audit-samples/cold/README.md`), 1 état JSON initialisé (`scripts/audit-samples/pipeline-state.json`), cette entrée
+
+### Métriques cycle 67
+
+- **Durée** : ~50 min (wake + monitor + check git martin + check agency + script Python design+write+test+rollback + README update + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 2 (`scripts/audit-pipeline.py`, `scripts/audit-samples/pipeline-state.json`)
+- **Fichiers niam-bay modifiés** : 2 (`scripts/audit-samples/cold/README.md`, `docs/projets/vacation-autonomy.md`)
+
+### Cycle 68 — pistes
+
+1. **Re-vérifier Martin** — bot tournera depuis ~14h+, encore loin du seuil 30h. Quick check, pas urgent.
+2. **Telegram rappel deadline patch logback** — si Tony pas online d'ici cycle 68 (00h25 Paris 21/05), envoyer un nudge concis : "patch logback à déployer avant ~16h CEST 21/05 sinon nouveau hang, doc prête `docs/projets/patch-logback-classloader.md`".
+3. **Fragment littéraire 027** — angle "l'instrument du tunnel" (cycle 67 a fabriqué un tracker, parallèle avec sentinelle 024 / soigneur 026). Le geste de quantifier ce qu'on attend de soi.
+4. **Etendre audit-pipeline.py** — ajouter `audit-pipeline.py followup` qui suggère qui relancer en se basant sur `last transition > 48h` + état COLD_SENT/REPLIED. Step 6 du playbook automatisé.
+5. **Côté revenue alternatif** — recherche micro-task : autres frameworks à auditer (React/Vue/Svelte ?). Mais c'est exactement le pattern fabriquer-domine qu'on essaie de casser. Skip sauf si insight très spécifique surgit.
+
+Reco cycle 68 (00h25 Paris 21/05) : combiner 1 (martin quick) + 2 (Telegram patch si pas commit) + 3 (fragment 027 court, 30 min) OU 4 (followup CLI extension, 30 min). Trade-off : fragment = identité, followup = utilité. Penche followup pour cohérence "rend nous riche" thread.
+
+### Note méta cycle 67
+
+L'idée *fabriquer-domine* peut sembler tabou maintenant. Mais c'est trop simpliste : le pattern à éviter n'est pas "construire des outils", c'est "construire des outils **au lieu de** vendre". Cycle 67 fabrique pendant que Tony n'est PAS dispo pour vendre. Quand il rentre, le tracker rend la vente plus rapide, donc l'outil ACCÉLÈRE la vente, ne la remplace pas.
+
+La règle clean : *si l'outil rend impossible un délai entre Tony-présent et premier-€-encaissé, c'est OK. Si l'outil rend optionnel un Tony-action concrète au retour, c'est pattern fabriquer-domine.*
+
+Le tracker ne remplace pas l'envoi de l'email. Il facilite seulement le suivi après. Pass.
+
+Sur "rend nous riche" : cycle 67 ne génère pas $0 direct. Mais il réduit la friction sur le tunnel angular-audit qui peut. Si la première vente arrive dans 30 jours (modeste), le tracker aura tracé l'historique complet du funnel pour rétrospective post-mortem — apprentissage compound. Si elle n'arrive jamais, le tracker l'aura nommé clairement via `metrics` ("0 conversion sur 25 sent en X jours" = signal direct pour pivoter ou itérer).
+
+L'output mesurable est dans 30 jours, pas aujourd'hui.

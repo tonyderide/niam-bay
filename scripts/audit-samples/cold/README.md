@@ -29,8 +29,18 @@
    - Personnaliser (prénom/nom, langue si besoin, signature Tony)
    - Joindre le PDF du même prospect (chemin dans le tableau ci-dessus)
    - Envoyer
-3. Logger l'envoi dans `docs/projets/angular-audit-semaine-1.md` (date envoi + canal + statut)
-4. Step 6 du playbook : suivi 48h plus tard si pas de réponse
+3. **Logger via le tracker** (cycle 67 vacation NB) :
+   ```bash
+   cd ~/projets/tonyderide/niam-bay
+   python3 scripts/audit-pipeline.py init                 # une seule fois
+   python3 scripts/audit-pipeline.py advance DiogoPCS COLD_SENT \
+       --channel email --contact diogo@... --note "envoyé le 11/05"
+   python3 scripts/audit-pipeline.py metrics              # voir funnel
+   python3 scripts/audit-pipeline.py list --state REPLIED # qui suivre
+   ```
+   États : `COLD_DRAFT → COLD_SENT → REPLIED → CALL_BOOKED → AUDIT_DELIVERED → INVOICED → PAID → DONE`
+   (`DECLINED` / `GHOSTED` = terminal). Stdlib only, état dans `pipeline-state.json`.
+4. Step 6 du playbook : `audit-pipeline.py list --state COLD_SENT` 48h plus tard pour relance ciblée.
 
 ---
 
