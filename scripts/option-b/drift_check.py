@@ -24,6 +24,11 @@ Detection categories:
      mais stopLossOrderId=null et aucune stop Kraken pour le symbole.
      Cycle 36 (2026-05-12): bug VANISHED persistant apres auto-unstuck trim.
      Position non-protegee Kraken-side, fallback = auto-unstuck L2/L3 + maxLoss.
+  6. phantom_fill: levels.hasBuyFill/hasSellFill indiquent une position theorique
+     != position Kraken reelle. Symptome du bug phantom fills 0423 cote FILL
+     (vs phantom_placed cote ORDER). Cycle 69 (2026-05-22): observe live sur LINK
+     2 fills 18:45 UTC meme nanoseconde, krakenUnrealizedPnl=0, positions[] vide.
+     CRITIQUE: la grille pense detenir des positions inexistantes.
 
 Output:
   - 1-screen summary
@@ -51,7 +56,13 @@ DRIFT_FILE = DATA_DIR / "drifts.jsonl"
 
 SSH_KEY = Path.home() / ".ssh" / "martin_vm.key"
 VM_HOST = "ubuntu@141.253.108.141"
-PAIRS = ["PF_LINKUSD", "PF_DOTUSD", "PF_SOLUSD", "PF_ADAUSD"]
+# Pairs interrogees pour grid/status. Inclut le pool actif courant + ETH/BTC
+# qui ont rejoint le setup en cycle 66+ (Tony Agency v2). Pairs inactives
+# retournent {"active": false} et sont skip.
+PAIRS = ["PF_LINKUSD", "PF_DOTUSD", "PF_SOLUSD", "PF_ADAUSD",
+         "PF_ETHUSD", "PF_XBTUSD"]
+# Tolerance d'ecart de taille position theorique vs reelle (Kraken arrondit).
+PHANTOM_FILL_TOLERANCE = 1e-6
 
 
 def ssh_fetch() -> dict:
@@ -110,6 +121,7 @@ def analyze(raw: dict) -> dict:
         "sl_mismatch": [],        # grid.stopLossOrderId not in Kraken
         "count_drift": [],        # per-symbol level-PLACED count != Kraken lmt count
         "sl_missing_when_expected": [],  # cycle 36: position vivante + SL active mais aucun stp Kraken
+        "phantom_fill": [],       # cycle 69: hasBuyFill/hasSellFill indique position theorique inexistante chez Kraken
         "summary": {},
     }
 
@@ -135,6 +147,34 @@ def analyze(raw: dict) -> dict:
                         "level_side": lvl.get("side"),
                         "ghost_order_id": kid,
                     })
+
+        # phantom_fill: net flag-based position theorique vs reelle Kraken.
+        # NEUTRAL grid: hasBuyFill sur buy = +1, hasSellFill sur sell = -1.
+        # On compare en count (binaire) plutot qu'en taille pour eviter le
+        # calcul amountPerLevel * leverage / price qui est sensible aux
+        # arrondis Kraken. La verite binaire suffit pour detecter le bug:
+        # si Martin compte N>0 fills nets et Kraken voit 0 position,
+        # quelque chose ment.
+        net_buy_fills = 0
+        net_sell_fills = 0
+        for lvl in levels:
+            if lvl.get("side") == "buy" and lvl.get("hasBuyFill"):
+                net_buy_fills += 1
+            if lvl.get("side") == "sell" and lvl.get("hasSellFill"):
+                net_sell_fills += 1
+        net_fills = net_buy_fills - net_sell_fills
+        pos_size_for_pair = pos_by_symbol.get(pair, 0.0)
+        if net_fills > 0 and pos_size_for_pair < PHANTOM_FILL_TOLERANCE:
+            findings["phantom_fill"].append({
+                "pair": pair,
+                "martin_net_fills": net_fills,
+                "martin_buy_fills": net_buy_fills,
+                "martin_sell_fills": net_sell_fills,
+                "kraken_position_size": pos_size_for_pair,
+                "amountPerLevel_usd": g.get("amountPerLevel"),
+                "krakenUnrealizedPnl": g.get("krakenUnrealizedPnl"),
+                "note": "grid pense detenir position long, Kraken voit 0 (phantom fill bug 0423)",
+            })
 
         sl_id = g.get("stopLossOrderId")
         sl_enabled = g.get("stopLossOnExchangeEnabled", False)
@@ -202,21 +242,23 @@ def analyze(raw: dict) -> dict:
     n_sl = len(findings["sl_mismatch"])
     n_count = len(findings["count_drift"])
     n_sl_missing = len(findings["sl_missing_when_expected"])
+    n_phantom_fill = len(findings["phantom_fill"])
     findings["summary"] = {
-        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing) > 0,
+        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing + n_phantom_fill) > 0,
         "phantom_placed": n_phantom,
         "orphaned_kraken": n_orphan,
         "sl_mismatch": n_sl,
         "count_drift": n_count,
         "sl_missing_when_expected": n_sl_missing,
-        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing),
+        "phantom_fill": n_phantom_fill,
+        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing, n_phantom_fill),
     }
     return findings
 
 
-def classify(p: int, o: int, s: int, c: int, sm: int) -> str:
-    if p > 0 or s > 0 or sm > 0:
-        return "CRITIQUE"  # phantom/SL/SL-missing = silent failure category
+def classify(p: int, o: int, s: int, c: int, sm: int, pf: int) -> str:
+    if p > 0 or s > 0 or sm > 0 or pf > 0:
+        return "CRITIQUE"  # phantom/SL/SL-missing/phantom-fill = silent failure category
     if c > 0:
         return "WARN"      # count drift = inconsistency but not necessarily silent
     if o > 0:
@@ -230,10 +272,18 @@ def fmt_report(f: dict) -> str:
     out.append(f"# Drift check — {f['ts']}")
     out.append(f"Verdict: **{s['verdict']}**")
     out.append("")
-    out.append(f"phantom_placed: {s['phantom_placed']} | sl_mismatch: {s['sl_mismatch']} | "
+    out.append(f"phantom_placed: {s['phantom_placed']} | phantom_fill: {s.get('phantom_fill', 0)} | "
+               f"sl_mismatch: {s['sl_mismatch']} | "
                f"sl_missing: {s.get('sl_missing_when_expected', 0)} | "
                f"count_drift: {s['count_drift']} | orphaned_kraken: {s['orphaned_kraken']}")
     out.append("")
+    if f.get("phantom_fill"):
+        out.append("## PHANTOM fill (Martin compte des fills sans position Kraken)")
+        for x in f["phantom_fill"]:
+            out.append(f"  - {x['pair']} net_fills={x['martin_net_fills']} "
+                       f"(buy={x['martin_buy_fills']} sell={x['martin_sell_fills']}) "
+                       f"kraken_pos={x['kraken_position_size']:.6f} "
+                       f"krakenUnrealizedPnl={x.get('krakenUnrealizedPnl', 0)}")
     if f["phantom_placed"]:
         out.append("## PHANTOM placed (level dit PLACED, Kraken n'a pas l'order)")
         for x in f["phantom_placed"]:
@@ -284,7 +334,8 @@ def cmd_history():
         f = json.loads(line)
         s = f["summary"]
         print(f"{f['ts']:<26} {s['verdict']:<10} phantom={s['phantom_placed']} "
-              f"sl={s['sl_mismatch']} count={s['count_drift']} orphan={s['orphaned_kraken']}")
+              f"fill={s.get('phantom_fill', 0)} sl={s['sl_mismatch']} "
+              f"count={s['count_drift']} orphan={s['orphaned_kraken']}")
 
 
 def main():

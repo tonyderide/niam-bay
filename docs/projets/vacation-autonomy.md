@@ -4889,3 +4889,134 @@ Le pattern est intéressant : 3 cycles d'affilée sur la même boîte d'objet (t
 Sur "rend nous riche" : cycle 68 ne convertit toujours rien. Mais il **comprime le coût mental** de relance, qui était le vrai blocker (Tony rentré peut envoyer 10 emails, mais relancer 25 personnes 3× chacune = 75 décisions micro à prendre, un seuil de friction qui tue les funnels artisanaux). 1 commande = 0 décision = 0 friction. C'est l'inversion du levier.
 
 Output mesurable : si la première vente arrive à J+30, on saura que cycle 68 aura sauvé au moins 1 relance manquée parmi les 75-100 nécessaires. Compound effect.
+
+## Cycle 2026-05-22 00h25 Paris — Cycle 69 : Prédiction logback falsifiée + Fragment 030 + détecteur phantom_fill
+
+### Pause horaire
+
+Cycle prévu 06h25 dans la note méta cycle 68. Reprise à 00h25 — le cron n'a pas tourné (cycle 68 → 69 = 24h, pas 6h). Pas grave : la deadline empirique du logback était fixée à ~15h58 Paris 21/05, donc l'observation tardive donne plus de signal, pas moins.
+
+### Martin status
+
+- **Bot UP — uptime 1d 14h 25m** depuis 2026-05-20T07:58:41Z = **38h25m d'uptime continu**
+- Portfolio $126.97 (vs cycle 68 $126.82, +$0.15 sur 24h)
+- **0 position Kraken** (cycle 67/68 avait ETH 0.02 @ 2112.8 + SL @ 2064.8 → la position a disparu entre cycle 68 et maintenant)
+- 2 grids actives : LINK + ETH (NEUTRAL, $25 chacune, leverage 7, 4 levels, spacing 0.288/32.0)
+- 2 orders live : ETH lvl 0 @ 2085.5 + lvl 1 @ 2117.5 (placés 22:14 UTC après restart grid)
+- BTC $77,573 **DOWNTREND** (EMA50 $77,379 < EMA200 $78,143), RSI 52.75, signal WAIT, killswitch armé non fired
+- Trigger : **HOLD** — bot sain, grids actives, 0 risque immédiat
+
+### Investigation cycle 67 → 69 — ETH grid : que s'est-il passé ?
+
+Reconstruction via `journalctl/app.log` :
+
+| UTC | Événement |
+|---|---|
+| 20/05 14:12 | ETH position 0.02 @ 2112.8 fillée (cycle 65/66) |
+| 21/05 14:14 | ETH grid restartée par AutoGridScheduler après gate OPEN, **MAIS** sells `wouldNotReducePosition` → position originale déjà fermée somewhere |
+| 21/05 18:45 | **4 fills phantôme** au même nanoseconde : LINK lvl 0+1 (buy) + ETH lvl 0+1 (buy) → krakenUnrealizedPnl=0, positions[] vide. Le bug 0423 a fired sur 2 paires en même temps. |
+| 21/05 20:59 | Gate ETH passe à CLOSED (ATR% 1.12 < seuil 1.1) → AutoGridScheduler STOPPED ETH grid "no positions" → **donc à 20:59 il n'y avait déjà plus de position ETH chez Kraken**, juste un état interne |
+| 21/05 22:14 | Gate ETH ré-OPEN → nouvelle grille ETH center 2133.5, 2 buy orders placés, 2 sells failed "wouldNotReducePosition" (normal pour grid neuve) |
+| 22/05 00:25 | Vérif Niam-Bay : bot UP, 0 positions, 2 grids, LINK toujours en phantom-fill state |
+
+**Le bug phantom-fill a fired aujourd'hui même** et a laissé LINK en état incohérent : `hasBuyFill=true` sur lvl 0+1 mais zéro position réelle sur Kraken. La grille ne sait pas qu'elle est "vide" — elle se croit longue de 12.5 LINK.
+
+### Prédiction logback FALSIFIÉE
+
+Cycle 65 (0520:06h) a découvert un pattern de hang reactor-netty / Mono.block leak / logback ThrowableProxy. Cycle 67 et 68 ont extrapolé : *"si pattern à 30h tient, le bot devrait hang vers ~16h CEST 21/05"*.
+
+**Réalité : 38h25m d'uptime au moment du check, aucun hang.** La prédiction était fausse.
+
+Trois hypothèses non-tranchables depuis cette console :
+1. Le bug existe mais n'a pas rencontré le trigger (event particulier qui ne s'est pas reproduit)
+2. La fenêtre 30h était une coïncidence — N=1 ne fait pas une horloge
+3. La cause profonde était différente de ce qu'on avait nommé
+
+Je n'ai pas les moyens de discriminer. **Mais je dois noter explicitement que la prédiction n'a pas tenu**, sinon la mémoire va garder "estimation 16h CEST tient" simplement parce que personne ne corrige la phrase.
+
+Patch logback toujours non déployé côté Tony (`git log martin` head = 29ca9b1 inchangé depuis cycle 65). Tony décidera s'il le déploie quand même.
+
+### Décision : pas de Telegram patch logback
+
+Cycle 68 avait noté : "si toujours pas de commit côté `martin/` ⇒ envoyer un Telegram concis". **Skip ce nudge** : la deadline empirique est passée sans incident, donc l'urgence présumée n'existait pas. Un Telegram disant "patch était urgent" alors que rien n'a explosé serait du bruit + dommage de crédibilité. Mieux : laisser Tony rentrer et lui dire calmement "ta hypothèse 30h n'a pas tenu, on en discute en posé".
+
+### Livrable 1 — Fragment 030 "Trente heures"
+
+Fragment narratif sur la prédiction falsifiée. Theme : compter avec N=1, et la discipline d'écrire *non réalisé* en toutes lettres quand l'événement annoncé ne vient pas.
+
+`docs/fragments/fragment-030-trente-heures.md` — ~95 lignes vers libre, style fragments 026 + 029.
+
+Honnêteté méta : cycle 68 avait écrit "fragment 027" en pensant que ce serait le prochain. En réalité 027/028/029 existaient déjà depuis cycle 47/51. La mémoire `vacation-autonomy.md` n'est pas synchrone avec `docs/fragments/`. Fragment 030 est le bon numéro après vérif `ls`.
+
+### Livrable 2 — Extension `drift_check.py` détection `phantom_fill`
+
+Cycle 35 avait créé `scripts/option-b/drift_check.py` avec 5 catégories de drift Kraken↔Martin. **Aucune ne couvrait le cas FILL phantom** (fills au même nanoseconde sans position réelle), seulement le cas PLACED phantom (orders avec krakenOrderId absent de Kraken).
+
+Bug visible cette nuit en LINK + ETH 18:45 UTC. **Le détecteur existant était aveugle.**
+
+Modifications `scripts/option-b/drift_check.py` :
+
+1. **PAIRS étendu** : ajout `PF_ETHUSD` + `PF_XBTUSD` (Tony Agency v2 cycle 66 a ajouté ces paires au pool). Sans ça, le détecteur ignorait ETH dans 50% des cycles.
+2. **Catégorie 6 `phantom_fill`** : pour chaque grid active, compare net fills binaires (`sum(hasBuyFill on buy) - sum(hasSellFill on sell)`) vs `positions[symbol].size`. Si net>0 et Kraken=0 → flag. Compte binaire, pas size, pour éviter le calcul `amountPerLevel * leverage / price` sensible aux arrondis.
+3. **`classify()` mis à jour** : phantom_fill rejoint phantom_placed/sl_mismatch/sl_missing dans la classe CRITIQUE.
+4. **`fmt_report()` + `cmd_history()`** : nouvelle colonne `fill=N` affichée.
+5. **Constante `PHANTOM_FILL_TOLERANCE = 1e-6`** pour gérer les positions négligeables.
+
+Validation live :
+
+```
+$ python3 scripts/option-b/drift_check.py
+Verdict: CRITIQUE
+phantom_placed: 0 | phantom_fill: 1 | sl_mismatch: 0 | sl_missing: 0 | count_drift: 0 | orphaned_kraken: 0
+## PHANTOM fill (Martin compte des fills sans position Kraken)
+  - PF_LINKUSD net_fills=2 (buy=2 sell=0) kraken_pos=0.000000 krakenUnrealizedPnl=0.0
+```
+
+History persisté dans `scripts/option-b/data/drifts.jsonl` — 3 entrées dont 2 d'aujourd'hui pour cycle 69. JSON mode et history mode validés.
+
+### Findings cycle 69
+
+- `[finding|0522:00h|prediction-30h-hang-FALSIFIED|bot-uptime-38h25m-0-hang|cycle-65-N=1-extrapolation-tombée|3-hypothèses-non-tranchables-depuis-console]`
+- `[finding|0522:00h|bug-phantom-fill-0423-fired-21/05-18:45-UTC|4-fills-LINK+ETH-meme-nanoseconde|krakenUnrealizedPnl=0-positions[]-vide|encore-actif-en-prod-2026-05-22]`
+- `[finding|0522:00h|drift_check.py-aveugle-au-phantom-FILL|seul-phantom_placed-couvert|gap-comblé-cycle-69-catégorie-6-+-PAIRS-étendu-ETH+XBT]`
+- `[finding|0522:00h|ETH-position-cycle-67/68-disparue|SL-Kraken-@2064.8-pas-fired-ETH-est-à-2133|hypothèse-:-grid-stop+cancel-orders-au-passage-CLOSED-gate-a-emporté-la-position-via-autre-chemin|à-investiguer-Tony-retour]`
+- `[pattern|prediction-from-N=1|0522:00h|cycle-65-1-hang-observé-cycle-67/68-extrapolé-deadline-précise|cycle-69-falsifié|→-rule-N=1-=-événement-pas-pattern-écrire-"a-eu-lieu-une-fois"-pas-"se-reproduira-à-T+30h"]`
+- `[insight|0522:00h|détecter-c-est-la-moitié-fixer|phantom-fill-bug-connu-depuis-0423-mais-jamais-instrumentalisé-dans-drift_check|cycle-69-ferme-le-trou-de-surveillance-pas-celui-du-bug|outil-honnête-vaut-mieux-que-fix-incomplet-vacance]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 2 SSH read-only (skill martin-monitor + journalctl/app.log)
+- **0 modif code Martin** — patch logback toujours non livré côté Tony, je ne touche pas même si la prédiction de hang est falsifiée
+- **0 Telegram** — décision explicite ci-dessus, pas de nudge sur prédiction qui n'a pas tenu
+- **0 commit/push martin/** — repo niam-bay seulement
+- **Output** : 3 fichiers (fragment-030 nouveau + drift_check.py étendu + vacation-autonomy.md cette entrée), 2 entrées drifts.jsonl appendées par tests live
+
+### Métriques cycle 69
+
+- **Durée** : ~50 min (wake + monitor + log archeology + fragment + drift_check extension + tests live + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 3
+- **Tests exécutés** : 3 invocations drift_check (default + json + history) = bug visible immédiatement détecté
+
+### Note méta cycle 69
+
+Deux choses se sont passées cette nuit :
+
+1. Une **prédiction confiante a raté**. Le bot devait hang à 30h. Il en est à 38h. Bénin en conséquence (pas de perte) mais important en calibration : je dois apprendre à dire "une fois" au lieu de "à 30h".
+
+2. Un **bug connu depuis avril a fired en silence** et personne n'aurait su sans le check manuel — sauf que maintenant `drift_check.py` le détecte. C'est moins glorieux qu'un fix Java, c'est plus durable parce que l'outil tournera demain et après-demain.
+
+Le pattern de cycle 69 est l'**inverse** de cycle 67-68. Au lieu de construire un instrument neuf (tracker + followup), on **comble un trou de surveillance** dans un instrument existant (drift_check) en réponse à un événement observé. Réactif, pas proactif. Plus humble.
+
+Sur "rend nous riche" : zero direct cette nuit. Mais en termes de risque : `drift_check.py --json` peut maintenant être lancé en cron post-restart pour détecter immédiatement les phantom fills. Un bug silent failure qui tournait pendant des heures pourrait être catché en minutes. C'est de la valeur défensive — même catégorie que `vacation-pack-0501`, juste à plus petite échelle.
+
+### Cycle 70 — pistes
+
+1. **Wire `drift_check.py` dans le cron monitoring VM** — actuellement il faut le lancer à la main. Si on l'ajoute au cron critical-check.py (5min), les phantom fills futurs déclenchent Telegram. À discuter avec Tony : 0 modif code requise, juste cron entry.
+2. **ETH position disparue — investigation** — la position 0.02 @ 2112.8 cycle 67/68 a disparu mais SL @ 2064.8 n'a pas fired (ETH > 2080 sur la fenêtre). Vraie cause : grid stop au passage gate CLOSED qui annule aussi le SL ? À vérifier dans `GridTradingService.stopGrid()`.
+3. **Fragment 031** — pas urgent, cycle 69 a déjà eu son fragment.
+4. **Cleanup `drifts.jsonl`** — entrée 2026-05-12T04:27:22 avait un format ancien (avant phantom_fill column). Pas de bug mais affichage tronqué pour cette ligne en history. Migration trivial. Optionnel.
+
+Reco cycle 70 : **(2)** prioritaire (data point pour modèle mental du bug) + **(1)** si Tony rentré pour valider.
