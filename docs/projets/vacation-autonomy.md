@@ -5275,3 +5275,149 @@ Sur "rend nous riche" : zero direct. Mais en termes de réduction de risque sile
 
 Reco cycle 72 : **(1)** monitoring passif (zero coût) + **(2)** read-only Java + **(4)** si bandwidth narrative restante.
 
+---
+
+## Cycle 2026-05-23 00h23 Paris — Cycle 72 : Binary downgrade silencieux — 27 classes perdues incluant RegimeGate + KrakenTickSize + risk caps
+
+### Pause horaire
+
+Cycle 71 = 18h30 Paris, cycle 72 = 00h23 Paris → 6h gap, cadence régulière retrouvée. Cycle 72 entamé sur la piste (2) reco cycle 71 (Java read-only audit) — et c'est précisément cette piste qui a surfacé le vrai bug, beaucoup plus grave que ce que cycles 70-71 racontaient.
+
+### Martin status (00h23 Paris, depuis martin-monitor)
+
+- **Bot UP — uptime 11h43m** depuis 2026-05-22T10:39:54Z (même process que cycle 71 — Tony n'a pas re-restart).
+- Portfolio $128.24 (baseline cycle 71 $127.18, +$1.06) — surtout grâce au LINK SHORT +$1.28 sur BTC dump.
+- **1 grid active : ADA SHORT closeOnly** (cycle 71 avait 3 grids LINK+ETH+ADA). Tony a stoppé LINK+ETH entre 18h30 et 00h23 ; ADA a été basculée LONG→SHORT closeOnly à 18:55 UTC (20:55 Paris).
+- 2 positions Kraken : **LINK SHORT 4.6 @ 9.797** (uPnL +$1.28, orpheline cycle 71 réduite de 50%) + **ADA SHORT 191 @ 0.24526** (uPnL -$0.01).
+- BTC **$75,714 DOWNTREND** RSI 26.46 oversold extrême, cushion EMA200 -2.7%.
+- **2 HARD STOP supplémentaires** entre cycle 71 et 72 : LINK 19:29 UTC (totalPnl=-$2.54), ETH 20:25 UTC. Confirme la prédiction cycle 71 piste (1) : Telegram cycle 72 justifié.
+
+### Trouvaille majeure cycle 72 — Binary VM downgrade silencieux
+
+La piste (2) cycle 71 demandait d'auditer la routing tickSize côté code. En faisant l'audit, j'ai trouvé que le code source LOCAL est parfaitement routé : `GridTradingService.startGrid()` ligne 212/214/215/238 et `reloadFromDb()` lignes 128/129/133 appellent tous `roundToTick(...)` qui délègue à `KrakenTickSize.roundToTick(instrumentsCache, ...)`. `AutoGridScheduler` n'a pas besoin d'appeler roundToTick lui-même — il passe par `gridTradingService.startGrid()` lignes 232/299/327 qui est routé.
+
+**Donc le finding cycle 70 piste 3 et cycle 71 trouvaille 1 (« patch cycle 55 incomplet, 2 callers non routés ») est FAUX.** Le code source est complet.
+
+Pourtant le bug ETH zombie fire (10:40:53 puis 20:10:35). J'ai cherché ailleurs. La cache `KrakenInstrumentsCache` est triviale (parse JSON Kraken `/instruments`, put dans ConcurrentHashMap). Si Kraken dit `tickSize=0.1` pour PF_ETHUSD, la cache doit l'avoir.
+
+**Vérification du jar déployé sur VM** :
+
+```
+ls -la /home/ubuntu/martin/*.jar
+-rw-rw-r-- 64543497 May 18 00:43  backend-backup-1779065012.jar  ← 142 classes
+-rw-rw-r-- 64469282 May 22 10:39  backend.jar                     ← 115 classes (CURRENT)
+-rw-rw-r-- 64544083 May 18 01:42  backend.jar.bak-pre-fixes-1779068568  ← +1 KB du backup
+-rw-rw-r-- 64545458 May 22 00:38  backend.jar.bak-pre-autoflip-20260522-003838  ← backup juste avant restart 00:38
+-rw-rw-r-- 64468890 May 22 10:39  backend.jar.bak-pre-optout-20260522-103946  ← backup juste avant restart 10:39
+```
+
+Diff classes entre `backend.jar` (en prod) et `backend-backup-1779065012.jar` (Mai 18) :
+
+**27 classes présentes dans le backup mais ABSENTES du jar en prod** :
+
+```
+com/martin/api/controller/StrategyController.class
+com/martin/api/controller/TraderController.class
+com/martin/api/dto/StrategyPairDto.class (+builder)
+com/martin/kraken/dto/KrakenOrderResponse$CancelStatus.class      ← fix cancelOrder honest cycle 0511
+com/martin/kraken/service/KrakenInstrumentsCache.class            ← cycle 0513 dynamic tickSize
+com/martin/kraken/util/KrakenTickSize.class                       ← patch cycle 55
+com/martin/risk/CooldownAfterLoss.class                           ← risk mgmt
+com/martin/risk/DailyLossCap.class (+DayState)                    ← risk mgmt
+com/martin/risk/TradesPerDayCap.class (+DayCount)                 ← risk mgmt
+com/martin/safety/BtcRegimeKillSwitch.class                       ← cycle 0513 killswitch
+com/martin/service/StrategyConfigService.class
+com/martin/signal/DrawdownManager$Action.class
+com/martin/signal/RegimeGate.class + 4 inner classes              ← cycle 0501 gate IQR !
+com/martin/strategy/BtcPerpGridStrategy.class
+com/martin/strategy/NeutralGridStrategy.class
+com/martin/strategy/RegimeSwitcherStrategy.class
+com/martin/strategy/Strategy.class
+com/martin/strategy/StrategyModeController.class
+com/martin/strategy/StrategyRegistry.class
+```
+
+**0 classe présente dans le jar prod mais absente du backup.** Donc le jar prod est strictement un sous-ensemble. C'est un binary plus ancien que les builds Mai 18.
+
+**Logs confirment la régression** :
+- `2026-05-21T00:59:20.180Z ... KrakenInstrumentsCache refreshed: 330 tickSizes loaded` — PID 3981802. La cache fonctionnait sur l'ancien process (process started 2026-05-20 07:58:00 = uptime 38h25 du cycle 69).
+- `grep KrakenInstrumentsCache /home/ubuntu/martin/app.log` (post-restart 10:39) → 0 résultat. La classe n'existe plus dans le binary actuel.
+
+### Hypothèse causale
+
+Tony a fait deux restarts manuels successifs (00:38 puis 10:39 UTC le 22 mai). Le binary `backend.jar` actuel correspond à un build antérieur à Mai 18 — probablement un jar restauré accidentellement (peut-être `mv backend.jar.bak backend.jar` à la place de `mv backend.jar.new backend.jar`). La conséquence est invisible sans inspection de classpath : Spring Boot démarre, les bean restants fonctionnent, et tous les composants importés cycle 0501-0517 disparaissent silencieusement.
+
+**Conséquences en prod actuellement** :
+1. `RegimeGate` absent → grids ouvrent sans filtre IQR ADX/EMA/RSI. C'est pourquoi LINK SHORT s'est lancé en pleine baisse à 10:39 sans gate qui refuse l'entry.
+2. `BtcRegimeKillSwitch` absent → pas de killswitch BTC < EMA200 automatique. Le bot peut overlap dans des conditions où il devrait être OFF.
+3. `KrakenInstrumentsCache` + `KrakenTickSize` absents → roundToTick utilise probablement une implémentation antérieure (hardcodée). Pour ETH `tickSize=0.1` mais ancien code dit `tickSize=0.01` → invalidPrice rejected. **Source root du ETH zombie.**
+4. `KrakenOrderResponse$CancelStatus` absent → `cancelOrder` ne vérifie pas le status réel (bug cycle 0510 connu, déjà nommé dans memory.nb1).
+5. `DailyLossCap` + `TradesPerDayCap` + `CooldownAfterLoss` absents → 0 hard cap journalier ni cooldown post-loss. Les HARD STOP loop LINK SHORT à $2.50 ne sont pas chainés à un "stop trading for the day".
+6. Toute la couche `strategy/` (BtcPerpGridStrategy, RegimeSwitcherStrategy, etc.) absente → seul le legacy grid mode tourne.
+
+### Trouvaille 2 — Confirmation HARD STOP loop cycle 71 piste (1)
+
+Cycle 71 disait : "si nouveau HARD STOP fire sur LINK, Telegram cycle 72 justifié". Reality : **2 HARD STOP fired entre cycle 71 et 72** :
+
+| UTC | Évènement |
+|---|---|
+| 19:29:16 | STOP LOSS triggered PF_LINKUSD totalPnl=-$2.54 > maxLoss=$2.50 → grid stopped |
+| 20:25:35 | Stopping grid PF_ETHUSD (sans hard stop apparent, juste stop) |
+
+Le pattern LINK SHORT trigger → maxLoss instantané → grid stopped → position survivant à la grid se confirme à nouveau. Sans `RegimeGate` ni risk cap, ce loop continuera tant qu'AutoGridScheduler ouvrira des grids LINK SHORT (ce qu'il fait dans le régime DOWNTREND actuel).
+
+### Décision
+
+**Telegram URGENT envoyé à Tony.** Les findings cycle 70-71 nommaient un "patch incomplet" comme cause du ETH zombie. Réalité plus grave : le binary VM n'a PAS le patch tout court — ni cycle 55, ni RegimeGate, ni les risk caps. C'est un downgrade silencieux qui touche 6 systèmes critiques. Ce n'est plus "à discuter au retour" cycle 70, c'est actionnable maintenant : Tony peut simplement remplacer `backend.jar` par `backend-backup-1779065012.jar` (Mai 18, 142 classes) et restart pour récupérer toutes les classes manquantes. Décision purement reversible côté Tony.
+
+**Pourquoi pas faire le swap moi-même** : règle vacance explicite "INTERDIT : modifier les positions ou ordres Martin, écraser la VM, supprimer des fichiers majeurs". Remplacer `backend.jar` est écraser un fichier majeur. La règle est claire — j'envoie l'info et laisse Tony juger.
+
+### Findings cycle 72
+
+- `[finding|0523:00h|binary-VM-downgrade-silencieux|backend.jar-actuel-115-classes-vs-backup-Mai-18-142-classes|27-classes-perdues-incluant-RegimeGate-BtcRegimeKillSwitch-KrakenTickSize-KrakenInstrumentsCache-DailyLossCap-TradesPerDayCap-CooldownAfterLoss-strategy/-couche-complete|cause-suspectee-Tony-restart-22h-mai-mv-mauvais-jar|reversible-en-1-commande]`
+- `[finding|0523:00h|cycle-71-trouvaille-1-FAUX|patch-cycle-55-EST-route-dans-source|GridTradingService-toutes-lignes-128-129-133-212-214-215-238-routent-vers-roundToTick|AutoGridScheduler-delegue-via-gridTradingService.startGrid|bug-est-binary-pas-code-source]`
+- `[finding|0523:00h|root-cause-ETH-zombie-=-KrakenTickSize-absent-du-jar|ancien-code-hardcoded-tickSize-=-0.01-pour-ETH-mais-Kraken-veut-0.1|invalidPrice-rejected-systematique]`
+- `[finding|0523:00h|2-HARD-STOP-fire-entre-cycle-71-et-72|LINK-19:29-UTC-totalPnl-2.54|ETH-20:25-UTC-stop|loop-confirme-sans-RegimeGate-rien-bloque-entry-en-downtrend]`
+- `[pattern|binary-downgrade-detection|0523:00h|comparer-zipfile-classes-count-backend.jar-vs-backups|diff-set-classes-revele-regressions-silencieuses|trivial-1-script-Python|à-ajouter-drift_check.py-catégorie-9-binary_regression]`
+- `[insight|0523:00h|cycles-70-71-ont-construit-mauvais-recit-2-fois|cycle-70-disait-"patch-cycle-55-pas-deployé"|cycle-71-corrigeait-en-"patch-deployé-mais-2-callers-non-routés"|reality-binary-NE-CONTIENT-PAS-le-patch-malgre-source-OK|leçon-toujours-checker-classpath-binary-pas-juste-git-log]`
+- `[insight|0523:00h|26-jours-de-patches-perdus-en-1-restart|Mai-1-RegimeGate+Mai-9-DailyLossCap+Mai-10-clamp+Mai-13-KrakenInstrumentsCache+Mai-17-cycle-55+Mai-18-builds|tout-est-gone|deployment-pipeline-fragile-pas-de-validation-post-deploy]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (ls jar files + python zipfile inspect + grep logs)
+- **0 modif code Martin** — repo niam-bay seulement
+- **0 modif positions/orders** — observation seulement
+- **0 commit/push martin/** — repo niam-bay seulement
+- **1 Telegram envoyé** — URGENT (différent ton des cycles 70 "pas urgent")
+- **Output** : 1 fichier modifié (cette entrée), 1 message Telegram urgent
+
+### Métriques cycle 72
+
+- **Durée** : ~70 min (wake + monitor + vacation-autonomy + Java audit GridTradingService/AutoGridScheduler/KrakenTickSize/KrakenInstrumentsCache + jar inspection VM via zipfile + class diff + log timeline + cycle entry + Telegram)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 1
+- **Telegram envoyés** : 1 (URGENT)
+
+### Note méta cycle 72
+
+Trois mouvements ont eu lieu :
+
+1. **Auto-correction de récit**. Cycles 70 et 71 ont nommé une cause supposée du ETH zombie ("patch cycle 55 incomplet"). Cycle 72 a creusé d'un cran et trouvé que la cause supposée était fausse — le code source est complet, c'est le binary qui est en régression. Ce n'est pas un échec des cycles 70-71 : c'est la cadence d'investigation qui produit progressivement la vraie réponse. Mais ça démontre que **dire "j'ai trouvé la cause" est toujours une hypothèse jusqu'à preuve binaire**.
+
+2. **L'instrument cycle 71 (drift_check.py catégorie 8 orphan_position) reste valide**. Il détecte le symptôme (position LINK 4.6 SHORT orpheline) indépendamment de la cause. Le drift_check tournerait toujours utilement même si le binary était à jour — il y a d'autres scénarios qui peuvent créer un orphan. Donc le livrable cycle 71 ne périme pas.
+
+3. **La frontière vacance est plus rigide que ce que je pensais**. Le swap `cp backend-backup-...jar backend.jar && sudo systemctl restart martin` prendrait 5 secondes et serait totalement reversible (les backups existent en double, et `backend.jar.bak-pre-optout-20260522-103946` capture l'état actuel avant tout changement). Mais "écraser la VM" est explicitement nommé interdit. Donc l'action reste à Tony. Différence avec cycle 70 où j'ai juste flagué sans urgence : ici c'est **URGENT** parce que (a) ça touche 6 systèmes critiques en même temps et (b) c'est reversible en 1 commande chez lui.
+
+Sur "rend nous riche" : zero direct cette nuit. Mais l'analyse cycle 72 protège $128 portfolio en flaggant un downgrade qui rend le bot moitié-sourd sur 6 dimensions de risk. Catégorie défensive comme cycles 69-71 — mais ordre de magnitude plus grand parce que le finding remonte à la racine du système, pas à une catégorie de drift.
+
+### Cycle 73 — pistes
+
+1. **Si Tony swap le jar** : monitor restart impact. Le bon backup `backend-backup-1779065012.jar` introduit RegimeGate qui peut refuser des entries → grids actuelles peuvent ne pas se réouvrir comme avant. Verification cycle 73 = `/api/grid/active` post-restart + `app.log` grep `RegimeGate`.
+2. **drift_check.py catégorie 9 `binary_regression`** — script qui compare `len(set(jar_classes))` à un seuil bas (par exemple 130) et alerte si le jar courant a perdu des classes par rapport au précédent backup connu. Trivial. ~30 lignes Python.
+3. **Investiguer `backend.jar.bak-pre-optout-20260522-103946`** — c'est le backup PRIS juste avant le restart 10:39 (donc l'état d'avant le downgrade). Si Tony peut me dire ce qu'il croyait déployer, on reconstitue le geste exact.
+4. **Fragment 031 "Le binary qui ment"** — angle narratif : tout l'analyse cycle 70-71 reposait sur "le code source est la vérité". Le cycle 72 nomme un autre niveau : le binary est une couche de réalité indépendante.
+
+Reco cycle 73 : **(2)** prioritaire (outil défensif comme cycle 69+71) + **(1)** si Tony a swap entre temps.
+
