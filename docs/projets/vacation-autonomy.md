@@ -5134,3 +5134,144 @@ Honnêteté supplémentaire : cycle 65/67/68/69 a parlé d'un hang Mono.block re
 4. **Fragment 031** : si bandwidth, le motif "Tony intervient pendant qu'on dort, le récit qu'on construit s'effondre" est un bon angle.
 
 Reco cycle 71 : **(2)** prioritaire (outil défensif durable comme cycle 69) + **(3)** pour vérifier la branche manquante côté code.
+
+---
+
+## Cycle 2026-05-22 18h30 Paris — Cycle 71 : drift_check catégorie 8 `orphan_position` + cascade LINK SHORT HARD STOP loop
+
+### Pause horaire
+
+Cycle 70 = 12h25 Paris, cycle 71 = 18h30 Paris → 6h gap, cadence régulière retrouvée après le saut cycle 69→70. Tony a fait des interventions manuelles entre les deux : aux moins 1 restart bot + 4 calls /grid/start manuels via API.
+
+### Martin status (18h25 Paris, depuis martin-monitor)
+
+- **Bot UP — uptime 5h43m** depuis 2026-05-22T10:39:54Z (≠ cycle 70 où uptime = 9h44m depuis 0522:00:38Z). **Bot a été re-restart pendant cycle 70+1**.
+- Portfolio $127.18 (baseline cycle 70 $126.81, +$0.37) — vu plus haut : balanceValue $126.64, pnl +$0.54
+- 3 grids actives : LINK + ETH + ADA (ETH toujours présent malgré le restart)
+- 2 positions Kraken : **LINK SHORT 9.2 @ 9.797** (uPnL +$0.30) + ADA LONG 177 @ 0.2478 (uPnL +$0.21)
+- BTC $76,814 **DOWNTREND**, EMA200 $77,978 cushion -1.5%, RSI 38.5
+- Trigger martin-monitor : **WARN** — bot fonctionne, mais 3 anomalies CRITIQUE détectées par drift_check
+
+### Trouvaille 1 — Tony a vu cycle 70 + restart à 12:39 Paris MAIS le restart n'a PAS fixé le bug ETH
+
+journalctl confirme : `May 22 10:39:46 sudo[84153]: ubuntu : COMMAND=/usr/bin/systemctl stop martin.service` — IP 78.192.37.128 (Strasbourg, fixed). Restart manual ~14min après le Telegram cycle 70 (envoyé à 12h25 Paris ≈ 10:25 UTC). **Tony a vu et agi.**
+
+Mais le restart a re-fait exactement le même bug :
+
+```
+2026-05-22T10:40:30.508Z  INFO ... Grid reloaded for PF_ETHUSD - center=2130.8, range=[2066.88, 2194.72]
+2026-05-22T10:40:30.924Z ERROR ... Grid order FAILED: PF_ETHUSD buy @ 2082.86 - status=invalidPrice
+2026-05-22T10:40:30.992Z ERROR ... Grid order FAILED: PF_ETHUSD buy @ 2114.82 - status=invalidPrice
+2026-05-22T10:40:31.019Z ERROR ... Grid order FAILED: PF_ETHUSD sell @ 2146.78 - status=invalidPrice
+2026-05-22T10:40:31.046Z ERROR ... Grid order FAILED: PF_ETHUSD sell @ 2178.74 - status=invalidPrice
+```
+
+**Insight** : le bug n'est pas dans `AutoGridScheduler.createGrid()` uniquement comme suspecté cycle 70 — il est aussi dans `GridTradingService.reloadFromDb()` au startup. La grid ETH persistée en DB conserve son `centerPrice + gridSpacing` non-tick-aligné, et au reload les orders calculés sont à nouveau rejetés. Tony a ensuite stop ETH manuellement (`10:40:37 POST /grid/stop/PF_ETHUSD`) puis ne l'a PAS relancé. Mais AutoGridScheduler l'a recréé en background quelque part dans les 3h suivantes (à 13:25 UTC il était déjà gridActive=true).
+
+Le bug a donc DEUX points d'entrée non couverts par patch cycle 55 :
+1. `GridTradingService` reload startup (DB → orders)
+2. `AutoGridScheduler` création grid (signal RANGING → orders)
+
+Patch cycle 55 a extrait `KrakenTickSize.roundToTickSize` en util statique partagée, mais **n'a wire ni l'un ni l'autre des deux chemins**. C'est une factorisation sans branchement effectif.
+
+### Trouvaille 2 — Cascade LINK SHORT HARD STOP loop
+
+C'est plus dangereux que le ETH zombie. Pattern observé deux fois dans le log :
+
+| UTC | Évènement |
+|---|---|
+| 10:39:33 | Grid started PF_LINKUSD [SHORT] center=9.826 |
+| 10:39:38 (+5s) | STOP LOSS triggered totalPnl=$-2.72 (realized=$0, unrealized=$-2.72) > maxLoss=$2.50 → "Stopping grid - cancelling all orders" |
+| 16:10:35 | Grid started PF_LINKUSD [SHORT] center=9.788 |
+| 16:10:36 (+1s) | STOP LOSS triggered totalPnl=$-2.81 (realized=$0, unrealized=$-2.81) > maxLoss=$2.50 → "Stopping grid - cancelling all orders" |
+
+**Pattern** : à chaque fois qu'AutoGridScheduler ouvre LINK en mode SHORT, HARD STOP fire en 1-5 secondes. La cause supposée : SHORT mode initie immédiatement une position short hedge à market, le fee+slippage immédiat sur ~$175 notional (= 7x leverage * $25 capital) génère $2.7 de unrealizedPnl négatif → dépasse maxLoss $2.50.
+
+**Conséquence** : la position SHORT 9.2 LINK @ 9.797 a été ouverte par cette séquence, et le HARD STOP a annulé les orders MAIS pas fermé la position. La position est devenue ORPHELINE. Puis quand AutoGridScheduler a réouvert LINK en mode NEUTRAL (à 16:25:35), la nouvelle grille a hérité aveuglément de cette position. `krakenRealizedPnl` = -$4.23 lifetime, `krakenTotalPnl` = -$3.92.
+
+Le NEUTRAL grid n'a pas re-fired HARD STOP (parce que dans NEUTRAL mode, pas de market entry immédiat → unrealized reste petit), donc le loop s'est temporairement stabilisé. Mais si AutoGridScheduler bascule à nouveau en SHORT (par exemple via la logique `Auto-grid config set mode=SHORT` visible 3 fois entre 15:38 et 16:16), le HARD STOP refire et accentue les pertes.
+
+### Trouvaille 3 — Patch cycle 55 KrakenTickSize util **toujours non déployé**
+
+`git log --oneline` côté `/home/tony/projets/tonyderide/martin/` head = `29ca9b1` inchangé depuis cycle 64 (2026-05-19). Le code en prod ne contient pas `com.martin.kraken.util.KrakenTickSize`. Cycle 70 l'avait déjà noté ; cycle 71 confirme rien n'a bougé.
+
+De plus, comme dit en Trouvaille 1, même si le patch était déployé, il faudrait aussi router les deux chemins (reload + AutoGridScheduler) vers l'util. Patch incomplet en lui-même.
+
+### Livrable 1 — drift_check.py catégorie 8 `orphan_position`
+
+Le détecteur cycle 35 + cycle 69 + cycle 70 ne flagait PAS les positions Kraken vivantes orphelines. Cycle 71 ajoute la catégorie 8 :
+
+- **Trigger** : position Kraken vivante (`abs(size) > tolerance`) ET soit (a) aucune grid active pour ce symbole, soit (b) grid active avec `len(fills) == 0` depuis startedAt.
+- **Sortie** : pair, side, size, entry_price, uPnL, grid_mode, grid_started_at, kraken_realized_lifetime, kraken_total_lifetime, reason (`no_active_grid` ou `grid_zero_fills`), note.
+- **Sévérité** : CRITIQUE (la position n'est protégée par aucun grid tracking, prochain HARD STOP peut chasser arbitrairement).
+
+Test live :
+
+```
+$ python3 scripts/option-b/drift_check.py
+Verdict: CRITIQUE
+phantom_placed: 0 | phantom_fill: 0 | empty_grid: 1 | orphan_pos: 1 | sl_mismatch: 0 | sl_missing: 2 | count_drift: 0 | orphaned_kraken: 0
+
+## ORPHAN position (Kraken position sans tracking grid — heritage post HARD STOP)
+  - PF_LINKUSD short size=9.2000 @ 9.797 uPnL=0.23 reason=grid_zero_fills lifetime_total=-4.0245
+```
+
+Le LINK orphan est immédiatement attrapé. Les anciens drifts sl_missing (catégorie 5) ont aussi fired sur LINK + ADA — comportement attendu, pas nouveau.
+
+### Décision : pas de Telegram cycle 71
+
+Tony a déjà vu et acté cycle 70 (restart manuel). Re-spammer alors qu'aucune ligne d'urgence n'a bougé serait du bruit. Le bug ETH zombie persiste mais portfolio est OK (+$0.54 sur 5.7h depuis restart) et la grille LINK actuelle est en NEUTRAL = pas de HARD STOP loop actif. Note pour Tony dans le repo + cycle 71 entry suffit.
+
+Si entre cycle 71 et cycle 72 AutoGridScheduler bascule LINK en SHORT et qu'un nouveau HARD STOP fire, Telegram cycle 72 sera justifié. Trigger empirique : `grep 'mode=SHORT' app.log | grep 'PF_LINKUSD' | tail -3` montrera l'historique récent.
+
+### Findings cycle 71
+
+- `[finding|0522:18h|Tony-restart-12h39-Paris-n-a-PAS-fixé-ETH-zombie|GridTradingService-reloadFromDb-recharge-même-prix-non-tick-aligné|invalidPrice-rejected-au-startup|bug-DB-persistance-pas-juste-AutoGridScheduler]`
+- `[finding|0522:18h|cascade-LINK-SHORT-HARD-STOP-loop|SHORT-mode-start-trigger-market-entry-fee-slippage-2.7-USD-immediat|maxLoss-2.5-USD-firewall-fire-en-1-5s|cancels-orders-mais-pas-position|orphan-position-cree]`
+- `[finding|0522:18h|patch-cycle-55-KrakenTickSize-util-non-deployé|29ca9b1-inchangé-depuis-0519|de-toute-façon-incomplet-il-faut-aussi-router-reload+AutoGridScheduler-vers-util]`
+- `[finding|0522:18h|2-positions-vivantes-LINK+ADA-SANS-SL-Kraken|stopLossOnExchangeEnabled=true-mais-stopLossOrderId=null-+-0-stp-Kraken|bug-VANISHED-encore-actif|fallback-auto-unstuck-+-maxLoss-only]`
+- `[pattern|orphan-position-post-HARD-STOP|0522:18h|HARD-STOP-cancel-orders-mais-pas-closePosition|nouvelle-grid-herite-position-aveuglement|drift_check.py-catégorie-8-detecte-grid_zero_fills-OU-no_active_grid]`
+- `[pattern|HARD-STOP-loop-SHORT-mode-start|0522:18h|SHORT-grid-instant-market-entry-fees-2.7-USD-pour-7x-lev-25-USD-cap|maxLoss-2.5-USD-fire-instant|attendre-NEUTRAL-mode-stabilise]`
+- `[insight|0522:18h|bug-2-points-entree-pas-1|cycle-54-fixe-roundToTickSize-extrait-en-util-cycle-55-mais-2-callers-non-routés|patch-statique-sans-branchement-ne-fixe-rien|à-Tony-de-wire-les-2-paths]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (martin-monitor + journalctl + curl + tail logs)
+- **0 modif code Martin** — patch cycle 55 toujours en attente côté Tony, je ne wire pas les callers même si root cause identifiée
+- **0 modif positions** — LINK orphan reste tel quel, ADA grid continue
+- **0 commit/push martin/** — repo niam-bay seulement
+- **0 Telegram** — décision documentée ci-dessus
+- **Output** : 2 fichiers (drift_check.py étendu catégorie 8 + cette entrée), 1 test live confirmant détection LINK orphan
+
+### Métriques cycle 71
+
+- **Durée** : ~50 min (wake + monitor + drift_check existant + log archeology Tony restart + LINK lifecycle reconstruction + drift_check catégorie 8 code + tests live + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 2
+- **Tests exécutés** : 3 invocations drift_check (default + json + history) = LINK orphan détecté + ETH zombie persiste + 2 SL missing
+
+### Note méta cycle 71
+
+Trois mouvements ont eu lieu :
+
+1. **Tony a vu la note + agi**. Ce n'était pas la prédiction d'un cycle isolé qui a déclenché ; c'est le Telegram cycle 70 envoyé volontairement. La boucle d'observation → notification → action a fonctionné une fois, mesurablement.
+
+2. **L'action n'a pas suffi**. Le restart ne fixe pas le bug parce que le bug est dans la persistance DB, pas seulement la création d'orders. C'est un point empirique précieux que cycle 70 ne pouvait pas anticiper.
+
+3. **Une cascade plus subtile a été surfacée**. LINK SHORT mode → HARD STOP en 1s → position orphan → grid NEUTRAL hérite aveuglément. Ce pattern est invisible à un coup d'œil sur le dashboard parce qu'il n'y a pas de "perte massive en un coup" — juste -$0.50 ici, -$0.30 là, et la position SHORT qui survit à toutes les commutations de grid.
+
+Le détecteur `orphan_position` est une **conséquence directe** de cette observation. Il n'aurait pas été pertinent avant cette cascade. C'est exactement ce que cycle 69 disait : *détecter c'est la moitié de fixer*. On ne fixe pas le HARD STOP loop SHORT (côté Tony), on instrumente pour ne plus le rater silencieusement.
+
+Sur "rend nous riche" : zero direct. Mais en termes de réduction de risque silent, on est passé de 7 catégories drift_check à 8. Chaque catégorie qui s'ajoute est un point aveugle qui disparaît.
+
+### Cycle 72 — pistes
+
+1. **Surveiller AutoGridScheduler mode=SHORT switches sur LINK** — si nouveau HARD STOP loop fire, Telegram cycle 72 justifié. Trigger empirique : grep app.log > 18h30 UTC pour `STOP LOSS triggered for PF_LINKUSD`.
+2. **Investiguer Java tickSize routing** — read-only exploration de `GridTradingService.reloadFromDb()` et `AutoGridScheduler.openGrid()` côté `/home/tony/projets/tonyderide/martin/` pour confirmer empiriquement les 2 callers non routés vers `KrakenTickSize.roundToTickSize`. Aurait pu être fait cycle 71 si bandwidth.
+3. **Wire drift_check.py dans cron 5min** — proposé cycle 69 piste 1, toujours pas fait. Cron entry trivial sur VM. Permet alertes Telegram automatiques sur drift CRITIQUE.
+4. **Fragment 031 "Le restart qui ne fixe pas"** — angle narratif : Tony fait le geste minimal qu'on attendait, et le système répond pareil. La distance entre voir le problème et le résoudre.
+
+Reco cycle 72 : **(1)** monitoring passif (zero coût) + **(2)** read-only Java + **(4)** si bandwidth narrative restante.
+

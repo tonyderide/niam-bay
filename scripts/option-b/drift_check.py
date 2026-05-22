@@ -34,6 +34,14 @@ Detection categories:
      observe live cycle 70 (2026-05-22) sur ETH: orders rejetes invalidPrice par
      Kraken (.86 vs tickSize 0.1), grid reste active mais inerte. CRITIQUE:
      silent failure, /api/grid/status ment (active=true), 0 trading possible.
+  8. orphan_position: position Kraken sans grid active POUR ce symbole, OU position
+     dont la grid active a 0 fills depuis startedAt (= position vient d'un cycle
+     anterieur et n'est plus reliee a une grille). Symptome observe cycle 71
+     (2026-05-22) sur LINK: HARD STOP a annule les orders d'une grille SHORT
+     mais la position 9.2 @ 9.797 est restee ouverte, puis nouvelle grille NEUTRAL
+     l'a "heritee" sans la tracker. CRITIQUE: perte non gardee, prochain
+     HARD STOP recompte krakenTotalPnl lifetime qui peut deja > maxLoss
+     immediat (loop infini stop/restart).
 
 Output:
   - 1-screen summary
@@ -131,6 +139,7 @@ def analyze(raw: dict) -> dict:
         "sl_missing_when_expected": [],  # cycle 36: position vivante + SL active mais aucun stp Kraken
         "phantom_fill": [],       # cycle 69: hasBuyFill/hasSellFill indique position theorique inexistante chez Kraken
         "empty_grid": [],         # cycle 70: grid active=true mais 0 krakenOrderId (zombie tickSize bug)
+        "orphan_position": [],    # cycle 71: position Kraken sans grid OU avec grid 0 fills (heritage post HARD STOP)
         "summary": {},
     }
 
@@ -252,6 +261,48 @@ def analyze(raw: dict) -> dict:
                 "kraken_lmt_orders": len(kraken_lmts),
             })
 
+    # Orphan positions: position Kraken sans grid active correspondante,
+    # OU avec grid active mais 0 fills depuis startedAt (position herite d'un
+    # cycle anterieur, generalement post HARD STOP qui a cancel orders sans
+    # fermer position). Pattern cycle 71: LINK SHORT 9.2 apres HARD STOP
+    # SHORT mode, puis NEUTRAL grid relancee sans tracking position.
+    active_grid_pairs = {p for p, g in grids.items() if g.get("active")}
+    for pos_symbol, pos_size in pos_by_symbol.items():
+        if pos_size <= PHANTOM_FILL_TOLERANCE:
+            continue
+        pos_record = next((p for p in positions if p.get("symbol") == pos_symbol), None)
+        if not pos_record:
+            continue
+        if pos_symbol not in active_grid_pairs:
+            # Position sans grid active du tout: orphan total
+            findings["orphan_position"].append({
+                "pair": pos_symbol,
+                "side": pos_record.get("side"),
+                "size": pos_size,
+                "entry_price": pos_record.get("price"),
+                "unrealizedPnl": pos_record.get("unrealizedPnl"),
+                "reason": "no_active_grid",
+                "note": "position Kraken vivante mais aucune grid Martin active pour ce symbole",
+            })
+            continue
+        # Grid active existe: comparer aux fills de la grille
+        g = grids[pos_symbol]
+        fills = g.get("fills", []) or []
+        if len(fills) == 0:
+            findings["orphan_position"].append({
+                "pair": pos_symbol,
+                "side": pos_record.get("side"),
+                "size": pos_size,
+                "entry_price": pos_record.get("price"),
+                "unrealizedPnl": pos_record.get("unrealizedPnl"),
+                "grid_mode": g.get("gridMode"),
+                "grid_started_at": g.get("startedAt"),
+                "kraken_realized_lifetime": g.get("krakenRealizedPnl"),
+                "kraken_total_lifetime": g.get("krakenTotalPnl"),
+                "reason": "grid_zero_fills",
+                "note": "position vivante mais grid relancee a 0 fills (heritage post HARD STOP)",
+            })
+
     # Orphans: Kraken orders for known pairs whose id wasn't claimed
     known_pairs = {p for p, g in grids.items() if g.get("active")}
     for o in orders:
@@ -283,8 +334,9 @@ def analyze(raw: dict) -> dict:
     n_sl_missing = len(findings["sl_missing_when_expected"])
     n_phantom_fill = len(findings["phantom_fill"])
     n_empty_grid = len(findings["empty_grid"])
+    n_orphan_pos = len(findings["orphan_position"])
     findings["summary"] = {
-        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing + n_phantom_fill + n_empty_grid) > 0,
+        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing + n_phantom_fill + n_empty_grid + n_orphan_pos) > 0,
         "phantom_placed": n_phantom,
         "orphaned_kraken": n_orphan,
         "sl_mismatch": n_sl,
@@ -292,14 +344,15 @@ def analyze(raw: dict) -> dict:
         "sl_missing_when_expected": n_sl_missing,
         "phantom_fill": n_phantom_fill,
         "empty_grid": n_empty_grid,
-        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing, n_phantom_fill, n_empty_grid),
+        "orphan_position": n_orphan_pos,
+        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing, n_phantom_fill, n_empty_grid, n_orphan_pos),
     }
     return findings
 
 
-def classify(p: int, o: int, s: int, c: int, sm: int, pf: int, eg: int) -> str:
-    if p > 0 or s > 0 or sm > 0 or pf > 0 or eg > 0:
-        return "CRITIQUE"  # phantom/SL/SL-missing/phantom-fill/empty-grid = silent failure category
+def classify(p: int, o: int, s: int, c: int, sm: int, pf: int, eg: int, op: int) -> str:
+    if p > 0 or s > 0 or sm > 0 or pf > 0 or eg > 0 or op > 0:
+        return "CRITIQUE"  # phantom/SL/SL-missing/phantom-fill/empty-grid/orphan-pos = silent failure category
     if c > 0:
         return "WARN"      # count drift = inconsistency but not necessarily silent
     if o > 0:
@@ -315,10 +368,18 @@ def fmt_report(f: dict) -> str:
     out.append("")
     out.append(f"phantom_placed: {s['phantom_placed']} | phantom_fill: {s.get('phantom_fill', 0)} | "
                f"empty_grid: {s.get('empty_grid', 0)} | "
+               f"orphan_pos: {s.get('orphan_position', 0)} | "
                f"sl_mismatch: {s['sl_mismatch']} | "
                f"sl_missing: {s.get('sl_missing_when_expected', 0)} | "
                f"count_drift: {s['count_drift']} | orphaned_kraken: {s['orphaned_kraken']}")
     out.append("")
+    if f.get("orphan_position"):
+        out.append("## ORPHAN position (Kraken position sans tracking grid — heritage post HARD STOP)")
+        for x in f["orphan_position"]:
+            tot = x.get("kraken_total_lifetime")
+            tot_str = f" lifetime_total={tot}" if tot is not None else ""
+            out.append(f"  - {x['pair']} {x['side']} size={x['size']:.4f} @ {x.get('entry_price')} "
+                       f"uPnL={x.get('unrealizedPnl')} reason={x['reason']}{tot_str}")
     if f.get("empty_grid"):
         out.append("## EMPTY grid (active=true mais 0 krakenOrderId — bug tickSize / zombie)")
         for x in f["empty_grid"]:
@@ -384,6 +445,7 @@ def cmd_history():
         s = f["summary"]
         print(f"{f['ts']:<26} {s['verdict']:<10} phantom={s['phantom_placed']} "
               f"fill={s.get('phantom_fill', 0)} empty={s.get('empty_grid', 0)} "
+              f"orphan_pos={s.get('orphan_position', 0)} "
               f"sl={s['sl_mismatch']} count={s['count_drift']} orphan={s['orphaned_kraken']}")
 
 
