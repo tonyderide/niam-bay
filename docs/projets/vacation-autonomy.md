@@ -5020,3 +5020,117 @@ Sur "rend nous riche" : zero direct cette nuit. Mais en termes de risque : `drif
 4. **Cleanup `drifts.jsonl`** — entrée 2026-05-12T04:27:22 avait un format ancien (avant phantom_fill column). Pas de bug mais affichage tronqué pour cette ligne en history. Migration trivial. Optionnel.
 
 Reco cycle 70 : **(2)** prioritaire (data point pour modèle mental du bug) + **(1)** si Tony rentré pour valider.
+
+---
+
+## Cycle 2026-05-22 12h25 Paris — Cycle 70 : Restart Tony manuel + ETH grid zombie 10h (bug tickSize re-fired)
+
+### Pause horaire
+
+Cycle 69 = 00h25 Paris, cycle 70 = 12h25 Paris → 12h gap. Pas de cron automatique entre les deux ; Niam-Bay réveillé manuellement par run-loop. Heure éclatée par rapport à la cadence 6h, mais l'investigation cycle 70 ne dépendait pas du timing.
+
+### Martin status (12h23 Paris, depuis martin-monitor)
+
+- **Bot UP — uptime 9h44m** depuis 2026-05-22T00:38:48Z (≠ cycle 69 où uptime = 38h25m depuis 0520:07h58 UTC)
+- Portfolio $126.81 (balanceValue, baseline initial $138.21 → -8.3% cumul vacation)
+- 3 grids actives : LINK + ETH + ADA (cycle 69 avait LINK + ETH seulement, ADA réajouté entre)
+- **0 positions Kraken**, 8 limit orders posés (4 LINK + 4 ADA)
+- BTC $77,226 **DOWNTREND**, EMA200 $78,065 cushion -1.07%, RSI 44.79, signal WAIT
+- Trigger : **WARN** car BTC < EMA200, mais 0 expo donc pas d'urgence
+
+### Trouvaille 1 — Le bot n'a PAS hang ; Tony l'a redémarré manuellement
+
+Investigation `journalctl` :
+
+```
+May 22 00:38:38 sshd[4184152]: Accepted publickey for ubuntu from 78.192.37.128 port 50414
+May 22 00:38:39 sudo[4184221]: ubuntu : COMMAND=/usr/bin/systemctl stop martin.service
+May 22 00:38:39 systemd[1]: Stopping Martin Trading Bot...
+May 22 00:38:44 systemd[1]: Main process exited, code=exited, status=143/n/a (SIGTERM)
+May 22 00:38:47 sudo[4184233]: ubuntu : COMMAND=/usr/bin/systemctl start martin.service
+May 22 00:38:48 systemd[1]: Started Martin Trading Bot.
+```
+
+L'IP `78.192.37.128` = box Tony à Strasbourg (même IP utilisée précédemment pour ses sessions SSH overnight). À 02h38 Paris (heure noctambule habituelle), Tony s'est connecté en SSH et a `systemctl stop && start` martin.service. Action manuelle, ~10 secondes entre stop et start.
+
+**Conséquence sur la prédiction cycle 65/67/68 du hang logback à 30h** :
+- Cycle 65 a observé un hang après ~30h d'uptime → extrapolation cycle 67/68 : "hang vers 16h CEST 21/05"
+- Cycle 69 (22h25 UTC 0521) a noté : "uptime 38h25m, pas de hang → prédiction falsifiée"
+- **Maintenant on sait que ce n'était pas un test valide** : le bot a tourné 42h40m (de 0520 07:58Z à 0522 00:38Z) AVANT que Tony intervienne, mais il n'a pas hang à l'heure prédite. La prédiction n'est ni vraie ni fausse — l'événement attendu n'a pas eu lieu dans la fenêtre observée, et Tony a coupé le test avant qu'on puisse savoir si ça aurait fini par arriver.
+- Note méta pour cycle 69 : la phrase "FALSIFIED" était trop forte. Plus exact : "NOT-CONFIRMED dans la fenêtre" + "Tony a interrompu le test".
+
+### Trouvaille 2 — ETH grid zombie depuis 10h (bug tickSize re-fired)
+
+C'est le vrai blocage. Le restart Tony a déclenché un effet de bord : AutoGridScheduler a recréé la grid ETH avec des prix non-alignés au tickSize Kraken (0.1 pour PF_ETHUSD).
+
+Timeline depuis log :
+
+| UTC | Événement |
+|---|---|
+| 00:39:25 | Grid reload après restart : 4 orders ETH placés OK aux prix 2085.5 / 2117.5 / 2149.5 / 2181.5 (multiples de 0.5, alignés tick) |
+| 00:39:34 | POST /grid/stop/PF_ETHUSD (par script externe — `[00:39:32] Stopping 2 active grids` dans stdout) → 4 orders cancel |
+| 00:39:48 | AutoGridScheduler recrée la grid ETH avec NOUVEAUX prix (centerPrice 2130.8, gridSpacing 31.96) : 2082.86 / 2114.82 / 2146.78 / 2178.74 |
+| 00:39:48 | **4 errors `Grid order FAILED: status=invalidPrice`** — Kraken rejette parce que prix non alignés au tickSize 0.1 |
+| 00:39:48 → maintenant | Grid `active=true`, 4 levels `WAITING`, `krakenOrderId=null`, **0 orders sur Kraken** |
+
+**Confirmation tickSize ETH = 0.1** via `https://futures.kraken.com/derivatives/api/v3/instruments`. Prix attendus : 2082.9 / 2114.8 / 2146.8 / 2178.7 (arrondis au dixième).
+
+**Root cause** : la première grid (00:39:25) chargeait l'état persisté avec prix déjà snapped au tickSize. La seconde grid (00:39:48) recalculait `centerPrice - n*gridSpacing` sans appeler `KrakenTickSize.roundToTickSize`. C'est exactement la famille de bug du cycle 54 BTC — où le patch cycle 55 avait extrait `roundToTickSize` en utilitaire statique partagé `com.martin.kraken.util.KrakenTickSize`.
+
+**Patch cycle 55 toujours non déployé** : `git log` côté `/home/tony/projets/tonyderide/martin/` head = `29ca9b1` inchangé depuis cycle 64 (0519). Le code en prod n'a pas la `KrakenTickSize.roundToTickSize` partagée → la branche AutoGridScheduler reste non couverte.
+
+**Conséquence économique** : 0 perte directe (la grid ETH n'a juste pas tradé). Mais c'est 10h d'opportunité ratée sur une paire où la gate était OPEN. Et c'est un *silent failure* : `/api/grid/status/PF_ETHUSD` rapporte la grid `active=true`, mais elle est inerte.
+
+### Décision : Telegram envoyé
+
+Concise, 2 lignes :
+
+> Cycle 70: ETH grid zombie depuis 10h. AutoGridScheduler a recréé la grid à 00:39 UTC avec prix non-tickSize-aligné (.86 vs tick 0.1) → 4 orders rejetés invalidPrice. Grid active=true mais 0 orders Kraken. Même famille bug que cycle 54 BTC. Patch KrakenTickSize cycle 55 toujours non déployé. 0 perte (juste opportunité ratée). PV $126.81 OK. À discuter au retour, pas urgent.
+
+Envoyé via skill telegram à chat 6574420846, message_id retourné OK.
+
+Justification du nudge : cycle 69 avait *explicitement skip* le Telegram patch logback parce que "rien n'a explosé". Là c'est différent : un bug observable, fired silencieusement, qui devrait être visible côté Tony quand il rentre. Telegram comme **point d'attention**, pas comme alerte rouge.
+
+### Findings cycle 70
+
+- `[finding|0522:12h|bot-restart-Tony-manuel-02h38-Paris|systemctl-stop+start-via-SSH-IP-78.192.37.128|prediction-hang-30h-non-falsifiée-mais-test-interrompu|→-rule-écrire-"non-confirmé-dans-fenêtre"-pas-"falsifié"-quand-l'observation-est-coupée]`
+- `[finding|0522:12h|ETH-grid-zombie-10h-bug-tickSize-AutoGridScheduler|grid-active=true-0-orders-Kraken|prix-2082.86-rejetés-invalidPrice-tick-0.1-attendu-2082.9|silent-failure-grid-status-API-ment]`
+- `[finding|0522:12h|patch-cycle-55-KrakenTickSize-util-non-deployé-cycle-70|recurring-cost-bug-cycle-54-pattern-re-fired|AutoGridScheduler-branch-pas-couverte-par-patch-original-anyway-il-faut-aussi-router-cette-branche-vers-l-util]`
+- `[pattern|silent-failure-grid-active-true-mais-0-orders-Kraken|0522:12h|toujours-cross-checker-/api/bot/orders-vs-/api/grid/status/levels|levels[].krakenOrderId=null-+-status-WAITING-=-zombie-grid|→-ajouter-à-drift_check.py-catégorie-7-empty_grid?]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (journalctl + curl + tail logs)
+- **0 modif code Martin** — patch cycle 55 toujours en attente côté Tony
+- **0 modif positions** — 0 positions ouvertes de toute façon
+- **0 commit/push martin/** — repo niam-bay seulement
+- **1 Telegram envoyé** — concis, factuel, "pas urgent"
+- **Output** : 1 fichier modifié (cette entrée), 1 message Telegram
+
+### Métriques cycle 70
+
+- **Durée** : ~30 min (wake + monitor + log archeology Tony restart + ETH grid investigation + tickSize confirmation + Telegram + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 1
+- **Telegram envoyés** : 1
+
+### Note méta cycle 70
+
+Le cycle 70 corrige deux choses inscrites au cycle 69 :
+
+1. **"Prédiction falsifiée"** était trop fort. Tony a coupé le test avant terme. Plus précis : "non-confirmé dans la fenêtre observée, test interrompu". Niam-Bay doit nommer la différence entre *réfutation* et *interruption*.
+
+2. **"ETH position disparue, à investiguer"** — la piste a divergé. Au lieu de trouver pourquoi la position cycle 67/68 avait disparu (la log app.log était déjà rotatée), j'ai trouvé un nouveau bug actif : la grid ETH est zombie depuis 10h. C'est plus actionnable. L'investigation initiale (cycle 70 piste 2) reste ouverte mais déprioritisée — le bug zombie domine.
+
+Honnêteté supplémentaire : cycle 65/67/68/69 a parlé d'un hang Mono.block reactor-netty pendant 4 cycles, en construisant un récit "ça va exploser à H+30h". Cycle 70 enterre ce récit sans drame — Tony a fait stop+start avant qu'on sache, et le bug zombie qu'on découvre n'a aucun lien avec le hang. La narration confiante de 4 cycles a tourné dans le vide.
+
+### Cycle 71 — pistes
+
+1. **Restart d'AutoGridScheduler-ETH** : 0 modif code, juste `POST /grid/stop/PF_ETHUSD` puis `POST /grid/start/PF_ETHUSD` pourrait suffire à re-créer la grid avec des prix re-snapped (test : si le bug est dans la branche AutoGridScheduler init *vs* re-create, la nouvelle init pourrait reproduire ou non). **MAIS** : règle vacance = 0 modif positions/ordres. Cet appel modifie l'état Martin (orders posés/canceled). À ne pas faire seul. Proposer à Tony quand il revient.
+2. **drift_check.py catégorie 7 `empty_grid`** : extension naturelle du cycle 69 — détecter `active=true` avec `0 krakenOrderId` parmi levels. Trivial à coder, totalement défensif (read-only détection). Cycle 71 candidat principal.
+3. **Lien tickSize / AutoGridScheduler** : explorer le code Java côté `/home/tony/projets/tonyderide/martin/` pour vérifier que la branche AutoGridScheduler n'appelle pas `KrakenTickSize.roundToTickSize`. Read-only, validatif. Cycle 71 candidat secondaire.
+4. **Fragment 031** : si bandwidth, le motif "Tony intervient pendant qu'on dort, le récit qu'on construit s'effondre" est un bon angle.
+
+Reco cycle 71 : **(2)** prioritaire (outil défensif durable comme cycle 69) + **(3)** pour vérifier la branche manquante côté code.

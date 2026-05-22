@@ -29,6 +29,11 @@ Detection categories:
      (vs phantom_placed cote ORDER). Cycle 69 (2026-05-22): observe live sur LINK
      2 fills 18:45 UTC meme nanoseconde, krakenUnrealizedPnl=0, positions[] vide.
      CRITIQUE: la grille pense detenir des positions inexistantes.
+  7. empty_grid: grid active=true depuis > EMPTY_GRID_GRACE_SEC mais 0 level
+     avec krakenOrderId. Symptome du bug tickSize cycle 54 cote AutoGridScheduler
+     observe live cycle 70 (2026-05-22) sur ETH: orders rejetes invalidPrice par
+     Kraken (.86 vs tickSize 0.1), grid reste active mais inerte. CRITIQUE:
+     silent failure, /api/grid/status ment (active=true), 0 trading possible.
 
 Output:
   - 1-screen summary
@@ -63,6 +68,9 @@ PAIRS = ["PF_LINKUSD", "PF_DOTUSD", "PF_SOLUSD", "PF_ADAUSD",
          "PF_ETHUSD", "PF_XBTUSD"]
 # Tolerance d'ecart de taille position theorique vs reelle (Kraken arrondit).
 PHANTOM_FILL_TOLERANCE = 1e-6
+# Grace period avant de flag une grid sans krakenOrderId comme empty_grid.
+# Couvre le delai entre reload/restart et placement des orders chez Kraken.
+EMPTY_GRID_GRACE_SEC = 60
 
 
 def ssh_fetch() -> dict:
@@ -122,11 +130,14 @@ def analyze(raw: dict) -> dict:
         "count_drift": [],        # per-symbol level-PLACED count != Kraken lmt count
         "sl_missing_when_expected": [],  # cycle 36: position vivante + SL active mais aucun stp Kraken
         "phantom_fill": [],       # cycle 69: hasBuyFill/hasSellFill indique position theorique inexistante chez Kraken
+        "empty_grid": [],         # cycle 70: grid active=true mais 0 krakenOrderId (zombie tickSize bug)
         "summary": {},
     }
 
     # Track which Kraken order_ids are claimed by some Martin level or SL slot
     claimed_ids = set()
+
+    now_utc = dt.datetime.now(dt.timezone.utc)
 
     for pair, g in grids.items():
         if not g.get("active"):
@@ -134,7 +145,10 @@ def analyze(raw: dict) -> dict:
 
         levels = g.get("levels", [])
         martin_placed_count = 0
+        levels_with_kid = 0
         for lvl in levels:
+            if lvl.get("krakenOrderId"):
+                levels_with_kid += 1
             if lvl.get("status") == "PLACED" and lvl.get("krakenOrderId"):
                 martin_placed_count += 1
                 kid = lvl["krakenOrderId"]
@@ -147,6 +161,31 @@ def analyze(raw: dict) -> dict:
                         "level_side": lvl.get("side"),
                         "ghost_order_id": kid,
                     })
+
+        # empty_grid: active=true depuis grace period mais 0 level avec krakenOrderId.
+        # Pattern observe cycle 70 sur ETH apres recreation AutoGridScheduler avec
+        # prix non aligne au tickSize → rejected invalidPrice → grid reste active
+        # mais 0 orders chez Kraken. Silent failure: grid/status ment.
+        if levels_with_kid == 0 and levels:
+            started_at_str = g.get("startedAt")
+            grid_age_sec = None
+            if started_at_str:
+                try:
+                    started = dt.datetime.fromisoformat(started_at_str.replace("Z", "+00:00"))
+                    grid_age_sec = (now_utc - started).total_seconds()
+                except (ValueError, TypeError):
+                    pass
+            if grid_age_sec is None or grid_age_sec >= EMPTY_GRID_GRACE_SEC:
+                findings["empty_grid"].append({
+                    "pair": pair,
+                    "active": True,
+                    "n_levels": len(levels),
+                    "n_levels_with_kraken_id": 0,
+                    "centerPrice": g.get("centerPrice"),
+                    "startedAt": started_at_str,
+                    "grid_age_sec": grid_age_sec,
+                    "note": "grid active=true mais 0 krakenOrderId apres grace — bug tickSize ou stale state",
+                })
 
         # phantom_fill: net flag-based position theorique vs reelle Kraken.
         # NEUTRAL grid: hasBuyFill sur buy = +1, hasSellFill sur sell = -1.
@@ -243,22 +282,24 @@ def analyze(raw: dict) -> dict:
     n_count = len(findings["count_drift"])
     n_sl_missing = len(findings["sl_missing_when_expected"])
     n_phantom_fill = len(findings["phantom_fill"])
+    n_empty_grid = len(findings["empty_grid"])
     findings["summary"] = {
-        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing + n_phantom_fill) > 0,
+        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing + n_phantom_fill + n_empty_grid) > 0,
         "phantom_placed": n_phantom,
         "orphaned_kraken": n_orphan,
         "sl_mismatch": n_sl,
         "count_drift": n_count,
         "sl_missing_when_expected": n_sl_missing,
         "phantom_fill": n_phantom_fill,
-        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing, n_phantom_fill),
+        "empty_grid": n_empty_grid,
+        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing, n_phantom_fill, n_empty_grid),
     }
     return findings
 
 
-def classify(p: int, o: int, s: int, c: int, sm: int, pf: int) -> str:
-    if p > 0 or s > 0 or sm > 0 or pf > 0:
-        return "CRITIQUE"  # phantom/SL/SL-missing/phantom-fill = silent failure category
+def classify(p: int, o: int, s: int, c: int, sm: int, pf: int, eg: int) -> str:
+    if p > 0 or s > 0 or sm > 0 or pf > 0 or eg > 0:
+        return "CRITIQUE"  # phantom/SL/SL-missing/phantom-fill/empty-grid = silent failure category
     if c > 0:
         return "WARN"      # count drift = inconsistency but not necessarily silent
     if o > 0:
@@ -273,10 +314,18 @@ def fmt_report(f: dict) -> str:
     out.append(f"Verdict: **{s['verdict']}**")
     out.append("")
     out.append(f"phantom_placed: {s['phantom_placed']} | phantom_fill: {s.get('phantom_fill', 0)} | "
+               f"empty_grid: {s.get('empty_grid', 0)} | "
                f"sl_mismatch: {s['sl_mismatch']} | "
                f"sl_missing: {s.get('sl_missing_when_expected', 0)} | "
                f"count_drift: {s['count_drift']} | orphaned_kraken: {s['orphaned_kraken']}")
     out.append("")
+    if f.get("empty_grid"):
+        out.append("## EMPTY grid (active=true mais 0 krakenOrderId — bug tickSize / zombie)")
+        for x in f["empty_grid"]:
+            age = x.get("grid_age_sec")
+            age_str = f"{age/3600:.2f}h" if age else "?"
+            out.append(f"  - {x['pair']} levels={x['n_levels']} center={x['centerPrice']} "
+                       f"age={age_str} → {x['note']}")
     if f.get("phantom_fill"):
         out.append("## PHANTOM fill (Martin compte des fills sans position Kraken)")
         for x in f["phantom_fill"]:
@@ -334,8 +383,8 @@ def cmd_history():
         f = json.loads(line)
         s = f["summary"]
         print(f"{f['ts']:<26} {s['verdict']:<10} phantom={s['phantom_placed']} "
-              f"fill={s.get('phantom_fill', 0)} sl={s['sl_mismatch']} "
-              f"count={s['count_drift']} orphan={s['orphaned_kraken']}")
+              f"fill={s.get('phantom_fill', 0)} empty={s.get('empty_grid', 0)} "
+              f"sl={s['sl_mismatch']} count={s['count_drift']} orphan={s['orphaned_kraken']}")
 
 
 def main():
