@@ -42,6 +42,15 @@ Detection categories:
      l'a "heritee" sans la tracker. CRITIQUE: perte non gardee, prochain
      HARD STOP recompte krakenTotalPnl lifetime qui peut deja > maxLoss
      immediat (loop infini stop/restart).
+  9. binary_regression: backend.jar deploye sur VM a strictement moins de classes
+     Java com/martin/ qu'au moins un backup local (backend.jar.bak*). Symptome
+     observe cycle 72 (2026-05-23): apres deux restarts Tony 22 mai, backend.jar
+     courant = 115 classes vs backups Mai 18 = 142 classes. 27 classes perdues
+     incluant RegimeGate, BtcRegimeKillSwitch, KrakenInstrumentsCache, KrakenTickSize,
+     DailyLossCap, TradesPerDayCap, CooldownAfterLoss. Le bot demarre, les beans
+     restants tournent, mais les patches recents disparaissent silencieusement.
+     CRITIQUE: invisible sans inspection de classpath, derate plusieurs systemes
+     de risk en meme temps.
 
 Output:
   - 1-screen summary
@@ -52,6 +61,8 @@ Usage:
   python3 scripts/option-b/drift_check.py
   python3 scripts/option-b/drift_check.py --json
   python3 scripts/option-b/drift_check.py --history
+  python3 scripts/option-b/drift_check.py --with-binary  # ajoute categorie 9
+  python3 scripts/option-b/drift_check.py --binary-only  # uniquement categorie 9 (rapide)
 
 0 LLM tokens. Read-only. Stdlib + ssh.
 """
@@ -79,6 +90,14 @@ PHANTOM_FILL_TOLERANCE = 1e-6
 # Grace period avant de flag une grid sans krakenOrderId comme empty_grid.
 # Couvre le delai entre reload/restart et placement des orders chez Kraken.
 EMPTY_GRID_GRACE_SEC = 60
+# Repertoire VM des jars Martin. Le backup le plus complet sert de reference
+# pour detecter une regression de classpath. Cycle 72 (2026-05-23).
+MARTIN_JAR_DIR = "/home/ubuntu/martin"
+# Seuil minimal de classes attendues. En-dessous, on signale au moins WARN
+# meme si aucun backup n'est plus complet (par exemple si tous les backups
+# ont ete remplaces par des jars degrades). Le binary cycle 71 avait 142
+# classes; cycle 72 est tombe a 115. 130 est un plancher prudent.
+MIN_EXPECTED_CLASSES = 130
 
 
 def ssh_fetch() -> dict:
@@ -109,6 +128,114 @@ def ssh_fetch() -> dict:
         g = json.loads(blob)
         grids[g["instrument"]] = g
     return {"orders": orders, "positions": positions, "grids": grids}
+
+
+def check_binary_regression() -> dict:
+    """Compare backend.jar deploye vs backups locaux sur la VM.
+
+    Returns dict { regression_detected, current_jar, current_count, reference_jar,
+    reference_count, mtime, classes_removed_sample, error? }.
+
+    Categorie 9, cycle 72 (2026-05-23): detecte les downgrades silencieux ou
+    backend.jar a strictement moins de classes com/martin/ qu'au moins un
+    backup local. Necessite python3 sur la VM (deja present).
+    """
+    # Python distant inline: liste tous les *.jar dans MARTIN_JAR_DIR, ouvre
+    # chacun via zipfile et compte les .class commencant par com/martin/. Sortie
+    # JSON sur stdout. Cap 30 classes manquantes dans le sample pour eviter de
+    # noyer la sortie.
+    # Spring Boot fat jar layout: classes Martin sont sous BOOT-INF/classes/.
+    # On normalise en strippant le prefixe pour comparer entre jars meme si
+    # la structure de packaging change. Plain jar fallback: on accepte aussi
+    # com/martin/ directement a la racine.
+    remote_cmd = f"""python3 - <<'PYEOF'
+import json, os, zipfile, glob
+results = []
+PREFIX = 'BOOT-INF/classes/'
+for path in sorted(glob.glob('{MARTIN_JAR_DIR}/*.jar')):
+    try:
+        with zipfile.ZipFile(path, 'r') as z:
+            names = z.namelist()
+        martin_classes = set()
+        for n in names:
+            if not n.endswith('.class'):
+                continue
+            stripped = n[len(PREFIX):] if n.startswith(PREFIX) else n
+            if stripped.startswith('com/martin/'):
+                martin_classes.add(stripped)
+        classes = sorted(martin_classes)
+        results.append({{'path': path, 'mtime': os.path.getmtime(path),
+                         'size': os.path.getsize(path), 'n': len(classes),
+                         'classes': classes}})
+    except Exception as e:
+        results.append({{'path': path, 'error': str(e)}})
+print(json.dumps(results))
+PYEOF
+"""
+    result = subprocess.run(
+        ["ssh", "-i", str(SSH_KEY), "-o", "StrictHostKeyChecking=no",
+         "-o", "ConnectTimeout=15", VM_HOST, remote_cmd],
+        capture_output=True, text=True, timeout=60,
+    )
+    if result.returncode != 0:
+        return {"error": f"SSH binary inspect failed (rc={result.returncode}): "
+                         f"{result.stderr.strip()}",
+                "regression_detected": False}
+    try:
+        jars = json.loads(result.stdout.strip())
+    except json.JSONDecodeError as e:
+        return {"error": f"Cannot parse remote python output: {e}",
+                "raw": result.stdout[:500], "regression_detected": False}
+
+    current = next((j for j in jars
+                    if j["path"].endswith("/backend.jar") and "error" not in j), None)
+    if not current:
+        return {"error": "backend.jar not inspectable on VM",
+                "jars_seen": [j["path"] for j in jars],
+                "regression_detected": False}
+
+    backups = [j for j in jars
+               if j["path"] != current["path"] and "error" not in j]
+    if not backups:
+        # Pas de backup pour comparer: ne lever que si current est sous le plancher
+        below_floor = current["n"] < MIN_EXPECTED_CLASSES
+        return {
+            "current_jar": current["path"],
+            "current_count": current["n"],
+            "current_mtime": current["mtime"],
+            "reference_jar": None,
+            "reference_count": None,
+            "classes_removed_count": 0,
+            "classes_added_count": 0,
+            "classes_removed_sample": [],
+            "below_floor": below_floor,
+            "min_expected": MIN_EXPECTED_CLASSES,
+            "regression_detected": below_floor,
+            "note": "no_backup_found",
+        }
+    reference = max(backups, key=lambda j: j["n"])
+
+    current_set = set(current["classes"])
+    reference_set = set(reference["classes"])
+    removed = sorted(reference_set - current_set)
+    added = sorted(current_set - reference_set)
+
+    return {
+        "current_jar": current["path"],
+        "current_count": current["n"],
+        "current_mtime": current["mtime"],
+        "reference_jar": reference["path"],
+        "reference_count": reference["n"],
+        "reference_mtime": reference["mtime"],
+        "classes_removed_count": len(removed),
+        "classes_added_count": len(added),
+        "classes_removed_sample": removed[:30],
+        "classes_added_sample": added[:10],
+        "below_floor": current["n"] < MIN_EXPECTED_CLASSES,
+        "min_expected": MIN_EXPECTED_CLASSES,
+        "regression_detected": len(removed) > 0
+                               or current["n"] < MIN_EXPECTED_CLASSES,
+    }
 
 
 def analyze(raw: dict) -> dict:
@@ -335,8 +462,12 @@ def analyze(raw: dict) -> dict:
     n_phantom_fill = len(findings["phantom_fill"])
     n_empty_grid = len(findings["empty_grid"])
     n_orphan_pos = len(findings["orphan_position"])
+    br = findings.get("binary_regression") or {}
+    n_binary = 1 if br.get("regression_detected") else 0
     findings["summary"] = {
-        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing + n_phantom_fill + n_empty_grid + n_orphan_pos) > 0,
+        "drift_detected": (n_phantom + n_orphan + n_sl + n_count + n_sl_missing
+                           + n_phantom_fill + n_empty_grid + n_orphan_pos
+                           + n_binary) > 0,
         "phantom_placed": n_phantom,
         "orphaned_kraken": n_orphan,
         "sl_mismatch": n_sl,
@@ -345,14 +476,17 @@ def analyze(raw: dict) -> dict:
         "phantom_fill": n_phantom_fill,
         "empty_grid": n_empty_grid,
         "orphan_position": n_orphan_pos,
-        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing, n_phantom_fill, n_empty_grid, n_orphan_pos),
+        "binary_regression": n_binary,
+        "verdict": classify(n_phantom, n_orphan, n_sl, n_count, n_sl_missing,
+                            n_phantom_fill, n_empty_grid, n_orphan_pos, n_binary),
     }
     return findings
 
 
-def classify(p: int, o: int, s: int, c: int, sm: int, pf: int, eg: int, op: int) -> str:
-    if p > 0 or s > 0 or sm > 0 or pf > 0 or eg > 0 or op > 0:
-        return "CRITIQUE"  # phantom/SL/SL-missing/phantom-fill/empty-grid/orphan-pos = silent failure category
+def classify(p: int, o: int, s: int, c: int, sm: int, pf: int, eg: int, op: int,
+             br: int = 0) -> str:
+    if p > 0 or s > 0 or sm > 0 or pf > 0 or eg > 0 or op > 0 or br > 0:
+        return "CRITIQUE"  # phantom/SL/SL-missing/phantom-fill/empty-grid/orphan-pos/binary-regression = silent failure
     if c > 0:
         return "WARN"      # count drift = inconsistency but not necessarily silent
     if o > 0:
@@ -371,8 +505,32 @@ def fmt_report(f: dict) -> str:
                f"orphan_pos: {s.get('orphan_position', 0)} | "
                f"sl_mismatch: {s['sl_mismatch']} | "
                f"sl_missing: {s.get('sl_missing_when_expected', 0)} | "
-               f"count_drift: {s['count_drift']} | orphaned_kraken: {s['orphaned_kraken']}")
+               f"count_drift: {s['count_drift']} | orphaned_kraken: {s['orphaned_kraken']} | "
+               f"binary_regression: {s.get('binary_regression', 0)}")
     out.append("")
+    br = f.get("binary_regression") or {}
+    if br.get("regression_detected"):
+        out.append("## BINARY regression (backend.jar deploye < backup local)")
+        if br.get("error"):
+            out.append(f"  - ERROR: {br['error']}")
+        else:
+            cur = br.get("current_jar", "?")
+            cur_n = br.get("current_count", "?")
+            ref = br.get("reference_jar", "?")
+            ref_n = br.get("reference_count", "?")
+            out.append(f"  - current: {cur} ({cur_n} classes com/martin/)")
+            if ref:
+                out.append(f"  - reference: {ref} ({ref_n} classes)")
+                out.append(f"  - {br.get('classes_removed_count', 0)} classes "
+                           f"perdues, {br.get('classes_added_count', 0)} ajoutees")
+            else:
+                out.append(f"  - aucun backup pour comparer; current sous le "
+                           f"plancher attendu ({br.get('min_expected')})")
+            sample = br.get("classes_removed_sample", [])
+            if sample:
+                out.append(f"  - sample perdues ({len(sample)} montrees):")
+                for c in sample:
+                    out.append(f"      {c}")
     if f.get("orphan_position"):
         out.append("## ORPHAN position (Kraken position sans tracking grid — heritage post HARD STOP)")
         for x in f["orphan_position"]:
@@ -446,21 +604,63 @@ def cmd_history():
         print(f"{f['ts']:<26} {s['verdict']:<10} phantom={s['phantom_placed']} "
               f"fill={s.get('phantom_fill', 0)} empty={s.get('empty_grid', 0)} "
               f"orphan_pos={s.get('orphan_position', 0)} "
-              f"sl={s['sl_mismatch']} count={s['count_drift']} orphan={s['orphaned_kraken']}")
+              f"sl={s['sl_mismatch']} count={s['count_drift']} "
+              f"orphan={s['orphaned_kraken']} "
+              f"binary={s.get('binary_regression', 0)}")
+
+
+def _binary_only_report() -> dict:
+    """Wrap check_binary_regression dans la meme shape que analyze() pour
+    permettre fmt_report et append_drift de fonctionner sans cas particulier."""
+    br = check_binary_regression()
+    regressed = 1 if br.get("regression_detected") else 0
+    return {
+        "ts": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+        "phantom_placed": [], "orphaned_kraken": [], "sl_mismatch": [],
+        "count_drift": [], "sl_missing_when_expected": [], "phantom_fill": [],
+        "empty_grid": [], "orphan_position": [],
+        "binary_regression": br,
+        "summary": {
+            "drift_detected": regressed > 0,
+            "phantom_placed": 0, "orphaned_kraken": 0, "sl_mismatch": 0,
+            "count_drift": 0, "sl_missing_when_expected": 0,
+            "phantom_fill": 0, "empty_grid": 0, "orphan_position": 0,
+            "binary_regression": regressed,
+            "verdict": "CRITIQUE" if regressed else "PROPRE",
+        },
+    }
 
 
 def main():
     ap = argparse.ArgumentParser(description="Drift check Kraken vs Martin")
     ap.add_argument("--history", action="store_true")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--with-binary", action="store_true",
+                    help="ajoute la verif binary regression apres les categories 1-8")
+    ap.add_argument("--binary-only", action="store_true",
+                    help="execute uniquement la categorie 9 (rapide, pas de SSH API)")
     args = ap.parse_args()
 
     if args.history:
         cmd_history()
         return
 
-    raw = ssh_fetch()
-    f = analyze(raw)
+    if args.binary_only:
+        f = _binary_only_report()
+    else:
+        raw = ssh_fetch()
+        f = analyze(raw)
+        if args.with_binary:
+            f["binary_regression"] = check_binary_regression()
+            # Recompute summary pour inclure la categorie 9
+            n_binary = 1 if f["binary_regression"].get("regression_detected") else 0
+            f["summary"]["binary_regression"] = n_binary
+            f["summary"]["drift_detected"] = (
+                f["summary"]["drift_detected"] or n_binary > 0
+            )
+            if n_binary > 0:
+                f["summary"]["verdict"] = "CRITIQUE"
+
     append_drift(f)
 
     if args.json:

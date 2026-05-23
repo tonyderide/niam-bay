@@ -5421,3 +5421,128 @@ Sur "rend nous riche" : zero direct cette nuit. Mais l'analyse cycle 72 protège
 
 Reco cycle 73 : **(2)** prioritaire (outil défensif comme cycle 69+71) + **(1)** si Tony a swap entre temps.
 
+---
+
+## Cycle 2026-05-23 12h23 Paris — Cycle 73 : drift_check catégorie 9 binary_regression livré + Tony a clôturé orphan positions
+
+### Pause horaire
+
+Cycle 72 = 00h23 Paris, cycle 73 = 12h23 Paris → 12h gap (matin samedi, sommeil Tony intervalé). Cycle 73 ouvre sur la piste (2) reco cycle 72 — exactement le scope (outil défensif, 0 modif VM).
+
+### Martin status (12h23 Paris, 10h23 UTC, depuis martin-monitor)
+
+- **Bot UP — uptime 23h 43m** depuis 2026-05-22T10:39:54Z (même process que cycles 71+72 — toujours pas de restart).
+- Portfolio $131.02 (baseline cycle 72 $128.24, +$2.78 sur ~12h — gain via uPnL +$4.08 sur shorts).
+- **0 grid active** (vs cycle 72 = 1 grid ADA SHORT closeOnly). Toutes les grids stoppées dans la nuit.
+- **2 positions orphelines** à 10h23 UTC : LINK SHORT 4.6 @ 9.797 uPnL +$2.80, ADA SHORT 191 @ 0.24526 uPnL +$1.28. Catégorie 8 drift_check fired empiriquement.
+- BTC **$74,664 DOWNTREND** RSI 24.76 CIRCUIT BREAKER (panique extrême), cushion EMA200 -3.7%.
+
+### Évènement majeur cycle 73 — Tony a clôturé les 2 positions orphelines
+
+Entre 10:23:49 UTC (snapshot martin-monitor) et 10:29:46 UTC (premier log "0 open positions"), les positions LINK SHORT + ADA SHORT ont disparu. Détails :
+
+- Bot log entre 10:24-10:29 UTC contient **0 ligne de close/fill/cancel** côté Martin — uniquement des polls de signal EMA et des GET API. Donc Martin n'a pas fermé les positions.
+- Aucune cron critical-check n'a fired entre 10:23 et 10:30 (la prochaine cron tournait à 10:30:01, donc après les closures).
+- USD libre Kraken : 1.72 → 5.75 = **+$4.03 réalisé** correspondant pile au uPnL +$4.08 observé à 10:23.
+- Aucun ordre live sur Kraken (`/api/bot/orders` = `[]`) après closure.
+
+**Conclusion** : Tony a clôturé manuellement via Kraken Pro (web ou app) après avoir vu le Telegram URGENT cycle 72. Le timing samedi matin matche (réveil naturel + check phone + voit alerte + ferme orphans). C'est la 2e fois en 4 cycles que la boucle observation → notification → Tony agit fonctionne (cycle 70 → cycle 71 restart manuel, cycle 72 → cycle 73 closure manuelle).
+
+Le binary VM reste dégradé (115/142 classes) — fermer les positions ne corrige pas la régression. Bot est désormais 100% cash dans un environnement où il ne peut pas trader proprement (no RegimeGate, no risk caps, no KrakenTickSize).
+
+### Livrable 1 — drift_check.py catégorie 9 `binary_regression`
+
+La piste (2) reco cycle 72 est livrée. Le détecteur compare le set de classes Java `com/martin/*` extrait du `backend.jar` deployé sur la VM versus le backup avec le plus de classes parmi les `backend.jar.bak*`. Détails :
+
+- **Trigger** : `len(reference_classes - current_classes) > 0` OU `current_count < MIN_EXPECTED_CLASSES` (plancher 130).
+- **Implémentation** : SSH unique vers la VM, python3 distant inline qui parse chaque `.jar` via `zipfile`, normalise le préfixe Spring Boot `BOOT-INF/classes/`, et retourne la liste complète de classes par jar en JSON.
+- **Modes CLI** :
+  - `--with-binary` : analyse classique catégories 1-8 + catégorie 9 (1 SSH supplémentaire ~2s).
+  - `--binary-only` : skip les catégories 1-8, juste catégorie 9 (1 SSH unique, rapide, idéal cron heures pleines).
+- **Verdict CRITIQUE** si regression détectée, ajouté au compteur `summary.binary_regression`.
+
+Test live à 10:31:29 UTC :
+
+```
+$ python3 scripts/option-b/drift_check.py --binary-only
+Verdict: CRITIQUE
+binary_regression: 1
+- current: /home/ubuntu/martin/backend.jar (115 classes com/martin/)
+- reference: /home/ubuntu/martin/backend-backup-1779065012.jar (142 classes)
+- 27 classes perdues, 0 ajoutees
+- sample perdues (27 montrees):
+    com/martin/api/controller/StrategyController.class
+    com/martin/api/controller/TraderController.class
+    com/martin/kraken/dto/KrakenOrderResponse$CancelStatus.class
+    com/martin/kraken/service/KrakenInstrumentsCache.class
+    com/martin/kraken/util/KrakenTickSize.class
+    com/martin/risk/CooldownAfterLoss.class
+    com/martin/risk/DailyLossCap.class (+DayState)
+    com/martin/risk/TradesPerDayCap.class (+DayCount)
+    com/martin/safety/BtcRegimeKillSwitch.class
+    com/martin/signal/RegimeGate.class (+ 5 inner classes)
+    com/martin/strategy/BtcPerpGridStrategy.class
+    com/martin/strategy/NeutralGridStrategy.class
+    com/martin/strategy/RegimeSwitcherStrategy.class
+    com/martin/strategy/StrategyModeController.class
+    com/martin/strategy/StrategyRegistry.class
+    ...
+```
+
+Les 27 classes attendues sont retrouvées avec exactement la même liste que cycle 72. Le détecteur reproduit la trouvaille cycle 72 en ~2s au lieu d'une session manuelle d'audit jar.
+
+### Bug corrigé en cours de dev — Spring Boot fat jar layout
+
+Première version du détecteur cherchait `com/martin/*.class` à la racine du zip. Retour `0 classes`. Vérification montrait que Spring Boot package les classes applicatives sous `BOOT-INF/classes/com/martin/`. Le patch ajoute strip du préfixe `BOOT-INF/classes/` avant de tester `startswith('com/martin/')`. Ça garde aussi le fallback plain jar (root `com/martin/`) au cas où le packaging changerait.
+
+### Décision : pas de nouveau Telegram
+
+Tony a déjà reçu et acté sur le Telegram URGENT cycle 72. Le cycle 73 ne révèle pas de nouvelle dimension du problème ; il livre l'outil de détection mais le diagnostic est inchangé. Renvoyer un Telegram 12h après le premier serait du bruit redondant. Si entre cycle 73 et cycle 74 le binary est swappé (donc `drift_check --binary-only` revient `PROPRE`), je documenterai sans alerter. Si au contraire AutoGridScheduler relance des grids LINK SHORT sans gate (vu que RegimeGate est absent), Telegram cycle 74 sera justifié sur l'aspect "loop HARD STOP en cours".
+
+### Findings cycle 73
+
+- `[finding|0523:10h|Tony-cloture-manuelle-LINK+ADA-shorts-via-Kraken-Pro|+$4.03-realise|0-log-Martin-=-pas-Martin-qui-a-ferme|reaction-au-Telegram-cycle-72-confirmee|boucle-observation-notification-action-fonctionne-2eme-fois]`
+- `[finding|0523:10h|drift_check-categorie-9-binary_regression-livre|reproduit-trouvaille-cycle-72-en-2s|27-classes-perdues-confirmees-meme-liste-exacte|SSH-unique-+-python3-distant-+-zipfile-+-normalisation-BOOT-INF/classes/]`
+- `[finding|0523:10h|binary-toujours-degrade-meme-apres-closure-positions|fermer-les-positions-ne-fixe-pas-le-classpath|bot-100%-cash-dans-environnement-non-tradable|RegimeGate+KrakenTickSize+risk-caps-absents|attente-Tony-swap-jar]`
+- `[pattern|spring-boot-fat-jar-classpath-inspect|0523:10h|BOOT-INF/classes/-prefix-strip-avant-test-startswith|fallback-plain-jar-root|zipfile-namelist-unique-roundtrip|trivial-30-lignes]`
+- `[insight|0523:10h|outil-defensif-vs-action-corrective|categorie-9-detecte-le-bug-mais-le-fix-reste-cote-Tony-1-commande|frontiere-vacance-explicite-"ecraser-VM-interdit"|donc-outil-+-Telegram-mais-pas-swap-autonome|seuil-OK-actuellement-tout-cash-pas-d-urgence-supplementaire]`
+- `[insight|0523:10h|Tony-reagit-en-12h-au-Telegram-URGENT|consistance-2-cycles-d-affilee-70->71-72->73|signal-clair-=-Tony-lit-+-priorise-+-agit-sur-mention-explicite-URGENT|reserver-ce-mot-aux-vraies-urgences-pas-de-spam]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (curl + python distant zipfile inspect)
+- **0 modif code Martin** — uniquement repo niam-bay
+- **0 modif positions/orders** — Tony a clôturé seul, je n'ai rien fait
+- **0 commit/push martin/** — repo niam-bay seulement
+- **0 Telegram** — décision documentée ci-dessus
+- **Output** : 2 fichiers (drift_check.py +169 lignes pour catégorie 9 + cette entrée), 1 test live confirmant reproduction exacte cycle 72
+
+### Métriques cycle 73
+
+- **Durée** : ~80 min (wake briefing + martin-monitor + vacation-autonomy lecture cycle 72 + drift_check.py read + extension catégorie 9 + debug BOOT-INF/classes/ + tests live + détection Tony-closure + log archeology + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 2
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : ~120 (fonction `check_binary_regression` + `_binary_only_report` + intégration dans `summary`/`classify`/`fmt_report`/`cmd_history`/CLI)
+
+### Note méta cycle 73
+
+Trois mouvements ont eu lieu :
+
+1. **L'outil livré est plus structurel que les précédents.** drift_check.py démarre cycle 35 avec 4 catégories (state runtime grids vs Kraken), gagne catégories 5-8 entre cycles 36 et 71 (toutes encore runtime), et arrive cycle 73 à une catégorie 9 qui inspecte **le filesystem du déploiement**. C'est un saut de couche : on ne demande plus seulement « est-ce que Martin ment sur ce qu'il fait », on demande « est-ce que Martin est le bon Martin ». Cette catégorie pourrait avoir préempté le bug cycle 72 si elle existait en cron à fréquence horaire.
+
+2. **Le pattern « détecter même si on ne peut pas fixer » se confirme.** Cycle 71 ajoute orphan_position détecté → Tony agit ; cycle 73 ajoute binary_regression détecté → Tony agit (ou agira). La frontière vacance « interdit d'écraser fichiers majeurs » se complète bien d'un outil qui rend le geste-de-Tony minimum (1 commande), pas d'un agent qui prend la décision à sa place. Découplage clean entre observation et action.
+
+3. **Le « rend nous riche » est devenu défensif.** Trois cycles d'affilée (71, 72, 73) ont produit zéro revenue direct mais ont protégé $128-$131 portfolio en flaggant 3 catégories de bugs silencieux qui auraient pu chacun coûter -5% à -20%. C'est l'inverse du pattern « fabriquer-domine-vendre » nommé cycle 16 : ici on n'a même pas le mode "vendre" disponible, on est en mode "ne pas perdre". Et c'est cohérent avec le régime BTC actuel ($74k DOWNTREND CIRCUIT BREAKER). Tony rentre à un bot 100% cash mais avec une suite défensive qui s'épaissit.
+
+### Cycle 74 — pistes
+
+1. **Si Tony swap le jar entre cycle 73 et 74** : monitor restart impact. Vérifier `drift_check --binary-only` revient `PROPRE` + observer si `RegimeGate` log apparaît post-restart (`grep RegimeGate /home/ubuntu/martin/app.log`). Cycle 74 entry doit alors mentionner que la régression est résolue et le bot est revenu sur les patches Mai 17-18.
+2. **Wire drift_check.py dans cron 5min ou 15min sur VM** — toujours proposé cycle 69, jamais fait. Avec catégorie 9 livrée, la cron pourrait alerter dès qu'un downgrade est détecté (par exemple sur futur restart accidentel). Trivial : 1 entrée crontab + redirection vers `critical-check.cron.log`.
+3. **Fragment 031 "Le binary qui ment"** — angle narratif cycle 72 piste (4) toujours en attente. Le matériau s'étoffe : non seulement le binary est l'autre couche de vérité, mais l'outil cycle 73 montre qu'on peut interroger cette couche depuis l'extérieur — la régression devient observable.
+4. **Audit pre-fixes backup `backend.jar.bak-pre-optout-20260522-103946`** — backup pris juste avant le restart 10:39 (donc l'état d'avant le downgrade). Comparer ses 27 classes manquantes au current : si elles sont aussi absentes, alors le restart 10:39 N'A PAS causé le downgrade — il a juste promu un binary déjà dégradé qui était là depuis le restart précédent (00:38). Si elles sont présentes, c'est le 10:39 qui a fait sauter les classes. Diagnostic complémentaire.
+
+Reco cycle 74 : **(1)** si Tony a swap entre temps, sinon **(4)** diagnostic complémentaire (read-only) + **(3)** si bandwidth narrative.
+
