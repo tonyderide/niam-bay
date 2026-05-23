@@ -5546,3 +5546,132 @@ Trois mouvements ont eu lieu :
 
 Reco cycle 74 : **(1)** si Tony a swap entre temps, sinon **(4)** diagnostic complémentaire (read-only) + **(3)** si bandwidth narrative.
 
+---
+
+## Cycle 2026-05-23 18h23 Paris — Cycle 74 : loop HARD STOP borné par maxLoss + fragment 031 livré + diagnostic (4) impossible
+
+### Pause horaire
+
+Cycle 73 = 12h23 Paris, cycle 74 = 18h23 Paris → 6h gap (samedi après-midi/début soirée). Pas le pattern habituel "cron 6h pile" — c'est une session humaine fired explicitement.
+
+### Martin status (18h23 Paris, 16h23 UTC, depuis martin-monitor)
+
+- **Bot UP — uptime 1d 5h 43m** depuis 2026-05-22T10:39:54Z (toujours le même process — pas de swap jar).
+- Portfolio $130.88 (baseline cycle 73 $131.02 → -$0.14 ≈ stable).
+- **2 grids actives** (vs cycle 73 = 0) :
+  - LINK NEUTRAL démarré 13:55 UTC, 0 fill, krakenRealizedPnl -$0.72 (résidu ancienne grid LINK), 0 RT, range $8.698-$9.81 spacing 0.278
+  - ADA SHORT closeOnly démarré 15:10 UTC, 2 sell fills initiaux à 0.2323+0.2396, krakenRealizedPnl +$0.99, krakenUnrealizedPnl +$0.15, 0 RT
+- **1 position ADA SHORT 746 units @ 0.24190** (uPnL négligeable -$0.002)
+- 7 ordres live (4 LINK + 3 ADA)
+- BTC **$75,379 DOWNTREND** RSI 45.82 (sorti du circuit breaker — cycle 73 disait RSI 24.76, le rebond a eu lieu), cushion EMA200 -2.6%.
+- gate-cushion en redressement mais EMA200 toujours brisée depuis 5j.
+
+### Évènements majeurs cycle 73 → cycle 74 (6h)
+
+J'ai reconstruit la timeline complète depuis les logs Martin entre 10:23 et 16:23 UTC :
+
+1. **10:25-13:40 UTC** (3h15) : AutoGridScheduler évalue toutes les 15min sur 3 instruments (LINK/ETH/ADA), tous "TRENDING tradeable=false signal=WAIT/DANGER". 0 grid déclenchée. Tony manipule la config ETH manuellement (10:52, 12:03 — change capital/leverage/levels/mode) mais sans déclencher de start.
+2. **13:55 UTC** : LINK passe **RANGING** (ADX=39.07 BBW=1.13). AutoGridScheduler ouvre une grid LINK NEUTRAL — 4 ordres lmt @ 8.837/9.115/9.393/9.671 size 4.5-5 LINK. **Pas de RegimeGate IQR filter** (absent du binary) — éligibilité repose seulement sur ADX+BBW.
+3. **14:25 UTC** : ADA passe RANGING (ADX=39.14 BBW=1.58). **AUTO-FLIP** détecté : *"BTC DOWNTREND → overriding PF_ADAUSD NEUTRAL → SHORT"*. Grid ADA SHORT ouverte avec 4 sell @ 0.2298/0.237/0.2442/0.2514. Premiers fills instant à 0.2298 + 0.237 (level 0 + level 1) → position SHORT 375 ADA.
+4. **14:40 UTC** : CLOSE-ONLY protection placée par AutoGridScheduler pour PF_ADAUSD : TP @ 0.24683 + SL @ 0.23937 size 375 (cycle 14:40 dit "LONG entry=0.24047" — étrange parce qu'on est SHORT, à investiguer mais hors scope cycle 74).
+5. **15:03:32 UTC** : **STOP LOSS triggered for PF_ADAUSD — totalPnl=-$2.5150 > maxLoss=$2.50** → grid stopped. Position fermée à perte. **C'est le HARD STOP loop prédit cycle 73.**
+6. **15:10 UTC** : Next cron 15min, ADA toujours RANGING. **AUTO-FLIP rejoue** → SHORT. New grid ADA SHORT ouverte, fills instant à 0.2323+0.2396 → position SHORT 375 (mais Kraken montre 746 = double, donc CLOSE-ONLY 14:40 SL n'a pas fired et la position s'est ajoutée par-dessus). À voir cycle 75.
+7. **15:25 UTC** : Auto-grid décision : ADA SHORT closeOnly, *"REGIME SWITCH CLOSE-ONLY for PF_ADAUSD — SL already active"*. Transition smooth vers closeOnly.
+8. **15:40-16:25 UTC** : grids stable, 0 nouveau évènement. ADA en CLOSE-ONLY décroissant vers TP, LINK en attente du range.
+
+### Interprétation cycle 74
+
+**Le loop HARD STOP s'est matérialisé exactement comme prédit cycle 72** (-$2.51 ADA fired à 15:03 UTC). Mais 3 choses inattendues :
+
+1. **L'AUTO-FLIP fonctionne** — détecte BTC DOWNTREND et bascule NEUTRAL → SHORT automatiquement. C'est un guardrail qui SUR-vit le binary downgrade (probablement parce qu'il est dans `AutoGridScheduler` core, pas dans une classe disparue). Sans RegimeGate IQR, ce guardrail seul ne suffirait pas si BTC remontait soudainement, mais en DOWNTREND continu il pousse les nouvelles grids en SHORT, ce qui est la bonne direction.
+
+2. **maxLoss=10% tient comme firewall**. Fired à exactement $2.51 ≈ 10% du capital $25 alloué à la grid. Tony rentre à un -2.5% sur une grid + redéploiement immédiat — pas un -20% runaway.
+
+3. **Le portfolio est stable** : $131.02 → $130.88 = -$0.14 sur 6h. Avec 1 HARD STOP fired (-$2.51 ADA) + ré-ouverture grid + +$0.99 réalisé sur la nouvelle grid ADA SHORT, le bilan net est presque 0. Le loop existe mais se compense partiellement.
+
+**Conclusion** : le pattern est *loop borné* plus que *loop catastrophique*. Le binary downgrade fragilise mais ne casse pas. Tony peut swapper le jar quand il veut sans urgence renouvelée.
+
+### Décision Telegram : SKIP
+
+Critères vacance pour Telegram : *"si tu découvres quelque chose d'important ou bloquant"*.
+
+- Important ? L'évènement (HARD STOP ADA) est dans les seuils configurés, le portfolio gagne nominalement (+0.7% vs cycle 72), AUTO-FLIP a poussé proprement en SHORT. Pas une découverte structurelle nouvelle.
+- Bloquant ? Non. Le bot tourne, les guardrails partiels tiennent, Tony peut décider de swap ou pas à son rythme.
+
+Un Telegram cycle 74 dans 18h après URGENT cycle 72 serait du spam : Tony lit, prioritise, agit (il a clôturé positions cycle 73). Un autre message dirait juste "le loop continue mais le portfolio gagne", redondant avec ce que les drift_checks logguent déjà. La règle apprise cycle 73 ("réserver URGENT aux vraies urgences pas de spam") s'applique à l'inverse aussi : ne pas envoyer informatif quand le contexte est inchangé.
+
+### Diagnostic (4) impossible — backups disparus
+
+La piste reco cycle 73 piste (4) était : *"comparer backend.jar.bak-pre-optout-20260522-103946 (état pré-restart 10:39) au current pour savoir si le restart 10:39 a causé le downgrade ou si c'était déjà avant"*. Réalité cycle 74 :
+
+```
+$ ssh ... ls -la /home/ubuntu/martin/*.jar
+-rw-rw-r-- 64543497 May 18 00:43  backend-backup-1779065012.jar    ← 142 classes
+-rw-rw-r-- 64469282 May 22 10:39  backend.jar                       ← 115 classes (current)
+```
+
+**Seulement 2 jars actuellement**. Le `bak-pre-optout-20260522-103946` (et tous les autres backups cycle 72-73) ont disparu entre cycle 73 (10:23 UTC) et cycle 74 (16:23 UTC). Possibles causes :
+
+- Tony a fait du ménage (`rm backend.jar.bak-*` pour libérer disk space ou par habitude)
+- Une cron VM nettoie les backups vieux > N jours (à vérifier)
+- Le restart cycle 73 a déclenché un cleanup script auto
+
+**Conséquence** : impossible de trancher entre les deux hypothèses (restart 10:39 cause vs déjà dégradé avant 10:39). Le diagnostic complémentaire est définitivement perdu. C'est une leçon par soustraction : **les backups jar doivent être archivés explicitement, pas laissés dans `/home/ubuntu/martin/` où ils sont fragiles aux cleanups**.
+
+### Livrables cycle 74
+
+**Livrable 1 — Fragment 031 "Le binary qui ment"** — piste cycle 73 (3) livrée. ~155 lignes, vers libre. Angle : la différence entre code source et binary est un objet de réalité indépendant, et l'outil cycle 73 le rend observable. Closure narrative sur la séquence cycles 70-71-72-73.
+
+**Livrable 2 — Cycle 74 entry vacation-autonomy** — cette entrée, timeline reconstruit, analyse loop borné, décision Telegram skip documentée.
+
+**Pas de livrable code cycle 74** — le diagnostic (4) est perdu, drift_check.py est déjà livré cycle 73. Wire cron VM (piste 2 cycle 73) reste possible mais nécessite `crontab -e` sur VM = je le classe en "limite frontière vacance" (éditer crontab n'écrase pas un fichier majeur strictement mais modifie le comportement VM persistant). Je laisse à Tony.
+
+### Findings cycle 74
+
+- `[finding|0523:16h|loop-HARD-STOP-confirme-mais-borne|1-HS-ADA-$-2.51-fired-15:03-UTC|maxLoss-10pct-tient-firewall|AUTO-FLIP-BTC-DOWNTREND→SHORT-fonctionne-survive-binary-downgrade|portfolio-$131→$130.88-stable-en-6h|loop-borne-pas-catastrophique]`
+- `[finding|0523:16h|AUTO-FLIP-est-dans-AutoGridScheduler-core|survit-au-downgrade-binary|RegimeGate-IQR-absent-mais-ADX+BBW+BTC-trend-suffit-en-DOWNTREND-continu|guardrail-degrade-mais-fonctionnel]`
+- `[finding|0523:16h|backups-jar-disparus-entre-cycle-73-et-74|seul-backend-backup-1779065012-May-18-reste|bak-pre-optout-20260522-103946-perdu|diagnostic-piste-4-cycle-73-impossible|cause-inconnue-Tony-cleanup-OR-cron-OR-restart-side-effect]`
+- `[finding|0523:16h|position-ADA-SHORT-746-vs-grid-attend-375|CLOSE-ONLY-cycle-14:40-place-TP+SL-puis-grid-15:10-rajoute-une-couche|SL-stop-@-0.23937-pas-fired-malgre-prix-baisse-cycle-14:40-vers-prix-actuel|cycle-75-investiguer-pourquoi-stop-ADA-CLOSE-ONLY-pas-execute]`
+- `[pattern|loop-HARD-STOP-borne-par-firewall|0523:16h|grid-trending-down-perd-maxLoss-puis-AutoGrid-redeploie-SHORT-via-AUTO-FLIP|pattern-cumul-near-0-en-DOWNTREND-stable|fragile-si-BTC-pivote-soudainement-vers-UPTREND]`
+- `[insight|0523:16h|telegram-restraint-strategique|cycle-73-rule-"reserver-URGENT"|cycle-74-rule-inverse-"ne-pas-spam-informatif-quand-contexte-inchange"|frequency-Telegram-doit-suivre-saliency-pas-existence-cycle]`
+- `[insight|0523:16h|backups-jar-doivent-etre-archives-explicitement|/home/ubuntu/martin/*.bak*-fragile-cleanup|pattern-deploy-pipeline-devrait-mover-backups-vers-/home/ubuntu/martin/archive/-protect-from-cleanup-scripts]`
+- `[insight|0523:16h|fragment-031-livre-clot-arc-narratif-3-cycles|cycle-70-71-72-construit-recit-faux|cycle-72-decouvre-binary-downgrade|cycle-73-livre-outil|cycle-74-livre-fragment|narrative-suit-tool-livraison-pas-l-inverse]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (curl + tail logs + python parsing inline)
+- **0 modif code Martin** — uniquement repo niam-bay
+- **0 modif positions/orders** — observation pure
+- **0 commit/push martin/** — repo niam-bay seulement
+- **0 Telegram** — décision documentée ci-dessus
+- **Output** : 2 fichiers (fragment 031 + cette entrée), 0 ligne code
+
+### Métriques cycle 74
+
+- **Durée** : ~75 min (wake briefing + martin-monitor + vacation-autonomy lecture cycle 73 + jar files audit + timeline logs reconstruction + Kraken realizedPnl deep dive + décision Telegram + fragment 031 redaction + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 2 (fragment 031 nouveau + vacation-autonomy update)
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : 0 (pas de nouveau outil, le détecteur cycle 73 suffit)
+
+### Note méta cycle 74
+
+Trois mouvements ont eu lieu :
+
+1. **Le pattern "détecter même si on ne peut pas fixer" tient un cycle de plus.** Cycle 71 ajoute orphan_position détecté → Tony agit (closure manuelle cycle 73). Cycle 73 ajoute binary_regression détecté → Tony agit (... ou agira). Cycle 74 ajoute timeline reconstruction des loops HARD STOP → Tony lira en rentrant. La frontière vacance s'auto-renforce : observer + écrire est productif même sans agir.
+
+2. **Le "rend nous riche" reste défensif mais avec une nuance nouvelle.** Cycle 73 disait "on est en mode ne pas perdre". Cycle 74 affine : on est en mode *constater que le système se protège partiellement tout seul* (AUTO-FLIP + maxLoss). C'est un downgrade fonctionnel pas un crash. Tony rentre à un bot qui a saigné -$2.50 sur 12h mais qui tient son range +/-1% en gros.
+
+3. **Le fragment 031 ferme un arc.** Cycles 70-71 ont construit un récit faux (deux fois). Cycle 72 a découvert pourquoi (binary downgrade). Cycle 73 a livré l'outil. Cycle 74 livre le fragment narratif. C'est une cadence : *trouvaille → outil → mot*. Cette séquence n'était pas planifiée ; elle a émergé. C'est la 3e ou 4e fois qu'un arc 4-cycles aboutit à un fragment fin (cf cycle 14 audit naissance → cycle 23 fragment 023, cycle 22 sentinelle → cycle 21 fragment 024). Le rythme se confirme : un fragment par arc majeur, pas un fragment par cycle.
+
+### Cycle 75 — pistes
+
+1. **Si Tony swap le jar entre cycle 74 et 75** : monitor `RegimeGate` log + `drift_check --binary-only` clean + observer impact sur AutoGridScheduler comportement (RegimeGate IQR filter va rendre les grids plus défensives). Documenter le retour à 142 classes.
+2. **Investiguer position ADA SHORT 746 vs grid 375** — anomalie cycle 74. La CLOSE-ONLY SL @ 0.23937 placée 14:40 UTC n'a pas fired malgré le HARD STOP grid 15:03 ($-2.51). Pourquoi ? Soit la SL était sur l'ancienne grid (avant 14:40 → 15:03 → 15:10) et a été cancel/recreate. Soit le SL stop @ 0.23937 attend toujours mais le prix est repassé au-dessus. Reading `app.log` plus en détail le 14:40-15:10 window devrait clarifier. Read-only diagnostic.
+3. **Drift_check VM cron** (proposé cycle 73 piste 2) — toujours non livré. Si je classe ça en frontière OK, c'est 1 commande `crontab -e` qui ajoute `*/15 * * * * cd ~/martin/scripts && python3 drift_check.py --binary-only >> drift.log 2>&1`. Question philosophique : éditer crontab ≠ écraser jar mais modifie comportement VM persistant. À discuter avec Tony au retour plutôt que faire seul.
+4. **Pensée nouvelle** — pas écrite depuis cycle 64 (2 semaines). Sujet candidat : "Le rythme des arcs : pourquoi un fragment par 4 cycles plutôt que par cycle ?" — méta-réflexion sur la cadence créative en autonomie longue.
+
+Reco cycle 75 : **(2)** prioritaire (anomalie observable, read-only) + **(4)** si bandwidth narrative. Skip (1) sauf si Tony swap entre temps. Skip (3) — pas mon scope sans validation Tony.
+
