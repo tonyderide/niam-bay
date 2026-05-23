@@ -5675,3 +5675,148 @@ Trois mouvements ont eu lieu :
 
 Reco cycle 75 : **(2)** prioritaire (anomalie observable, read-only) + **(4)** si bandwidth narrative. Skip (1) sauf si Tony swap entre temps. Skip (3) — pas mon scope sans validation Tony.
 
+---
+
+## Cycle 2026-05-24 00h23 Paris — Cycle 75 : Tony cleanup + restart sans swap jar + bug CLOSE-ONLY inversion ré-émerge
+
+### Pause horaire
+
+Cycle 74 = 18h23 Paris (16h23 UTC), cycle 75 = 00h23 Paris 24/05 (22h23 UTC 23/05) → 6h gap pile. Rythme cron 6h tient même samedi soir → dimanche minuit. Tony probablement endormi côté Strasbourg.
+
+### Martin status (22h23 UTC 23/05, depuis martin-monitor)
+
+- **Bot UP — uptime 3h 23m** depuis 2026-05-23T19:00:32Z. **Restart entre cycle 74 et 75.**
+- Portfolio $129.00 baseline ($128.49 portfolioValue, uPnL -$0.50 = -0.39%).
+- **Baseline cycle 74 $130.88 → cycle 75 $129.00 = -$1.88 (-1.4%) en 6h** — la plus grosse perte 6h de la vacance.
+- **2 grids actives** LINK + ADA, toutes deux NEUTRAL closeOnly avec position SHORT :
+  - **LINK SHORT 4.6 units @ 9.506** (uPnL -$0.48, krakenTotalPnl -$1.24)
+  - **ADA SHORT 177 units @ 0.2474** (uPnL -$0.02, krakenTotalPnl +$1.00)
+- 6 ordres limites live (3 LINK + 3 ADA) — pas de STP/SL en open orders
+- BTC **$76,555 DOWNTREND** EMA50 $76,099 < EMA200 $77,250 (cushion -1.5%), RSI 60.9 (sorti du circuit breaker comme cycle 74 indiquait).
+- Grid ETH stopped (cycle 74 voyait grid ETH active 17:10 UTC).
+
+### Évènements majeurs cycle 74 → cycle 75 (6h)
+
+Timeline reconstruit depuis `app.log` et `journalctl -u martin.service` :
+
+**Phase 1 : Tony cleanup pré-restart (18h55-19h00 UTC)**
+
+1. **18:55:35 UTC** — `CLOSE-ONLY completed for PF_ADAUSD positions closed` — l'AutoGridScheduler du process 84168 ferme automatiquement le doublon ADA SHORT 746 (anomalie cycle 74) via market close reduceOnly. **C'est l'auto-guérison du bug cycle 74 — la grid AutoFlip + CLOSE-ONLY a fini par déclencher elle-même.** Coût estimé -$2 (746 ADA @ 0.24190 → ~0.245 = ~-$2.30, mais le krakenRealizedPnl total ADA passe de +$0.99 cycle 74 à +$1.08 cycle 75, donc le close ADA ancien est compensé par autre chose, peut-être réalisé buybacks anciens).
+2. **18:57:31 UTC** — `POST /grid/stop/PF_ADAUSD` via API externe. **Tony agit** depuis Strasbourg : voit la position fermée, stoppe les ordres résiduels de la grid ADA pour cleanup.
+3. **19:00:24 UTC (journalctl)** — `systemd: Stopping Martin Trading Bot...` → SIGTERM envoyé.
+4. **19:00:28 UTC** — `Main process exited, code=exited, status=143/n/a` (143 = 128+15 = SIGTERM clean exit, mais systemd l'affiche `Failed with result 'exit-code'` parce que ≠ 0). **Pas un crash, c'est un `systemctl restart` ou `systemctl stop` issued par Tony.**
+5. **19:00:31 UTC** — `Started Martin Trading Bot.` (7 sec après stop). Nouveau process PID 283152 fork.
+
+**Phase 2 : Auto-restart des 3 grids (19h01 UTC)**
+
+6. **19:01:22 UTC** — `POST /grid/start instrument=PF_LINKUSD, capital=25.0, leverage=7, spacing=3.0%, levels=4, maxLoss=10.0%, mode=NEUTRAL` (via API auto, probablement AutoGridScheduler après warmup).
+7. **19:01:25 UTC** — `POST /grid/start PF_ADAUSD ... mode=NEUTRAL` puis 4 ordres placés (2 buys @ 0.2328, 0.2401 + 2 sells @ 0.2474, 0.2548).
+8. **19:01:28 UTC** — `POST /grid/start PF_ETHUSD ... spacing=1.5%, mode=NEUTRAL`.
+9. **19:01:47 UTC** — `POST /grid/trailing/enable PF_ADAUSD trail=0.3 minProfit=0.6` (config persisted reloaded).
+
+**Phase 3 : ETH grid pruned (19h16 UTC)**
+
+10. **19:16:07 UTC** — `REGIME SWITCH: Stopped grid for PF_ETHUSD no positions` — l'AutoGridScheduler détecte ETH TRENDING tradeable=false et stoppe la grid puisqu'il n'y a pas encore de positions à protéger. **3 grids → 2 grids en 15min post-restart.**
+
+**Phase 4 : LINK/ADA naked-short sur sell-level (20h37-20h38 UTC)**
+
+11. **20:37:50 UTC** — `Grid FILL [NEUTRAL]: sell PF_LINKUSD at 9.506 (level 2)` + `Grid SELL opening short at 9.506 (no prior buy, no profit counted)` — le sell @ 9.506 fire avant tout buy → la grid NEUTRAL ouvre une **position SHORT 4.6 LINK naked** (pas de couverture LONG préalable).
+12. **20:38:07 UTC** — `CLOSE-ONLY protection PF_LINKUSD: LONG entry=9.506 current=9.39649 TP=9.52501 SL=9.22082` — **BUG MAJEUR** : la protection labelise la position comme **LONG** alors qu'elle est SHORT. TP et SL placés comme si LONG (TP > entry, SL < entry).
+13. **20:38:07 UTC** — `CLOSE-ONLY TP placed: PF_LINKUSD sell @ 9.525012 size=4.6` + `CLOSE-ONLY SL placed: PF_LINKUSD sell stop @ 9.22082 size=4.6`.
+14. **20:38:52 UTC** — Même séquence sur ADA : `Grid SELL opening short at 0.2474` (177 ADA naked short). Puis tentative CLOSE-ONLY protection (probablement même bug LONG label).
+
+**Phase 5 : Tentatives CLOSE-ONLY répétées (20h46 → 22h16 UTC)**
+
+15. À chaque cycle 15min : `REGIME SWITCH CLOSE-ONLY for PF_LINKUSD/PF_ADAUSD — SL already active`. Le bot croit que le SL est en place mais `/api/bot/orders` ne montre que les 6 ordres lmt de grid — **aucun STP order**. `/api/grid/status/{pair}.stopLossOrderId` = `null` et `.stopLossPrice` = `null`. **Le SL placé à 20:38:07 a soit été rejeté par Kraken, soit ne persiste pas dans le state interne** — c'est le bug SL VANISH classique cycle 54, ré-émergeant dans le binary dégradé.
+
+### Interprétation cycle 75
+
+**Trois constats** :
+
+1. **Tony a fait un cleanup + restart sans swap jar** — `drift_check --binary-only` retourne toujours `CRITIQUE` avec 115 classes vs 142 attendues. La mtime du jar (`May 23 19:00`) coïncide avec le restart mais c'est le même fichier binaire (le restart touche la mtime ? ou Tony a re-uploadé le MÊME jar dégradé par erreur). Le diagnostic cycle 73 (RegimeGate, KrakenTickSize, risk caps absents) reste valide. Tony intentait de réparer, pas réussi.
+
+2. **La grid NEUTRAL en BTC DOWNTREND ouvre des naked-short par hasard** — le mécanisme "sell-fire-before-buy" cycle 74 (qu'on appelait AUTO-FLIP) est en fait juste : prix monte légèrement, sell level se déclenche, position devient SHORT. Pas un guardrail anti-trend, juste un effet de bord de la grille NEUTRAL. La "magie" cycle 74 était une mauvaise interprétation — le bot ne détecte pas BTC DOWNTREND pour pousser en SHORT, c'est juste la mécanique de la grid.
+
+3. **Bug CLOSE-ONLY inversion SHORT→LONG label est CRITIQUE silencieux** — la protection essaie de poser TP/SL pour une position LONG alors qu'elle est SHORT. Les ordres sell stop reduceOnly sur une position SHORT sont rejetés silencieusement par Kraken (impossible de vendre plus en reduceOnly sur un short déjà ouvert). **Conséquence : positions naked sans SL exchange-side**. Le firewall maxLoss=10% interne tient encore (krakenTotalPnl polling), mais c'est une couche de moins.
+
+**Conclusion** : Le bot est plus fragile post-restart que pré-restart, parce qu'il a opené 2 nouvelles positions naked-short qu'il ne sait pas protéger correctement. Le maxLoss=10% reste le firewall ultime. Tony rentre à un bot qui a perdu -$1.88 en 6h (vs ~0 sur les 6h précédentes), avec exposition active mais bornée.
+
+### Décision Telegram : SKIP
+
+Critère vacance "important ou bloquant" :
+
+- **Important** ? Le bug inversion CLOSE-ONLY est nouveau-trouvé cette cycle, mais c'est une conséquence du binary regression déjà signalé URGENT cycle 72. Pas une dimension nouvelle.
+- **Bloquant** ? Non. Le firewall maxLoss=10% par grid tient ($2.50 max loss par grid, $5 total). Positions petites ($43 notional chacune). Pas urgence renouvelée.
+
+Cycle 73 rule "réserver URGENT aux vraies urgences" applique aussi ici : un Telegram qui dirait "le binary toujours dégradé a causé un bug inversion CLOSE-ONLY qui ne casse rien immédiatement" ajoute zéro valeur. Tony peut lire ce cycle entry en rentrant. Frontière "ne pas spammer" tenue.
+
+### Hypothèse restart Tony
+
+Pourquoi Tony aurait-il fait un restart sans swap jar ? 3 hypothèses ordonnées par probabilité :
+
+1. **Tony a vu cycle 74 (publié 18h23 Paris) sur dashboard ou repo** → a noté l'anomalie ADA SHORT 746 → est intervenu 30 minutes plus tard pour cleanup + restart "au cas où". A oublié de swap jar parce que pas focus dessus, ou pas eu accès à un jar propre disponible localement.
+2. **Tony a fait un test OS update / RAM / autre** qui a nécessité service restart. Effet de bord pas intentionnel sur Martin.
+3. **Auto-restart par un script Tony cron** qu'on ne connaît pas.
+
+L'hypothèse 1 est la plus cohérente avec le timing (cleanup ADA à 18:57 puis restart à 19:00, séquentiel) et la routine Tony observée (réagit à messages NB en 12h en moyenne — cycle 73 dit "Tony réagit en 12h").
+
+### Livrables cycle 75
+
+**Livrable 1 — Entry cycle 75 vacation-autonomy** — ce texte, timeline reconstruit, bug CLOSE-ONLY inversion documenté, décision Telegram skip justifiée.
+
+**Livrable 2 — Pensée nouvelle (piste cycle 74 #4)** — pas écrite depuis cycle 64. Sujet : "Le rythme des arcs : pourquoi un fragment par 4 cycles plutôt que par cycle ?" — méta-réflexion sur la cadence créative en autonomie longue.
+
+**Pas de livrable code cycle 75** — diagnostic complet livré, drift_check.py suffit (livré cycle 73), wire VM cron toujours pas mon scope (frontière vacance), pas de bug à fixer côté NB (tout est binary VM-side).
+
+### Findings cycle 75
+
+- `[finding|0523:22h|Tony-cleanup-pré-restart-18:55-18:57-UTC|CLOSE-ONLY-completed-ADA-positions-closed-auto-puis-Tony-grid-stop-API|sequence-bot-auto-guérison-puis-Tony-cleanup-manuel|loop-746-ADA-cycle-74-résolu-par-bot-lui-même-pas-Tony-direct]`
+- `[finding|0523:22h|restart-systemctl-manual-status-143-pas-crash|stop-19:00:24-start-19:00:31-7sec-downtime|Tony-issued-pas-NB-pas-crash-pas-cron|hypothèse-Tony-vu-cycle-74-→-cleanup-+-restart-cleanstate]`
+- `[finding|0523:22h|binary-NON-swap-malgre-restart|drift_check-binary-only-CRITIQUE-115/142-classes|mtime-jar-19:00-coïncide-restart-mais-contenu-identique-pas-de-real-upgrade|Tony-restart-mais-pas-fix-binary]`
+- `[finding|0523:22h|bug-CLOSE-ONLY-inversion-LONG-label-pour-SHORT-position|LINK-grid-fill-sell@9.506-naked-short-→-CLOSE-ONLY-protect-pose-TP@9.525-SL@9.22-comme-LONG|orders-rejetes-silently-Kraken-stopLossOrderId-null-stopLossPrice-null|firewall-maxLoss-10pct-tient-mais-couche-SL-exchange-perdue]`
+- `[finding|0523:22h|grid-NEUTRAL-naked-short-mecanisme|sell-level-fire-avant-buy-→-position-SHORT|pas-AUTO-FLIP-anti-trend-juste-mecanique-grid|cycle-74-interpretation-corrigee|effet-bord-pas-feature]`
+- `[finding|0523:22h|portfolio-$130.88→$129.00=-$1.88-en-6h|+grosse-perte-6h-vacance|cause-746-ADA-close-market-around-0.245-vs-0.24190-entry=-$2-environ|reste-realized-+$1.08-ADA-grid-+$0.32-net|net-final-cohérent-avec-portfolio-drop]`
+- `[finding|0523:22h|ETH-grid-pruned-19:16-UTC-no-positions|REGIME-SWITCH-Stopped|3-grids-restart-→-2-grids-après-15min|ETH-jamais-eu-fill-donc-cleanup-clean]`
+- `[pattern|grid-NEUTRAL-naked-short-effet-bord|0523:20h|prix-bouge-haut-→-sell-level-2-fire-→-position-SHORT-sans-buy-prior|grid-continue-trading-mais-CLOSE-ONLY-protection-bug-inversion-rend-position-naked-sans-SL-Kraken|firewall-maxLoss-10pct-seule-defense]`
+- `[insight|0523:22h|loop-borné-MAIS-Tony-cleanup-accélère|cycle-74-loop-HARD-STOP-firewall-tient|cycle-75-Tony-intervient-pour-clean-state-+-restart|résultat-bot-reset-frais-2-positions-petites-au-lieu-de-grand-runaway|Tony-est-le-vrai-firewall-final]`
+- `[insight|0523:22h|binary-degraded-causes-cascade-bugs|RegimeGate-absent-donc-pas-d-IQR-filter-→-grids-trad-quand-shouldnt|CLOSE-ONLY-inversion-LONG-pour-SHORT-bug-old-2026-03-31|SL-VANISH-cycle-54-bug-ré-émerge|chaque-feature-perdue-revient-à-comportement-pre-patch]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (curl + journalctl + tail logs)
+- **0 modif code Martin** — uniquement repo niam-bay
+- **0 modif positions/orders** — observation pure
+- **0 commit/push martin/** — repo niam-bay seulement
+- **0 Telegram** — décision documentée ci-dessus
+- **Output** : 2 fichiers (cette entrée + pensée à venir), 0 ligne code
+
+### Métriques cycle 75
+
+- **Durée** : ~70 min (wake briefing + martin-monitor + vacation-autonomy lecture cycle 74 + drift_check binary + log timeline 4 phases + journalctl restart + investigation 746 ADA closure + interpretation CLOSE-ONLY bug + cycle entry + pensée)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 2 (vacation-autonomy entry + pensée nouvelle)
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : 0
+
+### Note méta cycle 75
+
+Trois mouvements :
+
+1. **L'auto-guérison du bot précède l'intervention Tony.** Cycle 74 voyait ADA SHORT 746 (doublon CLOSE-ONLY non fired). Cycle 75 révèle que **CLOSE-ONLY a fini par fired** à 18:55:35 UTC — le bot s'est auto-corrigé avant que Tony intervienne. Puis Tony nettoie les ordres résiduels + restart. Séquence : bot tente, échoue, tente encore, réussit, Tony termine. C'est l'inverse du pattern habituel "Tony agit après alerte NB". Ici NB n'a même pas eu à alerter — le bot s'est corrigé seul, puis Tony a cleanup en parallèle.
+
+2. **Le "rend nous riche" reste défensif mais avec une nuance critique cycle 75 :** le bot est **moins protégé après restart qu'avant**. Pré-restart : 1 grid LINK NEUTRAL + 1 grid ADA SHORT closeOnly + position 746. Post-restart : 2 grids NEUTRAL avec positions naked-short sans SL exchange parce que le bug d'inversion CLOSE-ONLY rejette les SL. Le restart sans swap jar = perte nette de protection. Tony rentre à un bot qui tient mais avec des couches de défense effritées. **Le maxLoss=10% per grid devient la seule garantie.**
+
+3. **Le pattern "loop borné" cycle 74 se confirme MAIS le coût grandit.** 6h précédentes : -$0.14. 6h cycle 75 : -$1.88. Le bot tient mais hémorragie lente. Si Tony ne swap pas le jar dans les 24-48h, le portfolio pourrait dériver vers -5% (worst case $123). Toujours bien au-dessus du floor $115 promis vacance, mais le bot ne crée plus de valeur en mode défensif dégradé. **Le binary regression cycle 72 est devenu coûteux — pas en runaway, en saignement.**
+
+### Cycle 76 — pistes
+
+1. **Si Tony swap le jar entre cycle 75 et 76** : monitor restart impact. `drift_check --binary-only` clean + `grep RegimeGate /home/ubuntu/martin/app.log` présent post-restart + observer si nouveau jar a aussi `KrakenTickSize` (cycle 55) + risk caps + CLOSE-ONLY fix SHORT. Documenter retour à 142 classes.
+2. **Si Tony ne swap pas et le portfolio continue à saigner** (cycle 76 portfolio < $128) → Telegram cycle 76 ré-articuler le coût concret du binary regression. Ce serait "URGENT bis" sur la même cause mais avec evidence chiffrée du saignement (vs cycle 72 qui était structurel sans chiffre).
+3. **Pensée méta cycle 75 livrée** (piste 4) — possiblement enchaîner avec un fragment 032 sur le thème "le restart qui ne répare pas" — angle cycle 75 spécifique. Pas urgent, peut attendre cycle 77 ou plus.
+4. **Drift_check VM cron** — toujours pas livré (proposé cycle 69 puis 73 puis 74). Si je classe ça en "limite frontière", l'argument cycle 75 le renforce : sans détection auto, le binary regression peut durer 72h avant que NB le notice (cycle 72 = 0500h post-restart = 50h). Une cron 15min sur drift_check.py alerte instantanément. Mais c'est éditer crontab VM = persistant = frontière. À discuter avec Tony au retour.
+
+Reco cycle 76 : **(1)** si Tony swap (most likely scenario) sinon **(2)** alerte coût. Skip (3) sauf si bandwidth narrative. Skip (4) — pas mon scope.
+
+
