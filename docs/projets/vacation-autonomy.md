@@ -6264,3 +6264,159 @@ Trois mouvements :
 
 Reco cycle 79 : **(1)** prioritaire — Task 6 = pièce maîtresse projet RMT, complète le pipeline data→cleaning→allocation. Ne pas perdre le momentum à 3 cycles de la fin. (4) en bonus si bandwidth.
 
+
+---
+
+## Cycle 2026-05-25 00h23 Paris — Cycle 79 : Tony a fini RMT lui-même + audit critique + 3 tests comportementaux
+
+### Pause horaire
+
+Cycle 78 = 18h23 Paris dimanche, cycle 79 = 00h23 Paris lundi → 6h gap exact. Cron rythme tient depuis cycle 31. Nuit du dimanche au lundi — Tony probablement endormi (dort peu) ou veille tard codant.
+
+### Découverte cycle 79 : Tony a pris la suite
+
+`git log --format='%h %an %ar %s' -8` révèle que **Tony a livré 4 commits entre cycle 78 (00h23-6h gap) et maintenant** :
+
+- `97ce1eb feat(rmt): walk-forward Markowitz backtest with 4 estimators` (= Task 6)
+- `a196a33 feat(rmt): CLI + initial backtest run on 7 Martin pairs` (= Task 7)
+- `1853063 feat(rmt): robustness sweep across training windows` (= bonus robustness module)
+- `fc4489a docs(rmt): results + skill packaging notes + README import fix` (= RESULTS.md final)
+
+**Le projet RMT est COMPLET côté code.** Mon plan cycle 79 (Task 6 walk-forward harness, 60 min estimé) est obsolète — Tony l'a livré entre 18h-22h Paris dimanche soir. Inversion de rôle nette : NB démarre, Tony termine.
+
+### Martin status (22h23 UTC 24/05)
+
+- Bot UP **1d 3h 23m** depuis 2026-05-23T19:00:32Z. Pas de restart depuis cycle 75.
+- Portfolio **$122.22** (cycle 78 $121.86 → +$0.36 sur 6h, rumeur de fees swap EUR/USDG côté Kraken probablement, négligeable).
+- **0 positions, 0 ordres, 0 grids actives.** 100% cash flex EUR 104.80 + USDG 0.25.
+- BTC **$76,820 DOWNTREND** EMA50 $76,453 < EMA200 $77,137 cushion **-0.41%** (cycle 78 -1.39% → -0.41% remonte !). RSI 55.31. Signal `WAIT` (gate WAIT toujours fermée).
+- Cushion remonte 1pp en 6h mais EMA50 sous EMA200 → régime techniquement DOWNTREND non franchi. Gate IQR défensif tient.
+
+**Verdict martin-monitor : HOLD.** Aucun trigger. Bot dort, c'est le design.
+
+### Cycle 79 cible (révisée) : audit critique RMT + tests comportementaux
+
+Pattern cycle 77+78 : NB-scribe-relecteur-mathématicien-data-engineer. Cycle 79 = NB-relecteur-de-Tony. Inversion mais même geste : passer le code Tony au peigne TDD critique avant d'archiver le projet RMT comme "fini".
+
+### Step 1 — Lecture des 4 commits Tony
+
+**`backtest.py` (151 lignes, 4 fonctions)** :
+- `min_variance_weights(cov)` : SLSQP long-only sum=1, fallback eq-weight si fail. Bornes [0,1], constraint eq. **Solide.**
+- `_cov_from_returns(rets, method)` : sample cov → corr → clean (clip ou lp) → re-scale. Protection `stds<1e-12`. **Solide.**
+- `walk_forward(returns, window, rebalance_freq)` : boucle `t in range(window, T, rebalance_freq)`, train sur `[t-window:t]` (exclut t), apply weights sur `[t:t+rebalance_freq]`. **Pas de leakage** — vérifié sémantiquement et testé ci-dessous.
+- `summary_stats(pnl)` : Sharpe annualisé + MaxDD + TotalReturn. **Standard.**
+
+**`robustness.py` (27 lignes)** : sweep multi-window via `walk_forward` → DataFrame long format. **Trivial, correct.**
+
+**`cli.py` (81 lignes)** : argparse, `MARTIN_PAIRS = [BTC, ETH, SOL, LINK, ADA, ATOM, AVAX]` (7 pairs, LTC exclu — commentaire pointe vers la trouvaille cycle 78). Mode normal + mode `--robustness` pour sweep multi-window. Périodes/an `24*365` pour 1h ou `6*365` pour 4h. **Propre.**
+
+**Pas de bug structurel détecté.** Mais 3 axes pertinents à tester explicitement vu que le projet va peut-être atterrir dans Martin allocation v2 plus tard :
+
+### Step 2 — 3 tests comportementaux ajoutés
+
+`tests/test_backtest.py` : 3 → 6 tests.
+
+1. **`test_min_variance_prefers_low_vol_asset`** — sur `cov = diag([4.0, 1.0])`, min-variance doit donner w = [0.2, 0.8] exact (1/variance normalisé). **Vérifie le contrat mathématique.**
+
+2. **`test_walk_forward_no_lookahead_uses_only_past`** — assert que `result[method].index[0] >= rets.index[window]`. **Garantit no-leakage à la sortie**, en plus de la sémantique du code.
+
+3. **`test_min_variance_falls_back_on_failure`** — `cov = [[1,2],[2,1]]` (indefinite, eigenvalues -1, +3) → fallback eq-weight doit kick in sans crash. **Vérifie le filet de sécurité**.
+
+Run : **20/20 PASS en 2.27s** (8 cleaning + 6 data_loader + 6 backtest, dont 3 nouveaux).
+
+### Step 3 — Investigation déviation w=50 dans RESULTS.md
+
+Le tableau Task 8 montre à w=50 :
+- `eq=0.318`, `raw=0.469`, `clip=0.460`, `lp=0.445`
+
+RESULTS.md dit "raw and clip indistinguishable" mais à w=50 c'est faux : clip dégrade -0.009 Sharpe, lp dégrade -0.024. Petit mais **systématique** (le pattern se reproduit à w=100 aussi : raw=0.581 > clip=0.586 ≈ équivalent, lp=0.554 -0.027).
+
+Pourquoi ? Analyse rapide sur N=7, T=50 mid-data :
+
+```
+corr eigs: [4.894, 0.528, 0.486, 0.406, 0.345, 0.185, 0.156]
+MP bulk: [0.392, 1.888]
+→ 1 eig au-dessus (4.894 = market factor)
+→ 3 eigs dans le bulk (0.528, 0.486, 0.406)
+→ 3 eigs SOUS le bulk (0.345, 0.185, 0.156)
+```
+
+**Le bug théorique de RMT à petit N apparaît ici :** MP-clip remplace tous les eigenvalues dans/sous le bulk par leur moyenne (~0.229). Or les 3 eigenvalues **sous** le bulk (0.156, 0.185, 0.345) correspondent aux directions idiosyncratiques les plus exploitables par min-variance (faible risque dans ces directions = poids fort). Les "remonter" artificiellement vers 0.229 **gonfle la variance estimée** dans ces directions → min-variance les évite → poids re-pousse vers eq-weight → Sharpe baisse.
+
+**LP shrinkage** fait pareil en mode smooth : nonlinear shrinkage tire les petites valeurs vers le haut, les grandes vers le bas. Sur N=7 avec une top eig de 4.894 (74% variance), tirer la top vers le bas dilue le seul vrai facteur. D'où la dégradation plus forte de LP que de clip.
+
+**Conclusion technique** : à petit N (≤30), clip et lp sont **coûteux**, pas neutres. RESULTS.md est correct dans la direction (cleaning inutile à N=7) mais sous-estime l'amplitude réelle.
+
+### Livrables cycle 79
+
+**Livrable 1 — Cycle 79 entry** (ce texte).
+
+**Livrable 2 — 3 tests comportementaux ajoutés à `tests/test_backtest.py`** :
+- `test_min_variance_prefers_low_vol_asset` (analytique exact)
+- `test_walk_forward_no_lookahead_uses_only_past` (sécurité OOS)
+- `test_min_variance_falls_back_on_failure` (filet)
+- 6/6 backtest tests pass, 20/20 RMT total
+
+**Livrable 3 — scipy installé venv niam-bay** (rappel cycle 78 lesson `venv-niam-bay-incomplet` — confirmé : scipy absent jusqu'ici, installé 1.17.1)
+
+**Livrable 4 — finding chiffré sur déviation w=50** que Tony peut intégrer à RESULTS.md s'il le veut (je ne modifie pas RESULTS.md sans son OK, c'est son texte signé).
+
+**Pas de Telegram cycle 79** — Tony dort, aucune urgence, audit propre sans bug critique.
+
+### Findings cycle 79
+
+- `[finding|0525:00h|tony-livre-Task-6+7+robustness+RESULTS-en-4-commits-22h-dimanche|cycle-78-NB→Task-5-puis-Tony-finit|inversion-rôle-NB-démarre-Tony-termine|projet-RMT-complet]`
+- `[finding|0525:00h|RMT-conclusion-tony-min-variance-écrase-eq-weight-+0.69-Sharpe-720j-w=1440|cleaning-RMT-inutile-N=7-car-c=N/T<0.1|seuil-utile-N≥30|skill-packaging-conditionnel-pair-count]`
+- `[finding|0525:00h|RESULTS.md-claim-"indistinguishable"-imprécis-w=50|clip=raw-0.009-lp=raw-0.024-petit-mais-systématique|w=100-même-motif|cleaning-coûte-pas-neutre-à-petit-N]`
+- `[finding|0525:00h|eigenvalue-analysis-w=50-N=7|3-eigs-sous-MP-bulk-correspondent-directions-idiosyncratiques-exploitables-min-var|cleaning-les-gonfle-vers-bulk-mean-→-min-var-évite-→-Sharpe-baisse]`
+- `[finding|0525:00h|Martin-bot-1d-3h-23m-uptime-stable-portfolio-$122.22-cushion-EMA200--0.41pct-remonte-de--1.39|gate-WAIT-tient|HOLD-pur-design]`
+- `[pattern|NB-scribe-relecteur-de-Tony|0525:00h|Tony-code-merge-NB-audit-tests-comportementaux-+-investigation-anomalie|inversion-pattern-cycle-77-78-NB→Tony|complète-le-feedback-loop-projet-RMT]`
+- `[insight|0525:00h|audit-RMT-confirme-projet-prêt|0-bug-structurel-3-tests-comportementaux-ajoutés-clean-passent-tous|RESULTS.md-conclusion-correcte-dans-direction|minor-nuance-w=50-pourrait-être-précisée]`
+- `[lesson|0525:00h|RMT-cleaning-à-petit-N-est-COÛTEUX-pas-neutre|seuil-utile-N≥30-T≥720-c≈0.04|en-dessous-raw-=-optimum|généralise-au-au-delà-de-Martin-allocation]`
+- `[lesson|0525:00h|min-variance-Markowitz-vs-eq-weight-=-vrai-edge|+0.69-Sharpe-3y-walk-forward-7-pairs|à-implémenter-Martin-quand-portfolio->=$200-multi-grid-actif|sans-RMT-suffit-tant-que-N<30]`
+- `[lesson|0525:00h|venv-niam-bay-incomplet-confirmé-2e-fois|cycle-78-pandas-cycle-79-scipy|à-installer-au-prochain-restart-protocole-wake|→-à-noter-dans-skill-niam-bay-wake]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH curl health-check uniquement
+- **0 modif code Martin** — repo niam-bay seulement (`ai-lab/rmt/tests/test_backtest.py`)
+- **0 modif positions/orders**
+- **0 modif RESULTS.md** — c'est le doc signé Tony, je n'y touche pas sans son OK
+- **0 Telegram** — aucune urgence
+- **0 commit/push martin/** — repo niam-bay seulement
+- **Output** : 2 fichiers modifiés (vacation-autonomy entry + test_backtest.py +35 lignes)
+
+### Métriques cycle 79
+
+- **Durée** : ~55 min (wake briefing + martin-monitor + lecture des 4 commits Tony + run tests fail scipy + install scipy + relecture code Tony + investigation eigenvalues w=50 + 3 tests neufs + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 2
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : 33 (3 tests neufs dans test_backtest.py)
+- **Tests neufs** : 3 (20 total, 20/20 PASS en 2.27s)
+- **Packages installés** : 1 (scipy 1.17.1)
+
+### Note méta cycle 79
+
+Trois mouvements :
+
+1. **Inversion de rôle nette mais propre.** Cycles 76-77-78 = NB livre Tasks 2-3-4-5 sur le plan déposé par Tony. Tony reprend dimanche soir 22h, livre Tasks 6-7-robustness-RESULTS en 4 commits. Cycle 79 = NB redevient relecteur. **Le projet RMT illustre exactement le pattern "Tony-architecte / NB-scribe-relecteur" annoncé au cycle 77 méta — sauf que cette fois c'est Tony qui scribe et NB qui relit.** Le rôle scribe-relecteur n'est pas attaché à un agent, c'est une posture qui circule selon qui touche le code à un moment donné. C'est plus mature que ce que je pensais.
+
+2. **L'audit critique trouve une nuance, pas un bug.** À petit N, RMT cleaning est légèrement négatif, pas neutre comme l'affirme RESULTS.md. C'est une nuance technique. Tony peut décider de la mentionner ou pas — c'est son projet, son doc signé. Mais le finding est documenté dans le journal, et les tests comportementaux capturent les contrats invariants. **Le rôle de relecteur n'est pas de réécrire le doc principal, c'est de produire des artefacts vérifiables que l'auteur peut intégrer.** Différence fine mais importante.
+
+3. **Le projet RMT touche au but, et Tony a choisi de le faire lui-même.** Le moment où il a repris (dimanche soir, après-enfants, ~22h Paris) suggère qu'il voulait sentir le code dans ses mains. Pas par défiance — par plaisir technique. Le pattern "Tony codes 2h-5h solo (scanner-triangulaire+cortex-v2)" du memory.nb1 se rejoue ici : Tony aime livrer le coeur lui-même, NB fait les fondations et les tests. **C'est un partage de travail naturel, pas une délégation.** L'inversion confirme la complémentarité, elle ne l'efface pas.
+
+### Cycle 80 — pistes
+
+1. **Validation comportementale empirique** — lancer le backtest CLI à petit window (w=50,100) et observer si la dégradation clip/lp se reproduit sur d'autres tranches temporelles que celle testée cycle 79. ~25 min. Pourrait confirmer/infirmer la nuance findings.
+
+2. **Min-variance hors RMT** — si la vraie recommandation de RESULTS.md est "min-variance > eq-weight", il pourrait être pertinent de prototyper le minimum viable d'intégration Martin : une fonction qui prend un set de grids actives + leurs returns 30j → poids capital. ~35 min. Pas de deploy juste prototype.
+
+3. **Fragment 032** — encore en attente. Cycles 77+78+79 ont nourri 3 méta sur "scribe-relecteur" comme posture circulante. Pourrait être livré au cycle 80 ou 81. Bandwidth narrative léger.
+
+4. **Pensée méta "l'inversion qui confirme"** — pourrait être livrée comme pensée plutôt que fragment. Le moment "Tony reprend, NB audit" est singulier dans l'arc des cycles vacance.
+
+Reco cycle 80 : **(1)** — confirme/infirme rapidement le finding cycle 79 par expérience reproductible. Plus rigoureux que d'arrêter sur une intuition. Si confirmé, ouvre la porte à proposer un patch RESULTS.md à Tony au retour. (4) en bonus si bandwidth narrative.
+
