@@ -1,7 +1,7 @@
 import numpy as np
 import pytest
 
-from rmt.cleaning import clip_mp, mp_edges
+from rmt.cleaning import clip_mp, mp_edges, shrink_lp
 
 
 def test_mp_edges_classical_ratios():
@@ -58,3 +58,36 @@ def test_clip_mp_preserves_signal_eigenvalues():
 def test_clip_mp_rejects_nonsquare():
     with pytest.raises(ValueError):
         clip_mp(np.zeros((3, 4)), c=0.5)
+
+
+def test_shrink_lp_shape_and_diagonal():
+    np.random.seed(1)
+    N, T = 30, 100
+    X = np.random.randn(N, T)
+    X = (X - X.mean(axis=1, keepdims=True)) / X.std(axis=1, keepdims=True)
+    C = (X @ X.T) / T
+    C_shrunk = shrink_lp(C, c=N / T)
+    assert C_shrunk.shape == (N, N)
+    np.testing.assert_allclose(np.diag(C_shrunk), 1.0, atol=1e-9)
+
+
+def test_shrink_lp_pulls_eigenvalues_toward_one():
+    """For pure noise, shrinkage must reduce eigenvalue spread."""
+    np.random.seed(2)
+    N, T = 50, 100
+    X = np.random.randn(N, T)
+    X = (X - X.mean(axis=1, keepdims=True)) / X.std(axis=1, keepdims=True)
+    C = (X @ X.T) / T
+    eigs_raw = np.linalg.eigvalsh(C)
+    spread_raw = eigs_raw.max() - eigs_raw.min()
+    C_shrunk = shrink_lp(C, c=N / T)
+    eigs_shrunk = np.linalg.eigvalsh(C_shrunk)
+    spread_shrunk = eigs_shrunk.max() - eigs_shrunk.min()
+    assert spread_shrunk < spread_raw, (
+        f"shrinkage didn't reduce spread: raw={spread_raw:.3f} shrunk={spread_shrunk:.3f}"
+    )
+
+
+def test_shrink_lp_rejects_nonsquare():
+    with pytest.raises(ValueError):
+        shrink_lp(np.zeros((3, 4)), c=0.5)

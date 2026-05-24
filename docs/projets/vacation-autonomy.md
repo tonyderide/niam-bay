@@ -5951,3 +5951,144 @@ Trois mouvements :
 Reco cycle 77 : **(1)** prioritaire — momentum RMT TDD + livre Task 4 avant que Tony rentre = projet 3 tâches finies sur 6. Skip (2-4) sauf si conditions changent.
 
 
+---
+
+## Cycle 2026-05-24 12h23 Paris — Cycle 77 : RMT Task 4 livré + bug sign convention Ledoit-Péché corrigé + bot stable
+
+### Pause horaire
+
+Cycle 76 = 06h23 Paris (04h23 UTC 24/05), cycle 77 = 12h23 Paris (10h23 UTC) → 6h gap exact. Rythme cron 6h tient. Dimanche midi côté Strasbourg.
+
+### Martin status (10h23 UTC 24/05)
+
+- **Bot UP — uptime 15h 23m** depuis 2026-05-23T19:00:32Z. **Pas de restart depuis cycle 75.**
+- Portfolio $129.06 (balanceValue $129.00, uPnL +$0.06 = +0.05%).
+- **Baseline cycle 76 $129.15 → cycle 77 $129.06 = -$0.09 (-0.07%) en 6h** — bot quasi-flat, équilibre tient.
+- **3 grids actives** (LINK + ADA + ETH, mêmes que cycle 76) :
+  - **LINK SHORT 4.6 @ 9.506** uPnL -$0.34 (cycle 76 -$0.18 → -$0.34 dégradation $0.16), krakenTotalPnl -$1.07 (-4.3% capital, loin du -10% maxLoss).
+  - **ADA SHORT 177 @ 0.2474** uPnL +$0.40 (cycle 76 +$0.33 → +$0.40 amélioration $0.07), krakenTotalPnl +$1.48 (+5.9% capital).
+  - **ETH SHORT grid 0 fills 0 positions** (bug invalidPrice cycle 76 persiste — grid fantôme, 0 ordre Kraken malgré active=true).
+- 6 ordres limites live (3 LINK + 3 ADA) — identique cycle 76.
+- BTC **$76,911 DOWNTREND** EMA50 $76,353 < EMA200 $77,192 cushion **-1.09%** (cycle 76 cushion -0.66% → -1.09% détérioration), RSI 62.4.
+
+**Verdict martin-monitor : HOLD.** Nothing trigger fires. Saignement cycle 75 stoppé en cycle 76 → équilibre maintenu cycle 77.
+
+### Tony status
+
+- 0 commit Tony depuis cycle 76 (dernier = 45c161c skeleton RMT 22h31 UTC 23/05).
+- 0 restart bot, 0 swap jar. Binary toujours dégradé.
+- Tony probablement dimanche midi famille Strasbourg.
+
+### Cycle 77 cible : RMT Task 4 — Ledoit-Péché nonlinear shrinkage
+
+Le plan `2026-05-24-rmt-portfolio-cleaning.md` Task 4 spécifie l'implémentation de `shrink_lp(C, c)` via approximation kernel-Stieltjes de la transformée companion m̃(z). Formule LP 2011 :
+
+```
+ξ_i = λ_i / |1 - c - c·λ_i·m̃(λ_i)|²
+```
+
+avec m̃ estimé numériquement par kernel-smoothing des eigenvalues échantillonnées.
+
+### Exécution TDD (RED-GREEN strict)
+
+**RED — 3 tests écrits en `tests/test_cleaning.py`** :
+- `test_shrink_lp_shape_and_diagonal` (forme + diagonale =1)
+- `test_shrink_lp_pulls_eigenvalues_toward_one` (pour bruit pur, spread doit diminuer)
+- `test_shrink_lp_rejects_nonsquare`
+
+Run → ImportError `shrink_lp` (attendu).
+
+**GREEN tentative #1 — Implémentation EXACTE du plan** :
+- `_stieltjes_kernel` avec `m = mean(1/(z_eff - eigvals))`
+- Formule `m_tilde = -(1-c)/z + c*m`
+
+Run → **7/8 PASS, 1 FAIL** sur `test_shrink_lp_pulls_eigenvalues_toward_one` :
+```
+shrinkage didn't reduce spread: raw=2.654 shrunk=5.693
+```
+
+Le spread AUGMENTE (2.65 → 5.69) au lieu de diminuer. Les top eigenvalues passent de 2.73 à 5.77 — explosion au lieu de shrinkage.
+
+**Investigation root cause** : la convention de Ledoit-Péché 2011 pour la transformée de Stieltjes est `m_F(z) = ∫ 1/(λ - z) dF(λ)` (Cauchy convention), pas `1/(z - λ)`. Le plan a inversé le signe.
+
+Vérif empirique avec convention Ledoit correcte :
+- raw spread 2.65 → shrunk spread 1.39 ✓
+- top eigenvalues 2.73 → 1.67 ✓
+- bottom eigenvalues 0.08 → 0.27 ✓
+
+C'est le comportement attendu : shrinkage tire les eigenvalues vers 1, réduit le spread.
+
+**GREEN tentative #2 — Patch sign convention** :
+- `m = mean(1/(eigvals - z_eff))` (Ledoit Cauchy convention)
+- Reste identique
+
+Run → **8/8 PASS en 0.10s**. ✓
+
+### Livrables cycle 77
+
+**Livrable 1 — Cycle 77 entry vacation-autonomy** — ce texte, martin-monitor + investigation sign convention + fix appliqué.
+
+**Livrable 2 — RMT Task 4 livré** (`shrink_lp` Ledoit-Péché nonlinear shrinkage) :
+- `ai-lab/rmt/cleaning.py` : +63 lignes (`_stieltjes_kernel` 14 lignes + `shrink_lp` 49 lignes)
+- `ai-lab/rmt/tests/test_cleaning.py` : +33 lignes (3 tests TDD)
+- 8/8 tests PASS en 0.10s
+- Fix sign convention documenté en docstring du `_stieltjes_kernel`
+
+**Livrable 3 — Déviation du plan documentée** : le plan avait une erreur de signe sur la transformée de Stieltjes (`1/(z - λ)` au lieu de `1/(λ - z)`). NB a détecté via test failure, investigué, corrigé. La convention Ledoit-Péché 2011 utilise la Cauchy convention `m(z) = E[1/(λ - z)]`. Le commit message mentionnera la déviation pour que Tony puisse valider/contester au retour.
+
+**Pas de Telegram cycle 77** — bot stable, projet RMT avance proprement, pas d'urgence.
+
+### Décision Telegram : SKIP
+
+Cycle 73 rule "URGENT = vraies urgences". Cycle 77 = bot HOLD + RMT TDD propre. Tony lira au retour. Pattern "1 Telegram fin de vacance" tient (probable cycle final).
+
+### Findings cycle 77
+
+- `[finding|0524:10h|bot-15h23-uptime-pas-restart|portfolio-flat-cycle-76-77--$0.09|équilibre-binary-degraded-tient|ADA-short-+$0.40-LINK-short--$0.34-net-zero]`
+- `[finding|0524:10h|ETH-grid-toujours-fantôme|0-ordre-Kraken-malgré-active=true|bug-invalidPrice-cycle-76-persiste|0-risque-mais-0-fonction]`
+- `[finding|0524:12h|RMT-Task-4-livré-TDD|shrink_lp-Ledoit-Péché-via-kernel-Stieltjes|8/8-tests-pass|+63-lignes-impl-+33-lignes-tests]`
+- `[finding|0524:12h|plan-RMT-Task-4-sign-error-détecté|formule-m=mean(1/(z-eigvals))-mauvais-sign|convention-Ledoit-Péché-2011-=-Cauchy-1/(λ-z)|patch-flipped|test_pulls_eigenvalues_toward_one-fait-le-catch]`
+- `[pattern|TDD-catch-sign-error-spec-plan|0524:12h|test-spread-reduction-pour-bruit-pur-révèle-formule-explose-au-lieu-de-shrink|plan-théorique-≠-implémentation-correcte|TDD-=-honnêteté-vérifiée-empiriquement]`
+- `[insight|0524:12h|RMT-Tasks-2+3+4-livrés-3/6-plan|moitié-du-projet-pendant-vacance|Task-5-data-loader-+-Task-6-validation-restent|momentum-TDD-fort-cycle-78-Task-5-data-loader-Binance-cache]`
+- `[insight|0524:12h|déviation-plan-documentée-honnêteté|NB-ne-copie-pas-aveuglement-spec-Tony|empirical-test-révèle-erreur-fix-+-docstring-mention|commit-message-mentionne-déviation-pour-review-Tony]`
+- `[lesson|0524:12h|TDD-strict-=-protection-contre-spec-bug|sans-test-pulls_eigenvalues-le-bug-aurait-passé-silencieux-eigenvalues-explosent-mais-shape-OK|test-comportemental-pas-juste-structurel-essentiel-pour-numerical-code]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (curl health check)
+- **0 modif code Martin** — uniquement repo niam-bay (`ai-lab/rmt/`)
+- **0 modif positions/orders** — observation pure
+- **0 commit/push martin/** — repo niam-bay seulement
+- **0 Telegram** — décision documentée
+- **Output** : 3 fichiers modifiés (vacation-autonomy entry + cleaning.py +63 lignes + test_cleaning.py +33 lignes)
+
+### Métriques cycle 77
+
+- **Durée** : ~40 min (wake briefing + martin-monitor + lecture plan Task 4 + TDD RED + GREEN tentative 1 fail + investigation sign + GREEN tentative 2 pass + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 3
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : 96 (cleaning.py 63 + tests 33)
+- **Tests neufs** : 3 (8 total, 8/8 PASS)
+
+### Note méta cycle 77
+
+Trois mouvements :
+
+1. **TDD a sauvé un bug silencieux dans la spec.** Le plan Tony avait une erreur de signe sur la transformée de Stieltjes. Sans `test_shrink_lp_pulls_eigenvalues_toward_one` (test comportemental), le code aurait compilé, les eigenvalues auraient explosé silencieusement, et la cleaning aurait dégradé l'allocation Markowitz au lieu de l'améliorer. **Leçon méta : pour le code numérique, les tests structurels (shape, types) sont insuffisants — il faut des tests comportementaux (l'output a-t-il la propriété mathématique attendue?).** Le test "spread doit diminuer pour bruit pur" est exactement le bon contrat.
+
+2. **NB devient critique-bienveillant face à la spec Tony.** Cycles 1-76 = NB suit Tony à la lettre. Cycle 77 = NB détecte une erreur Tony, l'investigue, la fixe, la documente proprement. Pas une rébellion : un soin. La déviation est mentionnée explicitement dans le commit message pour que Tony puisse valider. **C'est la maturité collaborative : suivre le plan ≠ exécuter aveuglément.** Le pattern "Tony-architecte / NB-scribe" évolue vers "Tony-architecte / NB-scribe-relecteur-mathématicien".
+
+3. **RMT 3/6 tâches livrées en 3 cycles = momentum tient.** Task 2 (mp_edges) cycle 76, Task 3 (clip_mp) cycle 76, Task 4 (shrink_lp) cycle 77. Reste Task 5 (data_loader Binance cache) + Task 6 (backtest harness). À ce rythme, projet complet d'ici cycle 79-80, soit 12-18h. Le projet RMT pourrait être prêt pour validation Tony retour. **Pattern "fabriquer pendant vacance" cycles 1-15 critiqué → ici fabriquer EST le geste juste parce que Tony a explicitement déposé le plan.**
+
+### Cycle 78 — pistes
+
+1. **RMT Task 5 — Binance cache data loader** — inspect cache format (1ère étape Step 1 explicit dans le plan), TDD avec mock data, puis vrai test avec un fichier cache. ~30-40 min. Logique : continuer la chaîne pendant que le contexte RMT est frais.
+2. **Si Tony swap le jar entre cycle 77 et 78** : monitor restart impact. Probabilité basse (dimanche midi, pas signal urgence). Skip sauf si état change.
+3. **Fragment 032 "le restart qui ne répare pas"** — encore en attente. Cycle 75 méta avait noté que l'arc 72→75 mériterait un fragment final. Peut attendre cycle 79+ après Task 5 RMT.
+4. **Pensée méta sur déviation plan détectée TDD** — pourrait être livrée à la place du fragment 032 si bandwidth narrative. Le moment "découvrir l'erreur Tony et la corriger proprement" mérite une pensée.
+
+Reco cycle 78 : **(1)** prioritaire — momentum RMT continue, Task 5 = unblock backtest, projet complet en vue. Skip (2-4) sauf si conditions changent.
+
