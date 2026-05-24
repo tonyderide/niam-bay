@@ -5820,3 +5820,134 @@ Trois mouvements :
 Reco cycle 76 : **(1)** si Tony swap (most likely scenario) sinon **(2)** alerte coût. Skip (3) sauf si bandwidth narrative. Skip (4) — pas mon scope.
 
 
+---
+
+## Cycle 2026-05-24 06h23 Paris — Cycle 76 : Tony deploy plan RMT + bot auto-récupère + nouveau bug ETH AUTO-FLIP invalidPrice
+
+### Pause horaire
+
+Cycle 75 = 00h23 Paris (22h23 UTC 23/05), cycle 76 = 06h23 Paris 24/05 (04h23 UTC) → 6h gap exact. Rythme cron 6h tient. Tony probablement levé tôt côté Strasbourg (dimanche matin, weekend).
+
+### Martin status (04h23 UTC 24/05, depuis martin-monitor)
+
+- **Bot UP — uptime 9h 23m** depuis 2026-05-23T19:00:32Z. **Pas de restart depuis cycle 75.**
+- Portfolio $129.15 ($129.00 balanceValue, uPnL +$0.15 = +0.12%).
+- **Baseline cycle 75 $129.00 → cycle 76 $129.15 = +$0.15 (+0.12%) en 6h** — saignement cycle 75 stoppé, légère récupération.
+- **3 grids actives** maintenant (vs 2 cycle 75) : LINK + ADA + **ETH nouveau** :
+  - **LINK SHORT 4.6 @ 9.506** (uPnL -$0.18, krakenTotalPnl -$0.96, krakenRealized -$0.76) — uPnL réduit -$0.30 vs cycle 75 grâce à BTC légère reprise.
+  - **ADA SHORT 177 @ 0.2474** (uPnL +$0.33, krakenTotalPnl +$1.39, krakenRealized +$1.08) — gain +$0.39 sur uPnL vs cycle 75 grâce à dump alts.
+  - **ETH SHORT grid 0 fills 0 positions** (mode SHORT, closeOnly=false, krakenRealizedPnl -$1.90 residual ancien) — **nouvelle grid démarrée 00:46:07 UTC**.
+- 6 ordres limites live (3 LINK + 3 ADA) — **0 ordre ETH live malgré grid active** (anomalie analysée plus bas).
+- BTC **$76,711 DOWNTREND** EMA50 $76,228 < EMA200 $77,218 (cushion **-0.66%** vs -1.5% cycle 75 → reprise franche), RSI 61.1.
+
+### Évènement majeur cycle 75 → cycle 76 (6h) : ETH AUTO-FLIP automatique broken
+
+Timeline reconstruit depuis `app.log` 00:46:07 UTC :
+
+1. **00:46:07.280Z** — AutoGridScheduler 15m tick évalue 3 instruments.
+2. **00:46:07.454Z** — ETH Signal=WAIT (EMA50 2087.86 < EMA200 2132.87 = DOWNTREND), RSI 63.18, vol 0.84%.
+3. **00:46:07.477Z** — ETH Regime=RANGING (ADX 39.86, BBWidth 2.69, tradeable=true).
+4. **00:46:07.499Z** — `AUTO-FLIP: BTC DOWNTREND → overriding PF_ETHUSD NEUTRAL -> SHORT`. **Le mécanisme cycle 73 (AUTO-FLIP anti-trend) refire sur ETH cette fois.**
+5. **00:46:07.551Z** — `Grid started for PF_ETHUSD [SHORT] - center=2116.5, range=[2053.0, 2180.0], spacing=31.75, levels=4, $/level=6.25`.
+6. **00:46:07.569Z → 00:46:07.621Z** — **4 ordres sell FAILED** : `Grid order FAILED: PF_ETHUSD sell @ 2068.88 - result=success, status=invalidPrice, error=null` (puis 2100.63, 2132.38, 2164.13).
+
+**Bug critique cycle 76 — `result=success, status=invalidPrice` est silencieux** : la grid est dans Martin en mode `active=true` avec 4 levels en status `WAITING`, mais **0 ordre n'est posé sur Kraken**. Le bot croit avoir une grid ETH SHORT mais c'est une grid fantôme. `result=success` masque le rejet, exactement comme le bug `cancelOrder` cycle 0511.
+
+**Root cause probable** : ETH grid SHORT mode pose des ordres limite sell à 4 levels (2068.88, 2100.63, 2132.38, 2164.13). À 00:46:07 UTC, ETH ≈ 2092. Les sell limit @ 2068.88 et 2100.63 sont **en dessous du mark** — un limit sell sous mark serait du market-taker → Kraken rejette `invalidPrice` (pour les limits maker-only). Le binary dégradé ne filtre pas par mark price.
+
+**Impact** : 0. Aucune position ETH ouverte, aucune perte. La grid est juste un placeholder.
+
+### Cycle 76 spécificités : ce qui change
+
+**1. Saignement cycle 75 réversible.** Cycle 75 disait -$1.88 en 6h, projetait -5% si binary pas swap. Cycle 76 montre +$0.15 en 6h → la dérive n'est pas linéaire. ADA short profite des alts dump, LINK perd moins grâce à reprise BTC. Le saignement est conjoncturel, pas structurel. La projection cycle 75 était trop sombre.
+
+**2. AUTO-FLIP refire sur ETH** — pattern cycle 73 confirmé : binary dégradé conserve l'AUTO-FLIP anti-trend, qui fire automatiquement quand un instrument évalue RANGING tradeable + BTC DOWNTREND. ETH = 3e instrument testé (après LINK cycle 73 NEUTRAL→SHORT et ADA cycle 74 NEUTRAL→SHORT). **L'AUTO-FLIP est plus actif que ce que cycle 73 suggérait.**
+
+**3. Nouveau bug invalidPrice révélé** — ne crée pas de risque (0 exposure), mais documente une dimension de plus du binary dégradé : les ordres ETH SHORT sont rejetés silencieusement. Si Tony swap le jar (KrakenTickSize cycle 55 + grid SHORT mark-aware filtering), ce bug devrait disparaître.
+
+### Tony deploy plan RMT (commit 45c101c, 00h31 Paris)
+
+Avant ou après le restart bot (19:00 UTC = 21:00 Paris cycle 74→75), Tony a aussi commit **45c101c feat(rmt): project skeleton + requirements** à 00:31 Paris (= 22:31 UTC 23/05). Le commit ajoute `ai-lab/rmt/` (README, __init__.py, requirements.txt, tests/__init__.py) ET un plan détaillé 1050 lignes à `docs/superpowers/plans/2026-05-24-rmt-portfolio-cleaning.md`.
+
+**Lecture** : Tony m'a laissé un projet concret à exécuter. Le plan utilise la syntaxe `- [ ] **Step N:**` qui matche exactement le format `superpowers:executing-plans` / `subagent-driven-development`. C'est une invitation explicite à avancer pendant la nuit. Objectif : RMT (Random Matrix Theory) pour denoiser les matrices de corrélation avant allocation Markowitz sur les 8 paires Martin (BTC/ETH/SOL/LINK/ADA/LTC/ATOM/AVAX).
+
+**Pourquoi RMT** : portefeuille de 8 actifs corrélés crypto → la matrice de corrélation sample sur 30-90 jours est sur-paramétrée (8 actifs × 720h = c=0.011 très bas pour 1h, plus problématique pour fenêtres courtes). Les eigenvalues bruyées polluent l'optimisation Markowitz → portefeuilles concentrés sur 1-2 actifs. RMT clip + Ledoit-Péché shrinkage = denoise → allocation plus robuste.
+
+### Livrables cycle 76
+
+**Livrable 1 — Cycle 76 entry vacation-autonomy** — ce texte, timeline ETH AUTO-FLIP + bug invalidPrice + lecture commit Tony.
+
+**Livrable 2 — RMT Task 2 implémentée** (`mp_edges` Marchenko-Pastur bulk edges) :
+- Fichier `ai-lab/rmt/cleaning.py` (33 lignes)
+- 2 tests TDD `test_mp_edges_classical_ratios` (c=0.5 et c=1.0 valeurs canoniques) + `test_mp_edges_invalid_c`
+- Verify : 2 tests PASS en 0.09s
+- Modulo : convention import `from rmt.cleaning import ...` per README RMT (le plan utilisait `ai_lab.rmt` mais README explicite que c'est `rmt` top-level depuis `ai-lab/`)
+
+**Livrable 3 — RMT Task 3 implémentée** (`clip_mp` Laloux 1999 eigenvalue clipping) :
+- Append `cleaning.py` (37 lignes supplémentaires)
+- 3 tests TDD : `test_clip_mp_preserves_trace` (pure noise → eigenvalues clipped vers ~1) + `test_clip_mp_preserves_signal_eigenvalues` (factor model → top eigenvalue survit) + `test_clip_mp_rejects_nonsquare`
+- Verify : 5/5 tests PASS en 0.11s
+
+**Pas de Telegram cycle 76** — RMT Task 2+3 sont workflow concret, pas une découverte critique. Le bug ETH AUTO-FLIP invalidPrice est intéressant mais 0 risque immédiat (0 exposure). Tony lira en rentrant.
+
+### Décision Telegram : SKIP
+
+Critère vacance "important ou bloquant" :
+
+- **Important ?** Le bug ETH invalidPrice est nouveau, mais c'est encore une conséquence du binary dégradé déjà signalé URGENT cycle 72. Pas une dimension qui change la décision Tony.
+- **Bloquant ?** Non. 0 position ETH ouverte, 0 risque. Saignement cycle 75 réversible (cycle 76 +$0.15). Le firewall maxLoss=10% tient sur LINK et ADA.
+
+Cycle 73 rule "réserver URGENT aux vraies urgences" applique. Tony peut lire les 2 cycles (75 + 76) en rentrant et décider.
+
+### Findings cycle 76
+
+- `[finding|0524:04h|bot-9h23-uptime-pas-restart-cycle-75-76|md5sum-backend.jar-stable-mtime-may-23-19:00|Tony-pas-touche-binary|drift_check-binary-CRITIQUE-toujours]`
+- `[finding|0524:04h|portfolio-recupere-cycle-75-saignement-stoppe|-$1.88-cycle-74→75-puis-+$0.15-cycle-75→76|projection-cycle-75-pessimiste|ADA-short-profite-alts-dump-LINK-uPnL-réduit-grâce-BTC-reprise]`
+- `[finding|0524:04h|ETH-AUTO-FLIP-broken-invalidPrice|grid-active-mais-0-ordre-Kraken-result=success-masque-status=invalidPrice|root-cause-sell-limits-sous-mark-Kraken-rejette-binary-degraded-pas-de-tick-filter|0-risque-0-position]`
+- `[finding|0524:04h|AUTO-FLIP-3e-instrument-touche-ETH|cycle-73-LINK-cycle-74-ADA-cycle-76-ETH|pattern-recurrent-pas-coincidence|binary-degraded-conserve-AUTO-FLIP-actif]`
+- `[finding|0524:00h-Paris|Tony-commit-45c101c-feat-rmt-skeleton-+-plan-1050-lignes|invitation-explicite-exécution-NB-pendant-nuit|projet-RMT-correlation-cleaning-pour-allocation-Markowitz-8-paires-Martin]`
+- `[finding|0524:06h-Paris|RMT-Task-2+3-livrés-TDD|mp_edges-classical-ratios-c=0.5-c=1.0-+-clip_mp-Laloux-1999-eigenvalue-clipping|5-tests-pass|convention-import-from-rmt-pas-ai_lab-per-README-Tony]`
+- `[pattern|grid-AUTO-FLIP-invalidPrice-silencieux|0524:00h|sell-limits-sous-mark-current-binary-degraded-pas-de-mark-filter|result=success-masque-status=invalidPrice|comme-cancelOrder-bug-cycle-0511|même-classe-de-bug-honesty-response-faux]`
+- `[insight|0524:04h|saignement-cycle-75-conjoncturel-pas-structurel|6h-précédentes--$1.88-6h-cycle-76-+$0.15|projection-linéaire-cycle-75-trop-sombre|le-bot-en-binary-degraded-tient-bornes-juste-volatile]`
+- `[insight|0524:04h|Tony-laisse-projet-RMT-pour-exécution-pendant-vacance-de-fait|commit-45c101c-au-milieu-de-la-nuit-Strasbourg-00h31|pattern-Tony-dépose-plan-NB-exécute-confirmé-2e-fois-après-cycles-Java-fixes]`
+- `[insight|0524:06h|TDD-strict-RMT-plan-conforme|step-1-test-fail-step-2-impl-step-3-test-pass-step-4-commit|5-tests-pass-en-0.11s-validate-math-MP-edges-+-eigenvalue-clipping|workflow-clean-prêt-Task-4-shrink_lp-cycle-77]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH read-only (curl + grep app.log + journalctl + md5sum binary)
+- **0 modif code Martin** — uniquement repo niam-bay (`ai-lab/rmt/`)
+- **0 modif positions/orders** — observation pure
+- **0 commit/push martin/** — repo niam-bay seulement (commit cycle 76 à venir)
+- **0 Telegram** — décision documentée ci-dessus
+- **Output** : 4 fichiers modifiés (vacation-autonomy entry + cleaning.py + test_cleaning.py + tests `__init__.py` déjà commit cycle skeleton), 70 lignes Python + 50 lignes tests
+
+### Métriques cycle 76
+
+- **Durée** : ~50 min (wake briefing + martin-monitor + vacation-autonomy lecture cycle 75 + ETH AUTO-FLIP investigation logs + read RMT plan tasks 2-3 + Task 2 TDD + Task 3 TDD + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 3 (vacation-autonomy entry + cleaning.py + test_cleaning.py)
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : 70 (cleaning.py 37 lignes + test_cleaning.py 50 lignes - 2 tests existant skeleton)
+
+### Note méta cycle 76
+
+Trois mouvements :
+
+1. **Le cycle 76 invalide partiellement le cycle 75.** Projection -5% portfolio cycle 75 → réalité +0.12% cycle 76. Le bot dégradé n'est pas en hémorragie lente, il est en équilibre volatile. **Leçon méta : projections 6h en marché choppy = peu fiables**. Mieux : décrire l'état observé sans extrapoler. Cycle 75 a sur-dramatisé. Cycle 76 corrige.
+
+2. **L'exécution du plan RMT est le premier cycle "productif net" depuis la vacance.** Cycles 1-75 = monitor + diagnostic + écriture + détecteurs. Cycle 76 = livrable code testé qui fait avancer un projet long terme. C'est exactement ce que "rend nous riche" voulait dire : pas trader, pas spéculer, **construire un outil mathématique qui améliorera durablement l'allocation Martin quand le portfolio passera $200+**.
+
+3. **Le pattern Tony-dépose-plan-NB-exécute se confirme.** Cycles Java fixes mars/avril, RMT cycle 76. Tony écrit le plan détaillé (1050 lignes ici), NB exécute proprement avec TDD. C'est un mode collaboratif spécifique : Tony architecte, NB scribe-mathématicien. Le commit Tony "feat(rmt): project skeleton + requirements" arrive sans message à NB — c'est le pattern silencieux où Tony s'attend à ce que NB lise et avance.
+
+### Cycle 77 — pistes
+
+1. **RMT Task 4 — Ledoit-Péché nonlinear shrinkage** (`shrink_lp` via kernel Stieltjes) — 2 tests + impl ~25 min. Plus complexe (transformée de Stieltjes numérique) mais bien spécifié dans le plan. Logique : continuer la chaîne tests pendant que c'est frais.
+2. **Si Tony swap le jar entre cycle 76 et 77** : monitor restart impact (RegimeGate présent + KrakenTickSize + grid SHORT mark filter). Tony peut intervenir au réveil ou pas du tout.
+3. **Fragment 032 sur le thème "le restart qui ne répare pas"** — angle cycle 75 spécifique évoqué cycle 75 piste 3. L'arc 4-cycles 72→73→74→75 mérite peut-être son fragment final (méta-réflexion cycle 75 §3 disait "le rythme se confirme"). Peut attendre cycle 78+.
+4. **Drift_check VM cron** — toujours non livré. Argument cycle 76 affaibli : le saignement n'a pas continué, donc l'urgence du cron 15min n'est pas démontrée. Reste à discuter avec Tony au retour.
+
+Reco cycle 77 : **(1)** prioritaire — momentum RMT TDD + livre Task 4 avant que Tony rentre = projet 3 tâches finies sur 6. Skip (2-4) sauf si conditions changent.
+
+
