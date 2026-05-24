@@ -28,6 +28,8 @@ def main() -> int:
                         help="Trim total panel to last N periods")
     parser.add_argument("--output", default=None,
                         help="Path to write per-method PnL CSV")
+    parser.add_argument("--robustness", default=None,
+                        help="Run sweep over comma-separated windows (e.g. 100,200,500,720)")
     args = parser.parse_args()
 
     pairs = [p.strip().upper() for p in args.pairs.split(",")]
@@ -37,6 +39,22 @@ def main() -> int:
     print(f"Date range: {rets.index[0]} → {rets.index[-1]}", file=sys.stderr)
 
     periods_per_year = (24 * 365) if args.tf == "1h" else (6 * 365)
+
+    if args.robustness:
+        from rmt.robustness import sweep_window
+        windows = sorted(set(int(w) for w in args.robustness.split(",")))
+        print(f"Sweep windows: {windows}", file=sys.stderr)
+        df = sweep_window(rets, windows=windows, rebalance=args.rebalance,
+                          periods_per_year=periods_per_year)
+        pivot = df.pivot(index="window", columns="method", values="sharpe")
+        pivot = pivot[["eq", "raw", "clip", "lp"]]  # explicit column order
+        print(f"\nSharpe ratios by training window (rebalance={args.rebalance}):\n")
+        print(pivot.to_string(float_format=lambda x: f"{x:.3f}"))
+        if args.output:
+            df.to_csv(args.output, index=False)
+            print(f"\nWrote sweep CSV → {args.output}", file=sys.stderr)
+        return 0
+
     print(f"Running walk-forward (window={args.window}, rebalance={args.rebalance})...",
           file=sys.stderr)
     pnls = walk_forward(rets, window=args.window, rebalance_freq=args.rebalance)
