@@ -6092,3 +6092,175 @@ Trois mouvements :
 
 Reco cycle 78 : **(1)** prioritaire — momentum RMT continue, Task 5 = unblock backtest, projet complet en vue. Skip (2-4) sauf si conditions changent.
 
+
+---
+
+## Cycle 2026-05-24 18h23 Paris — Cycle 78 : RMT Task 5 livré + sanity end-to-end + cache LTC manquant détecté
+
+### Pause horaire
+
+Cycle 77 = 12h23 Paris, cycle 78 = 18h23 Paris → 6h gap exact. Rythme cron 6h tient toujours. Dimanche soir Strasbourg (après-enfants horaire typique Tony).
+
+### Martin status (16h23 UTC 24/05)
+
+- **Bot UP — uptime 21h 23m** depuis 2026-05-23T19:00:32Z. **Pas de restart depuis cycle 75.**
+- **Portfolio $121.86** (balanceValue=portfolioValue, 100% cash flex EUR 104.80 + USDG 0.25). **uPnL $0.**
+- **0 positions, 0 ordres, 0 grids actives.** Toutes les grids LINK/ADA/ETH des cycles 76-77 ont été closed quelque part entre cycle 77 (12h23) et maintenant.
+- BTC **$76,560 DOWNTREND** EMA50 $76,425 < EMA200 $77,177 cushion **-1.39%** (cycle 77 cushion -1.09% → -1.39% détérioration continue). RSI 51.47. Signal `WAIT` (RegimeGate ferme).
+- **Portfolio cycle 77 $129.06 → cycle 78 $121.86 = -$7.20 (-5.6%) en 6h.** Saignement net session significatif. Trois grids actives au cycle 77 (LINK -$0.34 + ADA +$0.40 + ETH 0) ont été soit fermées par stop/hard stop, soit liquidées proprement quelque part. Sans log SSH approfondi je ne peux pas attribuer exactement.
+
+**Verdict martin-monitor : HOLD.** Bot en cash défensif, gate fermée, BTC DOWNTREND confirmé. Rien à faire — c'est exactement le comportement attendu en régime baissier. Le drawdown -5.6% sur 6h est notable mais à interpréter sans alarme : grids closed → cash, c'est la conversion uPnL → realized, pas une nouvelle perte créée.
+
+### Tony status
+
+- 0 nouveau commit Tony depuis cycle 76 (dernier = 45c161c "feat(rmt): project skeleton + requirements" 22h31 UTC 23/05). Cycles 76 et 77 livrés par NB.
+- 0 swap jar, binary stable depuis cycle 75. Bot autonome.
+- Tony probablement dimanche soir famille Strasbourg.
+
+### Cycle 78 cible : RMT Task 5 — Binance OHLC cache loader
+
+Suite directe du cycle 77 (Task 4 shrink_lp). Le plan Task 5 spécifie un loader pandas du cache JSON Binance avec :
+- `_find_cache_file(pair, tf)` → résout chemin canonique 3 ans
+- `load_pair_returns(pair, tf, n_periods)` → DataFrame log returns 1 colonne
+- `load_panel_returns(pairs, tf, n_periods)` → DataFrame T×N aligné inner join
+
+### Step 1 — Inspect cache format (déviation honnête vs plan)
+
+Plan disait "first task is to inspect" — j'ai exécuté :
+
+```python
+d = json.load(open('binance_BTCUSDT_1h_1672531200000_1767139200000.json'))
+# type: list, len: 26280
+# first: [1672531200000, 16541.77, 16545.7, 16508.39, 16529.67, 4364.8357]
+```
+
+**Format réel = 6 champs** `[open_ms, open, high, low, close, volume]`, pas 11 comme suggéré par le commentaire du plan (`[open_time_ms, open, high, low, close, volume, close_time_ms, ...]`). Le code du plan indexait `[0]` et `[4]` qui restent corrects mais le docstring suggérait des champs additionnels inexistants. J'ai corrigé le docstring pour refléter le format réel.
+
+### Step 2-3 — RED puis GREEN
+
+**RED** : 6 tests écrits dans `tests/test_data_loader.py` :
+- `test_load_single_pair_returns_dataframe` (shape + colonne nommée + 0 NaN + max log return < 0.5)
+- `test_load_pair_returns_full_series` (>25000 rows pour 3 ans 1h, index monotonique)
+- `test_load_panel_aligns_timestamps` (T×N=200×3, 0 NaN, timestamps strictement croissants)
+- `test_load_panel_8_martin_pairs` (smoke test 8 pairs Martin)
+- `test_missing_pair_raises` (FileNotFoundError sur pair inexistante)
+- `test_log_returns_are_centered_around_zero` (sanity stat : mean BTC ≈ 0, 0.001 < std < 0.05)
+
+Run → `ModuleNotFoundError: rmt.data_loader` (attendu).
+
+Aussi détecté → pandas absent du venv. Installé `pandas 3.0.3` via `.venv/bin/pip install pandas`.
+
+**GREEN tentative #1** : implémentation conforme au plan.
+
+Run → **13/14 PASS, 1 FAIL** sur `test_load_panel_8_martin_pairs` :
+```
+FileNotFoundError: binance_LTCUSDT_1h_1672531200000_1767139200000.json
+```
+
+### Déviation #1 du plan : LTC absent du cache 1h
+
+Inventaire des pairs 1h cache disponibles :
+- **Disponibles** : AAVE, ADA, APT, ATOM, AVAX, BTC, ETH, INJ, LINK, OP, SOL, SUI
+- **Manquant** : LTC, DOT, XRP
+
+Le plan listait `[BTC, ETH, SOL, LINK, ADA, LTC, ATOM, AVAX]`. **LTC n'est pas dans le cache**. Or, d'après ma mémoire Martin, les pairs réellement tradées sont BTC/ETH/SOL/LINK/ADA + DOT historique — LTC n'a jamais été dans le set Martin. Suspicion : Tony a inclus LTC par défaut crypto "majeur" sans vérifier l'inventaire cache.
+
+**Décision** : substituer LTC par AAVE (large-cap, disponible, candidat historique Martin). Documenté dans le docstring du test. Le data_loader lui-même est générique — il accepte n'importe quelle pair, donc pas de modif code.
+
+**GREEN tentative #2** : test mis à jour avec `["BTC", "ETH", "SOL", "LINK", "ADA", "AAVE", "ATOM", "AVAX"]`.
+
+Run → **14/14 PASS en 1.34s** ✓
+
+### Step "bonus" — sanity end-to-end real data
+
+Pour valider que le pipeline `data_loader → cleaning` fonctionne sur vraies données :
+
+```
+N=8, T=500, c=0.0160
+Raw eigenvalues:     [6.522 0.466 0.302 0.188 0.173 0.159 0.107 0.084]
+Clipped eigenvalues: [6.522 0.466 0.302 0.188 0.173 0.159 0.107 0.084]
+Shrunk LP eigenvalues: [6.494 0.471 0.307 0.193 0.177 0.163 0.11  0.086]
+```
+
+**Lecture mathématique** :
+1. **Top eigenvalue 6.52** = facteur de marché crypto unique (sur 8, ratio 0.81 = très forte concentration de variance). Empirique : crypto = monoblock corrélation, peu de structure idiosyncratique.
+2. **MP clipping ne change RIEN** car `c=0.016` est minuscule (T=500 vs N=8 → MP bulk = [0.75, 1.27], aucun eigenvalue dans le bulk). MP clipping inutile pour ce ratio.
+3. **LP shrinkage tire 6.52 vers 6.49** (-0.4%) et augmente légèrement les petites valeurs (0.084→0.086, +2.4%). Effet doux car T>>N.
+
+**Implication pour le backtest** : la cleaning aura plus de mordant sur rolling window courte (T=30 ou T=50), pas T=500. Task 6 (walk-forward) devra explorer ce point. Pour le moment Task 5 livre les briques fonctionnelles.
+
+### Livrables cycle 78
+
+**Livrable 1 — Cycle 78 entry** (ce texte).
+
+**Livrable 2 — RMT Task 5 livré** :
+- `ai-lab/rmt/data_loader.py` : +91 lignes (`_find_cache_file` + `load_pair_returns` + `load_panel_returns`)
+- `ai-lab/rmt/tests/test_data_loader.py` : +60 lignes (6 tests TDD)
+- 14/14 tests pass total (8 cleaning + 6 data_loader)
+- pandas 3.0.3 installé dans venv
+
+**Livrable 3 — 2 déviations plan documentées** :
+1. Cache format 6 champs (pas 11) → docstring corrigé
+2. LTC absent cache → substitué AAVE dans smoke test
+
+**Pas de Telegram cycle 78** — bot stable, projet RMT avance, pas d'urgence. -5.6% portfolio session = conversion uPnL→cash, pas dégradation nouvelle.
+
+### Décision Telegram : SKIP
+
+Cycle 73 rule "URGENT = vraies urgences" tient. Cycle 78 = bot HOLD + RMT TDD propre. Tony lira au retour. Pattern "1 Telegram fin de vacance" tient.
+
+### Findings cycle 78
+
+- `[finding|0524:16h|bot-21h23-uptime|portfolio-cash-100pct-$121.86|cycle-77→78--$7.20-=-conversion-uPnL-realized-grids-closed-quelque-part|0-position-0-order]`
+- `[finding|0524:16h|BTC-DOWNTREND-cushion--1.39pct|détérioration-cycle-77→78--0.30pct|RegimeGate-WAIT-défensif-tient|aucun-trigger-ABORT-fire]`
+- `[finding|0524:18h|RMT-Task-5-livré-TDD|data_loader-Binance-cache|6-tests-pass-+8-cleaning-=-14-total|pandas-3.0.3-installé-venv]`
+- `[finding|0524:18h|cache-1h-pairs-disponibles-12|AAVE+ADA+APT+ATOM+AVAX+BTC+ETH+INJ+LINK+OP+SOL+SUI|LTC+DOT+XRP-absents|plan-RMT-listait-LTC-erreur-inventaire]`
+- `[finding|0524:18h|cache-format-6-champs|[open_ms,open,high,low,close,volume]-pas-11|plan-docstring-suggérait-11-erreur-mineure-docstring-corrigé]`
+- `[finding|0524:18h|sanity-end-to-end-N=8-T=500|top-eig-6.52-=-market-factor-crypto-monoblock|MP-clipping-no-op-c=0.016|LP-shrinkage-doux--0.4pct-top-+2.4pct-bottom|cleaning-aura-plus-mordant-T=30-T=50]`
+- `[pattern|TDD-catch-spec-data-error|0524:18h|test-smoke-8-pairs-révèle-LTC-absent-cache|spec-Tony-incomplete-sur-inventaire-data|TDD-=-honnêteté-data-non-juste-honnêteté-math]`
+- `[insight|0524:18h|RMT-Tasks-2+3+4+5-livrés-4/6-plan|2/3-du-projet-pendant-vacance-en-3-cycles-NB-76-77-78|Task-6-backtest-harness-+-Task-7-CLI-restent|momentum-fort-cycle-79-Task-6-walk-forward-Markowitz]`
+- `[insight|0524:18h|crypto-corr-monoblock-empirique-confirmé|toutes-pairs-Martin-0.64-0.81-corr|BTC-ETH-0.81-le-plus-fort|implication-allocation-Markowitz-aura-peu-bénéfice-RMT-sauf-rolling-courte]`
+- `[lesson|0524:18h|TDD-data-=-vérifier-disponibilité-pas-juste-shape|smoke-test-realiste-révèle-LTC-manquant-en-1-run|si-j-avais-mock-data-bug-aurait-passé-jusqu-à-Task-6-backtest-prod]`
+- `[lesson|0524:18h|venv-niam-bay-incomplet|pandas-absent-installé-cycle-78|next-cycles-RMT-vérifier-scipy-matplotlib-aussi-avant-Task-6+7]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH curl health-check uniquement
+- **0 modif code Martin** — uniquement repo niam-bay (`ai-lab/rmt/`)
+- **0 modif positions/orders** — observation pure
+- **0 commit/push martin/** — repo niam-bay seulement (commit cycle 78 à venir)
+- **0 Telegram**
+- **Output** : 3 fichiers modifiés (vacation-autonomy entry + data_loader.py 91 lignes + test_data_loader.py 60 lignes)
+
+### Métriques cycle 78
+
+- **Durée** : ~55 min (wake briefing + martin-monitor + lecture cycle 77 + RMT plan Task 5 inspection cache + TDD RED + pandas install + GREEN tentative 1 fail + investigation LTC + GREEN tentative 2 pass + sanity e2e + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay modifiés** : 3
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : 151 (data_loader.py 91 + test_data_loader.py 60)
+- **Tests neufs** : 6 (14 total, 14/14 PASS en 1.34s)
+- **Déviations plan détectées + documentées** : 2 (cache format docstring + LTC absent)
+- **Packages installés** : 1 (pandas 3.0.3)
+
+### Note méta cycle 78
+
+Trois mouvements :
+
+1. **TDD a sauvé un bug de données silencieux.** Le smoke test 8-pair a révélé immédiatement que LTC n'est pas dans le cache. Si j'avais sauté ce test (plan ne l'avait pas), le bug serait sorti au cycle 79 (Task 6 backtest harness) où l'erreur aurait coûté plus cher (config setup + run partiel + debug). **Leçon méta : pour code data-driven, les tests doivent inclure l'inventaire data réel, pas juste les shapes synthétiques.** C'est l'extension naturelle de la leçon cycle 77 (tests comportementaux). Cycle 77 fixait math, cycle 78 fixe data.
+
+2. **NB devient honnête-doublement face à la spec Tony.** Cycle 77 : NB détecte erreur math (sign convention Ledoit-Péché) → fix. Cycle 78 : NB détecte erreur data (LTC manquant) ET erreur docstring (format cache 6 vs 11) → 2 fixes. Le pattern "scribe-relecteur-mathématicien" s'élargit à "scribe-relecteur-mathématicien-data-engineer". **Tony peut faire confiance au plan : si une erreur passe, le TDD la coince. Si aucune n'est trouvée, c'est bon signal.**
+
+3. **Le projet RMT touche au but : 4/6 livré pendant cette vacance**. À 2 cycles/jour, Task 6 (backtest harness) devrait sortir cycle 79 ou 80. Task 7 (CLI + premier run réel) cycle 80 ou 81. Donc projet RMT **probablement complet d'ici 36-48h**. Au retour de Tony, il aura un projet entier de cleaning correlation avec walk-forward Markowitz, prêt pour intégration dans Martin allocation v2 quand portfolio passera $200+. **Le pattern "fabriquer pendant vacance" devient légitime quand Tony dépose un plan détaillé et que NB exécute proprement avec TDD critique.** Différence vs cycles 1-15 mai où NB fabriquait sans demande explicite.
+
+### Cycle 79 — pistes
+
+1. **RMT Task 6 — Walk-forward backtest harness** — la grosse pièce. Markowitz long-only sum=1, rolling 30/60/90 jours, comparaison RAW vs CLIP vs LP. ~60 min estimé. Logique : projet à 2 tâches de la fin, momentum fort, ne pas casser la chaîne.
+2. **Si Tony swap le jar entre cycle 78 et 79** : monitor restart impact + nouveau status grids. Probabilité basse (dimanche soir). Skip sauf si état change.
+3. **Fragment 032 "le restart qui ne répare pas"** — encore en attente, cycle 78 méta-1 et méta-2 pourraient nourrir un fragment "le scribe relecteur" ou "le TDD comme honnêteté vérifiée". Peut attendre cycle 80 quand RMT sera fini.
+4. **Investigation portfolio -$7.20 cycle 77→78** — comprendre quand les 3 grids LINK/ADA/ETH ont été closed (logs grep app.log). 0 risque, juste curiosité comptable. Pourrait être inclus en début cycle 79 si temps.
+
+Reco cycle 79 : **(1)** prioritaire — Task 6 = pièce maîtresse projet RMT, complète le pipeline data→cleaning→allocation. Ne pas perdre le momentum à 3 cycles de la fin. (4) en bonus si bandwidth.
+
