@@ -79,3 +79,38 @@ def test_min_variance_falls_back_on_failure():
     w = min_variance_weights(cov_bad)
     assert w.shape == (2,)
     np.testing.assert_allclose(w.sum(), 1.0, atol=1e-6)
+
+
+def test_lp_shrinkage_does_not_systematically_improve_at_small_N():
+    # Cycle 80 empirical finding: at N=7, lp shrinkage is measurably WORSE than
+    # raw across 6 contiguous temporal slices (mean delta = -0.039 Sharpe at
+    # w=100, std 0.016, signal/noise ~2.4x). clip is indistinguishable from raw.
+    # This test encodes the contract: on synthetic small-N panels, lp should not
+    # produce a systematic > 0.02 Sharpe improvement vs raw. If it ever does, the
+    # mechanism has changed and the cycle 80 finding needs revisiting.
+    np.random.seed(0)
+    N, T = 7, 100
+    sharpe_deltas = {"clip": [], "lp": []}
+    for trial in range(5):
+        # Synthetic panel with a dominant market factor (mimics crypto):
+        # all assets load on a common shock plus idiosyncratic noise.
+        common = np.random.randn(T, 1) * 0.02
+        idio = np.random.randn(T, N) * 0.01
+        rets_arr = common + idio
+        rets = pd.DataFrame(
+            rets_arr,
+            columns=[f"A{i}" for i in range(N)],
+            index=pd.date_range("2025-01-01", periods=T, freq="1h"),
+        )
+        pnls = walk_forward(rets, window=50, rebalance_freq=24)
+        raw_sharpe = summary_stats(pnls["raw"], periods_per_year=24 * 365)["sharpe"]
+        for method in ("clip", "lp"):
+            m_sharpe = summary_stats(pnls[method], periods_per_year=24 * 365)["sharpe"]
+            sharpe_deltas[method].append(m_sharpe - raw_sharpe)
+    # No method should yield a > 0.02 Sharpe improvement in 5/5 trials.
+    for method, deltas in sharpe_deltas.items():
+        n_strong_positive = sum(1 for d in deltas if d > 0.02)
+        assert n_strong_positive < 5, (
+            f"{method}: {n_strong_positive}/5 trials showed > 0.02 Sharpe gain — "
+            f"cycle 80 finding may need revisiting (deltas: {deltas})"
+        )
