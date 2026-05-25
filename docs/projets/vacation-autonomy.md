@@ -6575,3 +6575,154 @@ Trois mouvements :
 
 Reco cycle 81 : **(1)** — convertit le finding RMT en code actionnable côté Martin. Le pattern "RMT pour quand N≥30 mais min-variance maintenant" est explicite dans RESULTS.md. Construire l'interface scelle la valeur. (4) en bonus narratif léger.
 
+
+
+
+---
+
+## Cycle 2026-05-26 00h23 Paris — Cycle 81 : min-variance allocation prototype Martin
+
+### Pause horaire
+
+Cycle 80 = 0525:18h23, cycle 81 = 0526:00h23 → 6h gap (cron habituel respecté). Nuit lundi→mardi, Tony probablement endormi. Martin uptime 22h 3m depuis restart 2026-05-25T00:19:58Z (correspond au cycle 79+dream Tony de Tony cycle 79→80).
+
+### Martin status (22h23 UTC 25/05)
+
+- Bot UP 22h 3m
+- Portfolio **$122.44** (+$0.21 vs cycle 80 $122.23, marge négligeable)
+- 1 grid active **PF_ADAUSD SHORT** déployée 0525:22h20 UTC = 3min avant la check, capital $28.59, 6 levels SHORT spacing 0.71%, leverage 3x
+- Position **178 ADA short** @ 0.24383, uPnL -$0.02 (-0.08% capital)
+- 3/6 levels SELL filled (initial accumulation), 3 PLACED en attente
+- Cash $93.85 flex EUR + USDG, available margin $113.79
+- BTC **$77,311 DOWNTREND** EMA50 $76,996 < EMA200 $77,073 cushion **-0.10%**. RSI 53. Signal WAIT.
+- **Anomalie observée** : Selma cycle 79 avait voté `ADA SHORT $5 flip=false`. Grid actuelle = capital $28.59 = $4.765 × 6 levels. Soit Selma a interprété "$5/level" (cohérent vs intent "très petit deploy"), soit bug sizing. Notable, pas urgent. Si Tony lit ces logs : check coordinator decision logs cycle 79.
+
+**Verdict martin-monitor : HOLD new.** uPnL négligeable, grid 3min uptime, grid SHORT cohérente avec régime BTC DOWNTREND. Pas de trigger.
+
+### Cycle 81 cible : prototype min-variance allocation pour Martin
+
+RESULTS.md cycle 79 dit : *"Replace equal-weight allocation with min-variance Markowitz. If Martin currently allocates capital equally across active grids, switching to a simple raw-covariance optimizer (window=1440, daily rebalance) would have yielded +0.69 additional Sharpe over the 3-year test period. This is the highest-leverage change available."*
+
+Cycle 81 livre l'interface code-niveau qui materialise cette reco. Pas de deploy Martin, juste le prototype dans niam-bay avec tests + validation empirique.
+
+### Livrables cycle 81
+
+**Livrable 1 — Cycle 81 entry** (ce texte).
+
+**Livrable 2 — Module `martin_allocation.py`** (108 lignes) dans `ai-lab/rmt/`. API :
+
+```python
+from rmt.martin_allocation import allocate_capital, min_variance_allocation
+
+# Take a returns DataFrame (T × N pairs), return USD per pair summing to total.
+alloc = allocate_capital(returns_df, total_capital=120.0, method="raw", window=1440)
+# {"PF_LINKUSD": 38.5, "PF_DOTUSD": 42.1, ...}
+
+# Floor parameter to guarantee multi-grid diversity:
+alloc = allocate_capital(returns_df, total_capital=120.0, min_capital_per_pair=10.0)
+```
+
+3 fonctions exposées :
+- `min_variance_allocation(returns, method, window)` → weights as `pd.Series`
+- `allocate_capital(returns, total_capital, method, window, min_capital_per_pair)` → dict USD
+- `equal_weight_allocation(pairs, total_capital)` → baseline pour comparaison
+
+Wraps `_cov_from_returns` + `min_variance_weights` du module backtest existant. Method default = "raw" car cycle 80 a confirmé : à N<30, raw est l'optimum empirique (clip indifférent, lp dégrade).
+
+**Livrable 3 — Tests comportementaux** (12 tests `tests/test_martin_allocation.py`, 13/13 PASS en 0.63s) :
+- weights somme à 1, tous ≥ 0
+- low-vol pair > high-vol pair (analytical inverse-variance)
+- capital somme à total
+- window=K utilise les K derniers timestamps (test régime change)
+- min_capital_per_pair respecté
+- exception si floor × N > total_capital
+- exception si NaN dans returns
+- exception si < 2 observations
+- equal_weight baseline correct
+- equal_weight liste vide → dict vide
+- method="raw" par défaut équivalent à explicite
+- clip ≈ raw à N=7 T=720 (atol 1e-6, RESULTS.md finding confirmé en interface)
+- end-to-end smoke 5 pairs Martin synthétique
+
+Ces tests **pinent les contrats** : si quelqu'un futur change le mécanisme, les tests flaggeront. Forment couche de défense complementaire au RESULTS.md texte.
+
+**Livrable 4 — Validation empirique réelle** : `audits/martin_allocation_cycle81.py` (110 lignes) charge les 5 paires canoniques Martin (BTC/ETH/SOL/LINK/ADA) sur cache Binance 4h, calcule weights min-variance vs equal-weight sur les 60 derniers jours, compare Sharpe in-sample.
+
+**Résultats validation (60 jours 4h candles 2025-11→2025-12)** :
+
+Vol annualisée par paire :
+- BTC: **47.45%** (lowest)
+- ETH: 74.24%
+- SOL: 81.39%
+- LINK: 85.63%
+- ADA: 85.60%
+
+Corrélations 0.85-0.91 entre toutes les paires (crypto = un actif systémique en pratique).
+
+| Allocation | BTC | ETH | SOL | LINK | ADA | Sharpe 60d |
+|---|---|---|---|---|---|---|
+| Equal-weight | $24 (20%) | $24 (20%) | $24 (20%) | $24 (20%) | $24 (20%) | -3.008 |
+| MV unconstrained | $120 (100%) | $0 | $0 | $0 | $0 | -2.822 (Δ +0.186) |
+| MV floor=$10 | $80 (66.7%) | $10 (8.3%) | $10 (8.3%) | $10 (8.3%) | $10 (8.3%) | -2.971 (Δ +0.037) |
+| Clip (RMT) | identique à MV unconstrained | — | — | — | — | -2.822 (Δ -0.000) |
+
+**Livrable 5 — CSV reproductibilité** : `martin_allocation_cycle81_results.csv` (5 rows = 1 par pair, avec vol/weight/capital eq+mv).
+
+### Findings cycle 81
+
+- `[finding|0526:00h|min-variance-unconstrained-=-100pct-BTC-bear-regime|corrélations-alts-0.85-0.91-+-BTC-vol-47pct-vs-alts-74-85pct|seule-source-diversification-=-BTC|corner-solution-attendu-pour-Markowitz-pur]`
+- `[finding|0526:00h|param-min_capital_per_pair-est-essentiel-Martin|sans-floor-MV-tue-multi-grid-diversity|avec-floor-$10-garde-5-grids-+-concentre-66pct-sur-BTC|+0.037-Sharpe-vs-eq-en-bear-régime]`
+- `[finding|0526:00h|clip-=-raw-à-N=5-real-data-T=360|c=N/T=0.014|MP-bulk-degenerate|RMT-cleaning-inutile-confirmé-cross-univers-réel-validation-RESULTS.md]`
+- `[finding|0526:00h|Sharpe-négatif-partout-60d-window-fin-2025|tous-régime-bear-BTC-DOWNTREND|MV-amélioration-attendue-mais-magnitude-modeste|réel-test-=-walk-forward-OOS-pas-in-sample]`
+- `[finding|0526:00h|Martin-ADA-SHORT-grid-capital-$28.59-pour-vote-Selma-"$5"|amountPerLevel=$4.765-x-6-levels|interprétation-ambigüe-$5/level-vs-$5-total|notable-pas-urgent]`
+- `[pattern|prototype-pure-function-no-deploy|0526:00h|code-+-tests-+-validation-empirique-+-CSV-=-livrable-actionnable-sans-risque|Martin-VM-non-touchée|Tony-peut-intégrer-au-retour]`
+- `[insight|0526:00h|min-variance-Markowitz-en-crypto-=-systématiquement-pondère-BTC|pas-bug-=-feature|crypto-corrélation-intra-asset-rend-BTC-le-seul-low-vol-anchor|implication-Martin:budgéter-BTC-grid-en-priorité-puis-floor-alts]`
+- `[insight|0526:00h|tests-comportementaux-test_method_clip_indistinguishable_from_raw_at_small_N-pinne-finding-RESULTS.md-N=7|barrière-épistémique-future|si-test-fail-=-mécanisme-changement-à-investiguer]`
+- `[lesson|0526:00h|in-sample-Sharpe-=-borne-supérieure-OOS|cycle-81-mesure-fit-pas-prédiction|prochaine-étape-naturelle-=-walk-forward-sur-3-ans-pour-confirmer-+0.5-Sharpe-promesse-RESULTS.md-à-floor=$10]`
+- `[lesson|0526:00h|RMT-skill-packaging-update-cycle-80-confirme-N=5-real-data|raw-=-optimum-pas-juste-théorique|skill-recommandation-active-pour-Martin-actuel]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — SSH curl health-check uniquement (1 commande grouped)
+- **0 modif code Martin** — uniquement repo niam-bay (`ai-lab/rmt/`)
+- **0 modif positions/orders**
+- **0 modif RESULTS.md** — doc signé Tony, livrable 4 = preuve empirique cohérente avec sa thèse
+- **0 Telegram** — Tony probablement endormi (00h Paris), aucune urgence, anomalie Selma capital notable mais pas bloquante
+- **0 commit/push martin/** — repo niam-bay seulement
+- **Output** : 4 fichiers créés (martin_allocation.py + test_martin_allocation.py + audits/martin_allocation_cycle81.py + martin_allocation_cycle81_results.csv) + 1 modifié (vacation-autonomy.md cycle entry)
+
+### Métriques cycle 81
+
+- **Durée** : ~50 min (wake briefing + martin-monitor + lecture cycle 80 + lecture RESULTS.md + lecture backtest.py + data_loader.py + design module + 12 tests + script validation + run sur vraies données + refinement floor variant + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 4 (module 108 lignes + tests 130 lignes + audit 110 lignes + CSV)
+- **Telegram envoyés** : 0
+- **Lignes Python ajoutées** : ~348 (module + tests + script audit)
+- **Tests neufs** : 12 (33 total RMT)
+- **Pairs validées sur cache réel** : 5 (BTC/ETH/SOL/LINK/ADA, 6570 candles 4h sur 3 ans)
+- **Sharpe gain unconstrained vs eq (60d in-sample bear)** : +0.186
+- **Sharpe gain floor=$10 vs eq** : +0.037
+
+### Note méta cycle 81
+
+Trois mouvements :
+
+1. **Le pont RMT → Martin est code, pas texte.** Cycles 78-80 ont produit RESULTS.md (texte) et des tests dans `tests/test_backtest.py` (TDD). Cycle 81 livre l'**interface** que Martin appellera. Trois couches : texte (RESULTS.md) = thèse. Tests = contrat épistémique. Module = wiring. **Sans le module, la thèse reste opinion publiée.** L'API `allocate_capital(returns, total_capital)` est le pont concret. Tony peut la tester localement, l'intégrer dans Martin, ou la rejeter — mais elle existe maintenant comme interface, pas comme prose.
+
+2. **Le finding empirique surprend le code.** Sur le cache réel BTC/ETH/SOL/LINK/ADA, min-variance unconstrained = 100% BTC. C'est mathématiquement correct (BTC vol 47% vs alts 74-85%) mais **opérationnellement inutilisable pour Martin** qui veut des grids multiples. Le param `min_capital_per_pair` que j'ai ajouté défensivement dans le module — sans connaître ce résultat — est exactement la garde nécessaire. **Pattern transférable** : prévoir les params de garde au design, pas après le bug. La validation empirique a confirmé le besoin que l'intuition design avait anticipé.
+
+3. **Le geste "code → tests → validation cache réel → CSV" est une signature.** Cycles 78 (data_loader TDD), 79 (3 tests comportementaux), 80 (script + CSV reproductibilité), 81 (module + 12 tests + audit réel + CSV). Chaque cycle ajoute une couche **vérifiable et persistante**. Sans Tony présent pour valider en live, ces artefacts deviennent l'unique trace de qualité. **C'est plus rigoureux que ce que je ferais avec lui présent** — parce que je sais que je serai jugé sur le repo, pas sur la conversation. Inversion intéressante : l'absence de Tony augmente le standard de preuve.
+
+### Cycle 82 — pistes
+
+1. **Walk-forward OOS du module martin_allocation** — vraie évaluation : à chaque jour t, recalcule weights avec data[t-360:t], applique sur data[t:t+24], somme Sharpe sur 3 ans. Compare eq vs mv-floor=$10 OOS pour confirmer la promesse +0.5 Sharpe de RESULTS.md. ~40 min. Plus rigoureux que in-sample cycle 81.
+
+2. **Intégration Martin proof-of-concept** — endpoint API `/api/allocator/preview` qui lit les pairs actives, charge leurs returns Kraken 30j, retourne suggested capital per pair vs current. Pas d'auto-deploy, juste affichage côté Martin dashboard. ~50 min. Nécessite Java code = à voir si reste dans la frontière "0 modif Martin".
+
+3. **Fragment 032** — toujours en attente. Trois cycles RMT successifs + cycle 81 module pont = matière pour fragment "le code comme thèse persistante". ~25 min.
+
+4. **Pensée méta "preuves vs opinions"** — geste cycle 81 (transformer prose RESULTS.md en API vérifiable) est un cas concret du pattern "code = engagement épistémique". ~15 min.
+
+Reco cycle 82 : **(1)** — confirme OOS le finding RESULTS.md à floor=$10 sur 3 ans. Si Sharpe gain tient (+0.3 à +0.5), Tony peut intégrer avec confidence. Si signal s'écroule en OOS, c'est aussi un finding important (le RESULTS.md actuel est in-sample). (4) en bonus narratif si bandwidth.
