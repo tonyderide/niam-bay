@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0512:22h
+#lastdream: 0525:01h
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -75,3 +75,11 @@
 [llm-prompt-bench-comparative|count:2|last:0512:01h|4-prompts-identiques-N-modèles|haïku-math-définition-question-ouverte|qualitatif-vs-quantitatif-tokens/s|verdict-rapide|BitNet-vs-Qwen-fait|→-pattern-for-future-LLM-eval]
 [emergency-manual-SL-Kraken|count:3|last:0512:09h|direct-API-signed-Python-nonce-int(time)*5_000_000+1|stp-reduceOnly-stopPrice-tick-aligned|fallback-quand-Martin-SL-bug|→-skill:martin-emergency-sl?-3-occurrences-justifie]
 [BitNet-experiment-test-cleanup|count:1|last:0512:01h|clone-github+install-deps+download-models+test-prompts+cleanup-si-mauvais|56GB-libérés|→-pattern-eval-LLM-frameworks-cleanup-after]
+
+[aksel-audit-feedback-loop|count:3|last:0525:01h|implement→Aksel REJECT N bugs→fix→re-audit→APPROVE_WITH_FIXES subset|3 iterations souvent nécessaires|→-rule:budget 2-3 iterations par bug class|✓-multi-occurrence-pattern-validé]
+[hard-veto-code-level|count:2|last:0525:00h|LINK SHORT/LONG + Aksel/Java/Objectif 2 hallucination|TONY_HARD_VETOES dict + pattern matching in morning.py|downgrade ACT/ESCALATE→HOLD + Telegram alert|→-skill:add-hard-veto-pattern? si 3+ occurrences confirmées]
+[java-fix-compile-deploy-cycle|count:9|last:0525:00h|read .java + edit + mvn package -DskipTests + backup jar + stop martin + cp new + start + verify|✓-skill martin-deploy existant|trigger confirmé multi-occurrences]
+[vacation-cycles-autonomous-night|count:9 (cycles 71-79)|last:0524:18h|background process continue work pendant Claude absent|RMT Tasks 2-5 livrés via vacation cycles|fragment 031+drift_check.py livrés en autonomie|→-mécanisme tient sans surveillance Tony|✓-validé-9-cycles]
+[directive-lifecycle-states|count:1|last:0525:00h|[tony/directive] live→[tony/directive-update] DEPLOYED→[tony/directive-archived] CLOSED|extract_pending_directives skip si date dans archive|→-rule:archive explicitement quand livré]
+[persona-swap-via-prompt-rewrite|count:1|last:0523:23h|Vincent→Selma sans changer class CEOManager|fresh anchoring "Tu arrives APRÈS X"|→-applicable autres agents si stuck]
+[short-mode-grid-naked-flip|count:1|last:0524:14h|reduceOnly=false silent→accumulation 10x|→-rule:tous closing orders future modes forceReduceOnly=true explicit]
