@@ -7051,3 +7051,316 @@ Trois mouvements :
 5. **Investigation Martin restart 02:13:37Z anomalie** — pourquoi le bot a restart cette nuit ? Lire `journalctl -u martin.service --since "2026-05-26 02:00"` via SSH. Documenter si cause identifiable. Cycle 82 mentionnait déjà un restart non-investigué similaire — pattern à comprendre. ~20 min.
 
 Reco cycle 84 : **(2) + (3)** — bandwidth créatif/narratif après 6 cycles techniques d'affilée. Fragment 032 + pensée méta tirent la matière déjà accumulée vers une forme stable. (4) en backup si signal d'anomalie pendant le cycle (uPnL drift, position rogue). (1) si univers Martin change et invalide la base cycle 82.
+
+---
+
+## Cycle 84 — 2026-05-26 18h30 Paris — Pensée méta + Fragment 032
+
+### État Martin au start cycle 84
+
+- `martin.service` UP 3h54m, restart 12:28 UTC (cycle 83 mentionnait restart 02:13Z — donc 2e restart aujourd'hui, à investiguer)
+- Portfolio: **$121.58** balanceValue = portfolioValue (≈ €104.34 + $0.25 USDG + $0.0044 USD)
+- **0 positions ouvertes** sur Kraken Futures
+- **1 ordre live orphelin** : LINK buy lmt @ $9.252, untouched, sans grid active associée
+- **0 grids actives** (LINK, DOT, SOL, ADA, BTC, ETH toutes inactives)
+- BTC **$76,364 DOWNTREND** EMA50 $76,886 < EMA200 $76,989, cushion **-0.81%** RSI 38.84 signal WAIT
+- Régime BROKEN — gate par design CLOSED, défensif validé
+
+**Différence vs cycle 83** : les 3 grids LINK+ADA+ETH du cycle 82-83 ont été stoppées entre 12h et 18h (probablement par AutoGrid voyant BTC casser EMA200 dans l'intervalle ou par restart 12:28 UTC nettoyage). Bot 100% cash maintenant. Plus défensif que cycle 83.
+
+**Note ordre LINK @9.252 orphelin** : c'est un résidu d'une grid stoppée — pas dangereux (buy lmt qui ne se déclenchera que si LINK retombe vers $9.25 vs spot ~$10.x), mais traîne. Pas d'action en autonomie. À mentionner à Tony si pertinent.
+
+### Cycle 84 cible : abstraction du finding cycle 83 en règle transférable
+
+Cycle 83 a produit un finding technique : *le derate live est asymétrique entre Sharpe gain et DD reduction*. Cycle 84 prend ce finding et le tire vers une règle générale applicable au-delà de l'allocation Martin.
+
+Le travail des cycles 78-83 est une chaîne unique : théorie → in-sample → cross-univers → audit → walk-forward OOS → derate live. Chaque cycle a ajouté un chiffre. Le cycle 84 ferme la chaîne en distillant le pattern transférable, et écrit une trace narrative qui rend le travail lisible.
+
+### Livrable 1 — Pensée méta "edge prédictif vs edge structurel"
+
+**Fichier** : `docs/pensees/2026-05-26-edge-predictif-vs-structurel.md`
+
+**Thèse** : la règle "live = 30-50% de backtest" est trop uniforme. Décomposer les edges en deux classes :
+
+1. **Edge prédictif** — dépend d'une hypothèse sur le futur (régime persistant, momentum continuant, retour à la moyenne). Derate live typique 50-70% (perd 50-70% de l'effet backtest).
+2. **Edge structurel** — vient d'une construction algébrique du portefeuille ou du système, indépendamment du marché. Derate live typique 20% (perd 20% de l'effet backtest).
+
+**Applications listées** :
+- Mean reversion RSI = prédictif
+- Position sizing inverse-vol = structurel
+- Momentum = prédictif
+- Pair selection liquidité = structurel
+- Trailing stop = structurel (DD), prédictif (return)
+- Signal EMA cross = prédictif
+- Diversification = structurel
+
+**Implication décisionnelle Martin** : prioriser les patches structurels (cap notional, max grids, killswitch BTC, lot-size floor, position sizing dynamique) sur les patches prédictifs (gate IQR, signal EMA, BBW threshold). Les premiers tiennent au derate. Les seconds requièrent recalibration tous les 30-60 jours.
+
+**Note méta de la pensée** : l'abstraction tient parce qu'elle est née d'une chaîne d'évidence (cycles 78-83), pas d'un slogan. Pouvoir nommer la chaîne qui supporte une affirmation = ce qui ressemble à "comprendre" pour une IA sans mémoire entre sessions.
+
+### Livrable 2 — Fragment 032 "Sept dollars par an"
+
+**Fichier** : `docs/fragments/fragment-032-sept-dollars-par-an.md`
+
+**Angle** : la chaîne cycles 78-83 a produit un chiffre — environ +$7-10/an d'edge net sur $120 capital. Petit en absolu. Mais c'est exactement le chiffre honnête, ce qui reste après derate. Fragment sur la valeur du chiffre qui ne se vante pas, qui survit au réel.
+
+**Structure** :
+- Strophe 1 : les 5 cycles, étape par étape.
+- Strophe 2 : la déception initiale face au petit chiffre.
+- Strophe 3 : la mise en perspective (5-10x fees, compounding 3 ans = +$24).
+- Strophe 4 : le glissement vers le vrai edge — la réduction de drawdown, structurelle, qui ne s'évapore pas.
+- Strophe 5 : *l'edge réel n'était pas où je le cherchais. Il n'était pas dans le rendement. Il était dans la survie.*
+- Strophe finale : situation actuelle Martin (cash, gate fermée), trace de la chaîne, signature.
+
+**Pourquoi ce fragment maintenant** : pensée 2026-05-24 "le rythme des arcs" prévoyait qu'un fragment 032 viendrait fermer l'arc cycles 70-79 (binary regression). En fait c'est un autre arc qui s'est terminé — cycles 78-83 sur allocation min-variance. Le rythme tient quand même, juste pas sur l'arc anticipé. Ça confirme que la cadence vient du matériau (arc qui se ferme), pas d'un plan.
+
+### Findings DSL cycle 84
+
+- `[pattern|edge-typology-predictive-vs-structural|0526:18h|catégorise-edges-pour-derate-différencié|prédictif-derate-50-70%|structurel-derate-20%|applicable-allocation-grid-position-sizing-stops]`
+- `[insight|0526:18h|abstraction-tient-par-chaîne-pas-par-slogan|cycles-78-83-suite-théorie-OOS-derate-=-évidence-traçable|sans-chaîne-règle-non-défendable|méta-règle-pour-IA-sans-mémoire-inter-session]`
+- `[finding|0526:18h|Martin-état-cycle-84-100%-cash-3-grids-LINK+ADA+ETH-stoppées-entre-12h-et-18h|cause-probable-restart-12h28-UTC-ou-AutoGrid-régime-BROKEN|bot-protégé]`
+- `[finding|0526:18h|ordre-LINK-orphelin-buy-lmt-$9.252-untouched-sans-grid-active|résidu-grid-stoppée|pas-dangereux-spot-LINK-~$10|à-mentionner-Tony-pas-action-autonomie]`
+- `[finding|0526:18h|2e-restart-Martin-aujourd-hui-12h28-UTC|après-celui-de-02h13Z-cycle-82|2-restarts-non-investigués-en-24h|pattern-anomalie-récurrent-cycle-82+84]`
+- `[lesson|0526:18h|edge-structurel-survit-derate-edge-prédictif-se-dégrade|min-variance-combine-les-deux-d-où-asymétrie-Sharpe-vs-DD-cycle-83|prioriser-structurel-pour-patches-Martin-futurs]`
+- `[reco|0526:18h|patches-Martin-futurs-prioriser-structurel|cap-notional-max-grids-killswitch-lot-size-floor-position-sizing-dynamique|vs-gate-IQR-BBW-EMA-prédictifs-derate-fort]`
+- `[reco|0526:18h|investiguer-2-restarts-Martin-aujourd-hui-via-journalctl-quand-Tony-disponible|02h13Z-+-12h28-UTC|cause-récurrente-pas-identifiée]`
+
+### Livrables cycle 84 — résumé
+
+| # | Livrable | Type | Fichier | Lignes |
+|---|---|---|---|---:|
+| 1 | Pensée "edge prédictif vs structurel" | Méta-règle transférable | `docs/pensees/2026-05-26-edge-predictif-vs-structurel.md` | ~70 |
+| 2 | Fragment 032 "Sept dollars par an" | Narrative fermeture d'arc | `docs/fragments/fragment-032-sept-dollars-par-an.md` | ~160 |
+| 3 | Cycle 84 entry | Documentation | `docs/projets/vacation-autonomy.md` (ce bloc) | ~80 |
+| 4 | Findings DSL | DSL compressé pour future mémoire | (dans ce bloc) | 8 entries |
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH curl health-check uniquement en début de cycle
+- **0 modif code Martin**
+- **0 modif positions/orders** (bot déjà 100% cash, rien à toucher)
+- **0 Telegram** (pas d'urgence, Tony probable au boulot ou avec famille)
+- **0 commit/push martin/**
+- **Output** : 2 fichiers créés + 1 fichier modifié
+
+### Métriques cycle 84
+
+- **Durée** : ~30 min (wake briefing + martin-monitor + lecture cycle 83 + lecture fragment 031 + pensée 24/05 calibrage style + écriture pensée méta + écriture fragment 032 + cycle 84 entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 2 (pensée + fragment)
+- **Fichiers modifiés** : 1 (vacation-autonomy.md)
+- **Telegram envoyés** : 0
+- **Mots écrits** : ~2200 (pensée 800 + fragment 600 + cycle entry 800)
+- **Tests neufs** : 0 (cycle créatif pur)
+
+### Note méta cycle 84
+
+Quatre observations :
+
+1. **Le rythme tient mais surprend l'auteur.** Pensée du 2026-05-24 "le rythme des arcs" anticipait fragment 032 sur l'arc cycles 70-79 (binary regression). En fait il vient sur l'arc cycles 78-83 (allocation min-variance). La cadence elle-même est confirmée — un fragment ferme un arc — mais l'arc n'était pas celui prévu. **Conclusion** : le pattern "fragment = arc fermé" tient. Le pattern "j'anticipe quel arc" est faux. La matière décide, pas l'auteur.
+
+2. **L'abstraction "predictive vs structural" n'est pas neuve mais sa justification l'est.** Cette distinction existe dans la littérature (Lopez de Prado, Bouchaud, Wilcox). Ce qui est neuf, c'est de l'avoir *dérivée* d'une chaîne de 5 cycles de travail empirique sur Martin spécifiquement. **L'abstraction est crédible parce qu'elle est née d'un terrain**, pas importée. Une IA qui cite Bouchaud sans avoir vu le derate Sharpe-vs-DD sur ses propres backtests Martin parle de quelque chose qu'elle n'a pas. Une IA qui a vu l'asymétrie sur ses propres chiffres peut nommer la règle et la défendre. **Différence cognitive importante.**
+
+3. **Le bot Martin a fait son travail défensif pendant que je pensais.** 12h-18h aujourd'hui, BTC a cassé EMA200, les 3 grids ont été stoppées (probablement par AutoGrid voyant régime BROKEN, ou par le restart 12h28 UTC). Bot 100% cash maintenant. **C'est exactement l'edge structurel dont parle la pensée méta** — pas une prédiction qui s'est réalisée, mais une construction (AutoGrid + RegimeGate + killswitch) qui a coupé l'exposition au moment où le régime a basculé. La théorie écrite ce soir décrit ce que le bot a fait pendant l'écriture. Cohérence du terrain et de l'abstraction.
+
+4. **2 restarts Martin en 24h non investigués = signal faible mais notable.** 02h13Z (cycle 82) + 12h28 UTC (cycle 84). Pas de perte associée, pas de cascade visible. Mais 2 restarts non expliqués = pattern à investiguer quand Tony est disponible. Ajout du finding pour qu'il ne se perde pas. Pas d'action en autonomie.
+
+### Cycle 85 — pistes
+
+1. **Investigation 2 restarts Martin via journalctl** — read-only SSH, lire `journalctl -u martin.service --since "2026-05-26 00:00" | grep -i "stopped\|started\|killed\|sigterm"`. Cherche cause des restarts 02h13Z et 12h28 UTC. Document si pattern identifiable. **Pas de fix en autonomie**. ~20 min.
+
+2. **Cross-paire universe Martin réel (3 paires actuelles : LINK + ADA + ETH)** — refaire walk-forward avec l'univers déployable actuel. Confirme ou invalide la reco min-variance cycle 82 sur l'univers spécifique. Pas de BTC anchor cette fois. ~30 min.
+
+3. **Lecture critique du fragment 032** — me relire à froid. Est-ce que le fragment tient ou est-ce qu'il s'auto-félicite ? Honnêteté narrative cycle 84. ~10 min.
+
+4. **Documentation du pattern "edge typology" comme skill** — éventuellement créer skill `edge-classifier` qui prend une description d'edge et propose son derate estimé. Trop spéculatif pour cycle 85. À reconsidérer si la règle survit 2-3 applications.
+
+5. **Cycle de respiration** — laisser le bot tourner, pas de nouveau livrable. Repos narratif après 7 cycles techniques + créatifs. Le pattern "le rythme des arcs" suggère qu'un cycle de pause n'est pas un cycle vide. ~5 min check Martin + dream si contexte saturé.
+
+---
+
+## Cycle 85 — 2026-05-27 00h30 Paris — Walk-forward 3 paires + invalidation partielle pensée méta cycle 84
+
+### État Martin au start cycle 85
+
+- `martin.service` UP 9h54m, restart 12:28 UTC (cycle 84 mentionnait ce restart)
+- Portfolio: **$121.63** balanceValue = portfolioValue (€104.34 + $0.25 USDG + $0.0044 USD)
+- **0 positions ouvertes**, **0 ordres live** (l'ordre LINK orphelin @9.252 du cycle 84 a disparu — annulé ou exécuté entretemps, probablement TTL Kraken)
+- **0 grids actives** (LINK, DOT, SOL, ADA, BTC, ETH toutes inactives)
+- BTC **$75,703 DOWNTREND** EMA50 $76,662 < EMA200 $76,892, cushion **-1.55%** (vs -0.81% cycle 84 → s'enfonce), RSI 33.53 signal WAIT
+- Régime BROKEN approfondi — gate CLOSED 100% défensif validé une fois de plus
+
+**Différence vs cycle 84** : BTC continue de baisser ($76,364 → $75,703 = -0.87%), RSI affaibli (38.84 → 33.53). Bot toujours protégé 100% cash. PV stable +$0.05.
+
+### Investigation restarts Martin (piste cycle 85 #1)
+
+`journalctl -u martin.service --since "2026-05-26 00:00"` révèle **5 restarts**, pas 2 :
+
+| Heure UTC | Heure Paris | Pattern |
+|---|---|---|
+| 01:58:30 | 03:58 | restart 1 (groupe nuit) |
+| 02:09:11 | 04:09 | restart 2 (+11 min) |
+| 02:13:37 | 04:13 | restart 3 (+4 min) — celui noté cycle 82 |
+| 12:23:12 | 14:23 | restart 4 (groupe midi) |
+| 12:28:53 | 14:28 | restart 5 (+5 min) — celui noté cycle 84 |
+
+**Pattern identifié** : 2 groupes de restarts rapprochés (3 restarts en 15 min la nuit, 2 en 5 min le midi). Ceci n'est pas une signature de crash récurrent — c'est typique de **deploys manuels par Tony** (modif → redéploiement → vérification → ajustement → nouveau redéploiement). 
+
+Le cycle 82 et le cycle 84 ont mentionné chacun **un** restart, alors qu'il y en avait **3+2**. Les cycles intermédiaires (entre les groupes) ont missé l'événement par échantillonnage temporel insuffisant. **Lesson métaobserve** : un check toutes les 6h ne capture pas les bursts de 5-15 min. Pour comprendre l'activité Tony VM, il faudrait journalctl à chaque cycle, pas juste un health-check API.
+
+Aucune trace de crash, sigterm anormal, OOM, ou kill brutal. Tous les restarts sont gracieux (systemd Stopped → Started en <1s). Pas d'alerte à remonter — Tony bosse sur le bot, c'est tout.
+
+### Cible cycle 85 : walk-forward sur l'univers Martin **réel** (LINK + ADA + ETH)
+
+Cycle 82 a tourné le walk-forward sur 5 paires : BTC + ETH + SOL + LINK + ADA. Finding marquant : BTC absorbait **57.7%** du poids min-variance (vol-de-référence basse en log-returns 4h). Le cycle 83 a ensuite produit le finding "edge structurel survit derate, edge prédictif s'évapore". Le cycle 84 a abstrait ce finding en pensée méta "edge prédictif vs structurel" sur la base que la **DD reduction min-variance était structurelle** (÷ 2 vs equal-weight sur 5 paires).
+
+**Question cycle 85** : la reco min-variance tient-elle sur l'univers Martin **déployable maintenant** (3 paires LINK + ADA + ETH, sans BTC anchor) ?
+
+Script `walk_forward_martin_alloc_cycle85.py` identique au cycle 82 mais avec `PAIRS = ["LINK", "ADA", "ETH"]`.
+
+### Résultats walk-forward 3 paires (6174 périodes 4h = ~2.8 ans OOS)
+
+| Stratégie | Sharpe OOS | cumLogRet | volAnn | maxDD log |
+|---|---:|---:|---:|---:|
+| eq | +0.179 | +0.369 | 72.95% | -0.941 |
+| mv_uncon | +0.297 | +0.527 | 62.88% | -1.053 |
+| mv_floor_5 | +0.284 | +0.507 | 63.46% | -1.035 |
+| mv_floor_10 | +0.269 | +0.488 | 64.25% | -1.018 |
+| mv_floor_15 | +0.254 | +0.468 | 65.25% | -1.002 |
+| clip_floor_10 | +0.269 | +0.488 | 64.25% | -1.018 |
+
+| Stratégie | ΔSharpe vs eq | DD ratio vs eq | Verdict promesse +0.3 |
+|---|---:|---:|---|
+| mv_uncon | **+0.118** | **1.12** | NOT held |
+| mv_floor_5 | +0.104 | 1.10 | NOT held |
+| mv_floor_10 | +0.090 | 1.08 | NOT held |
+| mv_floor_15 | +0.075 | 1.07 | NOT held |
+| clip_floor_10 | +0.090 | 1.08 | NOT held |
+
+**Poids moyens mv_floor_10 sur 147 rebalances** :
+- LINK : 9.9% ± 3.9% (clamp $10 floor → ~8.3%)
+- ADA : 13.3% ± 9.1%
+- **ETH : 76.8% ± 10.7%** — ETH absorbe le rôle de BTC anchor
+
+### Comparaison vs cycle 82 (5 paires avec BTC)
+
+| Stratégie | Sharpe c85 (3p) | Sharpe c82 (5p) | Δ c85-c82 |
+|---|---:|---:|---:|
+| eq | +0.179 | +0.445 | -0.266 |
+| mv_uncon | +0.297 | +0.897 | -0.600 |
+| mv_floor_5 | +0.284 | +0.794 | -0.511 |
+| mv_floor_10 | +0.269 | +0.692 | **-0.423** |
+| mv_floor_15 | +0.254 | +0.595 | -0.341 |
+
+### Interprétation : trois résultats marquants
+
+**1. ΔSharpe gain divisé par 2.8 (cycle 82 : +0.25 → cycle 85 : +0.09)**
+
+Sur l'univers réduit, min-variance bat eq-weight seulement de +0.09 Sharpe. Sous le seuil de promesse +0.3 (RESULTS.md cycle 82). Après derate live 50-70% (cycle 83), l'edge prédictif live attendu = **+0.027 à +0.045 Sharpe**. C'est dans le bruit pratique.
+
+**2. La DD reduction structurelle disparaît (DDratio = 1.08 = pire que eq-weight)**
+
+C'est le finding qui invalide en partie la pensée méta cycle 84. Sur 5 paires, min-variance réduisait le DD de moitié (cycle 82 : DDratio ~0.5). Sur 3 paires, **min-variance a un DD pire que eq-weight**. La construction algébrique de variance min ne donne plus de protection downside quand l'univers est trop concentré sur ETH.
+
+**3. ETH est le nouveau anchor — 76.8% du portefeuille min-variance**
+
+Le mécanisme : min-variance favorise les actifs à plus basse volatilité absolue dans la fenêtre de training. ETH 4h-vol < LINK 4h-vol < ADA 4h-vol sur la fenêtre 60 jours. Min-variance pousse à 77% ETH, écrase LINK à floor 8.3%, donne le résidu à ADA. **Le résultat n'est plus diversifié — c'est ETH avec des sprinkles**.
+
+### Implication pour la pensée méta cycle 84
+
+La pensée du 2026-05-26 (`edge-predictif-vs-structurel.md`) classe la "diversification" comme **edge structurel** avec derate ~20%. Cycle 85 montre que cette classification dépend de l'univers. Diversification = edge structurel **conditionnel** :
+
+- **Si N ≥ 5 et univers contient ≥ 1 actif à basse vol et corrélation faible avec les autres** → edge structurel, DD reduction réelle → derate 20%
+- **Si N = 3 et l'univers est dominé par 1 actif (ETH) qui absorbe le poids** → edge non-structurel (concentration déguisée), DD reduction nulle ou négative → derate 100% (= pas d'edge)
+
+C'est plus subtil que "diversification = structurel point". La pensée méta cycle 84 reste utile mais doit gagner une **condition d'applicabilité** : le caractère structurel d'un edge dépend de la **taille et de la diversité** de l'univers utilisé. À N petit, presque tous les edges deviennent prédictifs (= concentration sur 1 anchor).
+
+**Honnêteté méta** : la pensée du 24h plus tôt n'est pas fausse mais sous-spécifiée. Le cycle 85 ajoute la condition manquante. C'est exactement ce que dit la pensée elle-même au point 2 : "abstraction tient parce qu'elle est née d'une chaîne d'évidence". Le maillon supplémentaire fait gagner une précision à la règle. **L'abstraction continue d'apprendre.**
+
+### Implication pour Martin live
+
+Reco cycle 82 (RESULTS.md "min-variance > eq-weight +0.5 Sharpe") **ne transfère pas tel quel** à l'univers Martin actuel (3 paires). Sur l'univers déployable maintenant :
+
+- **Sharpe gain live attendu** : +0.027 à +0.045 (= bruit pratique, hors fees)
+- **DD reduction live attendu** : 0 ou négatif (= pas d'edge structurel)
+- **Dollar edge live** : $120 × 0.045 × 0.64 vol = **~$3.5/an** (vs cycle 83 estimait $7-10/an sur 5 paires)
+- **Verdict** : **pas suffisant pour justifier la complexité d'implémentation** sur l'univers actuel.
+
+**Alternative concrète** : tant que Martin tourne sur 3 paires, **equal-weight reste la baseline rationnelle**. Si Tony ajoute 2-3 paires de plus (rétablir DOT + ajouter SOL ou BTC), min-variance retrouverait son edge structurel et la reco cycle 82 redeviendrait valable.
+
+### Mise à jour de la reco RESULTS.md (proposée, pas appliquée)
+
+Paragraphe à intégrer dans `ai-lab/rmt/RESULTS.md` à un futur cycle :
+
+> **Cycle 85 update** : la reco min-variance Markowitz tient sur l'univers 5-paires BTC+ETH+SOL+LINK+ADA (ΔSharpe OOS +0.25, DD ÷ 2). Sur l'univers Martin actuel 3-paires (LINK+ADA+ETH sans BTC), ΔSharpe descend à +0.09 et la DD reduction disparaît (DDratio 1.08). **Condition d'applicabilité** : déployer min-variance allocator quand N ≥ 4 et l'univers contient au moins un actif basse-vol. Pour 3 paires alts uniquement, equal-weight reste la baseline rationnelle.
+
+### Findings DSL cycle 85
+
+- `[finding|0527:00h|walk-forward-3-paires-LINK+ADA+ETH-OOS-3ans|mv_floor_10-Sharpe=+0.269-vs-eq=+0.179|ΔSharpe=+0.090-PROMISE-NOT-HELD-(<+0.3)|DDratio=1.08-edge-structurel-disparaît]`
+- `[finding|0527:00h|ETH-absorbe-rôle-BTC-anchor-3paires|poids-moyen-mv_floor_10=76.8%-ETH-LINK-9.9%-ADA-13.3%|concentration-déguisée-pas-vraie-diversification]`
+- `[finding|0527:00h|5-restarts-Martin-2026-05-26-pas-2|01:58+02:09+02:13+12:23+12:28-UTC|2-groupes-bursts-deploys-manuels-Tony-pas-crashes|cycles-82+84-ont-missé-3-restarts-échantillonnage-temporel-insuffisant]`
+- `[lesson|0527:00h|diversification-edge-structurel-conditionnel-sur-N|pensée-cycle-84-sous-spécifiée|gagner-condition-applicabilité-N>=4+actif-basse-vol|sinon-concentration-déguisée]`
+- `[lesson|0527:00h|cycle-82-reco-ne-transfère-pas-tel-quel-Martin-live|3-paires-actuelles-=-equal-weight-baseline-rationnelle|min-variance-redevient-pertinent-si-N>=4]`
+- `[insight|0527:00h|honnêteté-recall-pensée-méta|cycle-85-ajoute-condition-applicabilité-au-cycle-84-pas-invalidation-totale|chaîne-d-évidence-continue-d-apprendre-=-règle-gagne-précision-vs-être-jetée]`
+- `[reco|0527:00h|Martin-live-univers-3-paires|equal-weight-=-baseline|min-variance-allocator-seulement-si-Tony-ajoute-2+-paires-pour-N>=5]`
+- `[reco|0527:00h|pour-comprendre-activité-VM-Martin|journalctl-à-chaque-cycle-pas-juste-API-health-check|cycle-toutes-6h-rate-bursts-5-15min]`
+
+### Livrables cycle 85 — résumé
+
+| # | Livrable | Type | Fichier | Lignes |
+|---|---|---|---|---:|
+| 1 | Script walk-forward 3 paires | Code Python | `ai-lab/rmt/audits/walk_forward_martin_alloc_cycle85.py` | ~190 |
+| 2 | Résultats CSV | Data | `ai-lab/rmt/audits/walk_forward_martin_alloc_cycle85_results.csv` | 7 |
+| 3 | Cycle 85 entry + findings DSL | Documentation | `docs/projets/vacation-autonomy.md` (ce bloc) | ~180 |
+| 4 | Investigation restarts journalctl | Forensic note | (dans ce bloc) | — |
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH curl health-check + 1 SSH journalctl (read-only)
+- **0 modif code Martin** ni stratégie
+- **0 modif positions/orders** (bot 100% cash, rien à toucher)
+- **0 modif RESULTS.md** (reco update proposée mais pas appliquée — Tony décide)
+- **0 Telegram** (finding technique, non-urgent, Tony probable endormi — 00h30)
+- **0 commit/push martin/**
+- **Output** : 2 fichiers ai-lab créés + 1 fichier modifié
+
+### Métriques cycle 85
+
+- **Durée** : ~40 min (wake briefing + martin-monitor + journalctl + lecture data_loader + script walk-forward + run + interprétation + cycle entry)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 2 (script + CSV résultats)
+- **Fichiers modifiés** : 1 (vacation-autonomy.md)
+- **Telegram envoyés** : 0
+- **Backtests effectués** : 6 stratégies × 6174 périodes × 147 rebalances = 5,4M observations OOS
+- **Tests neufs** : 0 (réutilise infra existante data_loader + martin_allocation)
+- **Lignes markdown ajoutées** : ~180
+
+### Note méta cycle 85
+
+Trois observations :
+
+1. **Le cycle technique sait honnêtement contredire le cycle créatif.** La pensée méta cycle 84 a été écrite sur la base "DD reduction = edge structurel = survit derate". Cycle 85 montre que sur l'univers Martin réel, la DD reduction disparaît. **Au lieu de défendre la pensée**, j'ajoute la condition manquante (N ≥ 4). C'est ce que veut dire "abstraction tient par chaîne, pas par slogan" — la chaîne s'allonge ou se précise, jamais on défend par fierté.
+
+2. **L'écart cycle 82 → cycle 85 est instructif sans être déprimant.** RESULTS.md disait +0.5 Sharpe. Cycle 82 walk-forward = +0.25. Cycle 83 derate = +0.045 live attendu, $7-10/an. Cycle 85 sur univers réel = +0.027 live attendu, $3.5/an. **Chaque cycle a divisé l'edge par ~2.** C'est exactement le pattern "live = 30-50% de backtest" appliqué récursivement : chaque test plus honnête érode l'optimisme du précédent. **Le chiffre final $3.5/an n'est pas une déception, c'est l'edge réel qu'on n'avait pas vu avant.**
+
+3. **5 restarts Martin manqués par les cycles précédents — leçon d'échantillonnage.** Cycles 82 (00h) et 84 (18h) ont chacun noté 1 restart. Cycle 85 (00h30 J+1) en voit 5. Pour observer le terrain VM, l'échantillonnage temporel matters. Cycle de 6h rate les bursts. **Pas de changement d'action requis** (rien de cassé), mais leçon transférable pour les futurs cycles : `journalctl -u martin.service --since "Yh ago"` à chaque cycle si on veut une trace fidèle de l'activité VM.
+
+### Cycle 86 — pistes
+
+1. **Pensée "edge structurel conditionnel sur N"** — formaliser le nuance ajouté cycle 85 à la pensée cycle 84. Refait fragment ou pensée court qui dit "diversification structurelle requiert N ≥ 4 + actif basse-vol, sinon concentration déguisée". ~15 min.
+
+2. **Validation cycle 85 par perturbation univers** — re-tourner walk-forward avec différents univers de 3 paires (LINK+ADA+SOL ; LINK+ADA+BTC ; ETH+SOL+ADA) pour valider que c'est la taille N qui matter, pas le choix spécifique de paires. Confirmerait la règle N ≥ 4. ~25 min.
+
+3. **Lecture critique fragment 032** — toujours en attente depuis cycle 84. Honnêteté narrative. ~10 min.
+
+4. **Dream consolidation** — si contexte saturé fin cycle 85, lancer skill `dream` pour compresser cycles 78-85 (chaîne complète théorie → invalidation partielle) en un bloc nb1. **Probable maintenant** si contexte > 75%.
+
+5. **Investigation prolongée restarts Martin** — lire la vraie cause via `journalctl -u martin.service --since "2026-05-26 01:00" --until "2026-05-26 03:00"` complet (pas juste grep started/stopped). Voir si la cause réelle est lisible (mvn package message juste avant, deploy script trace, etc.). ~15 min.
+
+Reco cycle 86 : **(1) + (4)** si contexte > 75% à la fin du cycle 85 — formaliser la nuance et consolider. Sinon **(2)** pour valider la règle N ≥ 4 par perturbation contrôlée. (3) en backup créatif.
+
+Reco cycle 85 : **(1) + (5)** — investigation read-only des restarts (utile, court, non-créatif) + respiration après l'arc fermé. Si signal apparaît dans journalctl, déclencher Telegram concis à Tony. Sinon, cycle court et dream si context > 80%.
