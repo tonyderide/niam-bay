@@ -150,6 +150,42 @@ def test_method_clip_indistinguishable_from_raw_at_small_N():
     np.testing.assert_allclose(w_raw.values, w_clip.values, atol=1e-6)
 
 
+def test_floor_monotonically_dilutes_min_variance_weights():
+    """Cycle 82 finding: raising the floor shifts allocation toward equal-weight.
+
+    Each $1 added to min_capital_per_pair pulls weights from the optimum toward
+    1/N. Specifically, the lowest-vol pair (BTC-analog here) should see its
+    weight strictly decrease as the floor grows, until it saturates at 1/N when
+    floor × N = total_capital.
+    """
+    rng = np.random.default_rng(82)
+    T, N = 720, 5
+    vols = [0.005, 0.012, 0.018, 0.020, 0.022]  # P0 = BTC-analog (lowest vol)
+    rets = pd.DataFrame(
+        rng.standard_normal((T, N)) * np.asarray(vols),
+        columns=[f"P{i}" for i in range(N)],
+        index=pd.date_range("2025-01-01", periods=T, freq="1h"),
+    )
+    total = 120.0
+    floors = [0.0, 5.0, 10.0, 15.0, 20.0]
+    p0_caps = [
+        allocate_capital(rets, total_capital=total, min_capital_per_pair=f)["P0"]
+        for f in floors
+    ]
+    # Monotone non-increasing: each higher floor reduces P0's capital.
+    for prev, curr in zip(p0_caps, p0_caps[1:]):
+        assert curr <= prev + 1e-9
+    # At floor=20 the budget is exhausted (5 × 20 = 100, leaving $20 free):
+    # P0 should still be > 20 but bounded. At floor=24 (5×24=120) all weights
+    # collapse to 24.0 each (equal-weight).
+    alloc_collapsed = allocate_capital(
+        rets, total_capital=total, min_capital_per_pair=24.0
+    )
+    np.testing.assert_allclose(
+        list(alloc_collapsed.values()), [24.0] * N, atol=1e-9
+    )
+
+
 def test_realistic_5_pair_universe_smoke():
     """End-to-end smoke: 5 Martin-like pairs, 30d hourly, 120 USD capital."""
     rng = np.random.default_rng(123)
