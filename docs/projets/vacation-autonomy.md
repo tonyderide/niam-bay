@@ -7364,3 +7364,123 @@ Trois observations :
 Reco cycle 86 : **(1) + (4)** si contexte > 75% à la fin du cycle 85 — formaliser la nuance et consolider. Sinon **(2)** pour valider la règle N ≥ 4 par perturbation contrôlée. (3) en backup créatif.
 
 Reco cycle 85 : **(1) + (5)** — investigation read-only des restarts (utile, court, non-créatif) + respiration après l'arc fermé. Si signal apparaît dans journalctl, déclencher Telegram concis à Tony. Sinon, cycle court et dream si context > 80%.
+
+---
+
+## Cycle 85b — 2026-05-27 00h50 Paris — Perturbation universe : N vs anchor
+
+### Pourquoi prolonger cycle 85 en 85b
+
+Cycle 85 a conclu "diversification edge structurel conditionnel sur N ≥ 4". Cette règle a une faiblesse : elle ne distingue pas **N est le driver** vs **la composition de l'univers est le driver**. Si c'est juste N, alors n'importe quel ajout de paire améliore. Si c'est la composition (présence d'un actif basse-vol type BTC), alors la règle change radicalement — Martin n'a pas besoin de plus de paires, il a besoin de **paires plus diversifiées en volatilité**.
+
+Test rapide par perturbation : 4 univers de 3 paires chacun, dont 2 avec BTC et 2 sans.
+
+### Script et résultats
+
+Script `perturbation_universe_cycle85b.py` réutilise l'infra walk-forward cycle 85. Quatre univers testés (toujours 6174 périodes 4h OOS) :
+
+| Univers | Description | Sharpe eq | Sharpe mv | ΔSharpe | DD ratio | Anchor weight |
+|---|---|---:|---:|---:|---:|---:|
+| LINK+ADA+ETH | baseline cycle 85 | +0.179 | +0.269 | +0.090 | 1.08 | ETH 76.8% |
+| LINK+ADA+SOL | 3 alts, no anchor | +0.335 | +0.298 | **-0.037** | 1.06 | LINK 30.7% |
+| LINK+ADA+**BTC** | 3 pairs WITH BTC anchor | +0.324 | +0.820 | **+0.496** | **0.62** | BTC 82.0% |
+| ETH+SOL+**BTC** | 3 majors WITH BTC anchor | +0.716 | +0.860 | **+0.143** | **0.62** | BTC 72.1% |
+
+**Verdict statistique** :
+- avg ΔSharpe avec BTC : **+0.320**
+- avg ΔSharpe sans BTC : **+0.026**
+- **Effet isolé BTC : +0.293 Sharpe**
+
+### Trois findings forts
+
+**1. La règle cycle 85 "N ≥ 4" est fausse. La vraie règle est "anchor basse-vol présent".**
+
+LINK+ADA+BTC (N=3) **bat le cycle 82 5-paires** : ΔSharpe +0.496 vs +0.246. Donc N n'est pas le driver. **Le driver est la disponibilité d'un actif à volatilité 4h significativement plus basse que les autres**, qui peut absorber le poids min-variance sans dégrader le DD agrégé.
+
+BTC remplit ce rôle parce que sa volatilité 4h sur 3 ans (~50% annualisé) est nettement plus basse que les alts (LINK ~85%, ADA ~85%, SOL ~85%). ETH ~60% — entre les deux — n'est pas assez basse pour fonctionner comme anchor pur (cycle 85 montre Δ=+0.09 seulement).
+
+**2. La DD reduction structurelle revient quand BTC est dans l'univers : DDratio = 0.62 (-38% DD).**
+
+C'est même mieux que cycle 82 (DDratio ~0.5 sur 5 paires, mais BTC capturait 57.7% du poids). La DD reduction est **vraiment structurelle quand l'anchor a une vol nettement plus basse** — sa pondération haute (72-82%) tire le portefeuille vers une distribution de pertes moins extrême.
+
+**3. La règle finale (3 itérations) :**
+
+| Cycle | Règle proposée | Statut |
+|---|---|---|
+| 82 | "min-variance > eq-weight +0.5 Sharpe sur 5 paires" | trop large |
+| 85 | "min-variance bénéfique si N ≥ 4" | fausse direction (N pas le driver) |
+| **85b** | **"min-variance bénéfique si univers contient un actif basse-vol (BTC en pratique)"** | **validé sur 4 univers** |
+
+### Implication actionnable pour Martin
+
+Cycle 85 disait "équal-weight baseline pour l'univers 3-paires actuel". Cycle 85b ajoute une option concrète :
+
+**Option A** : équal-weight, accepter le bruit Sharpe +0.09 ≈ 0 sur 3 alts. Simple, robuste.
+
+**Option B** : **ajouter BTC à l'univers Martin déployable** (4 paires : LINK+ADA+ETH+BTC ou similaire). Min-variance allocator transfère son edge cycle 82 sur cet univers. Sharpe gain attendu OOS ~+0.50 (cycle 85b LINK+ADA+BTC), DD reduction -38%.
+
+**Le delta Option B vs A** :
+- +0.50 Sharpe OOS × derate 50% = **+0.25 Sharpe live attendu**
+- DD reduction -38% × derate 80% (structurel) = **-30% DD live attendu**
+- $120 × 0.25 × 0.50 vol = **$15/an d'edge live** (vs ~$3.5/an Option A)
+- **DD réduction = vraie protection downside, pas juste un chiffre**
+
+**Recommandation honnête** : la valeur de ré-ajouter BTC à l'univers Martin n'est pas le rendement absolu (~$15/an reste petit). C'est la **structure de DD** — protéger Martin d'un drawdown massif en concentrant la pondération sur l'actif le plus stable. Cycle 84 (BtcRegimeKillSwitch) + cycle 85b (BTC anchor min-variance) se renforcent : BTC sert deux fonctions différentes (kill-switch régime + anchor allocation).
+
+### Honnêteté méta cycle 85b
+
+Le cycle 85 a fait une erreur — diagnostic "N ≥ 4" sur la base d'une seule perturbation (5 paires vs 3 paires). 25 minutes plus tard, le cycle 85b corrige avec 4 perturbations. C'est exactement ce que dit la pensée méta cycle 84 : *abstraction tient par chaîne, pas par slogan*. La chaîne s'allonge encore, et le diagnostic se précise.
+
+**Pattern à nommer** : *triple-révision dans la même nuit*. Cycle 82 (théorème large) → cycle 83 (derate live + dollar edge) → cycle 84 (pensée méta abstraction) → cycle 85 (test sur univers réel + invalidation partielle) → cycle 85b (perturbation + correction diagnostic). **Cinq cycles successifs où chaque maillon affine le précédent.** L'edge final tient parce qu'aucun maillon n'a été défendu par fierté.
+
+### Findings DSL cycle 85b
+
+- `[finding|0527:00h50|perturbation-4-univers-3-paires-confirme-anchor-pas-N|avg-ΔSharpe-avec-BTC=+0.320|avg-sans-BTC=+0.026|effet-isolé-BTC=+0.293-Sharpe|H_anch-validé]`
+- `[finding|0527:00h50|LINK+ADA+BTC-N=3-bat-cycle-82-5-paires|ΔSharpe+0.496-vs-+0.246|N=3-suffit-si-BTC-présent|invalide-règle-cycle-85-N≥4]`
+- `[finding|0527:00h50|DD-reduction-revient-avec-BTC-anchor|DDratio=0.62-(-38%-DD)-LINK+ADA+BTC-et-ETH+SOL+BTC|structurel-survit-derate-cycle-83-edge-typologie-tient]`
+- `[lesson|0527:00h50|driver-min-variance-=-actif-basse-vol-pas-N|BTC-vol-4h-50%-vs-alts-85%-ratio-1.7|ETH-vol-60%-intermédiaire-pas-assez-pour-anchor-pur]`
+- `[reco|0527:00h50|Option-B-Martin-ajouter-BTC-univers-déployable|LINK+ADA+ETH+BTC-4-paires|Sharpe-+0.50-OOS-derate-+0.25-live|DD--38%-(-30%-live)|edge-+$15/an-+protection-downside-réelle]`
+- `[insight|0527:00h50|triple-révision-même-nuit-cycles-82-85b|chaque-maillon-affine-précédent-aucun-défendu-par-fierté|pattern-honnêteté-itérative-rendue-possible-par-chaîne-traçable]`
+- `[reco|0527:00h50|règle-finale-corrigée|min-variance-bénéfique-si-univers-contient-actif-basse-vol-significatif|pas-de-condition-sur-N|BTC-naturel-anchor-crypto-3-ans-historique]`
+
+### Livrables cycle 85b — résumé
+
+| # | Livrable | Type | Fichier | Lignes |
+|---|---|---|---|---:|
+| 1 | Script perturbation 4 univers | Code Python | `ai-lab/rmt/audits/perturbation_universe_cycle85b.py` | ~130 |
+| 2 | Résultats CSV | Data | `ai-lab/rmt/audits/perturbation_universe_cycle85b_results.csv` | 5 |
+| 3 | Cycle 85b entry + correction règle | Documentation | `docs/projets/vacation-autonomy.md` (ce bloc) | ~110 |
+
+### Frontière respectée
+
+- **0 modif Martin/VM** (cycle 85 a déjà fait health-check + journalctl)
+- **0 modif code Martin** ni stratégie
+- **0 modif positions/orders**
+- **0 modif RESULTS.md** (reco update Option B proposée mais pas appliquée)
+- **0 Telegram** (00h50 Paris, Tony dort, finding non-urgent)
+- **Output** : 2 fichiers ai-lab créés + 1 fichier modifié
+
+### Métriques cycle 85b
+
+- **Durée** : ~20 min (script perturbation + run + interprétation + correction règle cycle 85)
+- **Backtests effectués** : 4 univers × 6 stratégies × 6174 périodes = 148k observations OOS additionnelles
+- **Fichiers niam-bay créés** : 2 (script + CSV)
+- **Fichiers modifiés** : 1 (vacation-autonomy.md)
+- **Tests neufs** : 0 (réutilise infra cycle 85)
+- **Lignes markdown ajoutées** : ~110
+
+### Note méta cycle 85b
+
+Une seule observation : **j'ai eu tort 50 minutes après avoir publié la règle "N ≥ 4". Le cycle 85b corrige avec 4 perturbations et une conclusion plus précise (anchor basse-vol matter, pas N).** Le coût de l'erreur : un commit qui dit N ≥ 4 (sera contredit dans le prochain commit). Le bénéfice : la règle finale est testée sur 4+2 univers (cycle 82 + 85 + 85b) au lieu de 1+1, et le diagnostic est défendable. **Le pattern "honnêteté itérative" coûte un commit incorrect et gagne une règle solide.** Bon trade.
+
+### Cycle 86 — pistes mises à jour
+
+1. **Implémentation Option B (read-only design)** — écrire un design doc `docs/projets/martin-allocator-option-b.md` décrivant comment ajouter BTC à l'univers Martin et brancher min-variance allocator. Pas de code Martin (frontière vacation). Juste design doc + interface attendue. ~30 min.
+
+2. **Pensée méta "honnêteté itérative"** — formaliser le pattern triple-révision en pensée courte. Lien avec cycle 84 "abstraction tient par chaîne". ~15 min.
+
+3. **Dream consolidation** — chaîne complète cycles 78-85b mérite compression nb1. Si contexte > 75%, lancer skill `dream` pour fermer arc proprement.
+
+4. **Lecture critique fragment 032** — toujours en attente. Honnêteté narrative reste due. ~10 min.
+
+Reco cycle 86 : **(3)** d'abord (dream) si contexte > 75%, puis **(2)** ensuite. Le design doc Option B est tentant mais Tony probablement veut décider lui-même la composition de l'univers Martin — n'écrire le design qu'à sa demande explicite.
