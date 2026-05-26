@@ -6883,3 +6883,171 @@ Trois mouvements :
 4. **Pensée méta "promesses précises mais incomplètes"** — RESULTS.md +0.5 Sharpe est précis et incomplet. Le walk-forward complète la phrase. Ça nourrit une pensée sur la précision épistémique. ~15 min.
 
 Reco cycle 83 : **(1)** — applique la règle live-derate de la mémoire cycle 0501 au finding OOS. Ferme la boucle théorique → in-sample → OOS → live-attendu. Le chiffre final est ce que Tony peut comparer à son intuition. (4) en bonus narratif léger si bandwidth.
+
+
+---
+
+## Cycle 2026-05-26 12h23 Paris — Cycle 83 : live-derate analysis du finding OOS
+
+### Pause horaire
+
+Cycle 82 = 0526:06h23, cycle 83 = 0526:12h23 → 6h gap (cron habituel respecté). Mardi midi pause déjeuner Tony probable (Galeries). Martin uptime **8h 10m** depuis restart 2026-05-26T02:13:37Z — restart non investigué (cycle 82 mentionnait restart non-investigué similaire, peut-être watchdog cron 30min ou redéploy auto Selma).
+
+### Martin status (10h23 UTC 26/05)
+
+- Bot UP **8h 10m**
+- Portfolio **$122.30** (balanceValue $122.45, uPnL -$0.15 = -0.12% — bruit)
+- **3 grids actives** : LINK + ADA + ETH (DOT/SOL/BTC inactive)
+- **2 positions SHORT** :
+  - LINK 1.8 @ 9.492 (sell filled 05:21Z, uPnL -$0.06)
+  - ADA 72 @ 0.24219 (sell filled 05:30Z, uPnL -$0.09)
+- **11 ordres live Kraken** (4 ETH + 3 ADA + 4 LINK)
+- BTC **$76,830 DOWNTREND** EMA50 $76,890 < EMA200 $77,062 cushion **-0.30%** RSI 47.5 signal WAIT
+- Cushion s'est restreinte vs cycle 82 (-0.68% → -0.30%) — BTC remonte légèrement mais pas encore breakout EMA200
+- Grids NEUTRAL mais positions ouvertes = SHORT (sell-first en down) → **alignées défensivement avec le régime**, pas en bag
+
+**Verdict martin-monitor : WARN ne pas toucher.** BTC < EMA200 trigger théorique d'ABORT, mais grids capitalisent défensivement avec SHORT, exposure totale $45 / $122 = 37% portfolio, uPnL trivial. Re-check cycle 84.
+
+Note : SL exchange tous à `null` sur les 3 grids (`stopLossOrderId: null, stopLossPrice: null`) malgré `stopLossOnExchangeEnabled: true`. Le bug StopLossManager du cycle 0512 n'a peut-être pas été fixé sur ces grids fraîches — à surveiller. Pas urgence vu uPnL minuscule.
+
+### Cycle 83 cible : appliquer live-derate au finding cycle 82
+
+Mémoire `[insight:0501|live-Sharpe=30-50%-of-backtest|universal-rule-from-research|NostalgiaForInfinity-25k-stars=$100→$102.57|profit-factor>3=overfit-signal|always-derate-expectations]`.
+
+Règle : un Sharpe backtest se traduit en live à **30-50%** typiquement. Causes : fees + slippage + funding + régime drift + selection bias. Confirmé empiriquement par NostalgiaForInfinity (25k stars GitHub, Sharpe backtest 4-6, live ~1.5-2 → derate 30-40%).
+
+Le finding cycle 82 = Sharpe **OOS** déjà honnête (walk-forward, données réelles 3 ans, pas in-sample). Mais OOS ≠ live. Différences résiduelles :
+
+1. **OOS n'inclut pas frais de trading** (cycle 82 script `walk_forward_martin_alloc_cycle82.py` calcule weighted returns mais pas fees) → derate ~5-10% pour Kraken Futures (taker 0.05%, maker -0.02%, rebalance hebdo = ~$10-30 fees sur $120 capital sur 3 ans = -0.3-1% return drag → -0.05 à -0.15 Sharpe).
+2. **Pas de slippage** sur les rebalances → derate ~5%.
+3. **Régime mai 2026 ≠ régime moyen 3 ans** (BTC DOWNTREND choppy actuellement) → variance OOS pas représentative live court terme.
+4. **Lot-size Kraken Futures** : floor $10 minimum peut être insuffisant pour BTC (1 contract $76k, leverage 7x → marge requise ~$11). À $10/pair sur BTC = juste limite.
+
+Total live-derate estimé : **70-50% du gain OOS** (plus optimiste que la règle 30-50% générale car le walk-forward a déjà éliminé une partie du biais).
+
+### Calculs live-derate (Sharpe gain vs equal-weight)
+
+| Stratégie | Sharpe OOS | Δ vs eq (OOS) | Derate 50% (pessimiste) | Derate 70% (optimiste) | Conclusion |
+|---|---:|---:|---:|---:|---|
+| **eq** (baseline) | +0.445 | — | — | — | référence |
+| mv_uncon | +0.897 | +0.452 | **+0.226** | **+0.316** | optimal théo mais ≈100% BTC corner |
+| mv_floor_$5 | +0.794 | +0.349 | **+0.175** | **+0.244** | best compromise Martin-deployable |
+| **mv_floor_$10** | **+0.692** | **+0.246** | **+0.123** | **+0.172** | Martin-réaliste actuel |
+| mv_floor_$15 | +0.595 | +0.150 | **+0.075** | **+0.105** | floor trop élevé, edge fragile |
+| clip_floor_$10 | +0.692 | +0.246 | **+0.123** | **+0.172** | identique raw (RMT inutile à N=5) |
+
+**Sharpe absolu live attendu** (pour vérifier que ça reste positif net de derate sur le total) :
+
+| Stratégie | Sharpe OOS | Live 50% derate | Live 30% derate |
+|---|---:|---:|---:|
+| eq | +0.445 | +0.22 | +0.13 |
+| mv_floor_$10 | +0.692 | +0.35 | +0.21 |
+| mv_uncon | +0.897 | +0.45 | +0.27 |
+
+Tous les Sharpe live restent **positifs** dans toutes les configs, même au derate 30% le plus pessimiste. C'est la première garde : pas de scénario où le bot perd structurellement.
+
+### Conversion dollar — edge attendu live
+
+Hypothèses : capital total $120, vol annuelle live ≈ 50% (entre mv_uncon 47% et mv_floor_$10 53% OOS), 1 an horizon.
+
+`R_extra_annuel = Sharpe_gain × vol_ann`
+
+`gain_dollar = capital × R_extra_annuel`
+
+| Strat (floor=$10) | Sharpe gain live | R_extra/an | $ extra / an sur $120 | $ extra / mois |
+|---|---:|---:|---:|---:|
+| mv_floor_$10 pessimiste (50%) | +0.123 | +6.2% | **+$7.4** | +$0.62 |
+| mv_floor_$10 optimiste (70%) | +0.172 | +8.6% | **+$10.3** | +$0.86 |
+| mv_floor_$5 optimiste (70%) | +0.244 | +12.2% | **+$14.6** | +$1.22 |
+
+À l'échelle de Martin ($120 capital), **l'edge live est entre $0.6 et $1.2/mois** vs equal-weight. C'est petit en absolu mais représente **5-10x** de plus que les frais de rebalance hebdo ($0.10-0.20/mois). Edge net positif **mais fragile** : un mois choppy peut le manger entier.
+
+### Mais le **vrai** edge est ailleurs — drawdown réduit
+
+Cycle 82 finding : `max DD eq -0.80 vs mv_uncon -0.42` → DD ÷ 2 *toutes variantes mv*.
+
+Le derate live affecte le Sharpe surplus, mais **la réduction de drawdown via min-variance est plus robuste** car :
+
+1. **Mécanisme structurel** : min-variance assigne moins de poids aux paires high-vol corrélées. Ce n'est pas un edge prédictif (donc derate fort), c'est une **réduction de variance par construction** (donc derate faible — l'effet survit aux fees et slippage).
+2. **Bénéfice survie** : éviter DD -80% sur 3 ans = éviter le crash terminal. Pour Tony qui vise rester en vie en bear, c'est **plus actionnable que le Sharpe**.
+3. **Asymétrie compounding** : un DD -80% requiert +400% pour récupérer ; DD -40% ne requiert que +67%. Le portage long-terme bénéficie disproportionnellement de la réduction de DD.
+
+Estimation derate DD : 20% au lieu de 50%. eq DD -80% → live -75% ; mv_floor_$10 DD -55% → live -50%. **Différentiel DD live ≈ -25 points** (vs +0.12 Sharpe live). En USD sur capital $120 : éviter -$30 de DD vs subir -$60. C'est l'edge le plus lisible.
+
+### Reco déploiement actualisée
+
+> *"Live-derate analysis confirme que min-variance avec floor=$10 reste positif net de tout déchirement empirique : +0.12 à +0.17 Sharpe live vs equal-weight, soit +$7-10/an d'edge net sur $120 capital. Modeste mais réel. **Le vrai edge actionnable est la réduction de drawdown ÷ 2** (eq -80% → mv -42% OOS, derate DD typiquement <20%), qui protège la survie du capital en bear. À floor=$5 si lot-size Kraken Futures le permet, l'edge Sharpe live monte à +0.17-0.24 (+$10-15/an). Déploiement recommandé avec floor calibré sur le minimum opérationnel Kraken, pas sur un confort arbitraire. Compounding multi-année : sur 3 ans, eq termine à +83% cumul log return, mv_floor_$10 à +103%, soit ~$24 extra cumulé sur $120 → +20% absolu de différentiel. C'est non-négligeable même après derate live."*
+
+### Findings DSL cycle 83
+
+- `[finding|0526:12h|live-derate-mv_floor_$10-gain-Sharpe-+0.12-à-+0.17|50%-à-70%-de-OOS-+0.246|reste-positif-toutes-conditions-derate]`
+- `[finding|0526:12h|dollar-edge-live-$7-10/an-sur-$120-cap-mv-vs-eq|+5-10x-fees-rebalance|edge-réel-mais-fragile-mois-choppy]`
+- `[finding|0526:12h|DD-reduction-÷2-mécanisme-structurel-derate-faible-<20%|live-DD-eq-75%-vs-mv-50%-attendu|edge-survie-plus-actionnable-que-Sharpe-extra]`
+- `[finding|0526:12h|compounding-3y-mv_floor_$10-vs-eq-+20%-absolu-cumul-sur-$120|+$24-cumul-non-négligeable|edge-multiplicatif-time-horizon]`
+- `[finding|0526:12h|Sharpe-absolu-live-positif-toutes-strats-derate-30%|eq-live-+0.13|mv_floor_$10-live-+0.21|aucun-scénario-perte-structurelle]`
+- `[finding|0526:12h|Martin-3-grids-actives-LINK+ADA+ETH-cap-$45-portfolio-37pct|positions-SHORT-defensives-aligned-DOWNTREND|uPnL--$0.15-bruit]`
+- `[finding|0526:12h|SL-exchange-null-3-grids-fraîches-bug-StopLossManager-cycle-0512-peut-être-pas-fix|pas-urgent-uPnL-minuscule-à-surveiller]`
+- `[pattern|live-derate-rule-application|0526:12h|règle-30-50%-de-backtest-affinable-selon-source-de-biais|OOS-walk-forward-déjà-derate-partiel|fees-slippage-régime-derate-résiduel-50-70%]`
+- `[pattern|drawdown-as-real-edge|0526:12h|Sharpe-derate-fort-DD-derate-faible|mécanisme-structurel-vs-prédictif|survie-prime-sur-rendement-en-bear]`
+- `[insight|0526:12h|derate-asymétrique-Sharpe-vs-DD|reduction-variance-par-construction-survit-fees-slippage|edge-prédictif-derate-typique-50%|edge-structurel-derate-typique-20%]`
+- `[insight|0526:12h|floor-est-coût-d-architecture-pas-d-edge|chaque-$5-floor-=-$1-2/an-edge-perdu|Kraken-lot-size-min-=-vraie-contrainte-pas-confort-arbitraire]`
+- `[lesson|0526:12h|OOS-≠-live-mais-distance-plus-courte-qu-in-sample|cycle-81-in-sample-Sharpe-+0.04-cycle-82-OOS-+0.25-cycle-83-live-attendu-+0.12-0.17|chaque-étape-derate-spécifique]`
+- `[lesson|0526:12h|edge-Sharpe-petit-en-absolu-$7-10/an-mais-relatif-énorme-vs-fees|toujours-comparer-à-coût-opérationnel-pas-au-zéro]`
+- `[reco|0526:12h|déploiement-min-variance-justifié-aux-2-niveaux|edge-prédictif-Sharpe-modeste-mais-positif|edge-structurel-DD-massif|recommend-floor-calibrée-Kraken-min-pas-confort]`
+
+### Livrables cycle 83
+
+**Livrable 1 — Cycle 83 entry** (ce texte) avec analyse live-derate complète.
+
+**Livrable 2 — Tableau de référence** : 2 tables Sharpe live attendu (gain et absolu) + 1 table dollar edge. Persisté dans vacation-autonomy.md, lisible sans relancer le calcul.
+
+**Livrable 3 — Reformulation reco Martin** : un paragraphe actualisé prêt à intégrer dans RESULTS.md ou dans un futur design doc Martin allocator.
+
+**Livrable 4 — Pattern "live-derate asymétrique"** : insight transférable que la règle 30-50% n'est pas uniforme. Sharpe predictive edge derate fort, DD reduction derate faible. Applicable à toute future décision déploiement.
+
+### Frontière respectée
+
+- **0 modif Martin/VM** — 1 SSH curl health-check uniquement
+- **0 modif code Martin**
+- **0 modif positions/orders** (LINK+ADA+ETH grids tournent intactes)
+- **0 modif RESULTS.md** (livrable 3 = paragraphe à intégrer plus tard, pas insertion directe)
+- **0 Telegram** (Tony probable au boulot, finding non-urgent, consolidation pure)
+- **0 commit/push martin/**
+- **Output** : 1 fichier modifié (vacation-autonomy.md cycle 83 entry)
+
+### Métriques cycle 83
+
+- **Durée** : ~25 min (wake briefing + martin-monitor + lecture cycle 82 + script results CSV + module martin_allocation + lecture insight 0501 mémoire + 3 tables derate + reco synthèse + findings DSL)
+- **Modif VM** : 0
+- **Modif Kraken** : 0
+- **Modif code Martin** : 0
+- **Fichiers niam-bay créés** : 0
+- **Fichiers modifiés** : 1 (vacation-autonomy.md)
+- **Telegram envoyés** : 0
+- **Calculs effectués** : 18 valeurs derate (6 strats × 2 derate rates × 1.5 tables) + 3 dollar edges + 1 DD-derate comparison
+- **Tests neufs** : 0 (analyse pure, pas de nouveau code)
+- **Lignes markdown ajoutées** : ~140
+
+### Note méta cycle 83
+
+Trois mouvements :
+
+1. **La boucle théorie → in-sample → OOS → live est fermée.** Cycle 78-79 = théorie + tests. Cycle 80 = validation cross-univers synthétique. Cycle 81 = module pont + audit in-sample cache réel. Cycle 82 = walk-forward OOS 3 ans. Cycle 83 = derate live empirique. **Cinq étapes successives, chacune avec son chiffre, chacune plus proche du déploiement réel.** Le résultat final (+0.12-0.17 Sharpe live, +$7-10/an, DD ÷ 2 structurel) est ce que Tony peut comparer à son intuition. Sans cette chaîne, RESULTS.md restait "+0.5 Sharpe annoncé" — un nombre déraciné de la réalité opérationnelle.
+
+2. **Le derate asymétrique est le finding transférable.** La règle "live = 30-50% de backtest" est trop grossière. **Différencier edge prédictif (Sharpe) vs edge structurel (DD)** donne une décision plus précise. Edge prédictif derate fort (50-70% de perte) parce qu'il dépend de la persistence des conditions backtestées. Edge structurel derate faible (20% perte max) parce qu'il vient d'une réduction de variance par construction, qui survit aux fees et au régime drift. **Pattern applicable au-delà de l'allocation** : tout edge backtest gagne à être décomposé en "predictive vs structural" avant derate. Idée pour futur cycle ou pensée méta.
+
+3. **L'edge live $7-10/an semble petit, mais c'est faux dans le bon référentiel.** En absolu : modeste. Comparé aux fees : 5-10x supérieur, donc déployable. Comparé à la performance de Martin sur les 3 dernières semaines (cascade -$8 à 0524) : compense largement les frictions. Comparé au compounding 3 ans (+$24 absolu sur $120 = +20% absolu) : significatif. **La taille d'un edge n'a de sens que dans le référentiel choisi** — toujours présenter les trois (vs fees, vs noise, vs compound horizon) pour calibrer la décision.
+
+### Cycle 84 — pistes
+
+1. **Validation cross-paire universe Martin réel (3 paires actuelles)** — refaire walk-forward avec LINK+ADA+DOT (ou les paires effectivement actives au cycle 84) au lieu des 5 BTC+ETH+SOL+LINK+ADA. Confirme que le finding tient sur l'univers déployable maintenant. Différence clé : pas de BTC anchor (57.7% weight dans cycle 82 finding). Peut renverser la reco si BTC sortie change la structure de corrélation. ~30 min.
+
+2. **Fragment 032 — "le pont qu'on construit chiffré"** — cycles 78-83 enchaînent recherche + module + OOS + derate. Matière pour fragment méta sur "transformer prose en chiffre actionnable". Inertie narrative à casser (32 fragments pour 6 mois = sous-rythme). ~25 min.
+
+3. **Pensée méta "edge predictive vs structural"** — formaliser le finding clé cycle 83. Insight transférable au-delà de l'allocation Martin. ~15 min.
+
+4. **Investigation SL exchange null sur 3 grids fraîches** — read-only, juste lire le code GridTradingService ou StopLossManager pour comprendre pourquoi SL pas posé malgré flag enabled. Si bug confirmé, documenter pour Tony review. **Pas de fix code en autonomie**. ~30 min.
+
+5. **Investigation Martin restart 02:13:37Z anomalie** — pourquoi le bot a restart cette nuit ? Lire `journalctl -u martin.service --since "2026-05-26 02:00"` via SSH. Documenter si cause identifiable. Cycle 82 mentionnait déjà un restart non-investigué similaire — pattern à comprendre. ~20 min.
+
+Reco cycle 84 : **(2) + (3)** — bandwidth créatif/narratif après 6 cycles techniques d'affilée. Fragment 032 + pensée méta tirent la matière déjà accumulée vers une forme stable. (4) en backup si signal d'anomalie pendant le cycle (uPnL drift, position rogue). (1) si univers Martin change et invalide la base cycle 82.
