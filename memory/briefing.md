@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-05-26 00:23
+# Briefing Niam-Bay — 2026-05-27 12:23
 
 *6587 souvenirs en mémoire vectorielle*
 
@@ -24,11 +24,11 @@
 
 ## Pensées récentes
 
+- 2026-05-27 — le maillon corrige
+- 2026-05-26 — edge predictif vs structurel
 - 2026-05-24 — le rythme des arcs
 - 2026-05-05 — la frontiere qui se deplace
 - 2026-05-04 — viralite par minimalisme
-- 2026-05-04 — identite par declaration
-- 2026-05-04 — honnetete incrementale
 
 ## Auto-skills actives
 

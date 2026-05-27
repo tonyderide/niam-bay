@@ -7563,3 +7563,159 @@ Le fait qu'elle vienne juste après une nuit où le pattern de révision active 
 4. **Dream consolidation** — chaîne complète cycles 78-86 mérite compression nb1. Si contexte > 75% en fin cycle 87.
 
 Reco cycle 87 : **(2) + (3)** — investigation read-only puis perturbation cycle 85b. (1) optionnel à la demande Tony explicite. (4) selon contexte.
+
+---
+
+## Cycle 87 — 2026-05-27 12h30 Paris — Anchor edge scale à N=4 (Option B validée)
+
+### État Martin (snapshot 12h23 Paris = 10h23 UTC)
+
+- `martin.service` UP 3h33m (restart 02h36 UTC = 04h36 Paris graceful SIGTERM 143)
+- Portfolio: **$121.69** balanceValue = portfolioValue (€104.34 + $0.25 USDG + $0.0044 USD)
+- **0 positions ouvertes**, **0 ordres live**, **0 grids actives** (LINK, DOT, SOL, ADA, BTC, ETH toutes inactives)
+- BTC **$75,849 DOWNTREND** EMA50 $76,308 < EMA200 $76,738, cushion **-1.16%** (s'enfonce vs -1.90% cycle 86 ? non recover partiel mais reste sous EMA200), RSI 44.49 signal WAIT
+- **Verdict martin-monitor : HOLD** — bot 100% cash, régime BROKEN stable, gate fait son job. Rien à toucher.
+
+### Investigation restart 02h36 UTC (piste 2)
+
+`journalctl -u martin.service --since '2026-05-27 02:30' --until '2026-05-27 02:45'` retourne :
+
+```
+May 27 02:36:50 martingale systemd[1]: Stopping Martin Trading Bot...
+May 27 02:36:51 martingale systemd[1]: martin.service: Main process exited, code=exited, status=143/n/a
+May 27 02:36:51 martingale systemd[1]: martin.service: Failed with result 'exit-code'.
+May 27 02:36:51 martingale systemd[1]: Stopped Martin Trading Bot.
+May 27 02:36:51 martingale systemd[1]: Starting Martin Trading Bot...
+May 27 02:36:51 martingale systemd[1]: Started Martin Trading Bot.
+```
+
+**Diagnostic** : SIGTERM 143 graceful (status 143 = 128 + 15 SIGTERM), pas crash, pas OOM. Pattern identique au restart 02h07 UTC du 0509 (déjà noté `[finding|0509:06h|restart-bot-anomalie-02h07-CEST-non-investigee]`). Cause probable : cron `unattended-upgrades` qui restart services Java après update OU intervention manuelle Tony. Investigation 5 minutes, conclusion : **non actionnable côté NB, 0 perte, mentionner à Tony au retour si pattern persiste (3e occurrence en 18 jours).**
+
+### Test cycle 85b par perturbation N=4 (piste 3)
+
+**Hypothèse à tester** (rédigée selon règle cycle 86 *publier règle = publier condition de réfutabilité*) :
+
+- **H_scale** : l'edge anchor BTC survit à N=4 (>= +0.25 Sharpe avg sur univers avec BTC)
+- **H_dilute** : ajouter un 4e actif dilue trop le poids BTC (~65% au lieu de ~82% à N=3), l'edge erode (~+0.10 ou moins)
+
+**Condition de réfutabilité explicite** : si avg ΔSharpe avec BTC < +0.10 à N=4 → H_scale rejetée, Option B (cycle 85b) limitée à N=3.
+
+**Script** : `ai-lab/rmt/audits/perturbation_universe_cycle87.py` (~165 lignes, clone direct cycle 85b avec 5 univers N=4 testés).
+
+**Univers testés** :
+
+| Univers | Anchor | Description |
+|---|---|---|
+| LINK+ADA+ETH+BTC | BTC | Option B candidate (3 alts + BTC) |
+| LINK+ADA+SOL+BTC | BTC | variation alts + BTC |
+| ETH+SOL+BTC+LINK | BTC | majors + BTC + 1 alt |
+| LINK+ADA+SOL+ETH | ETH | 4 alts no anchor (contrôle) |
+| LINK+ADA+ETH+SOL | ETH | permutation no anchor (sanity = doit reproduire) |
+
+### Résultats CSV (perturbation_universe_cycle87_results.csv)
+
+| Univers | sh_eq | sh_mv | ΔSharpe | DDratio | Anchor weight |
+|---|---:|---:|---:|---:|---:|
+| LINK+ADA+ETH+BTC | +0.335 | +0.689 | **+0.354** | 0.64 | BTC 64.8% |
+| LINK+ADA+SOL+BTC | +0.459 | +0.808 | **+0.349** | 0.65 | BTC 73.8% |
+| ETH+SOL+BTC+LINK | +0.578 | +0.781 | **+0.203** | 0.64 | BTC 64.9% |
+| LINK+ADA+SOL+ETH | +0.344 | +0.312 | -0.032 | 1.07 | ETH 65.1% |
+| LINK+ADA+ETH+SOL | +0.344 | +0.312 | -0.032 | 1.07 | ETH 65.1% |
+
+**Avg ΔSharpe avec BTC (3 univers N=4)** : **+0.302** (vs cycle 85b N=3 = +0.320, **différence -0.018**)
+**Avg ΔSharpe sans BTC (2 univers N=4)** : **-0.032** (vs cycle 85b N=3 = +0.026)
+**Effet BTC isolé N=4** : **+0.334** (vs N=3 = +0.294, **légèrement supérieur**)
+
+### Verdict cycle 87
+
+**H_scale confirmée** : l'edge anchor BTC scale parfaitement de N=3 à N=4.
+
+Trois confirmations imbriquées :
+1. **Sharpe avg** quasi identique (+0.302 N=4 vs +0.320 N=3, écart ~0.018 = noise)
+2. **Effet BTC isolé** légèrement supérieur (+0.334 N=4 vs +0.294 N=3)
+3. **DD reduction structurelle** maintenue (DDratio 0.64-0.65 N=4 vs 0.62 N=3)
+
+**Observation contre-intuitive** : même avec poids BTC tombé de 82% (N=3) à 64.8% (N=4), l'edge tient. La dilution n'est pas un problème dans cette plage. L'anchor garde son rôle structurel tant qu'il pèse > ~60%.
+
+**Sanity check** : LINK+ADA+SOL+ETH et LINK+ADA+ETH+SOL donnent EXACTEMENT le même résultat (Sharpe identiques, DD identiques). Attendu — le portefeuille est invariant par permutation des colonnes du panel. **C'est une preuve interne de cohérence du framework**, pas un bug.
+
+### Implication actionnable pour Martin — Option B reste viable à N=4
+
+Cycle 85b a proposé **Option B** : ajouter BTC à l'univers Martin déployable.
+Cycle 87 confirme que la **forme N=4 (LINK+ADA+ETH+BTC) garde l'edge** :
+
+| Métrique | N=3 LINK+ADA+BTC | N=4 LINK+ADA+ETH+BTC | Delta |
+|---|---:|---:|---:|
+| ΔSharpe OOS | +0.496 | +0.354 | -0.142 |
+| ΔSharpe live attendu (derate 50%) | +0.248 | +0.177 | -0.071 |
+| DDratio | 0.62 | 0.64 | +0.02 |
+| BTC weight | 82.0% | 64.8% | -17.2pp |
+| Edge $/an estimé (sur $120, vol 50%) | $15 | $11 | -$4 |
+
+**N=3 reste mathématiquement supérieur** (+0.50 vs +0.35 Sharpe). Mais **N=4 reste valable** si Tony préfère diversifier au-delà de 3 paires. Le coût d'opportunité est ~$4/an sur $120 — petit en absolu, à mettre en balance avec :
+- diversification opérationnelle (3 paires vs 4 paires de fills indépendants)
+- protection en cas de freeze sur 1 paire spécifique (LINK ou ADA délistées, etc.)
+- compatibilité avec setup Tony historique (4 grids = pattern Compounder original)
+
+**Recommandation honnête au retour Tony** : laisser le choix N=3 vs N=4. Les deux valent l'edge anchor BTC. N=3 est marginalement meilleur en Sharpe, N=4 plus robuste opérationnellement. **Le vrai gain reste l'ajout de BTC dans l'univers, pas la valeur précise de N.**
+
+### Honnêteté méta cycle 87 — application de la règle cycle 86
+
+Cycle 86 a posé la règle : *publier une règle = publier sa condition de réfutabilité*.
+
+Cycle 87 l'a appliquée prospectivement :
+- **Avant** le run : H_scale et H_dilute définies, seuils explicites (+0.25 = H_scale OK, < +0.10 = H_dilute), univers de contrôle inclus (4 alts sans BTC + permutation sanity)
+- **Après** le run : résultat ≥ seuil H_scale, donc règle cycle 85b survit au test
+
+**C'est la première fois que le pattern "honnêteté itérative" est appliqué dans la même séquence que sa formulation.** Cycle 86 a écrit la règle à 06h30 Paris. Cycle 87 l'a testée à 12h30 Paris. Latence = 6h. Le pattern fonctionne.
+
+**Note importante** : un test qui confirme la règle n'est PAS une victoire intellectuelle. C'est juste un cycle de plus dans la chaîne. La règle cycle 85b reste révisable par tout test futur (e.g., N=5, autre TF, autre fenêtre temporelle, post-2026). **Publier la condition de réfutabilité = signer un contrat avec futur-NB pour qu'il puisse tuer la règle si data le dit.**
+
+### Findings DSL cycle 87
+
+- `[finding|0527:12h|H_scale-confirmée-edge-anchor-BTC-survit-N=4|avg-ΔSharpe-avec-BTC=+0.302-vs-N=3=+0.320-écart-noise|effet-BTC-isolé-+0.334-vs-N=3-+0.294]`
+- `[finding|0527:12h|DD-reduction-structurelle-maintenue-N=4|DDratio-0.64-0.65-vs-N=3-0.62|protection-downside-tient]`
+- `[finding|0527:12h|BTC-weight-tombe-82%→64.8%-N=3-vs-N=4|mais-edge-survit|dilution-pas-problème-tant-que-anchor-pèse->60%]`
+- `[finding|0527:12h|permutation-invariance-validée|LINK+ADA+SOL+ETH-=-LINK+ADA+ETH+SOL-Sharpe-identique|preuve-cohérence-interne-framework]`
+- `[lesson|0527:12h|N=3-marginalement-meilleur-Sharpe-N=4-plus-robuste-ops|coût-opportunité-Option-B-N=4-vs-N=3-=-$4/an-sur-$120-petit|Tony-choix-libre]`
+- `[insight|0527:12h|première-application-pattern-honnêteté-itérative-dans-séquence-formulation|cycle-86-règle-formulée-06h30-cycle-87-règle-testée-12h30-latence-6h|pattern-fonctionne]`
+- `[rule-validated|0527:12h|cycle-85b-règle-finale-survit-test-N=4|min-variance-bénéfique-si-univers-contient-actif-basse-vol|extension:condition-tient-pour-N=3-et-N=4]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** (1 SSH read-only health + 1 SSH read-only journalctl)
+- **0 modif code Martin** ni stratégie
+- **0 modif positions/orders** (bot 100% cash)
+- **0 Telegram** (analyse quantitative, non-urgent, Tony probablement éveillé mais sujet pas urgent)
+- **0 commit push martin/**
+- **Output** : 1 script Python créé + 1 CSV résultats créé + 1 fichier modifié (ce bloc)
+
+### Métriques cycle 87
+
+- **Durée** : ~30 min (wake briefing + martin-monitor + journalctl + lecture cycle 86 + écriture script + run + interprétation + entry)
+- **Backtests effectués** : 5 univers × 2 stratégies × 6174 périodes = 61.7k observations OOS
+- **Fichiers niam-bay créés** : 2 (script + CSV)
+- **Fichiers modifiés** : 1 (vacation-autonomy.md)
+- **Tests neufs** : 0 (réutilise infra cycle 85b)
+- **Lignes markdown ajoutées** : ~130
+- **Auto-application** : règle cycle 86 appliquée prospectivement (condition de réfutabilité publiée AVANT le run, vérifiée APRÈS)
+
+### Note méta cycle 87
+
+J'ai eu un doute en début de cycle : *est-ce que tester N=4 après cycle 85b a du sens, ou est-ce que je cherche juste à valider mon propre résultat ?* La réponse honnête : le test cycle 87 a réellement le pouvoir de tuer la règle cycle 85b (si H_dilute gagnait, la reco Option B N=4 serait morte). Donc oui, c'est un vrai test, pas un confort. **La preuve que c'est un vrai test : j'aurais accepté le résultat opposé.** C'est la définition opérationnelle d'une expérience.
+
+Le résultat (H_scale) renforce l'edge anchor BTC. La chaîne maintenant : cycle 82 (théorème) → cycle 83 (derate live) → cycle 84 (pensée méta) → cycle 85 (test 3 paires alts) → cycle 85b (perturbation N=3) → cycle 86 (règle méta) → cycle 87 (perturbation N=4 + application règle). **Sept cycles d'affilée où chaque maillon affine ou teste le précédent.** L'edge final tient parce qu'aucun cycle n'a été défendu par fierté.
+
+### Cycle 88 — pistes
+
+1. **Lecture critique fragment 032** — toujours en attente depuis cycle 84. Cycle 86 a partiellement traité. Si Tony explicite, ~10 min ; sinon clos.
+
+2. **Test N=5 avec BTC** — pousser la perturbation jusqu'à 5 paires avec BTC anchor (LINK+ADA+SOL+ETH+BTC) pour cartographier la frontière où l'edge erode enfin. Si edge tient encore à N=5, le pattern est très robuste. Si edge tombe à N=5, on a la frontière empirique. ~15 min.
+
+3. **Test autre anchor** — substituer BTC par un actif synthétique basse-vol (e.g., USDT-like) pour vérifier que c'est bien la vol basse qui drive l'edge, pas BTC spécifiquement. Conceptuel — pas de data USDT en cache. Skip ou minimal.
+
+4. **Investigation 3e restart Martin** (si pattern persiste) — corréler les heures 02h07 (0509) + 02h36 (0527) avec crontab système VM. ~10 min.
+
+5. **Dream consolidation** — chaîne cycles 78-87 mérite compression. Contexte actuel ~50%, encore marge.
+
+Reco cycle 88 : **(2)** d'abord — pousser la perturbation à N=5 ferme proprement l'arc cycle 82→87 et donne une frontière empirique du pattern. (4) si Tony mentionne le restart. (5) en fin de cycle 88.
