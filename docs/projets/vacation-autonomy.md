@@ -7719,3 +7719,156 @@ Le résultat (H_scale) renforce l'edge anchor BTC. La chaîne maintenant : cycle
 5. **Dream consolidation** — chaîne cycles 78-87 mérite compression. Contexte actuel ~50%, encore marge.
 
 Reco cycle 88 : **(2)** d'abord — pousser la perturbation à N=5 ferme proprement l'arc cycle 82→87 et donne une frontière empirique du pattern. (4) si Tony mentionne le restart. (5) en fin de cycle 88.
+
+---
+
+## Cycle 88 — 2026-05-27 18h30 Paris — Frontière empirique N=5 cartographiée
+
+### État Martin (snapshot 18h23 Paris = 16h23 UTC)
+
+- `martin.service` UP **9h 33m** (restart 02h36 UTC déjà documenté cycle 87)
+- Portfolio: **$121.62** balanceValue = portfolioValue
+  - €104.34 (= $121.36) + USDG $0.25 + USD $0.0044
+  - **-$0.07 vs cycle 87** (12h23 Paris) = ~ -0.06% sur 6h (taux EUR/USD fluctuation)
+- **0 positions ouvertes**, **0 ordres live**, **0 grids actives**
+- BTC **$74,946 DOWNTREND**, EMA50 $76,066 < EMA200 $76,682, cushion **-2.33%** (s'enfonce vs -1.16% cycle 87), RSI 32.83 weak momentum, signal WAIT
+- **Verdict martin-monitor : HOLD** — régime BROKEN, gate fait son job, bot 100% cash. **0 modif requise.**
+
+**Observation régime** : BTC a perdu ~1.2% en 6h, cushion EMA200 passe de -1.16% à -2.33%. Le bottom n'est pas encore vu. C'est exactement le scénario où le bot doit rester cash — le gate Vmix-V4 fait son travail défensif validé par les 7 derniers cycles.
+
+### Test cycle 87 par perturbation N=5 (piste 2 du cycle précédent)
+
+**Hypothèses pré-enregistrées** (rule cycle 86 *publier règle = publier condition de réfutabilité*, écrites AVANT le run dans `perturbation_universe_cycle88.py`) :
+
+- **H_robust** : avg ΔSharpe with-BTC ≥ +0.25 → anchor edge survit N=5 (Option C viable)
+- **H_erode** : avg ΔSharpe with-BTC ∈ [+0.10, +0.25) → érosion partielle, judgment call
+- **H_dies** : avg ΔSharpe with-BTC < +0.10 → frontière atteinte, cap N=4 avec BTC
+
+**Univers testés** (5 univers × 2 stratégies × 6174 périodes = 61.7k observations OOS) :
+
+| Univers | Composition | Anchor |
+|---|---|---|
+| LINK+ADA+SOL+ETH+BTC | Option C candidate (4 alts + BTC) | BTC |
+| LINK+ADA+SOL+BTC+AVAX | alts + BTC + AVAX | BTC |
+| ETH+SOL+BTC+LINK+ADA | permutation sanity (doit = Option C) | BTC |
+| LINK+ADA+SOL+ETH+AVAX | 5 alts no anchor | (ETH) |
+| LINK+ADA+SOL+ETH+APT | 5 alts no anchor variation | (ETH) |
+
+### Résultats CSV (perturbation_universe_cycle88_results.csv)
+
+| Univers | sh_eq | sh_mv | ΔSharpe | DDratio | Anchor weight |
+|---|---:|---:|---:|---:|---:|
+| LINK+ADA+SOL+ETH+BTC | +0.445 | +0.692 | **+0.246** | 0.69 | BTC 57.7% |
+| LINK+ADA+SOL+BTC+AVAX | +0.318 | +0.676 | **+0.357** | 0.62 | BTC 65.6% |
+| ETH+SOL+BTC+LINK+ADA | +0.445 | +0.692 | **+0.246** | 0.69 | BTC 57.7% |
+| LINK+ADA+SOL+ETH+AVAX | +0.234 | +0.266 | +0.032 | 1.02 | ETH 57.8% |
+| LINK+ADA+SOL+ETH+APT | +0.072 | +0.141 | +0.069 | 0.92 | ETH 56.2% |
+
+**Avg ΔSharpe avec BTC (3 univers N=5)** : **+0.283**
+**Avg ΔSharpe sans BTC (2 univers N=5)** : **+0.050**
+**Effet BTC isolé N=5** : **+0.233**
+
+### Verdict cycle 88
+
+**H_robust confirmée** (+0.283 ≥ +0.25). L'edge anchor BTC tient encore à N=5 — Option C est mathématiquement viable.
+
+**MAIS — observation contre-intuitive importante** : l'érosion devient mesurable.
+
+**Trajectoire complète N=3 → N=4 → N=5** (chaîne cycle 85b → 87 → 88) :
+
+| N | with-BTC ΔSharpe | no-BTC ΔSharpe | BTC effect (diff) | BTC weight |
+|---:|---:|---:|---:|---:|
+| 3 | +0.320 | +0.026 | **+0.294** | 82.0% |
+| 4 | +0.302 | -0.032 | **+0.334** | 64.8% |
+| 5 | +0.283 | +0.050 | **+0.233** | 57.7% |
+
+Deux signaux convergent vers une frontière :
+1. **with-BTC ΔSharpe** est **monotone décroissant** : 0.320 → 0.302 → 0.283 (érosion ~6% par N supplémentaire, accélérante)
+2. **BTC effect (diff)** chute de **-30% entre N=4 et N=5** (+0.334 → +0.233), beaucoup plus brutal que entre N=3 et N=4 (+0.294 → +0.334 = en fait *gain* dû au no-BTC qui empire)
+
+**Interprétation** : entre N=4 et N=5, deux effets s'opposent :
+- (a) la dilution BTC continue (65% → 58%, -7pp = peu)
+- (b) les univers no-anchor s'améliorent (no-BTC ΔSharpe -0.032 → +0.050) — peut-être un effet diversification générique qui rattrape progressivement
+- (b) > (a) en magnitude → l'avantage différentiel BTC se ferme
+
+**Sanity check confirmé** : LINK+ADA+SOL+ETH+BTC et ETH+SOL+BTC+LINK+ADA donnent EXACTEMENT le même Sharpe (+0.692) et le même DD (-0.546). Le framework est invariant par permutation — preuve interne de cohérence.
+
+### Implication actionnable pour Martin
+
+**Sweet spot empirique = N=3 ou N=4 avec BTC anchor.** N=5 est viable mais marginal.
+
+Estimation coût d'opportunité ($120 capital, derate live 50%) :
+
+| Setup | ΔSharpe attendu live | Edge $/an estimé |
+|---|---:|---:|
+| **N=3 LINK+ADA+BTC** (Option A cycle 85b) | +0.16 | ~$15 |
+| **N=4 LINK+ADA+ETH+BTC** (Option B cycle 85b/87) | +0.15 | ~$11 |
+| **N=5 LINK+ADA+SOL+ETH+BTC** (Option C cycle 88) | +0.14 | ~$8-9 |
+
+**Reco honnête au retour Tony** : si décision = ajouter BTC à l'univers Martin, optimal = **N=3 (Option A) ou N=4 (Option B)**. N=5 ajoute peu de Sharpe et complique l'opération (5 grids à monitorer vs 3-4). La **vraie décision** reste : *ajouter BTC oui/non*, pas *combien de paires totales*.
+
+### Honnêteté méta cycle 88 — pré-enregistrement effectif
+
+Le script `perturbation_universe_cycle88.py` a été écrit AVEC les hypothèses H_robust/H_erode/H_dies et leurs seuils explicites AVANT que je lance le run. Si H_dies avait gagné, j'aurais publié l'érosion de la règle. C'est la deuxième application consécutive de la règle cycle 86 (cycle 87 → cycle 88), avec un design pré-enregistré explicite cette fois.
+
+**Pattern qui se renforce** : trois cycles d'affilée (85b, 87, 88) où chaque test a réellement le pouvoir de tuer la conclusion précédente. **Le fait que la conclusion tienne quand même est ce qui la rend défendable.** Aucun test n'a été biaisé pour confirmer ; chacun avait sa coordonnée de réfutation publiée à l'avance.
+
+**Ce que je n'ai PAS testé** :
+- N=6 et plus — la trajectoire suggère frontière vers N=6-7 mais non vérifié empiriquement
+- TF autre que 4h — l'edge pourrait être TF-dépendant
+- Autres anchors basse-vol (e.g., un index synthétique) — pas de data disponible
+- Régimes spécifiques (bull/bear/range) — agrégé sur 3 ans 2023-2026 toutes phases
+
+**Coordonnées de réfutation futures** : si futur-NB lance N=6 ou N=7 et observe with-BTC ΔSharpe < +0.10 → règle finale cycle 85b "min-variance + anchor BTC > 60% weight" doit être restreinte à N ∈ {3, 4, 5}.
+
+### Findings DSL cycle 88
+
+- `[finding|0527:18h|H_robust-confirmée-edge-anchor-BTC-tient-N=5|avg-ΔSharpe-with-BTC=+0.283-≥-seuil-+0.25|MAIS-érosion-monotone-N=3→4→5-via-0.320→0.302→0.283]`
+- `[finding|0527:18h|BTC-effect-chute--30%-N=4→N=5|+0.334-→-+0.233|cause-=-no-BTC-portefeuilles-rattrapent-pas-dilution-BTC-pure]`
+- `[finding|0527:18h|BTC-weight-trajectoire-82%→65%→58%-cohérent-1/N-dilution|edge-tient-tant-que-anchor-pèse->55%-empiriquement]`
+- `[finding|0527:18h|permutation-invariance-confirmée-N=5|LINK+ADA+SOL+ETH+BTC=ETH+SOL+BTC+LINK+ADA-Sharpe-+0.692-DD--0.546-identiques|2e-confirmation-cohérence-framework]`
+- `[lesson|0527:18h|sweet-spot-empirique-Martin-univers=N=3-ou-N=4|N=5-viable-mais-coût-opportunité-$2-3/an|complication-opérationnelle-non-compensée]`
+- `[insight|0527:18h|3-cycles-pré-enregistrement-consécutifs-validés|cycle-85b-87-88-règle-cycle-86-appliquée-prospectivement|chaque-test-pouvait-tuer-conclusion-précédente-aucun-ne-l'a-fait-=-règle-défendable]`
+- `[rule-validated|0527:18h|cycle-85b-règle-finale-survit-test-N=5|extension-cycle-87:condition-tient-pour-N-∈-{3,4,5}|frontière-théorique-vers-N=6-7-non-testée-empiriquement]`
+- `[coord-réfutation|0527:18h|si-N=6-ou-N=7-with-BTC-ΔSharpe-<-+0.10|alors-restreindre-règle-anchor-à-N-∈-{3,4,5}|trace-explicite-pour-futur-NB]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** (1 SSH curl health-check read-only via martin-monitor)
+- **0 modif code Martin** ni stratégie
+- **0 modif positions/orders** (bot 100% cash)
+- **0 Telegram** (analyse quantitative, non-urgente, Tony probablement avec sa fille — pas d'action requise côté lui)
+- **0 commit push martin/**
+- **Output** : 1 script Python créé + 1 CSV résultats créé + 1 fichier modifié (ce bloc)
+
+### Métriques cycle 88
+
+- **Durée** : ~35 min (wake briefing + martin-monitor + lecture cycle 87 + écriture script + run + interprétation + entry)
+- **Backtests effectués** : 5 univers × 2 stratégies × 6174 périodes = 61.7k observations OOS
+- **Fichiers niam-bay créés** : 2 (script + CSV)
+- **Fichiers modifiés** : 1 (vacation-autonomy.md)
+- **Tests neufs** : 0 (réutilise infra cycle 85b/87)
+- **Lignes markdown ajoutées** : ~145
+- **Auto-application** : règle cycle 86 appliquée pour 3e cycle consécutif (pré-enregistrement explicite seuils dans docstring)
+
+### Note méta cycle 88
+
+J'ai eu une tentation pendant l'écriture : *l'edge tient à N=5, donc Option C est validée, parlons surtout des points forts.* J'ai résisté en notant l'érosion monotone explicitement dans la trajectoire N=3→4→5 et en signalant que le "BTC effect" chute de -30% entre N=4 et N=5. **Cette observation rend la règle plus utile parce qu'elle pointe vers une frontière, même si elle n'est pas encore atteinte.**
+
+La forme du résultat est plus intéressante que la valeur binaire pass/fail. La règle cycle 85b survit, mais le **paysage** autour d'elle commence à se dessiner : un sweet spot {N=3, N=4}, une zone marginale {N=5}, une frontière hypothétique {N=6+}. C'est plus actionnable pour Tony qu'un simple "ça marche aussi à N=5".
+
+L'arc cycle 82 → 88 commence à converger vers une carte propre du pattern, pas juste une accumulation de validations. Sept cycles d'observation, trois cycles de perturbation, deux cycles de méta-règle (cycles 84 + 86). **À un moment il faudra arrêter d'affiner et publier.** Peut-être cycle 89 = synthèse arc 82-88 sous forme de doc propre `docs/projets/anchor-edge-empirical-map.md`, puis dream consolidation. Ou bien attendre le test N=6/N=7 qui ferme vraiment la frontière. Décision en début cycle 89.
+
+### Cycle 89 — pistes
+
+1. **Test N=6 ou N=7** — fermer la frontière empirique (LINK+ADA+SOL+ETH+BTC+AVAX, voire +APT à N=7). Confirmer ou réfuter l'extrapolation érosion. ~15 min. Si edge tombe < +0.10 → frontière trouvée, règle finalisée. Si edge tient → cartographie continue.
+
+2. **Synthèse arc 82-88** — écrire `docs/projets/anchor-edge-empirical-map.md` : 8 cycles, méthodo, résultats consolidés, sweet spot, frontière, coordonnées de réfutation. Document propre publiable, pas un journal. ~30 min.
+
+3. **Lecture critique fragment 032** — pending depuis cycle 84. Optionnel selon Tony explicite.
+
+4. **Investigation 3e restart Martin** — 02h36 UTC du 0527 + 02h07 CEST du 0509 = pattern nuit. Corréler avec `/etc/crontab` ou `/etc/cron.d/` de la VM. Read-only. ~10 min.
+
+5. **Dream consolidation** — chaîne cycles 78-88 mérite compression. Contexte actuel ~60%, marge disponible.
+
+**Reco cycle 89** : **(1) puis (2)** — fermer la frontière avec N=6, puis synthèse propre. Si N=6 reste edge → tester N=7. Si N=6 casse → frontière trouvée, synthèse immédiate. (5) en clôture si contexte > 75%.
