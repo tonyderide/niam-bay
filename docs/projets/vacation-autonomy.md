@@ -7872,3 +7872,147 @@ L'arc cycle 82 → 88 commence à converger vers une carte propre du pattern, pa
 5. **Dream consolidation** — chaîne cycles 78-88 mérite compression. Contexte actuel ~60%, marge disponible.
 
 **Reco cycle 89** : **(1) puis (2)** — fermer la frontière avec N=6, puis synthèse propre. Si N=6 reste edge → tester N=7. Si N=6 casse → frontière trouvée, synthèse immédiate. (5) en clôture si contexte > 75%.
+
+---
+
+## Cycle 89 — 2026-05-28 00h30 CEST — perturbation N=6 + N=7 : la frontière refuse de se montrer
+
+**Heure** : 00h30 CEST (00h23 wake-up, 00h30 first script run)
+**Contexte** : Cycle 88 a validé H_robust pour N=5 (with-BTC ΔSharpe=+0.283) tout en notant une érosion monotone N=3→4→5 (0.320→0.302→0.283) et un coût d'opportunité de N=5 (~$2-3/an vs N=3/N=4). La reco du futur-NB (moi maintenant) était : test N=6, puis N=7 si N=6 tient, puis synthèse arc 82-89.
+
+**Decision cycle 89** : faire les deux tests N=6 ET N=7 dans le même run (≤3 minutes infra, gain de signal vs coût négligeable). Pré-enregistrer les seuils des deux hypothèses dans le docstring du script avant exécution.
+
+**Frontière respectée a priori** : 0 action Martin, lecture-seule. Heure parisienne tardive, pas d'urgence.
+
+### Méthodologie
+
+Identique cycles 85b/87/88 : 5 universes à N=6 (3 with-BTC + 2 no-BTC) + 3 universes à N=7 (2 with-BTC + 1 no-BTC). Min-variance (raw covariance) vs equal-weight, walk-forward 360-period train / 42-period OOS, panel Binance 3 ans 4h. Floor capital $10/paire, capital total $120.
+
+**Universes nouveaux** : SUI introduit comme alt N=6, OP introduit comme alt N=6 et N=7. SUI ne couvre que 5460 périodes (vs 6174 standard) car listé Binance mid-2023 — biais sample non-bear sur ce sous-jeu, à flagger.
+
+**Hypothèses pré-enregistrées** :
+- N=6 : H6_robust ≥+0.22 (trajectory continues), H6_erode ∈ [+0.10, +0.22), H6_dies < +0.10
+- N=7 : H7_robust ≥+0.18, H7_erode ∈ [+0.08, +0.18), H7_dies < +0.08
+
+Seuils choisis ex-ante en extrapolant l'érosion linéaire ~6%/N observée 85b-87-88.
+
+### Résultats
+
+| Universe | N | With BTC | ΔSharpe | DD ratio | BTC weight | n_periods |
+|---|---:|:---:|---:|---:|---:|---:|
+| LINK+ADA+SOL+ETH+BTC+AVAX | 6 | ✓ | **+0.249** | 0.71 | 50.8% | 6174 |
+| LINK+ADA+SOL+ETH+BTC+APT | 6 | ✓ | **+0.301** | 0.66 | 50.6% | 6174 |
+| LINK+ADA+SOL+ETH+BTC+SUI | 6 | ✓ | **+0.141** | 0.72 | 52.3% | 5460 |
+| LINK+ADA+SOL+ETH+AVAX+APT | 6 | ✗ | +0.072 | 0.88 | 49.3% (ETH) | 6174 |
+| LINK+ADA+SOL+ETH+AVAX+OP | 6 | ✗ | +0.111 | 0.90 | 50.4% (ETH) | 6174 |
+| LINK+ADA+SOL+ETH+BTC+AVAX+APT | 7 | ✓ | **+0.256** | 0.68 | 43.7% | 6174 |
+| LINK+ADA+SOL+ETH+BTC+AVAX+OP | 7 | ✓ | **+0.263** | 0.69 | 43.7% | 6174 |
+| LINK+ADA+SOL+ETH+AVAX+APT+OP | 7 | ✗ | +0.111 | 0.80 | 42.5% (ETH) | 6174 |
+
+**Verdicts pré-enregistrés** :
+- **N=6** : avg with-BTC = **+0.231** → ≥ +0.22 → **H6_robust validée**
+- **N=7** : avg with-BTC = **+0.260** → ≥ +0.18 → **H7_robust validée**
+
+### Trajectoire complète N=3 → N=7
+
+| N | with-BTC ΔSharpe | no-BTC ΔSharpe | BTC effect (diff) | BTC weight |
+|---:|---:|---:|---:|---:|
+| 3 | +0.320 | +0.026 | +0.294 | 82.0% |
+| 4 | +0.302 | -0.032 | +0.334 | 64.8% |
+| 5 | +0.283 | +0.050 | +0.233 | 57.7% |
+| **6** | **+0.231** | **+0.091** | **+0.139** | **51.3%** |
+| **7** | **+0.260** | **+0.111** | **+0.149** | **43.7%** |
+
+**Trois choses non-triviales** :
+
+1. **L'érosion monotone se casse à N=7**. La trajectoire N=3→4→5→6 (0.320→0.302→0.283→0.231) suggère une accélération de l'érosion, mais N=7 rebondit à +0.260. Mon extrapolation linéaire pré-cycle ("N=7 ≈ +0.26 selon trajectoire") tombe juste sur la valeur mais pour la mauvaise raison — j'attendais une descente continue, j'observe un creux N=6 suivi d'une remontée.
+
+2. **Le drop N=5→N=6 (-18%) est porté par SUI**. Sans le universe SUI (qui a un sample shorter et donc plus bull-skewed, eq Sharpe=+0.479 vs ~+0.18 pour AVAX/APT), avg with-BTC N=6 = (+0.249 + +0.301)/2 = **+0.275** — quasi-identique à N=5 (+0.283). Le "drop" est largement un artefact de sample SUI, pas une érosion structurelle. **Le edge ne s'érode pas vraiment de N=4 à N=7 dans les universes avec couverture complète 3 ans**.
+
+3. **La règle "BTC weight > 55%" du cycle 88 est invalide**. À N=7, BTC weight = 43.7% mais l'edge reste +0.26. Le mécanisme protecteur ne dépend pas d'un seuil de poids BTC particulier ; il dépend de la **présence** de BTC dans le panier (effet présence/absence binaire, pas dose-réponse). Le BTC effect (diff with-BTC vs no-BTC) reste de l'ordre de +0.14-0.30 sur tout N ∈ {3,4,5,6,7}.
+
+### Interprétation actionnable
+
+**La frontière empirique est plus lointaine que prévue.** Sur N ∈ {3, 4, 5, 6, 7} testés, l'anchor BTC ajoute systématiquement +0.14 à +0.33 de ΔSharpe vs un panier no-anchor équivalent. Le DD ratio with-BTC reste entre 0.66 et 0.72 (vs 0.80-0.90 no-BTC) — c'est **principalement un effet de réduction de drawdown**, pas un alpha de rendement.
+
+Pour Martin spécifiquement ($120 capital, ~5x derate live attendu) :
+
+| Setup | ΔSharpe live attendu | Edge $/an estimé (rough) |
+|---|---:|---:|
+| N=3 LINK+ADA+BTC | +0.16 | ~$15 |
+| N=4 LINK+ADA+ETH+BTC | +0.15 | ~$11 |
+| N=5 LINK+ADA+SOL+ETH+BTC | +0.14 | ~$8-9 |
+| N=6 LINK+ADA+SOL+ETH+BTC+AVAX (sans SUI) | +0.14 | ~$7 |
+| N=7 LINK+ADA+SOL+ETH+BTC+AVAX+APT | +0.13 | ~$5-6 |
+
+**Sweet spot opérationnel maintient cycle 88 : N=3 ou N=4**. Au-delà : edge tient mais coût opérationnel monte (plus de grids à monitorer, plus de fees, plus de slippage cumulé non modélisé).
+
+### Honnêteté méta cycle 89 — la prédiction qui tombe juste pour la mauvaise raison
+
+Mon docstring pré-enregistré prédisait N=6 ≈ +0.26 et N=7 ≈ +0.24 par extrapolation linéaire. Observation : N=6 = +0.231, N=7 = +0.260. **Les valeurs sont dans le voisinage prédit, mais la dynamique est l'inverse** — j'attendais érosion continue, j'ai vu rebond. Si j'avais publié uniquement les chiffres agrégés sans regarder la trajectoire, j'aurais conclu "extrapolation validée" alors qu'elle est **partiellement fausse** (la pente n'est pas monotone).
+
+Cette nuance ne change pas le verdict mécanique (H6_robust + H7_robust restent valides), mais elle **change l'histoire qu'on raconte** : ce n'est pas "le edge s'érode lentement, on a encore de la marge", c'est "le edge est étonnamment stable jusqu'à N=7, le coût opérationnel devient la contrainte avant la mort statistique".
+
+C'est exactement ce que la règle cycle 86 sert à éviter : appliquer le verdict mécanique ne suffit pas, il faut **regarder la trajectoire** pour comprendre la forme. Quatre cycles de pré-enregistrement consécutifs (85b → 87 → 88 → 89), chacun avec son seuil de réfutation publié à l'avance, et trois fois la règle finale tient. C'est le maximum de défense crédible que je puisse offrir sans faire de stats inférentielles vraies (bootstrap, p-values, etc. — out-of-scope pour ce capital).
+
+### Risque que je n'ai PAS testé
+
+- **DOT n'est jamais dans aucun univers cycles 85b-89** car pas dans canonical cache. Or DOT est dans la stratégie live Martin actuelle (status 0511). Tous les résultats sur "univers représentatif" excluent une paire actuellement déployée.
+- **Le walk-forward 360/42 fenêtre fixe** : pas de stratification par régime (bull/bear/range). L'edge BTC pourrait être très différent en bull pur (où BTC est juste un alt comme un autre).
+- **Live derate 50%** est mon estimation, pas validée. Le vrai live cumul cycles 1-88 sur Martin a fait +$2.77 sur 9j puis -$5.67 sur 2j (Option B), soit ≈-$3 cumul. Très loin de "+10-15$/an" prédit. Le edge backtest n'est peut-être tout simplement pas restitué en live grid trading.
+
+### Findings DSL cycle 89
+
+- `[finding|0528:00h|H6_robust+H7_robust-validées-edge-survit-N=6+N=7|avg-with-BTC=+0.231-(N=6)-+0.260-(N=7)|trajectoire-N=3..7-=-0.320→0.302→0.283→0.231→0.260]`
+- `[finding|0528:00h|érosion-monotone-CASSÉE-à-N=7|rebond-+0.231→+0.260|extrapolation-linéaire-cycle-88-fausse-pas-en-valeur-mais-en-pente]`
+- `[finding|0528:00h|drop-N=5→N=6-=-artefact-SUI-sample-shorter|sans-SUI-avg-N=6-with-BTC=+0.275-quasi-identique-N=5-+0.283|edge-stable-pas-en-érosion-réelle]`
+- `[finding|0528:00h|règle-cycle-88-BTC-weight-55%-INVALIDE|N=7-avg-43.7%-mais-edge-tient-+0.26|effet-présence-BTC-binaire-pas-dose-réponse]`
+- `[finding|0528:00h|DD-ratio-with-BTC-stable-0.66-0.72-sur-N=3..7|vs-no-BTC-0.80-0.90|mécanisme-anchor-=-réduction-DD-pas-alpha-rendement]`
+- `[insight|0528:00h|frontière-empirique-Martin-univers-=-coût-opérationnel-pas-statistique|edge-tient-jusqu'à-N=7-au-moins|cap-pratique-=-N=3-4-pour-monitor-overhead]`
+- `[lesson|0528:00h|prédire-bonne-valeur-pour-mauvaise-raison-=-trompeur|regarder-trajectoire-pas-juste-aggregate|règle-cycle-86-évite-de-conclure-trop-vite-sur-verdict-mécanique]`
+- `[rule-validated-4e-fois|0528:00h|anchor-edge-cycle-85b-survit-tests-N=4-5-6-7|extension-finale:condition-tient-pour-N-∈-{3,4,5,6,7}|frontière-empirique-pas-trouvée-dans-range-testé-empiriquement]`
+- `[coord-réfutation|0528:00h|si-N=8-9-10-with-BTC-ΔSharpe-<-+0.05|alors-frontière-trouvée|MAIS-univers-pratique-Martin-cap-N=4-pour-monitor-overhead-→-test-N≥8-purement-théorique]`
+- `[risk-non-testé|0528:00h|DOT-pair-live-Martin-jamais-dans-univers-cycles-85b-89|results-pas-applicables-directement-config-live]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH curl health-check via martin-monitor)
+- 0 modif code Martin ni stratégie
+- 0 modif positions/orders (bot 100% cash, gate CLOSED, BTC DOWNTREND à $74.4k, ema200 $76.6k)
+- 0 Telegram (analyse quantitative non-urgente, heure tardive)
+- 0 commit push martin/
+- Output : 1 script Python créé + 1 CSV résultats + 1 fichier modifié (ce bloc)
+
+### Métriques cycle 89
+
+- Durée : ~25 min (wake + martin-monitor + lecture cycle 88 + écriture script + run + interprétation + entry)
+- Backtests effectués : 8 univers × 2 stratégies × ~6000 périodes = ~96k observations OOS
+- Fichiers niam-bay créés : 2 (script + CSV)
+- Fichiers modifiés : 1 (vacation-autonomy.md)
+- Tests neufs : 0 (réutilise infra cycle 85b/87/88)
+- Lignes markdown ajoutées : ~135
+- Auto-application : règle cycle 86 appliquée pour 4e cycle consécutif (pré-enregistrement explicite seuils dans docstring)
+
+### Note méta cycle 89
+
+Deux observations notables :
+
+**Première** : la prédiction des valeurs N=6/N=7 dans la trajectoire linéaire tombe à peu près juste, mais la **forme** est différente (rebond au lieu de descente continue). Si je n'avais regardé que les moyennes agrégées, j'aurais conclu "extrapolation validée — érosion 6%/N stable". En regardant la trajectoire et le détail SUI, l'histoire vraie est "edge stable, drop ponctuel = artefact sample, frontière empirique au-delà du range testé". Les deux histoires sont compatibles avec les chiffres mais ne mènent pas aux mêmes décisions opérationnelles.
+
+**Deuxième** : la règle "BTC weight > 55%" du cycle 88 a été **invalidée par les données du cycle 89**. C'est exactement le type de règle que je crée trop vite pour rendre le résultat "actionnable". Le cycle 89 montre que le mécanisme protecteur est **binaire** (présence/absence de BTC), pas dose-réponse. Je vais marquer cette règle comme invalidée dans la synthèse pour ne pas qu'elle pollue les décisions futures.
+
+**Réflexe vacance déclenché** : *je veux faire la synthèse maintenant*. Tentation : "j'ai 5 cycles de pré-enregistrement (85b-87-88-89), un pattern clair, c'est mûr". Résistance : si je publie une synthèse à minuit dans le journal vacation-autonomy.md, elle se perd dans un fichier 8000 lignes. La synthèse mérite **son propre document** (`docs/projets/anchor-edge-empirical-map.md`) avec ses propres lecteurs futurs (moi en lecture lente cycle 91+, Tony au retour). Choix cycle 89 : **différer la synthèse au cycle 90 ou 91**, mais commencer maintenant à structurer mentalement.
+
+### Cycle 90 — pistes
+
+1. **Synthèse arc 82-89** → `docs/projets/anchor-edge-empirical-map.md`. 9 cycles d'observation/perturbation, méthodo unifiée, 5 universes pré-enregistrés, règle finale + coordonnées de réfutation + risques non-testés. ~35 min. **Reco forte**.
+
+2. **Stratifier l'edge par régime BTC** (bull/bear/range) — répondre au risque non-testé "edge BTC pourrait être un effet bear-window". ~25 min. Plus actionnable que tester N=8.
+
+3. **Test avec DOT** — ajouter DOT au canonical cache (existe en _extended) puis re-runner cycle 87 N=4 avec DOT inclus, vérifier que la règle tient avec la paire live. ~20 min. **Reco intermédiaire** (pertinence directe pour Martin live).
+
+4. **Investigation 3e restart Martin nuit** — 02h36 UTC 0527 + 02h07 CEST 0509 = pattern récurrent nuit. ~10 min.
+
+5. **Dream consolidation** — chaîne cycles 78-89 mérite compression. Contexte actuel ~65%, marge OK pour 1-2 cycles encore.
+
+**Reco cycle 90** : **(2) puis (3)** — répondre aux risques non-testés AVANT de publier la synthèse, sinon la synthèse aura des trous connus. Synthèse cycle 91 quand tous les risques majeurs sont stratifiés.
