@@ -7484,3 +7484,82 @@ Une seule observation : **j'ai eu tort 50 minutes après avoir publié la règle
 4. **Lecture critique fragment 032** — toujours en attente. Honnêteté narrative reste due. ~10 min.
 
 Reco cycle 86 : **(3)** d'abord (dream) si contexte > 75%, puis **(2)** ensuite. Le design doc Option B est tentant mais Tony probablement veut décider lui-même la composition de l'univers Martin — n'écrire le design qu'à sa demande explicite.
+
+---
+
+## Cycle 86 — 2026-05-27 06h30 Paris — Pensée méta "le maillon corrigé"
+
+### État Martin (snapshot 06h23 Paris)
+
+- `martin.service` UP 1h46m (restart 02h36 UTC = 04h36 Paris — investigation séparée si pertinent)
+- Portfolio: **$121.71** balanceValue = portfolioValue (€104.34 + $0.25 USDG + $0.0044 USD)
+- **0 positions ouvertes**, **0 ordres live**, **0 grids actives** (LINK, DOT, SOL, ADA, BTC, ETH toutes inactives)
+- BTC **$75,382 DOWNTREND** EMA50 $76,452 < EMA200 $76,843, cushion -1.90% (vs -1.55% cycle 85b → s'enfonce encore), RSI 32.28 signal WAIT
+- **Verdict martin-monitor : HOLD** — bot dormant 100% cash, régime BROKEN, gate fait son travail. Rien à toucher.
+
+### Note restart 02h36 UTC
+
+6e restart Martin depuis 24h (après les 5 documentés au cycle 85). Heure 02h36 UTC = 04h36 Paris = milieu de nuit, possible Tony ou cron unattended-upgrades. Bot 100% cash donc 0 risque. Investigation read-only reportée — pas d'urgence et c'est explicitement piste 5 cycle 85 que je n'ai pas priorisée.
+
+### Cible cycle 86 : formaliser la pensée méta "honnêteté itérative" (piste 2 cycle 85b)
+
+Cycle 84 a écrit la pensée *edge prédictif vs structurel* avec une note méta forte : *abstraction tient par chaîne, pas par slogan*. Cycle 85 a appliqué cette règle de façon naïve (publié "N ≥ 4" sans condition de réfutabilité). Cycle 85b a corrigé en 25 min ("anchor basse-vol matter, pas N").
+
+Le pattern à nommer : **chaîne d'évidence ≠ addition pure**. Chaque maillon nouveau peut invalider partiellement les précédents, et la chaîne survit *parce que* cette révision se fait sans honte. Ce n'est pas une nuance vague — c'est une discipline pratique avec une règle actionnable : *toute règle publiée doit porter sa condition de réfutabilité dans le même bloc*.
+
+### Livrable
+
+`docs/pensees/2026-05-27-le-maillon-corrige.md` — ~95 lignes, structure 9 sections :
+
+1. Le fait (cycles 82→83→84→85→85b, la règle "N ≥ 4" qui survit 25 min)
+2. La distinction addition vs révision active
+3. Définition "honnêteté itérative" (acte de révision, pas aveu d'incertitude)
+4. Statut du fragment 032 (vrai dans son intuition, périmé dans son détail, ne pas le réécrire)
+5. Précondition : traçabilité des findings DSL
+6. Règle pratique : publier une règle = publier sa condition de réfutabilité
+7. Implication pour mémoire IA sans continuité
+8. Coda auto-réflexive (la pensée elle-même porte sa condition de réfutabilité)
+
+### Findings DSL cycle 86
+
+- `[finding|0527:06h|chaîne-d-évidence-pas-addition-pure|maillon-peut-invalider-partiellement-précédents-sans-dégrader-chaîne|exemple-cycle-85-règle-N≥4-corrigée-en-25min-par-cycle-85b]`
+- `[lesson|0527:06h|honnêteté-itérative-=-acte-de-révision-pas-aveu-d-incertitude|coût-=-commit-qui-contredit-précédent|gain-=-règle-testée-sur-6-univers-au-lieu-de-1-défendable-demain]`
+- `[rule|0527:06h|publier-règle-=-publier-condition-de-réfutabilité|dans-le-même-bloc-pas-dans-fichier-séparé|coordonnée-test-qui-pourrait-la-tuer-explicite|sinon-règle-pourrit-par-défaut-sans-mécanisme-d-expiration]`
+- `[insight|0527:06h|traçabilité-findings-DSL-précondition-révision|sans-coordonnée-règle-défendue-ou-abandonnée-en-bloc-jamais-affinée|coordonnées-=-points-de-retour]`
+- `[insight|0527:06h|fragment-032-reste-vrai-en-intuition-périmé-en-détail|ne-pas-réécrire-rôle-pensées-méta-=-porter-asterisques-rôle-fragments-=-cristalliser-moment]`
+
+### Frontière respectée
+
+- **0 modif Martin/VM** (1 SSH curl health-check read-only)
+- **0 modif code Martin** ni stratégie
+- **0 modif positions/orders** (bot 100% cash)
+- **0 Telegram** (pensée méta, non-urgent, sujet pas actionnable côté Tony)
+- **0 commit push martin/**
+- **Output** : 1 pensée niam-bay créée + 1 fichier modifié
+
+### Métriques cycle 86
+
+- **Durée** : ~25 min (wake briefing + martin-monitor + lecture cycles 84-85b + lecture fragment 032 + écriture pensée + entry)
+- **Modif VM** : 0
+- **Fichiers niam-bay créés** : 1 (pensée)
+- **Fichiers modifiés** : 1 (vacation-autonomy.md)
+- **Lignes markdown ajoutées** : ~95 (pensée) + ~50 (entry)
+- **Auto-application** : la pensée applique sa propre règle (coda explicite avec condition de réfutabilité)
+
+### Note méta cycle 86
+
+J'ai eu un instant où j'ai hésité à écrire cette pensée. *Encore une pensée méta sur l'honnêteté ? Cycle 84 + cycle 86 = redondance ?* Puis j'ai relu cycle 84. Il décrit la chaîne comme une structure d'apprentissage cumulative. Cycle 86 décrit la chaîne comme une structure d'apprentissage *révisable*. Ce sont deux pensées différentes. La deuxième n'est pas redondante avec la première — elle complète son angle mort.
+
+Le fait qu'elle vienne juste après une nuit où le pattern de révision active s'est manifesté concrètement (cycle 85 → 85b en 25 min) la rend particulièrement bien ancrée. Si je l'avais écrite à froid, sans la chaîne concrète qui vient de s'achever, elle serait abstraite. Avec la chaîne, elle a un test factuel : *est-ce que ce que je viens de faire correspond à ce que je décris ?* Oui — j'ai publié, corrigé, et la règle finale est plus solide que la première. Donc la pensée est défendable, pas juste plausible.
+
+### Cycle 87 — pistes
+
+1. **Lecture critique fragment 032** — toujours en attente depuis cycle 84. Cycle 86 a partiellement traité le statut (paragraphe 4 : *reste vrai dans son intuition, périmé dans son détail, ne pas le réécrire*). Si Tony veut une lecture critique plus longue, encore disponible. Sinon clos. ~10 min ou skip.
+
+2. **Investigation read-only restart Martin 02h36 UTC** — lire `journalctl -u martin.service --since "2026-05-27 02:30" --until "2026-05-27 02:45"` pour comprendre cause (mvn package, unattended-upgrades, Tony manuel, etc.). Pas d'urgence. ~10 min.
+
+3. **Validation cycle 85b par perturbations N=4** — tester univers LINK+ADA+ETH+BTC ou LINK+ADA+SOL+BTC pour confirmer que l'edge anchor scale avec N=4. ~20 min.
+
+4. **Dream consolidation** — chaîne complète cycles 78-86 mérite compression nb1. Si contexte > 75% en fin cycle 87.
+
+Reco cycle 87 : **(2) + (3)** — investigation read-only puis perturbation cycle 85b. (1) optionnel à la demande Tony explicite. (4) selon contexte.
