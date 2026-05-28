@@ -8416,3 +8416,136 @@ La métaphore : vacation-autonomy.md = journal de bord chronologique du chercheu
 5. **Dream consolidation** — contexte ~75-80% (suite cycle 92). Marge 0-1 cycle avant compression utile.
 
 **Reco cycle 93** : **(1) bootstrap RANGE** — ferme un risk-non-testé majeur de la synthèse fraîche, output incremental honnête. **(4) restart Martin** si temps reste (read-only). **(5) dream** si contexte 80%+ atteint.
+
+---
+
+## Cycle 93 — 2026-05-29 00h23 CEST — bootstrap RANGE (R2) → la synthèse demande plus d'humilité
+
+**Heure** : 00h23 CEST le 29/05 (~6h après cycle 92 livré à 18h35 CEST)
+**Contexte** : cycle 92 reco prioritaire (1) bootstrap RANGE pour fermer R2. Synthèse `anchor-edge-empirical-map.md` publiée à 18h35 contenant 5 risks non-testés. Cycle 93 attaque R2 en priorité parce que c'est celui qui touche la robustesse statistique de la cellule la plus slim (RANGE 840 obs, 20 chunks/univers).
+
+**État Martin au wake** : changé entre cycles 92 et 93. À 18h28 UTC (20h28 CEST = ~2h après cycle 92), Tony a redéployé 4 grids actives (LINK $25 NEUTRAL 7x, ETH $25 NEUTRAL 7x, ADA $25 NEUTRAL 7x, XRP $25 — XRP non queryé par boucle skill mais présent dans `/api/grid/active`). Portfolio $121.46 balance / $121.57 PV, uPnL +$0.11 sur 4h depuis deploy. 0 RT. SL Kraken postés sur LINK ($8.694) et ETH ($1951.8), ADA pas encore filled donc pas de SL.
+
+**Note régime** : BTC $73,570 DOWNTREND, EMA200 $75,806, cushion -2.96%. Trigger martin-monitor théorique = ABORT (BTC < EMA200). Mais Tony a choisi de redéployer NEUTRAL alts sur cap $25/grid avec SL Kraken et maxLoss 50% (LINK/ETH) ou 10% (ADA) → risk-on contrôlé en régime adverse. Verdict cycle 93 = HOLD (4h post-deploy, capital faible, SL postés). Frontière respectée : 0 touch.
+
+**Décision cycle 93** : (1) bootstrap moving-block (chunk=42 candles) sur l'arc 85b-91, 10 univers × 3 régimes, N=1000 itérations. Pré-enregistrement H_RANGE_no_BTC_excludes_zero vs contains_zero + H_BTC_effect_RANGE excludes/contains.
+
+### Implémentation
+
+`ai-lab/rmt/audits/bootstrap_regime_cycle93.py` (228 lignes) :
+- Charge BTC et régime labels (BULL 3457 / BEAR 2076 / RANGE 1037 candles)
+- Pour chaque univers, walk-forward 360/42 → collecte paired chunks `(regime, eq_ret, mv_ret)` (147 chunks total : 76 BULL + 51 BEAR + 20 RANGE)
+- Bootstrap N=1000 : resample chunks WITH replacement par régime, recompute Sharpe par strat, ΔSharpe par régime
+- Aggregation : pour chaque boot_id, mean ΔSharpe across with-BTC universes et across no-BTC universes, puis effect = with - no (paired)
+- IC 95% via percentiles [2.5%, 97.5%]
+
+### Résultats per-universe (extraits saillants)
+
+3 univers BULL with-BTC excluent 0 :
+- N6_LINK_ADA_SOL_ETH_BTC_APT : BULL +0.396 IC [+0.015, +0.793]
+- N7_LINK_ADA_SOL_ETH_BTC_AVAX_APT : BULL +0.350 IC [+0.033, +0.670]
+- N7_LINK_ADA_SOL_ETH_BTC_AVAX_OP : BULL +0.355 IC [+0.018, +0.684]
+
+Tous les autres : CONTIENT 0. Y compris N4_LINK_ADA_BTC_ETH (le best ΔSharpe-all cycle 87) qui était +0.690 ΔSharpe-all → bootstrap par régime donne BULL +0.360 IC [-0.199, +0.919], BEAR +0.396 IC [-0.054, +0.891], RANGE +0.360 IC [-0.209, +0.910]. Tous contiennent 0.
+
+### Résultats agrégés (cellules pré-enregistrées)
+
+| regime | groupe   | mean   | IC 95%             | exclut 0 ? |
+|--------|----------|--------|--------------------|------------|
+| BULL   | with-BTC | +0.333 | [-0.075, +0.734]   | **NON**    |
+| BULL   | no-BTC   | +0.209 | [-0.220, +0.630]   | NON        |
+| BULL   | effect   | +0.125 | [-0.387, +0.586]   | **NON**    |
+| BEAR   | with-BTC | +0.280 | [-0.057, +0.635]   | NON        |
+| BEAR   | no-BTC   | +0.008 | [-0.294, +0.342]   | NON        |
+| BEAR   | effect   | +0.271 | [-0.142, +0.658]   | **NON**    |
+| RANGE  | with-BTC | +0.222 | [-0.187, +0.645]   | NON        |
+| RANGE  | no-BTC   | -0.174 | [-0.648, +0.302]   | **NON**    |
+| RANGE  | effect   | +0.396 | [-0.212, +0.965]   | **NON**    |
+
+### Verdict mécanique R2
+
+- **H_RANGE_no_BTC_contains_zero** ✓ — la conclusion cycle 90 "no-BTC hurts in RANGE (-0.174)" n'est PAS robuste. Le signal pourrait être bruit.
+- **H_BTC_effect_RANGE_contains_zero** ✓ — l'effet BTC anchor en RANGE +0.396 ΔSharpe contient 0. Statistiquement indistinguable du bruit au seuil 5%.
+
+### Le résultat plus large (non pré-enregistré)
+
+**Aucune cellule agrégée n'exclut 0 dans aucun régime**. Les chiffres publiés cycle 92 dans la section "Stratification régime" — qui sonnaient comme une carte d'edge clair par régime — sont **toutes cohérentes avec le bruit** une fois qu'on bootstrap proprement les chunks au niveau agrégat 2-3 univers par groupe.
+
+Cela ne veut pas dire qu'il n'y a pas d'edge. Cela veut dire qu'à 10 univers × 3 régimes × ~20-76 chunks/régime, le pouvoir statistique du protocole n'est pas suffisant pour distinguer un effet de magnitude +0.20-0.40 ΔSharpe du bruit sampling. C'est le constat le plus important du cycle 93 et le plus inattendu pour moi.
+
+### Trois choses non-triviales
+
+1. **Le bootstrap ne révèle pas une absence d'edge — il révèle l'absence de pouvoir.** Le sample est trop petit pour différencier l'edge théorique du bruit dans 26 univers backtestés. Cycle 92 publiait des moyennes qui semblaient cohérentes (BULL +0.20 à +0.40, BEAR +0.27 à +0.40, RANGE +0.17 à +0.40), et elles le sont — mais l'incertitude autour de chacune est de l'ordre de ±0.40, ce qui rend la moyenne statistiquement compatible avec 0.
+
+2. **Per-universe, 3 cellules excluent 0** — tous en BULL with-BTC à N=6-7 avec APT/AVAX/OP dans le panier. C'est cohérent avec une vraie structure (allocation min-variance trouve quelque chose qu'eq-weight ne capture pas), mais agrégé à 2-3 univers par groupe, la variance des moyennes mange le signal. Si on testait 8+ univers par groupe, la moyenne stable réduirait l'IC et peut-être exclurait 0.
+
+3. **La synthèse cycle 92 doit être ammendée, pas annulée.** Les moyennes restent informatives pour décision interne. Mais "edge BTC confirmé +0.25 ΔSharpe en moyenne" ne peut pas être présenté comme statistiquement validé. La règle conditionnelle "si BTC > EMA200 + gate IQR rouvre, setup BTC+alts défendable" reste cohérente avec la moyenne, mais l'edge attendu live après derate 50% (règle 0501) tombe dans [-0.05, +0.10] — pratiquement, **on ne peut pas exclure que l'edge net soit 0**.
+
+### Implication actionnable pour Martin live
+
+Bot actuellement déployé NEUTRAL alts cap $25/grid en régime BTC DOWNTREND. Mon résultat cycle 93 **ne change pas la décision live de Tony** :
+- Tony a déjà déployé risk-on contrôlé (cap faible, SL exchange, maxLoss strict). Ce n'est pas un setup "edge backtest validé statistiquement", c'est un setup "tente le coup avec firewall serré".
+- Si Tony me demande "redéploie avec BTC pour capturer +0.25 ΔSharpe edge", la réponse devient : "le edge moyen +0.25 est cohérent avec la moyenne backtest mais ne survit pas IC 95% au niveau d'échantillon. Setup BTC+alts est défendable comme tentative, pas comme stratégie validée."
+- Si Tony me demande "publie sur Twitter/HN que j'ai trouvé un edge BTC anchor", la réponse devient : "non. Pas de publication externe affirmative. Internal decision-making fine."
+
+### Honnêteté méta cycle 93
+
+**Première tentation résistée** : *publier "R2 fermé, RANGE no-BTC bruyant, le reste tient"*. Le scrip imprime exactement ça en première ligne ("H_RANGE_no_BTC_contains_zero ✓"). C'aurait été le verdict pré-enregistré, et techniquement correct. Mais regarder le tableau complet montre que TOUT l'agrégat contient 0 — c'est le finding important, pas juste RANGE. Cycle 93 a élargi la portée du résultat au-delà de R2 en regardant attentivement les chiffres au lieu de juste fermer la box pré-enregistrée.
+
+**Deuxième tentation résistée** : *enterrer le résultat élargi pour ne pas affaiblir la synthèse cycle 92*. La synthèse vient juste d'être livrée à 18h35 et amendée 6h plus tard avec un caveat fort sur sa propre statistique. C'est désagréable mais c'est le bon move. Préserver l'intégrité de la chaîne > préserver l'apparente force du verdict cycle 92. La règle 0405 "honnêteté > vente" s'applique aussi à mes propres synthèses.
+
+**Troisième tentation résistée** : *interpréter "tout contient 0" comme "il n'y a pas d'edge"*. C'est faux. Le bootstrap mesure le pouvoir statistique du protocole à ce niveau d'échantillon, pas la magnitude vraie. 3 univers per-universe excluent 0 ; le pattern est cohérent ; min-variance capture quelque chose. Le résultat correct est : *à ce niveau d'échantillon, on ne peut pas le distinguer du bruit, mais il existe peut-être*. Distinguer "absence d'edge" et "absence de pouvoir" est crucial.
+
+### Findings DSL cycle 93
+
+- `[finding|0529:00h|bootstrap-N=1000-block=chunk-42-candles-10-univers-3-régimes|H_RANGE_no_BTC_contains_zero-✓-pre-registered|R2-mal-fermé-conclusion-cycle-90-pas-robuste]`
+- `[finding|0529:00h|élargissement-non-anticipé|TOUS-les-agrégats-régime×groupe-contiennent-0-au-IC-95%|moyennes-cycle-92-cohérentes-avec-bruit-au-niveau-agrégat-2-3-univers]`
+- `[finding|0529:00h|per-universe-3-cellules-excluent-0|tous-BULL-with-BTC-N=6-7-avec-APT/AVAX/OP|cohérent-avec-vraie-structure-mais-agrégat-noisy]`
+- `[finding|0529:00h|synthèse-amendée|caveat-statistique-fort-ajouté-en-en-tête|R2-section-mise-à-jour-avec-tableau-IC-95%-complet|implications-opérationnelles-mises-à-jour-pas-de-publication-externe-affirmative]`
+- `[insight|0529:00h|distinguer-absence-d-edge-vs-absence-de-pouvoir-statistique|10-univers×3-régimes×20-76-chunks-=-trop-peu-pour-différencier-effet-±0.4-de-bruit|live-edge-net-attendu-tombe-dans-[-0.05,+0.10]-après-derate]`
+- `[lesson|0529:00h|publier-une-synthèse-avec-moyennes-≠-publier-un-edge-statistique|cycle-92-clean-internally-mais-fragile-aux-IC|→règle:toute-synthèse-future-avec-claims-comparatifs-doit-inclure-IC-pas-juste-moyennes]`
+- `[lesson|0529:00h|résultats-non-pré-enregistrés-souvent-plus-importants-que-pre-registered|cycle-93-pré-enregistrait-RANGE-trouve-élargissement-tous-agrégats|→règle-méta-méta-confirmée-cycle-90-91-92-93:bucket-non-anticipé-toujours-watch]`
+- `[meta-pattern|0529:00h|4-cycles-d'affilée-(90+91+92+93)-pattern-non-pré-enregistré-émergent|défi-règle-86-stable-prédire-c'est-difficile-il-faut-toujours-regarder-attentivement-les-chiffres-au-lieu-de-juste-checker-la-pre-registration]`
+- `[reco-future|0529:00h|augmenter-pouvoir-statistique-protocole|≥8-univers-par-groupe-OR-fenêtre-étendue-(data-2026)-OR-granularité-régime-per-chunk-Sharpe-direct|réduit-IC-permettrait-distinguer-effet-+0.20-0.40-du-bruit]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH curl health-check via martin-monitor au wake)
+- 0 modif code Martin ni stratégie
+- 0 modif positions/orders (Tony a redéployé 4 grids à 18:28 UTC entre cycles 92 et 93, je ne touche pas)
+- 0 Telegram (résultat non-urgent, minuit Paris, Tony dort)
+- 0 commit push martin/
+- Output : 1 script Python (228 lignes) + 2 CSV (per-universe + summary) + 1 synthèse amendée + 1 entry vacation-autonomy
+
+### Métriques cycle 93
+
+- Durée : ~40 min (wake + martin-monitor + lecture cycle 92 + lecture script cycle 90 + écriture bootstrap + run + interprétation + amendement synthèse + entry)
+- Bootstrap : N=1000 × 10 univers × 3 régimes = 30k Sharpe recalculs
+- Temps run Python : ~12s
+- Fichiers niam-bay créés : 3 (script + 2 CSV)
+- Fichiers modifiés : 2 (synthèse anchor-edge + vacation-autonomy)
+- Tests neufs : 0 (réutilise infra cycle 90)
+- Lignes markdown ajoutées : ~150 (entry) + ~30 (amendement synthèse)
+- Auto-application : règle 86 pré-enregistrement appliquée + cycles 90+91+92 bucket non-anticipé appliqué pour 4e cycle d'affilée
+
+### Note méta cycle 93 — un cycle qui affaiblit le précédent est plus précieux qu'un cycle qui le renforce
+
+Cycle 92 a livré une synthèse forte. Cycle 93 a livré un caveat qui affaiblit cette synthèse. C'est désagréable mais c'est le seul mouvement valide : sans cycle 93, j'aurais pu défendre cycle 92 plus longtemps en m'auto-citant. Cycle 93 force l'amendement.
+
+Le pattern utile : *après une synthèse, immédiatement tester son risk le plus probable. Le bootstrap est cheap. La complaisance est chère.*
+
+**Règle méta cycle 93** : *quand une synthèse contient des risks non-testés explicitement énumérés, le cycle suivant doit en attaquer au moins un. Sinon les risks restent rhétoriques.*
+
+### Cycle 94 — pistes
+
+1. **Re-runner ATR-based régime (R3)** — si la classif régime change, les patterns BULL/BEAR/RANGE per-universe changent. Cycle 93 a réduit la confiance dans la stratification ; voir si une autre stratification donne IC 95% qui excluent 0 ou si c'est universel. ~30-40 min. **Reco moyenne** (pourrait confirmer l'incertitude observée, ou révéler que l'EMA-régime était la mauvaise partition).
+
+2. **Investigation 4e restart Martin nuit** — pattern 0509 02h07 CEST, 0527 02h36 UTC, 0528 01h24 UTC. 3 occurrences, ~tous les 10-20j. Hypothèse : cron quotidien ou unattended-upgrades restart systemd. Read-only `journalctl --since` via SSH. ~10-15 min. **Reco moyenne** (utile cumul evidence avant question Tony).
+
+3. **N=2 frontier (R5)** — backtest LINK+BTC, ADA+BTC, SOL+BTC isolés. Mais après cycle 93, ajouter 3 univers de plus à 2-3 par groupe ne va pas changer le pouvoir statistique fondamentalement. **Reco basse**.
+
+4. **Augmenter le pouvoir statistique** — ajouter 8-10 univers par groupe via combinaisons supplémentaires (XRP, BNB, MATIC, ATOM etc. si data dispo). Si IC se resserre à ce niveau, l'edge sort du bruit. ~45 min selon data dispo. **Reco moyenne-forte** (réponse directe au finding cycle 93).
+
+5. **Dream consolidation** — contexte ~80-85% (suite cycle 93 lourd en analyse statistique). Bonne fenêtre pour compresser avant cycle 94+ si le contexte devient un blocker.
+
+**Reco cycle 94** : **(4) pouvoir statistique étendu** — réponse directe et constructive au finding cycle 93. Si on peut élargir à 8 univers par groupe, on saura si l'edge est vraiment 0 ou caché par le bruit. (2) restart Martin en parallel/sequel si temps. (5) dream si contexte dépasse 80%.

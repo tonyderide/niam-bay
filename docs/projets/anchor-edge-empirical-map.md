@@ -1,8 +1,11 @@
-# Anchor edge — carte empirique (arc 85b-91)
+# Anchor edge — carte empirique (arc 85b-91, amendée cycle 93)
 
 **Auteur** : Niam-Bay, vacation autonomous cycles 85b → 91 (2026-05-25 → 2026-05-28)
+**Amendement cycle 93** (2026-05-29) : bootstrap R2 ferme un risque mais **élargit l'incertitude statistique au-delà de ce que les moyennes laissaient croire**. Voir section R2 plus bas.
 **Statut** : synthèse publiable, contient les biais méthodologiques connus et les coordonnées de réfutation
 **Question** : ajouter une grid BTC ($XBT) à un panier d'alts (LINK/ADA/SOL/ETH/AVAX/APT/SUI/OP/DOT) change-t-il l'edge Sharpe de l'allocation min-variance vs. eq-weight ?
+
+> **Caveat statistique cycle 93** : les moyennes ΔSharpe rapportées dans les tableaux ci-dessous sont *cohérentes avec une vraie structure* mais ne survivent **pas** au bootstrap d'IC 95% au niveau agrégat 2-3 univers par groupe. L'effet BTC dans chaque régime contient 0 en IC 95% sur l'agrégation. À ce niveau d'échantillon, on ne peut pas affirmer statistiquement "BTC anchor edge ≠ 0". Les *moyennes* restent informatives pour décision interne ; les *affirmations externes* doivent rester conditionnelles. Détail : section R2.
 
 ---
 
@@ -199,9 +202,34 @@ SI DOT ∈ univers ET BTC ∉ univers :
 **Risque** : ΔSharpe gonflé cycle 91 dépend de DOT-3y-baissier (-57.9%). Si DOT mean-reverts (re-ratio vers +0%), eq-weight rattrape et l'edge théorique tombe vers +0.20-0.30 dans les univers with-DOT+BTC.
 **Coord. de réfutation** : re-run cycle 91 sur sous-périodes 2024-Q3 → 2025-Q1 (recovery alts partial) ; si avg ΔSharpe DOT+BTC < +0.35, R1 confirmé.
 
-### R2 — Signal RANGE bruité (840 obs OOS vs 3192 BULL, 2142 BEAR)
+### R2 — Signal RANGE bruité (840 obs OOS vs 3192 BULL, 2142 BEAR) — **TESTÉ cycle 93**
 **Risque** : ΔSharpe RANGE = +0.226 with-BTC est calculé sur ~14% des observations. Variance par fenêtre potentiellement large.
 **Coord. de réfutation** : stationary block bootstrap N=1000 sur les 840 obs ; si IC 95% [low, high] contient 0, la conclusion "RANGE positif with-BTC" devient incertaine.
+
+**Résultat cycle 93** (`bootstrap_regime_cycle93_summary.csv`, 1000 boot, block=chunk 42 candles) :
+
+| regime | groupe   | mean    | IC 95%             | exclut 0 ? |
+|--------|----------|---------|--------------------|------------|
+| BULL   | with-BTC | +0.333  | [-0.075, +0.734]   | NON        |
+| BULL   | no-BTC   | +0.209  | [-0.220, +0.630]   | NON        |
+| BULL   | effect   | +0.125  | [-0.387, +0.586]   | NON        |
+| BEAR   | with-BTC | +0.280  | [-0.057, +0.635]   | NON        |
+| BEAR   | no-BTC   | +0.008  | [-0.294, +0.342]   | NON        |
+| BEAR   | effect   | +0.271  | [-0.142, +0.658]   | NON        |
+| RANGE  | with-BTC | +0.222  | [-0.187, +0.645]   | NON        |
+| RANGE  | no-BTC   | -0.174  | [-0.648, +0.302]   | NON        |
+| RANGE  | effect   | +0.396  | [-0.212, +0.965]   | NON        |
+
+**Verdict R2** : **PAS robuste** — IC95 sur l'effet BTC en RANGE contient 0. R2 confirmé comme risque réel. Mais **élargissement inattendu** : aucune cellule agrégée (with-BTC, no-BTC, ou effect) n'exclut 0 dans aucun régime. Les moyennes ΔSharpe publiées dans les tableaux régime × N de la section "Stratification régime" sont **toutes statistiquement consistantes avec le bruit** au seuil 5% au niveau agrégat 2-3 univers par groupe.
+
+**Au niveau per-universe**, 3 univers excluent 0 en BULL with-BTC (N6+APT, N7+AVAX_APT, N7+AVAX_OP — tous IC bas > +0.015). C'est cohérent avec une vraie structure mais ne suffit pas à porter la moyenne au-dessus du bruit à 2-3 univers par groupe.
+
+**Conséquence** : la règle conditionnelle "si gate IQR rouvre + BTC > EMA200 + setup BTC+alts" reste **cohérente avec la moyenne** mais ne peut pas être présentée comme **statistiquement validée** à ce niveau d'échantillon. Le pouvoir statistique du protocole 10-univers × 3 régimes est trop faible pour différencier un effet de magnitude +0.20-0.40 ΔSharpe du bruit.
+
+**Implications opérationnelles** :
+- Ne pas écrire "edge BTC confirmé +0.25 ΔSharpe en moyenne" dans des présentations externes
+- Live derate 50% (règle 0501) sur des chiffres *cohérents avec le bruit* devient une dérate **autour de zéro** — pratiquement, l'edge attendu live est dans [-0.05, +0.10] ΔSharpe net
+- Pour augmenter le pouvoir : (a) plus d'univers par groupe (≥8), (b) fenêtre étendue (data 2026), (c) granularité régime plus fine (per-chunk Sharpe direct au lieu d'aggregation)
 
 ### R3 — Régime redéfini ATR-based
 **Risque** : la classification BULL/BEAR/RANGE est EMA200-based. Une définition ATR-based (range = ATR/price < seuil) pourrait donner labels différents et inverser la conclusion régime.
