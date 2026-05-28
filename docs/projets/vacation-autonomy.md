@@ -8016,3 +8016,151 @@ Deux observations notables :
 5. **Dream consolidation** — chaîne cycles 78-89 mérite compression. Contexte actuel ~65%, marge OK pour 1-2 cycles encore.
 
 **Reco cycle 90** : **(2) puis (3)** — répondre aux risques non-testés AVANT de publier la synthèse, sinon la synthèse aura des trous connus. Synthèse cycle 91 quand tous les risques majeurs sont stratifiés.
+
+---
+
+## Cycle 90 — 2026-05-28 06h23 CEST — stratification régime : l'edge n'est pas universel
+
+**Heure** : 06h23 CEST (wake-up briefing 06h23, premier run script 06h41)
+**Contexte** : Cycle 89 (00h30 CEST même nuit) a validé H6_robust + H7_robust mais flaggé un risque non-testé : le walk-forward 360/42 ne stratifie pas par régime, donc l'edge BTC pourrait n'être qu'un effet bear-window. La reco cycle 89 pour cycle 90 était **(2) régime puis (3) DOT**. Cycle 90 exécute (2).
+
+**Décision cycle 90** : tester avec régime stratifié — BULL (BTC > EMA200 & slope+), BEAR (BTC < EMA200 & slope-), RANGE (transitions). 10 univers couvrant N=4,5,6,7 (with-BTC + no-BTC contrôles).
+
+**Frontière respectée a priori** : 0 action Martin, lecture-seule. Bot 100% cash, BTC DOWNTREND $72,778 RSI 18.63 = panic. Le bot est précisément dans la fenêtre où le edge BEAR/RANGE serait maximal s'il tradait — mais le gate IQR l'a sorti.
+
+### Méthodologie
+
+1. Construit série de labels régime à partir des log-prices BTC 4h : EMA50/EMA200 + slope EMA200 sur 50 candles.
+2. Walk-forward identique aux cycles 85b-89 : window 360, step 42, panel 3 ans.
+3. Pour chaque OOS chunk de 42 candles, label = régime majoritaire pendant le chunk.
+4. Sharpe calculé par sous-ensemble {BULL, BEAR, RANGE} pour chaque stratégie (eq vs mv-floor-10).
+5. ΔSharpe = sh_mv - sh_eq par régime par univers.
+
+**Distribution régimes panel 3 ans (6570 candles 4h)** :
+- BULL : 3457 (52.6%)
+- BEAR : 2076 (31.6%)
+- RANGE : 1037 (15.8%)
+
+**Hypothèses pré-enregistrées** :
+- H_uniform : spread ≤ 0.10 → edge universel
+- H_bear_concentrated : BEAR − BULL ≥ 0.20 → effet bear-window
+- H_bull_kills : BULL ≤ 0 → anchor neutre/négatif en bull
+- H_mixed : ne fit aucun pattern propre
+
+### Résultats — BTC effect (with-BTC ΔSharpe − no-BTC ΔSharpe) par régime
+
+| N | BULL | BEAR | RANGE | all |
+|---:|---:|---:|---:|---:|
+| 4 | +0.255 | +0.388 | **+0.689** | +0.386 |
+| 5 | +0.034 | +0.312 | +0.398 | +0.215 |
+| 6 | +0.087 | +0.266 | +0.361 | +0.204 |
+| 7 | +0.055 | +0.228 | +0.250 | +0.149 |
+| **moy** | **+0.116** | **+0.279** | **+0.409** | +0.232 |
+
+**Spread BULL → RANGE** : +0.294 → **H_uniform rejetée** (×3 du seuil 0.10)
+**BEAR − BULL** : +0.163 → **H_bear_concentrated rejetée** (sous seuil 0.20)
+**BULL** : +0.116 > 0 → **H_bull_kills rejetée**
+**Verdict mécanique** : **H_mixed**
+
+### Lecture honnête : RANGE > BEAR > BULL
+
+Le verdict "mixed" cache un pattern fort. **Le BTC anchor n'est pas un mécanisme universel** — c'est un mécanisme **défensif en régime adverse** :
+
+- En BULL (52.6% du temps panel) : edge minimal (+0.03 à +0.26), s'érode très vite avec N. À N=5+, l'anchor ne sert quasiment plus.
+- En BEAR (31.6%) : edge fort (+0.23 à +0.40), stable across N.
+- En RANGE (15.8%, peu d'obs mais signal net) : edge le plus fort (+0.25 à +0.69), encore stable.
+
+Le DD ratio with-BTC stable 0.66-0.72 du cycle 89 prenait tout son sens ici : **le anchor protège quand il y a quelque chose à protéger**. En bull pur, les alts montent ensemble, l'anchor BTC plus stable freine le gain ; en RANGE/BEAR, il limite les pertes.
+
+### Trois choses non-triviales
+
+1. **Le edge en BULL meurt avec N**. N=4 BULL = +0.255 → N=5 BULL = +0.034. La règle cycle 88 "edge stable jusqu'à N=7" du cycle 89 est **conditionnée au régime** : elle tient en BEAR/RANGE mais s'effondre en BULL passé N=5.
+
+2. **L'edge RANGE est ~2× l'edge BEAR malgré moins de données**. Le sous-échantillon RANGE n'a que 840 obs OOS vs 2142 BEAR. Statistiquement bruité mais le signal +0.69 à N=4 est trop large pour être pur bruit. Hypothèse : RANGE = environnements à volatilité hétérogène entre paires, où la min-variance gagne le plus en sélectionnant les paires stables — et BTC est la plus stable.
+
+3. **Aucun no-BTC RANGE n'est positif**. N=4..7 no-BTC en RANGE : -0.316, -0.194, -0.169, -0.049. Sans anchor, la min-variance perd contre eq-weight en range. Avec anchor, +0.20 à +0.37. Le RANGE est le régime où l'anchor est **nécessaire**, pas juste utile.
+
+### Implication opérationnelle pour Martin
+
+État actuel : BTC $72,778 < EMA200 $76,430 = **DOWNTREND** (techniquement BEAR par notre def). RSI 18.63 = panique. Si Martin tradait actuellement, ce serait le régime où **l'anchor edge serait maximal** (+0.23 à +0.40 BEAR, +0.25 à +0.41 RANGE).
+
+Mais le gate IQR a fermé : 100% cash. **Le bot est dans la fenêtre où le edge théorique maximum existe, mais où le gate protège plus que le edge ne rapporte** — choix défensif. Le gate prime sur l'anchor.
+
+Conclusion structurelle : **le gate IQR et l'anchor BTC sont deux mécanismes complémentaires** :
+- Gate IQR : *quand* trader (filtre régime aggregate)
+- Anchor BTC : *quoi* trader (composition de l'univers conditional à présence BTC)
+
+Ils ne se substituent pas. Le gate protège du downside extrême ; l'anchor protège du downside moyen quand on trade. Aujourd'hui (panique BTC), gate domine. Si on entrait dans un régime RANGE plus calme avec BTC < EMA200 mais slope plate, le gate pourrait s'ouvrir et l'anchor commencerait à payer.
+
+### Honnêteté méta cycle 90
+
+Trois tentations résistées pendant l'écriture :
+
+**Première** : *publier le verdict mécanique H_mixed et passer à la suite.* H_mixed est le bucket "rien à dire" du framework pré-enregistré. Mais la trajectoire BULL → BEAR → RANGE est très propre — c'est un H_defensive_in_adverse qui n'existait pas dans mes hypothèses pré-enregistrées. **L'écueil aurait été de jeter la lecture parce que le verdict mécanique ne la valide pas explicitement.**
+
+**Deuxième** : *présenter l'edge RANGE comme la grande découverte sans flagger les 840 obs.* Le signal RANGE est le plus fort mais aussi le plus bruité statistiquement. Sans bootstrap, je ne peux pas garantir que +0.689 (N=4 RANGE) n'est pas une queue de distribution. **Je l'ai écrit comme "trop large pour être pur bruit" — mais cette phrase reste une intuition.** Coordonnée de réfutation : si re-test sur un autre découpage régime (e.g. range = ATR-based pas EMA-based) le signal RANGE divise par 2, la conclusion "RANGE > BEAR" tombe.
+
+**Troisième** : *éviter de revisiter la règle cycle 88 "BTC weight > 55%" déjà invalidée cycle 89.* Cycle 90 confirme une nuance : la règle cycle 85b "anchor BTC ajoute du edge" tient en agrégé mais **n'est pas vraie en BULL passé N=5**. C'est une 2e correction d'une règle empirique que j'avais publiée trop vite. Le pattern "règles cassent ou se nuancent quand on stratifie" devient un méta-pattern à intégrer.
+
+### Findings DSL cycle 90
+
+- `[finding|0528:06h|BTC-anchor-edge-conditionnel-régime|BULL=+0.116-BEAR=+0.279-RANGE=+0.409|spread-BULL-RANGE=+0.294|3x-seuil-H_uniform-rejetée]`
+- `[finding|0528:06h|edge-BULL-s'érode-avec-N|N=4-BULL=+0.255-→-N=7-BULL=+0.055|à-N=5+-anchor-presque-inutile-en-bull]`
+- `[finding|0528:06h|RANGE-=-régime-où-anchor-nécessaire-pas-juste-utile|no-BTC-RANGE-tous-négatifs-N=4..7|with-BTC-RANGE-tous-+0.19-à-+0.69]`
+- `[finding|0528:06h|verdict-mécanique-H_mixed-trompeur|pattern-vrai-=-defensive_in_adverse_regimes-non-pré-enregistré|trajectoire-BULL→BEAR→RANGE-propre-malgré-bucket-mixed]`
+- `[lesson|0528:06h|règle-cycle-85b-anchor-BTC-conditionnée-régime|tient-en-BEAR/RANGE-tous-N|s'effondre-en-BULL-passé-N=5|2e-nuance-règle-cycle-85b-après-invalidation-cycle-89-BTC-weight-55%]`
+- `[insight|0528:06h|gate-IQR-et-anchor-BTC-complémentaires-non-substituts|gate=quand-trader-anchor=quoi-trader|aujourd'hui-régime-bear-extrême-edge-théorique-max-mais-gate-ferme-bot|gate-prime-sur-anchor]`
+- `[risk-non-testé|0528:06h|RANGE-bruité-840-obs-OOS-vs-3192-BULL-2142-BEAR|signal-+0.69-N=4-large-mais-pas-bootstrappé|coord-réfut:si-redéf-régime-ATR-divise-signal-RANGE-par-2-conclusion-tombe]`
+- `[meta-pattern|0528:06h|règles-empiriques-publiées-trop-vite-cassent-quand-on-stratifie|cycle-88-BTC-weight-55%-cassée-cycle-89|cycle-85b-anchor-edge-universel-nuancée-cycle-90|→règle-méta-future:stratifier-AVANT-de-publier-règle]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH curl health-check via martin-monitor au wake)
+- 0 modif code Martin ni stratégie
+- 0 modif positions/orders (bot 100% cash, gate CLOSED stable, BTC DOWNTREND $72,778 RSI 18.63 panic)
+- 0 Telegram (analyse non-urgente, heure matinale Tony, ferai bilan au prochain Telegram cycle ou si Tony demande)
+- 0 commit push martin/
+- Output : 1 script Python + 1 CSV + 1 fichier modifié (ce bloc)
+
+### Métriques cycle 90
+
+- Durée : ~50 min (wake + martin-monitor + lecture cycle 89 + design hypothèses + écriture script 195 lignes + run + interprétation + entry ~165 lignes)
+- Backtests effectués : 10 univers × 2 stratégies × ~6000 périodes × 3 régimes = ~360k observations OOS conditionnelles
+- Fichiers niam-bay créés : 2 (script + CSV)
+- Fichiers modifiés : 1 (vacation-autonomy.md)
+- Tests neufs : 0 (réutilise infra cycle 85b-89)
+- Lignes markdown ajoutées : ~165
+- Auto-application : règle cycle 86 appliquée pour 5e cycle consécutif (pré-enregistrement explicite hypothèses dans docstring AVANT run)
+- Méta-pattern nouveau émergent : "stratifier AVANT de publier règle"
+
+### Note méta cycle 90 — la règle 86 devient stricte
+
+Cinq cycles d'affilée (85b, 87, 88, 89, 90) où le pré-enregistrement a fonctionné : à chaque fois la conclusion mécanique aurait pu être réfutée par les chiffres. La règle cycle 86 (pré-enregistrer les seuils avant le run) tient remarquablement bien.
+
+Mais cycle 90 introduit une nuance méta : **les hypothèses pré-enregistrées ne couvraient pas le pattern observé.** Mes 4 hypothèses {uniform, bear_concentrated, bull_kills, mixed} étaient un partitionnement de l'espace de réponses possibles, mais le vrai pattern (BULL faible / BEAR fort / RANGE encore plus fort, avec érosion BULL par N) n'était pas un bucket. J'ai mécaniquement répondu H_mixed, mais la lecture honnête est H_defensive_in_adverse_regimes.
+
+C'est une limite du pré-enregistrement strict : il prévient le data-snooping mais ne garantit pas que les hypothèses énumérées couvrent les vraies dimensions du phénomène. **Règle méta-méta cycle 90** : *pré-enregistrer les seuils ET prévoir explicitement le bucket "pattern non anticipé". Si on tombe dedans, l'écrire dans la note méta avec ses propres coordonnées de réfutation, comme je viens de le faire pour H_defensive_in_adverse_regimes.*
+
+L'arc 85b-90 commence à converger vers une **carte** du anchor edge :
+- *Quand* : BEAR + RANGE > BULL (effet défensif)
+- *Combien* : +0.13 à +0.41 ΔSharpe selon N et régime
+- *Pourquoi* : réduction DD via paire low-vol
+- *Frontière N* : non trouvée empiriquement dans {3..7} mais limitée opérationnellement à N=3-4 (overhead grids)
+- *Frontière régime* : edge BULL meurt passé N=5
+- *Limites* : DOT pas encore testé (cycle 91), RANGE bruité (840 obs)
+
+C'est plus actionnable que ce que j'avais début arc. **Cycle 91 = ajouter DOT puis synthèse propre `docs/projets/anchor-edge-empirical-map.md`** — j'ai assez de matière pour une publication propre.
+
+### Cycle 91 — pistes
+
+1. **Test avec DOT** — ajouter DOT au canonical cache. DOT existe en `binance_DOTUSDT_4h_extended.json` mais pas dans le format canonical `1672531200000_1767139200000`. Vérifier dates / convertir ou re-télécharger via Binance. Re-runner cycle 87 N=4 + cycle 88 N=5 avec DOT inclus dans les univers no-BTC ET with-BTC. ~25 min. **Reco forte** (DOT est dans stratégie live Martin).
+
+2. **Synthèse arc 85b-90** → `docs/projets/anchor-edge-empirical-map.md`. 6 cycles d'observation, méthodo unifiée, 18+ univers backtestés, carte régime × N, règle finale conditionnelle + coordonnées de réfutation + risques non-testés. ~40 min. **Reco forte si (1) confirme** ou nuance proprement.
+
+3. **Bootstrap signal RANGE** — répondre au risk-non-testé "RANGE bruité 840 obs". Stationary block bootstrap sur les 840 obs OOS RANGE, intervalle de confiance 95% sur ΔSharpe. ~20 min. Plus rigoureux que mes intuitions.
+
+4. **Investigation 3e restart Martin** — pattern nuit 02h36 UTC + 02h07 CEST. Read-only. ~10 min.
+
+5. **Dream consolidation** — contexte actuel ~50% (suite cycle 89). Marge 1-2 cycles avant compression utile.
+
+**Reco cycle 91** : **(1) puis (2)** — DOT débloque la pertinence directe pour Martin, puis synthèse propre publiable. Bootstrap (3) en cycle 92 si Tony pose question sur la rigueur du signal RANGE. Investigation restart (4) au prochain cycle bilan.
