@@ -8313,3 +8313,106 @@ Conséquence opérationnelle : pour la synthèse cycle 92 (`anchor-edge-empirica
 4. **Dream consolidation** — contexte ~70% (suite cycle 91). Marge 1 cycle encore avant compression utile pour préserver fidélité chaîne 85b-91.
 
 **Reco cycle 92** : **(1)** prioritaire — la synthèse devient mûre avec 7 cycles, méta-pattern stable, dimension nouvelle (sh_eq/sh_mv) à intégrer. (2) en cycle 93 si Tony pose question rigueur statistique. (4) si contexte dépasse 80% au cycle 92.
+
+---
+
+## Cycle 92 — 2026-05-28 18h23 CEST — synthèse arc 85b-91 livrée
+
+**Heure** : 18h23 CEST (wake 18h23, doc créé 18h35)
+**Contexte** : cycle 91 (12h30) a recommandé en priorité forte la synthèse publiable de l'arc 85b-91 avec décomposition `(sh_eq, sh_mv)` séparée (règle méta-méta cycle 91). État Martin : 100% cash inchangé depuis cycle 91 (uptime 14h58m, restart 0528:01h24 = 4e anomalie nuit du pattern à investiguer), gate CLOSED stable, BTC $73,033 DOWNTREND, RSI 34.70, EMA200 $75,957 cushion -3.85%, signal WAIT depuis 9j+.
+
+**Décision cycle 92** : produire `docs/projets/anchor-edge-empirical-map.md` (282 lignes), publiable, contenant la carte complète arc 85b-91 (26 univers backtestés), stratification régime, décomposition (sh_eq, sh_mv) séparée, 5 risks non-testés avec coordonnées de réfutation, 2 patterns émergents non pré-enregistrés (P1 defensive_in_adverse_regimes, P2 pseudo_compatible_via_loser_bias), règle finale conditionnelle, implication actionnable Martin live + limites.
+
+**Frontière respectée a priori** : 0 action Martin, 1 SSH curl health-check via martin-monitor au wake, écriture pure de synthèse depuis CSVs cycle 85b à 91 existants.
+
+### Livrable
+
+`docs/projets/anchor-edge-empirical-map.md` :
+- Sections : TL;DR / Méthodologie / Carte complète N=3..7 / Stratification régime / Décomposition (sh_eq, sh_mv) / Règle finale conditionnelle / Risks non-testés (R1-R5) / Patterns émergents (P1-P2) / Implication actionnable Martin / Limites / Annexes / Prochaines étapes
+- 26 univers testés agrégés en tableaux clean
+- Avg with-BTC vs no-BTC par N : pattern stable N=3..7 (spread max +0.334 à N=4)
+- Avg régime BULL/BEAR/RANGE × with-BTC/no-BTC : 6 cellules avec valeurs explicites
+- Reco actionnable conditionnelle : si gate IQR rouvre + BTC > EMA200, setup 3-4 grids BTC+alts défendable, edge attendu net biais +0.20-0.30 ΔSharpe
+- Caveat explicite : éviter DOT comme quasi-anchor en no-BTC universe
+
+### Lecture honnête — ce que la synthèse n'est pas
+
+**Première limite** : *backtest ≠ stratégie Martin live*. La synthèse mesure l'edge théorique d'une allocation min-variance walk-forward 240 candles 4h. Le moteur live est Compounder + gate IQR + grid spacing 1.2-1.5%, qui n'allocate pas dynamiquement entre paires. L'edge measuré est une **borne supérieure** du gain potentiel d'une allocation multi-grid intelligente, pas le gain attendu de la stratégie actuelle.
+
+**Deuxième limite** : *fenêtre data fige à 2025-12-31*. Les 5 mois 2026 (jan-mai) absents = précisément le régime de Martin live. Le régime crypto Q1-Q2 2026 (BTC oscillant $73-83k, EMA200 cassé puis repris) n'est pas dans l'échantillon. R4 dans la doc.
+
+**Troisième limite** : *cycle 90 a 4 univers testés en régime, dont 2 with-BTC, sur N=4-7*. La cellule "RANGE no-BTC" est calculée sur ~5 univers × 840 obs = data slim. R2 (bootstrap manquant) reste non-fermé.
+
+### Trois choses non-triviales dans la doc
+
+1. **La règle finale est conditionnelle régime × N, pas universelle.** Premier reflexe analyste serait de publier "anchor BTC ajoute +0.25 ΔSharpe en moyenne". La synthèse refuse cette ligne et précise : +0.05 à +0.40 selon régime, érosion par N, mécanisme décomposable. C'est plus utile pour Tony de savoir *quand* l'edge marche que de connaître une moyenne brouillée.
+
+2. **R1 (DOT mean-reversion) est explicite et flag prioritaire.** Cycle 91 a montré que +50-60% du delta avec DOT vient du moteur (B) sh_eq-baisse. La synthèse documente cette dépendance et donne une coord de réfutation testable au cycle 93+. C'est l'inverse du commit-cycle-91 message qui aurait pu sonner triomphal ("DOT compatible avec edge").
+
+3. **Le pattern P2 pseudo_compatible_via_loser_bias est une généralisation actionnable.** S'applique à toute paire à drift directionnel non aligné avec hold passif (DOT -57.9%, mais aussi BAT, ZEC, EOS, autres "alts mortes"). La règle découverte cycle 91 n'est pas "DOT-spécifique", elle est "toute paire en bear secular". Implication : si Tony ajoute une nouvelle paire au panier Martin, vérifier d'abord son 3y drift avant d'inclure.
+
+### Honnêteté méta cycle 92
+
+**Première tentation résistée** : *publier la synthèse comme document fermé, conclusif.* Aurait été tentant après 7 cycles. La doc inclut explicitement section "Limites" et 5 risks non-fermés avec coordonnées de réfutation. La synthèse est un point de passage, pas un point d'arrivée. Cycle 93+ a déjà 5 pistes structurées.
+
+**Deuxième tentation résistée** : *gonfler l'implication actionnable.* L'edge théorique +0.25 ΔSharpe sonne joli en presentation, mais la doc derate à +0.10-0.15 net en live (règle 0501 cycle 0501). Et précise : pas de déploiement maintenant, gate fermé. C'est conditionnel et honnête.
+
+**Troisième tentation résistée** : *publier 7 cycles d'arc comme si tout avait été dirigé du début.* Cycle 85b était une perturbation N=3 dans le cadre du backtest cycle 81-82 Markowitz. L'arc 86-91 a émergé par questions successives : "et N=4 ?", "et avec DOT ?", "et par régime ?". La doc préserve cette trajectoire d'émergence dans les sections, pas une narration retrofitted. L'arc n'a pas été planifié, il a été découvert.
+
+### Findings DSL cycle 92
+
+- `[finding|0528:18h|synthèse-anchor-edge-livrée|docs/projets/anchor-edge-empirical-map.md|282-lignes|7-cycles-26-univers-régime×N-décomposition-sh_eq/sh_mv|publiable]`
+- `[finding|0528:18h|règle-finale-conditionnelle-régime×N-publiée|BULL=+0.20-0.35-N=4-décline-N=7|BEAR=+0.27-0.40-tient|RANGE=+0.17-0.40-tient-but-bruité-840-obs|no-BTC=négatif-en-régime-adverse]`
+- `[finding|0528:18h|décomposition-(sh_eq,sh_mv)-révèle-2-moteurs-edge|(A)-sh_mv-augmente=vrai-allocation-edge|(B)-sh_eq-baisse=loser-drag|cycle-91-DOT-=-63%-moteur-B]`
+- `[finding|0528:18h|5-risks-non-testés-coord-réfutation|R1-DOT-mean-rev|R2-RANGE-840-obs-bootstrap|R3-régime-ATR-redéf|R4-OOS-2026-data|R5-N=2-non-testé]`
+- `[finding|0528:18h|2-patterns-émergents-publiés|P1-defensive_in_adverse_regimes|P2-pseudo_compatible_via_loser_bias|tous-deux-non-pré-enregistrés-sortis-hors-bucket-règle-86]`
+- `[finding|0528:18h|reco-actionnable-conditionnelle-Martin|si-gate-IQR-rouvre-ET-BTC>EMA200-setup-3-4-grids-BTC+2-3-alts-défendable|edge-net-biais-+0.20-0.30|caveat-éviter-DOT-quasi-anchor]`
+- `[insight|0528:18h|synthèse-est-borne-supérieure-pas-stratégie|backtest-=-min-variance-walk-forward-≠-grid-Compounder-live|live-derate-50%-règle-0501|edge-live-attendu-+0.10-0.15-net-≈-+5-10%-APR-additionnel-via-meilleure-allocation]`
+- `[lesson|0528:18h|7-cycles-arc-non-planifié-mais-cohérent|cycle-85b=perturbation-isolée-cycle-92=carte-publiable|émergence-par-questions-successives-pas-roadmap-amont|→règle-méta:trust-emergent-arc-when-each-cycle-tests-une-question-falsifiable]`
+- `[meta-pattern|0528:18h|règle-86-pré-enregistrement-+-bucket-non-anticipé-stable-sur-3-cycles-d'affilée|cycle-90-P1-cycle-91-P2-cycle-92-meta-arc|→règle-cycle-86-tient-mais-toujours-réserver-bucket-explicite]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH curl health-check via martin-monitor au wake)
+- 0 modif code Martin ni stratégie
+- 0 modif positions/orders (bot 100% cash, gate CLOSED stable, BTC DOWNTREND $73,033 RSI 34.70)
+- 0 Telegram (synthèse non-urgente, soir Tony probablement avec famille — peut consulter doc plus tard)
+- 0 commit push martin/
+- Output : 1 fichier nouveau (anchor-edge-empirical-map.md 282 lignes) + 1 fichier modifié (ce bloc)
+
+### Métriques cycle 92
+
+- Durée : ~30 min (wake + martin-monitor + lecture cycle 91 + relecture CSV 6 fichiers + écriture synthèse 282 lignes + entry vacation-autonomy ~120 lignes)
+- Synthèse pages : ~10-12 pages markdown publiable
+- Univers agrégés en tableaux : 26
+- Régimes × paires couverts : BULL+BEAR+RANGE × N=4,5,6,7 = 12 cellules régime, 7 N
+- Risks documentés : 5 avec coord réfutation explicites
+- Patterns émergents : 2 (cumul arc)
+- Fichiers niam-bay créés : 1
+- Fichiers modifiés : 1
+- Tests neufs : 0 (synthèse pure)
+- Lignes markdown ajoutées : ~400
+- Auto-application : règle 86 + cycles 90+91 bucket non-anticipé appliqués
+- Pattern émergent non-pré-enregistré pour 3e cycle d'affilée (P1 cycle 90, P2 cycle 91, meta-arc cycle 92)
+
+### Note méta cycle 92 — l'arc 85b-92 comme objet auto-documenté
+
+Sept cycles ont produit une question d'analyse → une mesure → une publication. La synthèse cycle 92 est *l'objet* qui peut être lu indépendamment du fil vacation-autonomy. Tony peut ouvrir `anchor-edge-empirical-map.md` au retour, sans relire 8000 lignes de vacation, et avoir : la carte, les chiffres, la règle conditionnelle, les risks, les patterns, la reco actionnable. C'est exactement le rôle d'une synthèse publiable.
+
+La métaphore : vacation-autonomy.md = journal de bord chronologique du chercheur. anchor-edge-empirical-map.md = paper court avec abstract+méthodes+résultats+discussion. Les deux co-existent : le journal préserve la trajectoire (vrai pour audit honnêteté), le paper compresse pour le lecteur.
+
+**Règle méta cycle 92** : *quand un arc dépasse 5-7 cycles autour d'une question unique, produire un document publiable est l'output naturel. Le journal de cycles reste source de vérité, mais devient illisible pour qui n'a pas vécu l'arc.*
+
+### Cycle 93 — pistes
+
+1. **Bootstrap signal RANGE (R2)** — répondre au risk-non-testé synthèse. Stationary block bootstrap N=1000 sur les 840 obs OOS RANGE, IC 95% sur ΔSharpe par régime × has-BTC. Si IC contient 0 pour "RANGE no-BTC", la conclusion régime n'est plus différenciée. ~25-30 min. **Reco forte** (ferme un risk-non-testé majeur de la synthèse).
+
+2. **Régime ATR-based (R3)** — re-classifier régime via ATR/price < seuil et re-runner cycle 90. Si conclusion par régime change, P1 defensive_in_adverse_regimes perd robustesse. ~30-40 min. **Reco moyenne**.
+
+3. **Frontière N=2 (R5)** — backtest LINK+BTC, ADA+BTC, SOL+BTC isolés. Vérifier si edge à N=2 est cohérent avec arc N=3..7 ou outlier. ~15-20 min. **Reco moyenne**.
+
+4. **Investigation 4e restart Martin nuit** — pattern restart 0528:01h24 UTC (uptime 14h58m vs 24h+ attendu). 3e cas dans série 0509:02h07, 0527:02h36, 0528:01h24. Cause inconnue, 0 perte bot 100% cash mais signal anomalie. Read-only investigation `journalctl --since` SSH. ~10-15 min. **Reco moyenne** (utile cumul evidence avant question Tony).
+
+5. **Dream consolidation** — contexte ~75-80% (suite cycle 92). Marge 0-1 cycle avant compression utile.
+
+**Reco cycle 93** : **(1) bootstrap RANGE** — ferme un risk-non-testé majeur de la synthèse fraîche, output incremental honnête. **(4) restart Martin** si temps reste (read-only). **(5) dream** si contexte 80%+ atteint.
