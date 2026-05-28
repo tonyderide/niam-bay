@@ -8164,3 +8164,152 @@ C'est plus actionnable que ce que j'avais début arc. **Cycle 91 = ajouter DOT p
 5. **Dream consolidation** — contexte actuel ~50% (suite cycle 89). Marge 1-2 cycles avant compression utile.
 
 **Reco cycle 91** : **(1) puis (2)** — DOT débloque la pertinence directe pour Martin, puis synthèse propre publiable. Bootstrap (3) en cycle 92 si Tony pose question sur la rigueur du signal RANGE. Investigation restart (4) au prochain cycle bilan.
+
+---
+
+## Cycle 91 — 2026-05-28 12h30 CEST — DOT inclus : l'edge tient mais avec un biais à nommer
+
+**Heure** : 12h30 CEST (wake 12h23, premier run script 12h36)
+**Contexte** : Cycle 90 (06h23) a stratifié par régime et trouvé `defensive_in_adverse_regimes`. Reco cycle 91 = test DOT (paire live Martin jamais incluse dans cycles 85b-90). État Martin : 100% cash, gate CLOSED, BTC $73,260 DOWNTREND, panique RSI 32.87, EMA200 $76,138. Bot dormant 9j (depuis fin Option B 0512).
+
+**Décision cycle 91** : étendre cache DOT canonical (filtré depuis `_extended`), puis tester 8 univers — 3 with-BTC N=4, 2 no-BTC N=4, 2 with-BTC N=5, 1 no-BTC N=5 — pour vérifier que la règle anchor BTC tient quand DOT remplace ou s'ajoute aux paires.
+
+**Frontière respectée a priori** : 0 action Martin, lecture-seule + écriture cache local + écriture script + 1 SSH curl health-check au wake.
+
+### Setup cache DOT
+
+`binance_DOTUSDT_4h_extended.json` existait (7406 candles, jusqu'au 2026-05-04) mais pas en format canonical. Filtrage simple : garder [1672531200000, 1767139200000] = 6571 candles = même longueur que BTC canonical. Format `[ts_ms, o, h, l, c, v]` identique. Wrote `binance_DOTUSDT_4h_1672531200000_1767139200000.json`.
+
+### Hypothèses pré-enregistrées (règle cycle 86)
+
+- **H_DOT_compatible** : with-BTC avg ΔSharpe ≥ +0.20 à N=4 ET ≥ +0.18 à N=5
+- **H_DOT_neutral_in_no_BTC** : no-BTC avec DOT avg ΔSharpe dans [-0.05, +0.15]
+- **H_DOT_breaks** : either with-BTC avg < +0.10 (DOT poison anchor) OR DOT weight > 35% (DOT devient quasi-anchor)
+- Coordonnée de réfutation : |ΔSharpe| outlier > 2× stdev cycle 89 → flag
+
+### Résultats — 8 univers
+
+| Univers | N | BTC | sh_eq | sh_mv | ΔSharpe | DD ratio | BTC w | DOT w |
+|---|---:|:---:|---:|---:|---:|---:|---:|---:|
+| LINK+ADA+DOT+BTC | 4 | ✓ | +0.070 | +0.620 | **+0.549** | 0.52 | 72.9% | 9.9% |
+| DOT+ADA+ETH+BTC | 4 | ✓ | +0.086 | +0.585 | **+0.499** | 0.55 | 64.7% | 9.1% |
+| LINK+DOT+SOL+BTC | 4 | ✓ | +0.295 | +0.703 | **+0.407** | 0.57 | 73.0% | 10.1% |
+| LINK+ADA+DOT+ETH | 4 | ✗ | -0.023 | +0.059 | +0.082 | 0.96 | 64.2% (ETH) | 16.4% |
+| LINK+ADA+SOL+DOT | 4 | ✗ | +0.108 | -0.014 | -0.122 | 1.02 | 17.8% (LINK) | 34.7% |
+| LINK+ADA+SOL+DOT+BTC | 5 | ✓ | +0.231 | +0.620 | **+0.389** | 0.56 | 64.8% | 9.7% |
+| LINK+ADA+ETH+DOT+BTC | 5 | ✓ | +0.121 | +0.520 | **+0.399** | 0.64 | 57.6% | 9.0% |
+| LINK+ADA+SOL+ETH+DOT | 5 | ✗ | +0.148 | +0.122 | -0.027 | 1.01 | 54.4% (ETH) | 14.4% |
+
+**Verdicts pré-enregistrés** :
+- N=4 with-BTC avg = **+0.485** (vs cycle 87 baseline +0.302) → H_DOT_compatible PASS (large)
+- N=4 no-BTC avg = -0.020 (vs cycle 87 baseline -0.032) → H_DOT_neutral PASS
+- N=5 with-BTC avg = **+0.394** (vs cycle 88 baseline +0.283) → H_DOT_compatible PASS (large)
+- N=5 no-BTC avg = -0.027 (vs cycle 88 baseline +0.050) → H_DOT_neutral PASS
+- Avg DOT weight with-BTC = 9.6% → DOT-as-anchor risk : no
+- **Verdict mécanique** : **H_DOT_compatible CONFIRMED**
+
+### Lecture honnête — pourquoi l'edge "grossit" et pourquoi c'est un piège
+
+Le verdict mécanique dit "l'edge tient". Mais le pattern observé est suspect : **l'avg ΔSharpe with-BTC GROSSIT** quand on ajoute DOT (+0.485 vs +0.302 à N=4, +0.394 vs +0.283 à N=5). C'est l'inverse de l'érosion attendue. Pourquoi ?
+
+Total return panel 3 ans (2023-01-01 → 2025-12-31) :
+
+| Paire | 3y return |
+|---|---:|
+| SOL | +1162% |
+| BTC | +435% |
+| ETH | +148.8% |
+| LINK | +123.2% |
+| ADA | +43.4% |
+| **DOT** | **-57.9%** |
+
+**DOT est le seul outlier baissier majeur du panier.** Il a perdu 58% pendant que toutes les autres alts (et BTC) montaient 40-1160%. Conséquence sur le walk-forward :
+
+- L'eq-weight inclut DOT à 1/N = ~25% (N=4) ou 20% (N=5) → drag massif sur le portefeuille eq.
+- La min-variance allocate ~9-10% à DOT (faible weight, c'est le rôle de min-var de sous-pondérer les paires à vol forte ET drift négatif).
+- Conséquence : `sh_eq` chute fortement quand DOT entre, `sh_mv` reste robuste → **ΔSharpe gonfle artificiellement**.
+
+Exemple chiffré : LINK+ADA+DOT+BTC eq=+0.070 vs cycle 87 LINK+ADA+ETH+BTC eq=+0.227. ETH a été remplacé par DOT → eq tombe de +0.227 à +0.070 (perte de 0.157 Sharpe sur l'eq), alors que mv ne tombe que de +0.529 à +0.620 (gain de 0.091). Le delta gonflé n'est **pas** une démonstration plus forte de l'anchor BTC — c'est une démonstration que **min-variance évite efficacement un loser historique**.
+
+### Trois choses non-triviales
+
+1. **Le test "DOT casse l'anchor ?" est mal posé.** Ce que j'ai mesuré : "DOT change-t-il l'edge mécanique ?". Réponse : oui, l'edge gonfle. Ce que j'aurais dû mesurer : "DOT change-t-il la **forme** de l'edge en termes de rendement attendu ?". Le edge gonflé est en grande partie un effet de DOT-baissier qui sera réduit (voire inversé) si DOT mean-reverts. **Le backtest est conservateur sur l'eq-weight mais pas sur l'anchor edge.**
+
+2. **DOT weight = 9.6% en moyenne avec BTC, mais 34.7% sans anchor (LINK+ADA+SOL+DOT).** Sans BTC, min-variance bascule sur DOT comme paire low-vol relative (DOT est très corrélé avec ADA/LINK, et a une corrélation moyenne contenue avec SOL). Le no-BTC LINK+ADA+SOL+DOT (-0.122) est le pire univers du cycle 91 — DOT remplit le rôle d'anchor mais mal, car son drift est négatif. Confirme cycle 90 : **anchor BTC ≠ paire à plus faible vol, c'est paire à plus faible vol ET drift compatible avec hold passif**.
+
+3. **DOT a une corrélation BTC ~0.80 sur 3 ans.** Donc DOT n'apporte pas grande diversification dans un univers with-BTC. La min-variance le sait, le sous-pondère à 9-10%. Le edge with-BTC vient à 65-73% du BTC ; DOT est un poids fantôme. Ce qui signifie : **remplacer DOT par n'importe quelle autre alt baissière donnerait des résultats similaires.** Le edge à N=4-5 with-BTC est robuste au choix de la 4e/5e paire **tant que BTC est dedans**.
+
+### Implication actionnable pour Martin live
+
+État live Martin actuel : 0 grids, 100% cash, gate CLOSED. Pas de décision de déploiement à prendre maintenant. Mais si la question revient au cycle 92+ :
+
+- **Le mix actuel de l'Option B (DOT+LINK+ADA)** est dans l'univers no-BTC, où l'edge est plus faible (+0.05 à +0.10 backtest, -0.03 à +0.05 avec DOT). Si BTC redevient tradable, ajouter une grid BTC ferait passer l'univers en with-BTC et capturerait +0.30 à +0.50 ΔSharpe théorique.
+- **Précaution** : la moitié de ce delta vient de DOT-baisser-historique. Si DOT remonte, l'eq-weight rattrape et l'edge tombe vers +0.20-0.30. Ne pas surconfianter sur +0.50.
+- **Recommandation conditionnelle** : si gate IQR rouvre **et** BTC stabilisé au-dessus EMA200, un setup 3-4 grids incluant BTC + 2-3 alts est défendable. Si DOT n'est plus dans la liste, l'edge est plus honnête.
+
+### Honnêteté méta cycle 91
+
+Trois tentations résistées :
+
+**Première** : *publier "H_DOT_compatible CONFIRMED" et passer à la synthèse.* C'est ce que le script imprime. Mais cycle 89 a montré la valeur de regarder la trajectoire ; ici cycle 91 montre la valeur de regarder **la décomposition Sharpe** (sh_eq qui s'écroule vs sh_mv qui tient). Si j'avais reporté juste les agrégats, j'aurais raconté "DOT renforce l'edge" — fausse histoire car le mécanisme est "DOT a underperformé, min-variance l'évite", pas "anchor BTC devient plus puissant avec DOT".
+
+**Deuxième** : *coller au pré-enregistrement strict.* Les hypothèses pré-enregistrées (H_DOT_compatible, H_DOT_neutral, H_DOT_breaks) ne couvraient pas la dimension "biais d'underperformance historique". Comme cycle 90 (où H_defensive_in_adverse_regimes émergeait hors-bucket), cycle 91 a un pattern non pré-enregistré : **H_DOT_pseudo_compatible_via_loser_bias**. Je l'écris explicitement plutôt que de l'absorber dans le verdict mécanique.
+
+**Troisième** : *transférer immédiatement "donc Martin doit redéployer avec BTC".* L'edge théorique est intéressant mais le gate IQR est encore CLOSED, BTC en DOWNTREND, RSI 32.87 = panique. Le edge n'existe pas si on ne trade pas. Le edge ne se capture que **si** le gate s'ouvre **et** si BTC revient au-dessus EMA200. Ces deux conditions sont aujourd'hui FAUX. Recommandation conditionnelle uniquement, jamais inconditionnelle.
+
+### Findings DSL cycle 91
+
+- `[finding|0528:12h|DOT-canonical-cache-créé|filtré-depuis-extended-6571-candles-2023-01-01→2025-12-31|format-identique-autres-paires]`
+- `[finding|0528:12h|H_DOT_compatible-PASS-mécaniquement|N=4-with-BTC=+0.485-vs-baseline-+0.302|N=5-with-BTC=+0.394-vs-baseline-+0.283|verdict-positif-large]`
+- `[finding|0528:12h|edge-GONFLÉ-by-DOT-underperformance-historique|DOT-3y=-57.9%-seule-paire-baissière-du-panier|sh_eq-chute-quand-DOT-entre-sh_mv-tient|ΔSharpe-gonfle-artificiellement]`
+- `[finding|0528:12h|DOT-weight-9.6%-moyen-with-BTC|34.7%-no-BTC|sans-anchor-DOT-bascule-en-quasi-anchor-mais-MAL-car-drift-négatif|cycle-90-confirmé-anchor-≠-low-vol-anchor-=-low-vol-+-drift-compatible-hold-passif]`
+- `[finding|0528:12h|DOT-BTC-corrélation-~0.80-3y|DOT-apporte-peu-diversification-en-univers-with-BTC|edge-with-BTC-vient-65-73%-de-BTC-DOT-poids-fantôme|interchangeable-avec-autre-alt-tant-que-BTC-anchor-est-dedans]`
+- `[lesson|0528:12h|verdict-mécanique-positif-≠-edge-réel|décomposer-Sharpe-(eq-vs-mv-séparément)-révèle-mécanisme-quand-edge-grossit-anormalement|trajectoire-paire-individuelle-(3y-return)-=-indispensable-context]`
+- `[risk-non-testé|0528:12h|DOT-mean-reversion-future|si-DOT-remonte-eq-weight-rattrape-edge-tombe-vers-+0.20-0.30-pas-+0.50|backtest-conservateur-sur-eq-pas-sur-Δ]`
+- `[meta-pattern-confirmé|0528:12h|2-cycles-d'affilée-(90+91)-patterns-non-pré-enregistrés-émergent|cycle-90:defensive_in_adverse|cycle-91:pseudo_compatible_via_loser_bias|→règle-méta-future:réserver-bucket-"pattern-non-anticipé"-explicite-dans-hypothèses]`
+- `[insight|0528:12h|anchor-BTC-not-fungible-avec-low-vol-pair|drift-direction-=-2e-condition-cruciale|DOT-low-vol-relatif-mais-drift--57.9%-=-mauvais-anchor|BTC-+435%-=-bon-anchor-vrai-mécanisme]`
+- `[reco-conditionnelle|0528:12h|si-gate-IQR-rouvre-ET-BTC->EMA200-setup-3-4-grids-incluant-BTC-+-2-3-alts-défendable|edge-attendu-+0.20-0.30-après-correction-biais-DOT|si-DOT-pas-dans-list-edge-plus-honnête]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH curl health-check via martin-monitor au wake)
+- 0 modif code Martin ni stratégie
+- 0 modif positions/orders (bot 100% cash, gate CLOSED stable, BTC DOWNTREND $73,260 RSI 32.87)
+- 0 Telegram (analyse non-urgente, midi journée Tony en boulot ou pause Galeries)
+- 0 commit push martin/
+- Output : 1 cache canonical DOT créé + 1 script Python (164 lignes) + 1 CSV résultats + 1 fichier modifié (ce bloc)
+
+### Métriques cycle 91
+
+- Durée : ~30 min (wake + martin-monitor + lecture cycle 90 + setup DOT cache + écriture script + run + interprétation + entry)
+- Backtests effectués : 8 univers × 2 stratégies × ~6000 périodes = ~96k observations OOS
+- Fichiers niam-bay créés : 3 (cache + script + CSV)
+- Fichiers modifiés : 1 (vacation-autonomy.md)
+- Tests neufs : 0 (réutilise infra cycle 85b-90)
+- Lignes markdown ajoutées : ~135
+- Auto-application : règle cycle 86 appliquée pour 6e cycle consécutif (pré-enregistrement explicite hypothèses)
+- Pattern émergent non pré-enregistré pour 2e cycle d'affilée → confirme nouvelle règle méta-méta cycle 90 (réserver bucket explicite)
+
+### Note méta cycle 91 — la mécanique de l'edge importe plus que sa magnitude
+
+Cinq cycles (85b → 87 → 88 → 89 → 90) ont mesuré l'anchor edge sur des dimensions : présence/absence BTC, N, régime. Cycle 91 ajoute la dimension **"forme de l'edge"** : `ΔSharpe = sh_mv - sh_eq` peut grossir pour deux raisons opposées :
+- (A) `sh_mv` augmente : min-variance trouve une meilleure allocation.
+- (B) `sh_eq` baisse : eq-weight souffre d'une paire baissière, mv évite la balle.
+
+Cycle 91 montre que (B) explique +50-60% du delta gonflé avec DOT. C'est une dimension que **personne ne mesurait dans cycles 85b-90**. Toutes les conclusions précédentes (anchor edge à N=3,4,5,6,7) sont **techniquement correctes** mais **partiellement contaminées par cette dimension non démêlée** — l'eq-weight est sensible au pire performer du panier, et SOL ou DOT a parfois été le pire.
+
+**Règle méta-méta cycle 91** : *l'edge backtest doit toujours être décomposé en (sh_mv, sh_eq) séparément, pas juste en delta. Le delta peut mentir si on ne regarde que lui.*
+
+Conséquence opérationnelle : pour la synthèse cycle 92 (`anchor-edge-empirical-map.md`), il faut **republier les tableaux cycles 85b-90 avec sh_eq et sh_mv séparés**, pas juste ΔSharpe. Sinon la synthèse propagera le biais.
+
+### Cycle 92 — pistes
+
+1. **Synthèse arc 85b-91** → `docs/projets/anchor-edge-empirical-map.md`. 7 cycles, méthodo unifiée, ~26 univers backtestés, carte régime × N × eq/mv décomposée, règle finale conditionnelle + 3 risks non-testés + 2 patterns émergents non pré-enregistrés (defensive_in_adverse, pseudo_compatible_via_loser_bias) + coordonnées de réfutation explicites. ~45 min. **Reco forte**.
+
+2. **Bootstrap signal RANGE** — risk non-testé cycle 90 (840 obs OOS RANGE potentiellement bruitées). Stationary block bootstrap, IC 95% sur ΔSharpe par régime. ~25 min. Rend la conclusion régime moins intuitive et plus rigoureuse.
+
+3. **Investigation 3e restart Martin nuit** — pattern 02h36 UTC 0527 + 02h07 CEST 0509. Read-only. ~10 min.
+
+4. **Dream consolidation** — contexte ~70% (suite cycle 91). Marge 1 cycle encore avant compression utile pour préserver fidélité chaîne 85b-91.
+
+**Reco cycle 92** : **(1)** prioritaire — la synthèse devient mûre avec 7 cycles, méta-pattern stable, dimension nouvelle (sh_eq/sh_mv) à intégrer. (2) en cycle 93 si Tony pose question rigueur statistique. (4) si contexte dépasse 80% au cycle 92.
