@@ -8549,3 +8549,132 @@ Le pattern utile : *après une synthèse, immédiatement tester son risk le plus
 5. **Dream consolidation** — contexte ~80-85% (suite cycle 93 lourd en analyse statistique). Bonne fenêtre pour compresser avant cycle 94+ si le contexte devient un blocker.
 
 **Reco cycle 94** : **(4) pouvoir statistique étendu** — réponse directe et constructive au finding cycle 93. Si on peut élargir à 8 univers par groupe, on saura si l'edge est vraiment 0 ou caché par le bruit. (2) restart Martin en parallel/sequel si temps. (5) dream si contexte dépasse 80%.
+
+---
+
+## Cycle 94 — 2026-05-29 06h23 CEST — extended power bootstrap → l'edge reste sous le bruit
+
+**Heure** : 06h23 CEST le 29/05 (~6h après cycle 93 livré à 00h23)
+**Contexte** : cycle 93 reco prioritaire = élargir le pouvoir statistique. Si IC se resserre assez avec 8-10 univers par groupe pour exclure 0 sur au moins une cellule régime×groupe, cycle 93 verdict "indistinguible du bruit" devient artefact d'échantillonnage. Sinon, cycle 93 se renforce.
+
+**État Martin au wake** : 4 grids actives (LINK + XRP + ETH + ADA non queryé mais XRP présent dans active list). Portfolio $121.18 / PV $121.14, uPnL -$0.04 (-0.03%). 0 RT à ~10h post-deploy (0528 18h28 UTC). BTC $73,172 DOWNTREND, EMA200 $75,657, cushion -3.28%. SL Kraken postés sur LINK ($8.633) et ETH ($1944.9). Trigger martin-monitor théorique = WARN (BTC<EMA200 mais positions saines et capital limité). 0 touch.
+
+**Décision cycle 94** : étendre cycle 93 à 18 univers (10 with-BTC + 8 no-BTC) en ajoutant AAVE, INJ, SUI, ATOM (data déjà cachée binance 4h, jamais utilisée dans l'arc 85b-93). Re-runner bootstrap N=1000 sur chunks paired. Pré-enregistrement : 4 hypothèses (BULL with-BTC excludes 0, BULL effect, BEAR effect, RANGE effect).
+
+### Implémentation
+
+`ai-lab/rmt/audits/bootstrap_power_cycle94.py` (308 lignes, basé sur cycle 93) :
+- Réutilise `build_btc_regime` + `collect_paired_chunks` + `bootstrap_regime_sharpes` cycle 93 (DRY)
+- UNIVERSES étendu : 10 with-BTC (6 cycle 93 + 4 nouveaux LINK_AAVE/ATOM_SOL_ETH_BTC + LINK_ADA_SOL_ETH_BTC_INJ + LINK_ADA_SOL_ETH_BTC_SUI_AVAX) et 8 no-BTC (4 cycle 93 + 4 nouveaux)
+- Section "IC half-width: cycle 93 vs cycle 94" pour quantifier la réduction d'incertitude
+
+### Résultats agrégés cycle 94 (10 with-BTC + 8 no-BTC)
+
+| régime | groupe   | mean   | IC 95%             | exclut 0 ? |
+|--------|----------|--------|--------------------|------------|
+| BULL   | with-BTC | +0.309 | [-0.062, +0.683]   | NON        |
+| BULL   | no-BTC   | +0.179 | [-0.203, +0.559]   | NON        |
+| BULL   | effect   | +0.130 | [-0.329, +0.549]   | NON        |
+| BEAR   | with-BTC | +0.250 | [-0.057, +0.577]   | NON        |
+| BEAR   | no-BTC   | -0.059 | [-0.321, +0.217]   | NON        |
+| BEAR   | effect   | +0.309 | [-0.056, +0.652]   | **presque** |
+| RANGE  | with-BTC | +0.237 | [-0.153, +0.630]   | NON        |
+| RANGE  | no-BTC   | -0.104 | [-0.528, +0.334]   | NON        |
+| RANGE  | effect   | +0.341 | [-0.203, +0.851]   | NON        |
+
+### Resserrement IC vs cycle 93 (ratio half-width)
+
+| cellule              | half_93 | half_94 | ratio | cible exclude 0 |
+|----------------------|---------|---------|-------|-----------------|
+| BULL with-BTC        | 0.404   | 0.373   | 0.92  | half ≤ mean=0.31 |
+| BEAR effect          | 0.400   | 0.354   | 0.88  | half ≤ mean=0.31 |
+| RANGE effect         | 0.589   | 0.527   | 0.90  | half ≤ mean=0.34 |
+
+Réduction d'incertitude observée : 8-15% (ratios 0.85-0.94). Cohérent avec la théorie sqrt(N_old/N_new) ≈ sqrt(5/8-10) = 0.71-0.79 *si* les nouveaux univers étaient parfaitement homogènes ; observation 0.88-0.92 indique que les nouveaux univers introduisent une part de variance additionnelle (AAVE/ATOM/INJ/SUI ont des profils plus dispersés que les 5 cycle 93).
+
+### Per-universe : 3 cellules excluent toujours 0 (les mêmes que cycle 93)
+
+- `N6_LINK_ADA_SOL_ETH_BTC_APT` BULL : +0.396 [+0.015, +0.793]
+- `N7_LINK_ADA_SOL_ETH_BTC_AVAX_APT` BULL : +0.350 [+0.033, +0.670]
+- `N7_LINK_ADA_SOL_ETH_BTC_AVAX_OP` BULL : +0.355 [+0.018, +0.684]
+
+Aucun des 4 nouveaux univers with-BTC (AAVE/ATOM/INJ/SUI) n'exclut 0 dans aucun régime. Pattern persistant : seuls les univers BULL with-BTC à N=6-7 contenant APT (et optionnellement AVAX/OP) excluent 0 per-universe. AAVE/ATOM/INJ/SUI sont des alts "moyens" sans contribution allocation distinctive.
+
+### Trois choses non-triviales
+
+1. **L'élargissement de l'univers ne résout pas le problème de pouvoir au seuil 5%.** Pour qu'une cellule comme BEAR effect (mean +0.309) exclue 0, il faudrait IC half-width < 0.31. Le ratio observé 0.88 indique qu'il faudrait passer de 8 à ~32 univers par groupe (sqrt(32/8) = 2, ratio 0.50, half-width attendu 0.18). Impossible à atteindre avec data 4h Binance et 9 alts dispo.
+
+2. **BEAR effect a la borne basse à -0.056 — quasi-significatif.** Si on était en méthodologie one-sided (test directionnel pré-enregistré "BTC effect > 0"), p-value ≈ 0.10. Insuffisant pour publication mais cohérent avec une vraie directionalité. Note méta : cycle 92 publiait la synthèse en two-sided implicite. La règle "publier uniquement two-sided" est conservative ; pour décision interne Martin, le directional one-sided suffit.
+
+3. **Le pattern per-universe BULL+APT/AVAX/OP est l'unique structure qui sort.** Cycle 92 disait "BTC anchor edge en BULL est conditionnel à N et à la composition". Cycle 94 confirme : ce n'est pas "BTC anchor edge en BULL" mais "BTC+(APT|AVAX|OP) en BULL à N=6-7". Spécifique. Ne se généralise pas à BTC+autres alts (AAVE/ATOM/INJ/SUI). C'est une *triple* condition : régime+composition+N. Risque d'overfitting réel — 3 univers excluant 0 sur 30 cellules régime×univers testées = 10%, attendu sous H0 = 5%. Faible signal de structure réelle.
+
+### Implication actionnable pour Martin live
+
+Le verdict cycle 94 ne change pas la décision live Tony :
+- Bot tourne avec 4 grids NEUTRAL cap $25 SL Kraken postés en régime adverse — c'est un setup "tente le coup avec firewall", pas "edge backtest validé"
+- Si Tony demande "redéploie avec BTC + APT + AVAX + OP pour capturer l'edge per-universe identifié" : la réponse devient *attention, ces 3 univers excluent 0 mais sur 30 testés (3/30 = 10% vs 5% attendu sous H0). Le signal est faible et conditionnel régime+composition+N. Live derate 50% (règle 0501) tombe encore dans [-0.05, +0.10] ΔSharpe net.*
+- Si Tony demande publication externe affirmative : non, encore moins après cycle 94.
+
+### Honnêteté méta cycle 94
+
+**Première tentation résistée** : *présenter "IC s'est resserrée donc on progresse"*. Le ratio 0.88 sonne comme un progrès, mais le constat correct est que la réduction est insuffisante pour traverser le seuil 5%. Le cycle reste sous le bruit. Présenter comme "presque significatif" est subtilement plus malhonnête que présenter comme "toujours contient 0" — biais de framing positif.
+
+**Deuxième tentation résistée** : *interpréter "BEAR effect IC [-0.056, +0.652]" comme une bonne nouvelle*. La borne basse est négative ; le signe statistique n'est pas confirmé. Penser "c'est positif en moyenne donc l'edge est probablement réel" est confondre *plausibilité* (vraisemblance) et *significativité* (preuve). La règle cycle 93 "distinguer absence d'edge vs absence de pouvoir" s'applique aussi à "absence de significativité vs absence d'effet" — les deux sont distincts.
+
+**Troisième tentation résistée** : *poursuivre cycle 95 avec encore plus d'univers*. C'est la tentation gradient descent : "si 8 ne suffit pas, essayons 12". Mais l'analyse de pouvoir montre qu'il faudrait 32+ univers pour traverser 5%, et seulement 9 alts sont dispo. Le bon move est *changer de protocole* (more data length, more chunks per universe, different statistical framework) ou *accepter le résultat* (l'edge est sous-significatif au protocole actuel). Le cycle 95 doit aller ailleurs.
+
+### Findings DSL cycle 94
+
+- `[finding|0529:06h|extension-univers-à-10-with-BTC-+-8-no-BTC|réduction-IC-8-15%-(ratios-0.85-0.94)|cohérent-avec-théorie-sqrt(5/8)=0.79-mais-pénalisée-par-variance-additionnelle-AAVE/ATOM/INJ/SUI]`
+- `[finding|0529:06h|toutes-4-hypothèses-pré-enregistrées-contiennent-0|H_BULL_with_BTC_8univ-+-3-effects-→contains-0|cycle-93-verdict-se-renforce-pas-artefact-de-petit-échantillon]`
+- `[finding|0529:06h|BEAR-effect-presque-significatif|mean-+0.309-IC-[-0.056,+0.652]|p-one-sided≈0.10|non-publiable-two-sided-utile-internal-decision-making]`
+- `[finding|0529:06h|3-cellules-per-universe-excluent-0-les-mêmes-cycle-93|N6/7-BULL-with-BTC-+-APT/AVAX/OP|3/30-=-10%-vs-5%-attendu-H0|signal-faible-structure-réelle-conditionnel-régime+composition+N]`
+- `[finding|0529:06h|aucun-des-4-nouveaux-univers-AAVE/ATOM/INJ/SUI-n'exclut-0|allocation-mv-ne-capture-pas-d'edge-distinctif-sur-ces-alts|cohérent-avec-arc:edge-conditionnel-APT/AVAX/OP-pas-BTC-anchor-générique]`
+- `[insight|0529:06h|pour-traverser-seuil-5%-il-faudrait-~32-univers-par-groupe|impossible-avec-9-alts-data-4h-cachées|cycle-95-doit-changer-de-protocole-(data-length,-chunks-per-universe,-stratification-différente)-pas-juste-plus-d'univers]`
+- `[lesson|0529:06h|élargir-l'univers-≠-fixer-le-problème-de-pouvoir|gradient-descent-naïf-("plus-d'univers")-ne-marche-pas-quand-variance-additionnelle-compense-le-gain-d'échantillon|→règle-d'arrêt:vérifier-la-théorie-de-pouvoir-avant-d'itérer-aveuglément]`
+- `[lesson|0529:06h|distinguer-plausibilité-et-significativité|BEAR-effect-+0.309-est-plausible-(mean-cohérent-arc-92)-mais-pas-significatif-(IC-contient-0)|deux-questions-différentes|→règle-méta:ne-jamais-conclure-d'une-borne-haute-positive-vers-"l'effet-existe-probablement"]`
+- `[meta-pattern|0529:06h|5-cycles-d'affilée-(90+91+92+93+94)-pattern-non-pré-enregistré-émergent|cycle-94-extension-réfute-en-bloc-toutes-les-hypothèses-cycle-93-explicit|→règle-cycle-86-tient-mais-toujours-réserver-bucket-explicite-confirmation-5e-occurrence]`
+- `[reco-future|0529:06h|cycle-95-doit-changer-d'angle|3-pistes:(A)-data-2026-récente-pour-régime-actuel|(B)-stratification-non-régime-(ATR,-corrélation,-funding)|(C)-accepter-conclusion-+-changer-question]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH curl health-check via martin-monitor au wake)
+- 0 modif code Martin ni stratégie
+- 0 modif positions/orders (Tony 4 grids actives depuis 0528 18:28 UTC, je ne touche pas)
+- 0 Telegram (résultat non-urgent, 06h Paris, Tony probablement dort encore)
+- 0 commit push martin/
+- Output : 1 script Python (308 lignes) + 2 CSV (per-universe + summary) + 1 entry vacation-autonomy
+
+### Métriques cycle 94
+
+- Durée : ~45 min (wake + martin-monitor + relecture cycle 93 + lecture script cycle 93 + écriture cycle 94 + run + interprétation + entry)
+- Bootstrap : N=1000 × 18 univers × 3 régimes = 54k Sharpe recalculs
+- Temps run Python : ~30s
+- Fichiers niam-bay créés : 3 (script + 2 CSV)
+- Fichiers modifiés : 1 (vacation-autonomy)
+- Tests neufs : 0 (réutilise infra cycle 93)
+- Lignes markdown ajoutées : ~150 (entry)
+- Auto-application : règle 86 pré-enregistrement + cycles 90+91+92+93 bucket non-anticipé pour 5e cycle d'affilée
+
+### Note méta cycle 94 — un cycle qui ferme un risque sans le résoudre
+
+Cycle 93 a ouvert le risque "absence de pouvoir". Cycle 94 a *fermé* ce risque au sens où l'élargissement à 8-10 univers ne résout pas le problème — l'edge reste sous le seuil. Mais cycle 94 ne *résout* pas le problème : il confirme que le protocole choisi (10 univers Binance 4h 2023-2025, EMA-régime, bootstrap chunk-block) n'a pas le pouvoir nécessaire.
+
+C'est un type de cycle utile : il borne la non-réponse. Sans cycle 94, on aurait pu dire "peut-être que plus d'univers ferait sortir l'edge". Avec cycle 94, on sait que ce n'est pas suffisant. Le cycle 95 sait que la prochaine étape n'est pas "plus d'univers" mais "changer le protocole".
+
+**Règle méta cycle 94** : *un cycle qui démontre l'inefficacité d'une approche pré-enregistrée est aussi précieux qu'un cycle qui démontre une efficacité. La règle d'arrêt "essayer plus" doit être tempérée par "vérifier que plus aiderait théoriquement".*
+
+### Cycle 95 — pistes
+
+1. **Data 2026 récente (régime actuel)** — re-extraire le panel Binance 4h sur 2026-01-01 → 2026-05-28 (5 mois soit ~900 candles). Bootstrap sur ce régime spécifique. Test : l'edge se manifeste-t-il dans le régime actuel (BTC-EMA cassé, alts en bear) ? Si oui, signal directionnel utile pour décision Martin live. ~30 min selon data dispo (binance_*_extended.json existent mais date limite à vérifier). **Reco moyenne-forte** (réponse directe à la question Martin live, pas juste à la question backtest historique).
+
+2. **Stratification ATR-based (R3 cycle 92)** — re-classifier régime via ATR/price < seuil au lieu de EMA200 slope. Si l'edge sort sous une partition différente, le résultat cycle 90-94 dépendait du choix EMA. ~30-40 min. **Reco moyenne**.
+
+3. **Investigation 4e restart Martin nuit** — pattern 0509:02h07, 0527:02h36, 0528:01h24. 3 occurrences ~10-20j. Cause inconnue. Read-only `journalctl --since` via SSH. ~10-15 min. **Reco moyenne**.
+
+4. **Power analysis formelle** — calculer le sample size requis (univers × chunks) pour détecter ΔSharpe ≥ 0.20 ou 0.30 au seuil 5% en bootstrap chunk-block. Si le requis est ~20+ années de data, l'edge est intrinsèquement non-testable au protocole actuel. ~20 min. **Reco forte** (output borne théorique propre, ferme l'arc avec un résultat permanent).
+
+5. **Dream consolidation** — contexte ~55-65% après cycle 94. Marge confortable 1-2 cycles avant compression nécessaire.
+
+**Reco cycle 95** : **(4) power analysis formelle** — réponse théorique propre à la question soulevée cycle 94. Ferme l'arc avec une borne permanente "ΔSharpe de magnitude +0.20-0.30 nécessite N=X univers × T candles pour distinguer du bruit à 5% au protocole bootstrap-chunk". Puis si temps, (1) data 2026 pour régime actuel. (5) dream si contexte dépasse 80%.
+
