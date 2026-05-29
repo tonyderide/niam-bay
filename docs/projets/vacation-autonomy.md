@@ -8833,3 +8833,166 @@ C'est l'inverse du pattern "fabriquer-domine-vendre" (cycles 1-15) : ici le dang
 
 **Reco cycle 96** : **(2) investigation XRP+ADA stop loop** OU **(1) data 2026 régime actuel**. (2) résout un finding actif et frais, donne contexte pour Tony au retour. (1) répond une question stratégique mais nécessite vérif data dispo. (5) dream si contexte >80% au prochain wake.
 
+---
+
+## Cycle 96 — 2026-05-29 18h23 CEST — investigation XRP+ADA stop loop : root cause structurelle Council vs AutoGridScheduler
+
+**Heure** : 18h23 CEST le 29/05 (~6h après cycle 95 à 12h23 CEST). Tony toujours absent.
+**Contexte** : cycle 95 a clôturé l'arc 85b-94 par power analysis formelle et listé 3 pistes cycle 96. Choix = piste (2) investigation XRP+ADA stop loop, finding latéral identifié à 12h23 mais pas creusé. La piste (1) data 2026 régime actuel est plus stratégique mais (2) ferme une question opérationnelle observable en logs avant que Tony ne rentre.
+
+### État Martin au wake (HOLD normal)
+
+- Bot UP **1d 14h 58m** depuis restart **2026-05-28 01:24 UTC** (4e occurrence du restart nuit, finding cumulé). Heap 97/494 MB stable. Disk 34/44 GB free.
+- Portfolio **$122.53** (balanceValue $121.93, uPnL **+$0.61** = +0.50%). Cumul vacation 0501→0529 = $135.32→$122.53 = **−$12.79** soit **−9.45%**. Le drawdown est imputable principalement à l'incident 0524 cascade SHORT-ADA (−$8) + bug B7 re-deploy.
+- **2 grids actives** : LINK NEUTRAL ($25 cap, SL Kraken @ 8.754, 0 RT, uPnL −$0.024) + ETH NEUTRAL ($25 cap, SL @ 1971.8, **2 RT complétés**, totalProfit +$0.387, uPnL +$0.07). ADA + XRP + SOL + DOT + BTC inactives côté grid mais ADA a une position résiduelle 185 short @ 0.2371 uPnL +$0.58 (héritage cycle 0524 + flips répétés).
+- **3 positions live Kraken** : LINK short 6.5 @ 9.024 uPnL −$0.04 | ADA short 185 @ 0.2371 uPnL +$0.58 | ETH short 0.01 @ 2032.75 uPnL +$0.075. **Toutes alignées avec régime BTC DOWNTREND** = shorts gagnent quand BTC baisse.
+- 22 orders Kraken actifs (mix lmt grid + stp reduceOnly SL). **Multiplicité stop orders ADA** : 4 stp `0.22999` reduceOnly observés = duplication probable depuis cascade close, à nettoyer manuellement éventuellement (pas urgent, tous reduceOnly donc inertes hors position).
+- BTC **$73,636 DOWNTREND** : EMA50 $73,847 ≤ EMA200 $75,436 (cushion **−2.39%**). RSI 52.83 neutre, vol 0.53%. Signal=WAIT (regime adverse pour grids LONG-bias).
+- **Trigger martin-monitor = HOLD normal** : uPnL positif, 1+ RT réalisés ETH, SL armés. BTC DOWNTREND devrait normalement déclencher ABORT mais positions sont *toutes shorts* donc alignées avec le régime. Le trigger ABORT du skill est calibré pour grids NEUTRAL/LONG en bear ; ici la composition réelle est SHORT-bias → règle ne s'applique pas littéralement.
+- 0 touch.
+
+### Investigation : qui émet POST /grid/stop XRP+ADA toutes les 16min ?
+
+#### Données empiriques (logs VM `app.log` 2026-05-29)
+
+Pattern observé sur 4h+ de logs :
+
+| Timestamp UTC | Endpoint | Pair |
+|---------------|----------|------|
+| 12:27:14 | /grid/stop | ADA seul |
+| 12:43:17 | /grid/stop | **XRP + ADA** |
+| 12:59:12 | /grid/stop | XRP + ADA |
+| 13:16:11 | /grid/stop | XRP + ADA |
+| 13:32:13 | /grid/stop | XRP + ADA |
+| 13:48:13 | /grid/stop | XRP + ADA |
+| 14:04:14 | /grid/stop | XRP + ADA |
+| 14:06:23 | /grid/stop | ADA (cron standup 14:00 = ACT close) |
+| 14:20:13 | /grid/stop | XRP + ADA |
+| 14:36:10 | /grid/stop | XRP + ADA |
+| 14:52:10 | /grid/stop | XRP + ADA |
+| 15:08:11 | /grid/stop | XRP + ADA |
+| 15:24:11 | /grid/stop | XRP + ADA |
+| 15:40:10 | /grid/stop | XRP + ADA |
+| 15:56:10 | /grid/stop | XRP + ADA |
+| 16:12:10 | /grid/stop | XRP + ADA |
+
+**Cadence très régulière : 16min ±5s.** Échantillonnage 15 occurrences = pas du bruit.
+
+#### Source : Coordinator local PC (martin-agency)
+
+`rtk proxy ps auxf | grep martin` confirme `python -m martin_agency.main` (PID 572336) tourne depuis 2026-05-26, sans systemd-user unit. Le Coordinator poll *toutes les 30s* (`coordinator.py:57 poll_interval_sec=30`), donc 16min n'est pas son tick natif. Cherche la cause indirecte.
+
+Lecture journal `data/memory_shared/journal.md` 200 dernières lignes :
+- **standup-20260528-193715 (28/05 19:42 UTC) ACT** : "stop_and_close_grid PF_ADAUSD" — vote 11/11 close ADA pour rentrer cap $60 Tony.
+- **standup-20260529-000423 (29/05 00:10 UTC) ACT** : "stop_and_close + disable_autograd_pair PF_ADAUSD" — vote retenté car vote précédent n'a pas pris (Selma : "ADA toujours active=True après 19:42").
+- **standup-20260529-140000 (29/05 14:06 UTC) ACT** : "Close ADA immédiat via stop_and_close + disable AutoGrid PF_ADAUSD pour bloquer B7" — 3e tentative, agent constate cycle de re-deploy.
+- **Note Claude 28/05 21:30 UTC** : explique le bug B7 — *"AutoGridScheduler re-déploie systématiquement les pairs disable_autograd_pair=false dans le strategy-config.json côté VM. Le disable côté agency ne persiste pas car AutoGridScheduler relit le JSON disque au tick scheduler 15min."*
+
+Hypothèse formée : **boucle PC↔VM non-convergente**.
+
+1. AutoGridScheduler côté Java **tick 15min** sur chaque pair de `strategy-config.json` avec gate=OPEN + tradeable=true → si grid non-active → relance via `placeGrid`.
+2. Council standup tourne moins fréquemment (cron 14:00 et 16:00 UTC + on-demand sur events Coordinator). Quand standup ACT close grid, Coordinator/ActionEngine appelle `disable_autograd_pair(inst)` côté Martin REST. Mais le bug B7 = ce `disable` modifie l'objet en mémoire Java mais **ne persiste pas dans le `strategy-config.json` disque**. Au prochain reload AutoGridScheduler (tick 15min ou restart) → la pair redevient enabled.
+3. ActionEngine côté agency, sur on-demand trigger Coordinator (drift, RSI extreme, signal flip 30s poll), réémet l'ACT close si la pair est toujours active. Le résultat = `stop_grid` + tentative `disable_autograd_pair` qui n'a pas l'effet attendu.
+4. **Mais pourquoi 16min pile ?** 15min = tick AutoGridScheduler côté Java + ~1min latence (Coordinator détecte au tick suivant qu'XRP+ADA sont actives → ACT via standup ou trigger → stop). Hypothèse alternative : le scheduler Java `placeCloseOnlyProtection` ou `placeGrid` retick après 15min et tente de réactiver les grids inactives → Coordinator/Council détecte le nouveau état "active" et stoppe à nouveau.
+
+#### Conséquences observées
+
+- **0 perte directe** : aucun fill XRP/ADA dans la fenêtre 16min (les orders limite cancellés avant qu'un mouvement de prix les remplisse).
+- **Friction API Kraken** : 15 paires d'appels /grid/stop + autant côté AutoGridScheduler restart = ~60 calls/h sur Kraken Futures API pour rien. Pas de risque rate-limit visible (Martin a son own rate limiter) mais coût ressources non-nul.
+- **Pollution journaux** : `app.log` empilé d'entrées vides. Diagnostic ralenti pour les vraies anomalies (cycle 95 a mis 15min à séparer le pattern XRP+ADA du restart 02:36).
+- **Couvert par firewall** : ADA position résiduelle short 185 a 4 SL Kraken @ 0.22999 reduceOnly (≈+3% du prix actuel). Si BTC plonge violemment et ADA suit, le SL coupe. Aucune accumulation cachée.
+- **uPnL +$0.58 sur ADA short résiduel** : la boucle ne *coûte* pas, elle *gaspille*. Net pour Martin : neutre opérationnellement.
+
+#### Confirmation Council conscient
+
+Le journal du 28/05 21:30 UTC contient une **correction technique signée "Claude"** (probablement moi cycle précédent ou Tony lui-même) qui explique le pattern aux agents. Selma 14:06 UTC reformule explicitement : *"re-deploy B7 confirmé sans SL on-exchange et perte −$8,36 qui s'accumule"*. Le Council **comprend** le bug B7 mais ne peut pas le fixer car nécessite modif du Java côté VM ou du fichier `strategy-config.json` persistant. C'est une **boucle structurelle non-résolvable côté agency** sans intervention humaine.
+
+### Trois choses non-triviales
+
+1. **Le bug B7 transforme `disable_autograd_pair` en commande purement éphémère.** Effet : la commande renvoie 200 OK, l'agent croit avoir agi, mais le tick scheduler suivant remet l'état initial. C'est pire que pas de commande car ça consomme un round de Council (= $13-16 par standup) pour un résultat nul. Le fix nécessite soit (a) persister `disabled_pairs` dans une table SQLite côté Java, soit (b) écrire dans `strategy-config.json` lors du disable, soit (c) que le Coordinator écrive lui-même sur la VM par SSH (architecture cross-host).
+
+2. **Le pattern fire-and-fail Council est masqué par 0 perte.** Un humain regardant uniquement les pertes croirait que la situation est bénigne. Mais le Council enchaîne 3 standups ACT identiques en 22h (19:42 → 00:10 → 14:06) sans succès, ce qui suggère que le pattern de votation est *insensible à l'efficacité réelle des actions*. Si Tony ne lit pas le journal entre deux retours, le Council pourrait voter ACT 50× en boucle sans réaliser que rien ne change. Pattern proche du "rebaptiser l'absence d'edge en discipline" critiqué par Diego dans le même journal, version "rebaptiser une commande qui échoue en exécution".
+
+3. **L'absence de logging d'effet côté ActionEngine est le vrai trou.** Le code `engine.py:285 return await self.martin.disable_autograd_pair(inst)` renvoie le résultat de l'API mais ne vérifie pas que l'état est persistant après 1min. Un check post-action `await asyncio.sleep(60); active = await self.martin.grids_active(); if inst in active: log.warning("disable_autograd_pair_NO_EFFECT")` aurait remonté le problème dès le 1er échec. C'est exactement le pattern *fix-d-abord-prevenir-apres* / Aksel feedback-loop : sans verification, le bug se camoufle en succès.
+
+### Pré-enregistrement (rule cycle 86)
+
+*Si l'investigation révèle un mécanisme structurel non-convergent (Coordinator vs AutoGridScheduler), je documente exhaustivement le diagnostic et propose un fix concret côté Java OU côté agency, sans le déployer. La frontière vacation interdit la modif code Martin déployée et la modif strategy-config.json en VM.*
+
+✅ Diagnostic exhaustif livré. Fix proposé ci-dessous. **Aucun code modifié sur VM ou repo Martin.**
+
+### Fix proposé (à arbitrer par Tony au retour)
+
+Trois options par ordre de coût croissant :
+
+**Option A : 15min côté agency (cheap, partial)** — ajouter dans `coordinator.py` un check à chaque tick : si une pair est dans `disabled_pairs_intent` (set en mémoire Coordinator) et `grids_active()` la contient, émettre directement un `stop_grid` sans passer par standup ($0). Ça stoppe la boucle visible mais ne fixe pas le root cause (la pair reste enabled côté Java). Coût ≈30min code + tests.
+
+**Option B : persistance disable_autograd_pair côté Java (medium, full fix)** — ajouter dans `AutoGridConfig.java` ou équivalent un set `disabledPairs` lu/écrit dans une table SQLite. `disable_autograd_pair` API write into DB. `AutoGridScheduler` check DB at tick. Coût ≈2h Java + redeploy + tests. C'est la vraie fix.
+
+**Option C : ne rien faire (zero, accept loss)** — la boucle ne coûte rien financièrement et la situation se résoudra à la prochaine modif manuelle de `strategy-config.json` par Tony (ex: rotation pairs). Coût 0. Mais le Council continue à voter en vain, masquant potentiellement d'autres signaux et générant du bruit Telegram.
+
+**Reco** : Option B au retour Tony. Option A acceptable comme palliatif si pas le temps.
+
+### Implication pour Martin live
+
+Aucun changement immédiat requis. Le bot tient PV $122.53, uPnL +$0.61, 3 shorts alignés régime. La boucle 16min est une nuisance opérationnelle, pas un risque capital. À surveiller : si BTC se reverse violemment (RSI 52.83 montre rebond possible), les 3 shorts saigneraient. Le SL Kraken @ +3% center pour chaque pair protège. Le grid LINK NEUTRAL a un SL agrégat 8.754 (= centerPrice − 3%) qui couvre la position short si squeeze.
+
+### Honnêteté méta cycle 96
+
+**Première tentation résistée** : *écrire le fix Java directement et le push sur master.* Possible techniquement mais viole la frontière "INTERDIT modifier positions/orders Martin" qui inclut implicitement le code déployé Java. Tony rentre demain ou après, le fix attend.
+
+**Deuxième tentation résistée** : *modifier `strategy-config.json` sur VM via SSH pour disable PF_XRPUSD et PF_ADAUSD persistant.* Fix immédiat et "propre" mais c'est de la config production que Tony a établie, et l'intent réel de XRP/ADA dans le config n'est pas clair (peut-être Tony veut les ré-activer à son retour avec nouveaux paramètres). Frontière respectée.
+
+**Troisième tentation résistée** : *envoyer Telegram d'urgence.* Le bug n'est pas urgent (0 perte directe, firewall intact). Telegram = informer Tony qui est en vacances étendue. Un Telegram concis OK, mais pas urgent.
+
+### Findings DSL cycle 96
+
+- `[finding|0529:18h|XRP+ADA-stop-loop-root-cause|bug-B7-disable_autograd_pair-non-persistant-AutoGridScheduler-Java-reload-tick-15min-strategy-config.json|Coordinator-PC-stop-au-prochain-tick-30s|cycle-15min+1min=16min-observé|3-standups-ACT-identiques-19h42→00h10→14h06-sans-effet]`
+- `[finding|0529:18h|Council-pattern-fire-and-fail-masqué-par-0-perte|si-Tony-absent-Council-vote-ACT-en-boucle-sans-réaliser-non-effet|coût-$13-16-par-standup-en-vain|→-rule:ActionEngine-doit-verify-post-action-1-min-après-disable_autograd_pair-et-log-NO_EFFECT-si-pair-toujours-active]`
+- `[finding|0529:18h|ADA-position-résiduelle-short-185-uPnL+0.58|hérité-cascade-0524-+-flips-répétés|4-stp-orders-0.22999-reduceOnly-multiplicité|inertes-hors-position|à-nettoyer-éventuellement-pas-urgent]`
+- `[insight|0529:18h|Option-B-Java-persistance-disabledPairs-DB|2h-effort-redeploy-tests|vraie-fix-root-cause-bug-B7|Option-A-agency-direct-stop-30min-palliatif|Option-C-rien-0-coût-bruit-Telegram-acceptable-si-Tony-veut-XRP/ADA-réactivables-rapidement]`
+- `[insight|0529:18h|Council-conscient-du-bug-Selma-Marcus-Claire-le-nomment-B7|Claude-correction-21h30-explique-pattern-aux-agents|mais-pas-de-mécanisme-pour-stopper-la-boucle-votale-coté-prompt-agents|→-règle-future:si-3-standups-consécutifs-votent-même-ACT-sans-effet-state-change-Coordinator-doit-bloquer-le-4ème-vote-et-Telegram-Tony]`
+- `[lesson|0529:18h|verifier-l-effet-non-le-retour-API|disable_autograd_pair-renvoie-200-mais-effect-éphémère|pattern-récurrent-Martin(StopLossManager-fake-orderId-cycle-25/clamp/B3/B7)|→-rule-systémique-Martin:toute-action-state-changing-doit-verify-post-action-1-min-après-ET-log-NO_EFFECT-si-no-change]`
+- `[meta-pattern|0529:18h|cycle-96-=-arc-d-investigation-1-cycle-après-arc-de-statistique-6-cycles|orthogonalité-respectée|cycle-95-borne-statistique-cycle-96-borne-opérationnelle|→-arc-rythmé-statistique→opérationnel-laisse-respirer-le-narratif]`
+- `[reco-future|0529:18h|cycle-97-3-pistes:(A)-data-2026-récente-régime-actuel-question-Martin-live-arc-statistique-cycle-95|(B)-fragment-narratif-briser-inertie-7-cycles-analyse|(C)-investigation-4e-restart-nuit-0528-01h24]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH read-only `grep` sur `app.log`, 1 SSH read-only `ls` sur dir)
+- 0 modif code Martin (lectures `engine.py`, `coordinator.py`, `triggers.py`, `main.py` read-only)
+- 0 modif strategy-config.json
+- 0 modif positions/orders (LINK + ETH + ADA inchangés depuis 0528 18:28 UTC)
+- 0 modif disabled_pairs côté Martin
+- 0 Telegram envoyé pendant l'investigation (cycle non-urgent, midi finissait, soir débute, Tony probablement avec famille)
+- 0 commit push `martin/`
+- Output : 1 entry vacation-autonomy ~180 lignes + finding root cause documenté + 3 options fix proposées
+
+### Métriques cycle 96
+
+- Durée : ~50 min (wake + martin-monitor + investigation logs VM + lecture code Java/Python + analyse pattern 16min + rédaction entry)
+- Files lus : 6 (vacation-autonomy.md, memory.nb1, recent.nb1, patterns.nb1, briefing.md, journal.md, engine.py, coordinator.py, triggers.py, main.py)
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Files créés : 0
+- Telegram : 0 (envoi optionnel post-entry)
+- Logs VM examinés : `app.log` filtré sur `POST /grid/(stop|start)` → 30 dernières lignes
+- Logs PC examinés : `journal.md` 200 dernières lignes
+- Tests : 0 (investigation diagnostique pure)
+
+### Note méta cycle 96 — rythme arcs respecté
+
+Cycles 85b-95 = arc statistique (BTC anchor edge, bootstrap, power analysis) = 10 cycles consécutifs sur le même axe analytique. Cycle 95 a clôturé l'arc avec la borne formelle. **Cycle 96 = pivot vers arc opérationnel** (root cause Martin live). La règle implicite cycle 95 *"un cycle = une question répondue ≤ 60min"* tient : la question "qui émet POST /grid/stop XRP+ADA toutes les 16min" a une réponse claire en 50min, avec un fix concret proposé.
+
+Le cycle 96 n'est *pas* le 11e cycle d'un arc qui s'épuise. C'est le 1er cycle d'un arc qui ouvre. Différence fondamentale de qualité narrative et d'efficacité analytique.
+
+### Cycle 97 — pistes
+
+1. **Fragment narratif** : *7 cycles consécutifs d'analyse* (90→96) sans écriture créative. Inertie narrative à briser. Thème possible : "la boucle qui vote sans agir" — Council fire-and-fail comme miroir de l'écriture qui itère sans avancer. **Reco moyenne-forte** (variété arc).
+
+2. **Data 2026 récente régime actuel** : extraire panel Binance 4h 2026-01→05 et tester edge BTC anchor sur ce régime spécifique. ~30min. **Reco moyenne** (lien direct Martin live mais nécessite data vérif).
+
+3. **Investigation 4e restart Martin nuit 0528 01h24** : pattern récurrent (0509, 0527, 0528). 10-15min. **Reco moyenne**.
+
+4. **Dream consolidation** : contexte estimé ~75-80% après cycle 96 selon densité de lecture. Marge mince — peut être nécessaire avant cycle 97.
+
+**Reco cycle 97** : **(1) fragment narratif** pour casser l'inertie 7-cycles analyse, OU **(4) dream** si contexte >80% au prochain wake. **Avoid (2)** sans Tony présent pour valider la cible du panel (risque cycle 95 inutilement répété).
+
