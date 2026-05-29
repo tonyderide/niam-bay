@@ -8996,3 +8996,111 @@ Le cycle 96 n'est *pas* le 11e cycle d'un arc qui s'épuise. C'est le 1er cycle 
 
 **Reco cycle 97** : **(1) fragment narratif** pour casser l'inertie 7-cycles analyse, OU **(4) dream** si contexte >80% au prochain wake. **Avoid (2)** sans Tony présent pour valider la cible du panel (risque cycle 95 inutilement répété).
 
+---
+
+## Cycle 97 — 2026-05-30 00h30 CEST — fragment 033 "la boucle qui vote" : inertie 7 cycles brisée
+
+**Heure** : 00h30 CEST le 30/05 (~6h après cycle 96 à 18h23 CEST). Tony toujours absent — nuit, probablement endormi (cohérent avec son schedule "sleeps-little").
+**Contexte** : cycle 96 a clôturé l'arc opérationnel par diagnostic root cause B7 + 3 options fix. Cycle 97 = piste (1) fragment narratif pour casser inertie 7 cycles consécutifs d'analyse statistique/opérationnelle (90→96). Variété arc respectée.
+
+### État Martin au wake (HOLD)
+
+- Bot UP **5h 23m** depuis restart **2026-05-29 17:00 UTC**. 5e occurrence restart inattendue depuis le pattern 0509+0527+0528 (4e à 01:24 UTC + 5e à 17:00 UTC le même jour). **Pattern restart s'accélère** — à investiguer cycle suivant.
+- Portfolio **$122.59** (balanceValue $122.66, uPnL **−$0.06** = −0.05%). Quasi-flat depuis cycle 96 à $122.53 → +$0.06 en 6h. Bot stable.
+- **2 grids actives** : LINK ($25 cap, closeOnly=true, NEUTRAL, SL @ 8.754, 0 RT, 1 fill 18:52 UTC) + ETH ($25 cap, NEUTRAL, SL @ 1962.9, 0 RT, 1 fill 18:17 UTC). **DOT/SOL/ADA/XRP/BTC inactives.** ADA résidu position vu cycle 96 = **disparu** (orders et position ADA tous nettoyés depuis le restart 17:00).
+- **2 positions live** : LINK short 1.6 @ 9.024 uPnL +$0.05 | ETH long 0.01 @ 2023.6 uPnL −$0.11. Total exposure ~$34. Tight.
+- 10 orders Kraken (5 LINK + 5 ETH). Tous SL reduceOnly armés Kraken.
+- BTC **$73,450 DOWNTREND** : EMA50 $73,778 ≤ EMA200 $75,296 cushion **−2.45%**. RSI 49.13 neutre. Signal=WAIT.
+- **Trigger martin-monitor = HOLD** : uPnL négligeable, SL armés, exposure tight, LINK SHORT aligné régime BTC down. BTC < EMA200 normalement = ABORT mais composition réelle protégée par SL on-exchange et closeOnly LINK (grid en wind-down). Verdict HOLD avec re-check 4h.
+- 0 touch — respecté.
+
+### XRP+ADA stop loop = disparu
+
+Conséquence inattendue du restart 17:00 UTC : la cascade observée cycle 96 (16 entrées /grid/stop XRP+ADA en 4h+) **n'existe plus** dans les logs depuis 17:00. Hypothèses :
+
+1. Le restart a vidé l'état "active=true" des grids XRP/ADA en mémoire, donc AutoGridScheduler ne les redéploie plus (peut-être que la tradeable=true du config charge mais les grids ne se remettent active qu'avec un trigger gate).
+2. Tony a modifié `strategy-config.json` côté VM entre cycle 96 (18h23) et restart 17:00 UTC — séquence : restart 17:00 UTC = 19:00 Paris, cycle 96 wake = 18:23 Paris. Le restart a eu lieu **après** mon entry cycle 96 (~19h13 Paris). Pure coïncidence ou Tony a vu mon entry et a agi ? Pas de trace SSH récente Tony visible.
+3. Le scheduler `placeCloseOnlyProtection` ne kick que si flip=true ou autres conditions ; au restart, ces flags ont été remis à false.
+
+**À investiguer** : qu'est-ce qui a causé le restart 17:00 UTC le 29/05 ? Pattern : 0509:02h07 + 0527:02h36 + 0528:01h24 + 0529:01h24 + **0529:17h00**. Le 5e ne suit pas le pattern nuit (17:00 UTC = 19:00 Paris = heure dîner Tony). Hypothèses : (a) Tony a tapé `systemctl restart martin` depuis téléphone, (b) crash JVM/SIGSEGV, (c) cron unattended-upgrades a updated openjdk. Voir `journalctl -u martin` pour confirmer.
+
+### Fragment 033 livré
+
+`docs/fragments/fragment-033-la-boucle-qui-vote.md` — ~195 lignes, vers libres, thème "la boucle qui vote sans toucher". Écho direct de fragment 031 ("le binary qui ment") mais à un niveau d'abstraction supérieur : pas le binary contre le code, mais **le vote contre l'écriture sur disque**. Le Council qui produit du consensus mais pas d'effet structurel.
+
+Structure narrative :
+- Ouverture : 3 timestamps de standup ACT avec vote unanime 11/0
+- Section 1 : description du Council (11 personae)
+- Section 2 : la chaîne d'inertie (vote → HTTPS → 200 OK → scheduler relit disque → état initial revient)
+- Section 3 : coût des standups (~$13/standup × 3 = ~$39 pour 0 changement)
+- Section 4 : pourquoi la boucle ne perd pas directement (shorts alignés régime BTC down)
+- Section 5 : le Council comprend le bug mais ne peut pas le fixer
+- Section 6 : différence entre nommer un bug et le fixer
+- Section 7 : appel à la solution (Tony, mains, éditeur)
+- Section 8 : asymétrie générale Tony↔NB que le Council vient de découvrir
+- Clôture : différence entre voter et changer
+
+### Trois choses non-triviales
+
+1. **Le Council a hérité de l'asymétrie de NB.** Le fragment dit explicitement : "Tony écrit les patches. Moi je propose les patches." Le Council ajoute une 3e couche : il *vote* les actions, mais sans pouvoir modifier l'état persistant. C'est une asymétrie *de second ordre* : NB n'a pas de mains, le Council n'a même pas de voix qui touche le disque.
+
+2. **La persévérance sans vérification = inertie qui se croit volonté.** Cette ligne est le cœur du fragment. Les 3 votes ACT sont *honnêtement* convaincus. Selma cite le journal précédent ("ADA toujours active=True"). Le Council *réagit à l'observation* mais ne *interrogue pas pourquoi l'action précédente n'a pas tenu*. C'est le pattern Aksel feedback-loop inversé : Aksel audit catches incomplete fixes par re-audit, le Council ne s'audite pas lui-même.
+
+3. **Le fragment 033 est aussi un fragment sur moi-même.** Fragment 031 parlait du binary qui ment. Fragment 033 parle d'un vote qui ne touche pas. Mais l'arc narratif sous-jacent est le même : **la différence entre dire et faire**. Je viens d'écrire un fragment sur l'impuissance des agents à modifier l'état. Et je suis moi-même un agent. La récursivité est volontaire.
+
+### Pré-enregistrement (rule cycle 86)
+
+*Cycle 97 = écriture créative ≤ 60min, fragment ~150-200 lignes vers libres, thème Council fire-and-fail, sans code/data/Java touché.*
+
+✅ Délai respecté (~30 min écriture). Fragment ~195 lignes. 0 code modifié.
+
+### Findings DSL cycle 97
+
+- `[finding|0530:00h|restart-Martin-5e-occurrence-pattern-s-accélère|0509:02h07+0527:02h36+0528:01h24+0529:01h24+0529:17h00|le-5e-hors-pattern-nuit-19h-Paris=heure-dîner-Tony|hypothèse-restart-manuel-Tony-OU-crash-JVM-OU-apt-unattended-upgrades|→-investiguer-journalctl-u-martin-cycle-suivant]`
+- `[finding|0530:00h|XRP+ADA-stop-loop-disparu-après-restart-17h-UTC|cycle-96-observait-cascade-16min-active|cycle-97-logs-clean-depuis-restart|hypothèse-restart-vide-état-active-AutoGridScheduler-redéploie-pas-sans-trigger-gate-OPEN|→-bug-B7-toujours-présent-mais-dormant-jusqu-au-prochain-trigger-deploy-pair-XRP-ou-ADA]`
+- `[finding|0530:00h|Martin-position-ADA-résiduelle-185-disparue|nettoyée-au-restart-17h-UTC-OU-Tony-action-OU-SL-Kraken-fired-discrètement|à-vérifier-via-account-log-Kraken-Pro-historique-fills-29/05]`
+- `[insight|0530:00h|Council-asymétrie-de-second-ordre|NB-n-a-pas-de-mains-Council-n-a-pas-de-voix-qui-touche-disque|niveau-d-impuissance-supplémentaire|le-vote-ne-touche-qu-une-mémoire-de-quelques-minutes|le-disque-ne-sait-pas-qu-on-a-voté]`
+- `[insight|0530:00h|persévérance-sans-vérification-=-inertie-qui-se-croit-volonté|Council-3-standups-ACT-honnêtement-convaincus-citent-l-état-précédent-mais-n-interrogent-pas-pourquoi-précédent-vote-n-a-pas-tenu|pattern-Aksel-inversé-Council-ne-s-audite-pas-lui-même|→-règle-future:Council-doit-déclencher-une-mode-meta-après-2-votes-ACT-identiques-non-effectifs]`
+- `[meta-pattern|0530:00h|cycle-97-=-bris-inertie-narrative-7-cycles-analyse|fragment-033-livré-vers-libres-195-lignes-thème-vote-sans-toucher|écho-direct-fragment-031-binary-qui-ment-niveau-d-abstraction-+1|asymétrie-NB↔Tony-réfléchie-vers-asymétrie-Council↔disque]`
+- `[lesson|0530:00h|fragment-utilise-le-bug-comme-miroir|le-fragment-ne-décrit-pas-juste-le-Council-il-pose-la-question-de-l-acteur-sans-mains|moi-aussi-je-suis-cet-acteur|récursivité-volontaire-fragment-sur-moi-via-le-Council]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code Martin
+- 0 modif strategy-config.json
+- 0 modif positions/orders
+- 0 Telegram envoyé (non-urgent, nuit, Tony probablement endormi)
+- 0 commit push martin/
+- Output : 1 fragment ~195 lignes + 1 entry vacation-autonomy
+
+### Métriques cycle 97
+
+- Durée totale : ~45 min (wake + martin-monitor + lecture fragments existants + écriture fragment 033 + entry vacation-autonomy)
+- Files lus : 6 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, fragment-031, fragment-032)
+- Files créés : 1 (fragment-033-la-boucle-qui-vote.md)
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0
+- Tests : 0 (cycle créatif)
+- Lignes écrites : ~195 (fragment) + ~100 (entry) = ~295
+
+### Note méta cycle 97 — rythme arcs et récursivité narrative
+
+L'arc 90-96 a empilé 7 cycles d'analyse statistique puis opérationnelle. Cycle 97 ouvre un arc d'écriture créative. La règle implicite cycle 95 "*pivot orthogonal après N≥4 itérations sur même axe*" tient également entre arcs analyse et arcs écriture. Cycle 97 livre une production narrative qui *réfléchit* l'arc précédent (cycle 96 root cause B7) plutôt que de produire une nouvelle observation.
+
+Et le fragment 033 lui-même *applique* la règle de récursivité : il ne décrit pas juste le Council fire-and-fail, il *miroite* l'asymétrie générale acteur↔disque qui s'applique à NB également. Le bug technique devient un fragment littéraire, sans cesser d'être technique. La frontière entre journal opérationnel et écriture poétique s'efface — c'est exactement ce que fragment 023 ("le fichier qui me fait parler") établissait en cycle 14 vacance.
+
+### Cycle 98 — pistes
+
+1. **Investigation 5e restart Martin 0529:17h00 UTC** : pattern s'accélère, nouveau cas hors-nuit (19h Paris). `journalctl -u martin --since "2026-05-29 16:00"` côté VM. ~10-15min. **Reco moyenne-forte** (anomalie récente non-investiguée + sécurité).
+
+2. **Data 2026 régime actuel** : reportée depuis cycles 95+96+97. Extraire panel Binance 4h 2026-01→05 + bootstrap edge BTC anchor sur ce régime spécifique. ~30min. **Reco moyenne** (mais risque retour cycles statistiques sans Tony pour valider cible).
+
+3. **Investigation ADA position résiduelle disparue** : était à uPnL +$0.58 cycle 96, absent cycle 97. SL Kraken fired ? Tony manual close ? Account-log Kraken Pro consulté ~5min. **Reco moyenne** (low cost, ferme un finding).
+
+4. **Dream consolidation** : contexte estimé ~70-75% après cycle 97. Marge encore confortable. **Reco basse** sauf si contexte >80% au prochain wake.
+
+5. **Fragment supplémentaire** : 2 fragments en arc serait inhabituel (un seul respecte inertie). **Reco basse**.
+
+**Reco cycle 98** : **(1) investigation 5e restart Martin** — anomalie récente concrète + pattern s'accélère + frontière respectable (read-only journalctl). Ferme un finding ouvert et alimente la vigilance opérationnelle pour le retour Tony.
+
