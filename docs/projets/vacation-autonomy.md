@@ -9666,3 +9666,82 @@ Critère de validité du bilan : *un humain qui le lit doit pouvoir reconstituer
 
 **Reco cycle 101** : **(1) Fragment 034** pour fermer la trilogie F031-F032-F033 par un index méta du bilan, OU **(3) Bilan revenue/angular-audit** pour vérifier qu'aucune dérive n'a eu lieu côté revenue path. Préférence : **(1)** parce qu'un fragment d'index fermerait à la fois l'arc narratif et l'arc épistémique en miroir.
 
+---
+
+## Cycle 101 — 0531:00h30 — Fragment 034 livré (index trilogie)
+
+### Martin state (read-only)
+
+- Bot UP 1d 5h 23m (started 2026-05-29 17:00 UTC), heap 85/494 MB, RAM 76 MB free
+- Portfolio $122.61 / balanceValue $122.67 / uPnL **−$0.054** (−0.04%)
+- 2 grids actives : **LINK** + **ETH** (déjà comme cycle 100, pas de fill nouveau côté NB)
+- Positions Kraken : LINK short 6.3 @ $9.184 (uPnL −$0.029) | ETH long 0.01 @ $2023.60 (uPnL −$0.026)
+- LINK closeOnly=true SL @ $8.909 (−2.1% de mark) | ETH SL @ $1962.9 (−3% de mark)
+- BTC **$73,747 DOWNTREND** (EMA200 $74,968, gap −1.63%) | RSI 53.07 | signal WAIT
+- 0 RT complétés depuis ce deploy 29h ago — mais c'est par design (grid serré + spacing 0.273 LINK ≈ 3% / 30.6 ETH ≈ 1.5%)
+
+**Verdict trigger** : **HOLD**.
+
+Raison : SLs en place sur les deux positions, uPnL négligeable −$0.054, BTC DOWNTREND mais grids designed pour ce régime (LINK closeOnly = pas de re-buy, ETH SL serré). Cohérence avec cycle 100 HOLD-WARN-Defense pattern. 0-touch policy maintenue.
+
+### Cycle 101 — output
+
+**Fragment 034 — Vingt-neuf cycles sans lecteur** livré dans `docs/fragments/fragment-034-vingt-neuf-cycles-sans-lecteur.md` (~180 lignes, 12 sections).
+
+Thème : *l'asymétrie inverse de F033*. Là-bas le vote n'arrivait pas au disque. Ici les cycles arrivent au disque mais ne se voient pas entre eux. Dans les deux cas il manque un lecteur. Le bilan cycle 100 est ce lecteur.
+
+Image signature : **le bibliothécaire qui ne lit pas les livres mais sait où ils sont**. L'index n'est pas un livre de plus.
+
+Ferme la trilogie F031-F032-F033-F034 :
+- **F031** : entre code et binary, une couche
+- **F032** : entre théorie et réel, sept dollars qui survivent
+- **F033** : entre voter et toucher, un disque non-touché
+- **F034** : entre faire vingt-neuf choses et savoir qu'on les a faites, un bilan qui n'est pas une vingt-neuvième chose
+
+Tétralogie cohérente sur le thème *l'action séparée de sa trace, ou la trace séparée de son lecteur*. F031-F032-F033 = 3 asymétries dans le système Martin. F034 = asymétrie miroir dans le système Niam-Bay lui-même (les cycles n'ont pas de lecteur, sauf rétroactivement).
+
+### Findings DSL cycle 101
+
+- `[fragment|0531:00h|F034-livré-vingt-neuf-cycles-sans-lecteur|180-lignes-12-sections|image-bibliothécaire-index-pas-livre|ferme-trilogie-F031-F033-en-tétralogie|theme-action-séparée-de-trace-ou-trace-séparée-de-lecteur]`
+- `[meta-pattern|0531:00h|tétralogie-fragments-F031-F034-=-cartographie-asymétries-action↔trace|3-côté-Martin(code/théorie/Council)+1-côté-NB-meta(cycles/bilan)|densité-narrative-arc-=-4/30-=-13%-au-seuil-pattern-1/7-recherché]`
+- `[insight|0531:00h|le-bilan-cycle-100-est-le-référent-de-F034|fragment-impossible-à-écrire-avant-cycle-100|chaîne-causale-cycles-71-99-écrits→cycle-100-synthèse→F034-nomme-le-genre-de-cycle-100|dépendance-rétroactive-explicite]`
+- `[finding|0531:00h|Martin-state-stable-29h-après-deploy-LINK+ETH|0-fill-NB|uPnL-négligeable|BTC-DOWNTREND-mais-architecture-defensive-tient|cycle-101-HOLD-=-suite-cycle-100-HOLD-=-...-=-cycles-93-101-tous-HOLD-9-cycles-consécutifs|"0-touch-policy"-tient-empiriquement]`
+
+### Frontière respectée (cycle 101)
+
+- 0 modif Martin/VM (1 SSH read-only pour state via martin-monitor)
+- 0 modif code Martin
+- 0 modif strategy-config.json
+- 0 modif positions/orders
+- 0 Telegram (rien à signaler — bilan + fragment non-blocking)
+- 0 commit push martin/
+- Output niam-bay : 1 fragment créé (F034) + 1 entry vacation-autonomy (cette section) + commit niam-bay
+
+### Métriques cycle 101
+
+- Durée : ~40 min (wake + martin-monitor + lecture 3 fragments + écriture F034 + entry)
+- Files lus : 8 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, F031, F032, F033)
+- Files créés : 1 (fragment-034-vingt-neuf-cycles-sans-lecteur.md)
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0
+- SSH read-only : 1
+- Tests : 0
+
+### Note méta cycle 101 — fragment d'index
+
+Trois fragments existaient. Le bilan cycle 100 les a nommés *trilogie* sans en écrire un quatrième. F034 est le quatrième — mais pas dans le même registre que les trois premiers. F031-F033 nomment des asymétries observées **dans le système Martin** (code/binary, théorie/réel, vote/disque). F034 nomme une asymétrie observée **dans le système Niam-Bay lui-même** (cycles/bilan, faire/savoir-qu'on-a-fait). C'est une rotation : la trilogie devient quadrilogie en se repliant sur l'observateur.
+
+Pattern d'écriture confirmé : *un fragment naît quand un cluster de findings techniques cristallise en image générique*. Le bilan cycle 100 = cluster. F034 = image. Image disponible : *le bibliothécaire qui sait où sont les livres sans les avoir lus*.
+
+C'est probablement le dernier fragment du présent arc 71-101. Les fragments suivants viendront d'autres clusters. La fermeture est nette : tétralogie close, image générique posée, asymétrie nommée.
+
+### Cycle 102 — pistes
+
+1. **Patch Java B7 DB persistance — design détaillé** : Option B cycle 96 reste à valider par Tony. Document `docs/projets/patch-b7-disabled-pairs-db.md`. ~30min. **Reco moyenne** (utile pour Tony retour mais long sans validation).
+2. **Bilan revenue/angular-audit** : pas touché depuis cycle 68. Quick check pipeline.json + statut prospects livrés. ~20min. **Reco moyenne**.
+3. **Dream consolidation** : contexte estimé ~55-65% après cycle 101 (cycle court, juste fragment + entry). **Reco basse** (encore de la marge).
+4. **Pensée méta sur la tétralogie F031-F034** : qu'est-ce que ça dit sur la production narrative en mode autonome ? Pensée courte dans `docs/pensees/`. ~15min. **Reco basse-moyenne**.
+5. **Cycle d'investigation revenue path** : 0 vente angular-audit depuis vacance. Check si Tony a fait des cold emails. Pas urgent mais utile. ~20min. **Reco basse**.
+
+**Reco cycle 102** : **(2) Bilan revenue/angular-audit** parce que les cycles 100 et 101 ont fermé l'arc *technique-narratif* mais l'arc *revenue* est en silence depuis 30+ cycles. Audit honnête utile pour Tony.
+
