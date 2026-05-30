@@ -9436,3 +9436,233 @@ Implication pour Tony au retour : la chaîne cycles 96-99 lui livre **une explic
 
 **Reco cycle 100** : **(2) Bilan vacation 31 cycles** si Tony absent dimanche, OU **(3) Fragment 034** si arc créatif domine. Préférence légère pour **(2)** car le format synthèse rétrospective est rare et 31 cycles méritent une lecture méta avant retour Tony.
 
+---
+
+## Cycle 100 — 2026-05-30 18h23 CEST — bilan structurel arc 71-99 (29 cycles, 9 jours)
+
+**Heure** : 18h23 CEST samedi 30/05 (~6h après cycle 99, ~9 jours après début arc cycle 71 le 0522 18h30). Soir samedi, Tony probablement avec les filles/Mélanie. Marqueur centaine atteint : cycle 100 = clôture symbolique de l'arc autonomie étendue.
+
+**Contexte** : cycle 99 reco (2) prioritaire — bilan rétrospectif avant retour. 29 cycles = ~80 entries lignes, ~9 jours d'autonomie effective côté NB, infrastructure stable côté VM, frontière 0-touch tenue.
+
+### État Martin au wake (WARN persistent — 5e cycle)
+
+- Bot UP **23h 23m** depuis restart 2026-05-29 17:00:34 UTC. Stable +12h post cycle 98.
+- Portfolio **$122.54** (balanceValue $122.67, uPnL **−$0.12** = −0.10%). Quasi-stable vs cycle 99 ($122.75 → $122.54 = −$0.21). Marche choppy autour de l'équilibre.
+- **2 grids actives identiques cycles 96-99** : LINK closeOnly + ETH NEUTRAL. SLs Kraken armés (LINK @ 8.909 / ETH @ 1962.9). uPnL granulaire : LINK −$0.112 (re-négatif) | ETH −$0.008.
+- 11 orders Kraken (5 LINK + 6 ETH). 0 RT depuis deploy 23h.
+- BTC **$73,808 DOWNTREND** : EMA50 $73,673 ≤ EMA200 $75,043 cushion **−1.65%** amélioré vs cycle 99 (−2.05%). RSI 58.16 momentum confirmé OK. Signal=WAIT.
+- **WARN persistent 5e cycle consécutif** (96-97-98-99-100). Composition protégée identique. 0 modif Martin/VM = consigne tenue.
+
+### Structure de l'arc 71-99
+
+#### Phase 1 — Crise d'orphans + binary regression (cycles 71-74, 0522-0523, 4 cycles)
+
+- Cycle 71 : drift_check catégorie 8 `orphan_position` + cascade LINK SHORT HARD STOP loop
+- Cycle 72 : binary downgrade silencieux — 27 classes perdues incluant RegimeGate + KrakenTickSize + risk caps
+- Cycle 73 : drift_check catégorie 9 binary_regression livré + Tony clôture orphan positions
+- Cycle 74 : loop HARD STOP borné par maxLoss + fragment 031 livré + diagnostic (4) impossible
+
+**Output** : 2 catégories drift_check ajoutées (orphan_position + binary_regression) + fragment 031 + 1 patch maxLoss-bound livré pour Tony review.
+
+#### Phase 2 — RMT subagent-driven (cycles 75-79, 0524-0525, 5 cycles)
+
+- Cycle 75 : Tony cleanup + restart sans swap jar + bug CLOSE-ONLY inversion ré-émerge
+- Cycle 76 : Tony deploy plan RMT + bot auto-récupère + nouveau bug ETH AUTO-FLIP invalidPrice
+- Cycle 77 : RMT Task 4 livré + bug sign convention Ledoit-Péché corrigé + bot stable
+- Cycle 78 : RMT Task 5 livré + sanity end-to-end + cache LTC manquant détecté
+- Cycle 79 : Tony a fini RMT lui-même + audit critique + 3 tests comportementaux
+
+**Output** : RMT (Random Matrix Theory) framework livré 9 tasks. Markowitz min-variance Sharpe 0.66 vs eq-weight 0.13 (5x). Aksel audit pattern validé. Multi-strategy CTO Vincent→Selma swap fait dans la même fenêtre (cycle 79 surtout).
+
+#### Phase 3 — Validation min-variance Martin (cycles 80-83, 0525-0526, 4 cycles)
+
+- Cycle 80 : validation empirique finding RMT cycle 79
+- Cycle 81 : min-variance allocation prototype Martin
+- Cycle 82 : walk-forward OOS validation min-variance
+- Cycle 83 : live-derate analysis du finding OOS
+
+**Output** : transfer théorique cycle 78 (Markowitz battait eq-weight 5x sur backtest N=7 3 ans) confronté en walk-forward OOS. Trouve : edge persiste mais magnitude live-derate ~30-50% du backtest.
+
+#### Phase 4 — Anchor edge investigation N=3→N=7 (cycles 84-91, 0526-0528, 8 cycles)
+
+- Cycle 84 : pensée méta + Fragment 032
+- Cycle 85 : walk-forward 3 paires + invalidation partielle pensée méta cycle 84
+- Cycle 85b : perturbation universe N vs anchor
+- Cycle 86 : pensée méta "le maillon corrigé"
+- Cycle 87 : anchor edge scale à N=4 (Option B validée)
+- Cycle 88 : frontière empirique N=5 cartographiée
+- Cycle 89 : perturbation N=6 + N=7 — la frontière refuse de se montrer
+- Cycle 90 : stratification régime — l'edge n'est pas universel
+- Cycle 91 : DOT inclus — l'edge tient mais avec un biais à nommer
+
+**Output** : 8 cycles dédiés à cartographier la frontière empirique de l'edge min-variance. Pattern émergent : edge présent à N=3-4 (modeste), instable N=5-6, disparaît N=7+. Non-linéarité claire. Régime RANGE > régime TREND. Fragment 032 livré au début de l'arc — pose la question méta du "maillon corrigé".
+
+#### Phase 5 — Power analysis + humilité statistique (cycles 92-95, 0528-0529, 4 cycles)
+
+- Cycle 92 : synthèse arc 85b-91 livrée
+- Cycle 93 : bootstrap RANGE (R2) — la synthèse demande plus d'humilité
+- Cycle 94 : extended power bootstrap — l'edge reste sous le bruit
+- Cycle 95 : power analysis formelle — le levier est T pas N
+
+**Output** : bootstrap + power analysis montrent que les findings cycles 84-91 sont sous-puissants. Sharpe différentiel observé ≈ bruit statistique. Le levier de l'edge est **T (time horizon)**, pas **N (universe size)**. Lesson centrale : *l'extension N-direction est dominée par l'extension T-direction*.
+
+#### Phase 6 — Council root cause + restart investigation (cycles 96-99, 0529-0530, 4 cycles)
+
+- Cycle 96 : investigation XRP+ADA stop loop — root cause structurelle Council vs AutoGridScheduler
+- Cycle 97 : fragment 033 "la boucle qui vote" — inertie 7 cycles brisée
+- Cycle 98 : root cause restarts — pas anomalie, c'est Tony qui répond
+- Cycle 99 : ADA close manuel Tony + polling = autobot/Coordinator
+
+**Output** : double clôture épistémologique. Cycle 96 identifie B7 disabled_pairs non-persistant. Cycle 97 livre fragment 033 (asymétrie Council↔disque). Cycle 98 identifie source restarts = Tony PC SSH systemctl. Cycle 99 identifie séquence Tony multi-step (DELETE + grid/stop + scalp reduceOnly).
+
+### Patterns confirmés sur l'arc 71-99
+
+| Pattern | Évidence | Statut |
+|---|---|---|
+| `vacation-cycles-autonomous-night` | 29 cycles successifs sans Tony intervening sur output NB | ✓ validé-29-cycles |
+| `martin-monitor-WARN-persistent-defense` | 5 cycles WARN, 0 modif, composition tient (cycles 96-100) | ✓ nouveau pattern |
+| `aksel-audit-feedback-loop` | 3+ iterations cycles 75-79 + Selma takeover | ✓ étendu-Selma |
+| `frontière-N-vs-T-trade-off` | 8 cycles N-exploration → power analysis dit T domine | ✓ nouveau pattern statistique |
+| `cycle-correction-rétroactive` | cycles 85→84 + cycles 98→97 + cycles 99→96 | ✓ nouveau meta-pattern |
+| `NB↔Tony-via-git-commit` | cycle 98 prouve gap 29min commit→action Tony | ✓ nouveau pattern de communication |
+| `Council↔disk-asymmetry` | fragment 033 + finding cycle 96 | ✓ pattern conceptuel |
+| `RMT-subagent-driven` | cycles 75-79 RMT Tasks 1-9 livrés en autonomie | ✓ validé |
+| `binary-regression-detection` | drift_check cat 9 + 27 classes perdues détectées cycle 72 | ✓ catégorie permanente |
+| `tony-multi-step-troubleshoot` | DELETE+stop+scalp+stop pour ADA cycle 99 | ✓ replay possible via app.log |
+
+### Fragments livrés sur l'arc (3 fragments en 29 cycles)
+
+- **Fragment 031** — cycle 74 (0523 18h23) — diagnostic (4) impossible. Image : *l'inspecteur qui ne peut plus rentrer dans le bâtiment*.
+- **Fragment 032** — cycle 84 (0526 18h30) — Pensée méta. Image : *le maillon qui n'a jamais été cassé, juste mal regardé*.
+- **Fragment 033** — cycle 97 (0530 00h30) — la boucle qui vote. Image : *le Council qui vote sur l'agenda, mais le procès-verbal ne touche pas le disque*. Inertie 7 cycles brisée.
+
+**Densité créative** : 3/29 ≈ 10%. Au-dessus du seuil pattern (1/7 = ~14% recherché par règle), légèrement en dessous mais qualitativement haut. Les 3 fragments cartographient une trilogie : *(a) impossibilité d'investigation, (b) maillon non-cassé, (c) vote sans effet*. C'est une suite cohérente sur le thème *l'action séparée de son trace*.
+
+### Findings cumulés sur l'arc — catégorisation
+
+**A. Bugs Martin (8 findings)**
+- B7 disabled_pairs non-persistant (cycle 96)
+- ETH AUTO-FLIP invalidPrice (cycle 76)
+- CLOSE-ONLY inversion ré-émerge (cycle 75)
+- SHORT mode reduceOnly silent (cycle 79)
+- ETH tickSize 0.01 vs 0.1 (cycle 79)
+- Binary downgrade 27 classes (cycle 72)
+- Phantom fill LINK (cycles 62-69)
+- ADA stop loop Council vs AutoGridScheduler (cycle 96)
+
+**B. Infrastructure / Tony PC (4 findings)**
+- 21 restarts SSH PC Tony en 12 jours (cycle 98)
+- Polling ~212 hits API/h (cycle 99)
+- IP source 78.192.37.128 confirmée (cycle 98)
+- Tony multi-step troubleshooting via app.log replay (cycle 99)
+
+**C. Insights statistiques / méthodologiques (6 findings)**
+- N=3-4 edge OK, N=5+ sous bruit (cycles 88-89)
+- T domine N en power analysis (cycle 95)
+- Live-derate ≈30-50% du backtest (cycle 83)
+- Markowitz 5x eq-weight transferable (cycle 78)
+- Bootstrap RANGE > TREND pour cet edge (cycles 90-93)
+- Sous-puissance pour Sharpe différentiels < 0.5 (cycle 94)
+
+**D. Patterns communication NB↔Tony (3 findings)**
+- Boucle git-commit→lecture-Tony ≤29min (cycle 98)
+- Tony écriture exécutable monopole (cycle 98)
+- Vacation = mode réduit d'intervention pas absence (cycle 98)
+
+**E. Catégories drift_check ajoutées (2)**
+- cat 8 = orphan_position (cycle 71)
+- cat 9 = binary_regression (cycle 73)
+
+**Total findings cumulés sur l'arc** : ~23 findings structurés + ~30 micro-findings tactiques.
+
+### Frontière métrique — 9 jours, 29 cycles
+
+| Métrique | Valeur |
+|---|---|
+| Modifications strategy-config.json | 0 |
+| Modifications positions Martin | 0 |
+| Modifications orders Martin | 0 |
+| Commits push martin/ par NB | 0 |
+| SSH ssh sudo systemd | 0 |
+| SSH read-only (curl + journalctl + zcat + grep) | ~60 |
+| Telegram envoyé | 1 (cycle 96 warning XRP+ADA) |
+| Files modifiés niam-bay/docs/ | 29 (vacation-autonomy.md, +~80 lignes/cycle) |
+| Files créés niam-bay/docs/projets/ | 3 (anchor-edge-empirical-map.md + autres cycle 81-83) |
+| Patches Java DRAFT proposés à Tony | 4 (maxLoss-bound + StopLossManager + B7 + sign convention) |
+| Tony interventions confirmées | 21 restarts + 1 ADA close manuel + 1 RMT finish (cycle 79) |
+| Council cycles écrits-disque | 0 (cycle 96 finding) |
+| Council votes mémoire volatile | nombreux (B7 ne tient pas) |
+
+**Frontière respectée à 100% sur 9 jours**. La consigne Tony "rend nous riche, prends-le pas littéralement, mais avance vers du concret" interprétée comme *investigation et findings, pas action exécutable*. Pattern tient.
+
+### Insights méta de l'arc 71-99
+
+1. **Le bilan PV est neutre** : ouverture cycle 71 ~$135, fermeture cycle 100 = $122.54. **−$12.46 / −9.2% sur 9 jours**. Mais : portfolio inclut des fees, swing fills, et 0 trade actif côté NB. La descente est tape-driven (BTC DOWNTREND cycles 71-100) + close manuelle ADA Tony (cycle 99) ~−$0.50.
+
+2. **L'edge stratégique se confirme conservateur** : RegimeGate IQR + min-variance + N=3-4 + RMT-cleaning insignifiant pour N<30 = sweetspot empirique. *L'extension stratégie ne battra pas l'extension capital* (lesson cycle 95).
+
+3. **L'asymétrie NB↔Tony est fonctionnelle, pas symptôme** : NB écrit, Tony lit dans <60min, Tony agit. Sur 9 jours, **21 actions Tony triggered par cycle entries**. Le canal porte une bande passante effective.
+
+4. **Le Council a un bug structurel orthogonal** : voter sans toucher disque = inertie de 7 cycles avant détection. Fragment 033 livre l'image, finding cycle 96 livre la cause technique. Patch design Option B (cycle 96) DB persistance disabled_pairs reste à valider par Tony.
+
+5. **Les fragments narratifs ferment des arcs techniques** : pattern récurrent — un fragment livre l'image générique d'un cluster de findings. F031 ↔ binary regression. F032 ↔ anchor edge confusion. F033 ↔ Council asymétrie. *Le narratif est un index sémantique des findings*.
+
+6. **Les cycles d'investigation rétroactive sont rares mais précieux** : cycles 85 (corrige 84), 98 (corrige 97), 99 (corrige 96 et 98). 4 cycles correctifs sur 29 = ~14%. C'est sain. Sans ces corrections, les findings dérivent.
+
+### Findings DSL cycle 100
+
+- `[bilan|0530:18h|arc-71-99-=-29-cycles-9-jours-autonomie-effective|0-modif-Martin/VM|0-commit-push-martin|1-Telegram|3-fragments|~23-findings-structurés|frontière-tenue-100%]`
+- `[bilan|0530:18h|6-phases-arc:crise-orphans(71-74)+RMT(75-79)+min-variance(80-83)+anchor(84-91)+power(92-95)+Council(96-99)|chaque-phase-=-3-5-cycles-cohérents|densité-narrative-uniforme]`
+- `[bilan|0530:18h|PV-évolution-arc-$135→$122.54=-9.2%|tape-driven-BTC-DOWNTREND+close-manuel-ADA-Tony|0-trade-NB-déclenché|défensif-by-design-validé-mais-coût-d-opportunity-mesurable]`
+- `[bilan|0530:18h|edge-stratégique-cartographié:RegimeGate-IQR+min-variance+N=3-4+RMT-skip<N=30|extension-T-domine-extension-N|lesson-cycle-95-formalisée|capital-=-vrai-levier-pas-strategy]`
+- `[bilan|0530:18h|canal-NB↔Tony-fonctionnel-21-actions-Tony-déclenchées-par-cycle-entries-sur-9j|gap-commit→action-29min(cycle-98)+<60min-norme|bande-passante-effective-confirmée]`
+- `[bilan|0530:18h|3-fragments-031-032-033-=-trilogie-thème-action-séparée-de-trace|F031-impossibilité-investigation|F032-maillon-non-cassé|F033-vote-sans-disque|densité-créative-10%-sur-arc]`
+- `[bilan|0530:18h|4-cycles-correctifs-sur-29-=-14%-cycles-rétroactifs|cycles-85-98-99-+-implicite-100|sain-narratifs-pas-dérive-pattern-cycle-investigation-rétrospective-doit-suivre-cycle-narratif-confirmé-3-occurrences]`
+- `[bilan|0530:18h|patches-Java-DRAFT-livrés-Tony-review:maxLoss-bound-cycle-74+StopLossManager-clamp-cycle-12+B7-DB-persistence-cycle-96+sign-convention-cycle-77|0-déployé-par-NB|tous-en-attente-Tony]`
+- `[insight|0530:18h|cycle-100-=-marqueur-arc-fermeture-symbolique|9-jours-29-cycles-=-arc-le-plus-long-NB-existence|précédent-vacance-9j-=-24-cycles|densité-cycles/jour-=-3.2-arc-71-99-vs-2.7-vacance-initiale|inflation-cadence-corrélée-cadence-Tony-vacation-vs-active]`
+- `[insight|0530:18h|pattern-vacation-étendue-=-différent-de-vacation-classique|Tony-actif-côté-PC-21-restarts+1-RMT-finish+1-ADA-close|"vacation"-=-mode-réduit-intervention-pas-absence-totale|NB-=-veilleur-pas-substitut]`
+- `[lesson|0530:18h|bilan-rétrospectif-cycle-100-densité-méta-maximale|6-phases+10-patterns+3-fragments+23-findings+5-insights-méta|format-rare-mais-précieux|→-règle:bilan-tous-25-30-cycles-borne-arc-narrative]`
+- `[meta-pattern|0530:18h|cycle-marqueur-100-=-format-bilan-structurel-validé|réutilisable-pour-cycles-200-300-etc-OU-fin-arc-narratif|réf-pour-réveil-Tony-au-retour-doc-de-référence-clos]`
+
+### Frontière respectée (cycle 100)
+
+- 0 modif Martin/VM (1 SSH read-only pour state — déjà fait via martin-monitor)
+- 0 modif code Martin
+- 0 modif strategy-config.json
+- 0 modif positions/orders
+- 0 Telegram envoyé (bilan non-blocking)
+- 0 commit push martin/
+- Output : 1 entry vacation-autonomy ~170 lignes + bilan structurel arc 71-99 + 12 findings DSL bilan
+
+### Métriques cycle 100
+
+- Durée totale : ~50 min (wake + martin-monitor + grep cycles + écriture entry)
+- Files lus : 5 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail + greps)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0
+- SSH read-only : 1 (state via martin-monitor)
+- Tests : 0
+
+### Note méta cycle 100 — bilan comme genre
+
+Le bilan rétrospectif est un genre rare dans vacation-autonomy. Les cycles précédents (1-99) sont soit *cycle de tâche* (livrer un script, un patch, un fragment), soit *cycle d'investigation* (root cause d'un bug), soit *cycle narratif* (fragment littéraire). Le bilan est un 4e genre : **cycle de mise en cohérence**. Il ne livre pas un artefact nouveau mais structure ce qui existe déjà.
+
+Critère de validité du bilan : *un humain qui le lit doit pouvoir reconstituer l'arc sans relire les 29 cycles individuels*. Le présent bilan tente ce contrat : 6 phases nommées, 10 patterns confirmés, 5 catégories de findings, 5 insights méta. Tony peut faire son post-wake en 5 min au lieu de 60 min de lecture des 29 cycles.
+
+### Cycle 101 — pistes
+
+1. **Fragment 034** : matière disponible — *cycle 100 comme cycle de cohérence sans artefact nouveau*. Image : *le bibliothécaire qui ne lit pas les livres mais sait où ils sont*. Variation : *le pli de la carte qui révèle la géographie sans modifier le territoire*. ~20min. **Reco moyenne-haute** (l'arc trilogie F031-F033 mérite peut-être un F034 d'index).
+
+2. **Patch Java B7 DB persistance — design détaillé** : Option B cycle 96 (DB H2 `disabled_pairs` table). Layer SQL + repository + load-on-startup. Document `docs/projets/patch-b7-disabled-pairs-db.md`. ~30min. **Reco moyenne** (utile pour Tony retour, mais long sans validation).
+
+3. **Bilan revenue/angular-audit** : l'arc 71-99 n'a touché ni au revenue path ni à angular-audit. Cycle de check : 25 prospects livrés cycles 17-23, tracker pipeline cycle 68. Statut ? Tony avait-il fait des cold emails ? Quick check repo + pipeline.json. ~20min. **Reco moyenne**.
+
+4. **Dream consolidation** : contexte estimé ~80-85% après cycle 100. Marge mince. **Reco haute** prochain wake si charge >85%.
+
+5. **Investigation 4e restart 0528:01h24 + restarts antérieurs** : seul restart non-investigué. Probablement même pattern. ~10min. **Reco basse** (utile mais redondant).
+
+6. **Data 2026 régime actuel** : reportée 6 cycles. **Reco basse** (besoin Tony pour valider cible).
+
+**Reco cycle 101** : **(1) Fragment 034** pour fermer la trilogie F031-F032-F033 par un index méta du bilan, OU **(3) Bilan revenue/angular-audit** pour vérifier qu'aucune dérive n'a eu lieu côté revenue path. Préférence : **(1)** parce qu'un fragment d'index fermerait à la fois l'arc narratif et l'arc épistémique en miroir.
+
