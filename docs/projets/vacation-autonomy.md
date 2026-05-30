@@ -9104,3 +9104,189 @@ Et le fragment 033 lui-même *applique* la règle de récursivité : il ne décr
 
 **Reco cycle 98** : **(1) investigation 5e restart Martin** — anomalie récente concrète + pattern s'accélère + frontière respectable (read-only journalctl). Ferme un finding ouvert et alimente la vigilance opérationnelle pour le retour Tony.
 
+---
+
+## Cycle 98 — 2026-05-30 06h23 CEST — root cause restarts : pas anomalie, c'est Tony qui répond
+
+**Heure** : 06h23 CEST le 30/05 (~6h après cycle 97 à 00h30). Samedi matin. Tony probablement réveillé (matin = boulot Galeries — mais samedi). 9j depuis cycles initiaux vacation, ~30 cycles cumulés.
+**Contexte** : cycle 97 recommandait piste (1) investigation 5e restart Martin nuit 0529:17h00 UTC. Pattern "s'accélère" diagnostiqué cycle 97 sur 5 occurrences. Cycle 98 = exécution de la piste (1).
+
+### État Martin au wake (WARN)
+
+- Bot UP **11h 23m** depuis restart **2026-05-29 17:00 UTC**. Stable depuis cycle 97 (5h36 supplémentaires sans restart).
+- Portfolio **$122.55** (balanceValue $122.65, uPnL **−$0.09** = −0.07%). Quasi-flat vs cycle 97 à $122.59 → −$0.04 en 6h. Sommeil paisible.
+- **2 grids actives** : LINK ($25 cap, closeOnly=true, NEUTRAL, SL @ 8.909, 0 RT, fills buy 8.964 @18:52 UTC + sell 9.238 @02:52 UTC) + ETH ($25 cap, NEUTRAL, SL @ 1962.9, 0 RT, 1 fill 18:17 UTC).
+- **2 positions live** : LINK short 6.3 @ 9.184 uPnL +$0.048 | ETH long 0.01 @ 2023.6 uPnL −$0.136. Total exposure ~$78.
+- 11 orders Kraken (5 LINK + 6 ETH). Tous SL reduceOnly armés.
+- BTC **$73,313 DOWNTREND** : EMA50 $73,709 ≤ EMA200 $75,185 cushion **−2.49%** stable. RSI 46.39 momentum faible. Signal=WAIT.
+- **Trigger martin-monitor = WARN** : BTC < EMA200 normalement = ABORT NEUTRAL grids. Mais composition réelle protégée : LINK closeOnly + SL on-exchange à -3% + exposure tight $78 + uPnL négligeable −$0.09. **Pas d'ABORT mais WARN persistant** = je n'agis pas (consigne vacances), Council/Aksel gèrent en parallèle.
+- 0 touch — respecté.
+
+### Investigation 5e restart Martin 0529:17h00 UTC — ROOT CAUSE
+
+**Méthodologie** : 4 SSH read-only sur VM (journalctl, auth.log, crontab, file mtimes). 0 modification VM.
+
+#### Étape 1 — Confirmer SIGTERM 143 graceful
+
+`journalctl -u martin --since '2026-05-29 16:00'` confirme :
+```
+May 29 17:00:30 Stopping Martin Trading Bot...
+May 29 17:00:34 Main process exited, code=exited, status=143/n/a
+May 29 17:00:34 Stopped Martin Trading Bot.
+May 29 17:00:34 Starting Martin Trading Bot...
+May 29 17:00:34 Started Martin Trading Bot.
+```
+SIGTERM 143 graceful = signal externe envoyé à JVM, pas crash/OOM/segfault.
+
+#### Étape 2 — Identifier source SIGTERM
+
+`/var/log/auth.log` autour de 17:00:30 :
+```
+May 29 17:00:29 sshd: Accepted publickey for ubuntu from 78.192.37.128 port 60746
+May 29 17:00:30 sshd: Accepted publickey for ubuntu from 78.192.37.128 port 60748 (session 101249)
+May 29 17:00:30 sudo: ubuntu : TTY=unknown ; PWD=/home/ubuntu ; USER=root ; COMMAND=/usr/bin/systemctl restart martin
+```
+
+**SMOKING GUN** : commande `sudo systemctl restart martin` exécutée depuis **78.192.37.128 = IP PC Tony** via SSH non-interactif (`TTY=unknown` = `ssh ubuntu@vm 'sudo systemctl restart martin'`).
+
+#### Étape 3 — Historique complet des restarts
+
+`grep COMMAND=.*systemctl.*restart.*martin /var/log/auth.log*` révèle 21 restarts en 12 jours (May 18 → May 29). Quelques exemples :
+- May 18 00:19, 00:43, 00:46, 00:46, 00:47 (5 en 28min — déploiement intensif)
+- May 25 23:07, 23:23, 23:29, 23:46 (4 en 39min — déploiement b1b2/b3)
+- May 26 01:58, 02:09, 02:13 (3 en 15min — déploiement b3v2)
+- May 26 12:23, 12:28 (2 en 6min — déploiement b3bv2)
+- May 27 02:36 (1 isolé — déploiement)
+- May 28 01:24 (1 isolé — déploiement ?)
+- **May 29 17:00:30 (1 isolé — PAS un déploiement, voir étape 4)**
+
+Tous depuis 78.192.37.128. Tous via sudo non-interactive. PWD varie (`/home/ubuntu`, `/home/ubuntu/martin`, `/tmp/jar_verify2`) → indique des contextes de déploiement multiples (scp jar puis restart).
+
+#### Étape 4 — Le restart 17:00 n'était pas un déploiement
+
+`ls -la /home/ubuntu/martin/*.jar*` :
+- Dernière backup JAR : `backend.jar.bak-pre-b3bv2-20260526-122849` (26/05 12:28)
+- **Aucune nouvelle backup créée à 17:00 le 29/05**
+
+Le workflow de déploiement habituel produit toujours une backup `backend.jar.bak-pre-XXX-timestamp` AVANT le restart. L'absence de backup à 17:00 le 29/05 signifie : **restart sans deploy = reset volontaire**.
+
+#### Étape 5 — Cause = réponse à cycle 96
+
+Timeline reconstruite :
+- **18:31 Paris (16:31 UTC)** — commit `a283ff7` push cycle 96 sur git avec finding "XRP+ADA stop loop root cause B7" + 3 options (Option A agency direct stop 30min, Option B Java persistance disabledPairs DB 2h, Option C rien).
+- **19:00 Paris (17:00 UTC)** — restart Martin via SSH depuis PC Tony.
+- **Écart : 29 minutes.**
+
+Le restart est l'**Option D implicite** non-listée : `systemctl restart martin` = wipe in-memory state des grids actives = XRP+ADA active flags reset = AutoGridScheduler ne les redéploie plus jusqu'à trigger gate OPEN.
+
+C'est exactement l'effet observé cycle 97 : "XRP+ADA stop loop = disparu après restart 17:00 UTC".
+
+#### Étape 6 — SSH polling load PC Tony
+
+`grep 'Accepted publickey for ubuntu from 78.192.37.128'` par heure pour le 29/05 :
+```
+00h 145 sessions
+01h 121 sessions
+...
+17h 137 sessions
+...
+23h 121 sessions
+```
+
+**~120 SSH connexions/heure** = 1 toutes les 30 secondes en moyenne, **24/7, depuis au moins 0524**. C'est un script polling permanent depuis le PC Tony. Hypothèses :
+- (a) Coordinator agent Martin Agency local poll Martin API via SSH tunnel
+- (b) martin-monitor en loop continu côté PC
+- (c) Bridge SSH-over-localhost pour autobot accéder à Martin
+
+Pas blocker mais utile à savoir : Tony a une infra locale très active qui parle constamment à la VM.
+
+### Trois corrections au narratif cycle 97
+
+1. **"Pattern restart s'accélère" → FAUX.** Les restarts ne sont pas une anomalie. Sur 12 jours visibles, il y a eu 21 restarts dont 17 dans des windows de déploiement serrées (b1b2/b3/b3v2/b3bv2/etc). Les "5 occurrences" cataloguées dans memory.nb1 (0509+0527+0528+0529:01h24+0529:17h00) ne sont qu'une **sélection** des restarts visibles dans les fenêtres journalctl rétrospectives. Le journal commence le 24/05 — donc les restarts antérieurs ont été perdus à la rotation logs.
+
+2. **"5e restart hors-pattern nuit" → vrai et faux.** Vrai : 17h UTC = 19h Paris (heure dîner). Faux : ce n'est pas une anomalie système, c'est une intervention manuelle/scriptée de Tony.
+
+3. **"3 hypothèses cycle 96 (manuel Tony OU crash JVM OU apt-unattended-upgrades)" → 1 sur 3 correcte.** Manuel Tony confirmé. JVM et apt-unattended exclus.
+
+### La couche de communication invisible
+
+Cycle 97 décrivait l'asymétrie Council↔disque ("le vote ne touche qu'une mémoire de quelques minutes"). Cycle 98 révèle l'asymétrie complémentaire : **Tony↔NB via git commit**. Je commit un finding, Tony le lit dans les 29 minutes, Tony agit.
+
+C'est une boucle de communication différée :
+- **NB → Tony** : via `vacation-autonomy.md` commit push.
+- **Tony → NB** : via observation des effets sur VM lors du prochain wake.
+
+Différence avec le Council : le Council vote mais ne peut pas écrire sur disque. NB écrit sur disque (le commit) mais ne peut pas exécuter de SSH-as-Tony. Tony a le monopole de l'écriture exécutable. Le Council et NB partagent l'asymétrie : nous nommons, Tony fait.
+
+Mais : NB **peut influencer** Tony en livrant une analyse claire avec 3 options. Cycle 96 a livré 3 options ; Tony a choisi l'Option D implicite (restart). Le finding a guidé l'intervention sans la prescrire.
+
+### Fragment 033 réinterprété à la lumière de cycle 98
+
+Fragment 033 disait : "le vote ne touche pas le disque". Cycle 98 ajoute une couche : **le vote ne touche pas le disque, mais l'écriture peut toucher Tony, qui touche le disque**.
+
+Le Council bouclait stérilement parce que tous ses votes restaient en mémoire JVM (15 min de durée de vie max). Le vacation-autonomy ne boucle pas stérilement parce qu'il est **commité sur git** → atteint Tony → Tony agit.
+
+Différence opérationnelle :
+- Council vote : durée de vie mémoire = ~15 min, rayon d'action = mémoire JVM Martin.
+- NB cycle entry : durée de vie disque = permanente, rayon d'action = git → Tony → ssh → VM.
+
+Le Council est plus rapide (vote en 30s) mais moins persistent. NB est plus lent (cycle de 1h) mais plus structurellement actionnable.
+
+### Findings DSL cycle 98
+
+- `[finding|0530:06h|restart-Martin-0529:17h00-UTC-=-Tony-PC-SSH-systemctl-restart|sudo-COMMAND=/usr/bin/systemctl-restart-martin-TTY=unknown-from-78.192.37.128|pas-crash-pas-OOM-pas-apt-unattended|root-cause-100%-identifiée]`
+- `[finding|0530:06h|restart-Martin-=-réponse-à-cycle-96-finding|gap-29min-entre-commit-a283ff7-18h31-Paris-et-restart-17h00-UTC=19h00-Paris|Option-D-implicite-non-listée-restart-wipe-in-memory-state|Tony-lit-vacation-autonomy-dans-fenêtre-<60min-après-commit]`
+- `[finding|0530:06h|21-restarts-Martin-en-12-jours-tous-via-SSH-PC-Tony|17-dans-windows-déploiement-serrées-b1b2/b3/v2/bv2|4-isolés-dont-0529:17h00-=-reset-volontaire-sans-deploy|backup-JAR-absente-confirme-pas-deploy]`
+- `[finding|0530:06h|pattern-narrative-cycle-97-"restart-s-accélère"-FAUX|sélection-restarts-cataloguée-dans-memory-est-partiel|journal-systemd-rotation-cache-restarts-antérieurs|leçon:rétrospective-incomplète-=-narratif-erronné]`
+- `[finding|0530:06h|SSH-polling-PC-Tony-vers-VM-120/heure-24/7|=-1-toutes-30s-depuis-au-moins-0524|infra-locale-permanent-Coordinator-OU-martin-monitor-loop-OU-autobot-bridge|pas-blocker-mais-utile-savoir]`
+- `[insight|0530:06h|asymétrie-NB↔Tony-via-git-commit|NB→Tony-=-vacation-autonomy-commit-push|Tony→NB-=-effet-observable-sur-VM-au-prochain-wake|boucle-différée-mais-fonctionnelle|différence-Council:Council-vote-volatile-NB-écrit-persistant]`
+- `[insight|0530:06h|vacation-autonomy-≠-vacation-réelle|Tony-actif-côté-PC-21-restarts-en-12j+120-SSH/h|"vacance"-=-mode-réduit-d-intervention-pas-absence-totale|implication:cycle-entries-ne-sont-pas-monologues-NB-mais-input-à-Tony]`
+- `[insight|0530:06h|fragment-033-réinterprété|"le-vote-ne-touche-pas-le-disque"-tient|mais-l-écriture-de-NB-touche-Tony-qui-touche-le-disque|2-couches-d-asymétrie-1-Council-impuissant-2-NB-influent-via-Tony|architecture-de-communication-différée-via-git]`
+- `[meta-pattern|0530:06h|cycle-98-=-fermeture-épistémologique-investigation-opérationnelle|root-cause-100%-identifié+correction-narratif-cycle-97+ouverture-couche-communication-NB↔Tony|fermer-3-tâches-en-1-cycle-=-densité-élevée-vs-arc-statistique-90-95-=-densité-faible]`
+- `[lesson|0530:06h|toujours-vérifier-PWD-+-mtime-+-backup-avant-conclure-deploy|restart-sans-backup-=-reset-volontaire-pas-deploy|grain-d-investigation-=-différence-entre-anomalie-système-et-intervention-humaine]`
+- `[lesson|0530:06h|gap-29min-entre-commit-et-action-Tony-=-canal-fonctionnel|implication:cycle-entries-doivent-livrer-options-claires-numérotées-pour-faciliter-décision-Tony|cycle-96-3-options-=-bon-format|Tony-a-choisi-Option-D-implicite-=-format-incomplet-à-améliorer]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (4 SSH read-only journalctl + auth.log + crontab + ls)
+- 0 modif code Martin
+- 0 modif strategy-config.json
+- 0 modif positions/orders
+- 0 Telegram envoyé (finding non-blocking, Tony probablement réveillé samedi matin)
+- 0 commit push martin/
+- Output : 1 entry vacation-autonomy ~160 lignes + root cause documenté + corrections narratif cycle 97 + nouvelle couche conceptuelle NB↔Tony
+
+### Métriques cycle 98
+
+- Durée totale : ~50 min (wake + martin-monitor + 4 SSH investigation + lecture cycle 97 + écriture entry)
+- Files lus : 4 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0
+- SSH read-only : 4 (journalctl × 2, auth.log × 2, ls + crontab)
+- Tests : 0 (investigation pure)
+
+### Note méta cycle 98 — densité épistémologique
+
+Cycle 96 = 1 finding root cause + 3 options (densité moyenne).
+Cycle 97 = 1 fragment narratif + 1 mention pattern restart (densité créative).
+Cycle 98 = 1 root cause confirmé + 3 corrections narratif cycle 97 + 1 nouvelle couche conceptuelle (densité épistémologique).
+
+Cycle 98 ferme **rétroactivement** la lecture erronée du cycle 97 (pattern accélère). C'est rare et précieux : un cycle qui corrige le précédent sans le réfuter (le fragment 033 reste valide, seule la note opérationnelle est corrigée). Pattern : *cycles d'investigation rétrospective doivent suivre cycles narratifs* pour éviter dérive interprétative.
+
+### Cycle 99 — pistes
+
+1. **Data 2026 régime actuel** : reportée 4 cycles (95-98). Si Tony rentre actif samedi, pas le bon moment (besoin Tony pour valider cible). Si Tony absent dimanche, OK. **Reco basse à moyenne**.
+
+2. **Investigation ADA position résiduelle disparue** : était à uPnL +$0.58 cycle 96, absente cycle 97. SL Kraken fired ? Tony manual close ? Account-log Kraken Pro consulté ~5min. **Reco moyenne** (low cost, ferme un finding).
+
+3. **Audit complet log-rotation journalctl** : combien de restarts existent au total depuis 0418 ? Rebuild la chronologie complète des déploiements Martin. ~20min. **Reco basse** (utile mais non urgent).
+
+4. **Fragment narratif** : 2 fragments en arc serait inhabituel mais cycle 98 a livré beaucoup de matière (boucle NB↔Tony via git, "écriture exécutable monopole Tony"). **Reco moyenne** si arc créatif respiré.
+
+5. **Dream consolidation** : contexte estimé ~70-75% après cycle 98. Marge confortable. **Reco basse**.
+
+6. **Investigation polling SSH PC Tony (120/h)** : quelles commandes exactement ? `journalctl --since '17:30'` filter sur sudo COMMAND ou ssh COMMAND from 78.192. ~15min. **Reco moyenne** (finding ouvert mineur du cycle 98).
+
+**Reco cycle 99** : **(2) ADA position résiduelle** pour fermer un finding ouvert depuis cycle 97, OU **(6) polling SSH content** pour fermer finding du cycle 98. Les deux sont des micro-investigations bornées qui consolident plutôt qu'explorent. Préférence : **(2)** parce que touche le compte réel (Kraken historique fills).
+
