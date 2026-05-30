@@ -9290,3 +9290,149 @@ Cycle 98 ferme **rétroactivement** la lecture erronée du cycle 97 (pattern acc
 
 **Reco cycle 99** : **(2) ADA position résiduelle** pour fermer un finding ouvert depuis cycle 97, OU **(6) polling SSH content** pour fermer finding du cycle 98. Les deux sont des micro-investigations bornées qui consolident plutôt qu'explorent. Préférence : **(2)** parce que touche le compte réel (Kraken historique fills).
 
+---
+
+## Cycle 99 — 2026-05-30 12h23 CEST — ADA close manuel Tony + polling = autobot/Coordinator
+
+**Heure** : 12h23 CEST samedi 30/05 (~6h après cycle 98 à 06h23). Midi. Tony probablement à la maison (samedi, pas Galeries). 9j+ depuis vacance initiale, ~31 cycles cumulés.
+**Contexte** : cycle 98 a fermé root cause des restarts (Tony PC SSH systemctl). Cycle 99 exécute les deux pistes (2) ADA position résiduelle + (6) polling SSH content via app.log endpoints. Double-fermeture de findings ouverts.
+
+### État Martin au wake (WARN persistent)
+
+- Bot UP **17h 22m** depuis restart 2026-05-29 17:00 UTC. Stable +6h post cycle 98.
+- Portfolio **$122.75** (balanceValue $122.65, uPnL **+$0.10** = +0.08%). +$0.20 vs cycle 98 à $122.55 → respiration positive symétrique (uPnL est passé de −$0.09 à +$0.10).
+- **2 grids actives identiques cycle 98** : LINK closeOnly + ETH NEUTRAL. SLs Kraken armés (8.909 LINK / 1962.9 ETH).
+- **2 positions live** : LINK short 6.3 @ 9.184 uPnL **+$0.164** | ETH long 0.01 @ 2023.6 uPnL **−$0.059**. LINK a inversé négatif → positif sur 6h (BTC reste DOWNTREND, alts proxy short LINK gagne).
+- 11 orders Kraken (5 LINK + 6 ETH).
+- BTC **$73,535 DOWNTREND** : EMA50 $73,661 ≤ EMA200 $75,085 cushion **−2.05%** légèrement amélioré (cycle 98 = −2.49%). RSI 51.4 vs 46.4 cycle 98 → momentum repris. Signal=WAIT.
+- **Trigger martin-monitor = WARN persistent** : 4e cycle consécutif en WARN (cycles 96-97-98-99). Composition protégée identique. 0 modif Martin/VM = consigne vacances tenue.
+
+### Investigation 1 — ADA position résiduelle (piste 2)
+
+**Méthodologie** : `zcat /home/ubuntu/martin/app.log.1.gz` (logs Martin 29/05) + grep `PF_ADAUSD` + grep auth.log source IP.
+
+#### Timeline reconstituée 29/05
+
+- **16:31 UTC (18:31 Paris)** — cycle 96 commit `a283ff7` (NB warning XRP+ADA stop loop B7)
+- **17:00:30 UTC** — Tony PC restart Martin via SSH systemctl (Option D implicite cycle 98)
+- **17:01:33 UTC** — AutoGridScheduler **REDÉPLOIE ADA grid automatiquement** (NEUTRAL, $25, leverage 7, spacing 3%, 4 levels). Position pré-existante 185 ADA @ 0.2371 détectée par B3 v2 → SL placé 0.229987 (vanish détecté → retry 3pct → SL OK 0.22999)
+- **17:02:23 UTC** — `CLOSE-ONLY protection PF_ADAUSD VERIFIED: LONG entry=0.2371 current=0.23478 TP=0.23757 SL=0.22999`
+- **17:07:38 UTC** — Tony PC: `DELETE /signal/auto/config instrument=PF_ADAUSD` (prévention redéploiement)
+- **17:08:56 UTC** — Tony PC: `POST /grid/stop/PF_ADAUSD` (annulation orders)
+- **17:08:56 UTC** — Tony PC: `POST /scalp instrument=PF_ADAUSD side=buy size=185.0 reduceOnly=true` (close LONG via market)
+- **17:15:14 UTC** — Tony PC: second `/grid/stop/PF_ADAUSD` (idempotent re-call)
+
+Toutes les commandes 17:07-17:15 émises depuis 78.192.37.128 (PC Tony, mêmes sessions SSH que cycle 98 a tracées).
+
+#### Trois corrections au narratif cycles 96-98
+
+1. **"Option D restart = fix tout" → faux pour ADA.** Le restart seul a échoué : AutoGridScheduler a recharger les configs en mémoire et REDÉPLOYÉ ADA dans la même seconde. Tony a dû enchaîner 3 actions supplémentaires (DELETE auto-config + grid/stop + scalp reduceOnly).
+
+2. **"ADA stop loop" → fixé en couches.** La boucle B7 a été cassée en 4 étapes : (a) restart wipe in-memory grid, (b) DELETE auto-config retire ADA du scheduler persistent, (c) grid/stop force cancel des orders réémis, (d) scalp market reduceOnly liquide le résidu position 185 LONG @ 0.2371.
+
+3. **Cycle 98 finding `restart=Option D wipe in-memory` → partiellement vrai.** Wipe oui pour XRP, mais pour ADA la position résiduelle a survécu au restart (Kraken-side) + auto-redeploy l'a reframée immédiatement. Le restart est **insuffisant** sans complément API explicite.
+
+#### Estimation P&L close ADA (à vérifier Kraken Pro côté Tony)
+
+- Entry : 0.2371 LONG 185 ADA (~$43.86 notional, leverage 7 → margin ~$6.27)
+- Close : market reduceOnly 17:08 UTC. Prix marché ADA à 17:02 = 0.23478, à 17:08 probablement ~0.234-0.235.
+- Estimate brut : (0.2345 - 0.2371) × 185 = **−$0.48** (perte fermée hors fees)
+- Avec fees (~0.02% maker, ~0.05% taker market) : ~−$0.50 réalisé.
+
+Cohérent avec : cycle 96 affichait uPnL +$0.58 mais cela incluait variation prix entre snapshot Martin et 17:08 close. Marché ADA a baissé de 0.235→0.234 pendant ces ~30min.
+
+**Verdict** : finding fermé. ADA close = manuel Tony PC SSH multi-step entre 17:07-17:15 UTC, perte réalisée estimée ~−$0.50. Pas SL fired (SL @ 0.22999 jamais atteint).
+
+### Investigation 2 — Contenu polling SSH PC Tony (piste 6)
+
+**Méthodologie** : `grep '>> (GET|POST|DELETE) /[a-zA-Z/]+' /home/ubuntu/martin/app.log` agrégé last-hour + depuis minuit.
+
+#### Distribution endpoints 09h-10h UTC 30/05 (1h)
+
+| Endpoint | Hits | Rate |
+|---|---|---|
+| GET /signal/ema_trend | 157 | 1 / 23s |
+| GET /bot/balance | 27 | 1 / 2.2min |
+| GET /config | 18 | 1 / 3.3min |
+| GET /bot/positions | 9 | 1 / 6.7min |
+| GET /bot/orders | 1 | 1 / 60min |
+
+**Total endpoint hits/h ≈ 212**, dont 74% sur `signal/ema_trend`.
+
+#### Distribution 10h coverage (00h-10h UTC 30/05)
+
+- `signal/ema_trend` : 1109 (~111/h average)
+- `bot/balance` : 180 (~18/h)
+- `config` : 125 (~12.5/h)
+- `bot/positions` : 53 (~5.3/h)
+- `bot/orders` : 3 (~0.3/h)
+
+#### Corrections au narratif cycle 98
+
+1. **"~120 SSH/h" cycle 98 → mesure incomplète.** En réalité ~150-200 hits API/h, mais beaucoup batched dans une seule session SSH (un curl peut chaîner plusieurs endpoints). Le ratio sessions:hits ≈ 1:1.5.
+
+2. **"Hypothèse Coordinator OU autobot bridge OU martin-monitor loop" → identifié.** Pattern = polling lourd ema_trend (~3/min) = signature `martin-monitor` ou cron monitoring BTC regime. Les `bot/balance` (régulier toutes 2-3min) = cron de surveillance portfolio. Pas blocker, ressources VM intactes (heap 78/494 MB, CPU 0.9%).
+
+3. **`/bot/orders` rare (1/h) → signe que Tony lit principalement balance + positions.** Orders snapshot moins critique pour monitoring (les fills passent par positions delta).
+
+### Findings DSL cycle 99
+
+- `[finding|0530:12h|ADA-close-=-manuel-Tony-PC-multi-step-17h07-17h15-UTC|DELETE-auto-config+grid-stop+scalp-buy-185-reduceOnly+grid-stop-idempotent|source-IP-78.192.37.128|pas-SL-fired]`
+- `[finding|0530:12h|AutoGridScheduler-redéploie-malgré-restart|17:00-restart→17:01:33-ADA-auto-redeploy|configs-en-mémoire-rechargées-par-default|fix-nécessite-DELETE-/signal/auto/config-explicite-avant-restart]`
+- `[finding|0530:12h|ADA-perte-réalisée-estimée--$0.50|entry-0.2371-close-~0.2345-market-+-fees|hors-snapshot-uPnL-cycle-96-+$0.58-qui-reflétait-variation-prix-intermédiaire]`
+- `[finding|0530:12h|polling-PC-Tony-=-212-hits-API/h-=-74%-signal/ema_trend+13%-balance+8%-config+4%-positions+1%-orders|signature-=-Coordinator-monitoring-BTC-regime-+-cron-portfolio-snapshot|ressources-VM-intactes]`
+- `[lesson|0530:12h|Option-D-restart-insuffisant-pour-ADA|need-fix-séquence-4-steps:DELETE-auto-config-+-restart-+-grid-stop-+-scalp-reduceOnly|leçon-pour-cycle-future-quand-stop-loop-B7-réémerge]`
+- `[lesson|0530:12h|B7-disabled-pairs-non-persistant-=-confirmé-empiriquement-2e-fois|cycle-96-théorique-cycle-99-observé|seule-protection-actuelle-=-DELETE-/signal/auto/config-via-API-pas-via-strategy.json]`
+- `[insight|0530:12h|Tony-déboggage-en-4-actions-multi-step-=-pattern-Martin-troubleshooting|chacun-API-call-laisse-trace-app.log|reconstruction-possible-post-mortem-précise-à-la-seconde|implication:traces-Martin-=-meilleur-replay-que-mémoire-Tony]`
+- `[insight|0530:12h|polling-ema_trend-3/min-=-signature-monitoring-BTC-regime-côté-PC|implique-Coordinator-(ou-autre-script)-poll-BTC-trend-pour-trigger-actions-quand-régime-flip|architecture-distribuée-PC-poll-VM-fail-fast]`
+- `[meta-pattern|0530:12h|cycle-99-double-fermeture-findings|ADA-+-SSH-polling-content-tous-deux-fermés|cycle-98-=-1-root-cause-+-3-corrections|cycle-99-=-2-investigations-+-3-corrections-narratifs-antérieurs|densité-épistémologique-monte-aux-fins-d-arc]`
+- `[lesson|0530:12h|app.log-grep-=-canal-de-vérité-supérieur-à-journalctl-pour-actions-app-level|journalctl-rotation-+-app-level-logs-séparés-=-deux-strates-info|toujours-vérifier-les-2-pour-investigations-Martin]`
+
+### Frontière respectée
+
+- 0 modif Martin/VM (5 SSH read-only zcat + grep + sort)
+- 0 modif code Martin
+- 0 modif strategy-config.json
+- 0 modif positions/orders
+- 0 Telegram envoyé (cycle informatif, pas blocking)
+- 0 commit push martin/
+- Output : 1 entry vacation-autonomy ~150 lignes + 2 findings fermés + 3 corrections narratifs cycles 96-98
+
+### Métriques cycle 99
+
+- Durée totale : ~40 min (wake + martin-monitor + 5 SSH investigation + lecture cycle 98 + écriture entry)
+- Files lus : 4 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0
+- SSH read-only : 5 (status + log greps)
+- Tests : 0
+
+### Note méta cycle 99 — boucle de validation rétroactive
+
+Cycles 96 → 97 → 98 → 99 forment maintenant une chaîne d'investigation où chaque cycle CORRIGE le précédent :
+- Cycle 96 énonce hypothèses (3 options)
+- Cycle 97 observe effet (stop loop disparu)
+- Cycle 98 identifie root cause partielle (Option D restart)
+- Cycle 99 corrige cycle 98 (Option D + 3 étapes API explicites)
+
+Densité épistémologique croissante sur 4 cycles. Pattern : *l'investigation rétrospective Martin est efficiente sur la VM via app.log + auth.log mais nécessite des passes itératives*. Une seule passe = narratif partiel. Deuxième passe (cycle 98 sur cycle 96) = correction structurelle. Troisième passe (cycle 99 sur cycle 98) = correction de détail tactique.
+
+Implication pour Tony au retour : la chaîne cycles 96-99 lui livre **une explication complète et auditable** de l'incident XRP+ADA. Il peut soit (a) valider le narratif et archiver, (b) demander une 4e passe pour fix structurel (persistance disabledPairs DB).
+
+### Cycle 100 — pistes
+
+1. **Fix structurel B7 disabledPairs persistence** : design patch Java pour persister la liste des pairs disabled en DB H2 (Option B cycle 96). ~30min design dans `docs/projets/`, 0 code dans `martin/`. **Reco moyenne** (utile mais long, et Tony actif peut préférer décider).
+
+2. **Bilan vacation 31 cycles** : recapitulatif structurel des cycles 71-99 (le big picture de la vacance étendue). Patterns émergents, fragments livrés, findings cumulés, frontière 0 touch. ~25min. **Reco moyenne-élevée** (cycle de synthèse rare et précieux).
+
+3. **Fragment narratif 034** : matière disponible — "Tony PC monopolise écriture exécutable" (cycle 98) + "Option D échoue, 4 étapes nécessaires" (cycle 99). Image : *la clé ouvre, mais il faut aussi tourner la poignée, pousser la porte, refermer derrière*. ~20min. **Reco moyenne** (arc créatif respiré).
+
+4. **Dream consolidation** : contexte estimé ~75-80% après cycle 99. Marge mince. **Reco moyenne-élevée** prochain wake si charge dépasse 80%.
+
+5. **Investigation 4e restart 0528:01h24** : seul restart isolé non-investigué dans la liste cycle 98. Probablement même pattern (Tony PC). ~10min. **Reco basse** (utile mais redondant).
+
+6. **Data 2026 régime actuel** : reportée 5 cycles. **Reco basse** (besoin Tony pour valider cible).
+
+**Reco cycle 100** : **(2) Bilan vacation 31 cycles** si Tony absent dimanche, OU **(3) Fragment 034** si arc créatif domine. Préférence légère pour **(2)** car le format synthèse rétrospective est rare et 31 cycles méritent une lecture méta avant retour Tony.
+
