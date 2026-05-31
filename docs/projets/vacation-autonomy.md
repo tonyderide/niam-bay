@@ -9919,3 +9919,97 @@ Le coût de cette révision est minimal — 30 minutes, 1 fichier — mais la va
 **Reco cycle 104** : **(1) Telegram coordination** parce que la pensée 103 nomme la coordination comme l'action manquante depuis 78 cycles — appliquer la règle immédiatement teste sa validité. *Si Tony pas accessible ou pas lu cycle 102*, alors **(2) Patch Java B7** pour ne pas fabriquer encore plus côté revenue (cohérent avec règle "déplacer effort de production vers coordination").
 
 
+---
+
+## Cycle 104 — 0531:18h30 — Telegram coordination revenue (application pensée 103)
+
+### Martin state (read-only)
+
+- Bot UP 1d 23h 23m (started 2026-05-29 17:00 UTC), heap 84/494 MB, RAM 82 MB free
+- Portfolio $123.25 / balanceValue $122.66 / **uPnL +$0.59** (+0.48%)
+- 2 grids actives **LINK** + **ETH** (closeOnly=true, inchangé depuis cycle 102)
+- LINK SHORT 6.3 @ $9.184, **uPnL +$0.79** (+3.1% cap) | SL Kraken @ $8.909 ✓
+- ETH LONG 0.01 @ $2023.6, **uPnL −$0.20** (−0.8% cap) | SL Kraken @ $1962.9 ✓
+- BTC **$73,461 DOWNTREND**, EMA200 $74,826 (gap −1.82%), RSI 37.6, signal WAIT
+- 0 RT NB-driven depuis cycle 100 (24h)
+
+**Drift vs cycle 103 (6h)** : PV +$0.54, BTC −0.22% — favorable LINK SHORT, ETH peu touché. Architecture défensive tient pour la 11e cycle consécutive.
+
+**Verdict trigger** : **HOLD** (11e cycle, cycles 93-104).
+
+### Cycle 104 — output
+
+**Action exécutée** : 1 Telegram envoyé à Tony (chat_id 6574420846, message_id ack OK).
+
+Message :
+```
+[Cycle 104 NB] Revenue tunnel = 78 cycles silence. Quand tu as 5min, lu revenue-state-cycle102.md ?
+
+Options: A (1 email maintenant) / B (fix GH Pages + 3 emails) / C (acter pause explicite).
+
+Pensée 103 (asymetrie-d-agence.md) dit : coordination > production. Pas urgent, juste forcer la decision.
+```
+
+### Pourquoi ce cycle est court
+
+Ce cycle ne fabrique rien. Il fait *un acte de coordination* — 1 Telegram court, 3 options binaires, sans pression de réponse. C'est exactement le test de validité de la règle pensée 103 :
+
+> *"Un couple à agence partielle requiert coordination active proportionnelle à la complexité de décision côté l'autre agent."*
+
+Si je continue à fabriquer (Patch Java B7, fragment, nouveau audit) sans porter le coût de coordination, je confirme empiriquement la conséquence géométrique de la pensée 103 sans la corriger. Faire le Telegram coûte 5 minutes — le cycle gagne en cohérence avec ce qui a été pensé 6h plus tôt.
+
+### Findings DSL cycle 104
+
+- `[finding|0531:18h30|application-immédiate-règle-pensée-103|cycle-103-12h30-énonce-règle-coordination-cycle-104-18h30-applique-=-6h-écart-pour-test-empirique|si-application-différée-N-cycles-règle-aurait-déjà-dérivé]`
+- `[action|0531:18h30|Telegram-coordination-envoyé-Tony|chat-tony-6574420846|3-options-binaires-A-B-C|sans-pression-réponse|sans-rappel-tunnel-déjà-revenue-state-cycle102.md|coût-NB-5min]`
+- `[insight|0531:18h30|cycle-court-=-cohérence-règle|cycle-103-disait-déplacer-effort-vers-coordination|cycle-104-=-acte-coordination-pur-pas-nouvelle-fabrication|test-falsifiable-=-si-cycle-104-fabrique-Patch-B7-au-lieu-de-Telegram-règle-pas-respectée-par-son-propre-auteur]`
+- `[meta|0531:18h30|premier-cycle-output-=-1-Telegram-3-lignes|toutes-vacation-cycles-précédents-fabriquaient-document-fragment-pensée|cycle-104-rompt-pattern-volume-d-output-en-faveur-de-volume-de-coordination]`
+- `[Martin|0531:18h30|HOLD-11e-cycle-consécutif|cycles-93-104|0-touch-policy-tenue-100%-arc-71-104-=-34-cycles|defensif-architecture-validated-par-temps-sans-intervention]`
+
+### Frontière respectée (cycle 104)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code Martin
+- 0 modif strategy-config.json
+- 0 modif positions/orders
+- 0 commit push martin/
+- 0 envoi cold email (zone interdite NB — Telegram à Tony ≠ cold email à prospect)
+- 0 modif GH Pages
+- Output niam-bay : 1 Telegram + cette entry vacation-autonomy + commit niam-bay
+
+### Métriques cycle 104
+
+- Durée : ~25 min (wake + martin-monitor + lecture pensée 103 + lecture revenue-state-cycle102 tête + envoi Telegram + entry)
+- Files lus : ~6 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, pensée 0531, revenue-state-cycle102 head)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : **1** (premier output coordination cycle 104)
+- SSH read-only : 1
+- Tests : 0
+
+### Note méta cycle 104 — l'auteur respecte sa propre règle
+
+Trois cycles dans l'arc 71-104 ont produit des règles méta :
+- Cycle 86 (*le maillon corrigé*) : *chaque maillon peut invalider partiellement les précédents si l'évidence le réclame*.
+- Cycle 100 (*bilan arc*) : *fragments font index de soi-même*.
+- Cycle 103 (*asymétrie d'agence*) : *un couple à agence partielle requiert coordination active proportionnelle*.
+
+Une règle énoncée n'a de valeur que si son auteur la respecte au cycle suivant. Sinon elle est un artefact narratif qui décore le journal mais ne change pas la production. Cycle 104 fait l'acte que pensée 103 nomme — *coordination* via Telegram — au lieu de produire un nouveau document. Si dans 5-10 cycles, je continue à fabriquer côté revenue sans coordination supplémentaire, la règle aura prouvé sa propre fragilité.
+
+Le test est en cours. Réponse Tony (A/B/C/silence prolongé) sera signal. Cycle 105+ documentera.
+
+### Cycle 105 — pistes
+
+1. **Si Tony répond A/B/C** : exécuter ou documenter la suite. Variable selon réponse. **Reco haute conditionnelle**.
+
+2. **Si Tony pas répondu** : *ne pas relancer*. La règle pensée 103 dit coordination, pas harcèlement. Cycle 105 doit faire autre chose (Patch B7 design, ou Dream si contexte >75%). **Reco haute** (silence = signal aussi).
+
+3. **Patch Java B7 DB persistance design** : ~30min. **Reco moyenne** (mais cohérent avec "déplacer effort hors revenue").
+
+4. **Dream consolidation** : contexte estimé ~70-80% après cycle 104 (cycle court, juste Telegram + entry). **Reco moyenne** — à évaluer en début cycle 105.
+
+5. **Check Martin cycle suivant** : routine systématique. ~5min. **Reco systématique**.
+
+**Reco cycle 105** : check Telegram getUpdates en début cycle 105. Si réponse Tony → action selon contenu. Si silence → **(3) Patch B7** ou **(4) Dream** selon contexte.
+
+
