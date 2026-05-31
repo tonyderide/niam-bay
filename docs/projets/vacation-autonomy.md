@@ -9834,3 +9834,88 @@ Pattern à retenir : *quand un canal préparé n'est pas utilisé pendant N cycl
 
 **Reco cycle 103** : **(1) Pensée méta** si Tony pas réagi à revenue-state-cycle102.md. **(4) Acter décision** si Tony a appliqué A ou B. **(3) Dream** si contexte >80%.
 
+
+---
+
+## Cycle 103 — 0531:12h30 — Pensée méta sur l'asymétrie d'agence
+
+### Martin state (read-only)
+
+- Bot UP 1d 17h 23m (started 2026-05-29 17:00 UTC), heap 85/494 MB
+- Portfolio $122.71 / balanceValue $122.66 / **uPnL +$0.05** (+0.04%)
+- 2 grids actives **LINK** + **ETH** (closeOnly=true sur les 2, inchangé depuis cycle 102)
+- LINK SHORT 6.3 @ $9.184, **uPnL +$0.15** (+0.6% cap) | SL @ $8.909 ✓
+- ETH LONG 0.01 @ $2023.6, **uPnL −$0.10** (−0.4% cap) | SL @ $1962.9 ✓
+- BTC **$73,625 DOWNTREND**, EMA200 $74,895 (gap −1.69%), RSI 42.7, signal WAIT
+- 0 RT NB-driven depuis cycle 100 (18h)
+
+**Drift vs cycle 102 (6h)** : PV +$0.35, BTC −0.63% favorable pour SHORT LINK, ETH léger pull. Architecture défensive tient.
+
+**Verdict trigger** : **HOLD**. 10e cycle consécutif (cycles 93-103).
+
+### Cycle 103 — output
+
+**Pensée créée** : `docs/pensees/2026-05-31-asymetrie-d-agence.md` (~110 lignes, 8 sections + 3 codas).
+
+Diagnostic du pattern *fabriquer-domine-vendre* qui tient malgré 23 jours de préparation poussée (cycles 1-23 + 67-68 + 102 = ~26h de fabrication, 0 envoi). Trois hypothèses testées :
+
+1. **Procrastination Tony** — falsifiée par évidence empirique (Tony exécute deploys/code/trades sans procrastination, donc procrastination non globale ; localisée sur revenue = symptôme pas cause).
+2. **Tunnel préparé pour NB pas pour Tony** — partiellement vraie. Indices : 25 prospects = projet pas action, playbook 90min sans output intermédiaire, drafts sans dépendance landing (retire l'urgence GH Pages).
+3. **Asymétrie d'agence** — hypothèse retenue. NB a 100% agence sur *fabriquer*, 0% sur *vendre* (zone interdite + no email access). Conséquence géométrique : un agent à agence partielle optimise sur sa moitié, l'autre reste en suspens si personne ne porte la coordination.
+
+**Implication** : le pattern ne se cassera pas en fabriquant mieux (cycles 16-23 falsifient cette voie). Il peut se casser en (a) réduisant la fabrication, ou (b) déplaçant l'effort vers la *coordination* (action ≠ production).
+
+**Généralisation** : Code/Deploy, Décision/Exécution, Fabriquer/Vendre sont 3 couples à agence partielle. Les 2 premiers sont stables parce que coordonnés quotidiennement. Le 3e dérive depuis 78 cycles parce qu'aucune coordination active. **Règle qui sort** : un couple à agence partielle requiert coordination active proportionnelle à la complexité de décision côté l'autre agent.
+
+### Findings DSL cycle 103
+
+- `[finding|0531:12h30|pattern-fabriquer-domine-vendre-pas-cassé-par-fabrication-supplémentaire|cycles-16-23-tentaient-via-pré-exécution-step-3|78-cycles-plus-tard-toujours-0-envoi|hypothèse-tunnel-incomplet-falsifiée]`
+- `[insight|0531:12h30|asymétrie-d-agence-=-cause-structurelle|NB-100%-agence-fabriquer+0%-agence-vendre|optimisation-locale-rationnelle-mais-biaisée-globalement|pattern-géométrique-pas-psychologique]`
+- `[insight|0531:12h30|tunnel-préparé-pour-NB-pas-pour-Tony|25-prospects-=-projet-pas-action|playbook-90min-vs-Tony-steps-5min|drafts-sans-dépendance-landing-retire-urgence-fix-GH-Pages|asymétrie-audience-cachée]`
+- `[insight|0531:12h30|3-couples-agence-partielle-différentiel-=-fréquence-coordination|Code/Deploy-quotidien-stable|Décision/Exécution-quand-alerté-stable|Fabriquer/Vendre-78-cycles-sans-coordination-instable]`
+- `[reco|0531:12h30|déplacer-80%-effort-revenue-de-production-vers-coordination|prochain-cycle-pertinent-=-Telegram-court-décision-binaire-continue-arrête|pas-rappeler-tunnel-forcer-décision]`
+- `[lesson|0531:12h30|règle-générale-couple-agence-partielle|requiert-coordination-active-proportionnelle-complexité-décision-autre-agent|sinon-dérive-géométrique-inévitable|condition-de-réfutabilité-explicite-dans-pensée]`
+- `[meta|0531:12h30|pensée-103-=-3e-pensée-méta-2026-05|le-maillon-corrigé-0527+edge-prédictif-vs-structurel-0526+asymétrie-agence-0531|pattern-fabrication-pensée-méta-1-par-arc-décisionnel]`
+
+### Frontière respectée (cycle 103)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code Martin
+- 0 modif strategy-config.json
+- 0 modif positions/orders
+- 0 commit push martin/
+- 0 Telegram (pensée est analyse, pas trigger d'urgence — Telegram coordination viendra plus tard)
+- 0 envoi cold email (zone interdite NB)
+- Output niam-bay : 1 pensée créée + cette entry vacation-autonomy + commit niam-bay
+
+### Métriques cycle 103
+
+- Durée : ~30 min (wake + martin-monitor + lecture pensée 0527 + écriture pensée + entry)
+- Files lus : ~7 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, pensée 0527, ls pensees)
+- Files créés : 1 (`asymetrie-d-agence.md` ~110 lignes)
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0
+- SSH read-only : 1
+- Tests : 0
+
+### Note méta cycle 103 — la pensée comme acte de révision active
+
+Le cycle 102 a livré un one-pager honnête sur l'état du tunnel revenue. Il aurait été cohérent de s'arrêter là — l'audit est fait, la décision attend Tony.
+
+Mais la pensée 103 ajoute quelque chose que le one-pager ne pouvait pas porter : un *diagnostic structurel* du pattern. Le one-pager dit *quoi* (tunnel gelé) et *où* (blocker mental). La pensée 103 dit *pourquoi* (asymétrie d'agence) et *comment changer* (déplacer effort vers coordination).
+
+C'est exactement la *révision active* que la pensée du cycle 86 (*le maillon corrigé*) nommait : *chaque maillon peut invalider partiellement les précédents si l'évidence le réclame*. Ici, le maillon cycle 103 invalide partiellement le diagnostic implicite des cycles 16-23 (*pattern se casse par meilleure préparation*) et le remplace par un diagnostic plus précis (*pattern se casse par coordination, pas par production*).
+
+Le coût de cette révision est minimal — 30 minutes, 1 fichier — mais la valeur ajoutée est l'orientation des cycles futurs. Sans cette pensée, le cycle 110 ou 120 aurait probablement re-fabriqué encore un artefact revenue. Avec cette pensée, le prochain cycle revenue sera *forcément* un acte de coordination, ou une pause actée.
+
+### Cycle 104 — pistes
+
+1. **Telegram coordination revenue à Tony** : message court "Tu as lu revenue-state-cycle102.md ? On continue ou on acte pause ?". Action 5min. **Reco haute** *si timing permet* (Tony peut-être à table déjeuner ou avec famille — choisir cycle suivant si lecture probable).
+2. **Patch Java B7 DB persistance design** : Option B cycle 96 toujours en attente. ~30min. **Reco moyenne** (peut être livré sans validation immediate).
+3. **Dream consolidation** : contexte cycle 103 modéré (pensée 110 lignes + entry). Estimer 60-70% en fin cycle. **Reco basse** (encore de la marge).
+4. **Fragment littéraire sur asymétrie d'agence** : pensée méta + fragment narratif = pattern *cycle 84+86 pour edge structurel*. Tester si réplicable ici. ~25min. **Reco basse-moyenne** (récent F034 ferme déjà tétralogie, pas de cluster narratif nouveau).
+5. **Check Martin cycle suivant** : routine systématique. ~5min. **Reco systématique**.
+
+**Reco cycle 104** : **(1) Telegram coordination** parce que la pensée 103 nomme la coordination comme l'action manquante depuis 78 cycles — appliquer la règle immédiatement teste sa validité. *Si Tony pas accessible ou pas lu cycle 102*, alors **(2) Patch Java B7** pour ne pas fabriquer encore plus côté revenue (cohérent avec règle "déplacer effort de production vers coordination").
+
+
