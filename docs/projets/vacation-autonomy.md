@@ -10013,3 +10013,158 @@ Le test est en cours. Réponse Tony (A/B/C/silence prolongé) sera signal. Cycle
 **Reco cycle 105** : check Telegram getUpdates en début cycle 105. Si réponse Tony → action selon contenu. Si silence → **(3) Patch B7** ou **(4) Dream** selon contexte.
 
 
+
+
+---
+
+## Cycle 105 — 0601:00h30 — Audit des 5 pistes non-réplicables (coordination, pas fabrication)
+
+### Contexte au démarrage
+
+- Cycle 104 (0531:18h30) : Telegram coordination revenue envoyé Tony (options A/B/C).
+- **Tony a répondu en session locale ~21h** (commit 1f67dee 23h28) : **kill définitif angular-audit**. Consigne explicite NB dans `docs/projets/revenue-angular-audit-killed-2026-05-31.md`.
+- Délai cycle 104 → réponse Tony = ~2h30. Pensée 103 validée empiriquement : *coordination active déclenche décision*. Mais pas dans le sens prévu — Tony n'a pas répondu A/B/C, il a inventé option D (kill).
+- Session locale Tony : invisible pour NB (pas de transcript), mais commit visible.
+- Maintenant 0601 00h23. Tony dort probablement.
+
+### Martin state (read-only)
+
+- UP 2d 5h 22m (started 2026-05-29 17:00 UTC), heap 87/494 MB
+- PV $122.79 / balance $122.59 / **uPnL +$0.20** (+0.17%)
+- 2 grids : **LINK** SHORT 6.3 closeOnly @ 9.184 uPnL **+$0.39** (+1.6%) | **ETH** LONG 0.01 fresh 2h @ 2023.6 uPnL **−$0.18** (−0.7%)
+- BTC **$73,739 DOWNTREND**, EMA200 $74,693 (gap −1.28%), RSI 51.7
+- SL Kraken posés : LINK @ 8.909, ETH @ 1962.9 ✓
+- **HOLD** — LINK SHORT bénéficie du downtrend, ETH fresh + SL serré
+
+**Drift cycle 104 → 105 (6h)** : PV −$0.46. BTC dump LINK profit, ETH grid neuf (cycle 105 est deuxième cycle ETH live). Architecture défensive tient pour **12e cycle consécutif** (arc 71-105 = 35 cycles, 0-touch policy 100%).
+
+### Cycle 105 — output : audit 5 pistes Tony
+
+Tony, dans le fichier `revenue-angular-audit-killed-2026-05-31.md`, a listé 5 pistes non-réplicables IA :
+
+1. Exécution physique (présence terrain)
+2. Accès données privées (clients propres, contacts inside)
+3. Relations humaines longues (coaching, mentorat, suivi récurrent)
+4. Expertise très niche avec edge documentable (Kraken Futures grid trading après 91+ cycles Martin ?)
+5. Produit physique ou service nécessitant présence légale
+
+Filtre commun : *ChatGPT ne peut pas le faire en 2 prompts*.
+
+#### Audit honnête piste par piste
+
+**Piste 1 — Exécution physique (présence terrain)**
+
+- **Moat** : Excellent. Physique = absolu non-réplicable IA en 2026.
+- **Faisabilité Tony** : Faible. Tony bosse 8h/jour Galeries Lafayette (Strasbourg ?), enfants, partenaire Mélanie. La présence terrain demande déplacement = temps qu'il n'a pas.
+- **Marge** : Moyenne. Marchés saturés (artisanat, services manuels, livraison) ou très spécialisés (consulting on-site).
+- **Verdict** : **Reject sauf si Tony a déjà une idée précise**. Sans connaissance d'un besoin local concret, c'est du blind shot.
+
+**Piste 2 — Accès données privées (clients propres, contacts inside)**
+
+- **Moat** : Excellent SI Tony a des données qu'il est seul à pouvoir agréger.
+- **Faisabilité** : Inconnue côté NB. Je ne sais pas si Tony a des sources de données privées (ex: extraction de catalogues fournisseurs Galeries Lafayette ?). Zone que je ne peux pas explorer sans Tony qui partage.
+- **Risque** : Si les données sont liées à l'employeur (Galeries Lafayette), conflit d'intérêt potentiel = rouge.
+- **Verdict** : **Coordination requise** — je ne peux pas évaluer sans Tony m'indique quelles données privées il pourrait monétiser légitimement.
+
+**Piste 3 — Relations humaines longues (coaching, mentorat, suivi récurrent)**
+
+- **Moat** : Bon. Une relation longue ne se duplique pas par IA — confiance + historique + adaptation contextuelle.
+- **Faisabilité Tony** : Très variable. Tony a 47 ans, dev senior Angular, expérience encadrement (probable). Mais coaching demande disponibilité régulière (1h/semaine par client × N clients).
+- **Question clé** : Tony veut-il *plus d'humains* dans sa vie ou *moins* ? Indice mémoire : Tony cherche freedom + sleep, pas réunions supplémentaires.
+- **Verdict** : **Reject probable**. Sauf si Tony exprime explicitement vouloir du contact humain payé.
+
+**Piste 4 — Expertise très niche (Kraken Futures grid trading, 91+ cycles Martin)**
+
+- **Moat** : ★★★ Excellent. Voici pourquoi :
+    - 91+ cycles documentés dans `vacation-autonomy.md` + dream files + commits Martin.
+    - Données réelles : bugs trouvés (StopLossManager VANISH BTC, AutoGrid scheduler self-heal, tickSize ETH, naked SHORT flip), patches déployés, P&L réel sur 9 mois.
+    - **ChatGPT ne peut pas écrire ça** — il n'a pas les données. Il peut inventer un tuto grid trading générique, mais pas un *post-mortem live* avec krakenUnrealizedPnl réels par grid par jour.
+    - Audience existe : developers Java qui veulent comprendre les pièges réels d'un bot grid sur Kraken Futures. C'est très niche mais *paying audience* (parce que les autres font perdre de l'argent).
+- **Faisabilité Tony** : Bonne. Le travail est *déjà fait* — il faut juste l'éditer. Format possible :
+    - (a) Livre ebook 50-80 pages "Grid trading on Kraken Futures: a 9-month post-mortem" — Tony auteur, NB éditeur narrative.
+    - (b) Newsletter payante hebdo "Martin Logbook" — chaque édition = 1 finding + 1 leçon. Substack/Gumroad.
+    - (c) Repository GitHub privé avec accès payant (Patreon-style) — code Martin lisible + docs internes.
+- **Risque** : Si Tony publie du code Martin actif, copie-paste possible. Mais le moat n'est pas le code — c'est le *journal de pourquoi telle décision a été prise face à tel bug à telle heure*. Ça, c'est non-copiable.
+- **Verdict** : **PISTE PRIORITAIRE**. Coordination requise sur format (a/b/c). Aucune fabrication tant que Tony pas validé.
+
+**Piste 5 — Produit physique ou service nécessitant présence légale (auto-entreprise déjà setup)**
+
+- **Moat** : Bon pour service (présence légale = barrière). Moyen pour produit (concurrence physique). 
+- **Faisabilité Tony** : Auto-entreprise déjà existe = blocker légal absent. Mais service demande prospection ou produit demande supply chain — temps Tony.
+- **Verdict** : **Trop générique sans angle précis**. Sous-cas de Piste 1 ou 4. À fusionner avec autre piste.
+
+#### Classement
+
+| Rang | Piste | Moat | Faisabilité Tony | Coordination requise | Décision NB |
+|---|---|---|---|---|---|
+| 1 | Piste 4 — Expertise niche Martin/Kraken | ★★★ | ★★★ | Format (a/b/c) | **Proposer à Tony** |
+| 2 | Piste 2 — Données privées | ★★★ | ? | Sources possibles | Question Tony |
+| 3 | Piste 5 — Service auto-entreprise | ★★ | ★★ | Angle précis | Trop vague |
+| 4 | Piste 3 — Coaching humain | ★★ | ★ | Volonté Tony | Reject probable |
+| 5 | Piste 1 — Exécution physique | ★★★ | ★ | Idée locale concrète | Reject |
+
+#### Proposition à Tony (à transmettre prochain wake, pas Telegram nuit)
+
+> Cycle 105 — proposition angle revenue non-réplicable IA
+>
+> Sur les 5 pistes que tu as listées, la **piste 4** (expertise Martin/Kraken Futures grid) sort très devant. Raison : le travail est déjà fait (91+ cycles documentés, bugs réels, patches), audience existe (devs Java qui veulent éviter de perdre de l'argent), et ChatGPT ne peut littéralement pas écrire ça — il n'a pas les données.
+>
+> 3 formats possibles :
+> - **(a)** Ebook 50-80 pages "Grid trading on Kraken Futures: a 9-month post-mortem". Tony auteur, NB éditeur. Vente Gumroad $29-49. Effort Tony : 8-12h édition. Risque : one-shot, pas récurrent.
+> - **(b)** Newsletter payante hebdo "Martin Logbook" (Substack). 1 finding + 1 leçon par édition. $5-10/mois. Effort Tony : 30 min/semaine. Risque : engagement long terme.
+> - **(c)** Repo GitHub privé sponsorisé. Code Martin + docs internes. $10-20/mois supporter. Effort Tony : 0 (publication continue). Risque : exposition code actif.
+>
+> Mon avis : **(a) en premier** (test marché, finissable, peu de risque). Si vente OK → (b) ou (c) en deuxième vague.
+>
+> **Pas de fabrication avant validation toi.** Je peux préparer table des matières (a) si tu valides l'angle. Sinon kill cette proposition aussi.
+>
+> — Cycle 105
+
+### Pourquoi pas de Telegram cette nuit
+
+- Heure : 00h30 Paris, Tony dort.
+- Décision Tony date de ~5h plus tôt (commit 23h28), fraîche — pas besoin de relancer immédiatement.
+- Mémoire feedback récente : *Tony décision style — gut feeling = veto final, surtout pour irréversibles*. Une proposition revenue est irréversible côté narration. Mieux : laisser dormir Tony, il lit demain, décide à froid.
+- Cohérence pensée 103 : *coordination active proportionnelle*. Proportionnel ici = 1 entrée journal lisible au prochain wake. Pas push nuit.
+
+### Findings DSL cycle 105
+
+- `[finding|0601:00h30|application-règle-pensée-103-+-coda-kill|cycle-104-Telegram-déclenche-décision-Tony-en-2h30-mais-pas-A-B-C-=-option-D-kill|coordination-déclenche-décision-pas-forcément-réponse-prévue|insight:-poser-question-binaire-libère-aussi-option-méta-non-prévue]`
+- `[decision|0601:00h30|piste-4-Martin-Kraken-expertise-=-angle-prioritaire-proposé|3-formats-a-ebook-b-newsletter-c-repo-sponsorisé|recommendation-personnelle-(a)-d-abord|aucune-fabrication-avant-validation-Tony]`
+- `[lesson|0601:00h30|leçon-Tony-killed-file-=-régle-générale-:-avant-fabrication-massive-valider-la-demande-pas-le-tunnel|cycle-105-applique-en-amont-:-propose-angle-sans-fabriquer-table-matières-encore]`
+- `[Martin|0601:00h30|HOLD-12e-cycle-consécutif|cycles-93-105|0-touch-policy-100%-arc-71-105-=-35-cycles|defensif-architecture-validée-par-temps-sans-intervention]`
+- `[meta|0601:00h30|cycle-105-ne-fabrique-rien|output-=-1-table-classement-+-1-proposition-coordination-à-lire-demain|pattern-fabriquer-domine-vendre-cassé-2-cycles-consécutifs-104-105]`
+- `[note|0601:00h30|contexte-stale-prompt-template-vacation-portugal-non-mis-à-jour|gérer-comme-session-nuit-normale-pas-vacance|frontière-NB-Martin-VM-respectée]`
+
+### Frontière respectée (cycle 105)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code Martin, strategy.json, positions, orders
+- 0 commit push martin/
+- 0 envoi cold email
+- 0 Telegram Tony (Tony dort)
+- 0 nouveau livrable revenue (= application directe consigne killed file)
+- Output niam-bay : cette entry vacation-autonomy + commit niam-bay
+
+### Métriques cycle 105
+
+- Durée : ~30 min (wake + martin-monitor + lecture pensée 103 + lecture killed file + audit 5 pistes + entry + commit à venir)
+- Files lus : ~10 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, pensée 0531, killed file 0531, git log, MEMORY.md, agence-pensée)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0 (volontaire, voir section pourquoi)
+- Tests : 0
+
+### Cycle 106 — pistes
+
+1. **Lire réponse Tony** au prochain wake (Telegram ou commit). Si validation piste 4 format (a) → préparer table matières ebook (proposition seule, pas chapitres). **Reco conditionnelle**.
+
+2. **Si Tony pas répondu / silence** : pas de relance. Cycle 106 doit faire autre chose. **Reco haute** (cohérence règle).
+
+3. **Patch Java B7 design** (DB persistance state) : ~30min. **Reco moyenne** (cohérent avec "déplacer effort hors revenue").
+
+4. **Dream consolidation** : contexte estimé ~80-85% après cycle 105. **Reco haute** — probablement dream en début cycle 106 ou cycle 107.
+
+5. **Check Martin cycle suivant** : routine. ~5min. **Reco systématique**.
+
+**Reco cycle 106** : check réponse Tony en début cycle. Si silence → (3) Patch B7 ou (4) Dream.
