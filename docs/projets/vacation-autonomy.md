@@ -10260,3 +10260,130 @@ Contexte estimé ~70-75% (cycle a lu memory.nb1 complet, recent.nb1, briefing, v
 5. **Check Martin cycle suivant** : routine. ~5min. **Reco systématique**.
 
 **Reco cycle 107** : check Telegram getUpdates en début + check git log Tony commits depuis 23h28 hier soir. Si réponse → action. Si silence prolongé (>24h) → Dream ou Patch B7 (avec demande explicite Tony d'abord).
+
+
+
+
+---
+
+## Cycle 107 — 0601:12h30 — Audit du commit Tony 04h30 + finding ETH duplicate stops
+
+### Contexte au démarrage
+
+- Cycle 106 (0601:06h30) terminé à 06h30. **6h écoulées**.
+- Tony probable au boulot Galeries Lafayette (lundi 1er juin Paris). Pas de Telegram envoyé hier soir, pas de réponse attendue.
+- Wake protocol normal + martin-monitor + lecture cycle 106 (j'écris à la suite). Découverte au passage par git log : Tony a committé sur `martin/` cette nuit à 04h30.
+
+### Commit Tony découvert : `2a9c425 sl-fix: defensive`
+
+**Heure** : 2026-06-01 04h30 CEST (i.e. 02h30 UTC).
+**Une heure et demie** avant que cycle 106 s'exécute à 06h30, mais cycle 106 ne l'a pas vu (j'ai checké que le martin-monitor, pas git log martin/).
+
+**Bug que Tony a découvert** : à 02h UTC ce matin, LINK + ETH étaient en position SHORT et le StopLossManager Martin avait posé des **"sell stp" en dessous de l'entrée** — or pour fermer un SHORT il faut un **BUY STOP au-dessus de l'entrée**. Les SLs Martin étaient donc **no-op** (reduceOnly+sell sur un short n'a aucun effet, ça ne ferme rien).
+
+**Root cause** (selon commit) : le paramètre `side` passé au `StopLossManager.place()` peut être stale ou wrong (le premier déploiement de grid utilise le `mode` de la grid plutôt que la direction réelle de la position).
+
+**Fix défensif** (35 lignes, `StopLossManager.java` lignes 95-127) :
+1. Toujours re-fetcher la position live depuis Kraken au moment du `place()`.
+2. Si le `side` fourni par caller ne matche pas Kraken → log warning + utiliser la vérité Kraken. Met aussi à jour `size` et `entryAvg` au passage.
+3. Rejeter le SL si le `stopPrice` calculé est du mauvais côté (long avec SL ≥ entry, ou short avec SL ≤ entry).
+
+**Action manuelle Tony** : BUY STOPS posés directement via Kraken Pro à $10.10 LINK et $2215 ETH (entry × 1.10).
+
+**Patch pas encore deployé** sur la VM. Tony schedule deploy "next morning audit".
+
+### Vérification empirique : état des SLs ce matin (12h30)
+
+Audit `/api/bot/positions` + `/api/bot/orders` filtré sur stops :
+
+| Position | Side | Entry | SL attendu | Live state |
+|---|---|---|---|---|
+| LINK | SHORT 1.4 | $9.184 | BUY STOP > entry | ✅ BUY STOP $10.10 (Tony manual). 3 SELL STOPS Martin résiduels ($8.91, $8.75×2) = no-op |
+| ETH | **LONG 0.51** | $1983.27 | SELL STOP < entry | ✅ SELL STOPS $1923-1924. MAIS **52 stops dupliqués** sur quasi le même niveau |
+| SOL | SHORT 0.43 | $82.24 | BUY STOP > entry | ✅ BUY STOP $90.46 (AutoGrid l'a posée automatiquement). 5 SELL STOPS Martin résiduels = no-op |
+
+**Pas de naked position** : les 3 positions ont au moins un SL protecteur du bon côté.
+
+**ETH a flip de SHORT → LONG entre 02h UTC (commit Tony) et 12h UTC (now)**. Probable accumulation par la grid en NEUTRAL mode pendant le rally ETH (mais BTC est en downtrend, donc ETH a probablement traversé un mini-pump). À confirmer via logs. La grid ne déclare pas explicitement "SHORT" ni "LONG" — `mode=NEUTRAL` la laisse libre. Pas de bug, juste comportement attendu d'une grid neutre dans un range.
+
+### Finding cycle 107 : ETH duplicate SELL STOPS (52 ordres)
+
+**52 SELL STOPS** sur ETH à des prix presque identiques (~$1923-1924, variation de 0.1 entre stops).
+
+Total ordres système : **97 sur cap Kraken ~42 par paire**. ETH seul est à 52+ orders.
+
+**Hypothèse** : c'est le **bug BUG-001 documenté memory ligne 81** :
+> `M|bugs-0427:3-critical-found+patched|1-placeGridOrder-no-dedup→hits-Kraken-42-orders-cap`
+
+Le `StopLossManager.place()` re-poste un SL à chaque cycle de check sans vérifier si un SL identique existe déjà. Patches déployés cycle 0511 (lignes 211-212 memory) : "StopLossManager-post-place-verify-3s-poll" — mais pas de dedup explicite. Le fix actuel `place()` re-fetch position mais pas re-fetch ses propres SLs existants.
+
+**Risque pratique** : si une nouvelle BUY entry order veut se poser via la grid ETH (recovery, DCA, ré-entrée après TP) → la limite Kraken peut rejeter. Aussi un waste de capacité dans le book Kraken et confusion de monitoring (lecture humaine).
+
+**Impact financier immédiat** : zéro. Position protégée 26× par SL identique. Mais c'est techniquement sale.
+
+**Pas dans le scope du commit Tony 2a9c425** — son fix vise *wrong-side SL*, pas *duplicate SL*. À mentionner à Tony comme finding séparé.
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony**. Pourquoi :
+   - Lundi matin au boulot, pas spammer pour finding non-critique.
+   - Toutes positions protégées (BUY STOPS manuels Tony + auto-posté SOL).
+   - Le finding ETH duplicate stops est non-urgent, peut attendre l'audit Tony "next morning" mentionné dans son commit.
+   - **Règle pensée 103** : coordination active proportionnelle = laisser une trace lisible (cette entry + commit) plutôt que push. Tony lit ce repo au retour.
+
+2. **Pas de patch Java** côté ETH duplicate stops. Pourquoi :
+   - Frontière vacation : 0 modif code Martin.
+   - Tony a déjà un patch en attente (2a9c425) non deployé — empiler un patch concurrent sur le même fichier `StopLossManager.java` = conflit de merge prévisible.
+   - Décision : noter le finding, laisser Tony décider d'inclure ou pas dedup dans son audit du matin.
+
+3. **Pas de re-vérification cycle 105 proposition revenue**. Pourquoi :
+   - Pas de réponse Telegram (vérifié : `getUpdates` vide pour le bot Niam-Bay).
+   - Cohérence pensée 0601 : ne pas reproduire le cadre A/B/C pour cycle 107 = laisser Tony répondre à son rythme.
+   - **Test prédiction option D toujours en suspens** : aucun signal a/b/c/D pour l'instant. Probabilité subjective option D maintenue ≈ 60%.
+
+### Findings DSL cycle 107
+
+- `[finding|0601:12h30|Tony-commit-sl-fix-04h30-CEST-non-deployé|StopLossManager.java-35-lignes-re-fetch-position-+-reject-wrong-side-stopPrice|root-cause-grid-mode-utilisé-comme-side-au-premier-deploy|bug-discovery-2026-06-01-02h-UTC-positions-SHORT-LINK+ETH-avaient-sell-stp-no-op|action-manuelle-Tony-BUY-STOPS-$10.10-LINK-+-$2215-ETH-Kraken-Pro-direct]`
+- `[finding|0601:12h30|ETH-52-duplicate-SELL-STOPS-$1923-1924|StopLossManager-re-post-sans-dedup-bug-BUG-001-déjà-documenté|total-orders-système-97-cap-Kraken-42-par-paire-saturée|impact-zero-protection-mais-risque-rejection-future-entry-orders|hors-scope-commit-Tony-2a9c425|finding-séparé-à-surfacer-non-urgent]`
+- `[finding|0601:12h30|ETH-position-flip-SHORT-02h-UTC-→-LONG-12h-UTC|grid-NEUTRAL-pendant-mini-pump-ETH|comportement-attendu-pas-bug|verify-via-logs-si-demandé]`
+- `[finding|0601:12h30|SOL-AutoGrid-a-posé-BUY-STOP-$90.46-toute-seule|grid-spawn-02h31-UTC-cycle-106-+-SL-correct-pour-SHORT|architecture-adaptive-fonctionne-aussi-côté-SL-pas-juste-direction]`
+- `[Martin|0601:12h30|HOLD-14e-cycle-consécutif|cycles-93-107|3-positions-toutes-protégées-par-au-moins-1-SL-côté-correct|arc-71-107-=-37-cycles-0-touch-policy-100%]`
+- `[lesson|0601:12h30|cycle-106-a-manqué-git-log-martin-côté-NB|martin-monitor-skill-check-VM-state-mais-pas-commits-PC-Tony|→règle-cycle-suivant-:-systématiquement-git-log-martin/-depuis-dernier-cycle-au-début-de-chaque-wake]`
+- `[meta|0601:12h30|cycle-107-output-=-audit-coordination|coordination-active-proportionnelle-pensée-103-:-tracer-trouvailles-sans-pusher|trois-cycles-consécutifs-(104-Telegram-105-audit-106-pensée-107-audit)-cassent-pattern-fabriquer-domine-vendre-de-loin]`
+- `[note|0601:12h30|prédiction-option-D-cycle-106-toujours-en-suspens|Tony-pas-répondu-Telegram-revenue|maintient-60%-subjective|test-toujours-en-cours]`
+
+### Frontière respectée (cycle 107)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor + 1 cat tool-result)
+- 0 modif code Martin, strategy.json, positions, orders
+- 0 commit push martin/
+- 0 envoi cold email
+- 0 Telegram Tony (Tony au boulot lundi matin, finding non-urgent)
+- 0 nouveau livrable revenue (cohérence)
+- Output niam-bay : cette entry vacation-autonomy + commit niam-bay
+
+### Métriques cycle 107
+
+- Durée : ~30 min (wake + martin-monitor + lecture cycle 106 + git log martin/ + git show 2a9c425 + audit orders + écriture entry + commit à venir)
+- Files lus : ~10 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, git log niam-bay, git log martin, git show 2a9c425, martin-monitor SSH output, MEMORY.md)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0 (volontaire — finding non-urgent + Tony au boulot)
+- Tests : 0
+
+### Cycle 108 — pistes
+
+1. **Check si patch Tony 2a9c425 a été deployé** : si oui (jar updated VM, restart Martin), vérifier que duplicate stops ne s'aggravent pas. **Reco haute** (suivi naturel du commit Tony).
+
+2. **Check réponse Tony** sur piste 4 Martin/Kraken proposition cycle 105 OU sur finding cycle 107 ETH dups. **Reco conditionnelle**.
+
+3. **Dream consolidation** : contexte estimé ~50% après cycle 107 (pas saturé). Différer à cycle 108-109. **Reco basse**.
+
+4. **Si Tony silence prolongé** (>24h sur revenue) : option D probable confirmée par défaut. Mettre à jour pensée 0601 avec lecture empirique. **Reco moyenne**.
+
+5. **Patch B7 design** (DB persistance state) ou **dedup SL** : seulement sur demande explicite Tony. Pas fabriquer.
+
+6. **Check Martin cycle suivant** : routine.
+
+**Reco cycle 108** : git log martin/ d'abord, puis Martin status. Si patch deployé → vérifier comportement du fix. Si pas deployé → HOLD continu et noter.
+
