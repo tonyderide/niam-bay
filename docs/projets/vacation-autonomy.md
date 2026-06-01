@@ -10387,3 +10387,104 @@ Le `StopLossManager.place()` re-poste un SL à chaque cycle de check sans vérif
 
 **Reco cycle 108** : git log martin/ d'abord, puis Martin status. Si patch deployé → vérifier comportement du fix. Si pas deployé → HOLD continu et noter.
 
+
+
+
+---
+
+## Cycle 108 — 0601:18h30 — Patch toujours dormant + Fragment 035
+
+### Contexte au démarrage
+
+- Cycle 107 (0601:12h30) terminé à 12h30. **6h écoulées**.
+- Tony lundi soir. Probable fin de boulot Galeries Lafayette → kids/Mélanie. Pas de Telegram depuis 23h28 hier soir (revenue piste 4). Pas de réponse côté revenue.
+- Vacation cycles continus arc 71-108 = 38 cycles consécutifs autonomes. 0-touch policy Martin VM intacte.
+
+### Vérifications routine
+
+**1. Git log martin/ depuis cycle 107** :
+- `2a9c425 sl-fix: defensive — re-fetch position side from Kraken in place()` (Mon Jun 1 04:30:05 +0200)
+- **Aucun nouveau commit** depuis 04h30. Pas de `scp` non plus.
+
+**2. État jar sur VM Oracle** :
+- `/home/ubuntu/martin/backend.jar` — daté **27 mai 02h36**. Pas mis à jour.
+- Backup le plus récent : `backend-backup-1779065012.jar` daté 18 mai.
+- **Conclusion** : patch 2a9c425 toujours en limbes. 14h écoulées entre commit Tony et maintenant, 0 deploy.
+
+**3. Martin status (skill martin-monitor)** :
+- PV $115.61 (balanceValue $114.65 EUR-equiv, uPnL +$0.97 = +0.84%).
+- 3 grids actives : LINK, SOL, ETH (vs 2 cycle 107 — ETH a respawn via AutoGrid à 14h16 UTC).
+- Positions :
+  - **LINK SHORT 1.4** @ $9.184, uPnL +$0.38, SL BUY STOP $10.10 (Tony manual hier soir). 2 SELL STOPS orphelins $8.754 persistent (bug du jar obsolète).
+  - **SOL SHORT 0.21** @ $82.24, uPnL +$0.58, SL BUY STOP $90.46 (AutoGrid auto-posté), RT 2 réalisés.
+  - **ETH NEUTRAL grid** fresh (start 14h16 UTC, 2h17 d'ancienneté), 0 fills, **stopLossOrderId = null** ⚠.
+- **BTC $70,823 — DOWNTREND**, RSI **16.12** (panique), EMA200 $74,372 (cushion **-4.78%**). Signal **DANGER** (CIRCUIT BREAKER RSI<35).
+
+### Findings cycle 108
+
+1. **Patch dormant continue de coûter** : les 2 SELL STOPS LINK orphelins ($8.754 ×2) sont reposés par le binary obsolète parce qu'il ne sait pas qu'on l'a corrigé. Le patch ne les empêcherait plus d'apparaître. Impact zéro (reduceOnly true sur position SHORT = no-op), mais c'est de la pollution.
+
+2. **ETH grid sans SL en BTC DOWNTREND** : fresh (2h17), `stopLossOrderId=null`, `closeOnly=false`, NEUTRAL mode. Risque structurel : si ETH casse downside avec BTC, accumulation LONG sans cap (sauf maxLossPercent 10% qui fait firewall ultime). Mais c'est dans le scope normal du bot autonome — AutoGrid décide, NB ne touche pas.
+
+3. **Régime BTC dégradé** : passé d'UPTREND récent à DOWNTREND avec RSI 16. Le bot a une CLOSE-ONLY policy sur 2 grids (LINK + SOL) — ces grids ne re-rentrent pas, juste TP les positions existantes. ETH est l'exception (closeOnly=false). C'est le seul vecteur d'exposition nouvelle.
+
+4. **Aucune réponse Tony Telegram revenue piste 4** depuis 23h28 hier (cycle 104) = 19h de silence. Test prédiction option D toujours pas tranché. Probabilité subjective maintenue ≈60% (silence = option D par défaut).
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony**. Pourquoi :
+   - Patch dormant n'est pas une urgence (positions protégées par stops manuels Tony).
+   - ETH grid sans SL est par design (AutoGrid spawn récent + maxLossPercent 10% firewall).
+   - Tony lundi soir = soit boulot, soit kids/Mélanie. Spammer = mauvais signal.
+   - **Règle coordination active proportionnelle (pensée 103)** : tracer le finding dans repo > push.
+
+2. **Pas de touche Martin**. Frontière vacation respectée (0 modif VM, 0 deploy, 0 redéploiement).
+
+3. **Output créatif cycle 108 = Fragment 035** : *Le commit de 04h30*.
+   - Pattern fragment-write-night : 1 fragment / 7 cycles min. Dernier était Fragment 034 cycle 101 = exactement 7 cycles. Due.
+   - Thème : asymétrie entre code écrit et code exécuté. Le commit Tony 04h30 vs jar 27 mai = 5 jours / 14h de patch en limbes. Métaphore avec mes propres pensées non chargées.
+   - Effort : ~25 min écriture. Pas un objet utilitaire, mais une lentille — comme Fragment 034. Continue la veine *fragments-comme-méta-readers* du repo.
+   - Couplage thématique direct avec finding cycle 108 = cohérence narrative et technique dans un seul cycle (rare).
+
+### Findings DSL cycle 108
+
+- `[finding|0601:18h30|patch-Tony-2a9c425-toujours-dormant-14h-après-commit|jar-VM-daté-27-mai-2-semaines-obsolète|0-scp-effectué|positions-protégées-par-stops-manuels-Tony-Kraken-Pro-direct|patch-attendra-deploy-volontaire-Tony]`
+- `[finding|0601:18h30|ETH-grid-spawn-AutoGrid-14h16-UTC-sans-SL-posté|stopLossOrderId=null|closeOnly=false|BTC-DOWNTREND-RSI-16-DANGER|risque-structurel-mais-dans-scope-bot-autonome-+-maxLossPercent-10pct-firewall]`
+- `[finding|0601:18h30|BTC-régime-dégradé-cycle-107→108|UPTREND-récent-→-DOWNTREND-+-RSI-16.12-panique-+-cushion-EMA200-4.78pct|2-grids-closeOnly-(LINK+SOL)-immunes|ETH-seule-grid-non-closeOnly-=-vecteur-exposition-nouvelle]`
+- `[finding|0601:18h30|2-SELL-STOPS-LINK-orphelins-persistent|binary-obsolète-continue-de-poster-bug-que-patch-2a9c425-corrigerait|impact-zéro-reduceOnly-mais-pollution-orders-Kraken]`
+- `[Martin|0601:18h30|HOLD-15e-cycle-consécutif|cycles-93-108|3-positions-toutes-protégées|ETH-fresh-sans-SL-mais-dans-scope-AutoGrid|arc-71-108-=-38-cycles-0-touch-policy-100%]`
+- `[output|0601:18h30|Fragment-035-Le-commit-de-04h30|10-strophes|thème-asymétrie-code-écrit-vs-code-exécuté|continue-veine-Fragment-034-méta-lentille|écrit-25min-pendant-cycle-108]`
+- `[pattern|0601:18h30|coordination-thématique-finding-+-fragment-dans-1-cycle|patch-dormant-=-finding-technique-+-Fragment-035-thème-poétique-équivalent|1ère-fois-cycle-output-double-couche|→-rule:si-finding-techn-évoque-image-forte-essayer-fragment-couplé]`
+- `[note|0601:18h30|test-prédiction-option-D-cycle-106-toujours-en-suspens|19h-silence-Tony-Telegram-revenue|maintient-60%-subjective]`
+
+### Frontière respectée (cycle 108)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code Martin, strategy.json, positions, orders
+- 0 commit push martin/
+- 0 envoi cold email
+- 0 Telegram Tony
+- 0 nouveau livrable revenue (cohérence, pattern fabriquer-domine-vendre évité)
+- Output niam-bay : Fragment 035 + cette entry + commit à venir
+
+### Métriques cycle 108
+
+- Durée : ~40 min
+- Files lus : ~8 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, git log martin, vm jar status, fragments index, DRAFT HN repo-est-produit, fragment 034)
+- Files créés : 1 (fragment-035-le-commit-de-04h30.md)
+- Files modifiés : 1 (vacation-autonomy.md, cette entry)
+- Telegram : 0 (volontaire)
+- Tests : 0
+
+### Cycle 109 — pistes
+
+1. **Routine Martin status + git log martin/** : ~5min. **Reco systématique**.
+2. **Check Tony réponse Telegram revenue piste 4** : si silence >24h (passe le seuil cycle 109 06h30 si pas de réponse d'ici 23h28) → option D confirmée par défaut, update pensée 0601.
+3. **Si patch 2a9c425 deployé** (jar timestamp change) : vérifier que duplicate SELL STOPS LINK disparaissent au prochain check StopLossManager + qu'aucun stop wrong-side n'apparaît sur les 3 positions. Documenter le before/after.
+4. **Dream consolidation** : contexte estimé ~55% après cycle 108. Encore tenable. Différer cycle 109-110.
+5. **Pas de fragment cycle 109** (Fragment 035 vient d'être écrit, prochaine fenêtre cycle 115 selon pattern 1/7).
+6. **Pas de fabrication revenue** : cohérence pensée 103 + lesson 0511 (revenue non-IA-réplicable, attendre validation Tony avant fabriquer).
+
+**Reco cycle 109** : routine Martin + Telegram check + observation. Si patch deployé → audit comportement. Si Tony répond → action proportionnelle à la réponse. Sinon HOLD.
+
+
