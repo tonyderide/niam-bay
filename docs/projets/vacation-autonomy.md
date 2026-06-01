@@ -10488,3 +10488,107 @@ Le `StopLossManager.place()` re-poste un SL à chaque cycle de check sans vérif
 **Reco cycle 109** : routine Martin + Telegram check + observation. Si patch deployé → audit comportement. Si Tony répond → action proportionnelle à la réponse. Sinon HOLD.
 
 
+
+
+
+
+---
+
+## Cycle 109 — 0602:00h30 — Root cause BUG-001 documentée
+
+### Contexte au démarrage
+
+- Cycle 108 (0601:18h30) terminé à 19h. **5h30 écoulées**.
+- Tony lundi soir → mardi minuit. Probable couché (silence Telegram). **25h sans réponse** côté revenue piste 4. Test prédiction option D : silence = confirmation par défaut.
+- Vacation cycles continus arc 71-109 = **39 cycles** consécutifs autonomes. 0-touch policy Martin VM intacte.
+
+### Vérifications routine
+
+**1. Git log martin/ depuis cycle 108** :
+- `2a9c425 sl-fix` toujours HEAD. **Aucun nouveau commit Tony**. 20h cumulées entre commit 04h30 et maintenant, 0 deploy.
+
+**2. État jar VM** : `/home/ubuntu/martin/backend.jar` toujours daté 27 mai 02h36. Patch dormant. Mais SL stops manuels Tony Kraken Pro tiennent (LINK $10.10, SOL $90.46 auto-posté, BTC $68,713 ×3).
+
+**3. Martin status (skill martin-monitor)** :
+- PV $115.03 (balanceValue $114.29, uPnL +$0.74 = +0.64%).
+- 3 grids actives : LINK (closeOnly NEUTRAL, 3d 5h), SOL (closeOnly SHORT, 19h53), **XBT (LONG, fresh 20min)**.
+- ETH du cycle 108 a été remplacé par XBT — AutoGrid a fait un swap directionnel pendant que je dormais.
+- Positions :
+  - **LINK SHORT 1.4** @ $9.18, uPnL +$0.29, SL $10.10 (Tony) + 2 stops fantômes $8.754 reduceOnly.
+  - **SOL SHORT 0.21** @ $82.24, uPnL +$0.35, RT 2, SL $90.46 (AutoGrid auto).
+  - **XBT LONG 0.0004** @ $70,838, uPnL +$0.10, 3 SELL STOPS identiques $68,713 reduceOnly. Pari mean-rev RSI 16→29.
+- **BTC $71,068 — DOWNTREND**, RSI **28.91** (rebondit de 16.12 cycle 108, +12.79), EMA200 $74,187 (cushion -4.21%). Signal WAIT.
+
+### Action principale cycle 109 : investigation root cause BUG-001
+
+**Trigger** : 3 SELL STOPS identiques sur XBT (cycle 108 avait noté 2 sur LINK). Pattern qui se répète. Cycle 107 avait écrit "BUG-001 placeGridOrder no-dedup ré-émerge" mais sans root cause. Je creuse.
+
+**Méthode** : lecture `StopLossManager.java:93-216` + `GridTradingService.java:462-485` + `AutoGridScheduler.java:230-271`.
+
+**Root cause identifiée** (détails dans `docs/projets/bug-001-sl-duplicate-root-cause.md`) :
+
+- Le pipeline `place()` poste un stp à Kraken puis appelle `verifyOrderExistsOnKraken(orderId)` qui poll `/openorders` 3× 1s.
+- Quand Kraken a un lag de réplication read-side >3s (vu plein de fois sur Futures), la verify renvoie false alors que l'order EST live.
+- Le code clear `state.stopLossOrderId = null` et log "VANISHED".
+- 10s plus tard, `sync()` voit `stopLossOrderId == null` et re-pose. Cascade.
+
+**Pourquoi pas dans `cancelOrder` (cycle 107 thèse)** :
+- Le patch 0511 a fixé `BotController.cancelOrder` (vérifie cancelStatus.status). Donc cancel() honnête.
+- Mais aucun mécanisme ne scanne Kraken pour purger les stp+reduceOnly orphelins avant un nouveau place().
+
+**Patch proposé : Option A — pre-place dedup**
+- Avant chaque `place()`, fetch `/openorders`, filter stp+reduceOnly+symbol+exitSide, cancel tous.
+- Puis post fresh. 1 appel API extra par place() (~100ms).
+- Pas de cascade possible : même si verify échoue, le prochain sync purge le ghost.
+- Effort : 30-45 min code + 4 tests TDD + deploy.
+
+**Frontière vacation respectée** :
+- 0 modif martin/ code, juste lecture.
+- 0 build, 0 deploy.
+- Patch documenté dans niam-bay/docs/projets/bug-001-sl-duplicate-root-cause.md pour validation Tony à son réveil.
+
+### Findings cycle 109 (DSL)
+
+- `[finding|0602:00h30|BUG-001-root-cause-identifiée|verifyOrderExistsOnKraken-faux-négatif-3s-timeout-trop-court-vs-Kraken-read-replica-lag|state-clear-+-prochain-sync-repose-=-cascade|3-SL-XBT-tous-id-séquentiels-prouvent-cascade-10s|patch-Option-A-pre-place-dedup-documenté-niambay-projets]`
+- `[finding|0602:00h30|AutoGrid-swap-directionnel-ETH→XBT-pendant-nuit|cycle-108-ETH-NEUTRAL-fresh-→-cycle-109-XBT-LONG-fresh|spawn-22:04-UTC|pari-mean-rev-RSI-16→29-rebound-BTC|maxLoss-8pct-tight|autonomie-bot-validée-pour-décision-directionnelle-non-supervisée]`
+- `[finding|0602:00h30|patch-Tony-2a9c425-toujours-dormant-20h-après-commit|jar-VM-27-mai-=-5-jours-obsolète|0-deploy|positions-protégées-par-stops-manuels-Tony-Kraken-Pro-direct]`
+- `[Martin|0602:00h30|HOLD-16e-cycle-consécutif|cycles-93-109|3-positions-protégées-par-SL-exchange-(+3-ghosts-BUG-001-mais-impact-zéro)|arc-71-109-=-39-cycles-0-touch-policy-100%]`
+- `[output|0602:00h30|bug-001-sl-duplicate-root-cause.md-livré|analyse-110-lignes-+-patch-Option-A-+-tests-TDD-spec-+-question-Tony-branche-vs-master|substantive-engineering-output-pas-juste-observation]`
+- `[note|0602:00h30|test-prédiction-option-D-cycle-106-toujours-en-suspens|25h-silence-Tony-Telegram-revenue|maintient-60%-subjective-tend-vers-70%-passé-24h]`
+- `[lesson|0602:00h30|race-condition-typique-LLM-rate-limited-API|verify-too-short→clear-state→re-act-pattern|rule-générale:quand-API-distante-success+ID-mais-read-lag,JAMAIS-clear-l-ID-juste-retry-verify-plus-tard]`
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony** : Tony couché (00h30 mardi), finding pas urgent (positions protégées, fix patient peut attendre matin), respect du sommeil. Pattern coordination active proportionnelle (pensée 103).
+2. **Pas de touche Martin** : analyse read-only seulement.
+3. **Output créatif cycle 109 = root cause analysis** au lieu de Fragment (035 vient d'être écrit). Substantive engineering = piste 4 expertise Martin/Kraken (réf cycle 105 ebook proposition piste 4). Ce document EST de l'expertise documentée, réutilisable comme exemple si ebook un jour.
+
+### Frontière respectée (cycle 109)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor + 1 ls jar)
+- 0 modif code Martin, strategy.json, positions, orders
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — sommeil)
+- 0 nouveau livrable revenue direct (mais l'analyse BUG-001 est asset piste 4 indirect)
+- Output niam-bay : `bug-001-sl-duplicate-root-cause.md` + cette entry + commit à venir
+
+### Métriques cycle 109
+
+- Durée : ~50 min (wake + martin-monitor + lecture code Java + écriture analyse + entry + commit)
+- Files lus : ~12 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, git log martin, martin-monitor SSH output, StopLossManager.java 363 lignes, GridTradingService.java 75 lignes section audit, AutoGridScheduler.java 60 lignes section SL, listing docs/projets)
+- Files créés : 1 (bug-001-sl-duplicate-root-cause.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- Tests : 0 (specifiés dans le doc, pas écrits)
+
+### Cycle 110 — pistes
+
+1. **Routine Martin status + git log martin/** : ~5min. Reco systématique.
+2. **Check Telegram réveil Tony** : s'il a vu le bug-001 doc et répond, action proportionnelle. Si lecture sans réponse = pas urgent côté lui.
+3. **Si XBT LONG a fired sur SL $68,713** : noter que mean-rev fail + pari AutoGrid invalidé. Si TP atteint (~$74,382) → noter que mean-rev win.
+4. **Dream consolidation** : contexte ~65% après cycle 109. Encore tenable mais cycle 110-111 risque saturation. Probable trigger dream cycle 110 ou 111.
+5. **Pas de fragment** (035 vient d'être écrit, prochaine fenêtre cycle 115).
+6. **Pas de fabrication revenue directe** : cohérence règles. L'analyse BUG-001 vaut comme asset piste 4 indirect, pas pousser plus.
+7. **Si patch BUG-001 demandé par Tony** : préparer branche `fix/bug-001-sl-dedup` (toujours read-only sur master), mais SEULEMENT sur demande explicite. Pas auto.
+
+**Reco cycle 110** : routine + observe + différer dream à 110-111 quand contexte saturé.
