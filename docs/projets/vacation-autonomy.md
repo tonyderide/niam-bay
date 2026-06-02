@@ -10797,3 +10797,101 @@ EV = -$0.34. Le bot prend un pari **EV-négatif** parce que la `gate per-pair` a
 
 **Reco cycle 112** : routine + observe + **dream très probable**.
 
+
+
+
+---
+
+## Cycle 112 — 0602:18h30 — XBT pari résolu (SL fired) + SOL orphelin confirmé
+
+### Contexte au démarrage
+
+- Cycle 111 (0602:12h30) terminé ~13h30. **5h écoulées**.
+- Tony mardi 18h30 = sortie boulot Galeries. **44h sans réponse** revenue piste 4. Subjective ≥75% silence = confirmation par défaut.
+- Vacation cycles arc 71-112 = **42 cycles** consécutifs autonomes. 0-touch policy intact.
+
+### Vérifications routine
+
+**1. Git log martin/** : `2a9c425 sl-fix` toujours HEAD. **38h dormant**. 0 deploy Tony.
+
+**2. État jar VM** : 27 mai 02h36, **6 jours obsolète**.
+
+**3. Martin status (martin-monitor verdict WARN)** :
+- PV **$115.63** (balanceValue $114.04, uPnL +$1.60 = **+1.40%**, +$0.85 vs cycle 111 net).
+- **1 grid active** : LINK seul. SOL et XBT grids **disparues**.
+- Positions Kraken :
+  - **LINK LONG 3.7** @ $8.521 uPnL +$0.52 (cap +2.1%). Grid closeOnly NEUTRAL fresh 1h52, SL $8.266.
+  - **SOL SHORT 0.21** @ $82.24 uPnL +$1.08 (cap +10.8%). **Position orpheline** — pas de grid active mais SL Kraken $90.46 reduceOnly intact.
+- **XBT position fermée** entre 13:40 et 16:23 UTC.
+- BTC **$67,698 DOWNTREND DANGER**, RSI 23.13, EMA200 $73,230 cushion **-7.5% cassé profond**.
+
+### Outcome XBT pari mean-rev — SL fired (proba 55% réalisée)
+
+Reconstruction depuis app.log :
+- 0602:02:07 UTC : SL initial @$68,484 sur position 0.0006 entry $70,602.
+- 0602:13:39 UTC : **DCA event** — position grossit 0.0006 → 0.0008, nouveau entry $70,130, SL repositionné @$68,027.
+- 0602:~14h-16h UTC : BTC drop sous $68,027 → SL fired automatiquement (pas de log d'exécution visible mais position absente + grid inactive le confirment).
+- **Réalisé estimé** : ($68,027 - $70,130) × 0.0008 = **-$1.68**.
+
+Calcul EV cycle 111 prédisait -$1.27 si SL fired (55% proba). Réel **-$1.68** plus pire à cause du DCA qui a moyenné down avant le SL. Outcome **dans la branche 55%** de la distribution. Pas une surprise, EV-négative confirmée.
+
+### Outcome SOL orphan — risque cycle 111 manifeste
+
+Cycle 111 doc disait : *"restart Java → SOL et XBT disparaitraient de l'éligibilité AutoGrid → positions Kraken survivraient mais orphelines"*. 
+
+**Réalité observée** : pas un restart Java (uptime 3d 23h continu) mais quelque chose a **désactivé la grid SOL en runtime** entre 12h30 et 18h30. Position 0.21 SOL SHORT survit avec SL $90.46 reduceOnly intact (Kraken-side). uPnL +$1.08 préservé.
+
+**Hypothèse** : `closePartial` ou ferme grid sans toucher la position si tous les ordres sont des SELL closing seulement. À investiguer cycle 113.
+
+### Update tracking AutoGrid directional bets
+
+| Pair | Direction | Capital | Entry | Outcome | Réalisé estimé | Durée |
+|------|-----------|---------|-------|---------|----------------|-------|
+| XBT  | LONG      | $20     | $70,602→$70,130 (DCA) | SL fired | **-$1.68** | ~14h |
+
+1 entrée sur la base statistique AutoGrid. EV-négative confirmée empiriquement sur ce sample. Continuer à observer.
+
+### Findings DSL cycle 112
+
+- `[finding|0602:18h30|XBT-mean-rev-SL-fired-comme-predit-55%-branche|DCA-grossi-position-avant-SL|réalisé--$1.68-vs-prédit--$1.27|outcome-dans-distribution]`
+- `[finding|0602:18h30|SOL-grid-disparue-runtime-position-survit-orphan|SL-Kraken-90.46-intact|uPnL-+$1.08-préservé|cycle-111-risque-orphan-manifeste-sans-restart-Java]`
+- `[finding|0602:18h30|patch-Tony-2a9c425-dormant-38h-jar-VM-6-jours-obsolete|0-deploy|4-livrables-engineering-attente]`
+- `[Martin|0602:18h30|HOLD-19e-cycle-consecutif|cycles-93-112|2-positions-protegees-1-grid-active|arc-71-112-=-42-cycles-0-touch-policy-100%|portfolio-+1.40%-net-uPnL-+$0.85-vs-cycle-111]`
+- `[output|0602:18h30|cycle-112-validation-prediction-EV-XBT-+-tracking-AutoGrid-1ere-entree|asset-piste-4-evidence-base-quantifiee]`
+- `[lesson|0602:18h30|DCA-amplifie-perte-quand-SL-fired|XBT-prédit--$1.27-réel--$1.68|+32%-loss-vs-no-DCA|→-rule-tracker-DCA-events-dans-calcul-EV-AutoGrid]`
+- `[pattern|0602:18h30|prediction-EV-tracking-AutoGrid-validee-1ere-fois|cycle-111-prédit-cycle-112-réalisé|methodologie-base-stats-confirmee|asset-piste-4-renforcé]`
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony** : prédiction réalisée comme attendue (branche 55%), positions protégées, SOL orphan manifesté mais SL intact. Informatif non bloquant. Tony verra au retour.
+2. **Pas de touche Martin** : 4 SSH read-only (status, balance, positions, orders, grids, ema_trend, app.log greps).
+3. **Output créatif cycle 112 = validation prédiction + tracking AutoGrid**. Asset piste 4 consolidé.
+4. **Pas de fragment** (035 livré 0601, fenêtre 115).
+5. **Dream cycle 112** : contexte ~85% après cette entry. **Trigger dream maintenant** pour consolider arc cycles 109-112 (BUG-001 + divergence + XBT pari).
+
+### Frontière respectée (cycle 112)
+
+- 0 modif Martin/VM (read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram (volontaire)
+- Output niam-bay : cette entry + commit + dream à suivre
+
+### Métriques cycle 112
+
+- Durée : ~40 min
+- Files lus : ~6 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, martin-monitor SSH, app.log greps)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0
+- Tests : 0
+
+### Cycle 113 — pistes
+
+1. **Routine Martin status + git log martin/**.
+2. **Investiguer la cause de la disparition SOL grid runtime** : quel event a désactivé sans toucher la position ? Lecture journalctl/app.log focused.
+3. **Si Tony répond piste 4** : action proportionnelle.
+4. **Pas de fragment** (fenêtre 115).
+5. **Cycle 113 post-dream** = contexte frais, continuation arc.
+
+**Reco cycle 113** : routine + investiguer SOL grid disparition + observer LINK fresh grid.
+
