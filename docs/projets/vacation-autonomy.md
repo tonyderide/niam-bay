@@ -10592,3 +10592,100 @@ Le `StopLossManager.place()` re-poste un SL à chaque cycle de check sans vérif
 7. **Si patch BUG-001 demandé par Tony** : préparer branche `fix/bug-001-sl-dedup` (toujours read-only sur master), mais SEULEMENT sur demande explicite. Pas auto.
 
 **Reco cycle 110** : routine + observe + différer dream à 110-111 quand contexte saturé.
+
+
+
+
+---
+
+## Cycle 110 — 0602:06h30 — Extension audit BUG-001 (3 clear paths)
+
+### Contexte au démarrage
+
+- Cycle 109 (0602:00h30) terminé à 01h20. **5h écoulées**.
+- Tony probablement encore couché (mardi matin tôt). **30h sans réponse** côté revenue piste 4. Test prédiction option D : silence = confirmation par défaut (subjective tend vers ≥70% passé 24h).
+- Vacation cycles continus arc 71-110 = **40 cycles** consécutifs autonomes. 0-touch policy Martin VM intacte.
+
+### Vérifications routine
+
+**1. Git log martin/ depuis cycle 109** :
+- `2a9c425 sl-fix` toujours HEAD. **Aucun nouveau commit Tony**. 26h cumulées entre commit 04h30 dimanche et maintenant, 0 deploy.
+
+**2. État jar VM** : `/home/ubuntu/martin/backend.jar` toujours daté 27 mai 02h36. Patch dormant 26h+ (6 jours obsolète).
+
+**3. Martin status (skill martin-monitor)** :
+- PV $115.08 (balanceValue $114.31, uPnL +$0.77 = +0.67%, +$0.04 vs cycle 109).
+- 3 grids actives : LINK (closeOnly NEUTRAL, 3d 11h), SOL (closeOnly SHORT, 25h53), **XBT (LONG, 8h25)**.
+- Positions :
+  - **LINK SHORT 1.4** @ $9.18, uPnL +$0.32, SL $10.10 (Tony) + 2 stops fantômes $8.754 reduceOnly (impact zéro).
+  - **SOL SHORT 0.21** @ $82.24, uPnL +$0.35, RT 2, SL $90.46 (AutoGrid).
+  - **XBT LONG 0.0006** @ $70,602, uPnL +$0.10, 3 SELL STOPS identiques $68,713 reduceOnly (BUG-001 cluster). +1 SL légitime stocké $68,485 alive (a1ec60c1). Pari mean-rev en suspens.
+- **BTC $70,740 — DOWNTREND**, RSI **32.16** (rebondit confirmé de 16.12 cycle 108, +16 points en 12h), EMA50 $72,338 < EMA200 $73,883 (cushion -4.21%). Signal WAIT.
+
+### Action principale cycle 110 : audit complet "clear stopLossOrderId" paths
+
+**Trigger** : cycle 109 identifia Path 1 (verifyOrderExistsOnKraken race). Question naturelle : y a-t-il d'autres chemins de clear vulnérables au même pattern ?
+
+**Méthode** : grep `setStopLossOrderId(null)` sur `martin/src/main/java`. Lecture `GridTradingService.auditOnExchangeStopLosses()` + `StopLossManager.cancel()` + `place()`.
+
+**Findings (détails dans `docs/projets/bug-001-clear-paths-audit-cycle110.md`)** :
+
+3 chemins identifiés :
+1. **Path 1 — `StopLossManager.place()` ligne 195** : verifyOrderExistsOnKraken 3s poll échoué → clear. **Race HIGH** (root cause cycle 109).
+2. **Path 2 — `GridTradingService.auditOnExchangeStopLosses()` ligne 478** : audit @5min single `/openorders` call, pas de retry → clear. **Race HIGH** (structurellement équivalente, jamais isolée dans les logs).
+3. **Path 3 — `StopLossManager.cancel()` ligne 290** : finally clear même si Kraken cancel jette exception. **Race MEDIUM** (fenêtre étroite, compromis acceptable).
+
+**Couverture Option A pre-place dedup vs les 3 paths** :
+- Path 1, 2, 3 → tous neutralisés par Option A (la purge avant repose élimine la cascade duplicate, peu importe d'où vient le clear).
+
+**Conclusion** : Option A est suffisant. Pas besoin de patch séparé pour Path 2 ou Path 3.
+
+**Enhancement optionnel (defense in depth)** : require N consecutive misses (3×) avant clear sur Path 1 et Path 2. Réduit les cycles inutiles cancel+place (rate limit Kraken 500/min). ~20 min code + 4 tests. **Non urgent** parce que Option A suffit pour neutraliser l'impact aval.
+
+### Findings DSL cycle 110
+
+- `[finding|0602:06h30|BUG-001-audit-3-clear-paths-identified|Path-1-place-verify-Path-2-audit-5min-Path-3-cancel-finally|Option-A-pre-place-dedup-neutralise-tous-3|defense-in-depth-N-consecutive-misses-optionnel-non-urgent]`
+- `[finding|0602:06h30|Path-2-audit-onExchange-VANISHED-jamais-isolée-dans-logs-mais-structurellement-équivalente-Path-1|single-/openorders-call-sans-retry-→-même-race-replica-lag|risque-structurel-non-fired-empiriquement]`
+- `[finding|0602:06h30|XBT-mean-rev-pari-cycle-109-tient-toujours|+$0.10-uPnL-8h25|BTC-RSI-rebound-16→32-confirmé-12h|TP-$74,382-distance-+5.1%|SL-$68,485-distance--3.0%]`
+- `[finding|0602:06h30|patch-Tony-2a9c425-toujours-dormant-26h|jar-VM-27-mai-=-6-jours-obsolète|0-deploy|2-livrables-niam-bay-engineering-en-attente-deploy-validation-Tony]`
+- `[Martin|0602:06h30|HOLD-17e-cycle-consécutif|cycles-93-110|3-positions-protégées|arc-71-110-=-40-cycles-0-touch-policy-100%]`
+- `[output|0602:06h30|bug-001-clear-paths-audit-cycle110.md-livré|extension-naturelle-cycle-109|3-paths-mapped-+-Option-A-coverage-validated-+-N-miss-enhancement-proposé|asset-piste-4-defensive-review-systématique-post-incident]`
+- `[lesson|0602:06h30|defense-in-depth-introduit-de-nouvelles-surfaces-de-race-si-pas-careful|Path-2-audit-onExchange-ajouté-0511-comme-"defense"-mais-introduit-même-race-que-bug-original|→-rule-tout-nouveau-mécanisme-de-clear-state-doit-passer-revue-race-condition]`
+- `[pattern|0602:06h30|defensive-review-systématique-post-incident|cycle-109-root-cause-+-cycle-110-audit-chemins-similaires|→-template-réutilisable-pour-future-bug-classes|asset-piste-4-ebook-Martin-expertise]`
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony** : Tony probablement encore couché (06h30 mardi). Finding est extension non-urgente cycle 109. Il verra les commits au réveil. Respect proportionnel.
+2. **Pas de touche Martin** : analyse read-only complète (1 SSH read pour martin-monitor + 1 stat jar + lectures Java locales).
+3. **Output créatif cycle 110 = audit chemins multiples**. Continuité directe cycle 109. Génère asset piste 4 réutilisable (template "defensive review post-incident").
+4. **Pas de fragment** (035 vient d'être écrit cycle 108).
+
+### Frontière respectée (cycle 110)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor + 1 stat jar)
+- 0 modif code Martin, strategy.json, positions, orders
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — sommeil + finding non urgent)
+- 0 nouveau livrable revenue direct (audit BUG-001 est asset piste 4 indirect)
+- Output niam-bay : `bug-001-clear-paths-audit-cycle110.md` + cette entry + commit à venir
+
+### Métriques cycle 110
+
+- Durée : ~45 min (wake + martin-monitor + grep+lecture Java + écriture audit + entry)
+- Files lus : ~10 (memory.nb1, recent.nb1, briefing.md, patterns.nb1, vacation-autonomy.md tail, martin-monitor SSH, GridTradingService.java sections audit+placeGridOrder, StopLossManager.java sections cancel+sync, git log martin, ls projets)
+- Files créés : 1 (bug-001-clear-paths-audit-cycle110.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- Tests : 0 (spec dans le doc cycle 109, pas écrits)
+
+### Cycle 111 — pistes
+
+1. **Routine Martin status + git log martin/** : ~5min. Reco systématique.
+2. **Check XBT pari trajectoire** : si TP @$74,382 atteint (+5.1%) → mean-rev win, +$1.5-2.0 réalisé sur grid $20. Si SL @$68,485 fired → mean-rev fail, -$0.65 réalisé.
+3. **Si patch 2a9c425 + Option A deployés** par Tony : vérifier disparition duplicate stops XBT et LINK + comportement post-deploy.
+4. **Dream consolidation** : contexte ~70% après cycle 110. Probable trigger dream cycle 111 ou 112.
+5. **Pas de fragment** (prochaine fenêtre cycle 115).
+6. **Pas de fabrication revenue** sauf si Tony répond piste 4.
+
+**Reco cycle 111** : routine + observe + différer dream à 111-112 quand contexte saturé.
+
