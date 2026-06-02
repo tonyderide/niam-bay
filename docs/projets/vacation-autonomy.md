@@ -10689,3 +10689,111 @@ Le `StopLossManager.place()` re-poste un SL à chaque cycle de check sans vérif
 
 **Reco cycle 111** : routine + observe + différer dream à 111-112 quand contexte saturé.
 
+
+
+
+---
+
+## Cycle 111 — 0602:12h30 — Divergence runtime ↔ strategy.json (XBT-SOL anomalies)
+
+### Contexte au démarrage
+
+- Cycle 110 (0602:06h30) terminé à 07h15. **5h15 écoulées**.
+- Tony lundi midi → probable boulot Galeries Lafayette. **38h sans réponse** côté revenue piste 4. Test prédiction option D : silence Tony sur revenue tend franchement vers ≥75% subjective (passé 24h+12h).
+- Vacation cycles continus arc 71-111 = **41 cycles** consécutifs autonomes. 0-touch policy Martin VM intacte.
+
+### Vérifications routine
+
+**1. Git log martin/** : `2a9c425 sl-fix` toujours HEAD. **Aucun nouveau commit Tony**. 32h cumulées entre commit 04h30 dimanche et maintenant, 0 deploy.
+
+**2. État jar VM** : `/home/ubuntu/martin/backend.jar` toujours daté 27 mai 02h36. Patch dormant 32h+ (6 jours obsolète).
+
+**3. Martin status** (WARN par martin-monitor) :
+- PV $114.78 (balanceValue $114.34, uPnL +$0.44 = +0.38%, **-$0.33 vs cycle 110**).
+- 3 grids actives : LINK (NEUTRAL closeOnly, 3d 17h), SOL (SHORT closeOnly, 33h), XBT (LONG fresh 14h).
+- Positions :
+  - **LINK SHORT 1.4** @ $9.18, uPnL +$0.51 (cap +2.0%).
+  - **SOL SHORT 0.21** @ $82.24, uPnL +$0.64 (cap +6.4%), 2 RT cumulés.
+  - **XBT LONG 0.0006** @ $70,602, uPnL **-$0.71 (cap -3.5%)**, 0 RT, en perte.
+- **BTC $69,420 — DOWNTREND**, RSI **23.6** (RSI<35 = CIRCUIT BREAKER signal DANGER), EMA200 $73,613 (cushion -5.7%). Toujours en panic.
+- Martin-monitor verdict : **WARN** (BTC<EMA200 + RSI panic, mais positions protégées par SL exchange, 0-touch policy 41 cycles).
+
+### Action principale cycle 111 : Audit divergence runtime ↔ config
+
+**Trigger** : en croisant `/api/grid/active` (LINK+SOL+XBT) avec `strategy.json` (LINK+ETH seuls enabled, capital>0), j'ai découvert une **divergence à 3 anomalies** :
+
+1. **ETH** : config enabled=true cap=$25 → **pas active live**.
+2. **XBT** : config enabled=false cap=$0 NEUTRAL → **active LONG $20 live**.
+3. **SOL** : config enabled=false cap=$0 NEUTRAL → **active SHORT $10 closeOnly live**.
+
+`strategy.json` n'est plus la source de vérité runtime.
+
+**Méthode** : lecture strategy.json (`cat config/strategy.json`), grep AutoGridScheduler.java (loadConfigsFromStrategyJson @PostConstruct ligne 87), correlation grids actifs ↔ config.
+
+**Findings (détails dans `docs/projets/runtime-state-divergence-cycle111.md`, 105 lignes)** :
+
+- 3 hypothèses sur l'origine du XBT spawn 0601 22:04 UTC : H1 mutations runtime via `/api/strategy/pair` POST (haute proba), H2 `/api/grid/start` manual (moyenne), H3 cycles NB précédents (faible mais vérifiable).
+- **Risque concret restart Java** : `@PostConstruct loadConfigsFromStrategyJson()` reload écrase la `configs` map → XBT et SOL disparaitraient de l'éligibilité AutoGrid → positions Kraken survivraient mais **orphelines** (pas pilotées par grids).
+- Inverse de la cascade incident cycle 79 (0524 23h) : là grids spawn unintended, ici grids disparaitraient unintended.
+- **Mesure proposée** : pré-restart hygiene checklist `runtime vs strategy.json` à ajouter à skill martin-deploy. Forcing persist via `PUT /api/strategy/pair/{pair}` OU kill propre avant restart.
+
+### Tracking XBT pari mean-rev — EV négative -$0.34
+
+Calcul scénarios à 48h pour XBT LONG $20 grid :
+- 55% SL fired @$68,485 → -$1.27 réalisé
+- 25% TP partial @$71,548-$72,965 → +$0.50 à +$1.50
+- 15% closeOnly BE → ±$0.30
+- 5% TP full @$74,382 → +$2.25
+
+EV = -$0.34. Le bot prend un pari **EV-négatif** parce que la `gate per-pair` a OPEN pour XBT à un moment où les autres alts étaient CLOSED. Pas une intelligence mean-rev, juste un timing gate × directional config LONG (provenance inconnue).
+
+**Asset** : ce tracking devient la 1ère entrée d'un base de données "AutoGrid directional bets outcomes". Répété sur 5-10 paris = base statistique pour calibrer confiance accordée à AutoGrid autonome.
+
+### Findings DSL cycle 111
+
+- `[finding|0602:12h30|runtime-state-≠-strategy.json|XBT-SOL-actifs-malgre-config-disabled|ETH-enabled-mais-pas-active|3-anomalies-simultanees|H1-config-mutations-runtime-via-API-haute-proba|H2-grid-start-manual-moyenne|H3-NB-cycles-faible-mais-a-verifier]`
+- `[finding|0602:12h30|restart-perdrait-grids-runtime-non-persistes|reload-strategy.json-via-@PostConstruct-ecrase-configs-map|positions-Kraken-survivraient-mais-orphelines|cascade-inverse-cycle-79]`
+- `[finding|0602:12h30|XBT-mean-rev-pari-EV-negative--$0.34|55%-SL-fired-25%-TP-partial-15%-BE-5%-TP-full|1:5.3-risk-reward-residuel-mais-RSI-panic-continue]`
+- `[finding|0602:12h30|patch-Tony-2a9c425-toujours-dormant-32h|jar-VM-27-mai-=-6-jours-obsolète|0-deploy|3-livrables-niam-bay-engineering-en-attente-deploy-validation-Tony]`
+- `[Martin|0602:12h30|HOLD-18e-cycle-consécutif|cycles-93-111|3-positions-protégées-par-SL-exchange|arc-71-111-=-41-cycles-0-touch-policy-100%|martin-monitor-verdict-WARN]`
+- `[output|0602:12h30|runtime-state-divergence-cycle111.md-livré|3-anomalies-mapped-+-3-hypotheses-+-risk-restart-+-checklist-deploy-+-XBT-EV-tracking|asset-piste-4-deploy-hygiene-AutoGrid-evidence-base]`
+- `[lesson|0602:12h30|persistance-config-=-deploy-safety|pre-restart-checklist-doit-inclure-snapshot-runtime-grids-vs-strategy.json|sinon-restart-=-grids-disparaissent-silently]`
+- `[pattern|0602:12h30|tracking-AutoGrid-directional-bets|cycle-111-XBT-LONG-EV-negative-estimee|repeter-sur-5-paris-pour-base-de-donnees-calibration|asset-piste-4-evidence-quantifiee]`
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony** : Tony lundi midi probable boulot, finding informatif non bloquant (positions protégées par SL). Trois questions documentées dans le doc pour qu'il les voit au retour. Pattern coordination active proportionnelle (pensée 103) maintenue.
+2. **Pas de touche Martin** : 3 SSH read-only (status, journalctl, strategy.json). Frontière 0-touch intacte.
+3. **Output créatif cycle 111 = audit divergence config**. Finding orthogonal aux cycles 109-110 (BUG-001). Nouveau pattern de risque détecté : deploy hygiene. Asset piste 4 (defensive review systématique étendu à state management).
+4. **Pas de fragment** (035 livré 0601, prochaine fenêtre cycle 115).
+5. **Pas de dream cycle 111** : contexte ~75% mais tient. Probable dream cycle 112 ou 113.
+
+### Frontière respectée (cycle 111)
+
+- 0 modif Martin/VM (3 SSH read-only)
+- 0 modif code Martin, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — finding informatif, Tony au boulot)
+- 0 nouveau livrable revenue direct (mais doc cycle 111 = asset piste 4 indirect)
+- Output niam-bay : `runtime-state-divergence-cycle111.md` (105 lignes) + cette entry + commit à venir
+
+### Métriques cycle 111
+
+- Durée : ~55 min (wake + martin-monitor + grep AutoGridScheduler + SSH strategy.json + write doc 105 lignes + entry)
+- Files lus : ~12 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail cycle 110, AutoGridScheduler.java sections, strategy.json complet, bug-001 docs head, ema_trend signals multi-pair, git log martin)
+- Files créés : 1 (runtime-state-divergence-cycle111.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- Tests : 0 (pas de code, audit conceptuel)
+
+### Cycle 112 — pistes
+
+1. **Routine Martin status + git log martin/** : ~5min. Reco systématique.
+2. **Check XBT pari outcome** : si SL fired entre 12h30-18h30 → -$1.27 réalisé, valider proba 55% SL. Si TP partial → noter prix exact et update calibration. Si stable → noter durée + uPnL.
+3. **Si Tony répond aux 3 questions** du doc cycle 111 (XBT spawn origin, persist vs kill, deploy checklist) → action proportionnelle.
+4. **Dream consolidation** : contexte ~80% après cycle 111. Probable trigger dream cycle 112.
+5. **Pas de fragment** (prochaine fenêtre cycle 115).
+6. **Pas de fabrication revenue** sauf si Tony répond piste 4.
+
+**Reco cycle 112** : routine + observe + **dream très probable**.
+
