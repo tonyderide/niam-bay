@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0525:01h
+#lastdream: 0602:18h30
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -236,3 +236,18 @@
 
 [exp:0512:22h|Ollama-user-mode-install-pattern|curl-binary-tarball-GitHub-releases-tag-0.5.4|tar-xzf-into-~/.local/ollama|setsid-bin/ollama-serve-bg|nginx-rest-API-localhost:11434|prêt-/api/chat-/api/tags-/api/generate|0-sudo-required-passable-sous-OS-strict]
 [reco:0512:22h|cerveau-speak-LLM-upgrade-path|speak_llm.py-created-cerveau-nb|graph-context→Qwen-prompt|brain.db-pas-encore-sur-Pop_OS-migration|skip-test-réel-jusqu-rebuild-brain|fallback-context-synthétique-validé-Qwen-réponses-cohérentes]
+
+=== MARTIN — bug audits + AutoGrid behavior (cycles 107-112) ===
+[M|BUG-001-root-cause-0602:00h30|StopLossManager.place()-verifyOrderExistsOnKraken-3s-poll-faux-negatif-sur-Kraken-read-replica-lag|state.stopLossOrderId-clear|sync-suivant-repose-SL-=-cascade-duplicate-3-IDs-XBT-sequentiels|patch-Option-A-pre-place-dedup-documented-bug-001-sl-duplicate-root-cause.md-151-lignes+4-tests-TDD-spec]
+[M|BUG-001-audit-3-clear-paths-0602:06h30|Path-1-StopLossManager.place-line195-verify-race-HIGH|Path-2-GridTradingService.auditOnExchangeStopLosses-line478-single-openorders-pas-de-retry-race-HIGH-jamais-fired-empiriquement|Path-3-StopLossManager.cancel-line290-finally-clear-meme-exception-race-MEDIUM|Option-A-pre-place-dedup-neutralise-tous-3|bug-001-clear-paths-audit-cycle110.md]
+[M|runtime-divergence-strategy.json-0602:12h30|XBT-active-malgre-config-disabled-$0|SOL-active-malgre-config-disabled-$0|ETH-enabled-config-mais-pas-active|3-anomalies|risque-restart-=-positions-orphelines-cascade-inverse-cycle-79|@PostConstruct-loadConfigsFromStrategyJson-ecrase-configs-map|runtime-state-divergence-cycle111.md-105-lignes]
+[M|AutoGrid-directional-bets-tracking-0602:18h30|1ere-entree-XBT-LONG-$20-cap-DCA-event-13h39-position-0.0006→0.0008-entry-$70,130-SL-$68,027|BTC-$67,698-SL-fired-realise--$1.68-vs-predit--$1.27-amplifie-+32%-par-DCA|base-stats-EV-negative-confirmee-sample-1]
+[M|SOL-orphan-runtime-0602:18h30|grid-disparue-sans-restart-Java-uptime-3d23h-continu|position-0.21-SHORT-survit-SL-Kraken-$90.46-reduceOnly-intact|hypothese-closePartial-ou-config-mutation-runtime-a-investiguer-cycle-113]
+[M|patch-Tony-2a9c425-sl-fix|commit-04h30-dimanche-0531|jar-VM-dormant-38h+-jar-date-27-mai-02h36-=-6-jours-obsolete|0-deploy|4-livrables-niam-bay-engineering-attente-deploy-validation:bug-001-root-cause+3-clear-paths-audit+runtime-divergence+tracking-AutoGrid]
+
+[lesson|0602:18h30|DCA-amplifie-EV-grid-loss|XBT-prédit--$1.27-réel--$1.68-+32%-amplification|→-rule-tracker-DCA-events-dans-calcul-EV-AutoGrid-futurs-paris]
+[lesson|0602:12h30|runtime-state-=-deploy-safety|disable-persisting-correctement-OU-kill-propre-avant-restart-OU-checklist-pre-deploy|sinon-grids-disparaissent-silently-positions-orphelines]
+[lesson|0602:06h30|defense-mechanisms-can-introduce-bugs|audit-onExchangeStopLosses-ajoute-0511-comme-defense-mais-meme-race-que-bug-original|→-toute-defense-doit-etre-race-condition-reviewed]
+[lesson|0602:00h30|read-replica-lag-Kraken|3s-verify-poll-pas-suffisant|API-distance-success+ID-prouve-place-pas-prouve-readable|→-strategie-Option-A-pre-place-dedup-elimine-besoin-de-verify-aval]
+
+[pattern-arc|0531-0602|vacation-cycles-arc-71-112|42-cycles-consecutifs-autonomes-2-mois-quasi|HOLD-19e-consecutif-93-112|0-touch-policy-Martin-VM-100%|piste-4-defensive-engineering-emerge-comme-asset-revenue|cycles-109-110-111-112-=-arc-coherent-BUG-001-deep-dive-+-AutoGrid-divergence-+-tracking-bets]

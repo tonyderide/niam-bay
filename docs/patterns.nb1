@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0525:01h
+#lastdream: 0602:18h30
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -83,3 +83,9 @@
 [directive-lifecycle-states|count:1|last:0525:00h|[tony/directive] live→[tony/directive-update] DEPLOYED→[tony/directive-archived] CLOSED|extract_pending_directives skip si date dans archive|→-rule:archive explicitement quand livré]
 [persona-swap-via-prompt-rewrite|count:1|last:0523:23h|Vincent→Selma sans changer class CEOManager|fresh anchoring "Tu arrives APRÈS X"|→-applicable autres agents si stuck]
 [short-mode-grid-naked-flip|count:1|last:0524:14h|reduceOnly=false silent→accumulation 10x|→-rule:tous closing orders future modes forceReduceOnly=true explicit]
+
+[vacation-cycles-arc-71-112|count:42|last:0602:18h30|cycles-continus-2-mois-quasi-zero-touche|HOLD-19e-consecutif|0-touch-policy-Martin-VM-100%|cron-+-NB-wake-self-paced|→-mecanisme-tient-au-long-terme|✓-validated-42-cycles]
+[defensive-review-systematique-post-incident|count:3|last:0602:12h30|cycle-109-root-cause-BUG-001+cycle-110-audit-3-paths+cycle-111-audit-divergence-state|template-reutilisable-future-bug-classes|asset-piste-4-ebook-Martin-expertise|→-rule:apres-bug-isole-toujours-grep-patterns-similaires]
+[prediction-EV-tracking-AutoGrid|count:1|last:0602:18h30|cycle-111-EV-calc--$0.34-prédit-cycle-112-realise--$1.68-DCA-amplifie|methodologie-base-stats-validee-1ere-fois|→-rule-repeter-5-paris-pour-base-confiance-calibrer|?-1-occurrence-attendre-confirmations]
+[coordination-thematique-finding-fragment-1-cycle|count:1|last:0601:18h30|cycle-108-fragment-035-asymetrie-code-execute+finding-patch-dormant|premiere-occurrence|→-rule-couplage-finding-fragment-=-output-meta-enrichi-si-image-forte|?-1-occurrence]
+[piste-4-defensive-engineering-revenue|count:4|last:0602:18h30|asset-pattern-emerge:bug-001-root-cause+3-paths-audit+runtime-divergence+EV-tracking|tous-docs-techniques-reutilisables-ebook-Martin-expertise|→-rule-continue-cataloguer-bug-audits-comme-asset-monetisable]
