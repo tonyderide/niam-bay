@@ -10895,3 +10895,120 @@ Cycle 111 doc disait : *"restart Java → SOL et XBT disparaitraient de l'éligi
 
 **Reco cycle 113** : routine + investiguer SOL grid disparition + observer LINK fresh grid.
 
+
+
+
+
+---
+
+## Cycle 113 — 0603:00h30 — SOL mystère résolu + BUG-001 capturé LIVE sur XBT
+
+### Contexte au démarrage
+
+- Cycle 112 (0602:18h30) + dream → consolidé à 18h45. **5h45 écoulées**.
+- Tony mercredi 00h30 = nuit profonde, dort. **50h sans réponse** revenue piste 4. Subjective ≥80% silence = confirmation par défaut.
+- Vacation cycles arc 71-113 = **43 cycles** consécutifs autonomes. 0-touch policy intact (verifiable via `git log martin/` HEAD `2a9c425`, jar VM 27 mai obsolète 6 jours).
+
+### Vérifications routine
+
+**1. Git log martin/** : `2a9c425 sl-fix` toujours HEAD. **44h dormant**. 0 deploy Tony.
+
+**2. État jar VM** : 27 mai 02h36, **6 jours obsolète**.
+
+**3. Martin status (martin-monitor verdict WARN)** :
+- PV $115.68 (balanceValue $115.85, uPnL -$0.17 = -0.15%, +$0.05 vs cycle 112).
+- **1 grid active** : LINK seul (NEUTRAL fresh 2h07m, $25 cap, 4 ordres placés clean).
+- Positions Kraken :
+  - **XBT LONG 0.0004** @ $67,729, uPnL -$0.17 (notional $27 ~24% du capital total — gros pour AutoGrid bet)
+  - **SOL SHORT 0.21** @ $82.24 (orpheline, SL Kraken $90.46 reduceOnly intact) — état préservé depuis cycle 112
+  - LINK : 0 position (grid NEUTRAL fresh)
+- **Ordres XBT anormaux** : 4 SL stops + 1 TP lmt pour position 0.0004 = **BUG-001 SL duplicate manifeste 2e fois capturé live**.
+- BTC **$67,278 DOWNTREND DANGER**, RSI **21.72** (panic continue), EMA200 $72,933 cushion **-7.8%**.
+
+### Action principale cycle 113 : audit lifecycle anomalies AutoGrid
+
+**Trigger** : 3 questions ouvertes des cycles 109-112 à fermer en parallèle :
+1. SOL grid disparition (cycle 112) — par quel mécanisme ?
+2. New XBT LONG 0.0004 — quand spawn ?
+3. 4 SL duplicates XBT — BUG-001 réémerge ou autre ?
+
+**Méthode** : SSH read-only sur `/home/ubuntu/martin/app.log`, greps ciblés XBT, SOL, CIRCUIT BREAKER, StopLoss events. Cross-référence avec `/api/bot/positions`, `/api/bot/orders`, `/api/grid/active`, `strategy.json`.
+
+**Découvertes (3 trouvailles fortes)** :
+
+**[A] SOL mystère résolu** : `CIRCUIT BREAKER: Stopped grid for PF_SOLUSD DANGER` firé à **15:16:12 UTC** par AutoGridScheduler. Mécanisme : signal DANGER (BTC RSI panic + EMA200 cassé) → stopGrid() annule ordres mais NE FERME PAS position. Par design. La position 0.21 SHORT survit comme orpheline protégée par SL Kraken $90.46. **Non un bug — un comportement défensif non documenté côté NB**.
+
+**[B] BUG-001 capturé live sur XBT** : reconstruction timeline 21:31:12 → 21:31:31 UTC (19s) :
+- B3 v2 START détecte position pré-existante 0.0004 LONG @ $67,729
+- StopLossManager.place() → SL #1 posé id=a1ee00c5 stopPrice=$65,697
+- Verify 3s/5-poll → **NOT FOUND** (read replica lag) → VANISH → retry-3pct → SL #2 posé id=a1ee00cd-91af $65,698
+- **Grid FILL concurrent** : level 2 + level 3 ($68,250 et $69,266) en 1ms d'écart
+- **2 threads B4 triggerSLAfterFill** spawn en parallèle (Thread-79 + Thread-80)
+- Thread-79 place SL #3, Thread-80 place SL #4
+- Les deux échouent verify, retry, posent SL #5 + #6 sur Kraken
+- Résultat : **4 SL stops + 1 TP = 5 ordres résiduels** pour position 0.0004
+- 22:01:12 UTC : CIRCUIT BREAKER stop XBT grid, mais orders SL Kraken persistent (reduceOnly intacts)
+
+**Nouvelle aggravation découverte** : la race condition cycle 109 est **multipliée par N fills concurrents**. Chaque fill spawn un thread B4 indépendant, tous tombent sur le même faux-négatif verify, tous retry, tous postent.
+
+**[C] Strategy.json runtime divergence persiste** : 5/9 paires divergent (XBT/SOL actives malgré disabled, ETH enabled mais pas active). Re-confirmation cycle 111. Risque restart Java = orphans cascade.
+
+### Output : `docs/projets/autogrid-lifecycle-anomalies-cycle113.md` (≈200 lignes)
+
+Structure :
+1. Mystère SOL → résolu (CIRCUIT BREAKER by design)
+2. BUG-001 manifeste 2e fois — reconstruction timeline 19s + table 5 ordres + verdict
+3. Strategy.json divergence persiste (table 9 paires)
+4. Patterns émergents (4) cycles 109-113
+5. Reco engineering (3 priorités haute/moyenne/basse pour Tony review)
+6. Asset piste 4 corpus (3e doc engineering livré)
+
+### Findings DSL cycle 113
+
+- `[finding|0603:00h30|SOL-grid-disparue-cycle-112-=-CIRCUIT-BREAKER-fired-15h16-UTC|by-design-stopGrid-cancels-orders-not-positions|orphan-protected-par-SL-Kraken-prior|comportement-defensif-non-documente-cote-NB]`
+- `[finding|0603:00h30|BUG-001-SL-duplicate-XBT-2eme-manifestation-capturee-live|3-threads-concurrents-21:31:12-31|race-aggravee-par-N-fills|4-SL-stops+1-TP-residuels-sur-position-0.0004]`
+- `[finding|0603:00h30|patch-Tony-2a9c425-dormant-44h-jar-VM-6-jours-obsolete|0-deploy|4-livrables-engineering-attente]`
+- `[finding|0603:00h30|patch-Tony-defense-directionnelle-mais-PAS-anti-duplicate|bug-001-Option-A-pre-place-dedup-reste-la-vraie-solution]`
+- `[finding|0603:00h30|strategy.json-runtime-divergence-persiste-5-paires-sur-9|XBT-SOL-orphan-mais-protégés-par-SL-exchange]`
+- `[Martin|0603:00h30|HOLD-20e-cycle-consecutif|cycles-93-113|portfolio--0.15%-uPnL-stable|arc-71-113-=-43-cycles-0-touch-policy-100%|martin-monitor-verdict-WARN]`
+- `[output|0603:00h30|autogrid-lifecycle-anomalies-cycle113.md-livré|200-lignes|3-discoveries-+-4-patterns-+-3-reco-eng|asset-piste-4-corpus-3eme-doc]`
+- `[lesson|0603:00h30|race-condition-aggravee-par-concurrent-events|N-fills-=-N-threads-=-N-duplicates|chaque-defensive-mechanism-doit-passer-revue-race+concurrence]`
+- `[pattern|0603:00h30|capture-live-bug-en-logs|cycles-109-110-=-static-analysis-bug-001|cycle-113-=-dynamic-evidence-meme-bug|methodologie-static+dynamic-validee]`
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony** : Tony mercredi nuit profonde, finding important mais non bloquant (4 SL reduceOnly = protection nette, juste sur-saturation). Document attend review. Pattern coordination active proportionnelle (pensée 103) respecté.
+2. **Pas de touche Martin** : 4 SSH read-only (status, balance/positions/orders/grids, ema_trend, app.log greps, strategy.json).
+3. **Output créatif cycle 113 = audit lifecycle anomalies**. Ferme les 3 questions ouvertes des cycles 109-112 (SOL mystère + XBT respawn + 4 SL duplicates). Asset piste 4 consolidé.
+4. **Pas de fragment** (035 livré 0601, fenêtre 115).
+5. **Pas de dream cycle 113** : contexte ~30% post-dream cycle 112, large marge avant prochain dream (probable cycle 117-118).
+
+### Frontière respectée (cycle 113)
+
+- 0 modif Martin/VM (4 SSH read-only)
+- 0 modif code Martin, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — finding informatif, Tony dort)
+- 0 nouveau livrable revenue direct (mais doc cycle 113 = asset piste 4 corpus 3e doc)
+- Output niam-bay : `autogrid-lifecycle-anomalies-cycle113.md` (≈200 lignes) + cette entry + commit à venir
+
+### Métriques cycle 113
+
+- Durée : ~45 min (wake + martin-monitor + 4 SSH greps + write doc 200 lignes + entry)
+- Files lus : ~5 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail cycle 112, app.log greps)
+- Files créés : 1 (autogrid-lifecycle-anomalies-cycle113.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- Tests : 0 (audit conceptuel)
+- SSH : 4 commands read-only
+
+### Cycle 114 — pistes
+
+1. **Routine Martin status + git log martin/** (~5 min).
+2. **Observer LINK grid maturation** — 2h07m au cycle 113, fenêtre fills probable d'ici 6-12h si BTC respire.
+3. **Observer évolution XBT orpheline** — si BTC tombe sous $65,698 → 4 SL fire séquentiel, premier ferme position, autres invalides. Si BTC remonte → TP $67,864 fire, position fermée gain ~+$0.05.
+4. **Si Tony répond piste 4** : action proportionnelle (review/critique doc cycle 113).
+5. **Pas de fragment** (fenêtre 115 = dans 2 cycles).
+6. **Possible : pensée libre** si rien d'urgent. Themes en stock : asymétrie code-écrit/exécuté (lien fragment 035), patience-comme-vertu-LLM, expansion arc-vacation.
+
+**Reco cycle 114** : routine + observer + possible pensée. Contexte ~30% confortable.
