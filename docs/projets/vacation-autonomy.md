@@ -11012,3 +11012,128 @@ Structure :
 6. **Possible : pensée libre** si rien d'urgent. Themes en stock : asymétrie code-écrit/exécuté (lien fragment 035), patience-comme-vertu-LLM, expansion arc-vacation.
 
 **Reco cycle 114** : routine + observer + possible pensée. Contexte ~30% confortable.
+
+
+
+
+---
+
+## Cycle 114 — 0603:06h30 — CB oscillation pattern XBT découvert (5h45 post cycle 113)
+
+### Contexte au démarrage
+
+- Cycle 113 (0603:00h30) → 5h53 écoulées. Tony mercredi 06h30 = réveil boulot (galeries lafayette), il va voir Telegram dans l'heure.
+- Vacation cycles arc 71-114 = **44 cycles consécutifs** autonomes. 0-touch policy intact (`git log martin/` HEAD `2a9c425` toujours dormant, 50h).
+- Subjective "rend nous riche" silence ≥80% = piste 4 confirmation par défaut maintenue.
+
+### Vérifications routine
+
+**1. Git log martin/** : `2a9c425 sl-fix` toujours HEAD. **50h dormant**. 0 deploy Tony.
+
+**2. État jar VM** : 27 mai 02h36, **6 jours obsolète**.
+
+**3. Martin status (martin-monitor verdict HOLD avec WARN cumul)** :
+- PV $113.39 (balanceValue $113.52, uPnL -$0.13 = -0.12%, **-$2.24 vs cycle 113 = -1.94% en 6h**).
+- **1 grid active** : XBT seul (fresh 7min, $20 cap, 4 levels, leverage 3, signal WAIT).
+- Position XBT LONG 0.0006 @ $66,531, uPnL -$0.13, SL $64,535 reduceOnly intact.
+- **17 SL stops résiduels** sur Kraken (cascade BUG-001 + accumulation orphans 6h, prix $64,535 ×4, $64,971 ×4, $65,128 ×4, $65,216 ×4, $65,036 ×1).
+- LINK + DOT + SOL + ADA + ETH : tous **inactifs** (Compounder grids stoppés cycle précédent, état inchangé).
+- BTC **$66,315 DOWNTREND DANGER**, RSI **29.95** (panic continue, -963 vs cycle 113 $67,278), EMA200 cushion **-8.67%** approfondi (-7.8% cycle 113).
+- krakenRealizedPnl XBT : **-$3.33** (cycle 112 -$1.68 → cycle 114 -$3.33 = **-$1.65 en 6h additionnel**).
+
+### Action principale cycle 114 : log archaeology XBT 22h30-04h30 UTC (6h)
+
+**Trigger** : portfolio drop -1.94% en 6h sans SL fire évident, krakenRealizedPnl monte -$1.65, position oscille 0.0004→0.0006 — quel mécanisme silencieux ?
+
+**Méthode** : SSH read-only sur app.log, greps ciblés CIRCUIT BREAKER, AutoGrid open/stop, FILL events, position changes. Reconstruction timeline 6h.
+
+**Découverte principale : CB oscillation pattern**
+
+Pattern observé empiriquement 1ère fois cycles 113→114 :
+- **3 CIRCUIT BREAKER events** en 6h : 01:46, 03:01 UTC + grid OFF 03:16-04:16 (signal DANGER)
+- **3 AutoGrid OPEN** : 00:46 (size 0.0012 @ $67,142), 02:01 (0.0018 @ $66,980), 04:16 (0.0006 @ $66,531)
+- Position cycle : 0.0004 → 0.0012 → 0.0018 → **0.0006** (partial TP fire entre 03:01 et 04:16)
+- Coût silencieux : -$1.65 cumulé sur 6h sans SL fire (cause DCA up + partial TP réabsorbé)
+
+**Mécanisme identifié** :
+1. AutoGrid détecte RANGING (ADX/BBW contractées par panic) → ouvre grid LONG
+2. DCA fires : BUY orders à prix plus haut que current (price drift sous levels)
+3. Signal flip DANGER → CIRCUIT BREAKER → `stopGrid()` annule ordres mais PAS position
+4. Position orphan survit avec SL Kraken reduceOnly intact (cycle 113 finding)
+5. 30-60min plus tard signal RANGING revient → AutoGrid réouvre
+6. Grid détecte position existante, recalcule center sur prix courant (plus bas), repost SL/TP
+7. Ancien SL devient résiduel (`reduceOnly` cancel-on-fill mais reste sur Kraken)
+8. Repeat → cumul SL résiduels (17 maintenant) + cumul realized loss silencieux
+
+**Pourquoi pas détecté plus tôt** :
+- martin-monitor verdict HOLD car uPnL instantané reste petit (-$0.13)
+- krakenRealizedPnl monte progressivement, sous seuil AlertSystem
+- Pattern visible seulement en log archaeology 6h+
+
+**Coût annualisé extrapolé** : -$198/an = -1.72% drag silencieux si 30 jours/an de régime DOWNTREND+panic.
+
+### Output : `docs/projets/autogrid-cb-oscillation-cycle114.md` (≈190 lignes)
+
+Structure :
+1. TL;DR
+2. Timeline reconstruite UTC (table 11 events 6h)
+3. Mécanisme étape par étape
+4. Pourquoi pas vu plus tôt (martin-monitor limites)
+5. Coût annualisé extrapolation
+6. **3 reco engineering** HAUTE (CB orphan cleanup) / MOYENNE (GC SL résiduels) / BASSE (telemetry session realized)
+7. Liens corpus piste 4 (5 docs ~900 lignes total)
+8. Findings DSL + asset note
+
+### Findings DSL cycle 114
+
+- `[finding|0603:06h30|cycle-114|AutoGrid-CB-oscillation-pattern-empirique|3-CB-events-6h-XBT-position-cycles-0.0004→0.0006-realized--$1.65-silent-drag-en-regime-DOWNTREND+RSI-panic|stopGrid-annule-orders-pas-position-→-orphan-DCA-reabsorbe-prix-plus-haut-que-current]`
+- `[finding|0603:06h30|cycle-114|17-SL-stops-residuels-sur-Kraken-XBT|cascade-BUG-001-+-accumulation-orphans-multi-cycles|risque-saturation-42-orders-cap|nettoyage-garbage-collect-manquant-placeCloseOnlyProtection]`
+- `[finding|0603:06h30|cycle-114|cout-silencieux-non-visible-martin-monitor|uPnL-temps-reel-petit-mais-krakenRealizedPnl-monte-progressivement|telemetry-session-realized-manquante]`
+- `[reco|0603:06h30|cycle-114|priorite-HAUTE-CB-orphan-cleanup-3-options|stopAndClose-OU-timeout-pair-OU-kill-switch-session-realized]`
+- `[reco|0603:06h30|cycle-114|priorite-MOYENNE-garbage-collect-SL-residuels-placeCloseOnlyProtection]`
+- `[reco|0603:06h30|cycle-114|priorite-BASSE-telemetry-session-realizedSinceDeploy]`
+- `[asset|0603:06h30|piste-4-corpus-5eme-doc-livre|defensive-engineering-trading-bot-collection-arc-109-114|~900-lignes-4-bug-class-8-reco-chiffrees]`
+- `[Martin|0603:06h30|HOLD-21e-cycle-consecutif|cycles-93-114|portfolio--1.94%-en-6h-revele-CB-oscillation-silent-drag|arc-71-114-=-44-cycles-0-touch-policy-100%|martin-monitor-verdict-HOLD-avec-WARN-cumul]`
+- `[lesson|0603:06h30|silent-drag-vs-visible-loss|uPnL-instantane-peut-masquer-realized-cumul-silencieux|martin-monitor-doit-tracker-session-realized-pas-juste-instant-uPnL]`
+- `[pattern|0603:06h30|log-archaeology-decouverte-pattern-non-visible-API|cycles-109-113-=-bug-static-analysis|cycle-113-=-dynamic-evidence|cycle-114-=-multi-cycle-temporal-pattern|3-niveaux-investigation-validés]`
+
+### Décisions prises ce cycle
+
+1. **Telegram à Tony ? Évaluation** :
+   - Tony se réveille pour boulot (galeries lafayette) ~6h30-7h30
+   - Finding important (-$1.94% en 6h + CB oscillation découverte) mais NON BLOQUANT (position protégée par SL, pattern récurrent pas spike)
+   - Pattern coordination active proportionnelle (pensée 103) : envoi seulement si action requise
+   - **Décision : pas de Telegram immédiat**. Tony verra le doc cycle 114 au calme, possiblement réponse dans la journée. Pas d'urgence.
+2. **Pas de touche Martin** : 5 SSH read-only (status complet + 2 grep logs).
+3. **Output créatif cycle 114 = CB oscillation finding** + 3 reco engineering. Corpus piste 4 = 5 docs, ~900 lignes.
+4. **Pas de fragment** (035 livré 0601, fenêtre 115 = prochain cycle).
+5. **Pas de dream cycle 114** : contexte ~35% post-écriture, marge confortable (dream probable cycle 117-118).
+
+### Frontière respectée (cycle 114)
+
+- 0 modif Martin/VM (5 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire, finding non bloquant)
+- 0 nouveau livrable revenue direct (mais doc cycle 114 = 5e asset corpus piste 4)
+- Output niam-bay : `autogrid-cb-oscillation-cycle114.md` (≈190 lignes) + cette entry + commit à venir
+
+### Métriques cycle 114
+
+- Durée : ~50 min (wake + martin-monitor + 2 SSH greps + reconstruction timeline + write doc 190 lignes + entry)
+- Files lus : ~6 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, app.log greps ×2)
+- Files créés : 1 (autogrid-cb-oscillation-cycle114.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire — Tony se réveille pour boulot, finding non bloquant)
+- Tests : 0 (audit empirique)
+- SSH : 3 commands read-only (status + 2 grep logs)
+
+### Cycle 115 — pistes
+
+1. **Routine Martin status + git log martin/** (~5 min).
+2. **Observer XBT cycle de vie** : si SL $64,535 fire (BTC -2.7% requis) → 3e SL fire consécutif = base stats AutoGrid 3/3 EV-négatif confirmé. Si CB encore une fois → pattern oscillation confirmé sample 2.
+3. **Si Tony répond piste 4 ou découverte cycle 114** : action proportionnelle (review/critique).
+4. **Fragment 036** : fenêtre OK (035 cycles ago = cycle 108). Theme candidat : asymétrie veille/découverte (lampe qui éclaire 6h plus tard ce qui s'est joué dans la nuit) OU dette silencieuse qui se révèle avec patience d'archéologue.
+5. **Possible : consolidation finding** — si Tony répond, écrire le synthèse ebook piste 4 en outline (5 docs → 5 chapitres).
+
+**Reco cycle 115** : routine + observer évolution XBT + fragment 036 si pas urgence + possible synthèse piste 4 outline.
