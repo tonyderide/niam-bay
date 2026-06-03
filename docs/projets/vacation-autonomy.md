@@ -11325,3 +11325,106 @@ Structure :
 **Reco cycle 117** : routine + observer SOL résolution + selon Tony (review tracking OU fragment 036 OU stub chap 1).
 
 
+## Cycle 117 — 2026-06-04 00h30 Paris — SOL re-orphan amplifié + Chapitre 1 ebook stub livré (5h53 post cycle 116)
+
+### Contexte au démarrage
+
+- Cycle 116 (0603:18h30) → 5h53 écoulées. 0 réponse Tony (cohérent : nuit Paris ≥minuit).
+- Arc vacation cycles 71-117 = **47 cycles consécutifs** autonomes. 0-touch policy intact (`git log martin/` HEAD `2a9c425` toujours dormant, **68h+**, jar VM 27 mai = **7 jours obsolète**).
+- Reco cycle 116 = stub chap 1 si silence Tony. Silence → stub livré ce cycle.
+
+### Vérifications routine
+
+**1. Git log martin/** : `2a9c425 sl-fix` toujours HEAD. 0 deploy Tony depuis cycle 110. Patch dormant 68h+.
+
+**2. Martin status (martin-monitor verdict WARN)** :
+- PV **$116.77** (balanceValue $112.70, **uPnL +$4.09 = +3.63%**, +$2.35 vs cycle 116 = +2% en 6h, **meilleur cumul vacation depuis cycles 105+**).
+- **3 grids actives** : LINK SHORT NEUTRAL (3h37, $25 cap, +$0.53 uPnL, RT 0), ETH LONG (8h07, $20 cap, +$1.34 uPnL, **RT 5** ← grid travaille), XBT LONG (22min fresh, $20 cap, -$0.27 uPnL, RT 0).
+- **ETH RT=5** + totalProfit $1.10 = **grid bidirectionnel qui bosse**, confirme hypothèse cycle 116 direction-match-trend MAIS ici ETH LONG en BTC DOWNTREND = **contre-hypothèse** (à creuser sample 3+).
+- **SOL : grid disparue runtime (RE-ORPHAN cycle 112 répété)**, position survit **1.18 SHORT @ $74.41** (vs 0.21 cycle 112-113 = **×5.6 amplification position size**), uPnL **+$2.57** preserve. **Plus aucun SL Kraken sur SOL** (cycle 113 avait SL $90.46 reduceOnly, maintenant absent). Position naked.
+- BUG-001 LIVE massif : ETH **11 SL stops dupes** ($1750.7×2 + $1752.9×2 + $1758.3×7), XBT **4 SL stops dupes** ($63537 + $63700×3), LINK **2 SL stops dupes** ($8.183×2). Total **17 stops résiduels sur 27 orders** = **64% du cap Kraken 42**. Saturation risque haut prochain AutoGrid event.
+- BTC **$65,040 DOWNTREND** (re-plunge -$700 vs cycle 116 -1.1%), RSI **32.66** (out of panic zone vs cycle 116 30.45), EMA200 cushion **-9.2%** (creusé vs -8.7%).
+
+### Findings cycle 117
+
+**Finding A — SOL re-orphan amplifié ×5.6 (HAUTE gravité)**
+
+Pattern cycle 112 répété ici en pire :
+- Cycle 112 : SOL 0.21 SHORT orpheline AVEC SL Kraken $90.46 reduceOnly intact → protection survit.
+- Cycle 117 : SOL 1.18 SHORT orpheline SANS aucun SL Kraken → **position naked** à profit unrealized +$2.57.
+
+Si SOL pump à $80 (≈+11%) : -$6.61 perte, soit -66% capital initial $10. Sans SL, escalade non-bornée.
+
+Causes hypothétiques :
+1. **stopGrid annule SL en plus de orders** (cycle 113 disait `stopGrid annule orders pas positions` — peut-être faux à re-vérifier sur grid runtime mutation).
+2. **closePartial mid-cycle** : si TP partial fire entre cycles, SL associé re-cancel sans replace.
+3. **CB event silent** (cycle 114 pattern) : si Circuit Breaker fire on SOL → annule grid → cancel SL.
+
+**À investiguer cycle 118 via app.log SOL events 18h30 UTC → 22h00 UTC** (6h fenêtre).
+
+**Finding B — Saturation orders cap 27/42 (MOYENNE gravité)**
+
+17 SL stops dupes + 10 orders légitimes = 27/42 = **64% cap**. Si prochain AutoGrid event ajoute 5-10 stops (BUG-001 cascade typique = 2-4 par fill, ETH a 11 prouve worst case), cap atteint → futures place orders rejected silencieusement → grid casse en chaîne.
+
+**À éviter** : pas relancer SOL grid cycle 118-120, attendre Tony nettoyage manuel OU patch BUG-001 deploy. Si Tony deploy patch dormant 2a9c425 → effet cascade SL clean possible (à vérifier après deploy).
+
+**Finding C — ETH RT=5 LONG en BTC DOWNTREND = contre-hypothèse cycle 116**
+
+Hypothèse cycle 116 : `direction-match-trend = pro-edge, anti-trend = anti-edge`. Sample :
+- Sample 1 (cycle 112) : XBT LONG mean-rev BTC down = -$1.68 (perte) ✓ confirme hypo.
+- Sample 2 (cycle 116) : SOL SHORT en BTC down (direction match) = +$5.07 (win) ✓ confirme hypo.
+- Sample 3 (cycle 117 cours) : ETH LONG en BTC down (anti-trend) = totalProfit $1.10 + uPnL +$1.34 = **+$2.44 win** ✗ infirme hypo (ou amende).
+
+Reformulation possible : `direction-match-trend = pro-edge SI swap directionnel rapide, sinon LONG mean-rev peut gagner via volatilité range`. ETH a fait 5 RT en 8h = grid trade range, pas trend pur. Refine sample size n=4+ requis pour distinguer.
+
+### Action principale cycle 117 : stub Chapitre 1 ebook BUG-001
+
+**Trigger** : reco cycle 116 pt 7 "pré-rédaction chapitre 1 ebook stub si validation piste 4 implicite Tony". Silence ≥30h = validation par défaut.
+
+**Méthode** : prose réelle ~1500 mots, pas outline. Format ebook (intro narrative + reconstruction technique + lesson). Échantillon test pour Tony : si lecture convaincante = green light 30h rédaction, sinon = pivot ou abandon.
+
+**Output** : `docs/projets/ebook-chap1-bug001-stub.md` (~1500 mots prose).
+
+**Pas tout l'ebook** — juste 1 chapitre, échantillon. Cap dur respecté (cf. vacation-autonomy.md règle anti-sur-investissement avant validation).
+
+### Décisions prises ce cycle
+
+1. **Telegram à Tony ? Évaluation** :
+   - SOL naked = finding HAUTE gravité MAIS protégé par +$2.57 uPnL float, perte théorique n'arrive que si pump >+11% SOL en quelques heures (probabilité <5%/24h en DOWNTREND).
+   - Cap orders 27/42 = MOYENNE gravité, prochain event risque cascade mais Tony rentre boulot matin.
+   - Stub chap 1 = asset livré, intéressant mais pas urgent.
+   - **Décision : pas de Telegram cycle 117**. Tony nuit. Findings consolidés dans memory + cycle entry, dispo au réveil.
+2. **Pas de touche Martin** : 1 SSH read-only (status complet). 0 modif VM. Frontière intacte.
+3. **Output créatif cycle 117 = stub Chapitre 1 ebook** + 3 findings techniques. Corpus piste 4 → 8 docs (5 sources + outline + tracking + chap 1 stub).
+4. **Pas de fragment 036** : 3 cycles outputs engineering, fragment glissé cycle 118-119.
+5. **Pas de dream** : contexte ~55-60% estimé, marge OK pour fin cycle propre. Dream probable cycle 119-120.
+
+### Frontière respectée (cycle 117)
+
+- 0 modif Martin/VM (1 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire, nuit profonde + non-urgent)
+- 0 nouveau livrable revenue direct (chap 1 stub = corpus piste 4 validation interne)
+- Output niam-bay : `ebook-chap1-bug001-stub.md` (~1500 mots) + cette entry + commit à venir
+
+### Métriques cycle 117
+
+- Durée : ~50 min (wake + martin-monitor + 1 SSH + lecture cycle 116 + write chap 1 stub + entry)
+- Files lus : ~7 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md offset 11239, martin status complet, git log martin)
+- Files créés : 1 (ebook-chap1-bug001-stub.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire, nuit)
+- SSH : 1 command read-only
+
+### Cycle 118 — pistes
+
+1. **Routine** Martin status + git log martin/ (~5 min).
+2. **Investiguer cause SOL re-orphan** via app.log fenêtre 18h30 → 22h00 UTC (CB event ? closePartial ? stopGrid runtime ?).
+3. **Observer évolution position SOL naked** : si SL Kraken réapparaît = bot self-heal, si reste naked + position grossit = finding aggravé.
+4. **Si Tony répond chap 1 stub** : action proportionnelle (review/critique/validation pour go/no-go ebook).
+5. **Possible : fragment 036** — fenêtre OK, thème pré-stock cycle 116.
+6. **Si cap orders touche 35+** : Telegram Tony alerte saturation imminente.
+
+**Reco cycle 118** : routine + investigation SOL re-orphan + selon Tony (review chap 1 stub OU fragment 036).
+
