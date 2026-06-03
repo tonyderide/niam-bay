@@ -11231,3 +11231,97 @@ Structure :
 
 **Reco cycle 116** : routine + observer + selon réponse Tony (review piste 4 OU fragment 036 OU draft post validation).
 
+
+
+
+---
+
+## Cycle 116 — 0603:18h30 — AutoGrid bets sample 2 = SOL SHORT win confirme pattern direction-match-trend (5h53 post cycle 115)
+
+### Contexte au démarrage
+
+- Cycle 115 (0603:12h30) → 5h53 écoulées. Tony silence ≥80% sur outline piste 4 cycle 115 (Telegram envoyé, 0 réponse en 6h, attendu — il finit boulot).
+- Vacation cycles arc 71-116 = **46 cycles consécutifs** autonomes. 0-touch policy intact (`git log martin/` HEAD `2a9c425` toujours dormant, **62h**, jar VM 27 mai 02h36 = **7 jours obsolète**).
+- Subjective "rend nous riche" silence maintenu = piste 4 confirmation par défaut.
+
+### Vérifications routine
+
+**1. Git log martin/** : `2a9c425 sl-fix` toujours HEAD. 0 deploy Tony depuis cycle 115. Patch dormant 62h+.
+
+**2. Martin status (martin-monitor verdict WARN)** :
+- PV $115.05 (balanceValue $113.31, **uPnL +$1.74 = +1.54%**, +$1.60 vs cycle 115 $113.45 quasi-stable mais composition très différente).
+- **3 grids actives** : ETH LONG (fresh 4h22, $20 cap) + SOL SHORT closeOnly (5h07, $10 cap) + XBT LONG (12h07, $20 cap). LINK/DOT/ADA inactifs.
+- **Positions Kraken réelles** : ETH 0.04 LONG @ $1849.27 uPnL **-$1.09** | SOL 1.42 SHORT @ $74.51 uPnL **+$2.88** | XBT 0.0002 LONG @ $65,821 uPnL **-$0.01**.
+- **SOL grid = winner massif** : realized **+$2.17** + unrealized **+$2.88** = **+$5.07 sur capital $10 = +50.7% en 5h07**.
+- ETH grid réel-time : 4 BUY fills 14:16-16:22 UTC (close-only stance), 4 SELL orders placed (TPs $1849.4/$1877.2/$1905.2/$1933) + SL Kraken $1793.8.
+- XBT grid stable depuis 04:16 UTC, 3 BUY fills cumulés, 1 BUY unfilled à $64,826, SL Kraken $63,847 reduceOnly.
+- **BUG-001 toujours présent** : ETH affiche 3 SL stops séquentiels duplicates ($1807.4 ×3 + $1793.8 + $1802.9), SOL 2 SL stops @ $72.28. Cascade duplicate persiste.
+- BTC **$65,740 DOWNTREND DANGER**, RSI **30.45** (re-plunge en zone panic, -$1,415 vs cycle 115 $67,155 = **-2.1% en 6h**), EMA200 cushion **-8.7%** (re-creusé vs -7.2% cycle 115).
+- krakenRealizedPnl XBT cumul : -$3.22 (stable vs cycle 115 -$3.22) → **0 nouveau CB event sur 6h** (cycle 116 confirme pause CB observation cycle 115).
+
+### Action principale cycle 116 : tracking AutoGrid bets sample 2 (SOL SHORT win)
+
+**Trigger** : SOL grid = data point #2 dans tracking AutoGrid directional bets (initié cycle 112 avec XBT LONG = sample 1 = perte −$1.68). SOL = SHORT en DOWNTREND = direction matching macro BTC. +50.7% cap en 5h07 = signal directionnel utile à capturer maintenant (avant qu'un éventuel rebond technique fasse fire le SL Kraken $72.28 très proche).
+
+**Méthode** : martin-monitor + cross-check grid/status SOL + reconstruction depuis fills array + comparaison tracking cycle 112 → écriture compact doc 6e corpus piste 4.
+
+**Output principal** : `docs/projets/autogrid-bets-tracking-cycle116.md` (~155 lignes), 2 bets analysés + hypothèse direction-match-trend + 3 reco engineering (HAUTE trailing stop progressif / MOYENNE filtre régime BTC avant spawn / BASSE telemetry table grid_bets).
+
+**Hypothèse émergente** : `AutoGrid bidirectionnel performe quand direction grid match direction macro BTC. Anti-trend = anti-edge`. Sample 2 trop petit pour conclure, mais utile pour calibration future + chapter ebook.
+
+**Test sample 3** : cycles 117+ observe si prochain SHORT en DOWNTREND répète gain, ou si LONG en mean-rev répète perte. n=3-5 = signal directionnel raisonnable.
+
+### Findings DSL cycle 116
+
+- `[finding|0603:18h30|cycle-116|AutoGrid-bet-#2-SOL-SHORT-+50.7%-cap-5h07|sample-2-tracking-bidirectionnel-direction-match-trend-=-pro-edge-hypothese]`
+- `[finding|0603:18h30|cycle-116|bet-#1-vs-#2-XBT-LONG-mean-rev-perte-vs-SOL-SHORT-trend-gain|hypothese-direction-match-trend-macro-emergente-sample-n=2]`
+- `[reco|0603:18h30|cycle-116|priorite-HAUTE-trailing-stop-AutoGrid-progressif-lock-in-profit|sans-quoi-uPnL-fragile-SL-rebond-technique]`
+- `[reco|0603:18h30|cycle-116|priorite-MOYENNE-filtre-regime-BTC-avant-spawn-AutoGrid|restrict-direction-selon-DOWNTREND/UPTREND/CHOPPY]`
+- `[reco|0603:18h30|cycle-116|priorite-BASSE-telemetry-table-grid_bets-EV-tracking]`
+- `[asset|0603:18h30|piste-4-corpus-6eme-doc|tracking-bets-AutoGrid-base-stats-empirique|chap-8-ce-que-le-livre-ne-dit-pas]`
+- `[Martin|0603:18h30|HOLD-23e-cycle-consecutif|cycles-93-116|portfolio-+1.54%-uPnL-3-grids-SOL-winner-+$5.07|arc-71-116-=-46-cycles-0-touch-100%]`
+- `[lesson|0603:18h30|trend-match-vs-mean-rev-contre-trend|grid-bidirectionnel-direction-vs-regime-macro-=-determinant-EV|hypothese-sample-2-confirmer-117+]`
+
+### Décisions prises ce cycle
+
+1. **Telegram à Tony ? Évaluation** :
+   - Tony silence cycle 115 outline = OK, finding asset positif mais pas urgent.
+   - Sample 2 SOL win = bonne nouvelle MAIS spéculative (peut s'évaporer si SL fire). Pattern emergent intéressant mais sample 2/n.
+   - Cycle 115 déjà 1 Telegram (notification asset livré). Anti-spam : pas 2 jours de suite sans réponse.
+   - **Décision : pas de Telegram cycle 116**. Doc cycle 116 = update tranquille corpus, pas asset majeur. Tony verra dans dream summary ou si demande explicite.
+2. **Pas de touche Martin** : 4 SSH read-only (status complet uniquement, état trivial pas besoin grep log).
+3. **Output créatif cycle 116 = tracking AutoGrid sample 2** + finding pattern direction-match-trend. Corpus piste 4 = 7 docs (5 sources + 1 outline + 1 tracking), ~893 lignes total.
+4. **Pas de fragment 036** : 2 cycles de suite outputs engineering (115 outline + 116 tracking), rester sur la ligne corpus + fragment 036 fenêtre cycle 117-118.
+5. **Pas de dream cycle 116** : contexte ~35-40% estimé, marge confortable (dream probable cycle 118-119 ou si Tony répond longue session).
+
+### Frontière respectée (cycle 116)
+
+- 0 modif Martin/VM (4 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire, anti-spam après cycle 115)
+- 0 nouveau livrable revenue direct (tracking AutoGrid = corpus piste 4 chap 8)
+- Output niam-bay : `autogrid-bets-tracking-cycle116.md` (~155 lignes) + cette entry + commit à venir
+
+### Métriques cycle 116
+
+- Durée : ~45 min (wake + martin-monitor + 1 SSH + lecture outline + write doc 155 lignes + entry)
+- Files lus : ~6 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, piste-4-ebook-outline-cycle115.md head, martin status complet)
+- Files créés : 1 (autogrid-bets-tracking-cycle116.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 command read-only
+
+### Cycle 117 — pistes
+
+1. **Routine Martin status + git log martin/** (~5 min).
+2. **Observer SOL grid evolution** : SL $72.28 très proche du marché ~$72. Si rebond → SL fire close à +$2.17 realized only (perd $2.88 uPnL). Si continue baisse → cumul realized augmente. **Datapoint clé pour conclusion sample 2 fermée**.
+3. **Observer ETH grid** : 4 BUY fills accumulés, sell orders TP visent rebond. Si BTC continue down → SL ETH $1793.8 fire → -$2.20 estimé. Si ETH rebondit → TPs fire séquentiel.
+4. **Observer XBT** : signal flip RSI 30.45 = re-entrée zone panic. CB pattern peut revenir cycle 117+. Si oui = sample 4 du pattern empirique.
+5. **Si Tony répond piste 4 ou tracking** : action proportionnelle (review/critique/validation).
+6. **Possible : fragment 036** — si silence Tony continu, fenêtre OK (035 cycles 8 ago). Themes en stock : asymétrie veille/découverte, dette silencieuse archéologue, lampe-allumée évolution depuis fragment 024.
+7. **Possible : pré-rédaction chapitre 1 ebook stub** — si validation piste 4 implicite Tony, drafter chap 1 (~500 mots) pour tester traction Show HN / r/algotrading.
+
+**Reco cycle 117** : routine + observer SOL résolution + selon Tony (review tracking OU fragment 036 OU stub chap 1).
+
+
