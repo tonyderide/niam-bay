@@ -11137,3 +11137,97 @@ Structure :
 5. **Possible : consolidation finding** — si Tony répond, écrire le synthèse ebook piste 4 en outline (5 docs → 5 chapitres).
 
 **Reco cycle 115** : routine + observer évolution XBT + fragment 036 si pas urgence + possible synthèse piste 4 outline.
+
+
+
+
+---
+
+## Cycle 115 — 0603:12h30 — Piste 4 ebook outline consolidé + BUG-001 re-manifesté live (5h53 post cycle 114)
+
+### Contexte au démarrage
+
+- Cycle 114 (0603:06h30) → 5h53 écoulées. Tony mercredi midi = pause boulot, peut voir Telegram entre 12h-14h.
+- Vacation cycles arc 71-115 = **45 cycles consécutifs** autonomes. 0-touch policy intact (`git log martin/` HEAD `2a9c425` toujours dormant, **56h**, jar VM **6 jours+** obsolète).
+- Subjective "rend nous riche" silence ≥80% maintenu = piste 4 confirmation par défaut.
+
+### Vérifications routine
+
+**1. Git log martin/** : `2a9c425 sl-fix` toujours HEAD. 0 deploy Tony.
+
+**2. Martin status (martin-monitor verdict WARN)** :
+- PV $113.45 (balanceValue $113.45, uPnL +$0.03, +$0.06 vs cycle 114 = quasi-stable).
+- **4 grids actives** : LINK NEUTRAL (fresh 1h37, $25 cap) + ETH LONG (fresh 4h22, $20 cap) + SOL closeOnly SHORT (5h07, $10 cap) + XBT LONG (6h07, $20 cap).
+- Positions Kraken réelles : **ETH LONG 0.02 @ $1872.5** uPnL +$0.21, **SOL SHORT 0.71 @ $74.95** uPnL -$0.18. XBT et LINK = 0 position.
+- **BUG-001 re-manifestation live** : **3 ETH SL stops @ $1816.4** dupliquées + **5 SOL SL stops** (4×$72.53 + 1×$72.71) pour 1 position 0.71 SHORT. Pattern B4 triggerSLAfterFill spawn 2 threads par fill ms apart → ~2N stops par N fills.
+- BTC **$67,155 DOWNTREND**, RSI **43.44** (sortie zone panic, +14 vs cycle 114 où 29.95), EMA200 cushion **-7.2%** (slightly mieux que -8.67% cycle 114).
+- krakenRealizedPnl cumul : XBT -$3.22 (vs -$3.38 cycle 114), ETH -$8.10, SOL +$1.95.
+
+**3. CB oscillation XBT pattern pause confirmée** :
+- 3 CIRCUIT BREAKER events de cycle 114 (00:31 / 01:46 / 03:01 UTC).
+- Depuis 03:01 UTC = **7h sans CB** (sortie zone panic RSI 30→43).
+- XBT grid restartée 04:16 UTC, toujours active sans nouveau CB.
+- Pattern empirique cycle 114 = corrélé à RSI panic ≤30. Quand RSI remonte, CB pause naturellement.
+
+### Action principale cycle 115 : ebook outline piste 4
+
+**Trigger** : 5 docs engineering produits cycles 109-114 (713 lignes total) forment naturellement un corpus cohérent. Tony silence ≥80% sur revenue = piste 4 défaut. Outline = action de consolidation à faible risque, validation avant rédaction lourde.
+
+**Méthode** : lecture rapide cycles 109-114 docs, extraction structure commune, mapping 5 docs → 5 chapitres bugs + 3 chapitres meta (méthode + outils + ce-que-le-livre-ne-dit-pas), volume estimé 75-90p, modèle monétisation pay-what-you-want Gumroad.
+
+**Output principal** : `docs/projets/piste-4-ebook-outline-cycle115.md` (~180 lignes), 8 chapitres mappés sur corpus existant + audience cible + filtre revenue non-IA réplicable + prochaines étapes (validation demande externe AVANT rédaction lourde).
+
+**Angle différenciateur** : « le bot que personne ne montre — ce qui casse quand un grid bot tourne 6 jours sans toucher ». Niche vide entre Hummingbot docs (ops setup), Passivbot wiki (config), et 90% contenu crypto bot (stratégie/hype/cours). **Defensive engineering production crypto bot = niche structurelle**.
+
+**Filtre Tony 2026-05-31 — revenue non-IA réplicable** : ChatGPT peut-il écrire ça en 2 prompts ? **Non**. Le corpus contient 6h log archaeology empirique + 5 cycles observation live d'un vrai bot. Traces dans `/home/ubuntu/martin/app.log` non-hallucinable. **Moat = empirique**.
+
+### Findings DSL cycle 115
+
+- `[asset|0603:12h30|cycle-115|piste-4-ebook-outline-livre|5-chapitres-bugs-+-3-meta-+-volume-75-90p-+-monetisation-pay-what-you-want|moat-empirique-non-IA-replicable]`
+- `[finding|0603:12h30|cycle-115|BUG-001-re-manifestation-N-eme-fois|3-SL-ETH-stops-@-$1816.4-+-5-SOL-stops-@-$72.53-72.71|capture-live-confirme-bug-persistant-sans-patch-Tony]`
+- `[finding|0603:12h30|cycle-115|CB-oscillation-pause-7h-corrélée-RSI-rebound|RSI-30→43-=-CB-pause|pattern-empirique-confirmé-régime-dépendant]`
+- `[reco|0603:12h30|cycle-115|validation-demande-avant-redaction-lourde|Show-HN-ou-r-algotrading-post-mesurer-engagement-48h-avant-30h-redaction]`
+- `[Martin|0603:12h30|HOLD-22e-cycle-consecutif|cycles-93-115|portfolio-$113.45-uPnL-+$0.03-net-stable-vs-cycle-114-XBT-CB-pattern-pause-7h|arc-71-115-=-45-cycles-0-touch-100%]`
+- `[lesson|0603:12h30|catalogue-corpus-=-asset-monetisable|5-cycles-d-observation-cataloguees-pendant-arc-109-114-emergent-comme-livre-coherent-sans-effort-additionnel|pattern-NB-engineering-docs-+-NB-fragments-narratifs-=-2-corpora-revenue-potentiels]`
+- `[pattern|0603:12h30|3-niveaux-investigation-bug-static+dynamic+temporal|cycle-109-110-111-static-+-cycle-113-dynamic-+-cycle-114-temporal|3-passes-systematiques-applicables-tout-bot-trading|asset-meta-chapitre-6-ebook]`
+
+### Décisions prises ce cycle
+
+1. **Telegram à Tony ? Évaluation** :
+   - Tony mercredi midi, pause boulot, fenêtre de visibilité Telegram 12h-14h.
+   - Asset positif (ebook outline structurant) + bug re-manifesté observation (non bloquant car positions protégées par SL exchange).
+   - Pattern coordination active proportionnelle (pensée 103) : envoi seulement si action requise OU asset significatif.
+   - **Décision : Telegram court envoyé**. Notification asset livré + question implicite validation piste 4. Tony peut répondre au calme l'après-midi/soir.
+2. **Pas de touche Martin** : 4 SSH read-only (status complet + 2 grep logs + verify file location).
+3. **Output créatif cycle 115 = ebook outline piste 4** + finding BUG-001 re-manifesté. Corpus piste 4 = 6 docs maintenant (5 sources + 1 outline meta).
+4. **Pas de fragment 036** : outline déjà ~180 lignes, fenêtre fragment décalée cycle 117 (035 livré 0601, écart 8-9 cycles raisonnable).
+5. **Pas de dream cycle 115** : contexte ~40% post-écriture, marge confortable (dream probable cycle 117-118 ou si Tony écrit longue réponse).
+
+### Frontière respectée (cycle 115)
+
+- 0 modif Martin/VM (4 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 1 Telegram Tony (asset livré + question implicite, concis 2-3 lignes)
+- 0 nouveau livrable revenue direct (outline = consolidation, pas produit fini)
+- Output niam-bay : `piste-4-ebook-outline-cycle115.md` (~180 lignes) + cette entry + commit à venir
+
+### Métriques cycle 115
+
+- Durée : ~45 min (wake + martin-monitor + 2 SSH greps + lecture corpus 2 docs + write outline 180 lignes + entry + Telegram)
+- Files lus : ~7 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, autogrid-cb-oscillation-cycle114.md, bug-001-sl-duplicate-root-cause.md)
+- Files créés : 1 (piste-4-ebook-outline-cycle115.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 1 (notification asset livré)
+- SSH : 4 commands read-only
+
+### Cycle 116 — pistes
+
+1. **Routine Martin status + git log martin/** (~5 min).
+2. **Observer évolution XBT/ETH/SOL** : 3 grids fresh deploy < 7h, fenêtre fills probable d'ici 6-12h si BTC respire. Si CB XBT revient → sample 4 du pattern (cycles 113-114-115 = 3 datapoints actuels).
+3. **Si Tony répond piste 4** : action proportionnelle (review critique outline OU pre-écriture chap 1 si validation).
+4. **Si Tony silence** : possible **fragment 036** (theme candidat : asymétrie veille/découverte OU dette silencieuse archéologue OU lampe-allumée évolution depuis fragment 024).
+5. **Possible : pré-validation demande externe** — drafter post Show HN ou r/algotrading « I autopsy'd my own Kraken grid bot for 6 days, here are 4 bugs » avec lien outline + chap 1 stub. Ready-to-post mais ne pas publier sans Tony.
+
+**Reco cycle 116** : routine + observer + selon réponse Tony (review piste 4 OU fragment 036 OU draft post validation).
+
