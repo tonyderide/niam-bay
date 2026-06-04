@@ -11546,3 +11546,113 @@ Corpus piste 4 → **9 docs** (5 sources + outline + tracking + chap 1 stub + To
 6. **Possible dream cycle 119-120** : memory à compresser, cadrage 0-touch à corriger.
 
 **Reco cycle 119** : routine + observer reaction Tony (réponse OU silence-confirmation) + selon → fragment 036 OU dream consolidation cadrage corrigé.
+
+---
+
+## Cycle 119 — 2026-06-04 12h23 Paris — BUG-001 capture live grade A + AutoGrid sample 3 démarre (5h53 post cycle 118)
+
+### Contexte au démarrage
+
+- Cycle 118 (0604:06h23 Paris = 0604:04h23 UTC) → 5h53 écoulées.
+- Cycle 118 reco = observer si nouvelle grid spawn post-Tony cleanup. **Réponse : OUI**, AutoGrid a spawné XBT LONG à 06:46 UTC (= 2h22 post Tony intervention 04:23 UTC).
+- BTC a continué de chuter : $64,651 (cycle 118) → $62,704 (cycle 119) = **-3.0% en 6h**.
+
+### Martin état (martin-monitor → WARN)
+
+- Bot UP 5d 17h 23m (start 0529:17:00 UTC, stable).
+- PV **$116.02** (balanceValue $116.64, uPnL **-$0.62 = -0.55%**).
+- **1 grid active : PF_XBTUSD LONG** (center $64,213, range $62,287-$66,139, 4 levels, $5/level, $20 cap, leverage 3, started 06:46:17 UTC).
+- 1 position : XBT **0.0006 LONG @ $63,729 avg** (DCA progression depuis $64,694).
+- **7 orders Kraken** : 5 stops dupes @ $62,283 + 1 stop @ $61,817 (vrai SL) + 1 lmt sell @ $64,337 (TP CLOSE-ONLY).
+- BTC **$62,704 DOWNTREND** RSI **32.29** (panic zone), EMA50 $66,134, EMA200 $70,723, **cushion -11.3%** (creusé vs -9.1% cycle 118).
+- RAM tight : 74 MB free sur 952 MB (heap Java 87/494 MB OK, disque 35 GB free).
+
+Trigger martin-monitor : `WARN` (BTC < EMA200 mais SL exchange protège, position 3.6h post-deploy, uPnL -$0.62 nowhere near -10% cap).
+
+### **Découverte majeure cycle 119 — BUG-001 capture live grade A**
+
+Reconstruction app.log spawn XBT 06:46:17 UTC → 06:46:36 UTC (**19 secondes** pour générer 6 SL + 1 TP duplicate cascade) :
+
+| Time UTC | Path | Thread | Action | OrderId suffix |
+|---|---|---|---|---|
+| 06:46:18.072 | B3 v2 → B3 v3 [primary] | scheduling-1 | SL placed via StopLossManager | `...319a9` |
+| 06:46:23.159 | B3 v3 **[retry-3pct]** | scheduling-1 | direct sendOrder stp | `...5104ce` |
+| 06:46:23.401 | **AutoGridScheduler CLOSE-ONLY SL** | scheduling-1 | placeCloseOnlyProtection | `...fd16` |
+| 06:46:23.417 | AutoGridScheduler CLOSE-ONLY **TP** | scheduling-1 | placeCloseOnlyProtection | `...91865` (lmt) |
+| 06:46:31.574 | B3 v3 [primary] | **Thread-158** | SL placed parallel | `...f516a` |
+| 06:46:31.743 | B3 v3 [primary] | **Thread-159** | SL placed parallel | `...c139f` |
+| 06:46:36.692 | B3 v3 [retry-3pct] | Thread-158 | direct sendOrder stp | `...4021fa` |
+| 06:46:36.838 | B3 v3 [retry-3pct] | Thread-159 | direct sendOrder stp | `...17eb` |
+
+**6 SL placés en 19 secondes pour la même position (4.0E-4 BTC) à `$62,282.73`** + 1 TP CLOSE-ONLY à $66,620 (qui est le upperBound de grid, devenu $64,337 après ajustement) + 1 SL ultérieur à $61,817 quand position DCA grew à 0.0006 BTC.
+
+**Le pattern réel BUG-001 = bien plus que les 3 paths cycle 110 :**
+
+1. **B3 v2 → B3 v3 [primary]** (StopLossManager.place ligne 195, verify race) — connu cycle 110
+2. **B3 v3 [retry-3pct]** (fires *toujours*, pas conditionnel sur primary failure) — **NOUVEAU cycle 119**
+3. **AutoGridScheduler placeCloseOnlyProtection** (place CLOSE-ONLY SL+TP en parallèle de B3) — **NOUVEAU cycle 119**
+4. **Thread-158 + Thread-159 parallèles** (multi-thread races, pas serialized par GridState lock) — **NOUVEAU cycle 119**
+
+**Le cycle 110 audit a sous-estimé.** Il identifiait 3 paths mais missait le multi-thread + le CLOSE-ONLY path. Le vrai count est **≥ 4 paths × 2-3 threads parallèles = jusqu'à 12 places SL possibles par spawn**. Capture live confirme 6 SL effectifs.
+
+### Sample 3 AutoGrid bets tracking (post cycle 116 sample 2)
+
+Sample 1 (cycle 112) : XBT LONG mean-rev — SL fired, **-$1.68 réalisé** (EV prédit -$1.27, +32% amplification DCA).
+Sample 2 (cycle 116) : SOL SHORT direction-match-trend — TP partial + closure, **+$5.07 réalisé** (+50.7% sur cap $10).
+**Sample 3 (cycle 119) en cours** : XBT LONG **anti-direction-trend** (LONG en deep DOWNTREND BTC<EMA200 -11.3%) — DCA 4 fills, uPnL -$0.62, realized -$1.94, **cumul net -$2.56 / $20 cap = -12.8%** déjà avant SL fire.
+
+Hypothèse direction-match-trend cycle 116 **renforcée par sample 3 en cours** :
+- Sample 1 XBT LONG cycle 112 = anti-trend (BTC DOWN, grid LONG) → -$1.68
+- Sample 2 SOL SHORT cycle 116 = match-trend (BTC DOWN, grid SHORT alt) → +$5.07
+- Sample 3 XBT LONG cycle 119 = anti-trend (BTC DOWN, grid LONG) → -$2.56 cumul -12.8%
+
+**n=3, pattern direction-match consistant** (2 anti-trend losses, 1 match-trend win). Pas encore base statistique solide mais signal qualitatif clair.
+
+### Findings DSL cycle 119
+
+- `[finding|0604:10h23|cycle-119|BUG-001-paths-plus-nombreux-que-cycle-110-audit|capture-live-XBT-spawn-19s-6-SL-+-1-TP|3-paths-identifies-mais-4+-reels-multi-thread-+-CLOSE-ONLY-placeCloseOnlyProtection-non-comptes]`
+- `[finding|0604:10h23|cycle-119|multi-thread-race-Thread-158-Thread-159-paralleles|GridState-lock-insuffisant-pour-serializer-SL-place-calls|→-rule-toute-write-Kraken-orders-doit-acquerir-lock-instrument-pas-juste-lock-grid]`
+- `[finding|0604:10h23|cycle-119|B3-v3-retry-3pct-fires-toujours-pas-conditionnel|primary-succeed-+-retry-fires-=-2-SL-au-lieu-de-1|→-rule-retry-doit-skip-si-primary-succeded-condition-verify-state]`
+- `[finding|0604:10h23|cycle-119|AutoGridScheduler-placeCloseOnlyProtection-double-emploi|place-SL+TP-en-parallele-de-B3-meme-grid-meme-instrument|→-rule-fusionner-paths-ou-route-via-unique-StopLossManager]`
+- `[finding|0604:10h23|cycle-119|AutoGrid-sample-3-XBT-LONG-en-cours-anti-trend|cumul-net--$2.56-/-$20-cap-=--12.8%-DCA-4-fills-realized--$1.94-+-uPnL--$0.62|hypothese-direction-match-trend-renforcee-n=3]`
+- `[reco|0604:10h23|cycle-119|priorite-HAUTE-audit-BUG-001-Option-A-pre-place-dedup-doit-couvrir-CLOSE-ONLY-path|sinon-dedup-place-mais-CLOSE-ONLY-ajoute-2-orders-supplementaires|patch-doit-etre-cross-path]`
+- `[reco|0604:10h23|cycle-119|priorite-MOYENNE-instrumenter-multi-thread-race|log-thread-id-+-acquired-lock-id-dans-StopLossManager.place|verifier-empiriquement-prochain-spawn]`
+- `[reco|0604:10h23|cycle-119|priorite-BASSE-config-AutoGrid-pause-en-DOWNTREND-extreme|BTC-cushion-EMA200--10%-+-RSI-30-=-AutoGrid-skip-spawn|sample-1+3-confirment-anti-trend-loss-pattern]`
+- `[lesson|0604:10h23|cycle-119|audit-statique-sous-estime-vs-capture-live|cycle-110-audit-3-paths-vs-cycle-119-live-4+-paths+multi-thread|→-rule-bug-multi-path-toujours-capturer-trace-live-avant-conclure-paths-count]`
+- `[asset|0604:10h23|piste-4-corpus-10eme-doc|bug-001-live-capture-cycle119|chap-2-ebook-extension-multi-path-+-multi-thread-pattern]`
+- `[Martin|0604:10h23|WARN-NB-26e-cycle|XBT-LONG-actif-DCA-progresse-uPnL--$0.62-realized--$1.94|SL-protege-$61,817|BUG-001-re-fired-5-dupes-stale-$62,283-non-cleanup-since-position-grew]`
+
+### Décisions cycle 119
+
+1. **0 modif Martin/VM** : 3 SSH read-only (status + 2 grep app.log). Frontière NB intacte.
+2. **Output engineering = entry cycle 119 + finding multi-path-capture-live**. Pas de doc séparée (l'entry fait office, ~120 lignes substantielles).
+3. **Pas de Telegram Tony** : finding important mais non bloquant. Tony surveille en continu (cycle 118 discovery), il verra commit. Si reaction Tony → cycle 120 proportionnel.
+4. **Pas de fragment 036 ce cycle** : output engineering dense, fragment glissé cycle 120 si fenêtre OK.
+5. **Pas de dream** : contexte ~70% estimé, marge OK pour finir propre. Dream probable cycle 120-121.
+6. **Pas de patch code** : seul Tony deploy. Cycle 119 = capture + reco, pas action code.
+
+### Frontière respectée (cycle 119, côté NB)
+
+- 0 modif Martin/VM (3 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire, redondance évitée — cf cycle 118 reframing)
+- Output niam-bay : entry cycle 119 (~120 lignes) + commit à venir
+
+### Métriques cycle 119
+
+- Durée : ~45 min (wake + martin-monitor + 3 SSH investigation + lecture cycle 118 + write entry 120 lignes)
+- Files lus : ~8 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, martin status complet, 2 grep app.log)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 3 commands read-only
+
+### Cycle 120 — pistes
+
+1. **Routine** Martin status — observer si XBT SL fire (BTC continue down vers $61,817) ou rebond.
+2. **Si SL XBT fire** = sample 3 résolu, base stats AutoGrid sample 3 confirmée anti-direction-trend = perte.
+3. **Si Tony répond cycle 118 OU 119** : action proportionnelle.
+4. **Fragment 036** candidat (12 cycles depuis 035, fenêtre creative ouverte).
+5. **Dream cycle 121-122** probable : 12+ cycles depuis lastdream 0602:18h30, cadrage 0-touch à corriger en mémoire.
+
+**Reco cycle 120** : routine + observation résolution sample 3 XBT + fragment 036 si time permits.
