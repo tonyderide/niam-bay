@@ -11766,3 +11766,110 @@ Pattern 2/3 anti-trend lose / 1/1 match-trend win. Hypothèse renforcée.
 
 **Reco cycle 121** : routine + observation samples 4+5 + dream consolidation prioritaire pour intégrer reframing + 10e+11e docs piste 4.
 
+---
+
+## Cycle 121 — 2026-06-05 00h23 Paris — Sample 5 SOL RT1 fire match-trend confirmé n=2 + pattern direction-match formalisé n=5 + reco patch AutoGridScheduler (6h post cycle 120)
+
+### Contexte au démarrage
+
+- Cycle 120 (0604:18h23 Paris = 16h23 UTC) → 6h écoulées.
+- Cycle 120 reco principale : observer évolution samples 4 (XBT anti-trend) + 5 (SOL match-trend).
+- **Réponse** : sample 5 SOL RT1 fired @ 21:37 UTC (+$0.26 realized) → match-trend n=2 wins confirmé. Sample 4 XBT toujours ongoing en perte progressive (-$1.76 cumul -8.8% / $20).
+
+### Martin état (martin-monitor → HOLD-WARN)
+
+- Bot UP **6d 5h 23m** (stable, +6h vs cycle 120).
+- PV **$115.66** (balanceValue $115.50, uPnL **+$0.17 = +0.15% legerement positif vs -0.05% cycle 120**).
+- **3 grids actives** : PF_LINKUSD NEUTRAL + PF_SOLUSD SHORT + PF_XBTUSD LONG (mêmes que cycle 120, persistantes).
+  - **LINK** : 6h23 uptime grid, **1 nouveau buy fill** @ $7.918 (level 1) à 21:40 UTC, 0 RT, krakenRealizedPnl carry +$1.17, position accumulation phase.
+  - **SOL** : 6h08 uptime grid, **RT 1 réalisé +$0.26** (buy back @ $67.78 close partial du SHORT initial), position résiduelle 0.25 SOL SHORT @ $69.33 avg, uPnL +$0.34, krakenRealizedPnl -$2.30 (carry) + $0.26 (RT1) = -$2.04 cumul mais grid frais +$0.60 net.
+  - **XBT** : 6h23 uptime grid, position 0.0006 LONG @ $63,621 (DCA 3 buy fills @ $64,267 / $65,224 / $63,310), uPnL -$0.17, krakenRealizedPnl carry -$1.53 + uPnL -$0.17 = sample 4 cumul -$1.76 en 6h.
+- 2 positions Kraken : **XBT 0.0006 LONG @ $63,621** (uPnL -$0.17) + **SOL 0.25 SHORT @ $69.33** (uPnL +$0.34).
+- 17 orders Kraken : **BUG-001 dupes persistent massif** — 4 XBT stops (1× $61,714 + 3× $61,865) + 3 SOL stops (3× $67.25) + orders légitimes grid. Patch Tony 2a9c425 toujours dormant cycle 121 (4j+ obsolescence jar).
+- BTC **$63,348 DOWNTREND** RSI **42.45** (re-dip vs cycle 120 43.73 mais cushion stable), EMA50 $65,134, EMA200 $69,938, **cushion -9.4%** (stable vs cycle 120 -9.5%).
+- Signal ema_trend : **WAIT** (EMA50 < EMA200 + RSI < 50).
+- RAM tight 93 MB free / 952 MB (heap Java 78/494 MB OK).
+
+Trigger martin-monitor : `HOLD-WARN`. BTC DOWNTREND persistant, mais positions sous SL exchange, uPnL net positif, sample 5 confirme match-trend win pattern. Pas d'urgence.
+
+### Sample 5 SOL — RT 1 fired = pattern direction-match-trend confirmé n=2
+
+Cycle 120 : SOL SHORT $10 cap started 16:16 UTC, 2 sell-open fills @ $67.78 + $68.83.
+Cycle 121 (6h08 post-open) : **1 buy-close fill @ $67.78 → RT 1 réalisé +$0.2574** (profit on buy-back lower than sell).
+
+**Métrique** : +$0.26 realized + $0.34 uPnL = **+$0.60 net / $10 cap = +6.0% en 6h08**. Annualisé naïf ~22%/jour (extrapolation absurde, ne pas projeter).
+
+**Pattern direction-match-trend** : 2/2 wins sur SOL SHORT (sample 2 cycle 116 +50.7%, sample 5 cycle 120/121 +6.0% ongoing). 3/3 fails sur XBT LONG anti-trend (samples 1+3+4).
+
+### Sample 4 XBT — perte en cours de réalisation (anti-trend pattern n=4)
+
+XBT LONG $20 cap, 6h23 ongoing, cumul -$1.76 (-8.8%). Aucun TP fired, 3 DCA buys remplis. Si BTC stagne/descend cycle 122-123 → SL @ $61,714 fire → realize ≈ -$2 supplémentaire.
+
+**Confirmation pattern n=4** : anti-trend XBT LONG en DOWNTREND BTC = loss reproductible. 4/4 paris en perte.
+
+### Output créatif primaire cycle 121 — `autogrid-direction-match-pattern-cycle121.md`
+
+**Livré** : `docs/projets/autogrid-direction-match-pattern-cycle121.md` (~245 lignes).
+
+**Contenu** :
+1. Formalisation n=5 samples (3 résolus + 2 ongoing), tableau EV par cellule régime × direction.
+2. **EV asymmetry calculée** : anti-trend -9.85% / cap moyenne, match-trend +28.4% / cap. Spread ~38 points de %.
+3. **Honnêteté stat** : confound asset vs direction non éliminé (3/5 samples XBT, 2/5 SOL). Requiert samples SOL LONG + XBT SHORT pour isoler.
+4. **Reco engineering HAUTE** : patch `AutoGridScheduler` regime filter (~30 lignes Java + 6 tests TDD + feature flag default off). Économie estimée -$15-20 sur 2 mois = +13-17% portfolio si pattern réel.
+5. **Reco MOYENNE** : trailing stop 1.5% sur match-trend uniquement (capture profit uPnL fragile sample 5).
+6. **Reco BASSE** : table DB `grid_bets` + endpoint `/api/stats/bets-ev` pour validation continue.
+7. **Connexion piste 4** : chap 5 (défenses empiriques) + chap 8 (observations live AutoGrid). 12e doc corpus piste 4.
+
+**Méthode rigoureuse** : tous calculs sourcés `/api/grid/status`, `/api/bot/positions`, `/api/bot/orders`, `app.log` reconstruction. Classification direction-trend explicite. Feature flag default off pour préserver Tony control.
+
+### Findings DSL cycle 121
+
+- `[finding|0605:00h23|cycle-121|pattern-direction-match-trend-n=5|3-anti-trend-loss-2-match-trend-win|EV-spread-38pts-%-asymetrie-reproductible-0-inversion|HAUTE-base-action-patch-regime-filter]`
+- `[finding|0605:00h23|cycle-121|sample-5-SOL-SHORT-RT1-fired-+$0.26-en-6h08|match-trend-pattern-confirme-n=2|grid-trade-en-cours-+$0.60-net-+6.0%-/$10]`
+- `[finding|0605:00h23|cycle-121|sample-4-XBT-LONG-anti-trend-cumul--$1.76-en-6h23|pattern-anti-trend-loss-4e-fois-d-affilee|SL-$61,714-trigger-probable-cycle-122-123-si-BTC-stagne]`
+- `[finding|0605:00h23|cycle-121|confound-asset-vs-direction-non-elimine|3-samples-XBT-anti-trend-+-2-samples-SOL-match-trend|pourrait-etre-XBT-specifique-pas-direction|requiert-isolation-future-samples-SOL-LONG-+-XBT-SHORT]`
+- `[reco|0605:00h23|cycle-121|HAUTE-patch-AutoGridScheduler.isDirectionAllowedByRegime|~30-lignes-Java-+-6-tests-TDD-+-feature-flag-autogrid.regimeFilter.enabled=false-default|economie-+13-17%-portfolio-si-pattern-real-0-perte-si-faux]`
+- `[reco|0605:00h23|cycle-121|MOYENNE-TrailingStopService-active-sur-match-trend|sample-5-uPnL-+$0.34-fragile-3pct-SL-statique|capture-profit-pre-rebond-technique]`
+- `[reco|0605:00h23|cycle-121|BASSE-telemetry-grid_bets-+-endpoint-stats-ev|validation-continue-EV-cellule-regime-x-direction|prerequis-autonomie-future-AutoGrid]`
+- `[lesson|0605:00h23|cycle-121|empirique-n=5-reproductible-=-base-action-mais-confound-doit-etre-marque|hypothese-prefere-action-conditionnelle-feature-flag-default-off-vs-deploy-direct|honnetete-stat-+-action-pragmatique-coexistent]`
+- `[lesson|0605:00h23|cycle-121|sample-5-RT1-realise-validation-live-pattern|6h-suffit-pour-1er-signal-fort-match-trend|methodologie-tracking-cycle-116-+-cycle-121-=-2-iterations-mediocres-mais-coherentes]`
+- `[asset|0605:00h23|piste-4-corpus-12eme-doc|autogrid-direction-match-pattern-cycle121.md|~245-lignes-chap-5-+-chap-8-ebook-Martin-defensive-engineering]`
+- `[pattern|direction-match-trend-grid|count:5|cycles-112-116-119-120-121|3-fail-anti-2-win-match|EV-spread-38pts-%-base-action-conditionnelle|✓-validation-empirique-n=5-confound-non-elimine]`
+- `[Martin|0605:00h23|HOLD-WARN-NB-28e-cycle|3-grids-stables-XBT+SOL+LINK|portfolio-$115.66-uPnL-+$0.17-+0.15%|streak-NB-0-touch-tient-28-cycles-arc-71-121=51-cycles-2-mois]`
+
+### Décisions cycle 121
+
+1. **0 modif Martin/VM** : 1 SSH read-only (status complet via martin-monitor). Frontière NB intacte.
+2. **Output créatif primaire = `autogrid-direction-match-pattern-cycle121.md` ~245 lignes** (engineering analysis + EV math + code patch reco + honnêteté stat + connexion piste 4). Output engineering secondaire = cette entry cycle 121 + findings DSL.
+3. **Pas de Telegram Tony** : pattern formalisé important mais pas bloquant. Tony surveille en continu (cycle 118 reframing), verra commit. Reco patch déjà ouverte côté Tony (commit 2a9c425 dormant), peut intégrer regime filter dans son review.
+4. **Pas de dream** : contexte ~60% estimé après cette entry. Dream reporté cycle 122-123 (objectif : intégrer pattern n=5, reframing 0-touch, 12 docs piste 4, fragment 036, BUG-001 capture live cycle 119).
+5. **Pas de patch code direct** : seul Tony deploy. Cycle 121 = documentation + EV math + reco TDD spec prête.
+6. **Hypothèse direction-match-trend formalisée n=5** : 0 inversion sur 5 samples, mais confound asset honnêtement marqué. Patch derrière feature flag default off = action conditionnelle propre.
+
+### Frontière respectée (cycle 121, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — formalisation utile mais pas urgente + cycle 118 reframing tient)
+- Output niam-bay : `autogrid-direction-match-pattern-cycle121.md` (~245 lignes) + cette entry (~95 lignes) + commit à venir
+
+### Métriques cycle 121
+
+- Durée : ~70 min (wake + martin-monitor + lecture cycle 116 tracking + écriture pattern doc + entry + commit)
+- Files lus : ~6 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, autogrid-bets-tracking-cycle116.md, martin status complet)
+- Files créés : 1 (autogrid-direction-match-pattern-cycle121.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 command read-only
+
+### Cycle 122 — pistes
+
+1. **Routine** Martin status — observer SL XBT trigger sample 4 ($61,714) si BTC continue down OU rebond + TP partial XBT.
+2. **Sample 5 SOL continuation** — RT 2-3 attendu si SOL continue suivre BTC down. uPnL +$0.34 protégé par SL $67.25 mais trailing manquant.
+3. **Si Tony répond cycle 118-121** : action proportionnelle (review/critique/validation). Réponse à patch reco regime filter prioritaire.
+4. **Dream cycle 122-123** : prioritaire si contexte >70%. Intègre pattern direction-match n=5 + reframing 0-touch + 12 docs piste 4 + fragment 036 + BUG-001 capture live cycle 119.
+5. **Possible fragment 037** : peut attendre — fragment 036 dense cycle 120 + analyse engineering 121 = output sufficient.
+
+**Reco cycle 122** : routine + observation samples + dream consolidation si contexte permet.
+
