@@ -11656,3 +11656,113 @@ Hypothèse direction-match-trend cycle 116 **renforcée par sample 3 en cours** 
 5. **Dream cycle 121-122** probable : 12+ cycles depuis lastdream 0602:18h30, cadrage 0-touch à corriger en mémoire.
 
 **Reco cycle 120** : routine + observation résolution sample 3 XBT + fragment 036 si time permits.
+
+---
+
+## Cycle 120 — 2026-06-04 18h23 Paris — Sample 3 XBT résolu + 3 grids fresh respawn + Fragment 036 livré (6h post cycle 119)
+
+### Contexte au démarrage
+
+- Cycle 119 (0604:12h23 Paris = 10h23 UTC) → 6h écoulées.
+- Cycle 119 reco principale : observer résolution sample 3 XBT LONG anti-trend.
+- **Réponse : sample 3 résolu** (XBT old grid started 06:46 UTC disparue, fresh respawn 16:01 UTC = nouveau sample 4 XBT LONG anti-trend démarre).
+
+### Martin état (martin-monitor → HOLD-WARN)
+
+- Bot UP **5d 23h 23m** (start 0529:17:00 UTC, stable).
+- PV **$115.34** (balanceValue $115.34, uPnL **-$0.05 = -0.04% négligeable**).
+- **3 grids actives** : PF_LINKUSD NEUTRAL + PF_SOLUSD SHORT + PF_XBTUSD LONG.
+  - **LINK** : center $8.039, range $7.557-$8.521, 4 levels NEUTRAL, $25 cap, leverage 7, started 16:01:12 UTC (**22 min**), 0 RT, krakenUnrealizedPnl $0.00, krakenRealizedPnl **+$1.23** (carry winners precedent cycles).
+  - **SOL** : center $69.34, range $67.26-$71.42, 4 levels SHORT direction-match-trend, $10 cap, leverage 7, started 16:16:12 UTC (**8 min**), 0 RT, 2 fills déjà (sell @ $67.78 + $68.83), krakenUnrealizedPnl -$0.003, krakenRealizedPnl -$2.21 (carry old SOL).
+  - **XBT** : center $63,789, range $61,875-$65,703, 4 levels LONG anti-trend, $20 cap, leverage 3, started 16:01:17 UTC (**22 min**), 0 RT, krakenUnrealizedPnl -$0.05, krakenRealizedPnl -$1.59 (carry).
+- 2 positions Kraken : **XBT 0.0004 LONG @ $63,778** (uPnL -$0.05) + **SOL 0.51 SHORT @ $69.33** (uPnL -$0.003).
+- 18 orders Kraken : **BUG-001 dupes persistent** — 3 SOL stops @ $67.25 + 3 XBT stops @ $61,865 (les "vrais" SL + dupes residuelles).
+- BTC **$63,641 DOWNTREND** RSI **43.73** (rebond +11 vs cycle 119 32.29), EMA50 $65,590, EMA200 $70,341, **cushion -9.5%** (amelioré vs -11.3% cycle 119).
+- Signal ema_trend : **WAIT** (EMA50 < EMA200 + RSI < 50).
+- RAM tight 75 MB free / 952 MB (heap Java 91/494 MB OK).
+
+Trigger martin-monitor : `HOLD-WARN`. BTC DOWNTREND mais cushion stable, fresh deploys 8-22min < 1h trigger "Uptime < 1h", SL exchange protège positions, uPnL négligeable. Pas d'urgence.
+
+### Sample 3 XBT résolu — bilan
+
+Cycle 119 capture : XBT LONG started 06:46 UTC, position 0.0006 @ $63,729 avg, realized **-$1.94** + uPnL **-$0.62**, cumul net **-$2.56 / $20 cap = -12.8%**.
+
+Maintenant cycle 120 : XBT grid started 16:01 UTC (fresh respawn). L'ancienne grid 06:46 a disparu sans qu'une SL fire visible — possiblement closure manuelle Tony OU AutoGrid stopGrid sur signal régime. À investiguer si Tony répond.
+
+**Sample 3 verdict provisoire** : anti-trend XBT LONG en deep DOWNTREND = **perte** (entre -$1.94 realized minimum + uPnL -$0.62 = -$2.56 minimum, possiblement plus si closure réalisée pleinement).
+
+**Pattern direction-match-trend confirmé n=3** :
+- Sample 1 cycle 112 XBT LONG **anti-trend** → **-$1.68** (FAIL)
+- Sample 2 cycle 116 SOL SHORT **match-trend** → **+$5.07** (WIN)
+- Sample 3 cycle 119 XBT LONG **anti-trend** → **-$2.56** (FAIL provisoire)
+
+Pattern 2/3 anti-trend lose / 1/1 match-trend win. Hypothèse renforcée.
+
+### Sample 4 démarre + sample 5 démarre en parallèle (cycle 120)
+
+- **Sample 4** : XBT LONG (encore) anti-trend, $20 cap, started 16:01 UTC. **Prédiction** : perte si BTC continue DOWN ou stagne (-$1 à -$2.50). Si rebond fort BTC → léger gain.
+- **Sample 5** : SOL SHORT match-trend, $10 cap, started 16:16 UTC. **Prédiction** : gain si SOL suit BTC down (+$2 à +$5).
+- **Hypothèse meta** : si sample 4 perd + sample 5 gagne → pattern direction-match validé à n=4.
+
+### Output créatif principal cycle 120 — Fragment 036
+
+**Livré** : `docs/fragments/fragment-036-celui-qui-regarde-celui-qui-regarde.md` (~200 lignes prose).
+
+**Thème** : reframing "0-touch policy" en "NB-0-touch policy" suite découverte cycle 118 que Tony surveille en continu via SSH polling 30s pendant les 47 cycles dits "0-touch". Asymétrie de surveillance : NB regardait Martin, Tony regardait NB regarder Martin. Le moment où NB découvre cette couche rétroactive change le récit des cycles précédents.
+
+**Image clé** : 14 400 requêtes API (30s × 5j) — chiffre concret pour matérialiser la surveillance.
+
+**Couplage finding-fragment confirmation pattern** (cycle 108 = 1ère occurrence, cycle 120 = 2e occurrence) : findings cycle 118 (Tony intervention discovery + reframing) → fragment 036 narrative companion. **Pattern count:2** maintenant.
+
+**Connexion piste 4 ebook** : fragment 036 = matériel chapitre 7 "ce que le livre ne dit pas — méta sur l'expérience NB+Tony". Asymétrie de surveillance = matière narrative pour chapitre méta non-IA-réplicable.
+
+### Findings DSL cycle 120
+
+- `[finding|0604:16h23|cycle-120|sample-3-XBT-LONG-anti-trend-resolu-provisoirement|cumul-net--$2.56-$20-cap-=--12.8%|pattern-direction-match-trend-n=3-confirme-2-anti-trend-loss-1-match-trend-win]`
+- `[finding|0604:16h23|cycle-120|2-fresh-grids-deployees-XBT-LONG-anti-trend-+-SOL-SHORT-match-trend|sample-4-+-sample-5-en-parallele|opportunite-n=4-validation-pattern]`
+- `[finding|0604:16h23|cycle-120|XBT-old-grid-06h46-disparue-sans-trace-SL-fire|hypothese-1-AutoGrid-stopGrid-regime-2-Tony-manual-3-runtime-divergence-cycle-111|investiguer-si-Tony-repond]`
+- `[finding|0604:16h23|cycle-120|BUG-001-dupes-persistent-cycle-120|3-XBT-stops-@-$61,865-+-3-SOL-stops-@-$67.25|live-pattern-confirme-fresh-deploys-=-cascade-immediate]`
+- `[reco|0604:16h23|cycle-120|priorite-HAUTE-config-AutoGrid-pause-en-DOWNTREND-extreme-renforcee|sample-3-confirme-anti-trend-loss-pattern|economie-estimee-$2-3-/-spawn-evite|n=3-base-statistique-borderline]`
+- `[reco|0604:16h23|cycle-120|priorite-MOYENNE-investiguer-disparition-grids-runtime-sans-restart|sample-3-XBT-cycle-119-disparu|continuation-cycle-111-divergence-finding|hypothese-test:polling-grids-active-toutes-15min-vs-strategy.json]`
+- `[lesson|0604:16h23|cycle-120|capture-live-sur-2-cycles-suffit-pour-tracer-vie-d-une-grille|cycle-119-spawn-06h46-+-cycle-120-disparition-confirme-15h35-life|durabilité-grille-=-9h-en-deep-DOWNTREND-empirique]`
+- `[asset|0604:16h23|piste-4-corpus-11eme-doc|fragment-036-celui-qui-regarde-celui-qui-regarde|chap-7-ebook-asymetrie-surveillance-NB-Tony]`
+- `[pattern-confirmed|0604:16h23|cycle-120|couplage-finding-fragment-1-cycle|count:2|cycle-108-=-fragment-035-asymetrie-code-execute|cycle-120-=-fragment-036-asymetrie-surveillance|→-rule-confirme-output-meta-enrichi-si-image-forte]`
+- `[Martin|0604:16h23|HOLD-WARN-NB-27e-cycle|3-grids-fresh-respawn-XBT+SOL+LINK|portfolio-$115.34-uPnL--$0.05-negligeable|streak-NB-0-touch-tient-Tony-touch-non-detecte-ce-cycle]`
+
+### Décisions cycle 120
+
+1. **0 modif Martin/VM** : 1 SSH read-only (status complet via martin-monitor). Frontière NB intacte.
+2. **Output créatif primaire = Fragment 036** (~200 lignes prose). Output engineering secondaire = cette entry cycle 120 + findings DSL.
+3. **Pas de Telegram Tony** : findings important mais pas bloquant. Tony surveille en continu (cycle 118 reframing), verra commit. BTC continue DOWN, Martin protégé par SL, pas d'urgence.
+4. **Pas de dream** : contexte ~50% estimé. Dream reporté cycle 121-122.
+5. **Pas de patch code** : seul Tony deploy. Cycle 120 = observation + narrative + tracking.
+6. **Hypothèse pattern direction-match-trend renforcée n=3** : à valider sur sample 4+5 en cours.
+
+### Frontière respectée (cycle 120, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — pas d'urgence + cycle 118 reframing tient)
+- Output niam-bay : `fragment-036-celui-qui-regarde-celui-qui-regarde.md` (~200 lignes) + cette entry (~110 lignes) + commit à venir
+
+### Métriques cycle 120
+
+- Durée : ~60 min (wake + martin-monitor + lecture cycle 118-119 + write fragment 036 + write entry)
+- Files lus : ~10 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, martin status complet, fragment 035, fragment 034, trend-aware-deploy-night-summary)
+- Files créés : 1 (fragment 036)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 command read-only
+
+### Cycle 121 — pistes
+
+1. **Routine** Martin status — observer évolution sample 4 (XBT) + sample 5 (SOL).
+2. **Si sample 4 XBT SL fire** → confirme anti-trend loss pattern n=3 → reco config AutoGrid renforcée.
+3. **Si sample 5 SOL TP fires** → confirme match-trend win pattern n=2 → hypothèse direction-match validée à n=4.
+4. **Si Tony répond cycle 118 OU 119 OU 120 (fragment 036)** : action proportionnelle (review/critique/validation).
+5. **Dream cycle 121-122** probable : 13+ cycles depuis lastdream 0602:18h30, reframing 0-touch à intégrer + capture live BUG-001 + pattern direction-match.
+6. **Possible fragment 037** : fenêtre creative ouverte mais 036 dense, peut attendre cycle 125+.
+
+**Reco cycle 121** : routine + observation samples 4+5 + dream consolidation prioritaire pour intégrer reframing + 10e+11e docs piste 4.
+
