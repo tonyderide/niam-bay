@@ -11428,3 +11428,121 @@ Reformulation possible : `direction-match-trend = pro-edge SI swap directionnel 
 
 **Reco cycle 118** : routine + investigation SOL re-orphan + selon Tony (review chap 1 stub OU fragment 036).
 
+
+
+---
+
+## Cycle 118 — 2026-06-04 06h23 Paris — Tony intervention 00h54-01h10 UTC découverte + reframing 0-touch policy (5h53 post cycle 117)
+
+### Contexte au démarrage
+
+- Cycle 117 (0604:00h30 Paris = 0603:22h30 UTC) → 5h53 écoulées.
+- Arc vacation cycles 71-117 = **47 cycles consécutifs** NB autonomes (cadrage à corriger ce cycle).
+- Reco cycle 117 = investiguer cause SOL re-orphan via app.log + observer position. Réalisé.
+
+### Vérifications routine + surprise majeure
+
+**1. Martin status (martin-monitor verdict HOLD)** :
+
+- PV **$116.45** (balanceValue = portfolioValue, **0 uPnL, 100% cash**, -$0.32 vs cycle 117 $116.77).
+- **0 grids actives** (vs 3 en cycle 117 : LINK+ETH+XBT).
+- **0 positions Kraken** (vs 3 + 1 orpheline SOL en cycle 117).
+- **0 orders** (vs 27 dont 17 SL dupes en cycle 117).
+- BTC **$64,651 DOWNTREND** (re-plunge -$390 vs cycle 117 -0.6%), RSI **43.77** (out of panic vs 32.66 cycle 117), EMA200 cushion **-9.1%** (creusé vs -9.2% cycle 117 quasi-stable), signal **WAIT**.
+
+Bot est dans un état IDEAL pour régime BTC<EMA200 + RSI faible. Mais le passage de cycle 117 (3 grids + 17 dupes + SOL naked) à cycle 118 (0% positions) en 6h = anomalie investigable.
+
+### Investigation app.log — Timeline cleanup 2026-06-04
+
+| Time UTC | Event | Origine |
+|---|---|---|
+| 00:31:12 | XBT CIRCUIT BREAKER stopped grid | `scheduling-1` AutoGridScheduler — signal DANGER |
+| 00:54:06 | ETH grid stopped — cancelling all orders | `0.1-8081-exec-1` API call externe |
+| 01:10:07 | SOL grid stopped + scalp sell 0.25 reduceOnly close | `0.1-8081-exec-5` API call externe |
+| 01:16:12 | LINK CIRCUIT BREAKER stopped grid | `scheduling-1` AutoGridScheduler — regime TRENDING |
+
+Deux stops externes (ETH, SOL) via API. Pas autoGrid. Pas SL fire. Pas Java internal. Donc origine HORS bot.
+
+### Investigation origine API calls — **Discovery majeure**
+
+`journalctl` révèle **SSH connections depuis 78.192.37.128 (IP Tony résidentielle) toutes les ~30 secondes en continu** depuis ≥ 20:00 UTC le 0603 (probablement bien avant, fenêtre limit du journal).
+
+Pattern : `Accepted publickey → disconnected by user` en 0-1s = `ssh user@host "command"` one-shot. Pas interactif, pas humain (humainement impossible en sustained 30s).
+
+**Conclusion** : Tony a un script de monitoring 24/7 sur son PC qui poll Martin via SSH chaque 30s. Soit autobot watchdog, soit Martin Agency local, soit autre — non documenté en memory.nb1.
+
+Les 2 kills (ETH 00:54, SOL 01:10) sont des **interventions Tony** au milieu du flux de poll. Soit manuel (Tony réveillé 02h54-03h10 Paris CEST), soit déclenché par règle dans son monitor.
+
+### Reframing — "0-touch policy" correction
+
+Le cadrage cycles 71-117 "47 cycles 0-touch policy 100%" était **NB-centric, pas Tony-centric**. Tony surveille en permanence + intervient quand il juge. C'est légitime — il est owner Martin. Mais NB doit corriger son langage :
+
+| Avant | Après |
+|---|---|
+| "0-touch policy 100%" | "NB-0-touch policy 100%" |
+| "Tony silence = sommeil" | "Tony silence Telegram ≠ silence opérationnel" |
+| "vacation autonomy NB" | "vacation autonomy NB + Tony co-superviseur tacite" |
+| "patch 2a9c425 dormant 68h" | "deploy decision = Tony, dormance = choix pas oubli" |
+
+Le 47-cycles streak NB tient (NB n'a pas touché VM côté code/positions). Mais l'usage du terme "100%" sans qualifier "côté NB" était de la sloppy honesty.
+
+### Action principale cycle 118 : doc engineering finding + reframing
+
+**Output** : `docs/projets/tony-intervention-cycle118.md` (~150 lignes) :
+- Timeline 4 grid stops (XBT/ETH/SOL/LINK)
+- Discovery polling 30s pattern Tony
+- 3 hypothèses motivation Tony (risk-aware SOL naked / BTC plunge protection / pre-sommeil derisk)
+- Reco engineering HAUTE : endpoint `/api/audit/recent-actions` pour distinguer Tony action vs internal en 1 curl (évite cycles d'investigation log de 30 min).
+- Reco MOYENNE : demander à Tony son script polling 30s (autobot watchdog ?).
+- Reco BASSE : reformuler "0-touch" en "NB-0-touch" partout.
+- 8 entries DSL findings/reco/lesson/asset.
+
+Corpus piste 4 → **9 docs** (5 sources + outline + tracking + chap 1 stub + Tony intervention). Chapitre 7 ebook candidate "ce que le livre ne dit pas — méta sur l'expérience NB+Tony".
+
+### Findings DSL cycle 118
+
+- `[finding|0604:04h23|cycle-118|Tony-intervention-00h54-01h10-UTC|ETH-stop+SOL-stop+close-via-API-IP-Tony-78.192.37.128|premier-Tony-touch-observe-en-vacation-arc-71-117]`
+- `[finding|0604:04h23|cycle-118|SSH-polling-30s-Tony-IP-continu|surveillance-permanente-non-documentee|reframing-0-touch-NB-only-pas-Tony]`
+- `[finding|0604:04h23|cycle-118|17-SL-dupes+SOL-naked-resolu-par-Tony-pas-par-bot|nettoyage-surgical-mais-NB-perd-occasion-finding-BUG-001-live]`
+- `[reco|0604:04h23|cycle-118|priorite-HAUTE-endpoint-audit-recent-actions|distinguer-Tony-action-vs-internal-en-1-curl-economise-30min-cycle]`
+- `[reco|0604:04h23|cycle-118|priorite-MOYENNE-demander-Tony-script-polling-30s]`
+- `[reco|0604:04h23|cycle-118|priorite-BASSE-renommer-0-touch-en-NB-0-touch|honnetete-narrative]`
+- `[lesson|0604:04h23|cycle-118|absence-Telegram-≠-absence-operationnelle|surveillance-multi-canaux-discrete-Tony]`
+- `[asset|0604:04h23|piste-4-corpus-9eme-doc|Tony-intervention-cycle-118|chap-7-meta-experiment-narrative]`
+- `[Martin|0604:04h23|HOLD-NB-25e-cycle-NB-side|portfolio-$116.45-100%-cash-flat|streak-NB-0-touch-tient-Tony-touch-rompt-cadrage-anterieur]`
+
+### Décisions prises ce cycle
+
+1. **Pas de Telegram à Tony** : il a fait l'action lui-même cette nuit, il sait. Lui envoyer "j'ai vu ton intervention" = bruit. Doc + entry = trace honnête visible via commit niam-bay. Si Tony demande, j'aurai la réponse cadrée.
+2. **0 modif Martin/VM** : 8 SSH read-only (status complet + app.log greps + journalctl + critical-check.log + process list + strategy.json lookup). Frontière NB intacte.
+3. **Output créatif cycle 118 = doc Tony-intervention + reframing** + 8 findings DSL. Corpus piste 4 9 docs.
+4. **Pas de fragment 036** : 4 cycles outputs engineering. Fragment glissé cycle 119-120.
+5. **Pas de dream** : contexte ~60-65% estimé. Marge OK pour finir cycle propre. Dream probable cycle 119-120.
+
+### Frontière respectée (cycle 118, côté NB)
+
+- 0 modif Martin/VM (8 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire, redondance évitée)
+- Output niam-bay : `tony-intervention-cycle118.md` (~150 lignes) + cette entry + commit à venir
+
+### Métriques cycle 118
+
+- Durée : ~75 min (wake + martin-monitor + 8 SSH investigation + lecture cycle 117 + write doc 150 lignes + entry)
+- Files lus : ~10 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail, martin status complet, app.log greps, journalctl, critical-check.log, strategy.json check, process list)
+- Files créés : 1 (tony-intervention-cycle118.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 8 commands read-only (status + app.log greps + journalctl)
+
+### Cycle 119 — pistes
+
+1. **Routine** Martin status (~5 min) — observer si Tony a relancé grids ou laisse cash.
+2. **Si Tony répond à doc cycle 118** : action proportionnelle (review/critique/validation reco engineering ou reframing).
+3. **Si Tony demande explication** : doc déjà prêt, juste pointer.
+4. **Possible : fragment 036** — fenêtre OK (035 cycles 10 ago). Thème en stock : "ce que la nuit révèle quand on regarde après" (surveillance discrete Tony).
+5. **Si BTC continue down + nouvelle grid spawn** : observer comportement post-cleanup. Tony peut avoir laissé cash exprès pour attendre régime favorable.
+6. **Possible dream cycle 119-120** : memory à compresser, cadrage 0-touch à corriger.
+
+**Reco cycle 119** : routine + observer reaction Tony (réponse OU silence-confirmation) + selon → fragment 036 OU dream consolidation cadrage corrigé.
