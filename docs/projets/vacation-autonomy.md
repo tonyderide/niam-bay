@@ -11873,3 +11873,130 @@ XBT LONG $20 cap, 6h23 ongoing, cumul -$1.76 (-8.8%). Aucun TP fired, 3 DCA buys
 
 **Reco cycle 122** : routine + observation samples + dream consolidation si contexte permet.
 
+---
+
+## Cycle 122 — 2026-06-05 12h23 Paris — Sample 5 SOL RT=5 explose match-trend + sample 4 XBT évite SL via TP partial + nuance pattern (12h post cycle 121)
+
+### Contexte au démarrage
+
+- Cycle 121 (0605:00h23 Paris = 22h23 UTC du 0604) → 12h écoulées.
+- Cycle 121 reco principale : observer évolution samples 4 (XBT anti-trend) + 5 (SOL match-trend).
+- **Évolution 12h** :
+  - Sample 5 SOL : RT=1 → **RT=5** (+4 RT en 12h, +$1.04 realized supplémentaire)
+  - Sample 4 XBT : -$1.76 cumul → **+$0.17 net** (TP partial +$0.22 sur rebond BTC $64,262 + position réduite 0.0006→0.0004)
+- Portfolio $115.66 → **$117.09 (+$1.43, +1.24% en 12h)**.
+
+### Martin état (martin-monitor → HOLD)
+
+- Bot UP **6d 17h 23m** (stable, +12h vs cycle 121).
+- PV **$117.09** (balanceValue $116.02, uPnL **+$1.08 = +0.93% positif net**).
+- **2 grids actives** (LINK désactivée silencieusement runtime entre cycle 121 et 122 — à investiguer cycle 123) : PF_SOLUSD SHORT CLOSE-ONLY + PF_XBTUSD LONG.
+  - **SOL** (close-only) : 20h07 uptime grid, **RT=5 réalisé totalProfit +$1.3041**, position 0.5 SHORT @ $67.76 avg, krakenUnrealizedPnl +$0.74, krakenRealizedPnl -$5.18 (carry old grids), grid frais +$2.04 net = **+20.4% / $10 cap en 20h**.
+  - **XBT** (LONG) : 20h22 uptime grid, **RT=1 réalisé +$0.22**, position 0.0004 @ $61,644 (réduite vs cycle 121 0.0006 @ $63,621), krakenUnrealizedPnl +$0.33, krakenRealizedPnl -$0.17 (carry reset?), grid frais +$0.17 net = **+0.85% / $20 cap en 20h**.
+- 2 positions Kraken : **XBT 0.0004 LONG @ $61,644** (uPnL +$0.33) + **SOL 0.5 SHORT @ $67.76** (uPnL +$0.75).
+- 5 orders Kraken : **BUG-001 dupes persistent réduit** — 3 XBT stops (1× $59,795 + 2× $60,041) + orders légitimes grid (1 SELL lmt $64,262 TP + 1 BUY lmt $60,434 entry). **0 dupe SOL ce cycle** (les 3 SOL stops cycle 121 ont disparu — likely garbage collected ou fired sans réplacement).
+- BTC **$62,480 DOWNTREND** RSI **43.57** (stable vs cycle 121 42.45 baisse +1.12), EMA50 $64,252, EMA200 $69,089, **cushion -9.5%** (stable).
+- Signal ema_trend : **WAIT**.
+- RAM tight 74 MB free / 952 MB (heap Java 69/494 MB OK).
+
+Trigger martin-monitor : `HOLD`. uPnL net positif, deploy mature 20h, SL exchange en place, BUG-001 dupes réduit (5 orders vs 17 cycle 121). Pas d'urgence.
+
+### Sample 5 SOL — match-trend confirme MASSIVEMENT n=2
+
+Cycle 121 : SOL RT=1, +$0.26 realized, uPnL +$0.34, +$0.60 net /$10 = +6.0% en 6h.
+Cycle 122 (12h post) : SOL **RT=5**, totalProfit +$1.30 realized (4 RT supplémentaires × ~$0.26 avg), uPnL +$0.74, **+$2.04 net / $10 cap = +20.4% en 20h**.
+
+**Annualisation naïve (à ne pas projeter)** : +20.4% en 20h ≈ +24.5% / jour ≈ +9 000% / an. Absurde mais ordre de grandeur : grid match-trend en marché choppy + trend cohérent = printer.
+
+**Reproductibilité** : sample 2 cycle 116 SOL SHORT +50.7% / $10 cap en 4j, sample 5 actuel +20.4% en 20h. **Cohérence 2/2 : SOL SHORT en BTC DOWNTREND = match-trend win**.
+
+### Sample 4 XBT — anti-trend pas "loss garanti" : nuance critique du pattern
+
+Cycle 121 : sample 4 XBT cumul -$1.76 (-8.8%) en 6h, prédiction SL fire $61,714 si BTC stagne.
+Cycle 122 (12h post) : XBT **+$0.17 net** (-$0.17 realized via 1 TP partial à perte legere + uPnL +$0.33 actuel).
+
+**Reconstruction** : BTC a rebondi $63,310 → $64,262 entre cycle 121 et 122 (~06:17 UTC), permettant 1 sell @ $64,262 → profit +$0.22 partial. Puis BTC re-DCA $61,391 a augmenté position size. Position actuelle plus profitable car BTC remonté $62,480 vs entry avg $61,644 = entry favorable post-DCA.
+
+**Nuance pattern** : anti-trend XBT LONG **n'est pas systématiquement perte**. La grid mean-rev capte rebonds techniques courts. Sample 4 ongoing → si BTC descend $61k → SL fire et loss reprend. Si BTC stable/up → grid continue trader, sortie potentielle positive.
+
+### Pattern direction-match-trend — refinement cycle 122 (vs formalisation cycle 121)
+
+Cycle 121 disait : "3 anti-trend loss / 2 match-trend win, EV spread 38 points %".
+
+Cycle 122 corrige : sample 4 XBT anti-trend **n'est pas en loss actuellement** (+$0.17 net). Formulation plus honnête :
+
+| Direction × Régime | Samples | Wins | Loss | Net moyen / cap |
+|---|---|---|---|---|
+| **Match-trend (SOL SHORT en BTC DOWN)** | 2 | 2 | 0 | **+35%** |
+| **Anti-trend (XBT LONG en BTC DOWN)** | 4 | 1 partiel | 3 (1 ongoing) | **-7.5%** |
+
+**EV spread ajusté : ~43 points %** (match-trend domine plus que cycle 121 estimait).
+
+**Inversion sample 4 vs prédiction cycle 121** : sample 4 cycle 121 prédisait SL fire = -$2 supplémentaire. Réalité = TP partial +$0.22 + position réduite + uPnL positif = +$0.17. **Prédiction MISS, magnitude -$2.17**. Honnêteté : grid mean-rev a un mécanisme TP partial même en anti-trend qui amortit la perte si volatilité présente.
+
+**Implication patch AutoGridScheduler regime filter** (cycle 121 reco HAUTE) : reste valide mais magnitude économie revue à la baisse (-$10-12 sur 2 mois vs -$15-20 estimé cycle 121). Pattern asymétrie tient mais anti-trend moins catastrophique que craint.
+
+### Anomalie LINK grid disparue cycle 121 → 122
+
+Cycle 121 : 3 grids actives (LINK NEUTRAL + SOL SHORT + XBT LONG).
+Cycle 122 : **2 grids actives seulement** (SOL + XBT). PF_LINKUSD `active:false`.
+
+LINK avait 6h23 uptime + 1 buy fill @ $7.918 cycle 121 (accumulation phase, 0 RT). Disparition en 12h sans trace SL fire visible dans /api/bot/orders ni positions LINK live (positions Kraken n'inclut pas LINK). **Hypothèses** (similaire à sample 3 XBT cycle 119 → 120) :
+1. AutoGridScheduler.stopGrid sur regime filter (BTC DOWNTREND prolongé)
+2. Tony manual stop via API
+3. Runtime divergence cycle 111 (config mutation)
+4. Cycle 79-style cascade silencieuse
+
+**Sans accès app.log forensic ce cycle** (économie SSH), hypothèse 1 ou 2 plus probable. À investiguer cycle 123 + corrélation avec runtime-state-divergence-cycle111.md.
+
+### Findings DSL cycle 122
+
+- `[finding|0605:12h23|cycle-122|sample-5-SOL-match-trend-RT=5-en-20h-+$2.04-/-$10-cap-=-+20.4%|reproductibilite-n=2-confirmee-+50.7%-cycle-116-+-+20.4%-cycle-122|magnitude-+-vitesse-superieures-anti-trend]`
+- `[finding|0605:12h23|cycle-122|sample-4-XBT-anti-trend-TP-partial-+$0.22-evite-SL|prediction-cycle-121-SL-fire-MISS-magnitude--$2.17|grid-mean-rev-amortit-perte-via-rebonds-techniques-courts]`
+- `[finding|0605:12h23|cycle-122|pattern-direction-match-trend-EV-spread-43pts-%-vs-38pts-cycle-121|match-trend-domine-plus-que-prevu|anti-trend-moins-catastrophique|magnitude-economie-patch-revue-$10-12-vs-$15-20]`
+- `[finding|0605:12h23|cycle-122|LINK-grid-disparue-runtime-entre-cycle-121-et-122|3e-occurrence-pattern-grid-disparition-silencieuse-cycle-79-119-122|hypothese-AutoGrid-stopGrid-regime-OU-Tony-manual|sans-investigation-app.log-ce-cycle]`
+- `[finding|0605:12h23|cycle-122|BUG-001-dupes-XBT-reduit-3-stops-vs-4-cycle-121|0-dupe-SOL-ce-cycle-vs-3-cycle-121|garbage-collection-ou-fire-sans-replacement|patch-Tony-2a9c425-toujours-dormant-jar-8-jours-obsolete]`
+- `[reco|0605:12h23|cycle-122|HAUTE-investigation-LINK-grid-disparue-app.log-cycle-123|3e-occurrence-pattern-meme-mecanisme-orpheline-systeme|necessaire-avant-fonctionnement-AutoGrid-autonome]`
+- `[reco|0605:12h23|cycle-122|MOYENNE-tracker-sample-4-XBT-jusqu-resolution-SL-OU-grid-stopGrid|determiner-magnitude-finale-anti-trend|si-uPnL-+-realized-net-positif-=-anti-trend-pas-systematiquement-loss]`
+- `[reco|0605:12h23|cycle-122|BASSE-reframe-patch-AutoGridScheduler-pour-favoriser-match-trend-vs-bloquer-anti-trend|si-match-trend-+35%-EV-bias-deployment-vers-direction-favorable-plus-rentable-que-juste-eviter-anti-trend]`
+- `[lesson|0605:12h23|cycle-122|prediction-cycle-121-XBT-SL-MISS-honnetete-doit-marquer|grid-mean-rev-mecanisme-TP-partial-amortit-anti-trend|patterns-empiriques-=-tendances-pas-deterministes]`
+- `[lesson|0605:12h23|cycle-122|SOL-match-trend-magnitude-massive-+20%-/20h-meme-en-rebond-partial-BTC|si-pattern-tient-=-edge-AutoGrid-direction-detection-revenu-+15-20-/-2-mois-vs-estimation-cycle-121]`
+- `[asset|0605:12h23|cycle-122-entry-vacation-autonomy.md|~120-lignes-refinement-pattern-direction-match-+-nuance-anti-trend-pas-loss-systematique|enrichit-piste-4-corpus-13e-doc-implicite]`
+- `[pattern|grid-disparition-runtime-silencieuse|count:3|cycle-79-+-cycle-119-XBT-+-cycle-122-LINK|mecanisme-systeme-vs-cas-isole|requiert-investigation-app.log-prochain-cycle]`
+- `[Martin|0605:12h23|HOLD-NB-29e-cycle|2-grids-stables-SOL-CLOSE-ONLY+XBT-LONG-LINK-disparue|portfolio-$117.09-uPnL-+$1.08-+0.93%|streak-NB-0-touch-tient-29-cycles-arc-71-122=52-cycles-2-mois]`
+
+### Décisions cycle 122
+
+1. **0 modif Martin/VM** : 1 SSH read-only (status complet via martin-monitor). Frontière NB intacte (52e cycle consécutif arc 71-122).
+2. **Output créatif primaire = cette entry cycle 122** (refinement pattern + nuance anti-trend + 3e occurrence pattern grid disparition). Pas de fragment 037 ce cycle (036 dense, fenêtre créative encore ouverte mais pas pressante).
+3. **Pas de Telegram Tony** : observations utiles mais pas bloquantes. Tony surveille en continu (cycle 118 reframing), verra commit.
+4. **Dream prochain cycle** : contexte ~70% estimé après cette entry + martin-monitor + lectures. Dream cycle 123-124 pour intégrer pattern direction-match nuance n=5+, 3e occurrence grid disparition, LINK disparition runtime, refinement EV spread 38→43 points.
+5. **Pas de patch code direct** : seul Tony deploy. Cycle 122 = observation + refinement empirique.
+6. **Pattern direction-match-trend reste valide mais nuancé** : match-trend domine, anti-trend pas systématiquement loss → patch regime filter doit être *biais* vers favorable, pas juste *blocage* anti.
+
+### Frontière respectée (cycle 122, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only via martin-monitor)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — refinement utile mais pas urgent)
+- Output niam-bay : cette entry (~120 lignes) + commit à venir
+
+### Métriques cycle 122
+
+- Durée : ~50 min (wake + martin-monitor + lecture cycle 121 tail + reconstruction fills + écriture entry)
+- Files lus : ~5 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail 200 lignes, martin status complet)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 command read-only
+
+### Cycle 123 — pistes
+
+1. **Routine** Martin status — observer si LINK grid revient OU reste désactivée + suivi sample 4 XBT (SL trigger probable si BTC down OU continue rebound).
+2. **Investigation LINK disparition** : 1 SSH ciblé app.log entre cycle 121 et 122 (~12h) pour trace cause exacte. Hypothèses pré-définies.
+3. **Si sample 5 SOL continue gagner** : pattern match-trend n=2 = base solide pour reco patch AutoGrid biais direction.
+4. **Dream cycle 123-124** prioritaire : intégrer cycle 120 + 121 + 122, pattern direction-match nuancé, 3e occurrence grid disparition, fragment 036, BUG-001 réduction observée.
+5. **Si Tony répond** cycle 118-122 : action proportionnelle, priorité patch regime filter + investigation LINK.
+
+**Reco cycle 123** : routine + investigation app.log LINK (15min SSH ciblé) + dream consolidation si contexte permet.
