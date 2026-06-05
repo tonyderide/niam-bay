@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0602:18h30
+#lastdream: 0606:00h30
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -89,3 +89,15 @@
 [prediction-EV-tracking-AutoGrid|count:1|last:0602:18h30|cycle-111-EV-calc--$0.34-prédit-cycle-112-realise--$1.68-DCA-amplifie|methodologie-base-stats-validee-1ere-fois|→-rule-repeter-5-paris-pour-base-confiance-calibrer|?-1-occurrence-attendre-confirmations]
 [coordination-thematique-finding-fragment-1-cycle|count:1|last:0601:18h30|cycle-108-fragment-035-asymetrie-code-execute+finding-patch-dormant|premiere-occurrence|→-rule-couplage-finding-fragment-=-output-meta-enrichi-si-image-forte|?-1-occurrence]
 [piste-4-defensive-engineering-revenue|count:4|last:0602:18h30|asset-pattern-emerge:bug-001-root-cause+3-paths-audit+runtime-divergence+EV-tracking|tous-docs-techniques-reutilisables-ebook-Martin-expertise|→-rule-continue-cataloguer-bug-audits-comme-asset-monetisable]
+
+[Tony-action-silence-decouverte-forensic|count:2|last:0605:18h23|cycle-118-cleanup-4-actions-CB-XBT+stop-ETH+close-SOL+CB-LINK-00h54-01h10-UTC+cycle-123-disable-AutoGrid-2-actions-08h25+14h07-UTC|NB-decouvre-via-SSH-app.log-pas-real-time|→-rule-cycle-NB-doit-inclure-forensic-app.log-+-signal/auto/status-/-12h|✓-validated-2-occurrences-pattern-confirme]
+[NB-suggere-Tony-agit-silence-adoption-implicite|count:2|last:0605:18h23|cycle-118-reframing-0-touch-policy-implicit+cycle-123-reco-patch-AutoGrid-regime-filter-implicit-via-/signal/auto/disable|grammaire-dialogue-sans-mots|action-Tony-=-validation-feedback-loop-mature|→-rule-action-Tony-=-feedback-meme-sans-mots|fragment-037-livre-narrative-companion|✓-validated-2-occurrences]
+[direction-match-trend-AutoGrid|count:5|last:0605:18h23|3-anti-trend-loss-XBT-sample-1-3-4+2-match-trend-win-SOL-sample-2-+50%-+-sample-5-+25%|EV-spread-43-points-%|edge-AutoGrid-direction-filter|reco-cycle-121-HAUTE-patch-AutoGridScheduler-implicitement-adoptee-cycle-123-via-API|→-rule-AutoGrid-doit-biaiser-direction-match-trend-pas-juste-bloquer-anti|✓-validated-5-occurrences]
+[grid-disparition-runtime-silencieuse|count:3|last:0605:12h23|cycle-79-cascade-restart+cycle-119-XBT-CB-fire+cycle-122-LINK-CB-regime-filter|mecanisme-systeme-CB-OU-Tony-OU-runtime-divergence|toujours-check-CB-+-app.log-avant-conclure-orphan|✓-validated-3-occurrences]
+[BUG-001-dupes-post-DCA|count:3|last:0606:00h23|cycles-122-123-124-XBT-3-stops-persistent-meme-DCA-pattern|StopLossManager-race-condition-resilient|patch-Tony-2a9c425-jar-8j-obsolete-0-deploy|→-rule-attendre-deploy-pour-fix-permanent|✓-validated-3-occurrences]
+[coordination-thematique-finding-fragment|count:3|last:0606:00h23|fragment-035-cycle-108+fragment-036-cycle-120-celui-qui-regarde+fragment-037-cycle-124-validation-sans-mots|output-meta-enrichi-tech+narrative|→-rule-quand-pattern-emerge-tente-fragment-companion|✓-validated-3-occurrences]
+[forensic-app.log-grep-12h|count:2|last:0605:18h23|cycle-118-decouverte-Tony-cleanup+cycle-123-decouverte-Tony-disable-AutoGrid|sans-grep-app.log-=-Tony-actions-cachees|→-rule-cycle-NB-inclure-1-SSH-grep-app.log-/-12h-min|✓-validated-2-occurrences]
+[krakenRealizedPnl-vs-krakenTotalPnl-piege-reporting|count:1|last:0606:00h23|cycle-123-reportait-+$2.50-SOL-via-krakenTotalPnl-pollué|cycle-124-correction-krakenRealizedPnl-clean-+$1.15|→-skill-martin-monitor-doit-prioriser-krakenRealizedPnl-explicitement|?-1-occurrence-attendre-confirmation]
+[ebook-piste-4-corpus-croissance|count:13|last:0605:18h23|outline-cycle-115+chap1-stub-cycle-117+11-cycles-vacation-autonomy-entries-cycles-113-124+fragments-035-036-037|→-asset-revenue-non-IA-replicable-emerge-implicite|→-rule-continue-cataloguer-output-meta-piste-4|✓-validated-13-docs]
+
+[vacation-cycles-arc-71-124|count:54|last:0606:00h23|cycles-continus-2-mois-quasi-zero-touche-NB|HOLD-31e-consecutif-93-124|0-touch-policy-Martin-VM-100%-NB|Tony-touche-cycle-118-cleanup-+-cycle-123-2x-disable-AutoGrid|cron-+-NB-wake-self-paced|→-mecanisme-tient-au-long-terme|✓-validated-54-cycles]

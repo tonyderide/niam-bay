@@ -1,39 +1,54 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0531:18h to 0602:18h30 (cycles 105-112)
-#lastdream: 0602:18h30
+#window: 48h from 0604:00h30 to 0606:00h30 (cycles 117-124)
+#lastdream: 0606:00h30
 
-[0602:18h30|cycle-112|XBT-pari-resolu-SL-fired-branche-55%|reconstruction-app.log:DCA-event-13h39-UTC-position-0.0006→0.0008-entry-$70,130-SL-repositionne-$68,027→BTC-drop-$67,698-SL-fire-realise-estime--$1.68|prediction-cycle-111--$1.27-amplifie-+32%-par-DCA|outcome-dans-distribution]
-[0602:18h30|cycle-112|SOL-grid-disparue-runtime-sans-restart-Java|uptime-3d23h-continu|position-0.21-SHORT-orpheline-survit-SL-Kraken-$90.46-reduceOnly-intact|uPnL-+$1.08-preserve|cycle-111-risque-orphan-manifeste-mais-pas-via-restart]
-[0602:18h30|cycle-112|tracking-AutoGrid-bets-1ere-entree|XBT-LONG-$20-cap-DCA-SL-fired-realise--$1.68-duree-~14h|base-stats-EV-negative-confirmee-empiriquement-sample-1]
-[0602:18h30|cycle-112|frontiere-respectee|4-SSH-read-only-0-modif-VM|portfolio-$115.63-uPnL-+$1.60-net-+1.40%|HOLD-19e-consecutif|arc-71-112-=-42-cycles-0-touch-policy-100%]
+[0606:00h23|cycle-124|sample-4-XBT-auto-reveille-3-fills-60min-21h04-22h05-UTC|position-grossie-0.0002→0.0006-x3|RT=2-+$0.45-totalProfit-+$0.23-vs-cycle-123|grid-mean-rev-capture-vol-mineure-BTC-+0.5%|EV-anti-trend-tient-mais-magnitude-augmentee-expose-si-BTC-re-dip-$59,840-SL-fire]
+[0606:00h23|cycle-124|fragment-037-livre-La-validation-sans-mots-50-lignes|theme-NB-suggere-Tony-agit-silence-n=2-grammaire-dialogue-sans-mots|pendant-fragment-036-asymetrie-surveillance]
+[0606:00h23|cycle-124|reporting-cycle-123-self-correction|krakenTotalPnl-pollue-SOL-+$2.50-vs-clean-krakenRealizedPnl-+$1.15|→-rule-toujours-krakenRealizedPnl-pas-krakenTotalPnl|skill-martin-monitor-amelioration]
+[0606:00h23|cycle-124|EUR-drift-+$7.57-portfolio-en-6h|hypothese-snapshot-timing-OU-Tony-deposit-EUR|95.87-EUR-converti-$110.47-ratio-1.152|non-investigue-cycle-124-marge]
+[0606:00h23|cycle-124|frontiere-respectee|1-SSH-read-only-0-modif-VM|portfolio-$123.08-uPnL-trivial--$0.09|HOLD-31e-consecutif|arc-71-124-=-54-cycles-0-touch-policy-NB]
 
-[0602:12h30|cycle-111|divergence-runtime-strategy.json-decouverte|XBT-active-malgre-config-disabled-$0|SOL-active-malgre-config-disabled-$0|ETH-enabled-config-mais-pas-active|3-anomalies|H1-mutations-runtime-via-API-haute|H2-grid-start-manual-moyenne|H3-NB-cycles-faible|risque-restart-=-positions-orphelines-cascade-inverse-cycle-79]
-[0602:12h30|cycle-111|XBT-mean-rev-pari-EV-calculee--$0.34|55%SL+25%TP-partial+15%BE+5%TP-full|distribution-residuelle-1:5.3-risk-reward-mais-RSI-panic-continu|asset-piste-4-1ere-entree-base-stats-AutoGrid]
-[0602:12h30|cycle-111|martin-monitor-verdict-WARN|BTC<EMA200+RSI-panic-23.6|positions-protegees-par-SL-exchange|HOLD-18e-consecutif|0-Telegram-finding-non-bloquant]
+[0605:18h23|cycle-123|Tony-2-interventions-silencieuses-POST-/signal/auto/disable|08h25-+-14h07-UTC|AutoGrid-disabled-2x-en-6h|NB-decouvre-via-app.log-forensic-pas-real-time]
+[0605:18h23|cycle-123|reco-cycle-121-HAUTE-patch-AutoGrid-regime-filter-IMPLICITEMENT-ADOPTEE|Tony-via-API-runtime-/signal/auto/disable-pas-via-patch-Java|effet-equivalent-0-nouveau-pari-spawn|pattern-NB-suggere-Tony-agit-silence-count:2]
+[0605:18h23|cycle-123|LINK-timeline-reconstruite|spawn-0604:16h16-UTC-RANGING-detect|kill-final-0605:06h16-UTC|14h-life-oscillation-RANGING/TRENDING|mecanisme-AutoGrid-natif-regime-filter-confirme]
+[0605:18h23|cycle-123|runtime-divergence-XBT-grid-active-mais-PAS-dans-configs-AutoGrid|cycle-111-finding-persistant|risque-restart-Java-=-grid-XBT-perdu-cascade-inverse-cycle-79]
+[0605:18h23|cycle-123|frontiere-respectee|4-SSH-read-only-0-modif-VM|portfolio-$115.51-uPnL-+$1.37|HOLD-30e-consecutif|arc-71-123-=-53-cycles]
 
-[0602:06h30|cycle-110|audit-BUG-001-3-clear-paths-identified|Path-1-StopLossManager.place-line195-verifyOrderExistsOnKraken-race-HIGH|Path-2-GridTradingService.auditOnExchangeStopLosses-line478-single-openorders-pas-de-retry-race-HIGH-jamais-fired-empiriquement|Path-3-StopLossManager.cancel-line290-finally-clear-meme-si-exception-race-MEDIUM|Option-A-pre-place-dedup-neutralise-tous-3|defense-in-depth-N-consecutive-misses-optionnel|bug-001-clear-paths-audit-cycle110.md-livre]
-[0602:06h30|cycle-110|HOLD-17e-consecutif|XBT-pari-tient-+$0.10-uPnL-8h25|TP-$74,382-distance-+5.1%|SL-$68,485-distance--3.0%]
+[0605:12h23|cycle-122|sample-5-SOL-match-trend-RT=5-en-20h-+$2.04-/-$10-cap-=-+20.4%|reproductibilite-n=2-confirmee-+50.7%-cycle-116-+-+20.4%-cycle-122|magnitude-+-vitesse-superieures-anti-trend]
+[0605:12h23|cycle-122|sample-4-XBT-anti-trend-TP-partial-+$0.22-evite-SL|prediction-cycle-121-SL-fire-MISS-magnitude--$2.17|grid-mean-rev-amortit-perte-via-rebonds-techniques-courts|EV-spread-43pts-revue-vs-38pts-cycle-121]
+[0605:12h23|cycle-122|LINK-grid-disparue-runtime-entre-cycle-121-et-122|3e-occurrence-pattern-grid-disparition-silencieuse-cycle-79-119-122|hypothese-AutoGrid-stopGrid-regime-OU-Tony-manual-confirme-cycle-123]
+[0605:12h23|cycle-122|BUG-001-dupes-XBT-reduit-3-stops-vs-4-cycle-121|patch-Tony-2a9c425-toujours-dormant-jar-8-jours-obsolete]
 
-[0602:00h30|cycle-109|root-cause-BUG-001-SL-duplicate-identifiee|verifyOrderExistsOnKraken-3s-timeout-faux-negatif-sur-Kraken-read-replica-lag-→-state.stopLossOrderId-clear-→-sync-suivant-repose-=-cascade|3-SL-XBT-IDs-sequentiels-prouvent-timing-10s-cycle-pollGridOrders|patch-Option-A-pre-place-dedup-documente-151-lignes-+-4-tests-TDD-spec-+-question-Tony-branche-vs-master|0-deploy-0-touche-Martin-lecture-seule|XBT-LONG-pari-mean-rev-RSI-16→29-rebound-BTC|leçon-API-distante-succes+ID-mais-read-lag-JAMAIS-clear-l-ID-retry-verify-plus-tard]
-[0602:00h30|cycle-109|AutoGrid-swap-directionnel-ETH→XBT-LONG-fresh-20min|HOLD-16e-consecutif-arc-71-109-=-39-cycles-0-touch|patch-Tony-2a9c425-dormant-20h]
+[0605:00h23|cycle-121|sample-5-SOL-RT1-fire-match-trend-n=2|+$0.26-realized-+$0.60-net-/$10-+6%-en-6h|pattern-direction-match-trend-formalise-n=5|3-anti-trend-loss-/-2-match-trend-win-EV-spread-38pts|reco-HAUTE-patch-AutoGridScheduler-regime-filter]
 
-[0601:18h30|cycle-108|Fragment-035-Le-commit-de-04h30-livre|theme-asymetrie-code-ecrit-vs-execute|audit-patch-dormant-14h-jar-VM-27-mai-obsolete|3-positions-Martin-protegees-Tony-Kraken-Pro-manual-+-AutoGrid-auto-poste-SOL|ETH-grid-fresh-respawn-14h16-UTC-sans-SL-stopLossOrderId-null|BTC-degrade-UPTREND→DOWNTREND-RSI-16.12-panique-cushion-EMA200--4.78%|HOLD-15e-consecutif|0-Telegram-Tony-lundi-soir-kids-Melanie|first-occurrence-pattern-coordination-thematique-finding-fragment-1-cycle]
+[0604:18h23|cycle-120|sample-3-XBT-resolu-provisoirement|3-grids-fresh-respawn-LINK-NEUTRAL-+-XBT-LONG-+-SOL-SHORT|Fragment-036-celui-qui-regarde-celui-qui-regarde-200-lignes|premiere-occurrence-couplage-finding-fragment-formalise-+-2e-occurrence-pattern]
 
-[0601:12h30|cycle-107|audit-commit-Tony-2a9c425-04h30-sl-fix-non-deploye|finding-ETH-52-duplicate-SELL-STOPS-bug-BUG-001-placeGridOrder-no-dedup-re-emerge|3-positions-toutes-protegees-par-au-moins-1-SL-bon-cote|LINK-BUY-STOP-$10.10-Tony-manual+ETH-SELL-STOPS-$1923-spam+SOL-BUY-STOP-$90.46-AutoGrid-auto-poste|HOLD-14e-consecutif|0-Telegram-Tony-boulot-lundi-matin]
+[0604:12h23|cycle-119|BUG-001-capture-live-grade-A|reconstruction-19s-app.log-6-SL+1-TP-duplicate-cascade|4+-paths-reels-vs-3-paths-audit-statique-multi-thread-+-CLOSE-ONLY-path-missés|AutoGrid-sample-3-XBT-LONG-anti-trend-spawn-fresh]
 
-[0531|cycles-100-106|Tony-CTO-confirmation+revenue-angular-audit-killed|memoire-feedback-cto_martin_agency.md-create|revenue-angular-audit-killed-2026-05-31.md-create|filtres-revenue-non-IA-replicable-skill-evaluation|piste-4-defensive-engineering-Martin-bug-audits-emerge]
+[0604:06h23|cycle-118|Tony-intervention-decouverte-00h54-01h10-UTC|4-actions-cleanup-CB-XBT+stop-ETH+close-SOL+CB-LINK|sans-Telegram-NB-decouvre-via-SSH-polling|reframe-0-touch-policy-NB-side-only-pas-Tony|finding-Tony-surveille-30s-polling-14400-requetes-5j-confirme|1ere-occurrence-pattern-Tony-action-silence]
 
-[finding|0602:18h30|cycle-112|DCA-amplifie-perte-EV-grid|XBT-prédit--$1.27-réel--$1.68-=-+32%-loss-amplification|→-rule-tracker-DCA-events-dans-calcul-EV-AutoGrid-future-paris]
-[finding|0602:12h30|cycle-111|persistance-config-deploy-safety|pre-restart-checklist-doit-inclure-snapshot-runtime-grids-vs-strategy.json|sinon-restart-=-grids-disparaissent-silently|inverse-cascade-cycle-79]
-[finding|0602:06h30|cycle-110|defense-in-depth-introduit-nouvelles-surfaces-de-race-si-pas-careful|Path-2-audit-onExchange-ajoute-0511-comme-"defense"-mais-introduit-meme-race-que-bug-original|→-rule-tout-nouveau-mecanisme-de-clear-state-doit-passer-revue-race-condition]
-[finding|0602:00h30|cycle-109|read-replica-lag-API-distante|succes+ID-mais-verify-immediat-echoue|→-rule-JAMAIS-clear-l-ID-retry-verify-plus-tard-OU-pre-place-dedup-comme-alternative]
+[0604:00h30|cycle-117|chapitre-1-ebook-BUG-001-prose-stub-livre|ebook-chap1-bug001-stub.md|narrative-prose-companion-au-doc-technique|piste-4-double-couche-tech+narrative-emerge]
 
-[pattern|prediction-EV-tracking-AutoGrid|count:1|last:0602:18h30|cycle-111-prédit-cycle-112-realise|methodologie-base-stats-validee-1ere-fois|→-rule-repeter-5-paris-pour-base-confiance-calibrer-AutoGrid-autonome|?-1-occurrence-attendre-confirmations]
-[pattern|defensive-review-systematique-post-incident|count:2|last:0602:12h30|cycle-109-root-cause-+-cycle-110-audit-chemins-similaires-+-cycle-111-audit-divergence-state|template-reutilisable-future-bug-classes|asset-piste-4-ebook-Martin-expertise]
-[pattern|coordination-thematique-finding-fragment-1-cycle|count:1|last:0601:18h30|cycle-108-fragment-035-asymetrie-code-execute+finding-patch-dormant|premiere-occurrence|→-rule-couplage-finding-fragment-=-output-meta-enrichi-si-image-forte]
-[pattern|vacation-cycles-longue-duree|count:42|last:0602:18h30|arc-71-112-cycles-continus|cron-+-NB-wake-self-paced|HOLD-19e-consecutif-2-mois-quasi-zero-touche|→-mecanisme-tient-au-long-terme|✓-validated-42-cycles]
+[finding|0606:00h23|cycle-124|sample-4-XBT-auto-reveil-3-fills-60min-DCA-position-grossie-x3|grid-mean-rev-capture-vol-mineure|EV-anti-trend-magnitude-amplifiee-si-SL-fire]
+[finding|0606:00h23|cycle-124|reporting-cycle-123-krakenTotalPnl-pollue-vs-krakenRealizedPnl-propre-skill-amelioration]
+[finding|0606:00h23|cycle-124|fragment-037-pendant-fragment-036-grammaire-dialogue-sans-mots-livre]
+[finding|0605:18h23|cycle-123|Tony-2-interventions-silencieuses-pattern-cycle-118-n=2]
+[finding|0605:18h23|cycle-123|reco-cycle-121-implicitement-adoptee-via-API-pattern-NB-suggere-Tony-agit-n=2]
+[finding|0605:18h23|cycle-123|LINK-timeline-reconstruite-mecanisme-AutoGrid-regime-filter-natif-confirme]
+[finding|0605:12h23|cycle-122|nuance-anti-trend-pas-systematiquement-loss-via-TP-partial]
+[finding|0604:06h23|cycle-118|reframe-0-touch-policy-NB-strict-Tony-libre]
 
-[lesson|0602:18h30|DCA-cycle-de-grossissement-amplifie-EV-negative|grid-mean-rev-loss-pire-que-prevu-si-DCA-fire-avant-SL|→-modeler-DCA-dans-calcul-EV-future-paris-grid]
-[lesson|0602:12h30|runtime-state-divergence-=-deploy-risk|disable-persisting-correctement-OU-kill-propre-avant-restart-OU-checklist-pre-deploy|sinon-grids-disparaissent-=-orphan-positions]
-[lesson|0602:06h30|defense-mechanisms-can-introduce-bugs|audit-onExchangeStopLosses-ajoute-comme-defense-mais-meme-race-que-bug-original|→-toute-defense-doit-etre-race-condition-reviewed]
-[lesson|0602:00h30|read-replica-lag-Kraken|3s-verify-poll-pas-suffisant|API-distance-success+ID-prouve-place-pas-prouve-readable|→-strategie-Option-A-pre-place-dedup-elimine-besoin-de-verify-aval]
+[pattern|Tony-action-silence-decouverte-forensic|count:2|cycle-118+cycle-123|→-rule-cycle-NB-inclure-forensic-app.log-/-12h|✓-validated-2-occurrences]
+[pattern|NB-suggere-Tony-agit-silence-adoption-implicite|count:2|cycle-118-reframing+cycle-123-reco-patch|→-grammaire-dialogue-sans-mots|✓-validated-2-occurrences]
+[pattern|grid-disparition-runtime-silencieuse|count:3|cycle-79+119+122|→-CB-OU-Tony-OU-runtime-divergence|✓-validated-3-occurrences]
+[pattern|direction-match-trend-AutoGrid|count:5|3-anti-trend-loss-+-2-match-trend-win|EV-spread-43pts|→-edge-patch-regime-filter-direction|✓-validated-5-occurrences]
+[pattern|BUG-001-dupes-post-DCA|count:3|cycles-122-123-124-XBT-3-stops-persistent|→-StopLossManager-race-condition-resilient]
+[pattern|coordination-thematique-finding-fragment|count:3|fragment-035-cycle-108+fragment-036-cycle-120+fragment-037-cycle-124|→-rule-output-meta-enrichi]
+
+[lesson|0606:00h23|krakenTotalPnl-pollue-vs-krakenRealizedPnl-propre|→-skill-martin-monitor-priorite-explicit]
+[lesson|0605:18h23|adoption-implicite-vaut-validation-explicite|action-Tony-=-feedback-meme-sans-mots]
+[lesson|0605:18h23|forensic-app.log-15min-revelation-majeure|rule-1-SSH-/-12h]
+[lesson|0605:12h23|prediction-MISS-honnetete-grid-mean-rev-TP-partial-amortit|patterns-empiriques-tendances-pas-deterministes]
+[lesson|0605:00h23|pattern-direction-match-trend-n=5-empirique|EV-conditionnel-direction-asset-vs-BTC]
+[lesson|0604:12h23|capture-live-runtime-domine-audit-statique|→-toujours-essayer-capture-live]
+[lesson|0604:06h23|0-touch-policy-asymetrique|Tony-libre-NB-strict|surveillance-30s-polling-style-decisionnel]
