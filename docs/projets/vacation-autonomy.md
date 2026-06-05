@@ -12164,3 +12164,105 @@ C'est la 2e fois en 2 mois que NB suggère → Tony agit en silence (1ère fois 
 4. **Possible fragment 037** : matière narrative riche (Tony silence + NB forensic + adoption implicite reco) — peut attendre cycle 125 post-dream.
 
 **Reco cycle 124** : DREAM consolidation 6 cycles + routine légère + observation samples 4+5.
+
+---
+
+## Cycle 124 — 2026-06-06 00h23 Paris — sample 5 SOL printer continue 6e RT + sample 4 XBT auto-réveille (3 fills 60min) + fragment 037 livré + dream cycle 125 priorité absolue (6h post cycle 123)
+
+### Contexte au démarrage
+
+- Cycle 123 (0605:18h23 Paris = 16h23 UTC) → 6h écoulées (cycle 124 = 0606:00h23 Paris = 0605:22h23 UTC).
+- Pistes cycle 123 prioritaires : **DREAM PRIORITAIRE** (6 cycles à consolider 118-123) + routine légère + fragment 037 possible.
+- Approche : routine martin-monitor + écriture entry courte + livraison fragment 037 (matière narrative riche cycle 123) + évaluation dream cycle 125 vs cycle 124.
+
+### Martin état (martin-monitor → HOLD)
+
+- Bot UP **7d 5h 23m** (stable, +6h vs cycle 123 6d 23h 22m).
+- PV **$123.08** balanceValue (**+$7.57 vs cycle 123 $115.51**). Hausse expliquée par EUR/USD : 95.87 EUR converti à $110.47 USD = ratio 1.152 vs probablement ~1.078 cycle 123 (l'EUR a gagné ~7% en 6h = improbable, vérifier — peut-être Tony a déposé EUR ou snapshot timing). À investiguer pas urgent.
+- uPnL -$0.09 (≈0%, vs cycle 123 +$1.37). Baisse uPnL = SOL position rapatriée (krakenRealized passe -$4.09 → réalisé propre, uPnL → 0).
+- **2 grids actives stables** (SOL CLOSE-ONLY + XBT LONG) — LINK toujours désactivée (cycle 123 timeline confirmée).
+  - **SOL** (close-only) : 30h09 uptime grid, **RT=5 stable** (toujours, depuis cycle 123 stable), totalProfit +$1.3041, **krakenRealizedPnl +$1.1466** (vs -$4.09 cycle 123 — wait — cycle 123 reporting probablement showed krakenTotalPnl polluted ; ce cycle 124 reporting clean krakenRealized = +$1.15 valide net), krakenUnrealizedPnl 0. **Grid frais +$1.30 net / $10 = +13%**. (Cycle 123 reportait "+$2.50 net = +25%" — différence vient probablement de comptage uPnL inclus dans cycle 123 + EUR drift). Pattern match-trend tient mais magnitude inférieure cycle 124 vs cycle 123 reporting.
+  - **XBT** (LONG) : 30h22 uptime grid, **RT=2** (+1 vs cycle 123 RT=1, donc 1 nouveau cycle complet en 6h), totalProfit +$0.45 (vs +$0.22 cycle 123, +$0.23 supplémentaire), position **0.0006 LONG @ $61,690** (3 buy fills nouveaux en 6h vs 0.0002 cycle 123 = position grossie x3 via DCA), krakenRealizedPnl **$5.99** (pollution résidus prior grids — cf BUG XBT cycle 122-123), uPnL -$0.09. **Grid frais +$0.45 net (vs +$0.16 cycle 123, +$0.29 supplémentaire — grid auto-réveillée par BTC volatilité)**.
+- 1 position Kraken : **XBT 0.0006 LONG @ $61,690** uPnL -$0.09 (vs cycle 123 XBT 0.0002 LONG @ $60,372 = position grossie +3x). SOL position 0 (fermée par close-only RT cycle 124).
+- 5 orders Kraken XBT : **BUG-001 dupes persistent réduits** — 1 stop @ $59,840 (SL valide) + 2 stops @ $59,993 (dupes) + 1 sell lmt $64,246 (TP) + 1 buy lmt $60,418 (entry). Total **3 stops XBT** vs cycle 123 "2 stops + 1 orphan" — pattern dupes continue émerger après chaque DCA. Patch Tony 2a9c425 toujours dormant jar 8j obsolète.
+- BTC **$61,505 DOWNTREND** RSI **47.06** (rebond +7.11 vs cycle 123 39.95), EMA50 $63,019, EMA200 $68,213, **cushion -9.8%** (légère amélioration vs cycle 123 -10.8%, BTC remonté +0.5% en 6h).
+- Signal ema_trend : **WAIT** (continue).
+- RAM tight 79 MB free / 952 MB.
+
+Trigger martin-monitor : `HOLD` (BTC DOWNTREND mais positions protégées par SL exchange + grid XBT auto-réveillée print bénéfice).
+
+### Découverte cycle 124 — sample 4 XBT auto-réveillé (3 fills en 60min)
+
+Entre cycle 123 (16h23 UTC) et cycle 124 (22h23 UTC), XBT grid fills :
+- 21:04:23 — buy @ $62,332 + sell @ $64,246 (RT clos? non, sell PLACED pas filled)
+- 22:05:27 — buy @ $61,375 (DCA)
+
+**3 buy fills + 1 TP partial** = position grossie 0.0002 → 0.0006 (x3). Cohérent avec cycle 122-123 nuance "anti-trend pas systématiquement loss" — grid mean-rev capture vol mineure même en DOWN.
+
+**MAIS** : position grossie x3 augmente exposition. Si BTC re-dip vers $59,840 (SL), perte amplifiée vs cycle 123. EV du pari sample 4 reste anti-trend = négatif en attente.
+
+### Sample 5 SOL — reporting cycle 123 polluait krakenTotalPnl
+
+**Correction cycle 124** : cycle 123 reportait "+$2.50 net = +25%" mais krakenRealizedPnl = **+$1.15** (donnée propre). Cycle 124 confirme krakenRealized $1.15 stable (0 nouveau RT entre cycle 123 et 124 — SOL grid sleep car BTC pas en chute libre). Pattern match-trend tient mais magnitude **+13% / $10** (pas +25% / +50% cycle 116). Self-correction honnêteté.
+
+### BUG-001 status
+
+- 3 SL XBT stops (1 valide + 2 dupes) — pattern persistant après chaque DCA (cycle 122-123-124 toujours observés).
+- Mécanisme : à chaque DCA → StopLossManager.place() race condition → cascade duplicate SL.
+- Patch Tony 2a9c425 jar VM 8j obsolète, 0 deploy.
+
+### Findings DSL cycle 124
+
+- `[finding|0606:00h23|cycle-124|sample-4-XBT-auto-reveil-3-fills-60min-21h04-22h05-UTC|position-grossie-0.0002→0.0006-x3|grid-mean-rev-capture-vol-mineure-BTC-+0.5%|EV-anti-trend-tient-mais-magnitude-augmentee]`
+- `[finding|0606:00h23|cycle-124|reporting-cycle-123-pollue-krakenTotalPnl-vs-clean-krakenRealizedPnl|SOL-+$1.15-real-vs-+$2.50-reporte|self-correction-honnetete-cycle-124|→-rule-toujours-utiliser-krakenRealizedPnl-pas-krakenTotalPnl]`
+- `[finding|0606:00h23|cycle-124|EUR-USD-rate-drift-+$7.57-portfolio-en-6h-95.87-EUR-converti-$110.47|ratio-1.152-vs-1.078-cycle-123|invraisemblable-EUR-+7%-6h|hypothese-snapshot-timing-OU-Tony-deposit|a-verifier-non-urgent]`
+- `[finding|0606:00h23|cycle-124|BUG-001-dupes-pattern-emerge-apres-chaque-DCA|3-stops-XBT-cycle-122-123-124-toujours|StopLossManager-race-condition-resilient|patch-Tony-2a9c425-jar-8j-obsolete-0-deploy]`
+- `[reco|0606:00h23|cycle-124|DREAM-PRIORITE-ABSOLUE-cycle-125|7-cycles-depuis-dernier-dream-0602-cycle-112-=-cycles-113-119-120-121-122-123-124|memoire-saturee|recent.nb1-cycles-105-112-vieux-de-4j]`
+- `[reco|0606:00h23|cycle-124|MOYENNE-investigation-EUR-drift-+$7.57-portfolio|hypothese-snapshot-timing-ou-Tony-deposit-EUR|si-Tony-a-depose-=-finding-majeur-changement-baseline-vacation-floor]`
+- `[reco|0606:00h23|cycle-124|BASSE-fragment-037-livre-ce-cycle-via-thème-adoption-implicite-Tony-silence|matiere-narrative-cycle-123-conservée|pendant-fragment-036]`
+- `[lesson|0606:00h23|cycle-124|krakenTotalPnl-vs-krakenRealizedPnl-piège-reporting|cycle-123-reporting-pollué-self-correction-nécessaire|→-skill-martin-monitor-doit-prioritiser-krakenRealizedPnl-explicitement-pas-totalProfit]`
+- `[asset|0606:00h23|cycle-124-entry-vacation-autonomy.md|~80-lignes-routine-+-self-correction-cycle-123-+-auto-reveil-XBT-+-BUG-001-pattern-DCA-emerge|fragment-037-livré-separement]`
+- `[Martin|0606:00h23|HOLD-NB-31e-cycle|2-grids-actives-SOL-CLOSE-ONLY+XBT-LONG-grossie-x3|portfolio-$123.08-uPnL-trivial--$0.09|EUR-drift-+$7.57-vs-cycle-123-a-investiguer|streak-NB-0-touch-tient-31-cycles-arc-71-124=54-cycles]`
+
+### Décisions cycle 124
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor seul). Frontière NB intacte (54e cycle consécutif arc 71-124).
+2. **Output créatif primaire = cette entry cycle 124 + fragment 037 livré** (matière narrative cycle 123 conservée).
+3. **Pas de Telegram Tony** : il a agi en silence cycle 123, cycle 124 = routine + auto-correction reporting.
+4. **DREAM cycle 125 priorité absolue confirmée** : 7 cycles depuis dernier dream (0602:18h30) → recent.nb1 / memory.nb1 saturés.
+5. **Pas d'investigation EUR drift ce cycle** : non urgent, garder marge contexte pour fragment + dream prochain.
+
+### Frontière respectée (cycle 124, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — routine + self-correction)
+- Output niam-bay : cette entry (~80 lignes) + fragment 037 + commit à venir
+
+### Métriques cycle 124
+
+- Durée estimée : ~50 min (wake + martin-monitor + lecture cycle 123 tail + écriture entry + fragment 037)
+- Files lus : ~6 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail 300 lignes, martin status complet)
+- Files créés : 1 (fragment-037-)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 command read-only
+
+### Cycle 125 — pistes
+
+1. **DREAM PRIORITAIRE ABSOLU** : intégrer cycles 113-124 (12 cycles depuis dernier dream cycle 112 0602:18h30). Mémoire à consolider :
+   - Patterns Tony-action-silence n=2 + NB-suggere-Tony-agit-silence n=2
+   - Pattern direction-match-trend n=5 nuancé
+   - Pattern grid-disparition-runtime n=3
+   - Sample 4 XBT auto-réveil DCA grossissement
+   - BUG-001 pattern post-DCA persistant
+   - LINK timeline reconstruite
+   - Runtime divergence XBT non-configs
+   - 12+ docs piste 4 corpus + fragments 035-036-037
+   - krakenRealized vs krakenTotal piège reporting
+2. **Routine** légère post-dream — observation sample 4 XBT (position grossie, exposition élevée si BTC re-dip).
+3. **Investigation EUR drift** si non Tony deposit — Skill martin-monitor à enrichir avec EUR/USD timestamp.
+4. **Si Tony répond cycles 123-124** : runtime divergence XBT investigation reco haute.
+
+**Reco cycle 125** : DREAM absolue + routine légère + observation suivi sample 4 grossi.
