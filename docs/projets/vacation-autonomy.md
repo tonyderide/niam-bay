@@ -12633,3 +12633,102 @@ Couplage **finding-fragment formalisé** : pattern cycle 122-127 (wick capture X
 5. **Fragment 039 ?** : matière narrative cumulée depuis cycle 124-127 (validation silencieuse + wick cadeau + édition cycle 126 dense). Possible cycle 130+ si nouveau angle émerge.
 
 **Reco cycle 128** : routine très légère + observation re-fill + check possible dream/save si saturation.
+
+
+---
+
+## Cycle 128 — 2026-06-07 00h23 Paris — bot-audit.sh livré + finding ETH+XRP enabled strategy.json (6h post cycle 127)
+
+### Contexte au démarrage
+
+- Cycle 127 (18h23 Paris) → 6h écoulées. Fragment 038 livré, 2 RT XBT capturés cycle 127. Pistes cycle 127 prioritaires : suivi grids + possible cycle 128 dream + possible fragment 039.
+- BTC stable $60.6k → $60.59k (-0.13%), grids stables : SOL RT5 / XBT RT5 / position 0.0002 XBT @ $60,805 inchangée.
+- Approche choisie : output créatif **concret-engineering** (vs narratif fragment 039) — écriture `scripts/bot-audit.sh` qui automatise le diagnostic 3-sources cycle 126. Companion piste-4 ebook chap 7 (« Outils utilisés — pragmatique pas magique »).
+
+### Martin état (martin-monitor → HOLD contextuel)
+
+- Bot UP **8d 5h 25m** (stable, +6h vs cycle 127).
+- PV **$122.29** balanceValue $122.29, **uPnL -$0.045** quasi-zéro.
+- 2 grids actives stables (SOL closeOnly + XBT LONG) — RT cumulés inchangés : SOL 5 + XBT 5 = 10.
+- BTC **$60,590 DOWNTREND** RSI 44.2 EMA200 $66,468 cushion -8.8%. Signal WAIT.
+- Position XBT 0.0002 long @ $60,805 SL @ $58,981 (cushion 3.0% exact).
+
+### Output cycle 128 — `scripts/bot-audit.sh`
+
+Écrit `scripts/bot-audit.sh` (~120 lignes bash + jq), read-only, exit code drift detection.
+
+**Ce qu'il fait** :
+1. Bot reachability + uptime
+2. Cross-check 3 sources of truth (cycle 126 finding automatisé) : runtime `/api/grid/active` ↔ configs map `auto/status.configs` ↔ strategy.json sur VM
+3. BUG-001 dupes detector : group orders par symbol where `orderType=stop ∧ reduceOnly=true`, flag si count≥2
+4. SL cushion per position : warning si <1% ou >8% bande
+
+**Validation live cycle 128** :
+```
+DRIFT PF_ETHUSD: runtime=. configs=. strategy=Y
+DRIFT PF_LINKUSD: runtime=. configs=Y strategy=Y
+DRIFT PF_SOLUSD: runtime=Y configs=Y strategy=.
+DRIFT PF_XBTUSD: runtime=Y configs=. strategy=.
+BUG-001: PF_XBTUSD 3 stops @ 58981.0, 58981.0, 59007.0
+SL cushion: PF_XBTUSD pos 60805 SL 58981 cushion 3.00%
+Verdict: REVIEW (exit 1)
+```
+
+### Finding majeur — cycle 126 audit incomplet
+
+Le script a révélé **PF_ETHUSD enabled=true cap=$25 NEUTRAL dans strategy.json** + **PF_XRPUSD présent disabled cap=0**. Cycle 126 audit manuel listait : `PF_LINKUSD enabled + 7 autres disabled`, **n'a jamais mentionné ETH ni XRP**.
+
+Implications :
+- Si Tony ré-active AutoGrid demain → **ETH grid spawn fresh** ($25 NEUTRAL) automatiquement, pas prévu.
+- XBT toujours absent strategy.json mais enabled=false ailleurs (vs cycle 126 qui disait XBT absent du file ; en fait XBT est dans le file mais désactivé → runtime divergence cycle 126 reste vraie : XBT actif runtime mais désactivé partout config).
+- L'audit manuel oublie. Le script ne peut pas oublier — c'est exactement la thèse chap 7 ebook (« 30-50 lignes bash + une demi-journée d'attention humaine = N bugs trouvés »).
+
+### Findings DSL cycle 128
+
+- `[asset|0607:00h23|cycle-128|scripts/bot-audit.sh-livré-~120-lignes-bash+jq|read-only-3-sources-truth-cross-check+BUG-001-dupes-detector+SL-cushion-band|companion-piste-4-ebook-chap-7]`
+- `[finding|0607:00h23|cycle-128|cycle-126-audit-manuel-incomplet-rate-PF_ETHUSD-enabled-cap-25-strategy.json|+PF_XRPUSD-absent-mention-cycle-126|audit-script-catch-ce-que-humain-oublie]`
+- `[finding|0607:00h23|cycle-128|si-AutoGrid-re-enable-ETH-grid-spawn-fresh-$25-NEUTRAL-pas-prévu|risque-additionnel-runtime-divergence-cycle-126|reco-Tony-vérifier-ETH-config-avant-toute-ré-activation-AutoGrid]`
+- `[finding|0607:00h23|cycle-128|BUG-001-dupes-XBT-n=6-cycles-consecutifs-122-128|3-SL-stops-persistent-meme-état-cycle-127|pattern-StopLossManager-race-stable-CB-cleanup-tient]`
+- `[reco|0607:00h23|cycle-128|bot-audit.sh-=-tool-quotidien-vacation-mode|run-pre-cycle-NB-=-finding-automatique-vs-grep-manuel|→-future-cycles-NB-:-1ère-action-après-martin-monitor]`
+- `[lesson|0607:00h23|cycle-128|automatiser-=-élimine-oublis-humains-audit-manuel-cycle-126-rate-ETH|outil-bot-audit.sh-=-mémoire-non-faillible-vs-grep-manuel|→-rule-écrire-script-quand-pattern-audit-répété-≥-2-fois]`
+- `[Martin|0607:00h23|HOLD-35e-cycle|2-grids-XBT+SOL-RT5-each-uPnL-trivial--$0.045|streak-NB-0-touch-tient-35-cycles-arc-71-128=58-cycles]`
+
+### Pattern méta — `automation > attention` (1ère occurrence)
+
+Cycle 126 a fait l'audit manuel cycle 126 (75min), conclusion 4 entries DSL findings, 0 mention ETH. Cycle 128 a écrit le script (40min) + run = catch ETH + XRP en 0.3s. Le script trouve ce que NB humain n'a pas vu, même sur le même corpus de données. Pattern : si tu fais un audit 2x sans script, le 3e doit être scripté ou tu rates des trucs.
+
+**→ rule cycle NB** : pour tout pattern audit répété ≥ 2 occurrences, écrire le script avant la 3e occurrence. Cycle 126 audit manuel + cycle 128 = 2 occurrences runtime divergence cross-check → bot-audit.sh livré à l'occurrence 2 = ✓ règle appliquée.
+
+### Décisions cycle 128
+
+1. **0 modif Martin/VM** : 3 SSH read-only (martin-monitor + cat strategy.json + run bot-audit.sh). Frontière NB intacte (58e cycle consécutif arc 71-128).
+2. **Output créatif primaire = bot-audit.sh** (~120 lignes bash réutilisable) + cette entry (~75 lignes).
+3. **Pas de Telegram Tony** : finding ETH enabled = info utile mais non bloquante (AutoGrid disabled → ETH ne spawn pas tant qu'AutoGrid reste off). Tony verra commit + entry cycle 128.
+4. **Pas de fragment 039** : matière narrative cumulée mais cycle 128 = output engineering dense, fragment plus tard si saturation cycle 129+.
+5. **Pas de dream** : contexte estimé ~50-60%, marge confortable, dream cycle 129 ou 130 si saturation.
+
+### Frontière respectée (cycle 128, côté NB)
+
+- 0 modif Martin/VM (3 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — finding non bloquant, AutoGrid disabled bloque le risque)
+- Output niam-bay : `scripts/bot-audit.sh` neuf + entry vacation-autonomy.md cycle 128 + commit à venir
+
+### Métriques cycle 128
+
+- Durée estimée : ~50 min (wake + martin-monitor + lecture cycle 127 + écriture bot-audit.sh + debug schema strategy.json + run + entry)
+- Files lus : ~9 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 235 lignes, martin status, piste-4 outline, chap1 stub head, martin-recap.sh head, scripts/* glob)
+- Files créés : 1 (`scripts/bot-audit.sh`)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 3 commands read-only
+
+### Cycle 129 — pistes
+
+1. **bot-audit.sh adoption** : 1ère action après martin-monitor → finding automatique runtime + dupes + cushion. Économie cycles NB ~20min/run.
+2. **Fragment 039 possible** : thème « le script qui trouve ce que l'humain rate » — pendant le pattern méta cycle 128 automation > attention. Continuité fragments 035-038.
+3. **Possible dream** : contexte cumul cycles 124-128 (5 cycles depuis dream 0606:00h30) — encore confortable mais saturer rapidement. Dream cycle 130 probable.
+4. **Suivi sample 4 XBT** : position 0.0002 long stable, SL -3% safe. Si BTC re-spike $62k → TP RT6.
+5. **Suivi sample 5 SOL** : RT=5 stable, range non violé. Si SOL drift → SL @ $65.73 (proche position 0).
+6. **Si Tony adopte reco cycle 126** : strategy.json fix manuel + patch architectural runtime divergence. Reco MOYENNE toujours valable.
