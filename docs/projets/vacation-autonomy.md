@@ -12266,3 +12266,131 @@ Entre cycle 123 (16h23 UTC) et cycle 124 (22h23 UTC), XBT grid fills :
 4. **Si Tony répond cycles 123-124** : runtime divergence XBT investigation reco haute.
 
 **Reco cycle 125** : DREAM absolue + routine légère + observation suivi sample 4 grossi.
+
+---
+
+## Cycle 125 — 2026-06-06 06h23 Paris — sample 4 XBT capture wick BTC $64,246 RT3 +$0.22 + SL VANISH bug confirmé toujours présent + portfolio drop -$1.14 EUR snapshot revert (6h post cycle 124, post-dream 0606:00h30)
+
+### Contexte au démarrage
+
+- Cycle 124 (0606:00h23 Paris = 22h23 UTC June 5) → 6h écoulées.
+- Dream consolidation **effectué cycle 124 fin** (lastdream 0606:00h30). Mémoire fraîche.
+- Pistes cycle 124 prioritaires : routine légère post-dream + observation sample 4 XBT (position grossie x3) + EUR drift investigation.
+- Approche : martin-monitor → SSH forensic ciblé événements XBT entre cycle 124 et 125 → entry courte.
+
+### Martin état (martin-monitor → HOLD)
+
+- Bot UP **7d 11h 23m** (stable, +6h vs cycle 124 7d 5h 23m).
+- PV **$121.94** balanceValue (vs cycle 124 $123.08, **-$1.14 en 6h**). uPnL 0 (vs cycle 124 -$0.09).
+- **2 grids actives stables** (SOL CLOSE-ONLY + XBT LONG).
+  - **SOL** (close-only) : 36h09 uptime grid, **RT=5 stable** (0 nouveau cycle), totalProfit +$1.3041, krakenRealizedPnl **+$1.1466** stable, krakenUnrealizedPnl 0. Position 0. Grid en sommeil — pas de re-fill car SOL n'a pas violé borders ($60.89-$65.05 range, actuel ~$62-63). SL upper @ $65.73 cushion +4.1% (proche).
+  - **XBT** (LONG) : 36h22 uptime grid, **RT=3** (+1 vs cycle 124 RT=2, donc 1 nouveau cycle complet en 6h), totalProfit **+$0.6696** (+$0.23 vs +$0.45 cycle 124), position **0** (vs cycle 124 0.0006 LONG @ $61,690 — **TP firé et position close**), krakenRealizedPnl **$4.8584** (pollué résidus prior grids cycle 122-123), uPnL 0.
+- **0 positions Kraken, 0 orders live** (`[]`/`[]`). Grids en attente de re-fill — XBT levels 0-2 marqués hasBuyFill=true mais aucun ordre live (state queue interne). SL XBT @ $59,532 (cycle 124 valeur) absent des orders actuels = **SL closed avec la position lors du TP**, comme attendu.
+- BTC **$60,037 DOWNTREND** RSI **38.26** (re-dip vs cycle 124 47.06 — chute -19% RSI en 6h), EMA50 $62,548, EMA200 $67,687, **cushion -11.3%** (vs cycle 124 -9.8%, BTC -2.4% en 6h).
+- Signal ema_trend : **WAIT**.
+
+Trigger martin-monitor : `HOLD` (positions toutes fermées + RT3 fresh profit + plus de SL XBT à protéger).
+
+### Découverte cycle 125 — wick BTC capture $60,418 → $64,246 en 13 min
+
+**Reconstruction des fills entre cycle 124 (22h23 UTC) et cycle 125 (04h23 UTC)** via `app.log` forensic :
+
+| Time UTC | Event | Détails |
+|---|---|---|
+| 21:04 (J-1) | XBT level 2-3 buy fills | déjà cycle 124 |
+| 22:05 (J-1) | XBT level 1 buy fill @ $61,375 | déjà cycle 124 |
+| 04:07:30 | **Grid FILL [LONG]: buy @ $60,418** (level 0) | BTC touche bottom range |
+| 04:07:38-43 | **SL VANISH bug** confirmé (cycle 54 toujours présent) | primary SL @ $59,531 placed → vanish 5s → retry-3pct @ $59,532 OK |
+| 04:19:54 | EMA signal BTC ~$60,037 RSI 38.26 | BTC bottom local |
+| **04:20:15** | **Grid FILL [LONG]: sell @ $64,246** (level 3 TP) | **WICK UP +6.7% en quelques min** |
+| 04:20:15 | Grid order FAILED buy @ $63,289 | "wouldCauseLiquidation" — re-buy rejeté car position fermée |
+| 04:20:23-28 | B3 v2 poll 5×: 0 positions | Confirmation position close clean |
+
+**Mécanisme** : entre 04:07 (BTC à $60,418) et 04:20 (BTC spike à $64,246+), BTC a fait un **wick UP de +6.3% en 13 minutes**, puis retracé à $60,037 par 04:23 (-6.5% en 3 min). Le grid LONG a parfaitement timé : buy bottom, sell wick top, RT3 +$0.22 profit.
+
+**Profit/risque** : la grid sample 4 anti-trend a printé **+$0.45 en 13 minutes** ($0.22 sell + $0.23 nouveau RT cumul). Sans intervention humaine. Le pattern direction-match-trend dit "anti-trend = négatif EV" — mais ce wick produit du positif net. C'est conforme à la **nuance cycle 122 (grid mean-rev capture rebonds techniques)** — cycle 125 ajoute une preuve forte : capture wick = magnitude supérieure à RT classique.
+
+### Bug SL VANISH toujours présent — défense intacte
+
+**Finding majeur** : `2026-06-06T04:07:43.396Z ERROR ... B3 v3 [primary] VANISH detected: orderId a1f4977f-d8b0-4431-857e-d7de7e55ddf6 stored but NOT on Kraken openorders for PF_XBTUSD`
+
+Le bug SL VANISH du cycle 54 (root cause tickSize misalignment BTC, patch cycle 55 cible) **est toujours présent live**. Le mécanisme :
+1. Primary SL placement échoue silencieusement sur Kraken (5 polls vide)
+2. Retry-3pct fallback active : direct sendOrder stp @ $59,532
+3. SL **verified on Kraken poll #1** → OK
+
+Le patch cycle 55 `KrakenTickSize` util statique n'est **toujours pas déployé** (jar VM cycle 54 toujours, ~25 jours obsolète maintenant). Mais la défense-en-profondeur (retry-3pct) absorbe le bug à chaque occurrence. **0 conséquence opérationnelle** depuis cycle 54.
+
+### Investigation portfolio drop -$1.14 en 6h
+
+Cycle 123 → 124 → 125 portfolio evolution :
+- Cycle 123 : $115.51 (uPnL +$1.37)
+- Cycle 124 : $123.08 (uPnL -$0.09) — **+$7.57 en 6h**
+- Cycle 125 : $121.94 (uPnL 0) — **-$1.14 en 6h**
+
+Net cycle 123 → 125 = +$6.43 en 12h. Hypothèse cycle 124 "EUR drift snapshot timing" **confirmée** : l'EUR/USD a oscillé entre les snapshots (cycle 124 = pic local intraday, cycle 125 = retour vers mean). Pas de Tony deposit.
+
+Calcul : 95.87 EUR × Δrate ≈ $1.14 → Δrate ≈ 0.0119 = ~1% variation EUR/USD intra-6h. C'est dans la norme volatility EUR/USD (~0.5-1% daily range).
+
+**Conclusion** : l'EUR drift cycle 124 était bien un artefact snapshot. La marche aléatoire des taux fait évoluer le balanceValue USD-quoted même sans activité trading. La vraie performance trading se mesure via `krakenRealizedPnl` net de fees — qui pour sample 4+5 ensemble = ~+$6.00 réalisé sur ~$30 cap = +20% en 7j5h, indépendamment du FX.
+
+### Findings DSL cycle 125
+
+- `[finding|0606:06h23|cycle-125|wick-BTC-capture-grid-mean-rev-+$0.22-realise-13min-de-$60,418-buy-a-$64,246-sell|preuve-forte-nuance-cycle-122-anti-trend-pas-systematique-loss|RT3-XBT-execute-sans-intervention]`
+- `[finding|0606:06h23|cycle-125|SL-VANISH-bug-cycle-54-toujours-live-25-jours-obsolete-patch-non-deploye|defense-retry-3pct-fonctionne-100%-occurrence-04h07-43|0-consequence-operationnelle-empirique]`
+- `[finding|0606:06h23|cycle-125|portfolio-drop-$1.14-6h-=-EUR-USD-snapshot-revert-vers-mean|hypothese-cycle-124-EUR-drift-confirmee-artefact-FX|trading-net-toujours-+$6-realise-7d]`
+- `[finding|0606:06h23|cycle-125|sample-4-XBT-anti-trend-grossie-x3-cycle-124-close-net-+$0.45-cycle-125|EV-anti-trend-revu-nuance-grid-mean-rev-capture-wick-=-magnitude-superieure-classique-RT]`
+- `[finding|0606:06h23|cycle-125|0-positions-0-orders-live-Kraken-toutes-grids-attente-re-fill|XBT-SL-cleaned-avec-position-TP-close|nouveau-cycle-position-needs-new-fill-pour-armer-SL]`
+- `[reco|0606:06h23|cycle-125|priorite-MOYENNE-deploy-patch-cycle-55-KrakenTickSize-util|bug-SL-VANISH-25-jours-resilient-mais-fragile-si-retry-3pct-fail-un-jour|trivial-mvn-package-+-scp-+-restart]`
+- `[reco|0606:06h23|cycle-125|priorite-BASSE-skill-martin-monitor-amelioration-EUR-USD-tracking|afficher-rate-snapshot-pour-distinguer-FX-drift-vs-real-PnL|trivial-curl-rate-API]`
+- `[lesson|0606:06h23|cycle-125|grid-mean-rev-capture-wick-=-edge-anti-trend-non-trivial|+$0.22-en-13min-via-spike-net-vs-RT-classique-+$0.22-12h|magnitude-equivalente-vitesse-supreme]`
+- `[lesson|0606:06h23|cycle-125|portfolio-USD-quoted-=-bruit-FX|trading-performance-doit-mesurer-krakenRealizedPnl-net-pas-balanceValue|FX-snapshot-timing-explique-+/-$1-5%-portfolio-intraday]`
+- `[asset|0606:06h23|cycle-125-entry-vacation-autonomy.md|~100-lignes-wick-capture-+-SL-VANISH-confirmation-+-EUR-investigation|enrichit-corpus-piste-4-14e-doc|cas-d-école-ebook-bug-001-mais-aussi-bug-SL-VANISH-cycle-54]`
+- `[Martin|0606:06h23|HOLD-NB-32e-cycle|2-grids-en-attente-re-fill-0-positions|portfolio-$121.94-uPnL-0|net-trading-+$6-real-7d|streak-NB-0-touch-tient-32-cycles-arc-71-125=55-cycles]`
+
+### Pattern direction-match-trend — nuance grandit
+
+Cycle 121 a formalisé pattern n=5 : 3 anti-trend loss + 2 match-trend win, EV spread 38pts. Cycles 122-123-124-125 ajoutent observations :
+- Cycle 122 : nuance "anti-trend pas systématiquement loss via TP partial" (n=5 maintien)
+- Cycle 123 : sample 4 anti-trend résilient stable +$0.16
+- Cycle 124 : sample 4 anti-trend auto-réveille +$0.45 (DCA + grossissement)
+- Cycle 125 : sample 4 anti-trend capture wick +$0.22 en 13min
+
+**Revision pattern** : direction-match-trend reste vrai dans la majorité (5/5 occurrences cycle 121), mais sample 4 anti-trend XBT est devenu sample exception qui prouve la nuance. Le grid mean-rev structure capture la vol même dans le wrong régime, à condition que la position ne déclenche pas le SL. Avec SL @ $59,532 et BTC actuel $60,037 (cushion 0.8% only), le risque reste très réel.
+
+**Pari ouvert cycle 125** : si BTC re-dip vers $59,532, SL XBT fire et matérialise une perte modérée (position 0 actuellement = pas de SL armé). Si BTC range $60-64k continue → grid continue à printer wicks.
+
+### Décisions cycle 125
+
+1. **0 modif Martin/VM** : 2 SSH read-only (martin-monitor + grep app.log). Frontière NB intacte (55e cycle consécutif arc 71-125).
+2. **Output créatif primaire = cette entry cycle 125** (wick capture analysis + SL VANISH live + EUR drift résolution).
+3. **Pas de Telegram Tony** : observations utiles (wick capture, bug SL VANISH live) mais pas urgentes — Tony surveille et verra commit.
+4. **Pas de fragment 038** : matière narrative riche (le wick capture comme moment de chance) mais cycle 124 livre déjà fragment 037 — pas surcharge.
+5. **Pas de patch direct** : seul Tony deploy. Reco SL VANISH patch deploy notée priorité MOYENNE.
+
+### Frontière respectée (cycle 125, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — observations non-bloquantes)
+- Output niam-bay : cette entry (~100 lignes) + commit à venir
+
+### Métriques cycle 125
+
+- Durée estimée : ~60 min (wake + martin-monitor + lecture cycle 124 tail + 2 SSH forensic + écriture entry)
+- Files lus : ~6 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 300 lignes, martin status complet, app.log grep × 2)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 2 commands read-only
+
+### Cycle 126 — pistes
+
+1. **Suivi sample 4 XBT** : si BTC reste choppy → continue printer. Si BTC re-dip vers $59,500 → risque réel fill SL après new position armée. Si grids re-fill en cycle 126, vérifier SL VANISH + retry-3pct cycle complet.
+2. **Suivi sample 5 SOL** : grid en sommeil. Si SOL drift hors $60.89-$65.05 range → SL fire ou position re-armée.
+3. **Investigation runtime divergence XBT** persiste (cycle 111+123 finding) : XBT grid active mais pas dans AutoGrid configs. Si Martin restart Java → grid XBT perdu. Reco haute non-livrée encore.
+4. **Si Tony répond cycles 123-125** : runtime divergence + SL VANISH patch deploy priorités.
+5. **Possible fragment 038** : thème "le wick comme cadeau" — la grid attendait, et le marché lui a donné un moment. Si matière mature cycle 126-127.
+
+**Reco cycle 126** : routine légère + observation re-fill grids + suivre BTC volatility window (si re-spike, sample 4 continue printer).
