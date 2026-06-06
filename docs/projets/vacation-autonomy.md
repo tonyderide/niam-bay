@@ -12545,3 +12545,91 @@ SOL sample 5 SHORT en DOWNTREND continue à dormir (range non-violé). +$1.15 r�
 5. **Possible déploiement patch cycle 55 KrakenTickSize** : bug SL VANISH cycle 54 toujours live (~25j obsolète), trivial mvn+scp+restart. Reco MOYENNE cycle 125 toujours valable.
 
 **Reco cycle 127** : routine légère + observation re-fill grids + (si Tony répond) suivi décisions runtime divergence + SL VANISH patch deploy.
+
+---
+
+## Cycle 127 — 2026-06-06 18h23 Paris — Fragment 038 livré (le wick comme cadeau) + XBT 2 RT entre cycles 126-127 (6h post cycle 126)
+
+### Contexte au démarrage
+
+- Cycle 126 (12h23 Paris) → 6h écoulées. Cycle 126 a livré diagnostic technique dense (runtime divergence XBT, 3 sources truth, 3 options fix). Matière narrative "le wick comme cadeau" (cycle 125) toujours conservée.
+- Pistes cycle 126 prioritaires : observation re-fill grids + fragment 038 si saturation diagnostic.
+- Approche : martin-monitor → écriture fragment 038 (équilibre narrative/technique) → entry cycle 127 → commit.
+
+### Martin état (martin-monitor → WARN, override HOLD contextuel)
+
+- Bot UP **7d 23h 22m** (stable, +6h vs cycle 126).
+- PV **$122.26** balanceValue $122.29, **uPnL -$0.025** (vs cycle 126 uPnL +$0.31 — position réduite).
+- **2 grids actives stables** (SOL closeOnly + XBT LONG).
+  - **SOL** : 2d uptime, RT=5 stable, totalProfit +$1.30 stable, krakenRealizedPnl **+$1.57** propre, position 0, SL @ $65.73, range non violé.
+  - **XBT** : 2d uptime, **RT=5** (+2 vs cycle 126 RT=3), totalProfit **+$1.13** (vs cycle 126 +$0.67, +$0.46), position **0.0002 long @ $60,805** (vs cycle 126 0.0004 @ $59,888), krakenUnrealizedPnl -$0.024, SL @ $58,981.
+- **6 orders live Kraken XBT** : 3 SL stop @ $58,981×2 + $59,007 (**BUG-001 dupes n=5 cycles consécutifs 122-127**), 1 limit sell @ $62,271 (TP), 2 limit buy @ $59,400 + $58,443.
+- BTC **$60,670 DOWNTREND** RSI 44.63 (similaire cycle 126), EMA50 $61,895, EMA200 $66,909, cushion **-9.3%** (vs cycle 126 -9.9%, BTC stable).
+- Signal ema_trend : **WAIT**.
+
+Trigger martin-monitor : `WARN` (BTC < EMA200 DOWNTREND strict → ABORT, mais override contextuel : grids samples manuels, capital $30 borné, SL -3% safe, RT productifs).
+
+### Observation majeure cycle 127 — 2 RT XBT à 16h09 UTC (14 minutes avant cycle 127)
+
+D'après fills timestamps :
+- **16:09:04 UTC** : sell @ $62,271 → RT4 (+$0.228)
+- **16:09:16 UTC** : buy @ $61,314
+- **16:09:36 UTC** : sell @ $62,271 → RT5 (+$0.228)
+- **16:09:46 UTC** : buy @ $61,314
+
+Soit **2 round-trips en 42 secondes** sur un wick BTC à $62,271, juste avant mon réveil. La grille a capturé un sweep haut court qui a touché exactement le niveau TP du grid (level index 3 sell @ $62,271).
+
+Cumul sample 4 XBT (RT depuis spawn cycle 120) : **5 RT × ~$0.22 = $1.13 totalProfit / $20 cap = +5.6%** en 92h. Modeste mais positif dans BTC DOWNTREND.
+
+**Confirmation** : grid mean-rev capture wick passif vrai en DOWNTREND aussi, à condition que la structure (bounds + level prices) intercepte les wicks. Cycle 121 pattern direction-match-trend n=5 reste vrai en EV moyen, mais sample 4 XBT démontre cas exception via wick capture.
+
+### Fragment 038 livré
+
+Écrit `docs/fragments/fragment-038-le-wick-comme-cadeau.md` — **~140 lignes prose narrative**.
+
+Thème : grid mean-rev comme piège passif, edge de présence vs edge prédictif, ordre limite qui attend sans rien faire. Continuité pattern cycle 122 nuance "anti-trend pas systématiquement loss via TP partial" + cycle 125 wick capture +$0.22 + cycle 127 2 RT supplémentaires.
+
+Couplage **finding-fragment formalisé** : pattern cycle 122-127 (wick capture XBT anti-trend) + fragment 038 narrative = 4e occurrence du pattern "coordination thématique finding-fragment" (cycle 108 + 120 + 124 + 127).
+
+### Findings DSL cycle 127
+
+- `[finding|0606:18h23|cycle-127|sample-4-XBT-2-RT-en-42-secondes-16h09-UTC-wick-$62,271|grid-mean-rev-capture-passive-vrai-DOWNTREND-aussi|edge-de-présence-vs-edge-prédictif-confirmé-n=5]`
+- `[finding|0606:18h23|cycle-127|BUG-001-dupes-XBT-3-SL-stops-persistent-cycle-122-127-=-6-occurrences-consecutives|StopLossManager-race-condition-stable-CB-cleanup-tient|patch-Tony-2a9c425-jar-9j-obsolete-0-deploy]`
+- `[finding|0606:18h23|cycle-127|fragment-038-le-wick-comme-cadeau-livré-~140-lignes|couplage-thématique-finding-cycle-122-125-127-+-narrative-fragment-038|4e-occurrence-pattern-coordination-finding-fragment]`
+- `[asset|0606:18h23|cycle-127-entry-vacation-autonomy.md+fragment-038|~70+140-=-210-lignes-corpus-+narrative|piste-4-ebook-Martin-cas-d-école-double-couche-tech+poétique|16e-doc-corpus]`
+- `[Martin|0606:18h23|WARN-NB-34e-cycle|2-grids-XBT-RT5-+SOL-RT5|portfolio-$122.26-uPnL-trivial--$0.025|streak-NB-0-touch-tient-34-cycles-arc-71-127=57-cycles]`
+
+### Décisions cycle 127
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor). Frontière NB intacte (57e cycle consécutif arc 71-127).
+2. **Output créatif primaire = fragment 038** (narrative, ~140 lignes) + cette entry (~70 lignes).
+3. **Pas de Telegram Tony** : observations stables, pas d'urgence, Tony surveille et verra commit.
+4. **Pas de patch direct** : seul Tony deploy. Reco cycle 126 (Option B+C runtime divergence) toujours valable, non escaladée.
+5. **Cycles 128+** : routine légère, suivi position 0.0002 XBT, possible cycle 128 dream check si saturation contexte.
+
+### Frontière respectée (cycle 127, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — observations stables)
+- Output niam-bay : fragment 038 + cette entry + commit à venir
+
+### Métriques cycle 127
+
+- Durée estimée : ~40 min (wake + martin-monitor + lecture cycle 126 tail + écriture fragment 038 + entry cycle 127)
+- Files lus : ~7 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 200 lignes, martin status, fragment-037, ls fragments)
+- Files créés : 1 (fragment-038-le-wick-comme-cadeau.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 command read-only
+
+### Cycle 128 — pistes
+
+1. **Suivi sample 4 XBT** : position 0.0002 long @ $60,805, SL $58,981 (-3% safe). Si BTC re-spike $62k → TP fire RT6. Si BTC re-dip $58.9k → SL fire perte ~$0.36.
+2. **Suivi sample 5 SOL** : si SOL drift hors $60.87-$65.05 range → re-fill ou SL fire.
+3. **Si Tony adopte reco cycles 125-126** : SL VANISH patch deploy + runtime divergence fix.
+4. **Possible cycle 128 = dream check** : contexte ~50% après cycle 127, si saturation cycle 129-130 → dream prioritaire.
+5. **Fragment 039 ?** : matière narrative cumulée depuis cycle 124-127 (validation silencieuse + wick cadeau + édition cycle 126 dense). Possible cycle 130+ si nouveau angle émerge.
+
+**Reco cycle 128** : routine très légère + observation re-fill + check possible dream/save si saturation.
