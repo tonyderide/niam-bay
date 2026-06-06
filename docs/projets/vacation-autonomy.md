@@ -12394,3 +12394,154 @@ Cycle 121 a formalisé pattern n=5 : 3 anti-trend loss + 2 match-trend win, EV s
 5. **Possible fragment 038** : thème "le wick comme cadeau" — la grid attendait, et le marché lui a donné un moment. Si matière mature cycle 126-127.
 
 **Reco cycle 126** : routine légère + observation re-fill grids + suivre BTC volatility window (si re-spike, sample 4 continue printer).
+
+---
+
+## Cycle 126 — 2026-06-06 12h23 Paris — runtime divergence XBT diagnostic complet + reco MOYENNE patch concret + grid XBT re-armée 0.0004 long $59,888 (6h post cycle 125)
+
+### Contexte au démarrage
+
+- Cycle 125 (06h23 Paris) → 6h écoulées. BTC remonté $60,037 → $60,650 (+1%).
+- Pistes cycle 125 prioritaires : suivi re-fill grids + investigation runtime divergence XBT (reco haute non-livrée depuis cycle 111+123) + possible fragment 038.
+- Approche : martin-monitor → SSH cross-check configs vs runtime → lecture code Java GridTradingService + AutoGridScheduler + SignalController → diagnostic complet + reco concrète.
+
+### Martin état (martin-monitor → WARN)
+
+- Bot UP **7d 17h 23m** (stable, +6h vs cycle 125).
+- PV **$122.25** balanceValue $121.94, **uPnL +$0.31** (vs cycle 125 uPnL 0 — nouvelle position armée).
+- **2 grids actives stables** (SOL closeOnly + XBT LONG).
+  - **SOL** : 1d18h uptime, RT=5 stable, totalProfit +$1.30 stable, krakenRealizedPnl +$1.15, position 0, SL upper @ $65.73.
+  - **XBT** : 1d18h uptime, RT=3 stable, totalProfit +$0.67, **position 0.0004 long @ $59,888** (nouvelle vs cycle 125 position=0), krakenUnrealizedPnl +$0.31, SL @ **$58,092** (-3% sous position).
+- **5 orders live Kraken XBT** : 2 SL stop @ $58,092 (**BUG-001 dupes persistant**), 1 limit sell @ $62,271 (TP), 2 limit buy @ $59,400 + $58,443.
+- BTC **$60,650 DOWNTREND** RSI 44.09 (recovery vs cycle 125 38.26), EMA50 $62,199, EMA200 $67,279, cushion **-9.9%** (vs cycle 125 -11.3%, BTC +1%).
+- Signal ema_trend : **WAIT**.
+
+Trigger martin-monitor : `WARN` (BTC < EMA200 DOWNTREND, mais ≥1 RT done = HOLD normal). BUG-001 dupes confirmé live (2 SL stops dupliqués).
+
+### Investigation runtime divergence XBT — diagnostic complet
+
+**Question cycle 111 + 123** : pourquoi XBT grid active runtime mais pas dans `auto/status.configs` ? Quels risques réels ?
+
+**3 sources de vérité Martin** :
+
+| Source | Contenu | Persistance | Restart-safe |
+|---|---|---|---|
+| DB H2 (`GridStateEntity`) | Grid runtime state (centerPrice, levels, fills) | H2 disk | ✅ via `GridTradingService.@PostConstruct.reloadActiveGrids()` |
+| `config/strategy.json` | AutoGrid configs (capital, spacing, gridMode per pair) | filesystem disk | ✅ via `AutoGridScheduler.@PostConstruct` ligne 82+ |
+| `AutoGridScheduler.configs` (ConcurrentHashMap mémoire) | Configs runtime utilisées par checkSignals/regime filter | RAM seulement | ❌ vidée au restart |
+
+**Mécanisme constaté cycle 126** :
+- `strategy.json` actuel : PF_LINKUSD (enabled, $25, NEUTRAL), PF_ADAUSD/PF_LTCUSD/PF_ATOMUSD/PF_AVAXUSD/PF_AAVEUSD/PF_DOTUSD/PF_SOLUSD (tous capital=0 disabled).
+- `auto/status.configs` actuel : PF_LINKUSD ($25 NEUTRAL) + PF_SOLUSD ($10 SHORT) — donc Tony a fait POST `/signal/auto/config?instrument=PF_SOLUSD&...` à un moment, mais **pas persisté à strategy.json**.
+- **PF_XBTUSD absent partout sauf DB H2 (`GridStateEntity.active=true`)**.
+- DB H2 → grid restore au boot via `@PostConstruct reloadActiveGrids` (preuve : code lignes 71-76 GridTradingService).
+
+**Conséquences réelles** :
+
+| Scenario | Avant patch | Après patch |
+|---|---|---|
+| Java restart | ✅ XBT grid restore (DB H2) | ✅ XBT grid restore + surveillé par AutoGrid |
+| BTC regime change → AutoGridScheduler kill | ❌ XBT non-tracké, **pas kill** | ✅ kill normal si trigger |
+| XBT stoppé manuellement (CB ou Tony) | ❌ Pas respawn | ✅ Respawn au prochain cycle si regime OK |
+| StopLossManager défense SL @ $58,092 | ✅ Fonctionne (poll 10s) | ✅ Fonctionne |
+| BUG-001 dupes 2 SL stops | ✅ Cleanup CB 10min cycle | ✅ Idem |
+
+**Verdict** : XBT grid n'est **pas perdu au restart** (cycle 123 craignait ça — corrigé cycle 126). Le vrai risque = **AutoGridScheduler ne surveille pas XBT** : pas de regime check, pas de kill auto si DOWNTREND empire, pas de respawn si grid stoppe.
+
+### Solutions proposées (3 options)
+
+**Option A — Hot fix runtime (1 commande, 0 deploy, 0 restart)** :
+```bash
+curl -X POST 'http://localhost:8081/api/signal/auto/config?instrument=PF_XBTUSD&capital=20&leverage=3&gridSpacingPct=1.6&totalLevels=4&maxLossPercent=10&gridMode=LONG&enabled=true&adxThreshold=40.0&bbwThreshold=4.0'
+```
+Effet : ajoute PF_XBTUSD au `configs` map runtime, AutoGridScheduler surveille au prochain tick (~5min). **Mais non persisté** : prochain Java restart → config perdue → revient à divergence.
+
+**Option B — Fix persistant via strategy.json** :
+Édit `config/strategy.json` sur VM, ajouter bloc :
+```json
+{
+  "instrument": "PF_XBTUSD",
+  "capital": 20,
+  "leverage": 3,
+  "gridSpacingPct": 1.6,
+  "totalLevels": 4,
+  "maxLossPercent": 10,
+  "gridMode": "LONG",
+  "enabled": true
+}
+```
+Puis restart Java OU POST `/signal/auto/config` Option A pour applier immédiatement.
+
+**Option C — Fix architectural permanent** :
+Code patch dans `SignalController.setAutoGridConfig()` (ligne 142) :
+```java
+autoGridScheduler.setConfig(config);
+strategyConfigService.persistPairConfig(config);  // <-- nouveau, écrit strategy.json
+```
+Implique : ajouter méthode `StrategyConfigService.persistPairConfig()` qui lit strategy.json, upsert le pair, et `writeAtomic`. Coût : ~30 lignes Java + 1 test + deploy. **Élimine la divergence à la source**.
+
+### Reco cycle 126 — priorité MOYENNE
+
+**Reco Tony** : Option B (persistance manuelle 1x) + Option C (patch architecture pour empêcher récidive). Option A seul = patch temporaire jusqu'au prochain restart.
+
+**Pourquoi MOYENNE pas HAUTE** :
+- AutoGrid actuellement **disabled** (`"enabled":false` dans auto/status) — Tony l'a disable cycle 123. Donc même si XBT était surveillé, le scheduler ne tournerait rien.
+- StopLossManager protège déjà XBT (SL Kraken @ $58,092 cushion -3%).
+- DB H2 restore-safe au restart. Le vrai risque (regime change non-tracké) reste théorique tant que Tony manage manuellement.
+
+**Pourquoi pas BASSE non plus** : si Tony ré-active AutoGrid un jour et que XBT est toujours non-tracké, on aura un grid "orphan" actif qui prendrait des décisions divergentes du scheduler. C'est une dette technique à fixer avant prochaine activation AutoGrid.
+
+### Findings DSL cycle 126
+
+- `[finding|0606:12h23|cycle-126|3-sources-truth-Martin-DB-H2+strategy.json+configs-map-RAM|GridStateEntity-restore-PostConstruct-OK-au-restart|grids-survivent-restart-via-DB-H2-pas-strategy.json]`
+- `[finding|0606:12h23|cycle-126|PF_XBTUSD-runtime-divergence-causee-par-POST-signal/auto/config-non-persistance-strategy.json|setConfig-met-en-RAM-seulement|vide-au-restart-revient-strategy.json-only]`
+- `[finding|0606:12h23|cycle-126|cycle-123-craignait-restart-Java-=-grid-XBT-perdu-cascade-inverse-cycle-79|FAUX-DB-H2-restore-via-PostConstruct|vrai-risque-=-AutoGrid-non-surveille-XBT-regime-change]`
+- `[finding|0606:12h23|cycle-126|BUG-001-dupes-XBT-2-SL-stops-@-$58,092-persistent-cycle-122-126-=-5-occurrences-consecutives|pattern-StopLossManager-race-condition-resilient-CB-cleanup|patch-Tony-2a9c425-jar-9j-obsolete-0-deploy]`
+- `[reco|0606:12h23|cycle-126|priorite-MOYENNE-3-options-fix-runtime-divergence-XBT|A-hot-runtime-curl+B-strategy.json-edit+C-architecture-persist-PairConfig|recommande-B+C-pour-élimination-source]`
+- `[lesson|0606:12h23|cycle-126|3-sources-truth-distinctes-Martin-RAM-vs-DB-vs-filesystem|debugging-divergence-=-cross-check-toutes-3-sources-pas-juste-une|→-rule-cycle-NB-check-strategy.json-+-auto/status-+-DB-H2-via-restart-trail]`
+- `[lesson|0606:12h23|cycle-126|setConfig-RAM-seulement-pas-persistance-=-piège-architectural|tout-endpoint-config-doit-écrire-source-vérité-persistante|→-rule-API-config-=-write-DB-OR-file-pas-RAM-seul]`
+- `[asset|0606:12h23|cycle-126-entry-vacation-autonomy.md|~150-lignes-diagnostic-3-sources-truth-+-3-options-fix-+-cost-bénéfice|piste-4-ebook-Martin-cas-d-école-bug-architectural-config-persistance|15e-doc-corpus]`
+- `[Martin|0606:12h23|WARN-NB-33e-cycle|2-grids-actives-XBT-LONG-position-0.0004-armée-uPnL-+$0.31|portfolio-$122.25|streak-NB-0-touch-tient-33-cycles-arc-71-126=56-cycles]`
+
+### Pattern direction-match-trend — observation cycle 126
+
+XBT sample 4 LONG en DOWNTREND a re-armé une position. RT3 capture wick cycle 125 (+$0.22) tient. Cycle 126 nouvelle position 0.0004 @ $59,888 — si BTC continue remonter $61-62k = nouveau TP fire. Si BTC re-dip $58,092 = SL fire = perte ~$0.72 sur position. EV anti-trend reste négatif mais magnitude est plus petite quand vol monte (grid mean-rev).
+
+SOL sample 5 SHORT en DOWNTREND continue à dormir (range non-violé). +$1.15 réalisé tient = +11.5% sur $10 cap en 7j.
+
+**Cumulé Sample 4 + Sample 5** : ~+$6 réalisé (krakenRealizedPnl XBT +$4.86 mais pollué par grids antérieurs ; net "vacation arc" estimé ~+$2-3) + uPnL +$0.31. Performance modeste mais positive en DOWNTREND.
+
+### Décisions cycle 126
+
+1. **0 modif Martin/VM** : 2 SSH read-only (martin-monitor + cross-check configs). Frontière NB intacte (56e cycle consécutif arc 71-126).
+2. **Output créatif primaire = cette entry cycle 126** (diagnostic runtime divergence complet, reco concrète Tony).
+3. **Pas de Telegram Tony** : diagnostic technique pour lecture, pas urgence — Tony verra à son retour ou en surveillance.
+4. **Pas de fragment 038** : matière narrative cycle 125 (le wick comme cadeau) toujours conservée mais cycle 126 = output technique dense, fragment plus tard.
+5. **Pas de patch direct** : seul Tony deploy. Reco Option B (strategy.json edit) + Option C (architecture patch) notées priorité MOYENNE.
+
+### Frontière respectée (cycle 126, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — technique non urgent)
+- Output niam-bay : cette entry (~150 lignes) + commit à venir
+
+### Métriques cycle 126
+
+- Durée estimée : ~75 min (wake + martin-monitor + cross-check configs + lecture code Java 4 fichiers + écriture entry)
+- Files lus : ~9 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 200 lignes, martin status, strategy.json VM, auto/status, code Java GridTradingService + AutoGridScheduler + SignalController)
+- Files créés : 0
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 2 commands read-only
+
+### Cycle 127 — pistes
+
+1. **Suivi sample 4 XBT** : nouvelle position 0.0004 armée @ $59,888. Surveiller breakout $62k (TP sell @ $62,271 fire) ou breakdown $58k (SL fire).
+2. **Suivi sample 5 SOL** : si SOL drift hors range → re-fill ou SL.
+3. **Si Tony adopte reco MOYENNE** : Option B édit strategy.json = quick win. Option C patch architectural = 30 lignes Java + test = trivial.
+4. **Possible fragment 038** : matière narrative "le wick comme cadeau" toujours conservée. Cycle 127-128 si saturation diagnostic.
+5. **Possible déploiement patch cycle 55 KrakenTickSize** : bug SL VANISH cycle 54 toujours live (~25j obsolète), trivial mvn+scp+restart. Reco MOYENNE cycle 125 toujours valable.
+
+**Reco cycle 127** : routine légère + observation re-fill grids + (si Tony répond) suivi décisions runtime divergence + SL VANISH patch deploy.
