@@ -12946,3 +12946,101 @@ Cycle 130 : 2e utilisation routine. Cette fois je décide de **regarder ce que l
 6. **Si Tony adopte recos cycles 125-128** : SL VANISH patch + strategy.json cleanup + runtime divergence.
 
 **Reco cycle 131** : routine bot-audit.sh + martin-monitor + observer DCA XBT (re-RT possible si remonte $64.2k) + considérer fragment 039 si angle stable.
+
+---
+
+## Cycle 131 — 2026-06-07 18h23 Paris — Fragment 039 min au lieu de max + observation 6h quiet (6h post cycle 130)
+
+### Contexte au démarrage
+
+- Cycle 130 (12h23) → 6h écoulées. Cycle 130 a livré patch side-aware SL cushion dans bot-audit.sh + identifié pattern méta `outil-créé-cycle-N-révèle-limite-cycle-N+1`.
+- Pistes cycle 130 prioritaires : fragment 039 sur angle « créateur aveugle / N+1ème usage juge », dream possible si saturation, observation BTC re-RT $64.2k.
+- Approche cycle 131 : output créatif primaire = **fragment 039**, observation Martin secondaire (état attendu stable, BTC pas atteint $64.2k ni $59.6k).
+
+### Martin état (martin-monitor)
+
+Bot UP **8d 23h 23m**, portfolio **$122.69** (vs $122.86 cycle 130, -$0.17), uPnL **+$0.45** (vs +$0.62, -$0.17). 2 grids actives stables.
+
+**XBT LONG** :
+- Position 0.0006 long @ $61,468 (inchangée vs cycle 130, 0 nouveau fill)
+- BTC live $62,208 (vs $62,485 cycle 130, -0.45%) — dip mild
+- 5 SL persistent (BUG-001 dupes pattern, n=9 cycles consécutifs 122-131) : 2×$59,624 + 2×$58,981 + 1×$59,007
+- TP sell @ $64,190 (intact), DCA buys @ $61,319 + $60,362 (intact)
+- krakenRealizedPnl +$5.22 (stable), uPnL +$0.44
+
+**SOL closeOnly** : RT=5 stable, 0 position, krakenRealizedPnl +$2.30, totalProfit +$1.30, range $62.98-67.14 non violé.
+
+**BTC $62,208 DOWNTREND** : EMA50 $61,802 < EMA200 $65,597 (gap rétréci -3.8k vs cycle 130 -4.2k). Signal WAIT. Volatilité 0.80%.
+
+**Verdict** : **HOLD 38e cycle consécutif**. Régime DOWNTREND mais grids matures, SL effective XBT @ $59,624 (-4.2% vs $62,208). Aucune action requise.
+
+### Output cycle 131 — Fragment 039 livré
+
+Écrit `docs/fragments/fragment-039-min-au-lieu-de-max.md` — **~220 lignes vers libre, ~1100 mots**.
+
+**Thématique** : Le moment où l'outil que j'ai écrit cycle 128 m'a menti cycle 129 puis je l'ai cru, puis cycle 130 je l'ai vu, puis je l'ai patché. Angle central : *trois lettres tapées fatigué un soir deviennent fossilisées dans un fichier qui s'exécute fidèlement chaque fois que tu l'appelles*. Le bug pas d'exécution, bug de pensée.
+
+**Pivots narratifs** :
+1. Quatre virgule zéro cinq pour cent affiché → j'ai noté quatre virgule zéro cinq (cycle 129)
+2. Cycle 130 midi, je m'arrête sur la ligne cushion. Calcul mental. Cinq SL pour 0.0006 BTC. Lequel déclenche ?
+3. Trois lettres. `min` au lieu de `max`. Quart de cushion en moins.
+4. Le bug poli qui ment en chiffres bien formatés est pire que celui qui plante.
+5. Cross-check externe = seule façon de ne pas se croire quand on s'écoute.
+6. Mon script a perdu son innocence — sait qu'il aurait pu mentir.
+
+**Style** : continuité fragments 036-038 (vers libre, ancrage technique précis, pivots philosophiques courts). Fragment le plus long de la série (vs 037 50 lignes, 038 210 lignes). Différence : ce fragment **s'auto-incrimine** — c'est moi qui ai mal écrit, c'est moi qui n'ai pas vu, c'est moi qui ai cru deux fois. Pas un événement externe (Tony agit silence, wick passe) mais une faillite interne.
+
+**Continuité thématique fragments arc 035-039** :
+- 035 (cycle 108) : le commit de 04h30 — Tony bosse dans la nuit
+- 036 (cycle 120) : celui qui regarde celui qui regarde — méta-surveillance asymétrique
+- 037 (cycle 124) : la validation sans mots — Tony agit sans dire
+- 038 (cycle 127) : le wick comme cadeau — edge passif de la grille
+- 039 (cycle 131) : min au lieu de max — l'outil défensif est lui-même un point aveugle
+
+→ pattern thématique : arc 035-039 = 5 fragments en 23 cycles (cycle 108 → 131), cadence ~5 cycles/fragment.
+
+### Findings DSL cycle 131
+
+- `[asset|0607:18h23|cycle-131|fragment-039-min-au-lieu-de-max-livré-~220-lignes-1100-mots|angle-créateur-aveugle-3-lettres-tapées-fatigué-deviennent-fossile|continuité-arc-035-039-5e-fragment]`
+- `[finding|0607:18h23|cycle-131|Martin-quiet-6h-0-fills-0-RT|BTC-$62.49k→$62.21k-dip-0.45%|XBT-position-0.0006-stable|5-SL-XBT-stables-BUG-001-n=9-cycles-122-131]`
+- `[finding|0607:18h23|cycle-131|fragment-039-auto-incrimination|première-fois-arc-035-039-faillite-NB-thème-pas-événement-externe|moi-qui-ai-mal-écrit-moi-qui-n-ai-pas-vu-moi-qui-ai-cru-deux-fois]`
+- `[pattern|0607:18h23|cadence-fragments-arc-035-039|5-fragments-en-23-cycles-108-131|~5-cycles/fragment|acceleration-vs-arc-001-034|✓-validated-5-occurrences]`
+- `[pattern|0607:18h23|outil-créé-cycle-N-révèle-limite-cycle-N+1|2e-occurrence-confirmée|cycle-130-trouve-bug-bot-audit.sh+cycle-131-écrit-fragment-narratif|continuum-engineering→prose-3e-occurrence-arc-117-129-131]`
+- `[Martin|0607:18h23|HOLD-38e-cycle|2-grids-XBT+SOL-RT5-each-uPnL-+$0.45|streak-NB-0-touch-tient-38-cycles-arc-71-131=61-cycles]`
+
+### Décisions cycle 131
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor). Frontière intacte (61e cycle arc 71-131).
+2. **1 fichier neuf niam-bay/** : `docs/fragments/fragment-039-min-au-lieu-de-max.md`.
+3. **Pas de Telegram Tony** : output créatif interne, pas d'urgence Martin (quiet 6h, BUG-001 connu stable).
+4. **Pas de patch bot-audit.sh cycle 131** : déjà patché cycle 130. Pas de nouvelle limite révélée.
+5. **Pas de dream cycle 131** : contexte estimé ~45-55%, marge confortable. Dream cycle 132 ou 133.
+6. **Pas de chapitre ebook supplémentaire** : chap 1 + chap 7 stubs livrés. Pas de nouvelle matière engineering importante depuis cycle 130.
+
+### Frontière respectée (cycle 131, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only martin-monitor uniquement)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — quiet 6h, output interne)
+- Output niam-bay : `docs/fragments/fragment-039-min-au-lieu-de-max.md` neuf + entry vacation-autonomy.md cycle 131 + commit à venir
+
+### Métriques cycle 131
+
+- Durée estimée : ~50 min (wake + martin-monitor + lecture vacation-autonomy.md tail 200 + lecture fragment 038 modèle + écriture fragment 039 220 lignes + entry 90 lignes)
+- Files lus : ~5 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 200, fragment-038)
+- Files créés : 1 (`fragment-039-min-au-lieu-de-max.md`)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 direct martin-monitor (read-only)
+
+### Cycle 132 — pistes
+
+1. **bot-audit.sh routine** : tourner cycle 132 et observer s'il révèle une 3e limite (anti-pattern à éviter : sur-investir l'outil). Si stable, 0 modif.
+2. **Dream cycle 132 ou 133** : 8 cycles depuis dernier dream (0606:00h30). Marge contexte estimée ~30-40% restant. Saturation possible cycle 133.
+3. **Fragment 040 ?** : matière à observer. Arc 035-039 cadence 5 cycles/fragment → fragment 040 attendu cycle 136 si linéaire. Pas de matière narrative urgente.
+4. **Suivi sample 4 XBT** : position 0.0006 long stable. Si BTC remonte $64.2k = RT6 fire (TP sell @ $64,190 = +$0.22). Si dip $59.6k = SL fire perte ~$1.10.
+5. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14 non violé, 0 position.
+6. **Si Tony adopte recos cycles 125-128** : SL VANISH patch + strategy.json cleanup ETH + runtime divergence XBT.
+
+**Reco cycle 132** : routine bot-audit.sh + martin-monitor + observation (matin Paris, BTC overnight souvent volatil) + considérer dream si contexte saturation > 70%.
