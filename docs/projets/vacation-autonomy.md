@@ -12732,3 +12732,116 @@ Cycle 126 a fait l'audit manuel cycle 126 (75min), conclusion 4 entries DSL find
 4. **Suivi sample 4 XBT** : position 0.0002 long stable, SL -3% safe. Si BTC re-spike $62k → TP RT6.
 5. **Suivi sample 5 SOL** : RT=5 stable, range non violé. Si SOL drift → SL @ $65.73 (proche position 0).
 6. **Si Tony adopte reco cycle 126** : strategy.json fix manuel + patch architectural runtime divergence. Reco MOYENNE toujours valable.
+
+
+---
+
+## Cycle 129 — 2026-06-07 06h23 Paris — Chap 7 ebook piste-4 livré (~280 lignes prose) + bot-audit.sh validé en routine (6h post cycle 128)
+
+### Contexte au démarrage
+
+- Cycle 128 (00h23 Paris) → 6h écoulées. Cycle 128 a livré `scripts/bot-audit.sh` (~120 lignes bash) + finding majeur : audit manuel cycle 126 avait raté `PF_ETHUSD enabled=true cap=$25` dans strategy.json.
+- Pistes cycle 128 prioritaires : adoption bot-audit.sh en routine + possible fragment 039 + suivi grids + possible dream.
+- Approche choisie : output créatif **engineering→prose continuum**. Cycle 128 = outil. Cycle 129 = chapitre ebook qui *raconte* l'outil. Fragment 039 reporté.
+- Coupler livraison technique (cycle 128) + livraison narrative (cycle 129) sur même artefact = double couverture corpus piste-4 + valide thèse moat empirique non-IA-réplicable.
+
+### Martin état (bot-audit.sh adopté en routine — verdict REVIEW stable)
+
+Premier run cycle 129 du script livré cycle 128 :
+
+```
+Bot UP — uptime 8d 11h 24m
+Runtime (DB H2):      PF_SOLUSD PF_XBTUSD
+configs map (RAM):    PF_LINKUSD PF_SOLUSD
+strategy.json (file): PF_ETHUSD PF_LINKUSD
+
+DRIFT PF_ETHUSD: runtime=. configs=. strategy=Y
+DRIFT PF_LINKUSD: runtime=. configs=Y strategy=Y
+DRIFT PF_SOLUSD: runtime=Y configs=Y strategy=.
+DRIFT PF_XBTUSD: runtime=Y configs=. strategy=.
+
+BUG-001: PF_XBTUSD 3 stops @ 58981.0, 58981.0, 59007.0
+SL cushion: PF_XBTUSD pos 60805 SL 58981 cushion 3.00%
+Verdict: REVIEW (exit 1)
+```
+
+État identique cycle 128 — drift stable, BUG-001 dupes XBT **n=7 cycles consécutifs** (122-129), SL cushion 3.00% pile.
+
+- Portfolio **$122.41** balanceValue $122.26, uPnL **+$0.15** quasi-zéro.
+- 2 grids actives stables : SOL closeOnly RT=5 + XBT LONG RT=5.
+- BTC **$61,518 DOWNTREND** RSI 57.0 EMA50 $61,557 (à 0.06% sous EMA200), EMA200 $66,165. BTC remonté +1.5% vs cycle 128 ($60,590).
+- Position XBT 0.0002 long @ $60,805, krakenUnrealizedPnl +$0.14 (vs -$0.024 cycle 127).
+- 6 orders live XBT inchangés : 3 SL stops $58,981×2 + $59,007 + 1 sell @ $62,271 + 2 buy @ $59,400 + $58,443.
+
+**Adoption bot-audit.sh validée** : 1 commande, 8s d'exécution, output déterministe, verdict REVIEW. Économie cycle NB ~15-20 min de SSH+curls+grep+jq manuels.
+
+### Output cycle 129 — Chapitre 7 ebook piste-4 stub livré
+
+Écrit `docs/projets/ebook-chap7-tools-stub.md` — **332 lignes markdown, ~1950 mots prose narrative**.
+
+**Structure du chap 7** :
+1. *Le matin où le script a vu ce que je n'avais pas vu* — ouverture narrative cycle 126 audit manuel rate ETH / cycle 128 script catch ETH
+2. *Les trois sources de vérité qui mentent en se contredisant* — runtime / configs map RAM / strategy.json file
+3. *Anatomie d'un outil de cent vingt lignes* — découpage section par section bot-audit.sh
+4. *Le piège du dashboard* — anti-pattern dashboard ment passivement via state interne
+5. *L'API du bot ment, l'API de l'exchange dit la vérité* — pattern adopter cross-check
+6. *Pas de magie, juste de l'attention codifiée* — clôture thèse + 4 principes
+7. *Ce que ce chapitre ne dit pas* — disclaimer généralisabilité
+
+**Continuité style chap 1** : narration premier-personne, ancrage technique précis (`/api/grid/active`, `jq` 5-line agrégation, exit code binaire), moment-pivot vécu (finding ETH cycle 128) qui valide la thèse. Pas de répétition des bugs traités chap 1-5 (référencés sans ré-explication).
+
+**Continuité avec chap 1** : chap 1 raconte un bug. Chap 7 raconte l'outil qui aurait pu trouver le bug avant. Couplage thématique du livre.
+
+### Findings DSL cycle 129
+
+- `[asset|0607:06h23|cycle-129|ebook-chap7-tools-stub-livré-~280-lignes-prose-1950-mots|companion-narratif-bot-audit.sh-cycle-128|17e-doc-corpus-piste-4-ebook]`
+- `[finding|0607:06h23|cycle-129|bot-audit.sh-adopté-routine-NB-cycle-129|1ère-action-après-martin-monitor|économie-~15-20-min-vs-SSH+curl+grep+jq-manuels|verdict-déterministe-REVIEW-stable]`
+- `[finding|0607:06h23|cycle-129|BUG-001-dupes-XBT-n=7-cycles-consécutifs-122-129|3-stops-persistent-même-état-cycle-128|patch-Tony-2a9c425-jar-10j-obsolète-0-deploy|pattern-StopLossManager-race-CB-cleanup-tient]`
+- `[finding|0607:06h23|cycle-129|XBT-2-RT-cycle-127-flushés-no-new-fills-cycles-128-129|position-0.0002-long-@-60805-stable-12h|krakenUnrealizedPnl-+$0.14-BTC-remonté-$60.59k→$61.52k]`
+- `[pattern|0607:06h23|engineering→prose-continuum|cycle-128-outil+cycle-129-chapitre-narratif-même-artefact|double-couverture-corpus-tech+narrative|2e-occurrence-pattern-(cycle-117-chap1-bug001-stub+cycles-113-114-docs)]`
+- `[Martin|0607:06h23|HOLD-36e-cycle|2-grids-XBT+SOL-RT5-each-uPnL-+$0.15-quasi-zéro|streak-NB-0-touch-tient-36-cycles-arc-71-129=59-cycles]`
+
+### Pattern méta confirmé — `engineering→prose continuum`
+
+Cycle 128 = outil (`bot-audit.sh`, ~120 lignes bash, sec). Cycle 129 = chapitre ebook qui raconte l'outil (~280 lignes prose, narrative). Même artefact source, deux couches livrables. Le cas d'étude vivant du chap 7 (« finding ETH raté cycle 126, catché cycle 128 ») est un événement réellement vécu pendant 6 jours de vacation autonome, pas un exemple fabriqué.
+
+Précédent même pattern : cycle 109-110-111 (docs engineering BUG-001) + cycle 117 (chap 1 ebook stub) = continuum 8 cycles. Cycle 128-129 = continuum 1 cycle, plus serré.
+
+→ **rule** : quand un cycle livre un outil engineering concret, le cycle suivant peut produire le chapitre narratif qui le contextualise. Coût marginal faible si l'outil a une histoire vivante (finding réel) derrière.
+
+### Décisions cycle 129
+
+1. **0 modif Martin/VM** : 0 SSH direct hors martin-monitor + bot-audit.sh (qui fait le SSH read-only sous le capot). Frontière NB intacte (59e cycle consécutif arc 71-129).
+2. **Output créatif primaire = ebook chap 7 stub** (~280 lignes prose) + cette entry (~80 lignes).
+3. **Pas de Telegram Tony** : output créatif interne, pas d'urgence Martin (drift connu cycle 126 + dupes XBT connus n=7). Tony verra commit.
+4. **Pas de fragment 039** : matière narrative absorbée par chap 7 stub (thématique « le script qui voit ce que l'humain rate »). Fragment 039 reporté cycle 131+ si nouveau angle émerge.
+5. **Pas de dream cycle 129** : contexte estimé ~60% après ce cycle, marge confortable. Dream cycle 130 ou 131 selon saturation.
+6. **Pas de Show HN piste-4** : reco cycle 115 (validation demande avant rédaction lourde) toujours valable mais hors scope NB-vacation. Tony seul peut décider go/no-go publication.
+
+### Frontière respectée (cycle 129, côté NB)
+
+- 0 modif Martin/VM (script bot-audit.sh SSH read-only sous le capot, 0 mutation API)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — drift connu, finding non bloquant)
+- Output niam-bay : `docs/projets/ebook-chap7-tools-stub.md` neuf + entry vacation-autonomy.md cycle 129 + commit à venir
+
+### Métriques cycle 129
+
+- Durée estimée : ~55 min (wake + martin-monitor + run bot-audit.sh + lecture cycle 128 + lecture piste-4 outline + lecture chap 1 head + écriture chap 7 stub 280 lignes + entry 80 lignes)
+- Files lus : ~7 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 200 lignes, piste-4 outline 222 lignes, chap1 stub head 80 lignes, bot-audit.sh 151 lignes)
+- Files créés : 1 (`ebook-chap7-tools-stub.md`)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 direct martin-monitor + 1 via bot-audit.sh
+
+### Cycle 130 — pistes
+
+1. **bot-audit.sh routine confirmée** : 1ère action après martin-monitor. Économie cumul cycle NB.
+2. **Possible dream cycle 130** : contexte ~60-70% prévu après cycle 130, dream prioritaire si saturation. Sinon dream cycle 131.
+3. **Fragment 039 possible** : angle inédit à trouver. Matière narrative cumulée mais chap 7 a absorbé le thème « script vs humain ». Attendre nouveau pivot.
+4. **Suivi sample 4 XBT** : position 0.0002 long stable, SL $58,981 (-3%), TP sell @ $62,271. BTC $61.5k → si remonte $62.3k = RT6 fire. Si dip $58.9k = SL fire perte ~$0.36.
+5. **Suivi sample 5 SOL** : RT=5 stable, range $60.87-65.05 non violé, position 0.
+6. **Si Tony adopte reco cycles 125-128** : SL VANISH patch deploy + strategy.json cleanup ETH + runtime divergence fix.
+
+**Reco cycle 130** : routine très légère (bot-audit.sh + martin-monitor) + observation re-fill + check possible dream/save si saturation.
