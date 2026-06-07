@@ -116,14 +116,24 @@ fi
 echo
 
 # 4. SL cushion check per active position
+# Side-aware: for LONG the effective SL is the HIGHEST stop (fires first on dip);
+# for SHORT it's the LOWEST (fires first on pump). Using the wrong reducer
+# under-reports risk when dupes are present (BUG-001 case).
 positions=$(curl_api "/api/bot/positions")
 echo "## SL cushion per position"
-echo "${positions}" | jq -r '.[] | "\(.symbol) \(.side) \(.size) @ \(.price)"' | while read -r line; do
+echo "${positions}" | jq -r '.[] | "\(.symbol) \(.side) \(.size) \(.price)"' | while read -r line; do
   sym=$(echo "${line}" | awk '{print $1}')
-  pos_price=$(echo "${line}" | awk '{print $5}')
-  sl_price=$(echo "${orders}" | jq -r --arg sym "${sym}" '
+  side=$(echo "${line}" | awk '{print $2}')
+  pos_price=$(echo "${line}" | awk '{print $4}')
+  reducer="max"
+  [[ "${side}" == "short" ]] && reducer="min"
+  sl_price=$(echo "${orders}" | jq -r --arg sym "${sym}" --arg r "${reducer}" '
     [.[] | select(.symbol == $sym and .orderType == "stop" and .reduceOnly == true)
-       | .stopPrice] | min // empty')
+       | .stopPrice]
+    | if length == 0 then empty
+      elif $r == "min" then min
+      else max
+      end')
   if [[ -z "${sl_price}" ]] || [[ "${sl_price}" == "null" ]]; then
     echo "${sym}: NO SL on Kraken — exposed."
     drift_count=$((drift_count + 1))
@@ -134,7 +144,7 @@ echo "${positions}" | jq -r '.[] | "\(.symbol) \(.side) \(.size) @ \(.price)"' |
   flag=""
   awk -v c="${cushion_pct}" -v lo="${SL_CUSHION_WARN_MIN_PCT}" -v hi="${SL_CUSHION_WARN_MAX_PCT}" \
     'BEGIN { exit !(c < lo || c > hi) }' && flag=" ⚠ out of band"
-  echo "${sym}: pos ${pos_price} SL ${sl_price} cushion ${cushion_pct}%${flag}"
+  echo "${sym} ${side}: pos ${pos_price} effective-SL ${sl_price} cushion ${cushion_pct}%${flag}"
 done
 echo
 

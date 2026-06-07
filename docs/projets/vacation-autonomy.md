@@ -12845,3 +12845,104 @@ Précédent même pattern : cycle 109-110-111 (docs engineering BUG-001) + cycle
 6. **Si Tony adopte reco cycles 125-128** : SL VANISH patch deploy + strategy.json cleanup ETH + runtime divergence fix.
 
 **Reco cycle 130** : routine très légère (bot-audit.sh + martin-monitor) + observation re-fill + check possible dream/save si saturation.
+
+
+---
+
+## Cycle 130 — 2026-06-07 12h23 Paris — bot-audit.sh patch side-aware SL + BUG-001 dupes XBT n=8 grossissant 3→5 (6h post cycle 129)
+
+### Contexte au démarrage
+
+- Cycle 129 (06h23) → 6h écoulées. Cycle 129 a livré chap 7 ebook piste-4 stub (~280 lignes prose) + adopté `bot-audit.sh` en routine.
+- Pistes cycle 129 prioritaires : routine bot-audit.sh confirmée, possible dream/fragment 039/suivi grids.
+- Approche choisie cycle 130 : faire **tourner** la routine bot-audit.sh (2e usage live), observer ce qu'elle révèle, et — si elle expose elle-même une limite — la patcher. Pattern méta : un outil créé cycle N peut révéler sa propre limite cycle N+1 si la routine force son examen.
+
+### Martin état (bot-audit.sh + martin-monitor)
+
+Bot UP 8d 17h 23m, portfolio **$122.86**, uPnL **+$0.62** (+0.5%), 2 grids actives stables.
+
+**XBT LONG** :
+- Position grossie **0.0006** (vs 0.0002 cycle 129) — 3 nouveaux fills le 0607 04:42 UTC à $62,276 + $63,233 (DCA cycle dans le grid)
+- Prix entrée moyen $61,468, BTC live $62,485 → uPnL +$0.62
+- 5 SL au lieu de 3 cycle 129 : 2 nouveaux @ $59,624 (placés au DCA) + 3 vieux BUG-001 @ $58,981×2 + $59,007 (persistants depuis cycle 122)
+- krakenRealizedPnl +$5.22, totalProfit +$1.13, 5 RT completed
+
+**SOL closeOnly** : RT=5 stable, 0 position, range $62.98-67.14 non violé. totalProfit +$1.30.
+
+**BTC $62,485 DOWNTREND** : EMA50 $61,738 < EMA200 $65,890. Signal WAIT. BTC remonté +1.6% vs cycle 129 ($61,518).
+
+**Verdict bot-audit.sh** : REVIEW (drift 4 inchangé + 1 groupe dupes XBT).
+
+### Output cycle 130 — patch side-aware SL cushion dans bot-audit.sh
+
+**Bug trouvé en routine** : bot-audit.sh utilisait `[stops] | min` pour calculer le cushion SL, indépendamment du side de la position. Pour un LONG, le SL effectif (celui qui déclenche en premier sur dip) est le **plus haut**, pas le plus bas.
+
+**Manifestation cycle 130** : XBT LONG 5 stops {$59,624×2, $58,981×2, $59,007}.
+- Cushion reportée cycle 129 (bug) : min $58,981 → cushion **4.05%** (faux — trop optimiste)
+- Cushion réelle : max $59,624 → cushion **3.00%**
+
+**Conséquence si pas patché** : sous-estimation systémique du risque quand BUG-001 dupes présents. Un opérateur qui lit bot-audit.sh pourrait croire avoir 4% de buffer alors qu'il en a 3% — décision de hold/cut différente.
+
+**Fix appliqué** (scripts/bot-audit.sh lignes 118-145) :
+- Lecture du `.side` de la position
+- Reducer = `max` pour LONG, `min` pour SHORT
+- Output enrichi : `"PF_XBTUSD long: pos 61467 effective-SL 59624 cushion 3,00%"` (vs avant `"PF_XBTUSD: pos 61467 SL 58981 cushion 4,05%"`)
+- Commentaire explicite : *"Side-aware: for LONG the effective SL is the HIGHEST stop"*
+
+**Vérifié en live** : cushion XBT passe de 4,05% (faux) → 3,00% (vrai). Verdict REVIEW maintenu.
+
+### Pattern méta — `outil créé cycle N révèle limite cycle N+1`
+
+Cycle 128 : création `bot-audit.sh` (~120 lignes, 8s exec).
+Cycle 129 : 1ère utilisation routine. Bug subtil pas vu (cushion 3.00% vs 4.05% — pile-poil le seuil OK/WARN à 1%/8%, donc pas hors-band → pas d'alerte → bug invisible visuellement).
+Cycle 130 : 2e utilisation routine. Cette fois je décide de **regarder ce que le script dit** sur l'XBT et je remarque que la cushion semble grosse vs la BTC près du SL. Investigation 3min → bug `min` au lieu de `max`. Patch 15 lignes.
+
+**Pattern à généraliser** : un outil défensif est lui-même un artefact à auditer. La routine n'est pas juste "tourner le script" mais "tourner le script + croire ce qu'il dit + vérifier que le résultat est cohérent". Le 2e usage est souvent celui qui révèle le bug parce que le 1er usage = découverte, focus sur output principal (drift, dupes), pas sur le détail secondaire (cushion).
+
+→ **rule cycle NB** : tout outil livré est suspect à son N+1ème usage. Le créateur est aveugle à ce qu'il a oublié.
+
+### Findings DSL cycle 130
+
+- `[asset|0607:12h23|cycle-130|bot-audit.sh-patch-side-aware-SL-cushion-+commentaire-explicite|under-reporting-risque-LONG-cas-BUG-001-corrigé|18e-doc-corpus-piste-4-engineering]`
+- `[finding|0607:12h23|cycle-130|BUG-001-dupes-XBT-grossit-3-stops-cycle-129→5-stops-cycle-130|2-nouveaux-@-59,624-placés-au-DCA-cycle-130|3-vieux-@-58,981×2+59,007-jamais-removed|StopLossManager-race-cumulative-pattern]`
+- `[finding|0607:12h23|cycle-130|XBT-position-0.0006-vs-0.0002-cycle-129|DCA-3-nouveaux-fills-0607-04:42-UTC-buy-@-62,276+63,233|krakenRealizedPnl-+$5.22-stable|uPnL-+$0.62-BTC-remonté-$61.52k→$62.49k]`
+- `[finding|0607:12h23|cycle-130|bot-audit.sh-cushion-bug-trouvé-via-routine-N+1|reducer-min-au-lieu-de-max-pour-LONG|cushion-XBT-faux-4.05%-vs-vrai-3.00%|under-reporting-systémique-quand-dupes-présents]`
+- `[pattern|0607:12h23|outil-créé-cycle-N-révèle-limite-cycle-N+1|cycle-128-création-bot-audit.sh+cycle-130-trouve-bug-min/max|→-rule-N+1ème-usage-d-un-outil-est-suspect-créateur-aveugle|1ère-occurrence-attendre-confirmation]`
+- `[pattern|0607:12h23|BUG-001-dupes-XBT-grossissant-cumulatif|n=8-cycles-122-130+3→5-stops-en-24h|chaque-DCA-ajoute-2-SL-sans-supprimer-vieux|StopLossManager-pas-cleanup-stale-orders|→-confirme-race-cumulative]`
+- `[Martin|0607:12h23|HOLD-37e-cycle|2-grids-XBT+SOL-RT5-each-uPnL-+$0.62|streak-NB-0-touch-tient-37-cycles-arc-71-130=60-cycles]`
+
+### Décisions cycle 130
+
+1. **0 modif Martin/VM** : 0 SSH mutation. bot-audit.sh + martin-monitor read-only. Frontière intacte (60e cycle consécutif arc 71-130).
+2. **1 modif niam-bay/** : `scripts/bot-audit.sh` patch side-aware SL cushion (15 lignes ajoutées, commentaire explicite).
+3. **Pas de Telegram Tony** : finding bot-audit.sh interne (outil NB-side). Le BUG-001 grossissant 3→5 est notable mais pas bloquant — SL effectif @ $59,624 (-3%) est cohérent avec design, et la cushion réelle est 3% pas dangereuse.
+4. **Pas de fragment 039** : matière narrative possible (« le script qui sait pas se relire ») mais préfère engineering brut cycle 130. Fragment 039 reporté cycle 131+ si angle clair.
+5. **Pas de dream cycle 130** : contexte estimé ~50-55% après ce cycle, marge confortable. Dream cycle 131 ou 132.
+6. **Pas de Show HN** : reco cycle 115 toujours valable, hors scope NB-vacation.
+
+### Frontière respectée (cycle 130, côté NB)
+
+- 0 modif Martin/VM (1 SSH grossier read-only + 1 via bot-audit.sh)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — patch interne, BUG-001 grossissant connu pattern)
+- Output niam-bay : `scripts/bot-audit.sh` patché + entry vacation-autonomy.md cycle 130 + commit à venir
+
+### Métriques cycle 130
+
+- Durée estimée : ~45 min (wake + martin-monitor + run bot-audit.sh 1ère fois + observation cushion suspect + Edit script + re-run validation + entry 90 lignes)
+- Files lus : ~5 (memory.nb1, recent.nb1, briefing.md, patterns.nb1, vacation-autonomy.md tail 150 lignes, bot-audit.sh 151 lignes)
+- Files modifiés : 2 (bot-audit.sh patch + vacation-autonomy.md entry)
+- Telegram : 0 (volontaire)
+- SSH : 1 direct martin-monitor + 2 via bot-audit.sh (avant + après patch)
+
+### Cycle 131 — pistes
+
+1. **bot-audit.sh v3 ?** : maintenant side-aware. Prochain manque potentiel = audit `stopLossPrice` vs `stopPrice` Kraken cohérence (grid status interne vs ordres réels). Attendre besoin réel pas spéculer.
+2. **Dream cycle 131 ou 132** : contexte cumul 7 cycles depuis 0606:00h30. Dream prioritaire si saturation détectée.
+3. **Fragment 039 possible** : angle « le créateur est aveugle à ce qu'il a oublié » ou « le N+1ème usage est juge » — matière narrative claire. Continuité fragments 035-038.
+4. **Suivi sample 4 XBT** : position 0.0006 (DCA), SL effective $59,624 (-3%), TP @ $64,190. Si BTC remonte $64.2k = RT6 fire. Si BTC dip $59.6k = SL fire perte ~$1.10.
+5. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14, 0 position.
+6. **Si Tony adopte recos cycles 125-128** : SL VANISH patch + strategy.json cleanup + runtime divergence.
+
+**Reco cycle 131** : routine bot-audit.sh + martin-monitor + observer DCA XBT (re-RT possible si remonte $64.2k) + considérer fragment 039 si angle stable.
