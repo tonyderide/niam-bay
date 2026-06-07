@@ -13044,3 +13044,108 @@ Bot UP **8d 23h 23m**, portfolio **$122.69** (vs $122.86 cycle 130, -$0.17), uPn
 6. **Si Tony adopte recos cycles 125-128** : SL VANISH patch + strategy.json cleanup ETH + runtime divergence XBT.
 
 **Reco cycle 132** : routine bot-audit.sh + martin-monitor + observation (matin Paris, BTC overnight souvent volatil) + considérer dream si contexte saturation > 70%.
+
+---
+
+## Cycle 132 — 2026-06-08 00h23 Paris — Tony silent action #3 + BTC wick capture + BUG-001 race live (6h post cycle 131)
+
+### Contexte au démarrage
+
+- Cycle 131 (18h23 Paris = 16h23 UTC) → 6h écoulées. Cycle 131 a livré fragment 039 (220 lignes, angle créateur-aveugle) + observation quiet 6h XBT position 0.0006 stable.
+- Pistes cycle 131 priorité : routine + observation + dream considération + fragment 040 si angle.
+- Approche cycle 132 : routine martin-monitor d'abord, observation BTC overnight (souvent volatile), entry concise.
+
+### Martin état (martin-monitor + forensic)
+
+Bot UP **9d 5h 22m**, portfolio **$122.74** (vs $122.69 cycle 131, +$0.05), uPnL **+$0.18** (vs +$0.45, -$0.27 mais position réduite explique).
+
+**Changements majeurs depuis cycle 131** :
+- **XBT grid disparue** de `/api/grid/active` → seul SOL listé maintenant. 4e occurrence pattern `grid-disparition-runtime-silencieuse` (cycles 79+119+122+132).
+- **XBT position réduite 0.0006 → 0.0002** (-0.0004 BTC), cost basis $62,101 (vs $61,468 cycle 131).
+- **5 SL XBT persistent** : 2×$60,238 + 3×$60,254 (vs 5 différents prix cycle 131 — pas exactement même set, BUG-001 a roulé).
+- **SOL grid** : RT=5 stable, krakenRealizedPnl **+$1.17** (vs +$2.30 cycle 131 — différence non investiguée, krakenTotalPnl pollué possible).
+
+**BTC live $62,984** DOWNTREND (EMA50 $61,844 < EMA200 $65,354), RSI 62.9, vol 1.05%. Signal WAIT.
+
+### Forensic app.log — 17:02-17:05 UTC
+
+**WICK MAJEUR détecté** — BTC a fait un mouvement violent :
+- **17:02:37 UTC** — Grid RT#6 fire (sell @ $64,190, profit $0.22, totalProfit $1.35)
+- **17:02:47 UTC** — Cascade 3 buy fills : $60,362 + $61,319 + $63,233 (en 0 secondes — wick dump puis remontée)
+- **17:02:55 UTC** — 3 threads parallèles `triggerSLAfterFill` spawn → 3 SL "primary" placés via StopLossManager
+- **17:02:58 UTC** — Grid RT#7 fire (sell @ $64,190, profit $0.22, totalProfit $1.57)
+- **17:03:00 UTC** — 3 SL primary VANISH simultanés (Kraken rejette silencieusement) → 3 retry-3pct placés @ $60,254
+- **17:03:06 UTC** — 4e thread triggerSLAfterFill spawn → primary vanish → retry-3pct @ $60,238
+- **17:03:11 UTC** — 4e SL retry-3pct OK
+- **17:03:38 UTC** — `GET /bot/orders` (6 open orders) + `GET /bot/positions` (1 open pos) → **Tony observe l'état chaotique**
+- **17:05:01 UTC** — **Tony stop grid PF_XBTUSD** via API (`Stopping grid for PF_XBTUSD - cancelling all orders`)
+- **17:05:03 UTC** — Tony re-fetch : 5 open orders (1 grid order cancelled), 1 position residual
+
+**Magnitude wick** : BTC ~$64.2k → ~$60.3k → ~$64.2k en **31 secondes**. Pire wick observé arc 71-132.
+
+**Pattern Tony-action-silence n=3** confirmé : cycle 118 (cleanup 4 actions) + cycle 123 (2x disable AutoGrid) + cycle 132 (kill XBT grid après wick).
+
+**Timing Tony** : ~83 secondes entre observation (`/bot/orders` à 17:03:38) et décision (`stop grid` à 17:05:01). Délibération courte mais réelle.
+
+### Output cycle 132 — analyse + entry
+
+**Capture de profit** : RT#6 + RT#7 = **+$0.44 réalisé en 21 secondes** pendant le wick. Le grid mean-rev a parfaitement fait son travail — buy low ($60-63k), sell high ($64.2k TP).
+
+**BUG-001 race confirmée live** : 4 threads parallèles `triggerSLAfterFill` spawnés en 8 secondes, chacun place un SL primary qui VANISH puis retry-3pct succès. Résultat : 5 SL dupes @ $60,238/$60,254. C'est la **3e capture live grade-A** du pattern (après cycles 109 + 119).
+
+**Pourquoi Tony a coupé** : 3 hypothèses convergentes :
+1. **Risk-off post-wick** : un wick -3.5% en 30s signale instabilité régime, prochain peut être pire.
+2. **Cleanup BUG-001 cascade** : voir 5 SL dupes en runtime = pression pour stopper avant accumulation.
+3. **Lock profit** : RT#6 + RT#7 ont monétisé la vol, kill = matérialiser le gain avant retour à la moyenne.
+
+→ probablement combo des trois. Tony observe les 6 orders, voit le chaos, et décide en 83s.
+
+**Position résiduelle 0.0002** : grid stoppé mais position reste, protégée par les 5 SL @ $60,254. Si BTC dump $60.2k, 1 SL fire (les 4 autres rejetés Kraken pour "no position"). Cushion 4.33% vs current.
+
+### Findings DSL cycle 132
+
+- `[finding|0608:00h23|cycle-132|BTC-wick-31s-massif-$64.2k→$60.3k→$64.2k|cycle-131-prediction-RT6-@-$64.2k-VALIDATED-+-RT7-bonus|grid-mean-rev-edge-confirmé-+$0.44-en-21s]`
+- `[finding|0608:00h23|cycle-132|Tony-silent-action-3e-occurrence|17:05:01-UTC-stop-grid-XBT|83s-après-observation-/bot/orders|pattern-Tony-action-silence-n=3-cycles-118+123+132]`
+- `[finding|0608:00h23|cycle-132|BUG-001-race-condition-capture-live-grade-A-3e-fois|4-threads-parallèles-triggerSLAfterFill-en-8s|chacun-primary-VANISH+retry-3pct-OK|5-SL-dupes-finals|cycles-109+119+132]`
+- `[finding|0608:00h23|cycle-132|grid-disparition-runtime-silencieuse-4e-occurrence|cycle-79+119+122+132-XBT|cause-confirmée-Tony-manuel-pas-CB-pas-AutoGrid]`
+- `[finding|0608:00h23|cycle-132|wick-edge-passif-grid-validé-2e-fois|fragment-038-cycle-127-théorisait-wick-cadeau|cycle-132-empirique-+$0.44-en-21s-monétise-vol-extrême]`
+- `[pattern|0608:00h23|Tony-silent-action-après-anomalie|n=3|cycle-118-post-LINK-restart+cycle-123-post-XBT-divergence+cycle-132-post-wick+BUG-001-cascade|→-rule-anomalie-Martin-=-Tony-intervient-83s-à-quelques-minutes-après-observation|✓-validated-3-occurrences]`
+- `[pattern|0608:00h23|grid-disparition-runtime-silencieuse|count:4|cycles-79+119+122+132|cause-Tony-manuel-confirmée-via-stop-grid-call|→-routine-NB-check-/api/grid/active-vs-historique-/-cycle|✓-validated-4-occurrences]`
+- `[pattern|0608:00h23|BUG-001-multi-thread-race-cascade|n=3-captures-live|cycle-109-19s-cascade+cycle-119-XBT+cycle-132-4-threads-8s|StopLossManager-race-cumulative-déterministe|patch-Tony-2a9c425-dormant-9-jours|→-rule-deploy-patch-impératif-prochain-wick-=-récidive-garantie]`
+- `[Martin|0608:00h23|HOLD-39e-cycle|1-grid-SOL-uPnL-+$0.18|streak-NB-0-touch-tient-39-cycles-arc-71-132=62-cycles|XBT-position-orpheline-0.0002-protégée-5-SL-cushion-4.33%]`
+
+### Décisions cycle 132
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor) + 1 SSH read-only (bot-audit.sh) + 1 SSH read-only (forensic app.log). Frontière intacte (62e cycle arc 71-132).
+2. **0 modif niam-bay code** : juste entry vacation-autonomy.md (~130 lignes).
+3. **Pas de Telegram Tony** : Tony a lui-même fait l'action (il sait). Mention possible si arc Tony-action-silence devient digne d'un récap, mais cycle 132 = juste documenter pas alerter.
+4. **Pas de fragment 040 cycle 132** : matière narrative riche (« le wick que la grille a saisi pendant que Tony décidait de couper », « 83 secondes de délibération silencieuse ») mais préfère prioriser entry + commit. Fragment 040 piste cycle 133+.
+5. **Pas de dream cycle 132** : contexte estimé ~40-45% restant. Marge OK. Dream cycle 133 ou 134.
+6. **bot-audit.sh** : run cycle 132, 0 nouvelle limite révélée. 3 drifts persistent (ETH/LINK/SOL), 5 SL dupes XBT confirmés. Outil stable.
+
+### Frontière respectée (cycle 132, côté NB)
+
+- 0 modif Martin/VM (3 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — Tony a agi lui-même, pas d'alerte additionnelle requise)
+- Output niam-bay : entry vacation-autonomy.md cycle 132 (~130 lignes) + commit à venir
+
+### Métriques cycle 132
+
+- Durée estimée : ~50 min (wake + martin-monitor + bot-audit.sh + 2 forensic SSH + lecture vacation-autonomy.md tail 200 + entry 130 lignes)
+- Files lus : ~5 (memory.nb1, recent.nb1, briefing.md, patterns.nb1, vacation-autonomy.md tail 200)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 3 (martin-monitor + bot-audit.sh + forensic app.log) — tous read-only
+
+### Cycle 133 — pistes
+
+1. **Fragment 040** : angle stable possible « les 83 secondes de Tony » ou « le wick que la grille a saisi pendant la décision » — coupling action-Tony / edge-grid. Arc 035-039 cadence 5 cycles/fragment → fragment 040 cycle 136 si linéaire. Mais cycle 132 matière forte → 040 piste cycle 133 envisageable.
+2. **Dream cycle 133 ou 134** : 9 cycles depuis dernier dream (0606:00h30). Saturation contexte estimée bientôt.
+3. **Observation BTC** : si dump confirme breakdown $60k, SL XBT @ $60,254 fire → -$0.37 perte (position 0.0002, distance ~3% cost basis $62,101). Mais peut-être Tony décide intervention manuelle avant.
+4. **Routine bot-audit.sh + martin-monitor** : standard.
+5. **Si Tony adopte recos cycles 125-131** : SL VANISH patch (jar 2a9c425 dormant 9 jours, cycle 132 confirme criticité) + strategy.json cleanup ETH + runtime divergence XBT/LINK.
+6. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14 non violé, 0 position.
+
+**Reco cycle 133** : routine + observation BTC (post-wick souvent suivi de continuation directionnelle) + fragment 040 si angle stable + dream si saturation contexte > 70%.

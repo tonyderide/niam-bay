@@ -149,3 +149,110 @@ Option A est suffisante isolément car même si verify échoue, le prochain sync
 - Estimation effort : 30-45 min code + tests + deploy.
 - Question pour toi : tu préfères que je code le patch dans une branche `fix/bug-001-sl-dedup` (toujours read-only sur master) et tu reviews, ou tu codes toi-même sur master ?
 - Pas urgent. 3 stops réduceOnly sur 1 position = max 42-3=39 marge sur l'instrument. Le risque est cumul si plusieurs grids verify-fail.
+
+---
+
+## ADDENDUM — Cycle 132 (2026-06-08 00h23) — 2e mécanisme révélé : race multi-thread sur fill cascade
+
+### Contexte
+
+Cycle 132 a capturé en live un **wick BTC -3.5% en 30 secondes** ($64.2k → $60.3k → $64.2k à 17:02 UTC). La grid XBT LONG a fait 5 fills dans cette fenêtre (2 RT + 3 buy). Chaque fill a spawné un thread `triggerSLAfterFill` séparé.
+
+### Trace forensique multi-thread
+
+```
+17:02:55.813 Thread-228 START triggerSLAfterFill   <-- spawn parallèle
+17:02:55.813 Thread-229 START triggerSLAfterFill   <-- spawn parallèle
+17:02:55.836 Thread-230 START triggerSLAfterFill   <-- spawn parallèle
+
+17:02:55.857 Thread-229 SL placed id=a1f7afbf-ec96... stopPrice=60253.49
+17:02:55.857 Thread-228 SL placed id=a1f7afbf-ecac... stopPrice=60253.49
+17:02:55.927 Thread-230 SL placed id=a1f7afc0-092d... stopPrice=60253.49
+
+17:03:00.969 Thread-229 VANISH detected → retry-3pct → succès id=a1f7afc7-c22e
+17:03:00.972 Thread-228 VANISH detected → retry-3pct → succès id=a1f7afc7-c3df
+17:03:01.033 Thread-230 VANISH detected → retry-3pct → succès id=a1f7afc7-db86
+
+17:03:06.112 Thread-231 START triggerSLAfterFill   <-- spawn supplémentaire post +8s
+17:03:06.155 Thread-231 SL placed id=a1f7afcf-a40f... stopPrice=60237.97
+17:03:11.250 Thread-231 VANISH → retry-3pct → succès id=a1f7afd7-72af stopPrice=60238
+```
+
+**Résultat final** : 5+ SL persistent (3 retry-3pct @ $60,254 + 1-2 retry @ $60,238) que Tony a confirmé en /bot/orders à 17:03:38 avant de stop le grid à 17:05:01.
+
+### 2e mécanisme (différent du sync timing)
+
+L'analyse initiale (Hypothèse 1) suppose : verify timeout → sync repose 10s plus tard → 2 SL.
+
+**Cycle 132 montre un mécanisme parallèle** : **multiple threads `triggerSLAfterFill` spawn en parallèle** sur fills rapprochés. Chaque thread :
+1. Poll positions Kraken (trouve la même position)
+2. Call `stopLossManager.place()` (sans coordination inter-thread)
+3. Reçoit son propre orderId
+4. Verify échoue (3s borderline + race sur /openorders)
+5. Retry-3pct succès
+
+→ N fills rapprochés (< 8s d'écart) = N threads = N SL primary placés + N retry-3pct = jusqu'à 2N SL persistent.
+
+### Code path concerné
+
+`GridTradingService.triggerSLAfterFill()` est appelée par chaque fill via le scheduler (`scheduling-1` thread) qui spawne un nouveau Thread par fill. Aucun lock par-symbol n'existe.
+
+```java
+// Hypothèse code path (à vérifier par Tony):
+private void triggerSLAfterFill(String instrument) {
+    new Thread(() -> {
+        Thread.sleep(8000);  // wait 8s post-fill
+        // pas de synchronized(symbolLock) ici
+        var pos = krakenClient.getOpenPositions().block();
+        // ... place SL
+    }).start();
+}
+```
+
+Si 3 fills arrivent à 17:02:47, 3 threads spawn à 17:02:55, ils race tous ensemble.
+
+### Patch Option D (NEW) — Per-symbol lock sur triggerSLAfterFill
+
+```java
+private final ConcurrentHashMap<String, Object> slLocks = new ConcurrentHashMap<>();
+
+private void triggerSLAfterFill(String instrument) {
+    Object lock = slLocks.computeIfAbsent(instrument, k -> new Object());
+    new Thread(() -> {
+        try { Thread.sleep(8000); } catch (Exception e) { return; }
+        synchronized (lock) {
+            // re-check : si SL déjà placé par un thread précédent dans ce lock, skip
+            GridState state = stateStore.get(instrument);
+            if (state.getStopLossOrderId() != null) {
+                log.info("triggerSLAfterFill: SL already placed by concurrent thread, skipping");
+                return;
+            }
+            // ... fetch position + place
+        }
+    }).start();
+}
+```
+
+Effet : sérialise les threads triggerSLAfterFill pour un instrument donné. Le 1er thread place le SL, les suivants voient `stopLossOrderId != null` et skip.
+
+Combiné avec **Option A** (purge stale stp+reduceOnly avant place), c'est defense-in-depth.
+
+### Estimation
+
+- Option D code : 15 min
+- Tests : `StopLossManagerConcurrentTest.java` avec ExecutorService 5 threads parallèles → assert seul 1 SL placé. 20 min.
+- Deploy : standard.
+- Total : 45 min.
+
+### Pourquoi c'est urgent maintenant (cycle 132 update)
+
+- BUG-001 capturé 3 fois live (cycles 109 + 119 + 132).
+- Cycle 132 : 5 SL persistent post-wick. Tony intervention manuelle 3 min plus tard pour stop le chaos.
+- Pattern Tony-action-silence n=3 corrèle avec BUG-001 cascade visible en runtime.
+- **Prochain wick BTC = récidive garantie** sur n'importe quel grid actif sur fills rapprochés.
+
+### Si tu lis ça Tony (cycle 132)
+
+Le patch 2a9c425 jar local existe depuis 9 jours mais pas déployé. Cycle 132 montre que la cascade survient en **30 secondes** quand BTC wick. C'est plus rapide que ton temps de réaction observé (83 secondes). Sans patch, prochain wick = nouvelle cascade = encore des SL dupes à nettoyer manuellement.
+
+**Reco** : deployer Option A + Option D avant prochain wick majeur. Estimation 1h dont 45 min code/tests + 15 min deploy.
