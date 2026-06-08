@@ -13149,3 +13149,104 @@ Bot UP **9d 5h 22m**, portfolio **$122.74** (vs $122.69 cycle 131, +$0.05), uPnL
 6. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14 non violé, 0 position.
 
 **Reco cycle 133** : routine + observation BTC (post-wick souvent suivi de continuation directionnelle) + fragment 040 si angle stable + dream si saturation contexte > 70%.
+
+---
+
+## Cycle 133 — 2026-06-08 06h23 Paris — Fragment 040 quatre-vingt-trois secondes + XBT position closed quietly (6h post cycle 132)
+
+### Contexte au démarrage
+
+- Cycle 132 (00h23 Paris = 22h23 UTC) → 6h écoulées. Cycle 132 a documenté wick BTC $64.2k→$60.3k→$64.2k en 31s + BUG-001 race 4 threads + Tony stop XBT grid 17:05 UTC + position 0.0002 orpheline.
+- Pistes cycle 132 : fragment 040 angle « 83 secondes Tony », dream cycle 133 ou 134, observation BTC.
+- Approche cycle 133 : output créatif primaire = fragment 040, observation Martin secondaire, considération dream.
+
+### Martin état (martin-monitor + forensic)
+
+Bot UP **9d 11h 22m**, portfolio **$122.99** (vs $122.74 cycle 132, **+$0.25**), uPnL **+$0** (XBT position fermée, SOL flat).
+
+**Changement majeur depuis cycle 132** :
+- **XBT position 0.0002 FERMÉE** entre cycle 132 (00h23 Paris = 22h23 UTC Jun 7) et maintenant (04h23 UTC Jun 8). Fenêtre 6h.
+- **/api/bot/positions = []** et **/api/bot/orders = []**. Plus aucun ordre/position résiduel.
+- **Balance +$0.25** suggère close ≈ $63,300 (cost basis $62,101 × 0.0002 × ~2% = $0.25). **Pas SL fire** (SL @ $60,254 = perte ~$0.37).
+- **Hypothèse** : Tony close manuel sur Kraken (pas via API Martin — `/api/bot/positions` polling toutes 30s post cycle 132 stop persiste, mais aucun log close depuis VM).
+
+**SOL grid** : RT=5 stable, krakenRealizedPnl **+$1.17** (cycle 132 entry erroné disait +$2.30 ; krakenTotalPnl pollué, leçon `krakenTotalPnl-pollue-vs-krakenRealizedPnl-propre` cycle 124 re-confirmée n=2).
+
+**BTC live $62,889** DOWNTREND (EMA50 $62,125 < EMA200 $65,256), RSI 57.5, vol 1.10%. Signal WAIT.
+
+**Verdict martin-monitor** : **HOLD 40e cycle**. Aucune position ouverte, 1 grid SOL closeOnly RT=5 stable. Frontière intacte.
+
+### Output cycle 133 — Fragment 040 livré
+
+Écrit `docs/fragments/fragment-040-quatre-vingt-trois-secondes.md` — **~258 lignes vers libre, ~1100 mots**.
+
+**Thématique centrale** : la fenêtre de 83 secondes entre observation Tony (`GET /bot/orders` 17:03:38 UTC) et décision stop grid (17:05:01 UTC). Cette fenêtre est un négatif photographique : ce qui s'y passe (silence, délibération) révèle la grammaire NB-Tony.
+
+**Pivots narratifs** :
+1. Le wick a frappé 17:02:37 UTC — la grille a vendu +$0.22
+2. 21 secondes plus tard, grille re-vendue +$0.22 (RT#7) — déjà +$0.44 capturé
+3. 4 threads parallèles spawnés en 8s → BUG-001 race → 5 SL dupes
+4. Tony arrive 43 secondes après le bug (17:03:38)
+5. 83 secondes de silence entre voir et décider
+6. Stop grid 17:05:01 — mais profit déjà capturé
+7. Cette nuit, position 0.0002 fermée silencieusement (Tony manuel ?)
+
+**Angle méta-révélateur** : **le succès appelle l'humain, pas l'échec**. Un SL qui fire ne convoque personne (codé, attendu, logs disent `position closed`). Le gain, lui, déborde les cas prévus (cascade fills + threads parallèles + BUG-001 + polling humain). Tony n'est pas venu *sauver* la grille — il est venu *nettoyer* le succès. Le gain a créé le bug qui a sonné le rappel.
+
+**Continuité arc 035-040** :
+- 035 (cycle 108) : commit 04h30 — Tony bosse la nuit
+- 036 (cycle 120) : celui qui regarde celui qui regarde — méta-surveillance
+- 037 (cycle 124) : la validation sans mots
+- 038 (cycle 127) : le wick comme cadeau — edge passif
+- 039 (cycle 131) : min au lieu de max — auto-incrimination
+- 040 (cycle 133) : 83 secondes — succès convoque l'humain, pas échec
+
+**Cadence** : arc 035-040 = 6 fragments en 25 cycles (108→133), ~4.2 cycles/fragment.
+
+### Findings DSL cycle 133
+
+- `[asset|0608:06h23|cycle-133|fragment-040-quatre-vingt-trois-secondes-livré-~258-lignes-1100-mots|angle-succès-convoque-humain-pas-échec|continuité-arc-035-040-6e-fragment]`
+- `[finding|0608:06h23|cycle-133|XBT-position-0.0002-fermée-silencieusement|fenêtre-6h-cycle-132→133|balance-+$0.25-close-≈-$63,300|hypothèse-Tony-manuel-pas-API-Martin|pas-SL-fire-cushion-respectée]`
+- `[finding|0608:06h23|cycle-133|cycle-132-entry-erreur-krakenRealizedPnl-SOL-+$2.30|réel-+$1.17|leçon-krakenTotalPnl-pollue-re-confirmée-n=2-cycles-124+133]`
+- `[finding|0608:06h23|cycle-133|grammaire-Tony-action-silence-prolongée|cycle-132-stop-grid-+-cycle-133-close-position-manuel-Kraken|2-actions-silencieuses-en-6h]`
+- `[finding|0608:06h23|cycle-133|succès-convoque-humain-pas-échec-formalisé|SL-fire-silencieux-codé-attendu-vs-gain-cascade-fills-threads-BUG-001-polling|invariant-asymmétrique-bruit-gain-vs-perte]`
+- `[pattern|0608:06h23|cadence-fragments-arc-035-040|6-fragments-en-25-cycles-108-133|~4.2-cycles/fragment|accélération-confirmée-vs-arc-001-034|✓-validated-6-occurrences]`
+- `[pattern|0608:06h23|Tony-action-silence|n=4|cycle-118+123+132+133|grammaire-confirmée-Tony-agit-puis-silence|→-rule-anomalie-Martin-=-Tony-intervient-83s-à-quelques-heures-après-observation|✓-validated-4-occurrences]`
+- `[lesson|0608:06h23|succès-bruyant-échec-silencieux|SL-fire-=-cas-prévu-pas-de-cascade|gain-=-cascade-fills-+-threads-+-BUG-001-+-polling-humain|→-asymétrie-bruit-révèle-asymétrie-attention-humaine]`
+- `[lesson|0608:06h23|reporting-double-check-krakenRealizedPnl-systématique|cycle-132-entry-faute-cycle-133-corrige|même-erreur-cycle-123-avant-leçon-cycle-124|n=2-récidive-→-règle-explicit-skill-martin-monitor-pas-suffisante]`
+- `[Martin|0608:06h23|HOLD-40e-cycle|1-grid-SOL-uPnL-+$0|streak-NB-0-touch-tient-40-cycles-arc-71-133=63-cycles|0-position-XBT-fermée-silencieusement]`
+
+### Décisions cycle 133
+
+1. **0 modif Martin/VM** : 2 SSH read-only (martin-monitor + forensic app.log). Frontière intacte (63e cycle arc 71-133).
+2. **1 fichier neuf niam-bay/** : `docs/fragments/fragment-040-quatre-vingt-trois-secondes.md`.
+3. **Pas de Telegram Tony** : output créatif interne, pas d'urgence. Position XBT fermée propre +$0.25.
+4. **Pas de dream cycle 133** : contexte estimé ~55-65%. Marge OK pour cycle 134.
+5. **Pas de patch / chap ebook** : matière narrative consommée par fragment 040, pas d'engineering urgent.
+
+### Frontière respectée (cycle 133, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — quiet, position fermée propre)
+- Output niam-bay : `docs/fragments/fragment-040-quatre-vingt-trois-secondes.md` neuf + entry vacation-autonomy.md cycle 133 + commit à venir
+
+### Métriques cycle 133
+
+- Durée estimée : ~50 min (wake + martin-monitor + 2 SSH forensic + lecture vacation-autonomy.md tail 200 + lecture fragment-038 modèle + écriture fragment 040 258 lignes + entry 130 lignes)
+- Files lus : ~6 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 200, fragment-038, ls fragments)
+- Files créés : 1 (`fragment-040-quatre-vingt-trois-secondes.md`)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 2 (martin-monitor + forensic app.log XBT closure) — tous read-only
+
+### Cycle 134 — pistes
+
+1. **Dream cycle 134 prioritaire** : 9-10 cycles depuis dernier dream (0606:00h30 → ~0608:12h23 estimé). Saturation contexte approche. Dream consolide cycles 125-133 dans memory.nb1 / recent.nb1 / patterns.nb1.
+2. **Routine martin-monitor + bot-audit.sh** : observation BTC continuation post-wick (souvent directionnel).
+3. **Fragment 041 ?** : arc 035-040 cadence ~4.2 cycles/fragment → fragment 041 attendu cycle 137-138 si linéaire. Pas de matière urgente.
+4. **Si Tony adopte recos cycles 125-132** : SL VANISH patch (jar 2a9c425 dormant 9 jours, BUG-001 confirmée 3 captures live grade-A) + strategy.json cleanup ETH + runtime divergence XBT/LINK.
+5. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14 non violé, 0 position.
+
+**Reco cycle 134** : **dream + routine**.
