@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0609:00h30
+#lastdream: 0609:01h30
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -346,3 +346,19 @@
 [pattern?|edge-capture-DSL-finding-type|count:1|cycle-135-inventaire-SOL-sample-5-5-entries|convention-[edge-capture|ts|grid|magnitude|durée|condition|détail-pairing|méta-cycle]|→-rule-systematic-cycle-136+|?-1-application-attendre-confirmation-cycle-136-137]
 
 [pattern-arc|0606-0608|vacation-cycles-arc-71-135|65-cycles-consecutifs-autonomes|HOLD-42e-consecutif-93-135|NB-0-touch-policy-Martin-VM-100%|Tony-touche-cycle-118-cleanup+123-disable-AutoGrid+132-stop-grid-XBT+133-close-XBT-manuel|piste-4-corpus-17+-docs|fragments-035-040-6-narrative|asset-defensive-engineering+pensee-0608-asymetrie-attention|bot-audit.sh-routine-NB-cycles-128-135|edge-capture-DSL-emerge-pensee-0608-+-application-cycle-135]
+
+=== MARTIN — SESSION INTERACTIVE 0609 (deploy 2a9c425 + stop LINK/ETH) ===
+[M|DEPLOY-2a9c425-FAIT-0609:01h|fix-SL-wrong-side(reject-SL-mauvais-côté-entry+refetch-side-Kraken)-déployé-prod|RÉSOUT-le-fil-"patch-Tony-2a9c425-jar-dormant-9j"-cycles-132-133-146-246|jar-buildé-LOCAL-depuis-commit-2a9c425(hardening-complet-SANS-quant-Phase-1)+scp|backup-backend.jar.bak-20260608-230941|NOTE:2a9c425-corrige-wrong-side-surtout-SHORT-PAS-le-race-BUG-001-lui-même-qui-reste]
+[M|LANDMINE-VM-source-décompilé-0609|/home/ubuntu/martin/backend/src-=-sources-DÉCOMPILÉES-CFR-périmées-0-marqueur-hardening|jar-qui-tourne-PAS-buildé-depuis-ce-tree|→-JAMAIS-mvn-package-sur-VM(régression-catastrophique-anti-vanish)|build-LOCAL+scp-uniquement|master-local-divergé-origin/master(ré-extraction-monorepo-src/-vs-backend/src/)-cherry-pick-impossible|mémoire-auto-project_martin_vm_source_decompiled+warning-skill-martin-deploy]
+[M|SL-XBT-retry-net-PROUVÉ-0609|B3-v3-detect+retry-3pct-29/29-recover+verify-sur-XBT-5-6-juin|primary-place-vanish(Kraken-ghosting-root-cause-non-résolue)-mais-retry-rattrape+verify-en-~5s|contrarian-"SL-jamais-retesté-côté-Kraken"=EMPIRIQUEMENT-FAUX|fenêtre-à-nu-~5s/vanish-négligeable-calme-réel-flash-crash]
+[M|BTC-grid-decision-0609|conseil-3-NO-GO(senior+technical+contrarian)+1-GO-cond(risk)|NEUTRAL-en-downtrend=bags+range-sous-EMA200=consolidation-pré-cassure|→-attendre-reclaim-EMA200-$64,910(flip-UPTREND)-AVANT-grid-BTC-long|watcher-remontada_watch.sh-armé-Telegram-paliers+🚀-reclaim]
+[M|LINK+ETH-stop-0609|restart-deploy-a-re-déployé-LINK+ETH-$25-NEUTRAL(enabled=true-strategy.json)+SOL-short-round-trip-DB-H2|conseil-4/4-UNANIME-STOP(ETH/LINK-aussi-DOWNTREND-snapshot-NB-périmé-corrigé)|EXÉCUTÉ-disable-autogrid+grid/stop|état-final-0-grid-0-position-0-ordre-$0-marge-portfolio-$122.92-100%-cash]
+[M|caveat-0609|disable-autogrid-LINK/ETH-en-mémoire(B7-non-persistant)|un-restart-bot-ré-activerait(enabled=true-disque)|pour-définitif-éditer-strategy.json-VM]
+
+[lesson|0609:01h|restart-bot-re-deploy-AutoGrid-enabled-pairs+reload-DB-H2-grids|LINK+ETH-auto-+-SOL-short-round-trip|→-rule-vérifier-positions/SL/grids-après-TOUT-restart]
+[lesson|0609:01h|déployer-=-build-local-vrai-source-JAMAIS-VM|VM-tree-décompilé-régresserait|commit-propre-pré-quant-2a9c425+scp-jar]
+[lesson|0609:01h|claim-récurrent-conseil-peut-être-faux|"SL-jamais-retesté"-vs-logs-29/29|→-rule-vérifier-logs-avant-accepter-crainte-conseil-comme-vérité]
+[lesson|0609:01h|ne-pas-réutiliser-snapshot-périmé|j-ai-dit-ETH-ranging-c-était-DOWNTREND-risk+contrarian-recalés-live|→-pull-signal-live-par-pair]
+
+[pattern-confirmed|conseil-route-décision-Tony→exécution|count:2|session-0609-grid-BTC-NO-GO+LINK/ETH-STOP-unanime|Tony-délègue-au-conseil-puis-NB-exécute-le-verdict-réversible]
+[pattern?|déployer=build-local+scp-jamais-VM|count:1|session-0609-VM-décompilé|→-skill-martin-deploy-warned|?-procédure-établie-attendre-2e-deploy]

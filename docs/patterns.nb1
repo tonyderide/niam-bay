@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0609:00h30
+#lastdream: 0609:01h30
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -109,5 +109,11 @@
 [outil-cree-cycle-N-revele-limite-N+1|count:2|last:0607:18h23|cycle-130-bot-audit.sh-bug-min/max+cycle-131-fragment-narratif|→-rule-N+1eme-usage-suspect|✓-validated-2-occurrences]
 [Tony-action-silence|count:4|last:0608:06h23|cycle-118+123+132+133|grammaire-confirmee|→-rule-anomalie-Martin-=-Tony-intervient-83s-a-quelques-heures|✓-validated-4-occurrences]
 [grid-disparition-runtime-silencieuse|count:4|last:0608:00h23|cycles-79+119+122+132|cause-confirmee-Tony-manuel|→-routine-check-/api/grid/active-vs-historique|✓-validated-4-occurrences]
-[BUG-001-multi-thread-race-cascade|count:3|last:0608:00h23|cycle-109+119+132-captures-live-grade-A|StopLossManager-race-cumulative|patch-Tony-2a9c425-dormant-9j|→-rule-deploy-patch-imperatif|✓-validated-3-occurrences]
+[BUG-001-multi-thread-race-cascade|count:3|last:0608:00h23|cycle-109+119+132-captures-live-grade-A|StopLossManager-race-cumulative|patch-2a9c425-DÉPLOYÉ-0609(corrige-wrong-side-SHORT-PAS-le-race-lui-même-qui-reste)|→-fil-jar-dormant-clos|BUG-001-race-toujours-ouvert]
 [edge-capture-DSL-finding-type|count:1|last:0608:18h23|cycle-135-inventaire-SOL-sample-5-5-entries|convention-[edge-capture|ts|grid|magnitude|durée|condition|détail-pairing|méta-cycle]|→-rule-systematic-cycle-136+|?-1-application-attendre-confirmation]
+
+=== SESSION INTERACTIVE 0609 ===
+[deploy-build-local+scp-JAMAIS-VM|count:1|last:0609:01h|VM-git-tree-DÉCOMPILÉ-CFR-périmé-0-hardening|rebuild-VM=régression-catastrophique|build-LOCAL-commit-propre-2a9c425+scp-jar|master-divergé-origin/master-cherry-pick-impossible|→-skill-martin-deploy-WARNED+mémoire-auto-project_martin_vm_source_decompiled|?-procédure-établie-attendre-2e-deploy]
+[conseil-route-décision-Tony→exécution-NB|count:2|last:0609:01h|grid-BTC-NO-GO(3/1)+LINK/ETH-STOP-unanime(4/4)|Tony-délègue-au-conseil-puis-NB-exécute-verdict-réversible|→-rule-action-réversible+conseil-unanime+direction-sûre=exécuter-pas-re-demander]
+[verify-claim-conseil-via-logs|count:1|last:0609:01h|contrarian-"SL-XBT-jamais-retesté"=FAUX-logs-29/29-retry-net|→-rule-vérifier-app.log-avant-accepter-crainte-récurrente-conseil-comme-vérité|?-1-occurrence]
+[restart-bot-re-deploy-AutoGrid+reload-DB-H2|count:1|last:0609:01h|LINK+ETH-enabled=true-auto-déployés-au-boot+SOL-short-round-trip-DB-H2|→-rule-vérifier-positions/SL/grids-après-TOUT-restart|note:disable-autogrid-en-mémoire-B7-restart-ré-activerait]
