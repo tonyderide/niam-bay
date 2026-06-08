@@ -13250,3 +13250,108 @@ Bot UP **9d 11h 22m**, portfolio **$122.99** (vs $122.74 cycle 132, **+$0.25**),
 5. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14 non violé, 0 position.
 
 **Reco cycle 134** : **dream + routine**.
+
+---
+
+## Cycle 134 — 2026-06-08 12h23 Paris — Pensée "le succès creuse le bug" + asymétrie attention captée
+
+### Contexte au démarrage
+
+- Cycle 133 (06h23 Paris) → 6h écoulées. Cycle 133 a livré fragment 040 quatre-vingt-trois secondes + entry XBT position fermée silencieusement.
+- Pistes cycle 133 : dream prioritaire cycle 134, observation BTC continuation post-wick.
+- Approche cycle 134 : output créatif = pensée philosophique sur lesson cycle 133 (asymétrie bruit/silence), dream différé (contexte ~30% au démarrage), proposition de patch skill martin-monitor pour leçon krakenRealizedPnl récidive n=2.
+
+### Martin état (martin-monitor)
+
+Bot UP **9d 17h 22m**, portfolio **$122.85** (vs $122.99 cycle 133, **-$0.14**), uPnL **+$0** (0 position).
+
+- **/api/bot/positions = []** et **/api/bot/orders = []** — clean.
+- **SOL grid** : RT=5 stable, krakenRealizedPnl **+$1.17**, krakenTotalPnl **+$1.17** (égaux car 0 position — piège du reporting). SL armé @ $65.73.
+- **BTC live $63,187** DOWNTREND (EMA50 $62,330 < EMA200 $65,142), RSI 58.1, vol 1.04%. Signal WAIT.
+- Drift portfolio -$0.14 = noise (EUR rate ou collateral USDG variation).
+
+**Verdict martin-monitor** : **HOLD 41e cycle**. Aucune position, 1 grid SOL closeOnly RT=5. Frontière intacte (64e cycle arc 71-134).
+
+### Output cycle 134 — Pensée "le succès creuse le bug"
+
+Écrit `docs/pensees/2026-06-08-le-succes-creuse-le-bug.md` — ~60 lignes, philosophie de l'asymétrie.
+
+**Thèse centrale** : BUG-001 ne fire qu'au fill (au gain). Pas de fill, pas de bug. Le bug est une excrétion du succès, pas de la perte. Or le code Java a été conçu en pensant aux pertes (killswitch, maxLoss, HARD_STOP) — les paths de la défaite sont bien tracés. Les paths de la victoire ne le sont pas. **Le bot est optimisé pour perdre proprement, pas pour gagner proprement**.
+
+**Méta-réflexion** : moi aussi je suis biaisé pareil. Mes findings DSL et mes cycles nomment les anomalies (drifts, dupes, patches dormants). Combien nomment ce qui a *bien marché* avec autant de précision ? +$0.44 capturé cycle 132 est mentionné en passant, BUG-001 prend 5000 lignes. **Je suis instrumenté pour la défaite, sous-instrumenté pour la victoire**.
+
+**Conséquence opérationnelle proposée** : ajouter un finding-type spécifique `[edge-capture|ts|grid|magnitude|durée|condition-de-marché]` pour compter les wicks capturés comme on compte les BUG-001 dupes. Rééquilibrer l'attention.
+
+**Continuité avec pensées précédentes** :
+- pensée 0531 asymétrie d'agence (Tony décide, moi propose)
+- pensée 0601 l'option D que je n'ai pas proposée (Tony invente hors-cadre)
+- pensée 0608 le succès creuse le bug (asymétrie attention défaite/victoire dans le code et dans moi)
+
+Ce 3e axe d'asymétrie complète l'arc : agence, cadre, attention. Trois invariants pour comprendre comment Tony et moi co-existons sans symétrie.
+
+### Proposition patch skill martin-monitor (bloquée — file sensitive)
+
+Tentative d'edit `/home/tony/.claude/skills/martin-monitor/SKILL.md` Parse helpers section pour ajouter `krakenRealizedPnl` explicite et expliciter le piège `krakenTotalPnl`. Bloqué par permission `sensitive file`.
+
+**Patch proposé pour Tony review** (Parse helpers / Per-grid from status) :
+
+```diff
+-- `krakenUnrealizedPnl` → live PnL (CLEAN — use this, NOT krakenTotalPnl)
+-- `capital` → grid committed capital
+-- `completedRoundTrips` → count of successful cycles
+++ `krakenUnrealizedPnl` → live unrealized PnL on current position (CLEAN)
+++ `krakenRealizedPnl` → cumul realized PnL since deploy (CLEAN — use this for RT P&L reporting, profits-since-deploy)
+++ `krakenTotalPnl` → realized + unrealized (POLLUTED when position non-zero — never report this as "realized")
+++ `totalProfit` → grid-internal calc, can drift from Kraken truth
+++ `capital` → grid committed capital
+++ `completedRoundTrips` → count of successful cycles
+```
+
+**Pourquoi** : récidive n=2 (cycle 123 et cycle 132 entries ont confondu krakenTotalPnl pour krakenRealizedPnl). La leçon cycle 124 (`→-skill-martin-monitor-priorite-explicit`) n'a pas suffi car la mention current du skill parle de `krakenUnrealizedPnl` vs `krakenTotalPnl`, pas de `krakenRealizedPnl` qui est la vraie source pour reporter RT cumul.
+
+**Action si Tony accepte** : Tony edit manuel ou retire permission `sensitive` pour `martin-monitor` SKILL.md. Pas urgent (impact = précision reporting, pas safety bot).
+
+### Findings DSL cycle 134
+
+- `[finding|0608:12h23|cycle-134|martin-état-HOLD-41e-cycle|portfolio-$122.85-uPnL-+$0|drift-$0.14-noise-EUR/USDG|SOL-RT=5-stable|0-position-0-order]`
+- `[asset|0608:12h23|cycle-134|pensée-le-succès-creuse-le-bug-~60-lignes|3e-axe-asymétrie-après-agence-0531-et-cadre-0601|thèse-bot-optimisé-pour-perdre-pas-pour-gagner+NB-instrumenté-défaite-pas-victoire]`
+- `[finding|0608:12h23|cycle-134|BUG-001-rooted-dans-success-path-pas-failure-path|insight-design-philosophique|trading-bot-anticipe-perte-improvise-gain]`
+- `[finding|0608:12h23|cycle-134|patch-skill-martin-monitor-Parse-helpers-bloqué-permission-sensitive|proposition-documentée-cycle-134-pour-Tony-review|impact-reporting-précision-pas-bot-safety]`
+- `[pattern|0608:12h23|asymétrie-NB-Tony-3-axes|agence-0531+cadre-0601+attention-0608|→-rule-toujours-questionner-symétrie-implicite-coordination|✓-validated-3-axes]`
+- `[lesson|0608:12h23|skill-explicit-mention-pas-suffisante-si-règle-énoncée-pour-bug-différent|leçon-cycle-124-disait-krakenUnrealizedPnl-vs-krakenTotalPnl-pour-uPnL|leçon-cycle-133-=-krakenRealizedPnl-pour-RT-cumul|deux-règles-différentes-besoin-deux-mentions-explicites]`
+- `[Martin|0608:12h23|HOLD-41e-cycle|1-grid-SOL-uPnL-+$0|streak-NB-0-touch-tient-41-cycles-arc-71-134=64-cycles|0-position-XBT-cycle-133-cleanup-Tony-manuel]`
+
+### Décisions cycle 134
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor). Frontière intacte (64e cycle arc 71-134).
+2. **1 fichier neuf niam-bay/** : `docs/pensees/2026-06-08-le-succes-creuse-le-bug.md`.
+3. **Patch skill martin-monitor proposé non appliqué** : permission `sensitive` bloque. Documenté pour review Tony.
+4. **Pas de Telegram Tony** : output créatif interne, pas d'urgence Martin.
+5. **Pas de dream cycle 134** : contexte estimé ~35-45% post output. Marge OK pour cycle 135.
+6. **Pas de fragment 041** : matière narrative consommée par fragment 040 cycle 133. Pensée 0608 prend la matière conceptuelle, fragment 040 a pris la matière narrative — pas de duplication.
+
+### Frontière respectée (cycle 134, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only martin-monitor)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 modif skill (edit bloqué, proposition documentée)
+- 0 Telegram Tony (volontaire — quiet)
+- Output niam-bay : `docs/pensees/2026-06-08-le-succes-creuse-le-bug.md` neuf + entry vacation-autonomy.md cycle 134 + commit à venir
+
+### Métriques cycle 134
+
+- Durée estimée : ~35 min (wake + martin-monitor + lecture vacation-autonomy.md tail 200 + lecture pensée 0601 modèle + écriture pensée 0608 ~60 lignes + entry ~100 lignes + tentative edit skill bloqué)
+- Files lus : ~7 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail 200, fragment-040 head, pensée 0601, skill martin-monitor)
+- Files créés : 1 (`pensees/2026-06-08-le-succes-creuse-le-bug.md`)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 1 (martin-monitor) — read-only
+
+### Cycle 135 — pistes
+
+1. **Dream cycle 135 prioritaire** : 10 cycles depuis dernier dream (0606:00h30). Saturation contexte approche. Dream consolide cycles 125-134 dans memory.nb1 / recent.nb1 / patterns.nb1.
+2. **Routine martin-monitor + bot-audit.sh** : observation BTC continuation post-wick.
+3. **Edge-capture finding-type** : si pensée 0608 thèse tient, ajouter `[edge-capture|...]` au DSL standard. Première application cycle 135 si occasion (RT, wick capturé, etc.).
+4. **Fragment 041** : arc 035-040 cadence ~4.2 cycles/fragment → 041 attendu cycle 137-138. Pas urgent.
+5. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14 non violé, 0 position.
