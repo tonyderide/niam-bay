@@ -13355,3 +13355,86 @@ Tentative d'edit `/home/tony/.claude/skills/martin-monitor/SKILL.md` Parse helpe
 3. **Edge-capture finding-type** : si pensée 0608 thèse tient, ajouter `[edge-capture|...]` au DSL standard. Première application cycle 135 si occasion (RT, wick capturé, etc.).
 4. **Fragment 041** : arc 035-040 cadence ~4.2 cycles/fragment → 041 attendu cycle 137-138. Pas urgent.
 5. **Suivi sample 5 SOL** : RT=5 stable, range $62.98-67.14 non violé, 0 position.
+
+---
+
+## Cycle 135 — 2026-06-08 18h23 Paris — Edge-capture DSL appliqué inventory SOL sample 5
+
+### Contexte au démarrage
+
+- Cycle 134 (12h23 Paris) → 6h écoulées. Cycle 134 a livré pensée *le succès creuse le bug* + proposition finding-type `[edge-capture|...]`.
+- Pistes cycle 134 : dream prioritaire cycle 135, edge-capture finding-type application.
+- Approche cycle 135 : appliquer concrètement la proposition cycle 134 (build inventaire SOL sample 5), valider la convention DSL en pratique avant dream qui codifierait. Dream différé cycle 136 si contexte permet.
+
+### Martin état (martin-monitor)
+
+Bot UP **9d 23h 22m**, portfolio **$123.09** (vs $122.85 cycle 134, **+$0.24**), uPnL **+$0** (0 position).
+
+- **/api/bot/positions = []** et **/api/bot/orders = []** — clean.
+- **SOL grid** : RT=5 stable, krakenRealizedPnl **+$1.17**, krakenUnrealizedPnl **+$0**, 0 position. SL armé @ $65.73 (`a1f2bdf3-8f77-46a8-bd72-29251f4bd8c9`).
+- **BTC live $63,896** DOWNTREND (EMA50 $62,632 < EMA200 $65,056), RSI 63.1, vol 0.82%. Signal WAIT.
+- Drift portfolio +$0.24 = noise (EUR rate variation 95.87 EUR → $110.66 vs $110.47 cycle 134).
+- App.log VM : pas d'événement Martin depuis cycle 134, juste mes propres requêtes martin-monitor en surface.
+
+**Verdict martin-monitor** : **HOLD 42e cycle**. Aucune position, 1 grid SOL closeOnly RT=5 stagnante depuis 0605:06h (78h sans nouveau RT). Frontière intacte (65e cycle arc 71-135).
+
+### Output cycle 135 — `docs/projets/edge-capture-inventory-sol-cycle135.md`
+
+Inventaire RT du sample SOL 5 (cycles 120 → 135). 5 RT décortiqués : timestamp, durée, magnitude, condition. Convention DSL finalisée :
+
+```
+[edge-capture|ts|grid|magnitude|durée|condition|détail-pairing|méta-cycle]
+```
+
+Cinq entries créées (RT1 à RT5), agrégats calculés (ROI +11.67% en 14h, fees ~10.5%, densité 1 RT/2h48), lecture qualitative (3 angles + insight cycle 135 : RT5 buy @ 65.64 vs SL @ 65.73 = **9 cents de marge**, qui sans inventaire serait invisible).
+
+**Validation pensée 0608** : sans inventaire formel, RT5 = nombre dans totalProfit. Avec inventaire, RT5 = évènement narrable *captured the bottom by 9 cents*, précision symétrique aux dupes BUG-001. Le rééquilibrage attention défaite/victoire commence par cette précision-là.
+
+### Findings DSL cycle 135
+
+- `[finding|0608:18h23|cycle-135|martin-état-HOLD-42e-cycle|portfolio-$123.09-uPnL-+$0|drift-+$0.24-noise-EUR-rate|SOL-RT=5-stable|0-position-0-order]`
+- `[asset|0608:18h23|cycle-135|inventaire-edge-capture-SOL-sample-5-créé|5-RT-décortiqués-+convention-DSL-finalisée-+agrégats-calculés|première-application-concrète-pensée-0608]`
+- `[edge-capture|0604:21h37:17|SOL|+$0.2574|5h20m54s|range_drift|sell-67.78→buy-67.78|cycle120-RT1]`
+- `[edge-capture|0605:01h03:11|SOL|+$0.2574|1h07m53s|fast_oscillation|sell-68.83-T23:55→buy-67.78|cycle120-RT2-spacing1.55%-in-68min]`
+- `[edge-capture|0605:04h03:12|SOL|+$0.2617|1h04m29s|deep_dive|sell-66.69-T02:58→buy-66.69|cycle120-RT3-wick-down-then-reentry]`
+- `[edge-capture|0605:05h44:25|SOL|+$0.2617|1h18m16s|re_test|sell-67.73-T04:26→buy-66.69|cycle120-RT4-second-touch]`
+- `[edge-capture|0605:06h03:16|SOL|+$0.2659|3h04m33s|bottom|sell-65.65-T02:58→buy-65.64|cycle120-RT5-9-cents-from-SL]`
+- `[finding|0608:18h23|cycle-135|SOL-stagnation-78h-post-sample|0605:06h→0608:16h-no-RT|opportunity-cost-question-implicite|grille-closeOnly-armée-mais-sans-matière]`
+- `[lesson|0608:18h23|RT5-9-cents-de-marge-SL|sans-inventaire-=-invisible|avec-inventaire-=-narrable-symétrique-aux-dupes-BUG-001|→-règle-edge-capture-DSL-systematic-cycle-136+]`
+- `[Martin|0608:18h23|HOLD-42e-cycle|1-grid-SOL-uPnL-+$0|streak-NB-0-touch-tient-42-cycles-arc-71-135=65-cycles]`
+
+### Décisions cycle 135
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor) + 1 SSH read-only forensic (app.log 78h silence confirmé). Frontière intacte (65e cycle arc 71-135).
+2. **1 fichier neuf niam-bay/** : `docs/projets/edge-capture-inventory-sol-cycle135.md` (~150 lignes, inventaire + convention + lecture).
+3. **Dream cycle 135 différé** : contexte estimé ~50% après cet output, marge OK pour dream cycle 136 ou si BTC bouge fort cette nuit. Justification : la matière dream (cycles 125-134) est lourde et mérite contexte frais, pas la fin d'un cycle déjà chargé.
+4. **Pas de Telegram Tony** : output créatif interne, pas d'urgence Martin.
+5. **Pas de fragment 041** : arc 035-040 cadence ~4.2 cycles/fragment → 041 attendu cycle 137-138. Pensée 0608 + inventaire 135 ont consommé la matière conceptuelle des dernières 36h.
+
+### Frontière respectée (cycle 135, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 modif skill (cycle 134 proposition patch toujours en attente review Tony)
+- 0 Telegram Tony (volontaire — quiet)
+- Output niam-bay : 1 fichier neuf + entry vacation-autonomy.md cycle 135 + commit à venir
+
+### Métriques cycle 135
+
+- Durée estimée : ~30 min (wake + martin-monitor + forensic app.log + lecture pensée 0608 + lecture tail vacation-autonomy.md + écriture inventaire ~150 lignes + entry ~80 lignes)
+- Files lus : ~6 (memory.nb1, briefing.md, vacation-autonomy.md tail 120, pensée 0608, recent.nb1 head via memory.nb1, response JSON SOL grid)
+- Files créés : 1 (`projets/edge-capture-inventory-sol-cycle135.md`)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0 (volontaire)
+- SSH : 2 (martin-monitor + forensic) — read-only
+
+### Cycle 136 — pistes
+
+1. **Dream cycle 136 prioritaire** : 11 cycles depuis dernier dream (0606:00h30). memory.nb1 cap cycle 124. Dream consolide cycles 125-135 et codifie convention `[edge-capture|...]` dans patterns.nb1.
+2. **Backfill rétroactif edge-capture** : si dream allègre contexte, reconstruire inventaires samples 1-4 (cycles antérieurs) — pas urgent, livrable distribué cycles 136-140.
+3. **Routine martin-monitor** : SOL stagnation 78h, watch BTC pour catalyseur. SOL SHORT closeOnly attend buy fills si BTC down → SOL down → range basse touchée.
+4. **Si BTC casse $63k bas ou $65k haut** : événement à narrer (RT6+ potentiel ou SL fired). Cycle 135 a documenté la marge $0.09 — un mouvement BTC -2% pourrait fire SL SOL.
+5. **Fragment 041** : pas avant cycle 137-138 selon cadence.
+
+**Reco cycle 136** : **dream prioritaire** + routine martin-monitor.
