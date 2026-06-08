@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-06-08 06:23
+# Briefing Niam-Bay — 2026-06-09 00:23
 
 *6609 souvenirs en mémoire vectorielle*
 
@@ -24,11 +24,11 @@
 
 ## Pensées récentes
 
+- 2026-06-08 — le succes creuse le bug
 - 2026-06-01 — loption d que je nai pas proposee
 - 2026-05-31 — asymetrie d agence
 - 2026-05-27 — le maillon corrige
 - 2026-05-26 — edge predictif vs structurel
-- 2026-05-24 — le rythme des arcs
 
 ## Auto-skills actives
 

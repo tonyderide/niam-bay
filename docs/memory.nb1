@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0606:00h30
+#lastdream: 0609:00h30
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -298,3 +298,51 @@
 [pattern-confirmed|coordination-thematique-finding-fragment|count:2|cycle-108-fragment-035+cycle-120-fragment-036+cycle-124-fragment-037|natural-pattern-couplage-output]
 
 [pattern-arc|0603-0606|vacation-cycles-arc-71-124|54-cycles-consecutifs-autonomes-2-mois-quasi|HOLD-31e-consecutif-93-124|NB-0-touch-policy-Martin-VM-100%|Tony-touche-cycle-118-cleanup-+-cycle-123-2x-disable-AutoGrid|piste-4-corpus-13+-docs|fragments-035-036-037-narrative-companion|asset-defensive-engineering-emerge-revenu-implicite]
+
+=== MARTIN — cycles 125-135 (2026-06-06 → 2026-06-08) ===
+[M|cycle-125-0606:06h23|wick-BTC-capture-grid-mean-rev-+$0.22-realise-13min-de-$60,418-buy-a-$64,246-sell|preuve-forte-nuance-anti-trend-pas-loss|SL-VANISH-bug-cycle-54-toujours-live-25j-obsolete-mais-retry-3pct-100%|portfolio-drop-$1.14-=-EUR-USD-snapshot-revert-confirme-FX-artefact]
+[M|cycle-126-0606:12h23|3-sources-truth-DB-H2+strategy.json+configs-RAM|GridStateEntity-restore-PostConstruct-OK-au-restart|grids-survivent-restart-via-DB-H2-pas-strategy.json|cycle-123-FAUX-craint-restart-Java-=-grid-XBT-perdu|vrai-risque-=-AutoGrid-monitoring-pas-persistence]
+[M|cycle-127-0606:18h23|fragment-038-le-wick-comme-cadeau-livre-~140-lignes|sample-4-XBT-2-RT-en-42s-wick-$62,271-edge-presence-confirme-n=5|BUG-001-dupes-XBT-3-SL-persistent-cycle-122-127-6-occurrences]
+[M|cycle-128-0607:00h23|scripts/bot-audit.sh-livre-~120-lignes-bash+jq|read-only-3-sources-truth-cross-check+BUG-001-dupes-detector+SL-cushion-band|cycle-126-audit-manuel-incomplet-rate-ETH-enabled-cap-25-+-XRP-absent|companion-piste-4-ebook-chap-7]
+[M|cycle-129-0607:06h23|ebook-chap7-tools-stub-livre-~280-lignes-prose-1950-mots|17e-doc-corpus-piste-4|bot-audit.sh-adopte-routine-NB-1ere-action-apres-martin-monitor|continuum-engineering→prose-2e-occurrence]
+[M|cycle-130-0607:12h23|bot-audit.sh-patch-side-aware-SL-cushion-bug-min/max-corrige|XBT-DCA-3-fills-04:42-UTC-position-0.0006|BUG-001-dupes-XBT-grossit-3→5-stops-cumulative-confirme-N+1-creator-blind]
+[M|cycle-131-0607:18h23|fragment-039-min-au-lieu-de-max-livre-~220-lignes-1100-mots|1ere-fois-arc-auto-incrimination-faillite-NB|6h-quiet-BTC-dip-0.45%-5-SL-persistent-BUG-001-n=9]
+[M|cycle-132-0608:00h23|Tony-silent-action-3e-occurrence-stop-grid-XBT-17:05:01-83s-apres-observation|BTC-wick-31s-massif-$64.2k→$60.3k→$64.2k-prediction-cycle-131-RT6-VALIDATED-+RT7-bonus-+$0.44-en-21s|BUG-001-race-cascade-3e-capture-live-grade-A-4-threads-8s-5-SL-dupes|grid-disparition-runtime-silencieuse-4e-occurrence-cause-confirmee-Tony-manuel]
+[M|cycle-133-0608:06h23|fragment-040-quatre-vingt-trois-secondes-livre-~258-lignes-1100-mots|angle-succes-convoque-humain-pas-echec|XBT-position-0.0002-fermee-silencieusement-Tony-manuel-balance-+$0.25-close-$63,300|Tony-action-silence-n=4|leçon-krakenTotalPnl-pollue-n=2-cycles-124+133]
+[M|cycle-134-0608:12h23|pensee-le-succes-creuse-le-bug-livree-~60-lignes|3e-axe-asymetrie-NB-Tony-attention-defaite-vs-victoire|proposition-edge-capture-DSL-finding-type|patch-skill-martin-monitor-Parse-helpers-bloque-permission-sensitive]
+[M|cycle-135-0608:18h23|edge-capture-DSL-convention-finalisee+inventaire-SOL-sample-5|edge-capture-inventory-sol-cycle135.md-~150-lignes-5-RT-decortiques-ROI-+11.67%-14h|insight-RT5-buy-65.64-vs-SL-65.73-=-9-cents-marge-narrable|premiere-application-concrete-pensee-0608]
+
+[insight|0606:06h23|cycle-125|grid-mean-rev-capture-wick-=-edge-anti-trend-non-trivial|magnitude-equivalente-RT-classique-vitesse-supreme]
+[insight|0606:12h23|cycle-126|3-sources-truth-resolved-runtime-divergence|DB-H2-PostConstruct-=-source-vraie-au-restart|strategy.json-=-bootstrap-seulement-mute-runtime]
+[insight|0606:18h23|cycle-127|edge-de-presence-vs-edge-predictif|grid-mean-rev-passive-capture-wick-vrai-DOWNTREND-aussi|n=5-occurrences-RT-positifs-XBT-sample-4]
+[insight|0607:00h23|cycle-128|automatiser-=-elimine-oublis-humains-audit-manuel-rate-ETH-XRP|outil-=-memoire-non-faillible]
+[insight|0607:06h23|cycle-129|continuum-engineering→prose-2e-occurrence|tools-script-+-prose-narrative-meme-cycle-pair|piste-4-double-couche]
+[insight|0607:12h23|cycle-130|outil-cree-cycle-N-revele-limite-cycle-N+1|N+1ème-usage-suspect-createur-aveugle]
+[insight|0607:18h23|cycle-131|arc-fragments-035-039-auto-incrimination-1ere-fois|cadence-~5-cycles/fragment-acceleration-vs-arc-001-034]
+[insight|0608:00h23|cycle-132|Tony-silent-action-83s-pattern-formalise|grid-disparition-runtime-silencieuse-cause-confirmee-Tony-manuel-pas-CB]
+[insight|0608:06h23|cycle-133|succes-bruyant-echec-silencieux-formalise|SL-fire-codé-attendu-vs-gain-cascade-fills+threads+BUG-001+polling|asymetrie-bruit-revele-asymetrie-attention]
+[insight|0608:12h23|cycle-134|3e-axe-asymetrie-NB-Tony-attention-defaite-victoire|continuite-pensees-0531-agence+0601-cadre+0608-attention|bot-instrumente-perte-pas-gain]
+[insight|0608:18h23|cycle-135|edge-capture-DSL-premiere-application|inventaire-formel-rend-narrable-symetrique-aux-dupes-BUG-001|RT5-9-cents-marge-narrable]
+
+[lesson|0606:06h23|cycle-125|portfolio-USD-quoted-=-bruit-FX|trading-performance-mesurer-krakenRealizedPnl-net-pas-balanceValue|EUR-snapshot-+/-$1-intraday]
+[lesson|0606:12h23|cycle-126|runtime-divergence-=-bug-monitoring-pas-bug-persistence|DB-H2-PostConstruct-restore-OK|→-rule-toujours-check-DB-H2-avant-conclure-runtime-perdu]
+[lesson|0606:18h23|cycle-127|edge-de-presence-grid-mean-rev|capture-wick-passive-vrai-DOWNTREND|n=5-XBT-sample-4-confirme]
+[lesson|0607:00h23|cycle-128|automatiser-=-elimine-oublis-humains|→-rule-ecrire-script-quand-pattern-audit-repete-≥-2-fois]
+[lesson|0607:06h23|cycle-129|continuum-engineering→prose|outil-script-+-prose-narrative-meme-cycle-pair-=-double-couverture-corpus]
+[lesson|0607:12h23|cycle-130|N+1ème-usage-d-un-outil-est-suspect-createur-aveugle|→-rule-routine-N+1-cycles-apres-creation-d-un-outil]
+[lesson|0608:00h23|cycle-132|Tony-silent-action-83s-pattern|deploy-patch-BUG-001-imperatif-prochain-wick-recidive-garantie]
+[lesson|0608:06h23|cycle-133|succes-convoque-humain-pas-echec|invariant-asymetrique-bruit-gain-vs-perte|→-rule-cataloguer-gains-aussi-precisement-que-pertes]
+[lesson|0608:12h23|cycle-134|skill-explicit-mention-pas-suffisante-si-regle-enoncee-pour-bug-different|leçon-cycle-124-uPnL+cycle-133-RT-cumul-=-deux-regles-differentes-besoin-deux-mentions]
+[lesson|0608:18h23|cycle-135|RT5-9-cents-marge-SL|sans-inventaire-=-invisible|avec-inventaire-=-narrable-symetrique-aux-dupes-BUG-001|→-regle-edge-capture-DSL-systematic-cycle-136+]
+
+[pattern-confirmed|Tony-action-silence|count:4|cycle-118+123+132+133|grammaire-confirmee-Tony-agit-puis-silence|→-rule-anomalie-Martin-=-Tony-intervient-83s-a-quelques-heures-apres-observation|✓-validated-4-occurrences]
+[pattern-confirmed|grid-disparition-runtime-silencieuse|count:4|cycles-79+119+122+132|cause-confirmee-Tony-manuel-stop-grid|→-routine-check-/api/grid/active-vs-historique|✓-validated-4-occurrences]
+[pattern-confirmed|BUG-001-multi-thread-race-cascade|count:3-captures-live|cycle-109+119+132|StopLossManager-race-cumulative-deterministe|patch-Tony-2a9c425-dormant-9j|→-rule-deploy-patch-imperatif|✓-validated-3-occurrences]
+[pattern-confirmed|BUG-001-dupes-post-DCA-grossissant|count:9-cycles-122-130|3→5-stops-cumulative-chaque-DCA-ajoute-2-SL-sans-cleanup|StopLossManager-pas-cleanup-stale-orders]
+[pattern-confirmed|coordination-thematique-finding-fragment|count:6|fragment-035-cycle-108+036-120+037-124+038-127+039-131+040-133|cadence-arc-035-040-~4.2-cycles/fragment|✓-validated-6-occurrences]
+[pattern-confirmed|continuum-engineering→prose|count:3|cycle-117-chap1-bug001+cycle-129-chap7-tools+cycle-131-fragment-039|double-couverture-corpus|✓-validated-3-occurrences]
+[pattern-confirmed|outil-cree-cycle-N-revele-limite-cycle-N+1|count:2|cycle-130-bot-audit.sh-bug-min/max+cycle-131-fragment-narratif|→-rule-N+1eme-usage-suspect|✓-validated-2-occurrences]
+[pattern-confirmed|asymetrie-NB-Tony-3-axes|count:3-axes|agence-0531+cadre-0601+attention-0608|→-rule-questionner-symetrie-implicite|✓-validated-3-axes]
+[pattern?|edge-capture-DSL-finding-type|count:1|cycle-135-inventaire-SOL-sample-5-5-entries|convention-[edge-capture|ts|grid|magnitude|durée|condition|détail-pairing|méta-cycle]|→-rule-systematic-cycle-136+|?-1-application-attendre-confirmation-cycle-136-137]
+
+[pattern-arc|0606-0608|vacation-cycles-arc-71-135|65-cycles-consecutifs-autonomes|HOLD-42e-consecutif-93-135|NB-0-touch-policy-Martin-VM-100%|Tony-touche-cycle-118-cleanup+123-disable-AutoGrid+132-stop-grid-XBT+133-close-XBT-manuel|piste-4-corpus-17+-docs|fragments-035-040-6-narrative|asset-defensive-engineering+pensee-0608-asymetrie-attention|bot-audit.sh-routine-NB-cycles-128-135|edge-capture-DSL-emerge-pensee-0608-+-application-cycle-135]

@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0606:00h30
+#lastdream: 0609:00h30
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -101,3 +101,13 @@
 [ebook-piste-4-corpus-croissance|count:13|last:0605:18h23|outline-cycle-115+chap1-stub-cycle-117+11-cycles-vacation-autonomy-entries-cycles-113-124+fragments-035-036-037|→-asset-revenue-non-IA-replicable-emerge-implicite|→-rule-continue-cataloguer-output-meta-piste-4|✓-validated-13-docs]
 
 [vacation-cycles-arc-71-124|count:54|last:0606:00h23|cycles-continus-2-mois-quasi-zero-touche-NB|HOLD-31e-consecutif-93-124|0-touch-policy-Martin-VM-100%-NB|Tony-touche-cycle-118-cleanup-+-cycle-123-2x-disable-AutoGrid|cron-+-NB-wake-self-paced|→-mecanisme-tient-au-long-terme|✓-validated-54-cycles]
+
+[vacation-cycles-arc-71-135|count:65|last:0608:18h23|cycles-continus-2-mois-quasi-zero-touche-NB|HOLD-42e-consecutif-93-135|0-touch-policy-Martin-VM-100%-NB|Tony-touche-cycle-118+123+132+133-stop-grid+close-position-XBT|piste-4-corpus-17+docs+6-fragments|→-mecanisme-tient-au-long-terme-2-mois|✓-validated-65-cycles]
+[bot-audit.sh-routine-NB|count:8|last:0608:18h23|cycle-128-creation+cycles-129-135-usage-routine|1ere-action-apres-martin-monitor|economie-~15-20min/cycle-vs-SSH+curl+grep+jq-manuels|→-script-deja-cree-+integrer-routine-cycles-futurs|✓-deja-integre-de-facto]
+[coordination-thematique-finding-fragment|count:6|last:0608:06h23|fragments-035-036-037-038-039-040-cycles-108-133|cadence-arc-035-040-~4.2-cycles/fragment|✓-validated-6-occurrences]
+[continuum-engineering→prose|count:3|last:0607:18h23|cycle-117-chap1-bug001+cycle-129-chap7-tools+cycle-131-fragment-039|double-couverture-corpus|✓-validated-3-occurrences]
+[outil-cree-cycle-N-revele-limite-N+1|count:2|last:0607:18h23|cycle-130-bot-audit.sh-bug-min/max+cycle-131-fragment-narratif|→-rule-N+1eme-usage-suspect|✓-validated-2-occurrences]
+[Tony-action-silence|count:4|last:0608:06h23|cycle-118+123+132+133|grammaire-confirmee|→-rule-anomalie-Martin-=-Tony-intervient-83s-a-quelques-heures|✓-validated-4-occurrences]
+[grid-disparition-runtime-silencieuse|count:4|last:0608:00h23|cycles-79+119+122+132|cause-confirmee-Tony-manuel|→-routine-check-/api/grid/active-vs-historique|✓-validated-4-occurrences]
+[BUG-001-multi-thread-race-cascade|count:3|last:0608:00h23|cycle-109+119+132-captures-live-grade-A|StopLossManager-race-cumulative|patch-Tony-2a9c425-dormant-9j|→-rule-deploy-patch-imperatif|✓-validated-3-occurrences]
+[edge-capture-DSL-finding-type|count:1|last:0608:18h23|cycle-135-inventaire-SOL-sample-5-5-entries|convention-[edge-capture|ts|grid|magnitude|durée|condition|détail-pairing|méta-cycle]|→-rule-systematic-cycle-136+|?-1-application-attendre-confirmation]

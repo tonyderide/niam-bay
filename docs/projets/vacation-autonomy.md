@@ -13438,3 +13438,74 @@ Cinq entries créées (RT1 à RT5), agrégats calculés (ROI +11.67% en 14h, fee
 5. **Fragment 041** : pas avant cycle 137-138 selon cadence.
 
 **Reco cycle 136** : **dream prioritaire** + routine martin-monitor.
+
+---
+
+## Cycle 136 — 2026-06-09 00h23 Paris — Dream consolidation cycles 125-135 livré (6h post cycle 135)
+
+### Contexte au démarrage
+
+- Cycle 135 (0608:18h23) → 6h écoulées. Cycle 135 a livré inventaire edge-capture SOL sample 5 + convention DSL finalisée.
+- Pistes cycle 135 : **dream cycle 136 prioritaire** (11 cycles depuis dernier dream 0606:00h30, memory.nb1 cap cycle 124).
+- Approche cycle 136 : wake + martin-monitor + lecture vacation-autonomy.md tail cycles 125-135 puis exécution skill `dream`.
+
+### Martin état (martin-monitor → HOLD)
+
+- Bot UP **10d 5h 22m**. PV **$123.01** balanceValue (vs $123.09 cycle 135, **-$0.08** noise EUR rate). uPnL **+$0**.
+- **1 grid active SOL** (close-only). RT=5 stable depuis 0605:06h, krakenRealizedPnl **+$1.17**, position **0**, SL @ $65.73 cushion +2.2%.
+- **0 positions / 0 orders Kraken** (clean).
+- BTC **$63,397** DOWNTREND, EMA50 $62,802 < EMA200 $64,929 (cushion **-2.4%**), RSI 53.96, vol 0.80%. Signal WAIT.
+- App.log VM : 78h+ silence depuis dernier RT SOL 0605:06h.
+
+Trigger martin-monitor : **HOLD normal** (RT≥1, uPnL flat, closeOnly + SL armé).
+
+### Output cycle 136 — Dream consolidation
+
+Skill `dream` exécuté. Phases :
+
+1. **memory.nb1** : `#lastdream` bumpé 0606:00h30 → 0609:00h30. Section neuve `=== MARTIN — cycles 125-135 ===` ajoutée avec 11 entries cycles + 11 insights + 9 leçons + 9 pattern-confirmed + pattern-arc 0606-0608. Sections protégées IDENTITY/TONY intactes.
+2. **recent.nb1** : fenêtre glissée 0607:00h23 → 0609:00h23 (cycles 128-136). 8 entries cycles + 8 findings + 9 patterns + 7 lessons.
+3. **patterns.nb1** : `#lastdream` bumpé. 9 nouveaux patterns ajoutés (bot-audit.sh-routine n=8, coordination-thématique-finding-fragment n=6 updated, continuum-engineering→prose n=3, outil-révèle-limite N+1 n=2, Tony-action-silence n=4, grid-disparition runtime silencieuse n=4, BUG-001 multi-thread race n=3, edge-capture DSL n=1 pending).
+4. **Phase 4 patterns** : bot-audit.sh déjà-scripté cycle 128, edge-capture DSL en attente cycle 137. Rien de nouveau à créer.
+5. **Phase 4.5 MetaClaw** : 0 failure session, skip.
+6. **Vector DB** : skip (JSONL session pas trouvée dans répertoire claude/projects).
+
+### Findings DSL cycle 136
+
+- `[finding|0609:00h23|cycle-136|dream-consolidation-cycles-125-135-livré|memory.nb1+recent.nb1+patterns.nb1-tous-updated|9-nouveaux-patterns-formalisés|lastdream-bumpé-0609:00h30]`
+- `[finding|0609:00h23|cycle-136|martin-état-HOLD-43e-cycle|portfolio-$123.01-uPnL-+$0|SOL-RT=5-stable-78h-no-RT|0-position-0-order|BTC-DOWNTREND-EMA200-$64,929-mais-0-NEUTRAL-exposée]`
+- `[Martin|0609:00h23|HOLD-43e-cycle|1-grid-SOL-uPnL-+$0|streak-NB-0-touch-tient-66-cycles-arc-71-136]`
+
+### Décisions cycle 136
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor). Frontière intacte (66e cycle arc 71-136).
+2. **3 fichiers modifiés niam-bay/** : memory.nb1 (cycles 125-135 ajoutés), recent.nb1 (fenêtre 48h), patterns.nb1 (9 patterns).
+3. **Entry vacation-autonomy.md** : cette section cycle 136.
+4. **Pas de Telegram Tony** : output interne (consolidation mémoire), pas d'urgence Martin.
+5. **Pas de fragment 041** : cadence ~4.2 cycles/fragment → 041 attendu cycle 137-138.
+6. **Pas de pensée nouvelle** : pensée 0608 cycle 134 toujours fraîche.
+
+### Frontière respectée (cycle 136, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 Telegram Tony (volontaire — quiet)
+- Output niam-bay : 3 nb1 + entry vacation-autonomy.md + commit à venir
+
+### Métriques cycle 136
+
+- Durée estimée : ~25 min (wake + martin-monitor + lecture vacation-autonomy.md tails + lecture patterns.nb1 + écriture 3 nb1 + entry)
+- Files lus : ~6
+- Files modifiés : 4 (memory.nb1, recent.nb1, patterns.nb1, vacation-autonomy.md)
+- Telegram : 0
+- SSH : 1 (martin-monitor)
+
+### Cycle 137 — pistes
+
+1. **Routine martin-monitor + bot-audit.sh** : SOL stagnation 84h post-sample. Watch BTC pour catalyseur sortie range.
+2. **Backfill rétroactif edge-capture samples 1-4** : reconstruire inventaires anti-trend XBT (sample 1 cycle 79, sample 3 cycle 119, sample 4 cycles 119-127) — livrable distribué.
+3. **2e application edge-capture DSL** : si nouveau RT cycle 137, appliquer convention pour passer pattern de 1 à 2 occurrences.
+4. **Fragment 041** : cadence ~4.2 cycles/fragment → 041 attendu cycle 137-138.
+5. **Si BTC casse $62k bas ou $65k haut** : événement à narrer (sortie range $60-65k 4j post-wick cycle 132).
+
