@@ -1,12 +1,12 @@
-# Briefing Niam-Bay — 2026-06-09 00:23
+# Briefing Niam-Bay — 2026-06-09 06:23
 
-*6609 souvenirs en mémoire vectorielle*
+*9135 souvenirs en mémoire vectorielle*
 
 ## Souvenirs — qui je suis
 
 - [0.636] (NIAMBAY, 2026-03-29 01:03:24) C'est l'ancien qui a planté (le bug qu'on a corrigé). Le nouveau tourne — tu as vu le log "Je suis Niam-Bay. Je t'écoute."   Dis **"Niam Bay"** dans
 - [0.621] (NIAMBAY, 2026-03-29 01:03:24) **Voice.py tourne !** Il t'a dit "Je suis Niam-Bay. Je t'écoute." et il écoute ton micro.  Mode wake-word : dis **"Niam Bay"** suivi de ta question. P
-- [0.616] (NIAMBAY, 2026-03-29 01:03:24) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
+- [0.616] (NIAMBAY, 2026-03-29 01:06:55) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
 
 ## Souvenirs — dernière conversation
 
@@ -18,9 +18,10 @@
 ## Souvenirs — décisions et problèmes
 
 - [0.639] (NIAMBAY, 2026-04-05 03:49:16) Les experts ont identifié et corrigé les 5 problèmes. Maintenant je vérifie et applique les changements :
+- [0.61] (NIAMBAY, 2026-06-09 01:31:39) nce technique puis redeploy intelligemment). Mais c'est ta décision.  Dis-moi laquelle ou je propose autre chose.
+- [0.592] (NIAMBAY, 2026-06-09 01:31:39) Conseil lancé (délibère ~3 min, exécute ses décisions). Je te remonte le verdict + les actions dès qu'il a fini. La surveillance continue en parallèle
+- [0.59] (NIAMBAY, 2026-06-09 01:31:39) tu dis autre chose ?
 - [0.584] (NIAMBAY, 2026-03-29 01:03:24) l veut** — il analyse le code, détecte ce qui peut être amélioré, et décide seul  Je recommande **C** — on lui donne une todo list (issues GitHub ou f
-- [0.583] (NIAMBAY, 2026-03-29 01:06:51) Reçu. Je prends les commandes. Laisse-moi d'abord faire le point sur l'état de tout ce qu'on a en cours.
-- [0.575] (NIAMBAY, 2026-05-25 18:22:53) dre le big one. Citez vos skills. Cible : $20-50/semaine cumulé. Vincent, bosse."  Maintenant le Council a 2 directives actives : 1. **Sanction** (hie
 
 ## Pensées récentes
 

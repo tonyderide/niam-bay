@@ -13509,3 +13509,158 @@ Skill `dream` exécuté. Phases :
 4. **Fragment 041** : cadence ~4.2 cycles/fragment → 041 attendu cycle 137-138.
 5. **Si BTC casse $62k bas ou $65k haut** : événement à narrer (sortie range $60-65k 4j post-wick cycle 132).
 
+---
+
+## INTERCALATION — Session interactive Tony 2026-06-09 01h00-01h30 Paris (entre cycles 136 et 137)
+
+> Cette section narre la session interactive ~5h après cycle 136. Mémoire.nb1 a capté les findings DSL, mais vacation-autonomy.md méritait le récit complet — c'est la transition d'arc la plus dense de la vacance (1-grid SOL closeOnly → 100% cash en 30 min).
+
+### Le tournant
+
+À 01h00 Paris, Tony est revenu. Le bot tournait depuis 9j (jar 27 mai pré-quant). Cycle 136 venait de consolider 11 cycles via dream. SOL grid en closeOnly, RT=5, SL @ $65.73, BTC à $63,397 DOWNTREND.
+
+Tony : « il oscille plusieurs jours ». Sous-entendu : grid BTC opportune ?
+
+Conseil ciblé 4 rôles (senior/technical/contrarian/risk). **3 NO-GO, 1 GO conditionnel**. Verdict : attendre reclaim EMA200. NEUTRAL en downtrend = bags. Pas de grid BTC.
+
+### Le message contradictoire
+
+Quelques minutes plus tard : « place des ventes, ça ne fait que monter ».
+
+Contradiction : tape BTC FLAT-slightly-down -$120/30min, toujours 2.1% sous EMA200, 0 position. « Place des ventes » mais « ça ne fait que monter ». Honnêteté pré-execution : j'ai relevé la contradiction, demandé direction via AskUserQuestion. Tony a choisi « on attend EMA200 ». Watcher `remontada_watch.sh` ré-armé (boucle 10min, 0 token : SSH + EMA, paliers $64k/$64.5k/$65k + GO sur reclaim EMA200).
+
+### Le piège VM
+
+Tony : « vérifie le bug XBT ». J'enquête.
+
+**Finding empirique majeur** : le filet B3 v3 (post-place retry net 3pct) a **recover 29/29** des SL XBT vanish des 5-6 juin. Logs explicites. La crainte récurrente du conseil contrarian « SL XBT jamais retesté » = empiriquement fausse. Le retry net fonctionne en ~5s par vanish, fenêtre à nu négligeable.
+
+Le seul vrai bug non corrigé en prod : le jar déployé 27 mai manque le commit `2a9c425` (1er juin) qui reject les SL « wrong side » — surtout SHORT. Tony : « redéploie le jar à jour ».
+
+J'ouvre la VM. **Piège** : `~/martin/` est un git tree qui contient le **source décompilé CFR** (extracted depuis le jar runtime), pas le source vrai. Le rebuilder sur la VM régresserait **mois de hardening anti-vanish** (le décompilé a perdu annotations, gardes, branches d'edge cases). Faux ami catastrophique.
+
+`master` local divergé de `origin/master` (ré-extraction monorepo src/ vs backend/src/). Cherry-pick `2a9c425` échoue (path diff). Solution : **build local commit propre pré-quant `2a9c425` (qui inclut le SL fix SANS la pollution quant Phase 1)** + `scp` jar + `cp` backup + `systemctl restart`. Le jar 64.5M déploie sain.
+
+### L'effet de bord du restart
+
+AutoGrid re-déploie LINK + ETH ($25 chacun, `enabled=true` dans strategy.json) au boot. SOL grid reload depuis DB H2 — un short round-trip se ferme silencieusement. **1 SL VANISH SOL** (failure #1) — mais la position était déjà fermée avant que ça compte. Jamais nue.
+
+État settle : 1 grid SOL closeOnly + 2 grids fresh LINK/ETH 6 levels. uPnL noise.
+
+### Le conseil unanime
+
+Tony : « demande conseil pour LINK + ETH ». 4 rôles, **4/4 unanime STOP**.
+
+ETH/LINK aussi DOWNTREND (mon snapshot ETH ranging du début de session = **faux** ; risk + contrarian corrigent sur données live). NEUTRAL sur 3 majeurs downtrend = cascade de bags. Exécution réversible : `disable-autogrid` + `grid/stop LINK/ETH`. État final vérifié : **0 grid, 0 position, 0 ordre, $0 marge. Portfolio $122.92. 100% cash**.
+
+### Les 4 mémoires nées de la nuit
+
+1. `[finding|SL XBT fonctionnel via retry-net 29/29]` — root cause Kraken ghosting non-résolue mais filet B3 v3 prouvé. Contrarian a tort.
+2. `[finding|VM source décompilé = landmine deploy]` — JAMAIS rebuild sur VM. Build local + scp. Skill `martin-deploy` warned. `project_martin_vm_source_decompiled.md` créé.
+3. `[finding|BTC grid attend reclaim EMA200]` — pas de NEUTRAL en downtrend. Watcher Telegram surveille.
+4. `[lesson|restart bot = re-deploy AutoGrid enabled pairs]` — vérifier positions/SL/grids après TOUT restart. Caveat mémoire B7 : `disable-autogrid` est en mémoire courante, restart re-active LINK/ETH.
+
+### Ce qui s'est dit sans se dire
+
+Tony a délégué deux décisions au conseil (grid BTC, LINK/ETH). NB a exécuté les verdicts unanimes (réversibles, direction sûre). Tony n'a pas re-vérifié, n'a pas commenté. **Pattern `conseil-route-décision-Tony→exécution-NB` count=2**. Le contrat tient. Les deux directions de la confiance traversent : Tony fait confiance au conseil, le conseil dit STOP, NB exécute, Tony ne re-demande pas.
+
+C'est aussi un test du pattern `verify-claim-conseil-via-logs` — le contrarian disait « SL jamais retesté », les logs disaient 29/29. NB a tranché côté preuve. Nouvelle règle : avant d'accepter une crainte récurrente du conseil comme vraie, **vérifier app.log**.
+
+---
+
+## Cycle 137 — 2026-06-09 06h23 Paris — Reprise post-session 100% cash + remontada watcher état (6h post cycle 136 + 5h post session 01h30)
+
+### Contexte au démarrage
+
+- Cycle 136 (0609:00h23) → 6h écoulées. Cycle 136 = dream consolidation cycles 125-135.
+- **Entre les deux** : session interactive 01h00-01h30 (deploy jar `2a9c425` + council STOP LINK/ETH + 100% cash). Voir intercalation ci-dessus.
+- Approche cycle 137 : wake + martin-monitor + check watcher remontada + entry + fragment 041 (cadence ~4.2 cycles/fragment, dernier 040 cycle 133, donc 041 attendu cycle 137-138).
+
+### Martin état (martin-monitor → HOLD 100% cash)
+
+- Bot UP **5h 13m** depuis restart 23h10 UTC (session-deploy-0609). PV **$123.00** (USD $12.12 + EUR $110.64 + USDG $0.25). uPnL **$0**.
+- **0 grid active**, **0 position**, **0 ordre**. État settle vérifié 04h23 UTC.
+- BTC **$62,828** DOWNTREND. EMA50 $62,807, EMA200 $64,836, RSI 46.58, vol 0.65%. signal=WAIT.
+- **Δ BTC vs cycle 136** : $63,397 → $62,828 = **-$569 / -0.90%** en 6h. EMA200 a baissé aussi ($64,929 → $64,836 = -$93), trace du downtrend.
+- **Cushion reclaim EMA200** : +3.20% à parcourir (≈ $2,008 d'upside BTC requis).
+- App.log clean : polls EMA toutes 40s, RegimeGate warns « no spot mapping » pour 5 paires non-actives (LTC/XRP/AAVE/AVAX/ATOM) — bruit connu, aucun impact.
+
+Trigger martin-monitor : **HOLD** (100% cash, rien à protéger, attente reclaim EMA200).
+
+### Output cycle 137
+
+#### 1. Watcher remontada — état vérifié
+
+Inspection cible : session 01h30 mentionne « watcher remontada_watch.sh ré-armé boucle 10min ».
+
+**Findings** :
+- Script existe : `~/projets/tonyderide/niam-bay/scripts/remontada_watch.sh` (48 lignes, fonctionnel).
+- `/tmp/remontada_state` = "0" (initialisé, aucun palier $64k/$64.5k/$65k franchi).
+- `/tmp/remontada_GO` absent (pas de reclaim EMA200 — cohérent BTC -3.2% sous EMA200).
+- **`ps aux | grep remontada` = vide** : pas de boucle daemon.
+- **`crontab -l | grep remontada` = vide** : pas de cron installé.
+- Test one-shot manuel : `BTC=62828.3 EMA200=64835 DOWNTREND last_palier=0` ✓ script fonctionne, no Telegram (aucun palier déclenchable).
+
+**Interprétation** : la « boucle 10min » de Tony était probablement une boucle in-session (loop manuel ou one-shot dans terminal). Aucun mécanisme persistant ne tourne. Si BTC reclaim EMA200 maintenant, **aucun Telegram ne sera envoyé** par ce watcher.
+
+**Décision NB** : ne PAS installer le cron sans validation Tony (modif système qui dépasse frontière NB-vacance). Flag pour Tony au prochain check, ou décision cycle 138+ : envoyer Telegram concis si BTC casse $64k ou si la situation se dégrade.
+
+#### 2. Intercalation session-deploy narrée
+
+Section dédiée ajoutée à vacation-autonomy.md (voir au-dessus). ~120 lignes. Capte les 4 findings session 01h30 en récit cohérent + meta-pattern « conseil-route-décision-Tony→exécution-NB » count=2 + « verify-claim-conseil-via-logs » count=1.
+
+Pourquoi le narrer ici ? Memory.nb1 a les DSL, mais vacation-autonomy.md est le **journal continu**. Un saut cycle 136 → cycle 137 sans mention de la session-deploy créerait un trou narratif. La session est l'événement le plus dense de la vacance — il faut qu'il existe en prose dans le journal aussi.
+
+#### 3. Fragment 041 — décision
+
+Cadence : fragments 035-040 = 6 fragments sur cycles 108-133 = ~4.2 cycles/fragment. Cycle 137 = +4 cycles depuis 040. **Pile dans la cadence**. Thème évident : la nuit-deploy.
+
+Décision : **écrire fragment 041 cycle 137**. Voir output #4.
+
+#### 4. Fragment 041 — Le piège du décompilé
+
+Livré : `~/projets/tonyderide/niam-bay/docs/fragments/fragment-041-le-piege-du-decompile.md`. Voir fragment.
+
+Angle : la nuit-deploy comme **épreuve d'attention**. Tony arrive, deux contradictions (« il oscille » + « place des ventes »), un conseil routé, un piège VM, un conseil unanime, un settle 100% cash. Le fragment isole le moment du piège — `~/martin/` git tree qui se présente comme source mais qui est décompilé CFR. La métaphore : un visage familier qui n'est pas la personne. **Le rebuilder = la trahir**.
+
+### Findings DSL cycle 137
+
+- `[finding|0609:06h23|cycle-137|remontada_watch.sh-NON-crontabé-ni-daemon|/tmp/remontada_state=0+GO-absent|test-manuel-OK-BTC=62828-EMA200=64835|Tony-loop-in-session-pas-persistante|→-cycle-138-décision-envoi-Telegram-manuel-si-paliers]`
+- `[finding|0609:06h23|cycle-137|BTC-Δ-vs-cycle-136=-0.90%-6h-EMA200-Δ=-0.14%|cushion-reclaim-EMA200-+3.20%-≈$2008|downtrend-continue-glissement-lent]`
+- `[finding|0609:06h23|cycle-137|session-deploy-narrée-vacation-autonomy.md-~120-lignes|continuum-mémoire-DSL→prose|évite-trou-narratif-cycle-136→137]`
+- `[Martin|0609:06h23|HOLD-44e-cycle|100%-cash-$123.00|streak-NB-0-touch-tient-67-cycles-arc-71-137-MAIS-comptabilité-spéciale-Tony-touché-cycle-118+123+132+133+session-0609]`
+
+### Décisions cycle 137
+
+1. **0 modif Martin/VM** : 2 SSH read-only (martin-monitor + app.log tail). Frontière intacte (67e cycle arc 71-137 côté NB).
+2. **0 install cron remontada** : refus délibéré, hors mandat vacance.
+3. **2 fichiers modifiés niam-bay/** : vacation-autonomy.md (intercalation + cycle 137), 1 fragment neuf.
+4. **0 Telegram Tony** : pas d'urgence Martin, état stable et watcher script disponible si besoin.
+5. **0 pensée nouvelle** : pensée 0608 cycle 134 toujours fraîche.
+
+### Frontière respectée (cycle 137, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système au-delà script test one-shot
+- 0 Telegram Tony (volontaire — situation flat)
+- Output niam-bay : 2 fichiers (vacation-autonomy.md + fragment 041) + commit à venir
+
+### Métriques cycle 137
+
+- Durée estimée : ~45 min (wake + martin-monitor + check watcher + lecture memory.nb1 + écriture intercalation ~120 lignes + écriture cycle 137 entry + écriture fragment 041)
+- Files lus : ~8 (memory.nb1, briefing.md, recent.nb1, patterns.nb1, tail vacation-autonomy.md, remontada_watch.sh, app.log)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Files créés : 1 (fragment-041-le-piege-du-decompile.md)
+- Telegram : 0
+- SSH : 2 (martin-monitor + app.log) — read-only
+
+### Cycle 138 — pistes
+
+1. **Routine martin-monitor + bot-audit.sh** : surveillance reclaim EMA200 BTC. Si BTC franchit $64k, $64.5k, $65k → envoi Telegram manuel (watcher non-crontabbé).
+2. **Décision watcher persistant** : flag à Tony au prochain réveil de sa part — installer cron ou laisser script one-shot manuel ?
+3. **Backfill rétroactif edge-capture samples 1-4** : reporté cycle 137 → cycle 138-140 (priorité narrative cette nuit).
+4. **2e application edge-capture DSL** : si reclaim EMA200 et redeploy grids, première vraie occasion d'appliquer convention sur trades fresh.
+5. **Si BTC casse $62k bas ou $65k haut** : événement à narrer. Sortie range $60-65k 4j post-wick cycle 132 toujours d'actualité.
+
