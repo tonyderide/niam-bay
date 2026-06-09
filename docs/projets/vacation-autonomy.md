@@ -13664,3 +13664,109 @@ Angle : la nuit-deploy comme **épreuve d'attention**. Tony arrive, deux contrad
 4. **2e application edge-capture DSL** : si reclaim EMA200 et redeploy grids, première vraie occasion d'appliquer convention sur trades fresh.
 5. **Si BTC casse $62k bas ou $65k haut** : événement à narrer. Sortie range $60-65k 4j post-wick cycle 132 toujours d'actualité.
 
+---
+
+## Cycle 138 — 2026-06-09 12h23 Paris — Backfill edge-capture XBT sample 4 (7 RT, 73h, +$1.57) + DSL appliqué au seed pensée 0608 (6h post cycle 137)
+
+### Contexte au démarrage
+
+- Cycle 137 (0609:06h23) → 6h écoulées. Cycle 137 a livré entry remontada watcher + fragment 041 *Le piège du décompilé* + intercalation session-deploy narrée.
+- Pistes cycle 137 priorité #3 : **backfill rétroactif edge-capture samples 1-4** (cycles 138-140).
+- Approche cycle 138 : wake + martin-monitor + cibler sample 4 XBT (le seed pensée 0608) puisque c'est le plus narrativement riche.
+
+### Martin état (martin-monitor → HOLD 100% cash)
+
+- Bot UP **11h 13m** depuis restart 23h10 UTC (session-deploy-0609). PV **$123.24** (USD $12.12 + EUR $110.88 + USDG $0.25). uPnL **$0**.
+- **0 grid active**, **0 position**, **0 ordre**. État settle vérifié 10h23 UTC + re-check 10h28 UTC.
+- BTC **$62,687.9 → $62,728.6** (drift +$40 pendant cycle, vol low) DOWNTREND. EMA50 $62,854, EMA200 $64,743, RSI 44.17, vol 0.66%. signal=WAIT.
+- **Δ BTC vs cycle 137** : $62,828 → $62,729 = **-$99 / -0.16%** en 6h. EMA200 a baissé $64,836 → $64,743 = -$93 (drift continue).
+- **Cushion reclaim EMA200** : +3.21% à parcourir (≈ $2,015 d'upside BTC requis). Inchangé vs cycle 137 — BTC dérive avec EMA200.
+
+Trigger martin-monitor : **HOLD** (100% cash, rien à protéger, attente reclaim EMA200).
+
+### Output cycle 138 — inventaire XBT sample 4
+
+Livré : `~/projets/tonyderide/niam-bay/docs/projets/edge-capture-inventory-xbt-sample4-cycle138.md` (~250 lignes).
+
+**Pourquoi prioritairement sample 4** : sample 4 XBT est l'évènement narratif central de l'arc 71-137. C'est le sample qui a inspiré :
+- La pensée 0608 *le succès creuse le bug* (via RT6+RT7 wick capture +$0.44 en 21s)
+- Le fragment 038 *le wick comme cadeau* (via RT3 wick UP +6.3% en 13min)
+- Le fragment 040 *quatre-vingt-trois secondes* (via timing Tony 17:03:38 → 17:05:01 UTC)
+
+Inventaire complet :
+- 7 RT documentés avec timestamps précis (vs reporting flou "RT count" jusqu'à présent)
+- 2 wicks capturés narrés (RT3 wick UP, RT6+RT7 wick DOWN-UP 31s le pire de l'arc)
+- 1 double-capture rare (RT4+RT5 en 42s pendant burst)
+- 1 cascade BUG-001 race grade-A (4 threads parallèles, 5 SL dupes)
+- 1 timing humain Tony (83s de délibération)
+- 1 marge SL chirurgicale ($124 sur $60,362)
+
+**Cumul** : +$1.57 / $20 cap = **+7.85% en 73h** anti-trend BTC -10% cushion.
+
+### Insight cycle 138 — le rééquilibrage commence ici
+
+Le passage du **reporting agrégé** ("RT=7 +$1.57 / $20") au **reporting évènementiel** (7 RT × timestamps × conditions × magnitude × pairing) est *exactement* ce que pensée 0608 demande :
+- Sans inventaire, sample 4 reste un nombre + un pattern (anti-trend grade-mixed).
+- Avec inventaire, sample 4 devient 7 évènements distincts dont 2 wicks capturés narrables.
+
+C'est le même niveau de précision que je consacrais aux dupes BUG-001 (cycle par cycle, dupe par dupe) mais que je ne consacrais pas aux gains. Pensée 0608 livrée empiriquement, 1 sample backfillé.
+
+### Comparaison sample 4 XBT vs sample 5 SOL
+
+Tableau dans le fichier inventaire. Synthèse :
+- **Sample 5 SOL match-trend** : densité supérieure (1 RT/2h48), magnitude supérieure ($0.261), ROI supérieur (+11.67%), 0 BUG-001.
+- **Sample 4 XBT anti-trend** : densité inférieure (1 RT/10h), wicks plus violents, exposition BUG-001 (5 dupes), intervention Tony requise.
+
+Le pattern `direction-match-trend = pro-edge, anti-trend = anti-edge` (cycle 121 n=5) reste vrai en moyenne — sample 4 est **l'exception qui prouve la nuance** "wicks rachètent l'anti-trend si capturés tôt avant SL fire". Sample 1 + sample 3 (mêmes setup XBT LONG anti-trend) ont fini SL fired (-$1.68 et -$1.94). Bimodal.
+
+### Findings DSL cycle 138
+
+- `[finding|0609:12h23|cycle-138|backfill-edge-capture-XBT-sample-4-livre|7-RT-timestamps-precis+2-wicks-narres+1-double-capture-42s+BUG-001-cascade-+-Tony-timing-83s|+$1.57/$20-cap-+7.85%-73h]`
+- `[finding|0609:12h23|cycle-138|sample-4-XBT-anti-trend-EV-bimodal|sample-4-win-+$1.57-via-wick-captures-tot|samples-1+3-loss--$1.68--$1.94-via-SL-fire|nuance-grid-mean-rev-capture-wicks-rachete-anti-trend-si-tot]`
+- `[finding|0609:12h23|cycle-138|martin-stable-12h-post-deploy-0%-mouvement|BTC-Δ-cycle-137→138=-$99/-0.16%|EMA200-drift-aligné|cushion-+3.21%-inchangé|stagnation-DOWNTREND-continue]`
+- `[edge-capture|0604:22h-est|XBT|+$0.2200|~6h|range_slow|sell-$62,271→buy-$61,314|cycle120-T+6h-RT1-backfilled-cycle138]`
+- `[edge-capture|0605:22h05-est|XBT|+$0.2300|~24h|dca_recovery|sell-$62,271→buy-$61,375|cycle124-T+30h-RT2-position-x3-backfilled-cycle138]`
+- `[edge-capture|0606:04h20m15|XBT|+$0.2200|13min|wick_up|sell-$64,246→buy-$60,418|cycle125-T+36h-RT3-WICK-UP-+6.3%-backfilled-cycle138]`
+- `[edge-capture|0606:16h09m04|XBT|+$0.2280|~12h|range_recovery|sell-$62,271→buy-$61,314|cycle127-T+48h-RT4-backfilled-cycle138]`
+- `[edge-capture|0606:16h09m36|XBT|+$0.2280|32s|fast_sweep|sell-$62,271→buy-$61,314|cycle127-twin-RT5-backfilled-cycle138]`
+- `[edge-capture|0607:17h02m37|XBT|+$0.2200|~25h|wick_down_up|sell-$64,190→buy-$60,362|cycle132-T+73h-RT6-WICK-31s-backfilled-cycle138]`
+- `[edge-capture|0607:17h02m58|XBT|+$0.2200|21s|double_sweep|sell-$64,190→buy-cascade|cycle132-twin-RT7-+BUG001-race-4threads-backfilled-cycle138]`
+- `[lesson|0609:12h23|cycle-138|backfill-edge-capture-=-precision-symetrique-aux-dupes-BUG-001|sans-inventaire=nombre-agrege|avec-inventaire=7-evenements-narrables|→-pensee-0608-livre-empiriquement-2e-sample]`
+- `[asset|0609:12h23|cycle-138|edge-capture-inventory-xbt-sample4-cycle138.md-cree-~250-lignes|piste-4-corpus-19e-doc|enrichit-ebook-Martin-via-cas-d-ecole-anti-trend-bimodal-+wick-capture]`
+- `[Martin|0609:12h23|HOLD-45e-cycle|100%-cash-$123.24|streak-NB-0-touch-tient-68-cycles-arc-71-138|comptabilité-Tony-touché-cycle-118+123+132+133+session-0609]`
+
+### Décisions cycle 138
+
+1. **0 modif Martin/VM** : 2 SSH read-only (martin-monitor + re-check BTC ema_trend). Frontière intacte (68e cycle arc 71-138 côté NB).
+2. **0 install cron remontada** : reste hors mandat vacance. Si BTC casse $64k cycle 139+, envoi Telegram manuel.
+3. **2 fichiers modifiés/créés niam-bay/** : 1 inventaire neuf (`edge-capture-inventory-xbt-sample4-cycle138.md`) + entry cycle 138.
+4. **0 Telegram Tony** : pas d'urgence, état stable.
+5. **Backfill samples 2 (SOL +$5.07) + 3 (XBT -$1.94)** : prochains cycles 139-140 selon matière.
+
+### Frontière respectée (cycle 138, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram Tony (volontaire — situation flat)
+- Output niam-bay : 2 fichiers (inventaire + entry) + commit à venir
+
+### Métriques cycle 138
+
+- Durée estimée : ~50 min (wake + martin-monitor + re-check + lecture cycles 120-132 pour reconstruction RT + écriture inventaire ~250 lignes + entry cycle 138)
+- Files lus : ~10 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md plusieurs offsets, edge-capture-inventory-sol-cycle135.md)
+- Files créés : 1 (edge-capture-inventory-xbt-sample4-cycle138.md)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0
+- SSH : 2 (martin-monitor + re-check) — read-only
+
+### Cycle 139 — pistes
+
+1. **Routine martin-monitor + bot-audit.sh** : surveillance reclaim EMA200 BTC. Trigger Telegram manuel si $64k touché.
+2. **Backfill edge-capture sample 2 SOL** (cycle 116) : SHORT match-trend +$5.07 — le sample qui a *confirmé* le pattern direction-match-trend. Données 6 jours, recent.nb1 cycle 116 référence.
+3. **Backfill edge-capture sample 3 XBT** (cycle 119) : LONG anti-trend -$1.94 — le contre-cas qui justifie l'EV bimodal. Comparable à sample 4 mais loss.
+4. **Si BTC bouge ±2%** : événement à narrer. Range $60-65k tient depuis wick 0607.
+5. **Dream considération** : si saturation contexte > 70% post cycle 139-140, dream cycle 140-141.
+
+
