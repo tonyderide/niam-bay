@@ -13884,4 +13884,122 @@ Pour le narratif Niam-Bay (ebook chap 3 sur les gates, fragments sur la patience
 4. **Pensée méta sur l'opérateur-dépendance** : si je veux extraire la nuance du sample 4 vs samples 1+3, pensée dédiée vaut mieux que finding inline. Candidat cycle 141.
 5. **Dream considération** : 9 cycles depuis lastdream 0609:01h30, marge confortable. Probable cycle 142-143.
 
+---
+
+## Cycle 140 — 2026-06-10 00h23 Paris — Tony pivote SHORT match-trend + SL VANISH XBT bug réapparaît post-deploy 2a9c425 (6h post cycle 139)
+
+### Contexte au démarrage
+
+- Cycle 139 (0609:18h23 Paris) → 6h écoulées. Cycle 139 a livré : BTC capitulation -2.81% en 6h ($60,966), validation contrefactuelle gate "wait EMA200" (épargne $8-12), sample 3 mini-backfill, EV bimodal tripartite XBT.
+- Conseil session-deploy-0609 (01h30 ce matin) avait conclu : **NO-GO grid BTC, attendre reclaim EMA200**. Tony a accepté. Watcher remontada_watch.sh ré-armé.
+- **Cycle 140 démarre sur une surprise majeure** : Tony a redéployé 2 grids SHORT (XBT + ETH) à **21h28 UTC** (= 23h28 CEST hier soir, 5h après cycle 139). Pivot tactique SHORT au lieu d'attendre LONG.
+
+### Martin état (martin-monitor bundle) — HOLD avec bémol critique
+
+- Bot UP **23h13m** depuis restart 0608:23h10 UTC. PV **$122.91** balanceValue, portfolioValue **$122.85** (uPnL -$0.063 = -0.05%).
+- **2 grids actives** : `PF_XBTUSD` + `PF_ETHUSD` (SHORT mode, redéployées 0609:21h28 UTC par Tony).
+- Positions live Kraken : XBT short 0.001 @ $61,780 (uPnL -$0.066), ETH short 0.03 @ $1,650 (uPnL +$0.003).
+- BTC **$61,840** DOWNTREND. EMA50 $62,477, EMA200 $64,434, RSI **41.95** (sortie zone panique cycle 139), vol 0.78%, signal=WAIT.
+- **Δ BTC vs cycle 139** : $60,966 → $61,840 = **+$874 / +1.43%** (rebond modeste post-capitulation, RSI remonte 24→42).
+- **Cushion reclaim EMA200** : -5.91% → -4.02%. Reclaim toujours hors d'atteinte mais BTC respire.
+- **Δ portfolio** : $123.04 → $122.91 = -$0.13 (drift uPnL négligeable).
+
+#### Détails grids redéployées
+
+**XBT SHORT** (started 0609:21h28:04 UTC, ~55min d'activité au moment du check) :
+- Center $61,750, range $60,205-$63,295, 10 levels (5 buy reduceOnly + 5 sell), spacing $309, leverage 5, cap $20.
+- **1 RT complétée** : sell @ $61,905 → buy @ $60,051 (+$1.85/RT). totalProfit $0.0472 confirmé.
+- krakenRealizedPnl $0.00 (RT pas encore matérialisée sur Kraken au sens "trade closing"), krakenUnrealizedPnl -$0.066.
+- gridMode=SHORT, autoRegimeMode=NEUTRAL, maxLossPercent=10%.
+
+**ETH SHORT** (started 0609:21h28:05 UTC) :
+- Center $1,649.8, range $1,615.3-$1,684.3, 6 levels (3 buy reduceOnly + 3 sell), spacing $11.5, cap $20.
+- 0 RT. krakenUnrealizedPnl +$0.015.
+- **SL on exchange ACTIF** : stopLossOrderId=`a1fc148c-5a79-4ff2-9772-97db896e052a`, stopPrice $1,699.3 (~3% above entry). ✓ Protégé.
+
+### FINDING CRITIQUE — SL VANISH XBT SHORT en boucle post-deploy 2a9c425
+
+App.log XBT SHORT à 22h22-22h24 UTC (juste avant ce cycle) :
+
+```
+SL placed but VANISHED on Kraken [PF_XBTUSD] id=... (failure #271, #272, #273, #274, #275, #276, #277, #278, #279, #280, #281, #282...)
+Order ghosted within 3s — position UNPROTECTED. Clearing state for retry next sync.
+SL VANISH 3+ times for PF_XBTUSD - position UNPROTECTED, manual intervention required
+```
+
+**Cadence** : ~1 retry / 14 secondes. ~282 failures depuis grid spawn 21h28 = ~55min de loop. Le retry pose à `$63,602.5` = entry $61,780 × 1.0295 ≈ +3% (B3 v3 retry SL 3pct correct).
+
+**Tension méta** : commit 2a9c425 déployé hier soir (session-deploy-0609 1h30) devait corriger précisément le rejet wrong-side SL surtout SHORT. La mémoire dit "B3 v3 retry 29/29 prouvé XBT side LONG cycles 132-133". **Sur SHORT mode, le retry vanish quand même.**
+
+**Position UNPROTECTED réelle** : XBT short 0.001 @ $61,780. Si BTC pump brutalement vers $64,500 (3.5%+ upside, scénario re-test EMA200 depuis dessous), pas de SL → loss notional = 0.001 × ($64,500-$61,780) = ~$2.72. Sur cap $20 = **-13.6%**, juste au-dessus du maxLossPercent 10%.
+
+ETH SL par contre **tient** sur l'exchange depuis spawn (a1fc148c-5a79). Asymétrie : ETH SHORT a SL valide, XBT SHORT ne tient pas. Différence probable : la première tentative ETH a passé (côté SHORT, stopPrice $1,699.3 above entry $1,650 cohérent), la première tentative XBT a échoué et le retry à 3% loop infiniment.
+
+### Pensée 0608 "le succès creuse le bug" — incarnation parfaite live
+
+Cycle 139 (18h23 Paris hier) avait conclu sur "*le succès creuse le bug, le bug creuse le succès*" appliqué à sample 4 XBT (+$1.57 grâce à Tony+wicks vs samples 1+3 perdants).
+
+**6 heures plus tard, cycle 140 voit le motif s'appliquer au deploy lui-même** :
+- Le succès = deploy 2a9c425 réussi (session 01h30, jar 64.5M tourne sain, LINK/ETH stop unanime, 100% cash atteint).
+- Le bug creusé = SL VANISH XBT côté SHORT que personne n'avait testé (memory disait "29/29 XBT LONG cycles 132-133"). La couverture du fix était sur **LONG**, pas SHORT. Le succès LONG a masqué l'angle SHORT.
+
+C'est exactement l'asymétrie nommée dans la pensée. Tony a déployé pour fermer le fil "jar dormant 9j" (sample 4 XBT LONG souffrait). Il déploie SHORT 23h plus tard parce que BTC capitule. Et le SL retry meurt sur un côté du marché qu'on n'avait pas observé.
+
+### Direction-match-trend pattern n=6
+
+Memory recent.nb1 : `[direction-match-trend-AutoGrid|count:5|last:0605:18h23|3-anti-trend-loss-XBT-sample-1-3-4+2-match-trend-win-SOL-sample-2-+50%-+-sample-5-+25%]`.
+
+**Le redeploy SHORT XBT+ETH ce soir = 6e occurrence du pattern** : Tony a explicitement choisi SHORT en BTC DOWNTREND. C'est conscient (cycle 139 commentait "Si tu décides finalement de re-tester un grid : seulement SHORT cohérent avec direction").
+
+**Hypothèse Tony** : il a vu la capitulation BTC, vu le conseil 4-rôles unanime hier soir contre LONG/NEUTRAL en downtrend, et appliqué le contraire — SHORT match-trend. Test grandeur nature de ce qu'on a documenté en théorie.
+
+Si XBT+ETH SHORT closent en RT positifs dans les 24-72h, le pattern direction-match-trend passera de "5 backtests-like" à "**6 occurrences dont 1 live-test Tony-driven**". Asset narratif.
+
+### Telegram Tony envoyé
+
+"[NB cycle 140] XBT SHORT SL VANISH boucle (#282 et grossit) post-deploy 2a9c425. Position 0.001 BTC UNPROTECTED. ETH SL OK. Risk max ~$2.50 (-10% cap) si pump $64.5k. Pas touché. Cycle 140 documente. Tu vois ça?"
+
+Justification : action Tony récente (redeploy 23h28 CEST) → il est probable qu'il surveille. Le bug est non-trivial (position unprotected). Non-bloquant (risk limité $2.50) mais doit savoir. 1ère Telegram depuis cycle 117 (~23 cycles silence vacance).
+
+### Findings DSL cycle 140
+
+- `[finding|0610:00h23|cycle-140|Tony-redeploy-SHORT-XBT+ETH-0609:21h28-UTC|5h-post-cycle-139-après-acceptation-NO-GO-conseil-01h30|pivot-tactique-match-trend-en-downtrend|XBT-$20-cap-leverage-5-+-ETH-$20-cap-leverage-5|→-validation-empirique-live-direction-match-trend-pattern-n=6]`
+- `[finding|0610:00h23|cycle-140|SL-VANISH-XBT-SHORT-en-boucle-post-deploy-2a9c425|failure-#282+-en-55min-cadence-1-retry-14s|retry-3pct-$63,602.5-vs-entry-$61,780.2|jar-déployé-hier-soir-corrige-LONG-29/29-mais-SHORT-loop-infini|position-0.001-UNPROTECTED-risk-max-$2.50-13.6%-cap-si-pump-$64.5k]`
+- `[finding|0610:00h23|cycle-140|asymétrie-ETH-vs-XBT-SL|ETH-SHORT-SL-actif-stopPrice-$1,699.3-orderId-a1fc148c-spawn|XBT-SHORT-retry-vanish-282-fois-sans-jamais-tenir|première-tentative-ETH-passée-XBT-pas|cause-root-non-identifiée]`
+- `[finding|0610:00h23|cycle-140|XBT-RT1-déjà-réalisée|sell-$61,905→buy-$60,051-+$1.85-RT|55min-après-spawn|grid-fonctionne-côté-orders|seul-le-SL-protection-est-cassé]`
+- `[insight|0610:00h23|cycle-140|pensée-0608-incarne-deploy-→-SL-VANISH-SHORT|le-succès-LONG-29/29-a-masqué-l-angle-SHORT|fix-céré-par-side-non-testé-réapparaît-sous-autre-forme|cas-d-école-asymétrie-de-fix]`
+- `[Martin|0610:00h23|HOLD-47e-cycle|2-grids-SHORT-actives-Tony-deploy|portfolio-$122.91|uPnL--$0.063|XBT-RT-1+ETH-RT-0|XBT-position-UNPROTECTED-SL-VANISH-loop|streak-NB-0-touch-70-cycles-arc-71-140]`
+
+### Décisions cycle 140
+
+1. **0 modif Martin/VM** : 2 SSH read-only (bundle martin-monitor + grep app.log). Frontière intacte côté NB. Position XBT non touchée même si UNPROTECTED — Tony a déployé, c'est son call. Si je place un SL manuel je modifie l'expérimentation en cours.
+2. **1 Telegram Tony** : envoyé (213 chars, non-bloquant). Information actionable, action non-imposée.
+3. **0 modif code 2a9c425** : root cause SL VANISH SHORT pas identifiable depuis ce cycle (manque diff entre `placeStopOrder` XBT vs ETH côté Kraken). Note pour cycle 141+ : grep StopLossManager.java pour le code path SHORT side stop placement.
+4. **Output niam-bay** : entry cycle 140 substantiel (~150 lignes) **+ fragment 042 livré** (`docs/fragments/fragment-042-le-cote-qu-on-n-a-pas-teste.md`, ~180 lignes prose). Le thème "le côté qu'on n'a pas testé" capture l'asymétrie LONG/SHORT du fix 2a9c425 — companion narratif direct au finding SL VANISH XBT SHORT. Coordination thématique finding+fragment = pattern n=7.
+5. **Observation 6h** : prochain cycle 141 (06h23 Paris) doit vérifier (a) si Tony a réagi Telegram, (b) si XBT SL VANISH a continué ou Tony a placé manuel, (c) si RT supplémentaires XBT/ETH, (d) BTC range.
+
+### Frontière respectée (cycle 140, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 1 Telegram Tony (justifié : bug critique non-trivial sur position live, non-bloquant)
+- Output niam-bay : 2 fichiers modifiés/créés (vacation-autonomy.md cycle 140 + fragment 042 nouveau)
+
+### Métriques cycle 140
+
+- Durée estimée : ~65 min (wake + martin-monitor + grep app.log + investigation StopLossManager.java + Telegram + écriture cycle 140 ~150 lignes + fragment 042 ~180 lignes)
+- Files lus : ~8 (memory.nb1 head, recent.nb1, briefing.md, vacation-autonomy.md tail offset 13774, app.log grep, StopLossManager.java grep, fragment 041 style ref)
+- Files modifiés/créés : 2 (vacation-autonomy.md + fragment-042-le-cote-qu-on-n-a-pas-teste.md nouveau)
+- Telegram : 1 (213 chars)
+- SSH : 2 (martin-monitor bundle + app.log grep) — read-only
+
+### Cycle 141 — pistes
+
+1. **Vérif réponse Tony Telegram + état position XBT** : grep app.log pour Tony actions (place SL direct Kraken ? close position ?). Si position toujours unprotected et BTC volatile → re-Telegram.
+2. **Grep StopLossManager.java code path SHORT** : root-cause hypothesis du delta XBT vs ETH SL placement. Findable depuis martin/ src — pas besoin SSH.
+3. **Fragment 042 candidat** : 9 cycles depuis fragment 041, thème "le fix qui rate un côté" (asymétrie LONG/SHORT) parfaitement aligné. Companion narratif au finding cycle 140.
+4. **Dream considération** : 10 cycles depuis lastdream 0609:01h30. Cycle 142 candidat.
+5. **Backfill sample 2 SOL** : décalé encore une fois — priorité absolue cycle 141 = vérif SL XBT.
 
