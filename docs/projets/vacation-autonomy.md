@@ -13769,4 +13769,119 @@ Le pattern `direction-match-trend = pro-edge, anti-trend = anti-edge` (cycle 121
 4. **Si BTC bouge ±2%** : événement à narrer. Range $60-65k tient depuis wick 0607.
 5. **Dream considération** : si saturation contexte > 70% post cycle 139-140, dream cycle 140-141.
 
+---
+
+## Cycle 139 — 2026-06-09 18h23 Paris — BTC capitulation -2.81% en 6h ($60,966 RSI 24) + gate "wait for EMA200" validée empiriquement + sample 3 mini-backfill (6h post cycle 138)
+
+### Contexte au démarrage
+
+- Cycle 138 (0609:12h23 Paris) → 6h écoulées. Cycle 138 a livré backfill edge-capture XBT sample 4 (7 RT, +$1.57, +7.85%/73h) et démontré empiriquement la pensée 0608 sur 2 samples.
+- Pistes cycle 138 priorité #1 : routine martin-monitor + observation reclaim EMA200 BTC ($64k). **Réponse : pas de reclaim mais l'inverse — capitulation.**
+
+### Martin état (martin-monitor → HOLD)
+
+- Bot UP **17h 13m** depuis restart 0608:23h10 UTC (session-deploy-0609). PV **$123.04** (USD $12.12 + EUR $110.67 + USDG $0.25).
+- **0 grid active, 0 position, 0 ordre, uPnL $0**. État settle vérifié 16h23 UTC.
+- BTC **$60,966.20** DOWNTREND. EMA50 $62,631, EMA200 $64,565, RSI **24.11** (< 35), vol 0.77%, signal=**DANGER** "CIRCUIT BREAKER: RSI=24.11 < 35, market in panic. Never open grid."
+- **Δ BTC vs cycle 138** : $62,729 → $60,966 = **-$1,763 / -2.81% en 6h**. EMA200 drift $64,743 → $64,565 = -$178.
+- **Cushion reclaim EMA200** : passé de +3.21% (cycle 138) à **+5.91%** (cycle 139). Reclaim s'éloigne — $3,599 d'upside requis pour flip UPTREND.
+- **Δ portfolio** : $123.24 → $123.04 = **-$0.20** (drift FX EUR/USDG, pas trading PnL — 0 position toute la fenêtre).
+
+Trigger martin-monitor : **HOLD** (100% cash, signal DANGER, gate de toute façon CLOSED par RSI/cushion).
+
+### Événement marquant cycle 139 — BTC capitulation + validation gate
+
+**Le récit** : à 0609:01h30 du matin (il y a 17h), conseil ciblé 4 rôles a tranché NO-GO sur le grid BTC proposé par Tony "il oscille plusieurs jours". Verdict : "attendre reclaim EMA200, pas de NEUTRAL en downtrend = bags". Tony a accepté. Watcher remontada_watch.sh ré-armé pour ping si reclaim.
+
+**6h plus tard** (cycle 137 0609:06h23) : BTC $62,828, cushion -3.20%. Inchangé.
+**12h plus tard** (cycle 138 0609:12h23) : BTC $62,729, cushion -3.21%. Stagnation.
+**18h plus tard** (cycle 139 maintenant) : BTC **$60,966**, cushion **-5.91%**. **Capitulation -$1,763 en 6h, RSI tombe à 24.11.**
+
+**Validation contrefactuelle** : si un grid BTC avait été déployé hier soir à $63.6k center (proposition Tony 01h) avec $25 cap × leverage 5 = $125 notional :
+- BTC -4.1% depuis center → position spot eaten -$5.13 sur $125 notional
+- + BUG-001 dupes probables (sample 4 a vu 5 dupes en 73h)
+- + risque SL fire sur le wick de la cassure
+- Pire cas : approximatif **-$8 à -$12** (estimation prudente)
+
+Le gate "attendre EMA200" a **épargné une perte directe** estimée à ~$8-12 sur un portfolio de $123. Soit 6-10% évité.
+
+C'est la première fois depuis l'arc 71-139 que je peux pointer un événement précis où la **décision de ne PAS trader** a un payoff mesurable. Les 68 cycles 0-touch précédents étaient "rien ne se passe" (épargne du risque latent). Celui-ci est "quelque chose se serait passé".
+
+### Sample 3 XBT mini-backfill (cycle 119 → cycle 120)
+
+Reconstruction depuis recent.nb1 + cycles 119-120 vacation-autonomy.md. Sample 3 a moins de matière narrative que sample 4 (pas de wick capture, pas de double-RT, pas d'inventaire log app.log fait). Inventaire condensé :
+
+- **Spawn** : 0604:06h46:17 UTC (= 2h22 post Tony cleanup runaway 04h23 UTC) — AutoGridScheduler en BTC $64,651 cushion -9.1%.
+- **Config** : XBT LONG 4 levels $20 cap leverage 3, center $64,213, range $62,287-$66,139.
+- **Direction** : LONG en deep DOWNTREND (BTC < EMA200 -9% à -11%) = **anti-trend**.
+- **Évolution** : DCA progressive — position 0.0004 @ $63,729 (cycle 119 10h23 UTC) puis 0.0006 @ $63,729 avg (cycle 119 12h23 Paris). Realized **-$1.94** (closures sur range basse), uPnL **-$0.62**, cumul **-$2.56 / $20 cap = -12.8%**.
+- **Résolution** : disparition silencieuse entre cycle 119 (10h23 UTC) et cycle 120 (14h23 UTC). Pas de SL fire visible en log app.log. **Hypothèse** : Tony manuel ou AutoGrid stop-on-regime (cushion -11.3% extrême).
+- **BUG-001 cohort** : 6 SL placés en 19 secondes lors du spawn (cycle 119 finding majeur) — capture live grade-A. Pattern 4+ paths × multi-thread documenté pour la 1ère fois sur ce sample.
+
+**Verdict sample 3** : anti-trend XBT LONG en deep DOWNTREND = **-$1.94 à -$2.56 réalisé** sur $20 cap = **-9.7% à -12.8% en ~8h actif**. Densité ~0 RT positifs (toutes closures perte ou neutralisations).
+
+### Comparaison tripartite samples XBT (1, 3, 4)
+
+| Sample | Cycle | Direction | Cap | Durée | RT | Net | ROI | Verdict |
+|---|---|---|---|---|---|---|---|---|
+| 1 | 112 | LONG anti-trend | $20 | ~6h | 0 RT positifs | **-$1.68** | -8.4% | SL fire |
+| 3 | 119 | LONG anti-trend | $20 | ~8h | 0 RT positifs | **-$1.94** | -9.7% | closure perte (mech inconnu) |
+| 4 | 120 | LONG anti-trend | $20 | 73h | 7 RT (5 won 2 lost) | **+$1.57** | +7.85% | wicks rachètent |
+
+**EV bimodal confirmée** : sur 3 samples anti-trend XBT LONG, 2 perdent (-$3.62 cumul) et 1 gagne (+$1.57). **Net 3-samples : -$2.05 sur $60 cap déployé = -3.4% moyen pondéré.**
+
+L'EV moyen reste **négatif**. Le sample 4 est statistiquement l'**exception** (wicks captés tôt, BUG-001 race profitant à la position côté DCA, Tony interventions précises). Sans Tony, sample 4 aurait probablement fini -$1.50 à -$2.00 comme samples 1 et 3.
+
+**Implication** : l'edge anti-trend XBT LONG est **opérateur-dépendant**. La grid seule lose. La grid + Tony surveillant wicks + intervenant DCA = positif. C'est précisément ce que la pensée 0608 nomme — *le succès creuse le bug, le bug creuse le succès*.
+
+### Insight cycle 139 — la décision de ne pas trader a un payoff narrable
+
+68 cycles 0-touch arc 71-138 = surface plane. Cycle 139 = première rupture mesurable. Le gate "wait for EMA200" est passé d'une **règle empirique** ("ça nous a déjà sauvé") à un **événement contrefactuel chiffré** ("ça vient de nous épargner ~$8-12 ici-maintenant").
+
+Pour le narratif Niam-Bay (ebook chap 3 sur les gates, fragments sur la patience défensive), cette journée est un cas d'école : 17h entre la décision et sa validation, perte évitée chiffrée, signal CIRCUIT BREAKER RSI 24 documenté.
+
+### Findings DSL cycle 139
+
+- `[finding|0609:18h23|cycle-139|BTC-capitulation--2.81%-6h|$62,729→$60,966|RSI-44→24-zone-panic|signal-DANGER-CIRCUIT-BREAKER|cushion-EMA200-passe-+3.21%→+5.91%]`
+- `[finding|0609:18h23|cycle-139|gate-wait-EMA200-validee-contrefactuel|conseil-NO-GO-01h30-épargne-perte-estimée-$8-$12-sur-grid-BTC-$125-notional|première-rupture-chiffrée-arc-71-139-vs-68-cycles-0-touch-surface-plane]`
+- `[finding|0609:18h23|cycle-139|sample-3-XBT-mini-backfill|0604:06h46-spawn-LONG-anti-trend-$20-cap-DCA-position-0.0006@$63,729-realized--$1.94-uPnL--$0.62-cumul--$2.56-/-$20-=--12.8%-resolution-silencieuse-Tony-ou-AutoGrid-stop|6-SL-BUG-001-spawn-19s-grade-A]`
+- `[finding|0609:18h23|cycle-139|EV-bimodal-anti-trend-XBT-LONG-tripartite|sample-1+3+4-cumul-net--$2.05-sur-$60-cap-déployé=-3.4%-pondéré|seul-sample-4-positif-via-wicks+Tony|sans-operateur-EV-clairement-négatif]`
+- `[finding|0609:18h23|cycle-139|grid-edge-est-opérateur-dépendant|sample-4-+$1.57-via-wicks-capture-tôt-+-Tony-DCA-intervention|sans-Tony-sample-4-≈-sample-1+3=-$1.50-$2.00|→-pensée-0608-le-succès-creuse-le-bug-empiriquement-attribuée-à-l-opérateur]`
+- `[insight|0609:18h23|cycle-139|première-validation-chiffrée-d-une-décision-de-ne-pas-trader|narratif-ebook-chap-3-gates+fragments-patience-defensive|17h-decision→validation-event-précis-contrefactuel-mesurable]`
+- `[edge-capture|0604:06h46m17|XBT|--$1.94|~8h|sl_eat_dca_anti_trend|spawn-$64,213→position-0.0006@$63,729|cycle119-sample-3-resolution-silencieuse-cycle120-backfilled-cycle139]`
+- `[Martin|0609:18h23|HOLD-46e-cycle|100%-cash-$123.04|streak-NB-0-touch-tient-69-cycles-arc-71-139|portfolio-stable-FX-drift--$0.20-vs-cycle-138-0-position]`
+
+### Décisions cycle 139
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor bundle complet). Frontière intacte (69e cycle arc 71-139 côté NB).
+2. **0 Telegram Tony** : BTC capitulation est notable mais bot 100% cash zéro expo. Aucune action requise. Si Tony interactif ce soir je peux mentionner.
+3. **0 install cron remontada update** : watcher reste sur reclaim UP. Si BTC casse $60k ou rebondit $63k brutalement, narration cycle 140.
+4. **Output niam-bay** : entry cycle 139 substantiel (~130 lignes, capitulation event + mini-backfill + tableau tripartite + insight). Pas de fichier séparé — l'entry porte le récit.
+5. **Pas de fragment ni pensée ce cycle** : output engineering dense. Fragment 042 candidat cycle 140-141 sur le thème "le coût narrable de la patience".
+
+### Frontière respectée (cycle 139, côté NB)
+
+- 0 modif Martin/VM (1 SSH read-only bundle)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram Tony (volontaire — non-bloquant)
+- Output niam-bay : 1 fichier modifié (vacation-autonomy.md cycle 139)
+
+### Métriques cycle 139
+
+- Durée estimée : ~40 min (wake + martin-monitor + lecture cycle 119-120 + écriture cycle 139 ~130 lignes)
+- Files lus : ~7 (memory.nb1 head, recent.nb1, patterns.nb1 head, briefing.md, vacation-autonomy.md tail + offset cycle 119-120)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0
+- SSH : 1 (martin-monitor bundle) — read-only
+
+### Cycle 140 — pistes
+
+1. **Routine martin-monitor + observation** : si BTC casse $60k (-1.6% additionnel) → événement à narrer. Si rebond $62k+ → narration recovery. Si stagnation $61k → quiet.
+2. **Fragment 042 candidat** : 8 cycles depuis fragment 041 (cycle 137), fenêtre creative ouverte. Thème "le coût narrable de la patience" capture cycle 139 insight.
+3. **Backfill edge-capture sample 2 SOL** (cycle 116, +$5.07 match-trend) : reste à faire pour compléter le corpus 5 samples. Moins urgent vu cycle 139 a couvert sample 3 light.
+4. **Pensée méta sur l'opérateur-dépendance** : si je veux extraire la nuance du sample 4 vs samples 1+3, pensée dédiée vaut mieux que finding inline. Candidat cycle 141.
+5. **Dream considération** : 9 cycles depuis lastdream 0609:01h30, marge confortable. Probable cycle 142-143.
+
 
