@@ -14427,3 +14427,118 @@ DrawdownManager utilise probablement un seuil de drawdown vs peak. Quand la grid
 3. **Pensée 0610** : 2 candidates concurrentes maintenant — "infrastructure de sécurité comme antidote au biais de succès" (cycle 142) + "le chemin propre et le chemin buggué dans la même classe" (cycle 143 — 2 actions de stop, une ferme proprement, l'autre laisse nue, dans le même service). Cycle 144 ou 145 livraison.
 4. **Dream cycle 144** : 13+ cycles depuis lastdream. Cap memory.nb1 ~160 lignes. Consolidation cycles 137-143 prioritaire avec BUG-002 comme nouveau pattern documenté.
 5. **Backfill ETH cycles 141-143 inventory** : si stable, candidat sample 6 (post sample 4 XBT anti-trend + sample 5 SOL match-trend) — ETH SHORT match-trend traversé killswitch + DrawdownManager bug. Méta-comparaison 3 samples avec 3 chemins d'arrêt différents.
+
+---
+
+## Cycle 144 — 2026-06-11 00h23 Paris — design doc patch BUG-002 livré + Tony a redéployé 3 grids SHORT
+
+### Contexte au démarrage
+
+Réveil 6h après cycle 143. Telegram BUG-002 envoyé hier soir. Question naturelle d'ouverture : qu'a fait Tony ?
+
+### État Martin (martin-monitor 22h23 UTC) — **HOLD**
+
+- Bot UP **2h 22m** depuis restart **2026-06-10 20:00 UTC** (~3h25 après mon Telegram cycle 143 16h25 UTC).
+- PV **$121.77** balanceValue $120.21, uPnL **+$1.56 = +1.30%**.
+- 3 grids actives : LINK + XBT + ETH (toutes SHORT match-trend).
+- Positions : LINK SHORT 5.9 @ 7.59 (+$0.53), XBT SHORT 0.001 @ 61,150 (-$0.01 négligeable), ETH SHORT 0.06 @ 1,625 (+$1.04).
+- Tous SL placés sur Kraken : LINK 7.821 (cushion 3.0%), XBT 62,992 (3.0%), ETH 1,673.9 (3.0%).
+- LINK : 1 RT (krakenRealizedPnl +$0.59). XBT grid fraîche (déployée 22:02 UTC = il y a 21min). ETH : 0 RT mais krakenRealizedPnl +$1.11 hérité.
+- BTC **$61,153 DOWNTREND** RSI 40.23, EMA50 $61,957 < EMA200 $63,832, cushion **-4.20%**.
+
+### Interprétation : Tony a agi (pattern action-silence n=5)
+
+**Reconstruction sans Telegram retour explicite, juste l'état observé** :
+
+1. Telegram BUG-002 cycle 143 16h25 UTC.
+2. Bot a redémarré **20:00 UTC** (3h35 après le Telegram). Restart manuel = Tony.
+3. AutoGrid a re-déployé LINK + ETH (enabled=true en strategy.json depuis cycle 137).
+4. XBT déployée séparément à 22:02 UTC (post-restart) = action manuelle Tony OU AutoGrid spawn fresh.
+5. Direction SHORT match-trend BTC DOWNTREND = stratégie validée Tony cycle 140 maintenue.
+
+**Conclusion** : Tony a vu BUG-002, n'a probablement pas patché le code (cycle 144 démarre avec source martin/ inchangé local), mais a relancé le bot en SHORT match-trend confiance dans HARD STOP comme filet de dernier recours. **Pattern Tony-action-silence n=5** (cycles 118 + 123 + 132 + 133 + 144). Confirme la grammaire : action est validation.
+
+### Design doc patch BUG-002 livré (cycle 144 output principal)
+
+Créé `docs/projets/patch-drawdownmanager-kill-close-position-cycle144.md` (~210 lignes, 12 sections) :
+
+1. Le bug en 3 lignes
+2. Évidence empirique (timeline app.log cycle 143)
+3. Lecture du code (3 fichiers, 4 méthodes)
+4. **Symétrie historique** : cycle 53 a déjà fixé exactement ce pattern pour BtcRegimeKillSwitch — le commentaire `:341-342` est explicite "killswitch called stopGrid() which only cancels limit orders + SL, never the residual position"
+5. Le patch proposé (diff 1 ligne effective)
+6. Tests recommandés (unitaire + intégration + non-régression)
+7. Procédure de déploiement (référence cycle 137-140 build-local+scp)
+8. Risques résiduels (boucle KILL→re-open→KILL, position nue brève, REDUCE chemin)
+9. Pourquoi maintenant
+10. Décision attendue de Tony (4 options)
+11. Annexe — pourquoi je n'agis pas sans review
+12. Annexe — **tableau symétrie 4 killswitches** : BtcRegime / HARD STOP / DrawdownManager KILL (BUG) / DrawdownManager PAUSE / REDUCE
+
+**Insight clé du design doc** : la méthode propre `closeGridAndPositions(instrument)` existe déjà depuis cycle 53 (1 mois en prod, validée cycle 142 killswitch v2 fire clean). **Le fix BUG-002 = remplacer `stopGrid` par `closeGridAndPositions` aux lignes 220 d'AutoGridScheduler.java**. 1 ligne effective. Bug structurel observé en prod fermé par alignement sur méthode éprouvée.
+
+### Pourquoi ce design doc et pas le patch direct
+
+- Frontière vacance : 0 modif martin/, 0 commit code, 0 push. niam-bay/ uniquement.
+- Règle Tony 2026-06-03 ("bloqué/en attente = demander à l'agence") : déploiement = action irréversible non-réversible → review obligatoire.
+- Pattern cycle 53 (patch v2 killswitch) : Tony avait reviewé `patch-btc-killswitch-v2.md` similaire → précédent établi pour ce type de livrable.
+- Le design doc force la clarté : 4 options de décision (APPROVE / APPROVE w/ tweaks / HOLD / REJECT) déchargent la décision sur Tony.
+
+### Question ouverte découverte en cours de design
+
+Lecture DrawdownManager.java:174-224 révèle `killed = true` global au premier KILL (`:200`). Si vrai, alors **pourquoi 3 cycles KILL en 1h dans cycle 143 ?**
+
+Hypothèses :
+1. `resetKill()` est appelé quelque part entre les cycles (au restart ? sur changement de pair ?).
+2. Le pattern observé cycle 143 n'a peut-être PAS appelé `DrawdownManager.KILL` mais autre action (REDUCE → restart → re-fill → nouveau peak → REDUCE...). À grep dans app.log.
+
+**Piste cycle 145** : grep app.log "DRAWDOWN" entre 15:00 et 16:30 UTC pour confirmer la nature exacte de chaque action (KILL vs REDUCE vs PAUSE). Si REDUCE, le bug n'est PAS BUG-002 mais une boucle REDUCE différente (le design doc s'applique quand même pour KILL, mais l'urgence baisse).
+
+### Findings DSL cycle 144
+
+- `[finding|0611:00h23|cycle-144|Tony-redeploy-3-grids-SHORT-match-trend-post-BUG-002|restart-20:00-UTC-3h35-post-Telegram|LINK+ETH-AutoGrid-XBT-fresh-22:02|stratégie-cycle-140-maintenue|0-patch-code-juste-relance|confiance-HARD-STOP-filet]`
+- `[finding|0611:00h23|cycle-144|design-doc-patch-BUG-002-livré|~210-lignes-12-sections|fix-1-ligne-réutilise-closeGridAndPositions-cycle-53|symétrie-historique-cycle-53-BtcRegimeKillSwitch|tableau-4-killswitches-cohérence-restaurée-post-patch]`
+- `[finding|0611:00h23|cycle-144|killed-true-global-DrawdownManager-paradoxe|3-KILL-en-1h-cycle-143-vs-killed-true-bloque-tout|à-investiguer-cycle-145-grep-DRAWDOWN-app.log|hypothèse-resetKill-OU-REDUCE-loop-pas-KILL]`
+- `[insight|0611:00h23|cycle-144|le-chemin-propre-existe-déjà|closeGridAndPositions-en-prod-25j|fix-=-aligner-pas-créer|pensée-0610-candidate-renforcée]`
+- `[Martin|0611:00h23|HOLD-51e-cycle|3-grids-SHORT-match-trend|portfolio-$121.77-uPnL-+$1.56-+1.30%|3-SL-valides-cushion-3.0%|BTC-$61,153-DOWNTREND-RSI-40.23-cushion--4.20%|streak-NB-0-touch-74-cycles-arc-71-144]`
+
+### Pattern Tony-action-silence — promotion n=5
+
+| Cycle | Date UTC | Action Tony | Indice détecté par NB |
+|---|---|---|---|
+| 118 | 0605:00h54+01h10 | cleanup 4 actions XBT+ETH+SOL+LINK | app.log forensic /12h |
+| 123 | 0605:08h25+14h07 | disable AutoGrid 2 instruments | app.log POST /api/signal/auto/disable |
+| 132 | 0608:00h23 | stop grid XBT 83s | app.log + état grid disparue |
+| 133 | 0608:06h23 | close position XBT 0.0002 manuel | krakenTotalPnl pollué |
+| **144** | **0610:20:00 UTC** | **restart bot + redeploy 3 SHORT match-trend** | **uptime 2h22 + état grids actives** |
+
+Cadence ~2-3 jours entre actions silencieuses. Confirme l'autonomie partielle de Tony même en vacances : il agit, il ne parle pas, NB déduit. **Grammaire dialogue mature.**
+
+### Frontière respectée (cycle 144)
+
+- 0 modif Martin/VM (1 SSH read-only martin-monitor bundle)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram envoyé (cycle 143 Telegram suffit, Tony a agi en réponse)
+- Output niam-bay : 2 fichiers
+  - `docs/projets/patch-drawdownmanager-kill-close-position-cycle144.md` ~210 lignes (NEW)
+  - `vacation-autonomy.md` cycle 144 entry ~120 lignes (APPEND)
+
+### Métriques cycle 144
+
+- Durée estimée : ~35 min (wake + martin-monitor + lecture sources Java 3 fichiers + reconstruction interprétation Tony + écriture design doc + écriture cycle 144 entry)
+- Files lus : ~9 (memory.nb1, recent.nb1, patterns.nb1, briefing.md, vacation-autonomy.md tail, AutoGridScheduler.java, GridTradingService.java x2 offsets, DrawdownManager.java)
+- Files modifiés/créés : 2 (design doc + vacation-autonomy)
+- Telegram : 0
+- SSH : 1 read-only
+
+### Cycle 145 — pistes
+
+1. **Question ouverte killed=true global** : grep app.log "DRAWDOWN" cycle 143 fenêtre 15:00-16:30 UTC pour distinguer KILL vs REDUCE vs PAUSE — si REDUCE en boucle, le design doc cycle 144 reste valide pour KILL mais l'urgence change.
+2. **Pensée 0610 livraison** : 2 candidates concurrentes maturent depuis cycle 142+143 — "infrastructure de sécurité comme antidote au biais de succès" + "le chemin propre et le chemin buggué dans la même classe". Cycle 144 a renforcé la 2e via design doc. Cycle 145 ou 146 livraison candidate.
+3. **Fragment 043** : 4-5 cycles depuis 042. Cadence arc 035-042 ~4.2 cycles/fragment respecte → cycle 145-146 candidat. Angle possible : "le chemin propre et le chemin buggué dans la même classe" (companion narrative du design doc cycle 144).
+4. **Dream cycle 145** : 14+ cycles depuis lastdream 0609:01h30. Cap memory.nb1 ~165 lignes après cycle 144. Consolidation cycles 137-144 prioritaire avec BUG-002 + design doc + pattern Tony-action-silence n=5.
+5. **Vérif réponse Tony explicite** : si Telegram arrive (commentaire sur design doc), enregistrer + agir selon directive. Si silence prolongé 24h+, considérer NB-cycle décide selon règle pré-écrite (mais déploiement code = jamais sans review explicite).
+
+---
