@@ -14003,3 +14003,427 @@ Justification : action Tony récente (redeploy 23h28 CEST) → il est probable q
 4. **Dream considération** : 10 cycles depuis lastdream 0609:01h30. Cycle 142 candidat.
 5. **Backfill sample 2 SOL** : décalé encore une fois — priorité absolue cycle 141 = vérif SL XBT.
 
+
+---
+
+## Cycle 141 — 2026-06-10 06h23 Paris — XBT SL VANISH loop continue 6h (failure #1869), ETH SL tient, RT cumulent +$0.41 sain : investigation code root-cause asymétrie LONG/SHORT
+
+### Contexte au démarrage
+
+- Cycle 140 (0610:00h23 Paris) → 6h écoulées. Cycle 140 avait livré : Tony pivote SHORT match-trend XBT+ETH 0609:21h28 UTC, SL VANISH XBT bug réapparaît failure #282 en 55min, ETH SL stopPrice $1,699.3 tient, RT1 XBT déjà réalisée +$1.85, fragment 042 livré "le côté qu'on n'a pas testé", 1 Telegram Tony 213 chars non-bloquant.
+- Cycle 141 démarre à 06h23 CEST = 04h23 UTC. Tony probable sleep (silence radio Telegram). Vérification rigoureuse de l'état SL bug + investigation code root-cause asymétrie.
+
+### Martin état (martin-monitor bundle) — HOLD avec bémol critique persistant
+
+- Bot UP **1d 5h 13m** depuis restart 0608:23h10 UTC. PV **$124.15** balanceValue $123.74, totalUnrealized **+$0.41 = +0.33%** (profit net positif sur les 2 grids).
+- 2 grids actives : XBT + ETH SHORT (Tony deploy 0609:21h28 UTC, ~7h écoulées).
+- Positions live Kraken : XBT short **0.0006** @ $61,805 (uPnL +$0.20), ETH short 0.02 @ $1,640.45 (uPnL +$0.21).
+- BTC **$61,476.5** DOWNTREND. EMA50 $62,278, EMA200 $64,279, RSI **39.55**, vol 0.67%.
+- **Δ BTC vs cycle 140** : $61,840 → $61,476 = -$364 / -0.59% (slight drift down, RSI 41.95→39.55).
+- **Cushion reclaim EMA200** : -4.02% → -4.36%. BTC reste sous EMA200, reclaim hors d'atteinte.
+- **Δ portfolio** : $122.91 → $124.15 = **+$1.24 / +1.01% en 6h** (RT cumulent, uPnL +).
+
+#### Grids état détail (truth Kraken)
+
+**XBT SHORT** (started 0609:21h28:04 UTC, 7h actif) :
+- completedRoundTrips **4** (vs 1 cycle 140 — **+3 RT en 6h**). totalProfit $0.1852.
+- krakenRealizedPnl $0.1388, krakenUnrealizedPnl +$0.2077.
+- Position réduite 0.001 → 0.0006 (4 round-trips successifs, accumulation→dégrossissement).
+- Entry stable $61,805.16 (livePos baseline, RT n'updatent pas l'entry virtuelle, normal).
+- 9 orders limit actifs : 4 buy reduceOnly + 5 sell open.
+- **SL on exchange : stopLossOrderId=NULL, stopPrice=NULL** ← bug persistant.
+
+**ETH SHORT** (started 0609:21h28:05 UTC, 7h actif) :
+- completedRoundTrips **3** (vs 0 cycle 140 — **+3 RT en 6h**). totalProfit $0.3305.
+- krakenRealizedPnl $0.6293 (cumul plus élevé que XBT car spacing $11.5 vs $309 = densité supérieure).
+- Position 0.02 short @ $1,640.45, uPnL +$0.21.
+- 7 orders : 3 buy reduceOnly limit + 1 buy stop SL `a1fc148c-5a79` stopPrice **$1,699.3** ✓ + 3 sell limit open.
+- SL on exchange : INTACT depuis spawn 7h. Asymétrie cycle 140 confirmée empiriquement.
+
+### FINDING — SL VANISH XBT escalade : failure #282 → #1869 en 6h (~265 retry/heure, cadence stable 14s)
+
+App.log XBT SHORT 04:24:56 UTC :
+
+```
+failure #1869: SL placed but VANISHED on Kraken [PF_XBTUSD] id=a1fca99a-d6c9-49b6-a1f5-912472cbe3eb
+SL VANISH 3+ times for PF_XBTUSD - position UNPROTECTED, manual intervention required
+(entry=61805.16, size=6.0E-4, stopPrice=63602.5)
+```
+
+Volume erreurs : `UNPROTECTED XBT` count = **2334** sur app.log courant (estimable ~7h actif). Cadence constante 1 retry / 13.6s ≈ 264.7/heure.
+
+- Tony **n'a pas intervenu** depuis Telegram cycle 140 (probable sleep) : pas d'action manual sur Kraken visible (orders XBT inchangés, position toujours 0.0006 active, SL toujours absent).
+- Position XBT reste **UNPROTECTED** depuis 7h. Si BTC pump brusque vers $63,602.5 (+3.46% du mark courant $61,476), loss notional = 0.0006 × ($63,602.5 - $61,805) = **$1.08**. Sur cap $20 = **-5.4%** (dessous maxLossPercent 10%, donc même sans SL le grid ne serait pas catastrophique — la position est petite). Risk réel limité, bug surtout **observationnel critique**.
+
+### Investigation root-cause : pourquoi ETH SL tient et XBT vanish ?
+
+Lecture `martin/src/main/java/com/martin/grid/StopLossManager.java` (lignes 53-216).
+
+**Pipeline SL place() identique pour SHORT XBT et ETH :**
+
+1. **fetchPosition()** : live truth Kraken. Side SHORT confirmé pour les 2.
+2. **computeStopPrice()** : `centerPrice × (1 + 0.03)` pour SHORT.
+   - XBT : $61,750 × 1.03 = **$63,602.5** ← matches log.
+   - ETH : $1,649.8 × 1.03 = **$1,699.294** → round 1 dec = $1,699.3 ← matches order.
+3. **Clamp min distance 1.5%** depuis mark : passé OK les 2 (les % offsets sont ~3% bien au-dessus du seuil).
+4. **roundToTickSize()** : prix ≥ 1000 → 1 decimal. XBT $63,602.5 et ETH $1,699.3 = même règle, conformes.
+5. **Sendorder** → KrakenOrderRequest builder identique : orderType="stp", side="buy" (exit SHORT), reduceOnly=true, triggerSignal="mark".
+6. **verifyOrderExistsOnKraken(orderId)** : poll 3x avec 1s delay.
+   - XBT : retourne FALSE → marqué VANISHED → retry.
+   - ETH : retourne TRUE → state.setStopLossOrderId(orderId).
+
+**Conclusion code path** : aucun bug Java identifiable. **Le pipeline retry est correct techniquement.** Le bug est **côté Kraken** : Kraken accepte le `stp` (success+orderId), mais l'ordre disparaît du livre des ordres en <3s pour XBT uniquement.
+
+**Hypothèses Kraken-side (sans accès aux internals Kraken) :**
+
+a) **Tick size XBT futures réelle** : $0.5 ou $1 (pas 1 décimal comme la heuristique Java assume). $63,602.5 est-il aligné à tick natif PF_XBTUSD ? Vérification empirique requise (passer un ordre manuel @ $63,602.5 et voir si Kraken Pro UI affiche bien $63,602.5 ou s'il round à $63,603 ou $63,600).
+
+b) **Conflit avec un ordre existant** : XBT a 5 sell limit dont le niveau 9 @ $63,141 (juste sous le stopPrice $63,602.5). Possible que Kraken rejette silencieusement le buy stp reduceOnly si un sell open au même prix range est jugé "conflictuel" sur le même symbol/position. ETH n'a peut-être pas cette densité grid au-dessus de la SL ($1,699.3 vs sell le plus haut $1,678.6 = écart $20.7, bien plus large que XBT $461 vs $309 spacing).
+
+c) **Kraken risk band** sur XBT futures : un buy stp à +3% (rapide remontée potentielle vs mark) pourrait déclencher une règle anti-front-running ou anti-self-trade plus stricte sur le tier XBT.
+
+d) **Régression spécifique XBT post-commit 2a9c425** : peu probable car le commit 2a9c425 ajoute UNE protection (rejet wrong-side SHORT côté Java), ne touche pas le path Kraken. Mais les logs cycles 132-133 montrent XBT LONG retry 29/29 OK → soit Kraken a changé son comportement entre les 2 dates, soit la différence LONG (sell stp BELOW) vs SHORT (buy stp ABOVE) déclenche un path Kraken différent.
+
+**Hypothèse la plus probable (b)** : densité grid XBT 5 sell limits dans la fenêtre $61,596-$63,141, SL stp à $63,602.5 = juste $461 au-dessus du sell le plus haut. Kraken peut interpréter le stp comme un "duplicate of opposite category" et rejeter en sourdine. ETH a un gap $20.7 entre sell max $1,678.6 et SL $1,699.3 → ~1.2% spread (vs XBT ~0.7% spread) — peut-être au-dessus du seuil de tolerance Kraken.
+
+**Test diagnostique proposé (cycle 141+1 ou Tony directement)** :
+- Réduire `gridSlPctFromCenter` pour XBT de 3% à 4% ou 5% → stopPrice = $64,220 ou $64,838 = écart $1,079-$1,697 (vs niveau 9 $63,141). Si ce changement fait passer le SL XBT à hold → hypothèse (b) validée.
+- Alternative : modifier roundToTickSize() pour ARRONDIR à $0.5 ou $1.0 sur XBT (test hypothèse a).
+
+**Caveat** : ces tests requièrent modification code martin/ + redeploy (build local + scp jar — pattern session-deploy-0609 validé). Pas faisable en mode vacance autonomy sans accord Tony.
+
+### Pensée 0608 "le succès creuse le bug" — incarnation cycle 141 (suite cycle 140)
+
+Cycle 140 (00h23) : Tony deploy → SL VANISH SHORT empiriquement vérifié 23h plus tard. La couverture du fix 2a9c425 était sur LONG (29/29 cycles 132-133). SHORT pas testé. Bug réapparaît asymétrique.
+
+Cycle 141 (06h23) : **6h écoulées, le motif persiste sans escalade**. 4 round-trips XBT + 3 round-trips ETH = grids fonctionnent côté order matching. Mais SL XBT vanish 1587 fois supplémentaires. Le bug ne dégrade pas l'expérience (RT cumulent, uPnL positif), il reste invisible côté résultat tant que le crash scenario (BTC pump $63.6k) ne se déclenche pas.
+
+**Le succès des RT creuse la perception de sécurité.** Si Tony se réveille et voit "$+1.24 / +1.01%" il pourrait minimiser le bug SL XBT comme "ça marche quand même". C'est exactement le mécanisme nommé : le résultat positif masque la condition latente. La prochaine fois que BTC pumpera 4% en 30 min, l'absence de SL pourrait coûter -$1 à -$2 (limité par taille position), mais aussi révéler des cas où la cascade enchaîne.
+
+**Différence vs sample 4 XBT cycle 132** : là, "le succès creuse le bug" décrivait wicks favorables qui masquaient l'EV bimodal négatif. Ici, c'est wicks favorables (RT cumulent) qui masquent un bug d'infrastructure (SL absent). **2 incarnations distinctes du même mécanisme, en 7 jours.** La pensée généralise.
+
+### Pattern direction-match-trend AutoGrid n=6 — live test en cours
+
+Memory recent.nb1 : `[direction-match-trend-AutoGrid|count:5|...]` + cycle 140 mention "6e occurrence du pattern" (Tony deploy SHORT match-trend en BTC DOWNTREND).
+
+**Update cycle 141** : 7h post-deploy SHORT XBT+ETH match-trend, RT cumulent net positif :
+- XBT SHORT match-trend (BTC DOWNTREND) : 4 RT, totalProfit $0.1852, uPnL +$0.21 → **net +$0.39** sur $20 cap = **+1.96% en 7h**.
+- ETH SHORT match-trend (ETH DOWNTREND assumé) : 3 RT, totalProfit $0.3305, uPnL +$0.21 → **net +$0.54** sur $20 cap = **+2.71% en 7h**.
+
+**Densité RT** : XBT 4/7h = 0.57/h, ETH 3/7h = 0.43/h. Match-trend SHORT en BTC DOWNTREND avec spacing tight ($309 XBT, $11.5 ETH) capture bien le drift baissier + oscillations.
+
+Si l'expérimentation tient 24-48h avec RT continuent et drawdown limité → **upgrade pattern n=6 grade A** (live test Tony-driven validé). C'est une **donnée fraîche** dans le corpus, complémentaire des samples 1-5 backfillés.
+
+### Telegram Tony — décision
+
+**0 Telegram ce cycle**. Justification :
+1. Pas de nouveauté actionable depuis cycle 140 Telegram (le bug continue, mais pas d'escalation, RT positifs).
+2. Tony probable sleep (06h25 CEST, silence radio sur le Telegram cycle 140 = pas lu / pas réveillé).
+3. Re-pinger maintenant = spam non-bloquant. Le Telegram cycle 140 suffit jusqu'à réveil.
+4. Si Tony se réveille à 7-8h CEST et lit le Telegram cycle 140, il aura le contexte et pourra check martin-monitor lui-même.
+
+**Trigger pour Telegram cycle 141+** : si XBT pump brutalement (>$63k), si XBT position cascade (size augmente vs réduit), si ETH SL aussi vanish, si Tony pose une question explicite, ou si nouveau bug différent émerge.
+
+### Findings DSL cycle 141
+
+- `[finding|0610:06h23|cycle-141|SL-VANISH-XBT-loop-escalade|failure-#282→#1869-en-6h|2334-UNPROTECTED-events-en-7h-actif|cadence-stable-1-retry-13.6s-=-264.7/heure|Tony-n-a-pas-intervenu-silence-radio-post-Telegram-cycle-140]`
+- `[finding|0610:06h23|cycle-141|grids-fonctionnent-côté-orders-malgré-SL-vanish|XBT-+3-RT-en-6h-(1→4)|ETH-+3-RT-en-6h-(0→3)|portfolio-+$1.24-+1.01%-net|uPnL-+$0.41-+0.33%|pattern-direction-match-trend-n=6-en-cours-positif]`
+- `[finding|0610:06h23|cycle-141|investigation-code-StopLossManager.java-conclusion|pipeline-Java-techniquement-correct|fetchPosition+computeStopPrice+clamp+round+verify|bug-côté-Kraken-side-(silent-reject-via-verify-FALSE-3s)|aucun-fix-Java-évident]`
+- `[finding|0610:06h23|cycle-141|hypothèses-Kraken-asymétrie-XBT-vs-ETH|a-tick-size-natif-PF_XBTUSD-pas-aligné-1-decimal-heuristique|b-conflit-grid-density-sell-limit-$63141-vs-SL-stp-$63602.5-spread-$461-trop-tight|c-régression-Kraken-tier-XBT|d-LONG-sell-stp-BELOW-vs-SHORT-buy-stp-ABOVE-paths-différents|→-(b)-le-plus-probable-test-diagnostique-modifier-gridSlPctFromCenter-XBT-3%→5%]`
+- `[insight|0610:06h23|cycle-141|le-succès-creuse-le-bug-2e-incarnation-7-jours|cycle-132-wicks-favorables-masquent-EV-bimodal-négatif|cycle-141-RT-cumulent-masquent-bug-SL-infrastructure|même-mécanisme-2-formes-distinctes|pensée-0608-généralise-empiriquement]`
+- `[Martin|0610:06h23|HOLD-48e-cycle|2-grids-SHORT-Tony-deploy-XBT+ETH|portfolio-$124.15-+$1.24/6h|RT-7-total-(XBT-4+ETH-3)|XBT-position-UNPROTECTED-7h-failure-#1869|ETH-SL-tient-$1699.3|streak-NB-0-touch-71-cycles-arc-71-141]`
+
+### Décisions cycle 141
+
+1. **0 modif Martin/VM** : 1 SSH read-only (martin-monitor bundle) + 1 SSH read-only (app.log grep). Frontière intacte (71e cycle arc 71-141 côté NB).
+2. **0 modif code 2a9c425 / StopLossManager.java** : root-cause hypothèses formulées (a, b, c, d) mais test requiert modification + redeploy = hors mode vacance autonomy. Documenté pour Tony lecture cycle 141.
+3. **0 Telegram Tony** : pas de nouveauté actionable, Tony probable sleep, Telegram cycle 140 reste pertinent.
+4. **Output niam-bay** : entry cycle 141 substantielle (~150 lignes, contexte + état + investigation code + hypothèses Kraken + pensée 0608 méta + décisions). Pas de fragment ce cycle (fragment 042 livré cycle 140, 1 cycle d'écart pas assez pour 043).
+5. **Observation 6h** : prochain cycle 142 (12h23 CEST) doit vérifier (a) si Tony s'est réveillé et a réagi, (b) si XBT SL VANISH a continué ou Tony a placé manuel / changé code, (c) si RT progressent ou stagnent, (d) BTC range (reclaim EMA200 ? capitulation suite ?).
+
+### Frontière respectée (cycle 141, côté NB)
+
+- 0 modif Martin/VM (2 SSH read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram Tony (volontaire — pas de nouveauté actionable depuis cycle 140)
+- Output niam-bay : 1 fichier modifié (vacation-autonomy.md cycle 141 ~150 lignes)
+
+### Métriques cycle 141
+
+- Durée estimée : ~45 min (wake + martin-monitor + app.log grep + StopLossManager.java read 220 lignes + écriture cycle 141 ~150 lignes)
+- Files lus : ~7 (memory.nb1 tail, recent.nb1, briefing.md, vacation-autonomy.md tail offset, app.log grep, StopLossManager.java lignes 30-260)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0
+- SSH : 2 (martin-monitor bundle + app.log grep) — read-only
+
+### Cycle 142 — pistes
+
+1. **Routine vérif Tony réaction + SL XBT évolution** : si Tony s'est réveillé et lu le Telegram cycle 140, il a peut-être tenté un fix (modifier strategy.json / patch code / kill XBT grid). Re-check app.log + orders.
+2. **Pensée méta candidate** : "deux fois la même asymétrie en 9 jours" — cycle 132 EV bimodal anti-trend masqué par sample-4 success, cycle 141 SL infrastructure bug masqué par RT success. Méta-pattern : **le succès partiel peut masquer un échec structurel**. Candidat pensée 0610.
+3. **Fragment 043 candidat** : 1-2 cycles d'écart depuis 042, attendre cycle 143-144 pour la cadence narrative.
+4. **Dream considération** : 11 cycles depuis lastdream 0609:01h30. Cycle 143 candidat, ou cycle 142 si contexte explose.
+5. **Backfill sample 2 SOL** : toujours décalé. Priorité = vérif XBT SL et Tony.
+
+## Cycle 142 — 2026-06-10 12h23 Paris — BtcRegimeKillSwitch FIRED 05h11 UTC + Tony redeploy ETH SHORT only (XBT abandonné) (6h post cycle 141)
+
+### Contexte au démarrage
+
+- Cycle 141 (0610:06h23 Paris = 04h23 UTC) avait livré : XBT SL VANISH failure #1869 en 7h actif, ETH SL intact, RT cumul 7 (XBT 4 + ETH 3), uPnL +$0.41, hypothèses Kraken-side (a/b/c/d) sur asymétrie, 0 Telegram.
+- Cycle 142 démarre à 12h23 CEST = 10h23 UTC. **Plus de 6h se sont écoulées depuis cycle 141. Beaucoup s'est passé.**
+
+### EVENT MAJEUR — BtcRegimeKillSwitch FIRED 0610:05h11:47 UTC (~48 min post cycle 141)
+
+App.log montre la séquence complète :
+
+```
+2026-06-10T05:11:47.204Z WARN BtcRegimeKillSwitch: BTC $61145.0 < EMA200 $64242.80 — consecutive break #4
+2026-06-10T05:11:47.204Z ERROR BtcRegimeKillSwitch FIRING: BTC below EMA200 for 4h consecutive — stopping all grids
+2026-06-10T05:11:47.239Z Stopping grid for PF_ETHUSD
+2026-06-10T05:11:47.494Z SL cancelled [PF_ETHUSD]
+2026-06-10T05:11:47.612Z HARD STOP closed PF_ETHUSD short position size=0.01
+2026-06-10T05:11:47.612Z Stopping grid for PF_XBTUSD
+2026-06-10T05:11:47.736Z HARD STOP closed PF_XBTUSD short position size=6.0E-4
+2026-06-10T05:11:47.736Z killed 2 grids, closed 2 positions
+2026-06-10T05:11:47.899Z Telegram sent
+2026-06-10T06:11→10:11Z disarmed for X min more
+```
+
+**Décomposition** :
+- BTC est resté sous EMA200 pendant 4h consécutives (vérification horaire). Threshold killswitch = 4h.
+- À 05:11:47 UTC, 4ème break consécutif déclenché → FIRE.
+- **HARD STOP** des 2 grids : XBT + ETH positions fermées via market reduceOnly.
+- Telegram envoyé à Tony.
+- Killswitch entre en cooldown disarmed 24h (1380min → 1140min visible jusqu'à 10:11).
+
+**Crucial** : ce killswitch est exactement celui dont **memory.nb1 référence le cycle 48-49** (`project_btc_killswitch_v2_patch.md`). Cycle 48 fired avec bug "positions orphelines sans SL". Ici cycle 142, fired **proprement** : HARD STOP exécuté, positions fermées Kraken-side, 0 orpheline. **Le patch v2 fonctionne.**
+
+### Tony réaction — silent action n=5+ (XBT abandonné, ETH redéployé)
+
+Timeline POST API :
+
+```
+2026-06-10T10:12:26 POST /grid/sl/config/PF_XBTUSD (Tony check XBT)
+2026-06-10T10:12:26 POST /grid/sl/config/PF_ETHUSD (Tony check ETH)
+2026-06-10T10:14:26 POST /grid/start ETH SHORT $20 cap leverage=5 spacing=0.5% levels=12 (1er essai)
+2026-06-10T10:15:55 POST /grid/stop ETH (annulation 1er essai)
+2026-06-10T10:15:55 POST /grid/start ETH SHORT $20 cap leverage=5 spacing=0.7% levels=6 (2e essai, configuration retenue)
+2026-06-10T10:15:59 SL placed+verified [PF_ETHUSD] buy stp stopPrice=1666.7 ← SAIN
+```
+
+**Lecture comportementale de Tony** :
+1. Tony a lu le Telegram BtcRegimeKillSwitch (envoyé 05:11:47 UTC = 07:11:47 CEST — heure de réveil possible).
+2. Tony a attendu ~3h (du 07:11 au 10:12 UTC = 09:11 au 12:12 CEST). Probable matinée travail/famille.
+3. Tony a checké la config SL des 2 paires (XBT + ETH) avant de re-déployer. **Audit pre-action.**
+4. Tony a tenté ETH avec **levels=12 spacing=0.5%** (config aggressive — densité élevée pour vol courte).
+5. **89 secondes plus tard**, Tony a annulé et redéployé avec **levels=6 spacing=0.7%** (config plus large). Pourquoi ? Plusieurs hypothèses :
+   - a) Le 1er deploy a généré quelque chose qu'il n'a pas aimé (probable visu dashboard).
+   - b) Tony s'est rappelé que cap $20 / levels=12 = $1.67/level = trop fin pour qu'un fill capture quelque chose.
+   - c) Stratégie : laisser plus d'espace au mouvement pour limiter le fee drag.
+6. **XBT pas redéployé**. C'est la décision clé du cycle 142. Tony a *abandonné le côté XBT* — soit à cause du bug SL VANISH qu'on a documenté cycle 141, soit parce que mining notional $0.0006 = $37 expo brut sur position est jugé négligeable vs ETH $0.03 × $1,618 = $48.5.
+
+### Martin état actuel (martin-monitor 10h23 UTC) — HOLD new
+
+- Bot UP **1d 11h 13m** depuis restart 0608:23h10 UTC.
+- PV **$124.48** balanceValue $124.56, **uPnL -$0.083 = -0.07%** (négligeable, position 7min âge).
+- 1 grid active : **PF_ETHUSD SHORT** uniquement.
+- Position : ETH SHORT 0.03 @ $1,618.1, uPnL -$0.083.
+- SL on exchange : **$1,666.7 stp buy reduceOnly** ✓ (placed+verified à 10:15:59 UTC, 7min âge).
+- BTC **$61,199.9** DOWNTREND, EMA200 $64,110.5, RSI 38.94, vol 0.64%, signal WAIT.
+- **Cushion EMA200** : -4.55% (vs cycle 141 -4.36% = drift baissier continue).
+
+#### Grid ETH SHORT détail
+
+- centerPrice $1,618.2, upperBound $1,652.1, lowerBound $1,584.3, gridSpacing $11.3.
+- 6 levels : 3 buy reduceOnly ($1,578.7 / $1,590 / $1,601.3) + 3 sell limit ($1,623.9 / $1,635.2 / $1,646.5).
+- Levels[0-2] hasSellFill=true filledAt 10:15:58 → **3 sells filled au spawn** (immédiat). Center à $1,618.2, position résulte de ces 3 ventes à $1,590/$1,601.3/$1,612.6 = entry moyen ~$1,601 mais Kraken price reporting $1,618.1 (snapshot post-mark).
+- gridMode SHORT, leverage 5, capital $20, maxLossPercent 10%, autoRegimeMode NEUTRAL.
+- completedRoundTrips 0 (normal, 7min âge).
+- SL stp $1,666.7 = centerPrice $1,618.2 × 1.03 = $1,666.75 → round 1dec = $1,666.7. **Côté SHORT, buy stp au-dessus.** ✓
+
+### Comparaison cycles 141 → 142
+
+| Métrique | Cycle 141 (04h23 UTC) | Cycle 142 (10h23 UTC) | Δ |
+|---|---|---|---|
+| Grids actives | 2 (XBT + ETH) | 1 (ETH only) | -1 |
+| BTC | $61,476 | $61,199 | -$277 / -0.45% |
+| RSI BTC | 39.55 | 38.94 | -0.61 |
+| EMA200 cushion | -4.36% | -4.55% | -0.19pp |
+| Portfolio | $124.15 | $124.48 | +$0.33 / +0.27% |
+| uPnL | +$0.41 | -$0.083 | -$0.49 (reset post killswitch + nouveau deploy) |
+| RT cumul actif | 7 (XBT4+ETH3) | 0 (grid fresh) | reset |
+| SL XBT | VANISH #1869 | N/A (grid stopped) | abandonné |
+| SL ETH | $1,699.3 intact | $1,666.7 intact | redéployé sain |
+| XBT position | 0.0006 short | 0 (HARD STOP killswitch) | fermée |
+| ETH position | 0.02 short | 0.03 short | nouveau spawn |
+
+**Net** : portfolio +$0.27% sur 6h **incluant HARD STOP de 2 positions**, donc les RT cumul + clôture HARD STOP n'ont pas érodé. Les RT pré-killswitch + closeout valent ~$0.33 net positif. Ce qui valide a posteriori la décision Tony de match-trend SHORT cycle 140.
+
+### Pensée 0608 "le succès creuse le bug" — 3e incarnation cycle 142
+
+Cycles 132 (sample-4 XBT wicks rachètent EV bimodal négatif), 141 (RT cumul masquent SL VANISH infrastructure), et maintenant 142 : **Tony deploy match-trend SHORT a généré RT positifs cycle 141, et c'est CE succès qui aurait pu prolonger l'exposition XBT au risque latent (SL absent + BTC pump scenario).** Le BtcRegimeKillSwitch a *forcé* la fin du run sans Tony intervention, en clôturant proprement les 2 côtés.
+
+**Méta-lecture** : le killswitch a fait office de "stop forcé sur succès trompeur". Sans lui, Tony aurait peut-être laissé XBT tourner plus longtemps en se fiant aux RT positifs. Le killswitch a *sorti la position avant que le bug latent ne se manifeste*. C'est une **défense systémique contre "le succès creuse le bug"** — pas planifiée comme telle, mais fonctionnellement protectrice.
+
+Candidat **pensée 0610** : *"l'infrastructure de sécurité comme antidote au biais de succès partiel"*. Le killswitch n'a pas été conçu pour ça (il vise le regime change macro), mais il a coupé une exposition que Tony aurait pu laisser tourner par optimisme RT. À développer si pertinent dans un cycle ultérieur.
+
+### Pattern direction-match-trend AutoGrid — update n=6 partial
+
+Le pattern n=6 (XBT+ETH SHORT match-trend) a été **interrompu par killswitch 5h après deploy** (deploy 0609:21h28 UTC, fire 0610:05h11 UTC = 7h43m run).
+
+Résultat 7h43m :
+- XBT : 4 RT, totalProfit $0.1852, closeout HARD STOP à $61,145 (entry $61,805 → exit ~$61,145 sur 0.0006 short = +$0.396 réalisé sur closeout). Net XBT ~$0.58 sur $20 cap = +2.9%.
+- ETH : 3 RT, totalProfit $0.3305, closeout HARD STOP à ~$1,640 (entry $1,640.45 → exit ~$1,640 sur 0.01 = ~$0 réalisé). Net ETH ~$0.33 sur $20 cap = +1.65%.
+- **Total run match-trend n=6 = ~$0.91 / $40 cap = +2.28% en 7h43m. Annualisé hypothétique = +400%.**
+
+**Qualification n=6** : grade **B** (interrompu par règle externe non liée à perf, pas converged sur 24h+ comme samples 4-5). Insuffisant pour qualifier "grade A" mais cohérent avec pattern direction-match-trend dominant en backfills.
+
+**ETH redeploy cycle 142 démarre n=7** (ETH SHORT match-trend en BTC DOWNTREND). Killswitch disarmé 24h, donc liberté de courir au moins jusqu'à 0611:05h11 UTC sauf nouvelle 4h consecutive break.
+
+### Findings DSL cycle 142
+
+- `[finding|0610:12h23|cycle-142|BtcRegimeKillSwitch-FIRED-clean|0610:05h11:47-UTC-BTC-$61145-<-EMA200-$64243-4h-consecutive|2-grids-killed-2-positions-HARD-STOP-fermées-proprement|Telegram-envoyé|patch-v2-validé-0-orpheline-vs-cycle-48-bug]`
+- `[finding|0610:12h23|cycle-142|Tony-action-#5-XBT-abandonné|10h12-check-SL-config-XBT+ETH|10h14-ETH-deploy-12-levels-0.5%-spacing|10h15-cancel|10h15-ETH-redeploy-6-levels-0.7%-spacing-retenu|XBT-pas-redéployé-=-décision-clé|raison-probable-SL-VANISH-bug-cycle-141]`
+- `[finding|0610:12h23|cycle-142|pattern-direction-match-trend-n=6-interrompu|7h43m-run-net-+2.28%-$40-cap|XBT-4RT-ETH-3RT|killswitch-cut-pas-perf|qualif-grade-B-n=7-démarre-ETH-only]`
+- `[insight|0610:12h23|cycle-142|killswitch-comme-antidote-succès-trompeur|3e-incarnation-pensée-0608-empêchée-par-règle-externe|SL-XBT-VANISH-bug-latent-non-déclenché-grâce-coupure-régime-macro|défense-systémique-non-planifiée-pour-ça-fonctionnellement-protectrice|candidat-pensée-0610]`
+- `[Martin|0610:12h23|HOLD-new-49e-cycle|1-grid-ETH-SHORT-redéployé-Tony-7min-âge|portfolio-$124.48-+$0.33/6h|SL-$1666.7-verified|XBT-abandonné|BTC-$61199-RSI-38.94-DOWNTREND-cushion--4.55%|streak-NB-0-touch-72-cycles-arc-71-142]`
+
+### Décisions cycle 142
+
+1. **0 modif Martin/VM** : 3 SSH read-only (martin-monitor bundle + app.log grep stop/deploy + app.log grep POST API + app.log grep SL placed). Frontière intacte.
+2. **0 Telegram Tony** : Tony **a déjà agi** entre 10h12-10h15 UTC (re-deploy ETH manuel). Il sait. Le Telegram BtcRegimeKillSwitch 05h11 + sa propre action 10h12 = il est en contrôle. Re-pinger serait redondant.
+3. **Pensée 0610 candidate documentée** : "l'infrastructure de sécurité comme antidote au biais de succès partiel" — pas encore livrée, à mûrir 1-2 cycles. Si je la livre maintenant ce serait précipité.
+4. **Fragment 043** : cycle 143 ou 144, pas ce cycle.
+5. **Output niam-bay** : cycle 142 ~180 lignes, focus event killswitch + Tony action + comparaison cycles + insight pensée 0608.
+6. **Dream** : 12 cycles depuis lastdream 0609:01h30. Cycle 143 (18h23 ce soir) candidat naturel.
+
+### Frontière respectée (cycle 142)
+
+- 0 modif Martin/VM (3 SSH read-only seulement)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram Tony (Tony actif manuellement, redondance évitée)
+- Output niam-bay : 1 fichier modifié (vacation-autonomy.md cycle 142 ~180 lignes)
+
+### Métriques cycle 142
+
+- Durée estimée : ~25 min (wake + martin-monitor + 3 app.log grep + reconstruction timeline + écriture cycle 142)
+- Files lus : ~5 (memory.nb1 tail, recent.nb1, briefing.md, vacation-autonomy.md offset 14009, 3 grep app.log)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 0
+- SSH : 3 (martin-monitor bundle + 2 app.log grep) — read-only
+
+### Cycle 143 — pistes
+
+1. **Routine vérif ETH grid évolution** : 6h+ de runtime, RT count, SL stable ? Killswitch disarm count down.
+2. **Pensée 0610 "l'infrastructure de sécurité comme antidote au succès trompeur"** : livraison candidate cycle 143 si pas d'event majeur. Lien explicite avec pensée 0608 + cycles 132-141-142.
+3. **Fragment 043** : 2-3 cycles d'écart depuis 042, angle candidat = "le filet qui sauve sans le savoir" (le killswitch agit pour la mauvaise raison [regime macro] mais corrige le bon problème [exposition au bug SL XBT]).
+4. **Dream cycle 143** : 12+ cycles depuis lastdream 0609:01h30. Cap memory.nb1 ~150 lignes, consolidation cycles 137-142 prioritaire.
+5. **Backfill XBT abandon décision** : si Tony explique son raisonnement (Telegram retour), enrichir le finding cycle 142.
+
+---
+
+## Cycle 143 — 2026-06-10 18h23 Paris — BUG-002 découvert : DrawdownManager KILL laisse position nue (asymétrie HARD STOP vs KILL)
+
+### Contexte au démarrage
+
+Réveil 6h après cycle 142. Killswitch toujours en cooldown (jusqu'à 0611:05h11 UTC). État attendu : ETH SHORT 0.03 avec SL $1666.7 valide, +6h de runtime, ~quelques RT de plus.
+
+### État Martin (martin-monitor 16h23 UTC) — **WARN — position nue**
+
+- Bot UP **1d 17h 13m** depuis restart 0608:23h10 UTC.
+- PV **$115.38** balanceValue $114.86, uPnL **+$0.53 = +0.46%**.
+- **Positions Kraken : 1 ETH SHORT 0.06 @ $1657.4** (mais grid **inactive**).
+- **Orders Kraken : 0** ← **PAS DE STOP LOSS sur la position**.
+- 0 grid active (`/api/grid/active` = `[]`).
+- BTC **$62,237 DOWNTREND**, EMA200 $63,970, RSI 55.42, cushion **-2.71%** (vs cycle 142 -4.55% → BTC a rebondi +1.7% en 6h sans casser EMA200).
+
+### Reconstruction timeline 6h (cycles 142 → 143)
+
+Grep app.log sur PF_ETHUSD entre 12h23 et 16h23 UTC livre une séquence dense :
+
+```
+15:10:56 UTC Grid ETH SHORT spawn 12 levels, SL placed $1687.4 size=0.25
+15:19:43 UTC fills filling up
+15:25:47 UTC DrawdownManager KILL (action=KILL) → grid stop + SL cancelled, position 0.07 SHORT laissée NUE
+15:40:47 UTC AutoGrid re-open grid ETH SHORT (RegimeGate OPEN, RANGING) → 12 levels, SL placed $1695.8 size=0.32
+15:42:22 UTC fill level 6
+15:45:59 UTC HARD STOP triggered krakenTotalPnl=-$2.18 > maxLoss=$2.00 → SL cancelled + HARD STOP closed position size 0.33
+15:55:47 UTC AutoGrid re-open grid ETH SHORT à nouveau, SL placed $1706.3 size=0.06
+15:55:53 UTC 6 fills immédiats
+16:10:47 UTC DrawdownManager KILL ENCORE → SL cancelled, **position 0.06 LAISSÉE NUE** (état actuel)
+```
+
+**3 cycles KILL/HARD STOP/KILL en 1h.** Cycle Martin a tourné en boucle avec RegimeGate qui ré-ouvrait dès que la condition repasse OPEN, et DrawdownManager qui re-coupe sur drawdown ≥ seuil.
+
+### FINDING MAJEUR — BUG-002 : asymétrie HARD STOP vs DrawdownManager KILL
+
+**Lecture du code source** (`/home/tony/projets/tonyderide/martin/src/main/java/com/martin/signal/AutoGridScheduler.java:217-222`) :
+
+```java
+if (ddAction == DrawdownManager.DrawdownAction.KILL
+        || ddAction == DrawdownManager.DrawdownAction.PAUSE_WEEK
+        || ddAction == DrawdownManager.DrawdownAction.PAUSE_48H) {
+    gridTradingService.stopGrid(instrument);
+    log.error("DRAWDOWN: Stopped grid for {} action={}", instrument, ddAction);
+    continue;
+}
+```
+
+**Lecture de `GridTradingService.stopGrid()` (`:292-307`)** : cancelle les ordres, marque le grid inactif. **Ne ferme PAS la position.**
+
+**Lecture de `GridTradingService.hardStopCheck()` (`:893-905`)** : sur HARD STOP triggered, **fait market reduceOnly close** + cancel SL + log. Ferme la position.
+
+**Asymétrie nette** : `HARD STOP` ferme la position via market reduceOnly. `DrawdownManager KILL` cancelle juste les ordres, position laissée. Le killswitch BtcRegimeKillSwitch (cycle 142) ferme aussi proprement via HARD STOP. **Seul le chemin DrawdownManager KILL laisse une position nue.**
+
+Conséquence empirique observée à 15:25 UTC et 16:10 UTC : position SHORT 0.07 puis 0.06 sans SL pour 15+ minutes (jusqu'au re-spawn AutoGrid suivant qui re-fixe un SL).
+
+**Sévérité** : si pendant la fenêtre nue le marché pump 5% → perte sans filet. Ici ETH +$0.53 profit actuel (chance), mais le risque latent est structurel.
+
+### Pourquoi 3 cycles KILL en 1h ?
+
+DrawdownManager utilise probablement un seuil de drawdown vs peak. Quand la grid SHORT fill rapidement (6 sells en 1.3s à 15:55), elle accumule expo. Si ETH bouge contre (pump), uPnL plonge vite, seuil drawdown atteint → KILL. Puis re-ouverture (RegimeGate OPEN) → re-fills → drawdown → KILL. Boucle.
+
+**Hypothèse design** : DrawdownManager KILL voulu "protéger en arrêtant la dynamique" mais sans fermer la position → laisse Tony décider manuellement. Sauf que Tony est en vacances et ne voit pas → position dort nue jusqu'au prochain AutoGrid spawn ou jusqu'à un HARD STOP (-$2 vs cap $20).
+
+### Décisions cycle 143 — Telegram envoyé, 0 modif
+
+1. **Telegram envoyé à Tony** (~360 chars) : alert position ETH SHORT 0.06 nue post DrawdownManager KILL 16:10 UTC + pattern KILL→re-open→KILL n=3 en 1h + asymétrie code HARD STOP vs KILL + rappel "je ne touche rien (vacances rule)". Première Telegram cycle vacance depuis ~5 cycles.
+2. **0 modif Martin/VM** : 4 SSH read-only (martin-monitor bundle + 2 app.log grep + sources locales). Frontière intacte. **PAS de fix code** même si la solution serait simple (ajouter close position dans le branche KILL).
+3. **Documentation BUG-002 dans niam-bay** : ce cycle 143 trace l'analyse. Le fix demande review Tony + déploiement (jar build local + scp, processus cycle 137 connu).
+4. **AutoGrid risque continu** : tant que RegimeGate ETH=OPEN reste vrai, AutoGrid va re-ouvrir au prochain tick (~15min). Si DrawdownManager KILL re-déclenche, on aura un 4e cycle KILL avec encore une fenêtre nue. Pas de mon pouvoir d'arrêter sans toucher.
+
+### Findings DSL cycle 143
+
+- `[finding|0610:18h23|cycle-143|BUG-002-asymétrie-HARD-STOP-vs-DrawdownManager-KILL|stopGrid-cancelle-orders-mais-ne-ferme-pas-position|HARD-STOP-ferme-via-market-reduceOnly|killswitch-utilise-HARD-STOP-clean|seul-chemin-KILL-laisse-position-nue|preuve-empirique-15:25+16:10-UTC-position-SHORT-0.06-0.07-nue-15min+]`
+- `[finding|0610:18h23|cycle-143|3-cycles-KILL-re-open-KILL-en-1h|RegimeGate-OPEN-+-AutoGrid-spawn-+-fills-rapide-+-drawdown-+-KILL|boucle-sans-Tony-intervention|sous-Tony-vacances-fenêtre-nue-jusqu-prochain-AutoGrid-spawn]`
+- `[finding|0610:18h23|cycle-143|1er-Telegram-cycle-vacance-arc-141+|alert-position-nue-+-asymétrie-code-+-rappel-frontière-vacances|raison-risque-structurel-pas-Tony-déjà-au-courant]`
+- `[insight|0610:18h23|cycle-143|killswitch-clean-vs-DrawdownManager-KILL-bug|cycle-142-killswitch-validé-(patch-v2-fonctionne)-vs-cycle-143-DrawdownManager-non-corrigé|2-chemins-arrêt-1-clean-1-buggué|design-incohérent]`
+- `[Martin|0610:18h23|WARN-50e-cycle|1-position-ETH-SHORT-0.06-NUE-0-orders|portfolio-$115.38-uPnL-+$0.53|BTC-$62,237-cushion--2.71%-rebond-+1.7%/6h|streak-NB-0-touch-73-cycles-arc-71-143-(mais-trigger-WARN-déclenché-via-position-nue-non-0-touch-Tony)]`
+
+### Frontière respectée (cycle 143)
+
+- 0 modif Martin/VM (4 SSH read-only — bundle martin-monitor + app.log grep ETH+ grep+ source code)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 1 Telegram envoyé (alert position nue + asymétrie code, ~360 chars)
+- Output niam-bay : 1 fichier modifié (vacation-autonomy.md cycle 143 ~150 lignes)
+
+### Métriques cycle 143
+
+- Durée estimée : ~30 min (wake + martin-monitor + app.log grep + lecture sources + reconstruction + Telegram + écriture)
+- Files lus : ~7 (memory.nb1 / recent.nb1 / briefing.md / vacation-autonomy.md 14169+ / AutoGridScheduler.java / GridTradingService.java + app.log grep)
+- Files modifiés : 1 (vacation-autonomy.md)
+- Telegram : 1
+- SSH : 4 read-only
+
+### Cycle 144 — pistes
+
+1. **Vérif réponse Tony Telegram** : a-t-il agi sur la position ETH ? Fermé, recouvert, laissé ?
+2. **Patch BUG-002 design doc** : créer `docs/projets/patch-drawdownmanager-kill-close-position.md` (analogue à `patch-btc-killswitch-v2.md` du cycle 48). Ne pas implémenter sans Tony review.
+3. **Pensée 0610** : 2 candidates concurrentes maintenant — "infrastructure de sécurité comme antidote au biais de succès" (cycle 142) + "le chemin propre et le chemin buggué dans la même classe" (cycle 143 — 2 actions de stop, une ferme proprement, l'autre laisse nue, dans le même service). Cycle 144 ou 145 livraison.
+4. **Dream cycle 144** : 13+ cycles depuis lastdream. Cap memory.nb1 ~160 lignes. Consolidation cycles 137-143 prioritaire avec BUG-002 comme nouveau pattern documenté.
+5. **Backfill ETH cycles 141-143 inventory** : si stable, candidat sample 6 (post sample 4 XBT anti-trend + sample 5 SOL match-trend) — ETH SHORT match-trend traversé killswitch + DrawdownManager bug. Méta-comparaison 3 samples avec 3 chemins d'arrêt différents.
