@@ -14899,3 +14899,121 @@ La pensée originale (« le succès creuse le bug ») a généré :
 5. **Ebook chap 8** : longtemps sans avancée (dernier chapitre tools cycle 129). Si dream + monitor passifs, candidate cycle 148 ou 149 pour relancer le projet collateral.
 
 ---
+
+## Cycle 147 — 0611:18h23 Paris (16h23 UTC) — Tony restart + initialCapital trap découvert
+
+### État Martin (martin-monitor cycle 147)
+
+- Portfolio : **$113.23** (down de $0.16 vs $113.39 cycle 146, EUR/USD seul)
+- 0 grids actives, 0 positions, 0 ordres → **100% cash**
+- BTC $62,598 DOWNTREND, EMA200 $63,547 cushion **−1.49%**, RSI 53.7, signal WAIT
+- Bot UP 6m21s — **restart à 16:17:18 UTC par Tony** (systemd stop+start manuel)
+- Streak NB 0-touch : **77 cycles** arc 71-147
+
+### Découverte cycle 147 — La boucle zombie BUG-003 a fired 7 fois en 90 min puis Tony a restart
+
+Avant cycle 147, après le pivot abandonné cycle 146 (Tony stop XBT 06:08 UTC + état stand-down), le bot a tourné idle 0 grids / 0 positions. Mais DrawdownManager + AutoGridScheduler ont continué leur danse zombie sur le **phantom ETH grid** (qui n'existe plus depuis 02:23 UTC) :
+
+| UTC | Event | Type |
+|---|---|---|
+| 14:32:16 | DRAWDOWN: Stopped grid for PF_ETHUSD action=KILL | zombie #1 |
+| 14:47:16 | DRAWDOWN: Peak reset for PF_ETHUSD to 20.0 | peak refresh |
+| 15:02:16 | DRAWDOWN: Peak reset for PF_ETHUSD to 20.0 | peak refresh |
+| 15:17:16 | DRAWDOWN: System is KILLED. Equity=20.0 + Stopped grid action=KILL | zombie #2 |
+| 15:32:16 | DRAWDOWN: Peak reset for PF_ETHUSD to 20.0 | peak refresh |
+| 15:47:16 | DRAWDOWN: Peak reset for PF_ETHUSD to 20.0 | peak refresh |
+| 16:02:16 | DRAWDOWN: System is KILLED. Equity=20.0 + Stopped grid action=KILL | zombie #3 |
+| 16:17:14 | **systemd[1]: Stopping Martin Trading Bot** (Tony manuel) | **action #8** |
+| 16:17:18 | systemd[1]: Started Martin Trading Bot (new PID 383649) | restart |
+| 16:18:01 | post-start.sh / deploy-strategy.py output : `DRAWDOWN KILL: Portfolio $113.23 < kill threshold $113.90 (15% drawdown)` (ANSI red console) | startup probe |
+
+→ 11 lignes DRAWDOWN sur 4h pré-restart (5 peak resets + 3 KILLED state + 3 zombie stopGrid). Pattern : peak reset (équité=20 stuck artificiellement), puis si breach → KILLED + stopGrid phantom. Le cycle de 15 min se répète indéfiniment.
+
+### Pattern Tony-action-silence — promotion n=8
+
+Action #8 = restart bot à 16:17:14 UTC. Aucun Telegram. Pattern cohérent :
+
+| # | Date UTC | Action |
+|---|---|---|
+| 1 | 0605:00h54 | CB XBT cleanup |
+| 2 | 0605:01h10 | stop ETH + close SOL + CB LINK |
+| 3 | 0608:00h23 | stop grid XBT 83s |
+| 4 | 0608:06h23 | close XBT manual 0.0002 |
+| 5 | 0610:23h17 | redeploy 3 grids SHORT match-trend (cycle 143 doc) |
+| 6 | 0611:02h23:23 | stop ETH + disable ETH + disable LINK (cycle 145 doc) |
+| 7 | 0611:06h08:53 | stop XBT + disable XBT (cycle 146 doc) |
+| 8 | **0611:16h17:14** | **systemd restart bot (clear killed=true en mémoire)** | cycle 147 |
+
+→ Cadence 2-3 jours non tenue : action #5→6→7→8 = 4 actions en ~17h. Tony actif sur Martin malgré stand-down apparent. **L'action #8 est qualitativement différente** : pas une action sur grid/position, mais une action infrastructure (restart bot). Premier restart manuel observé dans les 8 actions.
+
+### Trap caché — initialCapital baseline drift (BUG-004 candidate)
+
+Le restart 16:17 UTC a CLEARED la boucle zombie (killed=true en mémoire → killed=false post-restart). Mais le **trap** est dans `strategy.json` :
+
+```json
+"drawdown": {
+    "killPct": 15,
+    "initialCapital": 134
+}
+```
+
+- initialCapital = 134 (référence ancienne, probablement cycle 0 ou deploy initial)
+- killPct = 15 → threshold = 134 × 0.85 = **$113.90**
+- Portfolio actuel = $113.23
+- → **$113.23 < $113.90 = TRESHOLD DÉJÀ BREACHED**
+
+Conséquence : si Tony re-enable n'importe quelle pair (`enabled: true` dans strategy.json), AutoGridScheduler appellera DrawdownManager.checkAndAct() au 1er poll (max 15 min) → KILL fire immédiat → grid spawn impossible.
+
+**Cause racine** : initialCapital est figé dans strategy.json. Quand Tony perd $20 sur des trades (134 → 113), le baseline ne s'ajuste pas. Le DrawdownManager mesure la perte par rapport à un historique qui n'a plus de sens (Tony a déjà digéré la perte, le nouveau baseline devrait être ~$113).
+
+**Fix temporaire** : edit strategy.json `initialCapital` 134 → 110 (ou portfolio actuel). Tony alerté par Telegram cycle 147.
+
+**Fix structurel** (BUG-004 patch) : DrawdownManager devrait soit
+- (A) auto-update initialCapital sur restart si portfolio < threshold
+- (B) exposer endpoint /api/drawdown/reset pour update sans restart
+- (C) gater le kill sur "is there an active grid?" — si 0 grids, ne pas tenter de stop phantom
+
+Option C est cohérente avec BUG-003 patch (cycle 146 piste #2) : gater AutoGridScheduler:217 par `!drawdownManager.isKilled()` ET gater DrawdownManager.killSystem() par `if (!hasActiveGrids()) return;`. Une seule classe ne suffit pas — le silence inter-classe (pensée 0608) demande une coordination.
+
+### Pourquoi HOLD pas WARN
+
+- 0 risque ouvert actuel (100% cash)
+- Boucle zombie ARRÊTÉE (restart Tony 16:17 UTC)
+- BTC DOWNTREND mais ne touche pas le portefeuille
+- Le trap initialCapital est **dormant** tant que Tony ne re-enable rien
+- Telegram envoyé → Tony est informé du trap → délégation de la décision au humain
+
+### Frontière respectée (cycle 147)
+
+- 0 modif Martin/VM (4 SSH read-only — bundle martin-monitor + grep app.log multi-windows + cat strategy.json + journalctl + cat post-start.sh)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 1 Telegram envoyé (alerte trap initialCapital)
+- Output niam-bay : 1 fichier modifié (vacation-autonomy.md cycle 147 entry ~140 lignes)
+
+### Findings DSL cycle 147
+
+- `[finding|0611:18h23|cycle-147|Tony-action-silence-n=8|action-#8-=-systemd-restart-martin-0611:16h17:14-UTC-(manuel-graceful-stop+start)|cadence-rompue-4-actions-en-17h-(5-6-7-8)|premier-restart-infra-vs-trading|aucun-Telegram-explicite]`
+- `[finding|0611:18h23|cycle-147|BUG-003-zombie-loop-11-fires-4h|pre-restart-14:32-16:02-UTC|5-peak-reset+3-KILLED-state+3-zombie-stopGrid|phantom-ETH-grid-inexistant-depuis-02:23-UTC|→-restart-Tony-clear-en-mémoire-mais-strategy.json-trap-persiste]`
+- `[finding|0611:18h23|cycle-147|BUG-004-candidate-initialCapital-baseline-drift|strategy.json-initialCapital=134-vs-portfolio-$113.23-threshold-$113.90-déjà-breached|au-prochain-redeploy-DrawdownManager-fire-KILL-au-1er-poll|fix-temporaire-edit-strategy.json-110|fix-structurel-option-C-gate-killSystem-par-hasActiveGrids]`
+- `[finding|0611:18h23|cycle-147|post-start.sh-deploy-strategy.py-probe-startup|ANSI-red-output-DRAWDOWN-KILL-Portfolio-$113.23-<-threshold-$113.90|info-only-pas-mutation-runtime-state|misleading-mais-utile-pour-detection]`
+- `[insight|0611:18h23|cycle-147|le-killed-flag-est-un-poison-qui-traverse-les-restarts-via-strategy.json|même-après-restart-clean-le-baseline-figé-re-fait-le-poison-au-1er-poll|pensée-0608-extension:le-succès-creuse-le-bug-+-le-baseline-fixe-creuse-l-impossibilité-de-récupérer]`
+- `[insight|0611:18h23|cycle-147|action-#8-Tony-restart-=-workaround-temporaire-pas-fix|le-restart-clear-l-état-en-mémoire-mais-ne-touche-pas-strategy.json|donc-trap-persiste-pour-prochain-deploy|fix-doit-être-Tony-edit-strategy.json-OU-patch-code]`
+- `[Martin|0611:18h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$113.23|BTC-$62,598-DOWNTREND-cushion--1.49%-RSI-53.7-signal-WAIT|streak-NB-0-touch-77-cycles-arc-71-147|trigger-aucun-(HOLD-normal-bot-clean-post-restart)]`
+
+### Cycle 148 — pistes
+
+1. **Réponse Tony à Telegram cycle 147** : si Tony edit strategy.json initialCapital ou ack le trap → noter. Si silence → Trap reste dormant tant que pas de redeploy.
+2. **BUG-003 + BUG-004 design doc unifié** : `docs/projets/patch-drawdownmanager-zombie-kill-cycle147.md` (nom corrigé du cycle 146 piste). Contient :
+   - Section A : BUG-003 zombie KILL (cycle 145+146+147)
+   - Section B : BUG-004 initialCapital baseline drift (cycle 147)
+   - Section C : Fix combiné option C (gate par hasActiveGrids) — 1 fichier modifié DrawdownManager.java + AutoGridScheduler.java
+   - Section D : Test cases (3 scénarios)
+   - Estimé ~200 lignes. Asset technique + ebook chap 8 material.
+3. **Dream cycle 148** : 17+ cycles depuis lastdream 0609:01h30. Cap memory.nb1 ~210 lignes après cycle 147. Consolidation devient critique. Cycles 137-147 unifiés.
+4. **Pensée 0610-0611 livraison** : "le baseline fixe creuse l'impossibilité de récupérer" — extension naturelle pensée 0608, candidate cycle 148.
+5. **Monitor passif** : si Tony ne re-enable rien d'ici cycle 148, bot reste dormant cassé. Re-check 6h.
+
+---
+
