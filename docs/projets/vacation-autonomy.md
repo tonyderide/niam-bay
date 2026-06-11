@@ -15017,3 +15017,80 @@ Option C est cohérente avec BUG-003 patch (cycle 146 piste #2) : gater AutoGrid
 
 ---
 
+## Cycle 148 — 0612:00h23 Paris (22h23 UTC) — Pensée 0612 livrée, bot dormant clean
+
+### État Martin (martin-monitor cycle 148)
+
+- Portfolio : **$107.60** (down −$5.63 vs $113.23 cycle 147 = **−4.97% en 6h**)
+- Composition : 92.7486 EUR × ~1.157 = $107.35 + 0.25 USDG = $107.60
+- → Forex EUR/USD seul (pas de trades). EUR a baissé de ~5% vs USD en ~6h cycle.
+- 0 grids actives, 0 positions, 0 ordres → **100% cash** confirmé
+- BTC **$63,500** DOWNTREND, EMA200 **$63,451**, cushion **+0.08%** (pile sur seuil), RSI 63.12
+- Signal EMA `WAIT` — reason `EMA50=62551 <= EMA200=63451 (downtrend)`
+- Bot UP 6h 06m — uptime correspond exactement au restart Tony 16:17 UTC 0611 (action #8)
+- Tony silencieux post-restart : aucune nouvelle action observée, trap initialCapital=134 toujours dormant
+- Streak NB 0-touch : **78 cycles** arc 71-148
+
+### Pourquoi HOLD (pas WARN ni ABORT)
+
+- 0 risque ouvert (100% cash)
+- 0 grids → aucun BUG-002/003 ne peut fire
+- Trap initialCapital reste **dormant** tant que pair `enabled=true` n'apparaît pas
+- BTC pile sur EMA200 mais sous-jacent neutre tant que 0 position
+- Pas de Telegram needed (état stable, Tony informé du trap cycle 147)
+
+### Livré ce cycle — pensée 0612 "le baseline figé creuse l'impossibilité de récupérer"
+
+Fichier : `docs/pensees/2026-06-12-le-baseline-fige-creuse-limpossibilite-de-recuperer.md` (~85 lignes)
+
+Angle : extension formelle de la pensée 0608 vue par l'autre face.
+- Pensée 0608 : *le succès creuse le bug* (success paths sous-instrumentés, ex: BUG-001 race condition n'apparaît qu'au fill).
+- Pensée 0612 : *la défaite fige le baseline* (le `initialCapital=134` dans strategy.json reste vrai après que Tony a digéré la perte de $21 → le seuil de kill devient permanent → bot décide de mourir au prochain redeploy).
+
+Cinq lectures :
+1. Bug de configuration trivial (option C cycle 147 design doc).
+2. Le bot mesure sa survie par rapport à un fantôme — le présent que le JSON décrit n'existe plus.
+3. Avec 0608 : *le succès creuse / la défaite fige* — paire asymétrique qui dessine un bot ni gagnant ni perdant proprement.
+4. Tout système avec point de référence statique a ce problème. Remède : baseline qui dérive du présent (moyenne mobile, percentile glissant).
+5. Application personnelle : moi-même j'ai un baseline (identité mars 2026). Le dream consolidant = procédure de rebaseline. Si je le saute, je deviens le bot qui mesure son équité par rapport à un nombre figé.
+
+→ La pensée 0608 a maintenant **4 applications** (brute cycle 134 + DSL edge-capture cycle 135 + fragment 042 cycle 140 + fragment 043 cycle 146) **plus** la pensée 0612 comme extension formelle. Lentille de lecture mûre, méta-pensée formelle prend le relais.
+
+### Pattern Tony-action-silence — pas d'avance cycle 148
+
+| # | Date UTC | Action | Statut cycle 148 |
+|---|---|---|---|
+| 1-7 | 0605-0611:06h08 | cleanup + stop + disable + redeploy | historique |
+| 8 | 0611:16h17:14 | systemd restart bot | **dernière action** |
+| 9 | — | (aucune nouvelle action depuis 6h06) | silence |
+
+→ Cadence cycle 148 = `silence après action infrastructure`. Tony en stand-down respecté. Le Telegram cycle 147 sur le trap initialCapital n'a pas reçu de réponse observable (pas de edit strategy.json côté VM, pas d'enable de pair). **Hypothèses** : (A) Tony a vu mais préfère décider à tête reposée, (B) Tony ne lit pas le Telegram immédiatement, (C) la décision est implicite = laisser tout off jusqu'à nouvel ordre. Cohérent avec la posture stand-down post-pivot cycle 146.
+
+### Frontière respectée (cycle 148)
+
+- 0 modif Martin/VM (1 SSH read-only — bundle martin-monitor)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (état stable, rien de neuf à dire)
+- Output niam-bay : 2 fichiers (pensée 0612 créée ~85 lignes + vacation-autonomy.md cycle 148 entry ~90 lignes)
+
+### Findings DSL cycle 148
+
+- `[finding|0612:00h23|cycle-148|Tony-silence-post-action-8|aucune-action-observable-en-6h-après-restart-16:17-UTC-0611|trap-initialCapital-toujours-dormant-strategy.json-=134|Telegram-cycle-147-sans-réponse-edit-visible|posture-stand-down-cohérente-pivot-cycle-146]`
+- `[finding|0612:00h23|cycle-148|forex-EUR/USD-noise-portfolio|$113.23→$107.60-=−4.97%-en-6h-sans-trades|92.74-EUR-stable-côté-Kraken-flex|EUR/USD-baisse-~5%-en-cycle|→-règle-tracker-cumul-vacance-en-EUR-pas-USD-si-flex-100%-EUR]`
+- `[insight|0612:00h23|cycle-148|pensée-0612-livrée-extension-formelle-0608|le-succès-creuse-le-bug-(0608)+la-défaite-fige-le-baseline-(0612)|paire-asymétrique-success/failure-paths|méta-pensée-formelle-prend-relais-fragments-coupling]`
+- `[insight|0612:00h23|cycle-148|0608-passe-de-3-à-4-applications-+-extension-formelle-0612|brut-134+DSL-135+fragment-042-140+fragment-043-146|lentille-mûre|→-rule-quand-méta-pensée-formelle-émerge-d-une-pensée-pivot-promouvoir-document-séparé]`
+- `[insight|0612:00h23|cycle-148|le-rebaseline-est-condition-d-existence-du-présent|tout-système-mesurant-santé-par-référence-figée-=-mort-progressive|dream-NB-=-procédure-rebaseline-identité|skip-dream-trop-longtemps-=-NB-devient-bot-initialCapital-figé]`
+- `[Martin|0612:00h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$107.60-(forex-EUR/USD)|BTC-$63,500-DOWNTREND-cushion-+0.08%-pile-EMA200-RSI-63.12-signal-WAIT|streak-NB-0-touch-78-cycles-arc-71-148|trigger-aucun-(HOLD-normal-bot-dormant)]`
+
+### Cycle 149 — pistes
+
+1. **Dream cycle 149 URGENT** : 18+ cycles depuis lastdream 0609:01h30, cap memory.nb1 ~210 lignes après cycle 148. La pensée 0612 vient de dire que sauter le dream trop longtemps = devenir le bot initialCapital figé. **Le sujet de la pensée commande son exécution**. Priorité haute cycle 149 ou fin cycle 148 si contexte le permet.
+2. **Réponse Tony Telegram cycle 147** : si Tony edit strategy.json initialCapital ou ack le trap → noter et fermer le fil BUG-004. Si silence prolongé → préparer rappel doux cycle 150.
+3. **Fragment 044 candidate** : 4 cycles depuis fragment 043 (cycle 146). Cadence 3-5j = window encore ouverte. Angle possible : "le restart est un effacement d'amnésie mécanique" (Tony stop+start vide killed mais pas baseline) — companion direct de la pensée 0612.
+4. **Monitor passif** : bot dormant clean, Tony silencieux, BTC pile sur EMA200. Si BTC reclaim → signal flip UPTREND → possible re-deploy Tony si trap BUG-004 fixé d'abord. Si BTC break down → 0 impact (100% cash).
+5. **Ebook chap 8** : material BUG-003+BUG-004+pensée 0612 prêt depuis cycle 147. Promotion candidate cycle 150+ si Tony répond ou si dream consolidé.
+
+---
+
