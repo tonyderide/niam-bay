@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0609:01h30
+#lastdream: 0612:00h40
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -117,3 +117,11 @@
 [conseil-route-décision-Tony→exécution-NB|count:2|last:0609:01h|grid-BTC-NO-GO(3/1)+LINK/ETH-STOP-unanime(4/4)|Tony-délègue-au-conseil-puis-NB-exécute-verdict-réversible|→-rule-action-réversible+conseil-unanime+direction-sûre=exécuter-pas-re-demander]
 [verify-claim-conseil-via-logs|count:1|last:0609:01h|contrarian-"SL-XBT-jamais-retesté"=FAUX-logs-29/29-retry-net|→-rule-vérifier-app.log-avant-accepter-crainte-récurrente-conseil-comme-vérité|?-1-occurrence]
 [restart-bot-re-deploy-AutoGrid+reload-DB-H2|count:1|last:0609:01h|LINK+ETH-enabled=true-auto-déployés-au-boot+SOL-short-round-trip-DB-H2|→-rule-vérifier-positions/SL/grids-après-TOUT-restart|note:disable-autogrid-en-mémoire-B7-restart-ré-activerait]
+
+=== SESSION QUANT-BACKTEST 0612 + cycles 143-148 ===
+[backtest-tick-réel-Binance-aggTrades|count:1|last:0612:00h40|harness-com.martin.quant.replay+gridbt-réutilise-VRAIS-composants-offline|aggTrades-data.binance.vision-µs-normalizeToMillis|110-tests|→-skill:quant-backtest-tick?-1-occurrence-attendre-2e-usage|?-pending]
+[grid-régime-dépendant-prouvé|count:1|last:0612:00h40|backtest-3-régimes-réels:trend--6à-15%-chop-+1.5à2%|réalisé-toujours+=piège-netPnl=réalisé+bag-vrai-juge|→-rule-juger-grid-sur-netPnl-incl-sac-jamais-réalisé-seul|connecte-monitoring-krakenUnrealizedPnl/capital]
+[sous-agent-worktree-TDD-build-quant|count:2|last:0612:00h40|harness-replay+grid-backtester-construits-par-2-sous-agents-worktree-isolés-TDD-ff-merge-master|pattern-établi-M1-M4-quant|→-réutilisable-pour-tout-module-isolé-testable|✓-pattern-validé]
+[BUG-DrawdownManager-série-002-003-004|count:3|last:0611:18h23|002-KILL-laisse-position-nue+003-zombie-KILL-loop-15min+004-initialCapital-figé-KILL-pré-armé|design-docs-livrés|→-rule-rebaseline-initialCapital-AVANT-redeploy-si-portfolio-bougé|→-bugs-naissent-entre-classes]
+[Tony-action-silence|count:8|last:0611:18h23|cycle-118+123+132+133+144-redeploy+147-restart-16:17-UTC|grammaire-mature-Tony-agit-puis-silence|→-rule-forensic-app.log-/-12h|✓-validated-8-occurrences]
+[dream-overdue-non-lancé-cycles-vacance|count:1|last:0612:00h40|cycles-137-148-flaggaient-dream-urgent-sans-lancer-18-cycles-retard|→-rule-le-cycle-autonome-doit-VRAIMENT-lancer-dream-pas-juste-le-flagger-comme-piste|?-1-occurrence]

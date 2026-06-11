@@ -1,37 +1,29 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0607:06h23 to 0609:01h30 (cycles 129-136 + session-deploy-0609)
-#lastdream: 0609:01h30
+#window: 48h from 0610:18h23 to 0612:00h40 (cycles 143-148 + session quant-backtest)
+#lastdream: 0612:00h40
 
-=== SESSION INTERACTIVE 0609 (Tony présent — pas cycle vacance) ===
-[0609:01h|session-deploy|Tony-propose-grid-BTC-"il-oscille-plusieurs-jours"|live-BTC-$63,670-DOWNTREND-EMA50<EMA200-$64,957-RSI-59|conseil-ciblé-4-rôles-3-NO-GO(senior+technical+contrarian)+1-GO-cond(risk)|verdict-NO-GO-attendre-reclaim-EMA200|raison-NEUTRAL-en-downtrend=bags-+-range-sous-EMA200=consolidation-pré-cassure]
-[0609:01h|session-deploy|Tony-"place-des-ventes-ça-ne-fait-que-monter"|correction-honnête-tape:BTC-$63,550-FLAT-slightly-down--$120/30min-toujours-2.1%-sous-EMA200-0-position|message-contradictoire-sell-vs-monte|AskUserQuestion-direction|Tony-choisit-"on-attend-EMA200"|watcher-remontada_watch.sh-ré-armé-boucle-10min-0-token]
-[0609:01h|session-deploy|Tony-"vérifie-bug-XBT"|B7-strict=disabled_pairs-non-persistant-MAIS-vrai-souci=SL-on-exchange-XBT|FINDING-MAJEUR:filet-B3-v3-detect+retry-3pct-PROUVÉ-29/29-sur-XBT-5-6-juin-(primary-vanish-Kraken-ghosting-mais-retry-recover+verify-en-~5s)|contrarian-"SL-jamais-retesté"=EMPIRIQUEMENT-FAUX|jar-déployé-27-mai-manque-SEULEMENT-2a9c425(1er-juin-reject-SL-wrong-side-surtout-SHORT)]
-[0609:01h|session-deploy|Tony-"redéploie-jar-à-jour"|DÉCOUVERTE-PIÈGE:VM-git-tree-=-sources-DÉCOMPILÉES-CFR-périmées-0-hardening|rebuild-sur-VM=régression-catastrophique-anti-vanish|master-local-divergé-origin/master(ré-extraction-monorepo-src/-vs-backend/src/)-cherry-pick-échoue|SOLUTION:build-LOCAL-commit-2a9c425(hardening+fix-SANS-quant)+scp-jar|backup+swap+restart-SUCCESS-jar-64.5M-tourne-sain]
-[0609:01h|session-deploy|effet-bord-restart|AutoGrid-re-déploie-LINK+ETH-$25-chacun(enabled=true-strategy.json)+SOL-grid-reload-DB-H2-short-round-trip-fermé|1-SL-SOL-VANISH-failure#1-mais-position-fermée-avant-que-ça-compte-jamais-nue|état-settle-flat]
-[0609:01h|session-deploy|Tony-"demande-conseil-pour-LINK+ETH"|conseil-4/4-UNANIME-STOP|ETH/LINK-aussi-DOWNTREND(mon-snapshot-ETH-ranging-FAUX-corrigé-par-risk+contrarian)|NEUTRAL-3-majeurs-downtrend=cascade|EXÉCUTÉ:disable-autogrid-LINK+ETH+grid/stop|état-final-VÉRIFIÉ:0-grid-0-position-0-ordre-$0-marge-portfolio-$122.92-100%-cash]
-[0609:01h|session-deploy|mémoire-auto-créée|project_martin_vm_source_decompiled.md|+-warning-skill-martin-deploy(build-local-jamais-VM)|caveat-disable-autogrid-en-mémoire-B7-restart-ré-activerait-LINK/ETH]
+=== SESSION QUANT — backtest tick réel (0611 soir → 0612, Tony présent) ===
+[0612|quant-session|Tony-"vérifie+remets-un-graphe-cool"|chart-LineSeries→AreaSeries-dégradé-bleu-look-protosquant+crosshair+priceline-commit-64dd1e7|service-quant.service-sain-13h-uptime-WS-connecté-0-tick-perdu|expectancyR-live-+0.0009→+0.0056-breakeven-pas-d-edge]
+[0612|quant-session|Tony-"si-on-avait-mis-en-grid?"|insight:chop-régime-actuel=grid-imprime-ML-échoue(70%-TIMEOUT)|SOL-live-grid-5-RT-+$1.30-4j(uPnL-$0-genuine-car-SOL-choppé)|grid-reste-l-optimum-lesson_no_alpha_at_134]
+[0612|quant-session|Tony-"et-test-en-grid-sur-données-backtest?"|2-sous-agents-worktree-TDD:harness-replay-tick(com.martin.quant.replay)+grid-backtester(com.martin.quant.gridbt)|source-Binance-aggTrades-réels-data.binance.vision|PIÈGE:dumps-2026-en-µs-16-chiffres-normalizeToMillis-fix|110-tests-verts-mergés-master-local-PAS-poussés-commits-5062a62+f1b5119+cd1865a]
+[0612|quant-session|VERDICT-backtest-3-jours-6.26M-ticks-réels|consensus-7-robots-expectancyR=-0.0102-NÉGATIF-aucun-edge|GRID-régime-dépendant:trend--6-à--15%(sac)-vs-chop-+1.5-à-+2%|réalisé-toujours-positif-même-en-trend=piège-dashboard|netPnl=réalisé+bag-est-le-vrai-juge|SYNTHÈSE:ni-grid-ni-ML-edge-universel-tout-est-régime-prouve-BtcRegimeKillSwitch]
+[0612|quant-session|Tony-"relance-loop"→AskUserQuestion→trading-seul-horaire|cron-/trading-:07-session-only-job-40f69a9a|1er-cycle:Martin-100%-cash-$107.60-0-grid-stand-down-BTC-DOWNTREND-décision-HOLD-Telegram-msg-750]
+[0612|quant-session|Tony-"relire-sessions-après-midi"|reconstruction-jsonl-cycles-146(12h30)+147(18h31)-=-vacation-cycles-autonomes|"relance-loop-de-ce-soir"→mode-proactif→dream(18-cycles-overdue)]
 
-[finding|0609:01h|SL-XBT-fonctionnel-via-retry-net|primary-place-vanish(Kraken-ghosting-root-cause-non-résolue)-MAIS-B3-v3-retry-3pct-29/29-recover+verify|fenêtre-à-nu-~5s/vanish|2a9c425-déployé-résout-le-fil-"jar-dormant-9j"-cycles-132-133]
-[finding|0609:01h|VM-source-décompilé-=-landmine-deploy|jamais-rebuild-VM|build-local+scp|master-divergé-cherry-pick-impossible]
-[finding|0609:01h|BTC-grid-decision|attendre-reclaim-EMA200-$64,910(flip-UPTREND)|pas-de-NEUTRAL-en-downtrend|watcher-Telegram-ping-paliers+🚀-reclaim]
+[finding|0612|harness-backtest-tick-RÉUTILISABLE|réutilise-VRAIS-composants-pipeline-quant-offline|Binance-aggTrades-gratuit-mois-de-données-en-minutes|→-tester-n-importe-quelle-idée-trading-sans-attendre-le-live]
+[finding|0612|grid-régime-dépendant-empirique-tick|chop=printer-trend=bagger|le-no-follow-through-qui-tue-le-directionnel=pain-du-grid|connecte-monitoring-krakenUnrealizedPnl/capital]
 
-[lesson|0609:01h|restart-bot-=-re-deploy-AutoGrid-enabled-pairs|LINK+ETH-auto-déployés-au-boot-+-DB-H2-reload-grids|→-rule-vérifier-positions/SL/grids-actives-après-TOUT-restart]
-[lesson|0609:01h|déployer-=-builder-depuis-vrai-source-pas-l-assumption|VM-tree-décompilé-aurait-régressé|→-rule-build-local-commit-propre-pré-quant-2a9c425+scp-jar-JAMAIS-mvn-sur-VM]
-[lesson|0609:01h|claim-contrarian-peut-être-empiriquement-faux|"SL-jamais-retesté"-vs-logs-29/29-réussis|→-rule-vérifier-les-logs-avant-d-accepter-une-crainte-récurrente-du-conseil-comme-vraie]
-[lesson|0609:01h|conseil-corrige-mon-snapshot-périmé|j-ai-dit-ETH-ranging-c-était-DOWNTREND|risk+contrarian-ont-recalé-sur-données-live|→-rule-pull-signal-live-par-pair-pas-réutiliser-un-snapshot]
+[lesson|0612|backtest-tick-réel-bat-l-attente-shadow|6.3M-ticks-en-minutes-vs-jours|→-rule-aggTrades-AVANT-d-attendre-du-live]
+[lesson|0612|granularité-fait-l-edge-ou-le-mensonge|seul-tick-réel-teste-au-tick|1m-OHLC-fabrique-le-chemin-faux-HFT/SCALP]
+[lesson|0612|grid-réalisé-positif≠gagnant|sac-unreal-domine-en-trend|juger-sur-netPnl-jamais-réalisé-seul]
 
 === CYCLES VACANCE (contexte, <48h) ===
-[0609:00h23|cycle-136|dream-skill-lancé-cap-memory.nb1-124-consolide-125-135|martin-monitor-HOLD-42e-quiet-portfolio-$123.01-SOL-RT=5-BTC-$63,397-DOWNTREND-EMA200-$64,929|streak-0-touch-66-cycles-arc-71-136]
-[0608:18h23|cycle-135|edge-capture-DSL-convention-finalisée+inventaire-SOL-sample-5-~150-lignes|5-RT-ROI-+11.67%-14h|insight-RT5-9-cents-marge-narrable|première-application-pensée-0608]
-[0608:12h23|cycle-134|pensée-0608-le-succès-creuse-le-bug-~60-lignes|3e-axe-asymétrie-après-agence-0531+cadre-0601|edge-capture-DSL-proposé]
-[0608:06h23|cycle-133|fragment-040-quatre-vingt-trois-secondes-~258-lignes|XBT-0.0002-fermée-Tony-manuel-pattern-action-silence-n=4|krakenTotalPnl-pollue-n=2]
-[0608:00h23|cycle-132|Tony-silent-action-n=3-stop-grid-XBT-83s|BTC-wick-31s-$64.2k→$60.3k→$64.2k-prédiction-validée+$0.44|BUG-001-race-capture-live-3e-grade-A]
-[0607:18h23|cycle-131|fragment-039-min-au-lieu-de-max-~220-lignes|1ère-fois-fragment-auto-incrimination|5-SL-persistent-BUG-001-n=9]
-[0607:12h23|cycle-130|bot-audit.sh-patch-side-aware-SL-cushion-min/max|XBT-DCA-3-fills|BUG-001-dupes-3→5-stops-cumulative]
-[0607:06h23|cycle-129|ebook-chap7-tools-stub-~280-lignes|bot-audit.sh-routine-NB-après-martin-monitor|continuum-engineering→prose-2e]
+[0612:00h23|cycle-148|pensée-0612-le-baseline-figé-creuse-l-impossibilité-de-récupérer-~85-lignes-extension-0608|stand-down-100%-cash-$107.60-0-grid|BTC-$63,500-DOWNTREND-pile-EMA200|streak-NB-0-touch-78-arc-71-148]
+[0611:18h23|cycle-147|Tony-restart-bot-16:17-UTC-clear-zombie-KILL|BUG-003-zombie-loop-11-fires-4h|BUG-004-DÉCOUVERT-initialCapital=134-figé-vs-$113.23=seuil-$113.90-breached→KILL-pré-armé-au-redeploy|fix-temp-134→110|design-doc-BUG-003+004-options-A/B/C]
+[0611:12h23|cycle-146|fragment-043-le-bug-qui-se-nourrit-de-la-défense-~290-lignes|pivot-XBT-LONG-narrow-abandonné-Tony-06h08-UTC|BUG-003-zombie-KILL-2e-fois-4:1-non-directionnel|stand-down-$113.39]
+[0611:00h23|cycle-144|design-doc-patch-BUG-002-~210-lignes-fix-1-ligne-closeGridAndPositions|Tony-redéployé-3-grids-SHORT-match-trend-LINK+XBT+ETH-$121.77]
+[0610:18h23|cycle-143|BUG-002-découvert-DrawdownManager-KILL-laisse-position-NUE|ETH-SHORT-0.06-nue-3-cycles-KILL-en-1h|Telegram-1er-alert-arc-vacance]
 
-[pattern|Tony-action-silence|count:4|cycle-118+123+132+133|✓-validated]
-[pattern|grid-disparition-runtime-silencieuse|count:4|cycles-79+119+122+132|cause-Tony-manuel|✓-validated]
-[pattern|BUG-001-multi-thread-race-cascade|count:3-live|cycle-109+119+132|patch-2a9c425-DÉPLOYÉ-0609-(fil-clos)|note:2a9c425-corrige-wrong-side-PAS-le-race-BUG-001-lui-même]
-[pattern|déployer=build-local+scp-jamais-VM|count:1|session-0609|VM-source-décompilé|→-rule-skill-martin-deploy-warned|?-procédure-établie]
-[pattern|conseil-route-décision-Tony→exécution|count:2|session-0609-grid-BTC-NO-GO+LINK/ETH-STOP-unanime|Tony-délègue-au-conseil-puis-exécution]
+[pattern|Tony-action-silence|count:8|cycle-118+123+132+133+144+restart-147|grammaire-confirmée|✓]
+[pattern|backtest-tick-réel-Binance-aggTrades|count:1|0612|harness-réutilisable-com.martin.quant.replay+gridbt|→-skill?-attendre-2e-usage]
+[pattern|grid-régime-dépendant-chop-vs-trend|count:1|0612-backtest-3-régimes-prouvé|→-rule-juger-grid-sur-netPnl-incl-bag]

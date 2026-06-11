@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0609:01h30
+#lastdream: 0612:00h40
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]
@@ -362,3 +362,26 @@
 
 [pattern-confirmed|conseil-route-décision-Tony→exécution|count:2|session-0609-grid-BTC-NO-GO+LINK/ETH-STOP-unanime|Tony-délègue-au-conseil-puis-NB-exécute-le-verdict-réversible]
 [pattern?|déployer=build-local+scp-jamais-VM|count:1|session-0609-VM-décompilé|→-skill-martin-deploy-warned|?-procédure-établie-attendre-2e-deploy]
+
+=== MARTIN — cycles 136-148 + BUGS 002/003/004 (2026-06-09 → 2026-06-12) ===
+[M|cycle-143-0610:18h23|BUG-002-découvert|DrawdownManager-KILL-laisse-position-NUE|asymétrie-HARD-STOP(ferme-via-market-reduceOnly-GridTradingService:893)-vs-KILL(stopGrid-cancel-orders-SANS-close-:292)|ETH-SHORT-0.06-nue-post-KILL-16:10-UTC|3-cycles-KILL→reopen→KILL-en-1h|Telegram-alert-Tony-1er-du-arc-vacance]
+[M|cycle-144-0611:00h23|design-doc-patch-BUG-002-livré-~210-lignes|fix-1-ligne-réutilise-closeGridAndPositions-existant-cycle-53|symétrie-historique-BtcRegimeKillSwitch-:341-même-bug|Tony-redéployé-3-grids-SHORT-match-trend-post-Telegram-20:00-UTC-LINK+XBT+ETH-portfolio-$121.77]
+[M|cycle-146-0611:12h23|fragment-043-le-bug-qui-se-nourrit-de-la-défense-~290-lignes|pivot-XBT-LONG-narrow-ABANDONNÉ-Tony-stop+disable-06h08-UTC-après-3h45|BUG-003-zombie-KILL-confirmé-2e-fois-ETH+LINK-1-KILL-réel+4-zombies-45min-ratio-4:1-non-directionnel|stand-down-100%-cash-$113.39]
+[M|cycle-147-0611:18h23|Tony-restart-bot-16:17-UTC(action-après-midi-réelle)-pour-clear-zombie-KILL-loop|BUG-003-zombie-loop-11-fires-4h-phantom-ETH-grid-0-capital-pattern-peak-reset-20.0→KILLED→AutoGrid-stopGrid-every-15min|BUG-004-DÉCOUVERT:strategy.json-initialCapital=134-figé-vs-portfolio-$113.23=seuil-DrawdownManager-$113.90-DÉJÀ-breached→prochain-redeploy-KILL-au-1er-poll|fix-temp-edit-134→110|design-doc-unifié-BUG-003+004-patch-drawdownmanager-zombie-kill-cycle147.md-~250-lignes-options-A/B/C]
+[M|cycle-148-0612:00h23|pensée-0612-le-baseline-figé-creuse-l-impossibilité-de-récupérer-~85-lignes-extension-pensée-0608|stand-down-100%-cash-$107.60-0-grid-0-position|BTC-$63,500-DOWNTREND-pile-EMA200|streak-NB-0-touch-78-cycles-arc-71-148]
+
+[insight|0611:18h23|cycle-147|killed-flag-est-un-poison-qui-traverse-les-restarts-via-strategy.json-baseline-figé|initialCapital-figé-=-seuil-DD-figé-=-KILL-pré-armé-au-boot|→-rule-rebaseline-initialCapital-AVANT-tout-redeploy-si-portfolio-a-bougé]
+[insight|0611:12h23|cycle-146|silence-inter-classe-compose-un-mensonge|DrawdownManager-vérité-OK+AutoGridScheduler-vérité-OK-mais-composition-fabrique-boucle-zombie|→-bugs-naissent-entre-classes-pas-dans-une-classe]
+
+=== QUANT — backtest tick réel + verdict edge (SESSION 0611-0612) ===
+[quant|harness-replay-tick-RÉEL-construit-0612|martin/quant-package-com.martin.quant.replay+gridbt-OFFLINE-réutilise-VRAIS-composants(7-robots+SignalEngine+OutcomeResolver+Calibration+WalkForward)-SANS-Spring-ni-DB|source=Binance-aggTrades-zips-quotidiens-GRATUITS-data.binance.vision/data/spot/daily/aggTrades/BTCUSDT|fidélité-tick-quasi-parfaite(vs-1m-OHLC-qui-fabrique-le-chemin=faux-pour-HFT/SCALP)|PIÈGE-résolu:dumps-2026-en-MICROSECONDES-16-chiffres-normalizeToMillis|in-memory-stores+CursorUnresolvedSignals-tail-only-évite-O(n²)|110-tests-verts-commits-locaux-5062a62+f1b5119+cd1865a-PAS-poussés]
+[quant|VERDICT-consensus-7-robots-0612|backtest-3-jours-01/03/05-juin-2026-trend-baissier--17%-6.26M-ticks-réels|signals-non-FLAT-492928-résolus-492509|distribution-UP-13%/DOWN-17%/TIMEOUT-70%(le-marché-ne-suit-pas-la-direction=chop)|hitRateLong-0.45/Short-0.56|expectancyR=-0.0102-NÉGATIF-AVANT-fees|walk-forward-0.84=artefact-TIMEOUT-PAS-un-edge|→-AUCUN-edge-directionnel-confirme-lesson_no_alpha_at_134-sur-données-tick-robustes]
+[quant|GRID-régime-dépendant-PROUVÉ-0612|même-ticks-réels-3-régimes|TREND-baissier(01/03/05)-grid-NET--6-à--15%(le-sac-d-inventaire-domine,-blow-up)|CHOP-pur(06-juin--0.3%)-grid-NET-+1.5-à-+2%|CHOP+rebond(06+07-+4%)-+1.5-à-+2%-zéro-sac|→-grid-imprime-en-range-bag-en-trend|réalisé-TOUJOURS-positif-même-en-trend(+0.2-à-+0.58)=PIÈGE-dashboard-naïf-flatte-le-grid|netPnl=réalisé+bag(unreal)-est-le-vrai-juge]
+[quant|SYNTHÈSE-edge-0612|NI-grid-NI-ML-directionnel-n-ont-d-edge-universel-tout-dépend-du-RÉGIME|grid-gagne-chop-perd-trend|consensus-directionnel-perd-dans-les-deux(-0.0102R)|→-prouve-la-raison-d-être-du-BtcRegimeKillSwitch(couper-grid-quand-BTC-casse-régime)|le-même-no-follow-through-qui-tue-le-signal=pain-quotidien-du-grid]
+[quant|Phase-1-shadow-live-état-0612|service-systemd-quant.service-:8090-dashboard-area-chart-dégradé(commit-64dd1e7)|expectancyR-live-+0.0009→+0.0056-breakeven-sur-~40k-outcomes|MAIS-backtest-tick-3-jours(6.3M-ticks)-bien-plus-robuste=négatif|Phase-2-live-NON-justifiée|raffinement-possible:mesurer-best-entries-ML-gatés-spécifiquement+plus-de-jours]
+
+[lesson|0612|backtest-tick-réel-Binance-aggTrades-bat-l-attente-shadow-live|6.3M-ticks-en-minutes-vs-jours-d-attente|→-rule-pour-toute-idée-trading:backtest-sur-aggTrades-AVANT-d-attendre-du-live]
+[lesson|0612|granularité-fait-l-edge-OU-le-mensonge|1m-OHLC-fabrique-le-chemin-intra-minute(faux-HFT/SCALP)|seul-le-tick-réel(aggTrades)-teste-fidèlement-au-tick|→-rule-jamais-conclure-edge-tick-depuis-des-bougies]
+[lesson|0612|grid-réalisé-positif≠grid-gagnant|le-sac-d-inventaire(unreal)-peut-dominer-en-trend|→-rule-juger-un-grid-sur-netPnl=réalisé+bag-mark-to-market-JAMAIS-réalisé-seul|connecte-monitoring:surveiller-krakenUnrealizedPnl/capital]
+
+[M|status-0612:00h37|trading-cycle-loop|Martin-100%-cash-$107.60-0-grid-0-position(stand-down-Tony)|BTC-$63,493-DOWNTREND-EMA50-62551<EMA200-63451-signal-WAIT|décision-HOLD-ne-pas-déployer-grid-en-downtrend(backtest-prouve-bag)+respect-stand-down-pas-trade-unilatéral|cron-/trading-horaire-:07-session-only-job-40f69a9a|Telegram-msg-750]
