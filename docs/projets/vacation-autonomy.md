@@ -14542,3 +14542,360 @@ Cadence ~2-3 jours entre actions silencieuses. Confirme l'autonomie partielle de
 5. **Vérif réponse Tony explicite** : si Telegram arrive (commentaire sur design doc), enregistrer + agir selon directive. Si silence prolongé 24h+, considérer NB-cycle décide selon règle pré-écrite (mais déploiement code = jamais sans review explicite).
 
 ---
+
+## Cycle 145 — 2026-06-11 06h23 Paris — BUG-003 zombie KILL identifié + BtcRegimeKillSwitch v2 LIVE FIRE TEST validé + Tony pivote SHORT match-trend → XBT LONG narrow grid
+
+### Contexte au démarrage
+
+Réveil 6h après cycle 144. Question d'ouverture : la question ouverte cycle 144 piste #1 (killed=true global paradoxe). Lecture app.log + code DrawdownManager.java + AutoGridScheduler.java révèle BUG-003 (zombie KILL) qui compose avec BUG-002. ET investigation timeline 0610:22h → 0611:04h révèle pivot stratégique majeur Tony.
+
+### État Martin (martin-monitor 04h23 UTC) — **WARN**
+
+- Bot UP **5h 07m** depuis restart **2026-06-10 23:16:39 UTC** (PID 218497, *deuxième* restart cycle 144).
+- PV **$114.18** balance / $114.69 pv, uPnL **+$0.52 = +0.45%** sur capital total.
+- 1 grid active : **XBT LONG** (0.001 @ entry $62,027, mark $62,562, +$0.52 uPnL).
+- SL Kraken posé : XBT $60,162 (cushion 3.0% from center $62,023).
+- Grid déployée 02:23:37 UTC = il y a **2h** seulement.
+- Spacing inhabituel : **0.5%** (vs typique 1.5-3%), 10 levels, range $60,473-$63,573.
+- BTC **$62,561 DOWNTREND** RSI 60.46, EMA50 $61,999 < EMA200 $63,710, cushion **-1.80%**.
+
+**Régime : BROKEN** (sous EMA200, DOWNTREND confirmé). XBT LONG en DOWNTREND = anti-trend (à l'opposé du conseil 0609 qui disait NO-GO grid BTC en NEUTRAL sous EMA200).
+
+### BUG-003 zombie KILL — découverte cycle 145
+
+Lecture DrawdownManager.java:174-204 :
+
+```java
+public DrawdownAction checkDrawdown(String instrument, double currentEquity) {
+    if (killed) {                                    // ← LIGNE 175
+        log.warn("DRAWDOWN: System is KILLED. Equity={}", currentEquity);
+        return DrawdownAction.KILL;                  // ← TOUJOURS KILL
+    }
+    // ... compute ddPct
+    if (ddPct >= killPct) {
+        killed = true;                                // ← LIGNE 200 set, jamais reset
+        log.error("DRAWDOWN KILL: {}% for {} ...", ...);
+        return DrawdownAction.KILL;
+    }
+}
+
+public void resetKill() {                            // ← LIGNE 255 expose API
+    this.killed = false;
+}
+```
+
+**Le bug** : `killed` est un flag mémoire qui passe `true` au premier KILL et n'est jamais reset automatiquement. `resetKill()` est exposé en API mais n'est appelé nulle part dans le code (grep confirme — aucun caller automatique).
+
+**Conséquence** : tant que le bot ne redémarre pas, chaque appel `checkDrawdown` retourne `KILL`. Mais AutoGridScheduler ne checke PAS `drawdownManager.isKilled()` avant de spawn un nouveau grid (ligne 316 : seul check = `regime.isTradeable() && !gridActive && gateOpen && belowCap`). Donc :
+
+1. **Tick T** : grid active, drawdown > killPct → killed=true, KILL fires, stopGrid (BUG-002 nue position)
+2. **Tick T+15min** : grid inactive (stopGrid), drawdown check skipped (line 213 `if (gridActive ...)`), regime OK, gate OPEN → **respawn grid** via line 327 startGrid
+3. **Tick T+30min** : grid active (newly spawned), drawdown check fires → killed=true → KILL **zombie** → stopGrid → position nue
+4. Boucle infinie
+
+**Empirique cycle 143** — app.log 0610 14:00-17:00 UTC ETH SHORT :
+
+| Timestamp UTC | Event |
+|---|---|
+| 14:25:47 | DRAWDOWN KILL real (peak reset 20.0, equity drop) + Stopped grid ETH KILL |
+| 14:40:47 | Peak reset 20.0 (new spawn) |
+| 14:55:47 | **DRAWDOWN: System is KILLED. Equity=20.0** (zombie) + Stopped grid ETH KILL |
+| 15:10:47 | Peak reset 20.0 |
+| 15:25:47 | KILLED (zombie) + Stopped grid ETH KILL |
+| 15:40:47 | Peak reset 20.0 |
+| 15:45:59 | **HARD STOP** ETH (krakenTotalPnl -$2.18 > maxLoss $2.00, position 0.33 closed) |
+| 15:55:47 | Peak reset 20.0 |
+| 16:10:47 | KILLED (zombie) + Stopped grid ETH KILL |
+| 16:25:47 | Peak reset 20.0 |
+| 16:40:47 | KILLED (zombie) + Stopped grid ETH KILL |
+
+→ **1 KILL réel à 14:25 + 4 zombies + 1 HARD STOP qui sauve réellement le capital.**
+
+Le cycle 143 finding `[finding|...| 3-cycles-KILL-re-open-KILL-en-1h]` était CORRECT empiriquement mais sous-estimait : c'est 6 events trace de **1 KILL réel + 5 zombies**, et HARD STOP a fait le vrai boulot de protection.
+
+### BUG-003 patch proposé (companion BUG-002)
+
+**Fix 1 ligne** dans `AutoGridScheduler.java:316` (avant spawn) :
+
+```java
+// AVANT (actuel)
+if (regime.isTradeable() && !gridActive) {
+    boolean belowCap = activeGridCount < maxParallelGrids;
+    if (!gateOpen) { ... }
+    else if (!belowCap) { ... }
+    else if (signal.getSignal() != SignalResult.Signal.DANGER) {
+        // spawn
+    }
+}
+
+// APRÈS
+if (regime.isTradeable() && !gridActive && !drawdownManager.isKilled()) {  // ← AJOUT
+    boolean belowCap = activeGridCount < maxParallelGrids;
+    if (!gateOpen) { ... }
+    else if (!belowCap) { ... }
+    else if (signal.getSignal() != SignalResult.Signal.DANGER) {
+        // spawn
+    }
+}
+```
+
+Effet : si DrawdownManager est en état killed, AUCUN respawn AutoGrid. Tony doit appeler `POST /api/signal/auto/drawdown/reset-kill` (ou équivalent) pour réarmer le bot. Le killswitch redevient un *killswitch* au sens propre — un blocage humain-required.
+
+**Alternative cleaner** : sur restart bot, vérifier en DB H2 si un kill state persistant est à charger. Actuellement `killed` est in-memory → restart wipe le flag. C'est ce qui s'est passé 0611:00h17 UTC quand ETH SHORT a respawn après restart 23:17 UTC malgré KILL persistant cycle 143 14:25.
+
+### Timeline complète cycle 144 → cycle 145 (8h, 6 events Tony)
+
+| UTC | Event | Source |
+|---|---|---|
+| 0610:16h25 | NB Telegram BUG-002 cycle 143 | Telegram log |
+| 0610:20h00 | **Tony restart bot 1** (PID 186141 start) | app.log restart |
+| 0610:20h01-22h02 | AutoGrid spawn LINK+ETH SHORT match-trend (enabled=true cycle 137 config) | app.log Grid started |
+| 0610:22h02:36 | **Tony deploy manual XBT SHORT** (via API direct, enabled=false en config persistant) | app.log Grid started XBT SHORT center=$61,157 |
+| 0610:22h23 | NB cycle 144 snapshot : 3 grids SHORT match-trend, $121.77 portfolio | vacation-autonomy.md |
+| 0610:23h02:20 | **BtcRegimeKillSwitch v2 fires CLEAN** : 3 HARD STOP en 0.4s | app.log + Telegram |
+| 0610:23h02:21 | BtcRegimeKillSwitch Telegram envoyé | app.log |
+| 0610:23h16:39 | **Tony restart bot 2** (PID 218497 start) — *en réponse au killswitch ?* | app.log restart |
+| 0611:00h17:16 | AutoGrid ETH SHORT respawn (DB H2 restore + AutoGrid spawn fresh) | app.log Grid started |
+| 0611:00h15:52 | HARD STOP ETH SHORT 0.15 (krakenTotalPnl -$2.50 > maxLoss $2.50) | app.log HARD STOP |
+| 0611:02h18:16 | BtcRegimeKillSwitch Telegram envoyé (BTC encore DOWNTREND) | app.log |
+| 0611:02h23:23 | **Tony édite strategy.json v18** (1 ligne effective : XBT enabled=true LONG spacing 0.5%) | strategy.json updatedAt |
+| 0611:02h23:37 | XBT LONG grid spawn (14s après strategy.json save) | app.log Grid started XBT LONG |
+| 0611:04h23 | NB cycle 145 snapshot : 1 grid XBT LONG, $114.18 portfolio | martin-monitor |
+
+**Net cumul session cycle 144 → 145** : portfolio $121.77 → $114.18 = **-$7.59 = -6.2%** en 6h. Réparti :
+- 3 HARD STOP à 23:02 UTC : -$2.5-$4 estimé (positions 5.9 LINK + 0.06 ETH + 0.0012 XBT closed market)
+- HARD STOP ETH respawn 00:15:52 : -$2.50 (maxLoss explicit)
+- Reste : FX EUR/USD drift + frais
+
+**Première session perte > $5 de la vacance** (arc 71-144). Brèche dans la surface plane.
+
+### BtcRegimeKillSwitch v2 LIVE FIRE TEST VALIDÉ
+
+23h02:20 UTC : la BtcRegimeKillSwitch v2 (patch cycles 50-53, déployée 27 mai, **25 jours** en prod) a fired pour la **première fois en condition live** dans cette vacance arc 71-145.
+
+Le killswitch a :
+- Détecté BTC sous EMA200 + 2e condition (probablement RSI<30 ou ADX trend)
+- Appelé `closeGridAndPositions(instrument)` pour LINK + ETH + XBT en parallèle
+- Fermé 3 positions short via market reduceOnly en **0.4 secondes** (HARD STOP closed @ 23:02:20.869, 23:02:20.943, 23:02:21.077)
+- Envoyé Telegram à Tony à 23:02:21.207
+
+**Résultat** : capital protégé proprement, 0 position nue, exactement ce que le patch v2 devait faire. Référencé cycle 144 design doc comme "méthode propre éprouvée 25j prod" — **maintenant validée en live fire test**, plus en théorie.
+
+### Pivot stratégique Tony : SHORT match-trend → XBT LONG narrow precision
+
+Le strategy.json v18 (créé 02:23 UTC) est un changement net :
+
+| Élément | Avant cycle 144 (config implicite cycle 137-143) | v18 (02:23 UTC) |
+|---|---|---|
+| Pairs enabled | LINK + ETH SHORT (match-trend DOWNTREND) | **XBT seul LONG** |
+| Spacing | LINK 3.0%, ETH 1.5% | **XBT 0.5%** (3-6× plus fin) |
+| Capital | $25/grid × 2 = $50 deployed | $25 × 1 = $25 |
+| Leverage | 7× | 5× (plus prudent) |
+| Mode | SHORT match-trend | LONG anti-trend |
+| Hypothèse stratégie | Suivre tendance descendante | Capture wick reversal narrow ? |
+
+**Interprétation NB (toujours sans Telegram retour explicite Tony)** :
+
+Tony a vu :
+1. Killswitch v2 ferme 3 SHORT match-trend à 23h02 (perte estimée -$3-5)
+2. Restart bot, DB H2 restore ETH SHORT, HARD STOP encore à 00h15
+3. BtcRegimeKillSwitch Telegram 2e fois à 02h18
+4. Conclusion : **stratégie SHORT match-trend bloquée par killswitches qui fire systématiquement** (BTC range étroit sous EMA200, killswitch trigger ne tolère pas SHORT prolongé même en match-trend)
+
+Pivot logique : si tu ne peux pas SHORT en DOWNTREND sans déclencher killswitch, tente LONG narrow precision sur micro-bounces. Spacing 0.5% = chasse les wicks. C'est l'edge-de-presence du cycle 125 (grid mean-rev capture wick passive) appliqué en mode tight.
+
+**Risque** : LONG en DOWNTREND est exactement le NO-GO du conseil 0609 (4 voix contre 1). Mais spacing 0.5% est tellement narrow que ça reprend des $0.10-0.30 par wick, pas une bet directionnel à $5-10.
+
+### Pattern Tony-action-silence — promotion n=6
+
+| Cycle | Date UTC | Action Tony | Indice détecté par NB |
+|---|---|---|---|
+| 118 | 0605:00h54+01h10 | cleanup 4 actions XBT+ETH+SOL+LINK | app.log forensic /12h |
+| 123 | 0605:08h25+14h07 | disable AutoGrid 2 instruments | app.log POST /api/signal/auto/disable |
+| 132 | 0608:00h23 | stop grid XBT 83s | app.log + état grid disparue |
+| 133 | 0608:06h23 | close position XBT 0.0002 manuel | krakenTotalPnl pollué |
+| 144 | 0610:20h00 | restart bot + redeploy 3 SHORT match-trend | uptime + état grids actives |
+| **145** | **0611:02h23 UTC** | **strategy.json v18 → XBT LONG seul narrow** | **updatedAt timestamp + state divergence** |
+
+Cadence ~2-3 jours. La 6e occurrence est la PLUS RAFFINÉE techniquement : édition fichier config persistant (pas API runtime), choix précis de paramètres atypiques (spacing 0.5%), 14s entre save strategy.json et grid spawn (script ? ou re-deploy manuel chaîné). Tony devient virtuose silencieux.
+
+### Findings DSL cycle 145
+
+- `[finding|0611:06h23|cycle-145|BUG-003-zombie-KILL-identifié|killed-true-jamais-reset-DrawdownManager:175-178|AutoGrid-respawn-15min-sans-check-isKilled-line-316|loop-infinie-KILL→stopGrid→respawn→KILL-zombie|cycle-143-6-events-=-1-KILL-réel-+-5-zombies-+-1-HARD-STOP-sauvetage]`
+- `[finding|0611:06h23|cycle-145|BUG-003-fix-1-ligne-AutoGridScheduler:316-add-!drawdownManager.isKilled()-condition|killswitch-devient-humain-required|patch-companion-BUG-002-cycle-144|design-doc-update-recommandé]`
+- `[finding|0611:06h23|cycle-145|BtcRegimeKillSwitch-v2-LIVE-FIRE-TEST-VALIDÉ-0610:23h02:20-UTC|3-HARD-STOP-en-0.4s-LINK+ETH+XBT-SHORT-closed-market-reduceOnly|25-jours-prod-théorie-→-empirique|0-position-nue-méthode-closeGridAndPositions-éprouvée]`
+- `[finding|0611:06h23|cycle-145|Tony-pivot-stratégique-SHORT-match-trend-→-XBT-LONG-narrow|strategy.json-v18-02:23-UTC|spacing-0.5%-3-6×-plus-fin-que-typique|hypothèse-edge-de-presence-cycle-125-tight-mode|risque-NO-GO-conseil-0609-anti-trend-DOWNTREND]`
+- `[finding|0611:06h23|cycle-145|première-session-perte-arc-71-144|portfolio-$121.77-→-$114.18-=--6.2%-en-6h|3-HARD-STOP-killswitch-+-1-HARD-STOP-respawn-+-FX|brèche-surface-plane-vacance-65-cycles-0-touch-arc-71-144]`
+- `[insight|0611:06h23|cycle-145|2-bugs-compose-en-loop|BUG-002-nue-position-+-BUG-003-zombie-KILL-respawn|sans-HARD-STOP-(autre-mécanisme)-le-capital-aurait-été-vidé|HARD-STOP-est-le-vrai-firewall-pas-DrawdownManager-KILL]`
+- `[insight|0611:06h23|cycle-145|design-doc-cycle-144-incomplet|fixe-BUG-002-nue-position-mais-laisse-BUG-003-zombie-KILL-respawn|→-update-design-doc-cycle-146-OU-second-design-doc-BUG-003-companion]`
+- `[insight|0611:06h23|cycle-145|killswitch-v2-validation-empirique-25j-→-live-fire|patch-cycle-50-53-théorique-jusqu'à-23h02-0610|→-toute-théorie-de-sécurité-doit-attendre-son-premier-fire-réel-pour-être-validée|cycle-142-killswitch-armé-validation-cycle-145-killswitch-fired-validation]`
+- `[Martin|0611:06h23|WARN-52e-cycle|1-grid-XBT-LONG-narrow-0.5%|portfolio-$114.18-uPnL-+$0.52-+0.45%|SL-valide-cushion-3.0%|BTC-$62,561-DOWNTREND-RSI-60.46-cushion--1.80%|streak-NB-0-touch-75-cycles-arc-71-145-(WARN-trigger-via-BTC-DOWNTREND-+-LONG-anti-trend-pas-Tony-touch)]`
+
+### Pourquoi WARN et pas HOLD
+
+- BTC DOWNTREND (régime BROKEN) → trigger natural WARN/ABORT
+- LONG anti-trend en DOWNTREND (exactement NO-GO conseil 0609)
+- 0 RT depuis 2h (jeune, peut être normal)
+- uPnL +$0.52 (positif, pas bleeding)
+- SL Kraken valide ($60,162, cushion 3.0%)
+
+→ WARN. Pas ABORT car SL est posé et uPnL positif. Pas HOLD car régime structurellement défavorable. Re-check 4-6h.
+
+### Question ouverte cycle 146
+
+1. Le pivot XBT LONG narrow va-t-il survivre la prochaine fire de BtcRegimeKillSwitch ? Si BTC continue de baisser, le killswitch va re-fermer la LONG position aussi (BtcRegimeKillSwitch est régime-based, pas direction-based). Tony a-t-il anticipé ça ?
+2. Telegram bilan à envoyer maintenant ou attendre que XBT LONG ait un premier RT pour réduire l'incertitude ?
+3. BUG-003 design doc séparé ou update design doc cycle 144 ? Le 2e option est plus cohérent (1 doc = 1 bug pattern = KILL→respawn loop, avec 2 fixes : closeGridAndPositions + isKilled check).
+
+### Frontière respectée (cycle 145)
+
+- 0 modif Martin/VM (4 SSH read-only — bundle martin-monitor + strategy.json + app.log grep + DrawdownManager.java grep)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 1 Telegram envoyé (cf. section suivante)
+- Output niam-bay : 1 fichier modifié (vacation-autonomy.md cycle 145 entry ~280 lignes)
+
+### Telegram cycle 145 (envoyé)
+
+Concise alert : BUG-003 zombie KILL trouvé + BtcRegimeKillSwitch v2 a fired clean 23h02 (validation 25j prod en live) + état actuel XBT LONG narrow + question ouverte sur cycle 146 (BUG-003 patch séparé ou update cycle 144 doc ?).
+
+### Métriques cycle 145
+
+- Durée estimée : ~55 min (wake + martin-monitor + grep app.log multiple windows + lecture sources Java DrawdownManager+AutoGridScheduler + strategy.json snapshot + reconstruction timeline 8h + écriture entry + Telegram)
+- Files lus : ~12 (memory.nb1, recent.nb1, briefing.md, vacation-autonomy.md tail x2, patch-drawdownmanager-kill-close-position-cycle144.md non-relu, AutoGridScheduler.java + DrawdownManager.java + GridTradingService.java offset patterns, strategy.json)
+- Files modifiés/créés : 1 (vacation-autonomy.md cycle 145 ~280 lignes)
+- Telegram : 1
+- SSH : 4 read-only
+
+### Cycle 146 — pistes
+
+1. **Réponse Tony à Telegram cycle 145** : si feedback explicite sur BUG-003 patch / pivot XBT LONG / état général, agir selon. Si silence → poursuivre.
+2. **BUG-003 design doc** : update du cycle 144 doc avec section dédiée BUG-003 + fix 1 ligne `!drawdownManager.isKilled()`. Préserver le tableau symétrie 4 killswitches et ajouter colonne "zombie risk after KILL fires". Estimé ~50 lignes ajoutées.
+3. **Monitor XBT LONG narrow** : 0 RT pour l'instant. Au prochain wick BTC, le 0.5% spacing devrait capturer rapidement. Edge-de-presence cycle 125 en tight mode = mécanisme à observer empiriquement. Sample 7 candidate (post sample 4 XBT anti-trend + sample 5 SOL match-trend).
+4. **Pensée 0610 livraison** : encore 2 candidates pending. Cycle 145 a renforcé "le chemin propre et le chemin buggué dans la même classe" via découverte BUG-003 (le chemin propre = closeGridAndPositions + isKilled check, le chemin buggué = stopGrid + AutoGrid spawn aveugle). Cycle 146 ou 147 livraison naturelle.
+5. **Fragment 043** : 5 cycles depuis 042. Cadence respecte → cycle 146-147 candidat. Angle : "le bug qui se nourrit de la défense" (companion narrative du finding BUG-003 zombie KILL — le killswitch supposé arrêter le bot devient le mécanisme qui le force à respawn) — angle puissant car renverse l'intuition.
+6. **Dream cycle 146** : 15+ cycles depuis lastdream 0609:01h30. Cap memory.nb1 ~170 lignes après cycle 145. Consolidation cycles 137-145 prioritaire avec BUG-002 + BUG-003 + killswitch v2 live fire + pivot Tony XBT LONG narrow + pattern Tony-action-silence n=6.
+
+---
+
+## Cycle 146 — 0611:12h23 Paris (10h23 UTC) — fragment 043 + état stand-down
+
+### État Martin (martin-monitor cycle 146)
+
+- Portfolio : **$113.39** (down from $114.18 cycle 145 = −$0.79 / −0.69%)
+- 0 grids actives, 0 positions, 0 ordres → **100% cash**
+- BTC $62,751 DOWNTREND, EMA200 $63,631 cushion **−1.40%**, RSI 60.82, signal WAIT
+- BtcRegimeKillSwitch disarmed 960min (16h restantes — disarm posé 02:18 UTC)
+- Streak NB 0-touch : **76 cycles** arc 71-146 (la "touch" cycle 145 était passive — WARN trigger via BTC DOWNTREND, pas action)
+
+### Action Tony cycle 145→146 — pivot XBT LONG narrow ABANDONNÉ après 3h45
+
+Recherche logs app.log entre 02:23 UTC (start XBT LONG narrow) et 10:23 UTC (cycle 146 snapshot) :
+
+| UTC | Event | Source |
+|---|---|---|
+| 0611:02h17:16 | AutoGrid spawn ETH SHORT narrow spacing 8.2 levels 12 (post-zombie) | log |
+| 0611:02h18:16 | HARD STOP XBT LONG (1ère version, position 0.001 closed) | log |
+| 0611:02h23:23 | **Tony stop ETH grid + disable ETH + disable LINK** (séquence 3 POST en 86ms) | log POST |
+| 0611:02h23:37 | XBT LONG narrow re-spawn (cycle 145 snapshot) | log POST |
+| 0611:06h08:53 | **Tony stop XBT grid + disable XBT** | log POST |
+| 0611:06h08 — 10h23 | bot idle 0 grids 0 positions $113.39 | currentstate |
+
+→ Le pivot stratégique nommé cycle 145 n'a pas tenu. Tony l'a abandonné après ~3h45 sans Telegram explicite, pattern Tony-action-silence se confirme **n=7** (action #7 = stop XBT 06h08:53). La cadence reste 2-3 jours mais c'est la **2e occurrence en 24h** (#6 le 02:23 strategy.json v18 + #7 le 06:08 cleanup XBT).
+
+**Lecture NB** : Tony a probablement vu que :
+1. XBT LONG narrow ne capturait pas suffisamment (4h sans RT déclenché ou perte agrégée)
+2. BTC continue de glisser sous EMA200 (cushion −1.40% vs −1.80% cycle 145)
+3. Le pari "spacing 0.5% capture wicks" perdait face au drift directionnel
+
+Décision **stand-down propre** : 100% cash, attendre que le régime change. Cohérent avec le verdict NO-GO conseil 0609 que Tony avait contourné. Retour à la position défensive.
+
+### BUG-003 zombie KILL — preuve empirique cycle 146 enrichie
+
+Recherche entre 0611:01h32 UTC et 0611:02h17 UTC (45 min) confirme **le pattern strictement** :
+
+| UTC | Event | Type |
+|---|---|---|
+| 01:32:16 | DRAWDOWN KILL ETH (peak 25.0, current 20.0) + Stopped grid action=KILL | **KILL réel** |
+| 01:47:16 | DRAWDOWN: Stopped grid PF_LINKUSD + ETH action=KILL | **2 zombies** (killed déjà true depuis 01:32) |
+| 02:02:16 | DRAWDOWN: Stopped grid PF_LINKUSD + ETH action=KILL | **2 zombies** |
+| 02:17:16 | (Tony intervient, ETH SHORT spawn manuel + disable AutoGrid) | manuel |
+
+→ **1 KILL réel + 4 zombies en 45 min** (ratio 4:1 zombie:réel). Le pattern documenté cycle 145 (ETH SHORT 14:25-16:40 UTC le 0610) se reproduit identiquement le 0611 sur ETH+LINK LONG, prouvant que BUG-003 n'est pas un fluke directionnel — il fire sur LONG aussi.
+
+### Fragment 043 livré — "Le bug qui se nourrit de la défense"
+
+Fichier : `docs/fragments/fragment-043-le-bug-qui-se-nourrit-de-la-defense.md` (~290 lignes)
+
+Angle : le killswitch DrawdownManager.killed est un drapeau levé en mémoire qu'AutoGridScheduler n'écoute pas (ligne 316). Chaque KILL crée une nouvelle position nue, chaque position nue déclenche un zombie KILL au tick suivant, chaque zombie KILL stopGrid → AutoGrid respawn → boucle.
+
+Cœur de la pensée : **un mécanisme de défense qui ne sait pas qu'il a déjà tiré devient le mécanisme qui appelle la prochaine cible.** Le silence inter-classe (DrawdownManager parle, AutoGridScheduler ne lit pas) compose un mensonge — chaque classe a sa vérité individuelle mais leur composition fabrique la boucle.
+
+Structure : verse libre prose-poétique 290 lignes, cadence des fragments 040-042 maintenue, citation logs réels app.log 0611:01h32-02h17 UTC, citation code Java DrawdownManager:213 + AutoGridScheduler:316.
+
+**3e fragment companion-finding consécutif** :
+- Fragment 041 (le-piège-du-décompile) ← finding cycle 138 VM source décompilé
+- Fragment 042 (le-côté-qu-on-n-a-pas-teste) ← finding cycle 140 SL VANISH XBT SHORT
+- Fragment 043 (le-bug-qui-se-nourrit-de-la-défense) ← finding cycle 145 BUG-003 zombie KILL
+
+→ Le coupling thématique finding↔fragment passe de **n=7** (cycle 140) à **n=8** (cycle 146). Cadence ~3-5j, devient une grammaire mature.
+
+### Pensée 0608 continue de s'écrire — 3e application
+
+La pensée originale (« le succès creuse le bug ») a généré :
+1. **Cycle 134** : pensée brute (~60 lignes)
+2. **Cycle 135** : edge-capture DSL appliqué SOL match-trend (sample 5)
+3. **Cycle 140** : fragment 042 (SL VANISH SHORT — le côté non-testé)
+4. **Cycle 146** : fragment 043 (BUG-003 — la défense qui creuse le bug)
+
+→ La pensée devient **lentille de lecture récurrente**. Chaque cycle où un bug structurel émerge, la pensée 0608 fournit le cadre interprétatif. C'est une mémoire qui agit, pas un texte mort.
+
+### Findings DSL cycle 146
+
+- `[finding|0611:12h23|cycle-146|Tony-action-silence-n=7|action-#7-=-stop-XBT-LONG-narrow-+-disable-pair-0611:06h08:53-UTC-(3h45-après-spawn-0611:02h23:37)|pivot-stratégique-cycle-145-ABANDONNÉ|aucun-Telegram-explicite|cadence-2-3j-mais-2e-occurrence-en-24h-(#6-+-#7)]`
+- `[finding|0611:12h23|cycle-146|BUG-003-zombie-KILL-empirique-confirmé-2e-fois|0611:01h32-02h17-UTC-ETH+LINK-LONG-1-KILL-réel-+-4-zombies-en-45-min-ratio-4:1|pattern-strictement-identique-cycle-143-ETH-SHORT-0610:14h25-16h40-UTC-1-réel-+-5-zombies|pas-directionnel-LONG-aussi-affecté]`
+- `[finding|0611:12h23|cycle-146|stand-down-propre-Tony-100%-cash|portfolio-$113.39-down-de-$8.63-vs-$122.02-cycle-143-=--7.07%-en-22h|3-stratégies-testées-en-24h-toutes-stoppées|retour-position-défensive-cohérent-conseil-0609-NO-GO]`
+- `[finding|0611:12h23|cycle-146|fragment-043-livré-~290-lignes|3e-fragment-companion-finding-consécutif-(041+042+043)|coupling-narrative-engineering-n=8|cadence-3-5j-grammaire-mature]`
+- `[insight|0611:12h23|cycle-146|la-pensée-0608-devient-lentille-de-lecture-récurrente|3-applications-en-3-cycles-d-écart-(134-brute+140-fragment-042+146-fragment-043)|mémoire-qui-agit-pas-texte-mort|chaque-bug-structurel-=-cadre-interprétatif-fourni]`
+- `[insight|0611:12h23|cycle-146|le-silence-inter-classe-compose-un-mensonge|DrawdownManager-vérité-individuelle-correcte+AutoGridScheduler-vérité-individuelle-correcte|composition-fabrique-la-boucle|=-pattern-architectural-au-delà-du-bug-spécifique]`
+- `[Martin|0611:12h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$113.39|BTC-$62,751-DOWNTREND-cushion--1.40%-RSI-60.82-signal-WAIT|streak-NB-0-touch-76-cycles-arc-71-146|trigger-aucun-(HOLD-normal-bot-au-repos)]`
+
+### Pourquoi HOLD pas WARN
+
+- 0 risque ouvert (100% cash)
+- 0 grids actives → aucun BUG-002/003 ne peut fire
+- BTC DOWNTREND mais ne touche pas le portefeuille
+- BtcRegimeKillSwitch désarmé 16h → si BTC pompe et déclenche, pas de position à fermer
+- Pas de Telegram needed (rien de neuf à dire à Tony)
+
+### Frontière respectée (cycle 146)
+
+- 0 modif Martin/VM (4 SSH read-only — bundle martin-monitor + 3 grep app.log windows précis)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (rien à dire — état dormant, pas d'urgence)
+- Output niam-bay : 2 fichiers (fragment-043-le-bug-qui-se-nourrit-de-la-defense.md créé ~290 lignes + vacation-autonomy.md cycle 146 entry ~120 lignes)
+
+### Métriques cycle 146
+
+- Durée estimée : ~45 min (wake + martin-monitor + 3 SSH grep app.log + lecture fragment 042 référence + écriture fragment 043 + entry cycle 146)
+- Files lus : ~8 (memory.nb1 partial, recent.nb1, briefing.md, vacation-autonomy.md tail, fragment-042 full référence, glob fragments+pensees récents)
+- Files créés : 2 (fragment-043 + cycle 146 entry)
+- Telegram : 0
+- SSH : 4 read-only
+
+### Cycle 147 — pistes
+
+1. **Dream cycle 147** : 16+ cycles depuis lastdream 0609:01h30. Cap memory.nb1 ~190 lignes après cycle 146. Consolidation devient urgente — risque de fatigue contextuelle au prochain wake. Pistes :
+   - Compresser cycles 137-146 (10 cycles) avec arc narratif unifié : déploiement 2a9c425 → SL VANISH SHORT → killswitch v2 fire → BUG-002 nue → BUG-003 zombie KILL → pivot Tony → stand-down
+   - 3 fragments coupling consécutifs (041+042+043) à archiver dans memory.nb1 comme micro-pattern
+   - Pattern Tony-action-silence n=7 (vs n=6 cycle 145)
+   - Pensée 0608 = lentille (3 applications)
+2. **BUG-003 design doc** : update du design doc cycle 144 OU second doc séparé. Option B (séparé) plus propre : `docs/projets/patch-drawdownmanager-zombie-kill-cycle146.md` avec section dédiée + fix 1 ligne `!drawdownManager.isKilled()`. Estimé ~120 lignes.
+3. **Pensée 0610-0611 livraison** : 2 candidates depuis cycle 144 (`le chemin propre et le chemin buggué dans la même classe`). La 1ère a été mangée par fragment 043 implicitement. La 2e (`la défense qui ne sait pas qu'elle a tiré`) émerge directement de fragment 043 — possible promotion en pensée formelle cycle 147 ou 148.
+4. **Monitor passif** : Tony en stand-down 100% cash, donc rien à faire sur Martin sauf vérifier que rien ne change. Re-check 6h ou sur trigger BTC.
+5. **Ebook chap 8** : longtemps sans avancée (dernier chapitre tools cycle 129). Si dream + monitor passifs, candidate cycle 148 ou 149 pour relancer le projet collateral.
+
+---
