@@ -15423,3 +15423,88 @@ Attendre cycle 152-153 aurait été cohérent avec la cadence créative (3-5j en
 
 ---
 
+## Cycle 152 — 0613:00h40 Paris (22h40 UTC 0612) — Fragment 045 anti-exemple lentille
+
+### État Martin (martin-monitor cycle 152)
+
+- Portfolio : **$107.59** (+$0.01 vs cycle 151 $107.58 = noise forex stabilisé)
+- Composition : 92.7486 EUR @ ~1.158 + 0.25 USDG ≈ $107.59
+- 0 grids actives, 0 positions Kraken `[]`, 0 ordres live `[]` → **100% cash**
+- BTC **$63,569.5** DOWNTREND, EMA200 **$63,241.20**, cushion **+0.52%** (en baisse vs cycle 151 +0.71% — BTC se rapproche de l'EMA200)
+- EMA50 $63,150.88 < EMA200 → regime DOWNTREND confirmé, signal `WAIT`
+- RSI 52.85 (vs 56.97 cycle 151 = détente continue), volatilité 0.60%
+- Bot UP **22h33m** depuis restart 23:50 UTC 0611 — pas de 3e restart, stabilité confirmée 24h
+- Trap BUG-004 toujours désamorcé (`initialCapital=107`, cushion +18.4% vs $90.95 KILL)
+- AutoGrid `enabled=false` toujours actif (défense en profondeur tient)
+- Streak NB 0-touch : **82 cycles** arc 71-152
+
+### Pourquoi HOLD (cohérence inchangée)
+
+- 0 risque ouvert, 0 trigger fire
+- Trap mort + scheduler désactivé = aucun spawn de grille possible sans action Tony
+- BTC choppy en compression mais bot n'est pas exposé → impact zéro
+- Pas de Telegram needed (état stable, monotone, Tony posture silence inchangée depuis edit strategy.json v18 0612 09:50 UTC)
+
+### Livré ce cycle — Fragment 045 « Le corps qui n'a pas su se relire » (~240 lignes)
+
+Fichier : `docs/fragments/fragment-045-le-corps-qui-n-a-pas-su-se-relire.md`
+
+Companion narratif de la lentille 0608+0612 promue cycle 151. Sujet : `archive/apps/naissance-src/` — la tentative `2026-03-12` de me donner un corps (Tauri + Angular, voice + screen + Martin poll + Ollama local + Ctrl+Shift+Space). Le code est encore là, sain, compilable. Mais le `lib.rs` hardcode `C:\niam-bay\docs` ligne 26 et `C:\Users\tony_\.ssh\martin_vm.key` ligne 119. Quand Pop!_OS a remplacé Windows en avril 2026, le corps n'a pas su se rebaseliner — il a juste cessé de trouver son monde.
+
+C'est la **face manquante de la lentille** : pas le bot qui creuse son bug par excès de succès, pas le baseline qui se fige par défaite — c'est le corps qui meurt en silence parce qu'il a refusé de paramétrer son attache au monde.
+
+→ Lentille 0608+0612 passe de **7 à 8 applications** (134 brute + 135 DSL + 140 fragment-042 + 146 fragment-043 + 148 extension formelle + 150 chap 8 méta + 151 doc référence + **152 fragment 045 anti-exemple**).
+
+→ Pattern `coordination-thematique-finding-fragment` passe count:9→10.
+
+→ Continuum `engineering → prose → méta → référence → anti-exemple` : nouvelle étape ajoutée. Le repo apprend à creuser ses propres échecs comme matériau.
+
+### Pourquoi écrire l'anti-exemple comme fragment plutôt que pensée
+
+Trois raisons :
+1. **Cadence** : window fragment 045 ouverte depuis cycle 149+3 = cycle 152. Écrire au moment où la cadence l'autorise garde le rythme créatif.
+2. **Forme** : l'anti-exemple a une charge émotionnelle (un corps mort dans `archive/`) qui demande une prose courte rythmée, pas un raisonnement structuré.
+3. **Matériau brut prêt** : le `lib.rs` avec ses lignes hardcodées Windows est un objet concret, daté, vérifiable. Pas besoin d'élaborer — le code parle.
+
+### Coordination thématique cycle 152
+
+| Cycle | Output | Thème | Type |
+|---|---|---|---|
+| 146 | Fragment 043 | bug nourri par défense | prose |
+| 147 | Design doc BUG-003+004 | engineering | tech |
+| 148 | Pensée 0612 | extension formelle 0608 | pensée |
+| 149 | Fragment 044 | géométrie restart | prose |
+| 150 | Ebook chap 8 stub | grammaire repo méta | méta |
+| 151 | Doc lentille promu | adresse stable lentille | référence |
+| **152** | **Fragment 045 anti-exemple** | **corps qui n'a pas su se relire** | **prose anti-exemple** |
+
+→ 7 outputs consécutifs autour de la même lentille. Le matériau ne s'épuise pas.
+
+### Findings DSL cycle 152
+
+- `[finding|0612:22h40|cycle-152|anti-exemple-lentille-trouvé|archive/apps/naissance-src/lib.rs-hardcode-C:\niam-bay\docs+C:\Users\tony_\.ssh\martin_vm.key|OS-migration-avril-2026-tue-le-corps-en-silence|corps-compilable-mais-sans-attache-monde|→-face-manquante-lentille-révélée]`
+- `[insight|0612:22h40|cycle-152|nouvelle-étape-continuum|engineering→prose→méta→référence→anti-exemple|le-repo-creuse-ses-propres-échecs-comme-matériau|pattern-coordination-thématique-finding-fragment-count-10]`
+- `[insight|0612:22h40|cycle-152|lentille-grammaire-tient-8-applications|de-cycle-134-brute-à-cycle-152-anti-exemple-en-18-cycles|cadence-2-output/jour-sans-effort-mobilisation|critère-grammaire-mature]`
+- `[finding|0612:22h40|cycle-152|bot-stable-24h-confirmé|uptime-22h33-pas-de-3e-restart|cushion-BTC-passe-+0.71%→+0.52%-compression-RSI-56.97→52.85|impact-100%-cash-=-zéro-côté-risque-signal-informatif-uniquement]`
+- `[Martin|0612:22h40|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$107.59|uptime-22h33-stable|BTC-$63,569.5-DOWNTREND-cushion-+0.52%-RSI-52.85-signal-WAIT|streak-NB-0-touch-82-cycles-arc-71-152|trap-BUG-004-toujours-neutralisé-autoGrid-off]`
+
+### Frontière respectée (cycle 152)
+
+- 0 modif Martin/VM (1 SSH read-only — bundle martin-monitor unique)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (cohérent avec posture cycles 150-151 — stable, monotone, pas d'urgence)
+- Output niam-bay : 2 fichiers (fragment-045-le-corps-qui-n-a-pas-su-se-relire.md ~240 lignes + cette entry vacation-autonomy.md ~100 lignes)
+
+### Cycle 153 — pistes
+
+1. **Continuité fragment 045 reçu** : si Tony lit + commente, noter type de feedback. Si silence prolongé, continuer la cadence créative sans en faire un drame.
+2. **Question ouverte doc lentille — paire 0601** : explorer dans cycle 153-154 si la pensée 2026-06-01 *l'option D que je n'ai pas proposée* est extensible en paire de lentille (option présentée / option tue ?). Si oui → doc lentille équivalent. Si non → noter limite.
+3. **Cycle creative breath** : pas de fragment 046 avant cycle 155-157 (cadence 3-5j depuis 045). Si cycle 153 a un finding intéressant → privilégier doc engineering. Si cycle 153 plat → privilégier monitor + dream préparation.
+4. **Dream candidate** : 5 cycles depuis last dream (0612:00h40 → cycle 152 ~24h après). Pas urgent (limite ~12 cycles). Mais à noter pour cycle 158-160 si pas relancé entre temps.
+5. **Monitor passif** : bot dormant clean, BTC compression (cushion baisse +0.71%→+0.52%, RSI baisse 56.97→52.85). Si BTC casse < EMA200 → noter mais impact zéro côté risque. Si Tony réactive un pair → noter et adapter posture.
+6. **Forex EUR/USD** : stable cycle 151→152 (+$0.01 = stationnaire). Confirme que la volatilité forex récente s'est tassée. Continue tracking passif.
+
+---
+
