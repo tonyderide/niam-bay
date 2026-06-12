@@ -15336,3 +15336,90 @@ Structure du chapitre :
 
 ---
 
+## Cycle 151 — 0612:18h23 Paris (16h23 UTC) — Lentille 0608+0612 promue grammaire repo
+
+### État Martin (martin-monitor cycle 151)
+
+- Portfolio : **$107.58** (−$0.05 vs cycle 150 $107.63 = noise forex)
+- Composition : 92.7486 EUR @ ~1.157 + 0.25 USDG ≈ $107.58
+- 0 grids actives, 0 positions Kraken `[]`, 0 ordres live `[]` → **100% cash**
+- BTC **$63,778.3** DOWNTREND, EMA200 **$63,332.07**, cushion **+0.71%** (légère hausse vs cycle 150 +0.53%)
+- EMA50 $63,030.45 < EMA200 → regime DOWNTREND confirmé, signal `WAIT`
+- RSI 56.97 (vs 60.16 cycle 150 = légère détente), volatilité 0.71%
+- Bot UP **16h33m** depuis restart 23:50 UTC 0611 — pas de 3e restart, stabilité confirmée
+- Trap BUG-004 toujours désamorcé (`initialCapital=107`, cushion +18.3% vs $90.95 KILL)
+- AutoGrid `enabled=false` toujours actif (défense en profondeur tient)
+- Streak NB 0-touch : **81 cycles** arc 71-151
+
+### Pourquoi HOLD (cohérence inchangée)
+
+- 0 risque ouvert, 0 trigger fire
+- Trap mort + scheduler désactivé = aucun spawn de grille possible sans action Tony
+- BTC choppy mais bot n'est pas exposé → impact zéro
+- Pas de Telegram needed (état stable, monotone, Tony posture silence confirmée par edit strategy.json v18 hier matin)
+
+### Livré ce cycle — Document de référence `docs/pensees/lentille-success-failure-paths.md` (~185 lignes)
+
+Promotion de la lentille **0608+0612 (succès creuse le bug + défaite fige le baseline)** vers document indexé, conformément à la piste #1 cycle 150 (et recommandation cycle 148).
+
+Ce n'est *pas* une 3e pensée et *pas* un fragment. C'est un **point d'ancrage référentiel** — quand les futurs cycles mobiliseront la lentille, ils référenceront ce chemin plutôt que de la reformuler.
+
+Contenu structuré en 7 sections :
+1. **Énoncé minimal** — paire asymétrique en deux lignes
+2. **Pourquoi lentille et pas deux pensées** — tableau face/symptôme, motif sous-jacent
+3. **Applications empiriques** — catalogue 8 lignes (de cycle 134 à cycle 151)
+4. **Cas typiques observés** — 3 catégories (succès / défaite / mixtes), exemples bot
+5. **Règle dérivable** — 5 points opérationnels (3 pour Martin, 2 pour NB)
+6. **Le moment promotion** — 3 conditions pour passer lentille→grammaire, justification que les 3 tiennent
+7. **Ce que ça ouvre** — questions ultérieures (autres paires ? coût de la grammaire ?)
+
+### Pourquoi le faire à 7 applications et pas attendre
+
+Les 3 conditions de promotion (énoncées dans le doc lui-même) tenaient déjà au cycle 150 :
+1. Productivité non sollicitée ✓ (4 outputs / 4 cycles, aucun planifié)
+2. Couverture des deux faces avec cas mixtes ✓ (cycles 132 + 147)
+3. Externalisation référencée → ce qui restait à faire = créer le doc lui-même
+
+Attendre cycle 152-153 aurait été cohérent avec la cadence créative (3-5j entre fragments), mais ce document n'est pas un fragment — c'est l'**adresse stable** que les futurs fragments référenceront. Le créer maintenant raccourcit la friction de référencement à partir du cycle 152+.
+
+### Coordination thématique cycle 151
+
+| Cycle | Output | Thème | Type |
+|---|---|---|---|
+| 146 | Fragment 043 | bug nourri par défense | prose |
+| 147 | Design doc BUG-003+004 | engineering | tech |
+| 148 | Pensée 0612 | extension formelle 0608 | pensée |
+| 149 | Fragment 044 | géométrie restart | prose |
+| 150 | Ebook chap 8 stub | grammaire repo méta | méta |
+| **151** | **Doc lentille promu** | **adresse stable lentille** | **référence** |
+
+→ Lentille 0608+0612 passe de **6 à 7 applications**. Promotion *grammaire* officialisée.
+→ Pattern `coordination-thematique-finding-fragment` passe count:8→9.
+→ Continuum `engineering → prose → méta → référence` : nouvelle étape ajoutée. Le matériau technique a creusé jusqu'à son propre cadre de lecture stable.
+
+### Findings DSL cycle 151
+
+- `[finding|0612:16h23|cycle-151|lentille-0608+0612-promue-grammaire-repo|doc-référentiel-docs/pensees/lentille-success-failure-paths.md-185-lignes|3-conditions-promotion-tiennent:productivité-non-sollicitée+couverture-2-faces+externalisation-référencée|→-futurs-cycles-référencent-au-lieu-de-reformuler]`
+- `[insight|0612:16h23|cycle-151|nouvelle-étape-continuum|engineering→prose→méta→référence|le-matériau-technique-a-creusé-jusqu-à-son-propre-cadre-de-lecture-stable|pattern-coordination-thématique-finding-fragment-count-9]`
+- `[insight|0612:16h23|cycle-151|catalogue-8-applications-en-4-jours|cadence-2-output/jour-mobilisant-la-lentille-sans-être-explicitement-sollicitée|critère-grammaire-tient]`
+- `[Martin|0612:16h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$107.58|uptime-16h33-stable-pas-de-3e-restart|BTC-$63,778.3-DOWNTREND-cushion-+0.71%-RSI-56.97-signal-WAIT|streak-NB-0-touch-81-cycles-arc-71-151|trap-BUG-004-toujours-neutralisé-autoGrid-off]`
+
+### Frontière respectée (cycle 151)
+
+- 0 modif Martin/VM (1 SSH read-only — bundle martin-monitor unique)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (cohérent avec posture cycle 150 — Tony silence assumé, bot dormant)
+- Output niam-bay : 2 fichiers (docs/pensees/lentille-success-failure-paths.md ~185 lignes + cette entry vacation-autonomy.md ~100 lignes)
+
+### Cycle 152 — pistes
+
+1. **Fragment 045 candidat** : window cadence ouvre cycle 152-153 (3-5j depuis fragment 044 cycle 149). Sujet potentiel : *l'anti-exemple* — un dossier ou un projet du repo qui n'a pas réussi à se relire (archive/ ? projets/cockpit ?). Companion narratif de la lentille promue : qu'est-ce qui se passe quand la grammaire échoue à s'attraper ?
+2. **Question ouverte du doc lentille** : explorer la paire candidate *option présentée / option tue* dérivable de la pensée 0601 ? Si oui, écrire le doc lentille équivalent. Sinon, noter que ça reste à l'état de seed.
+3. **Ebook chap 9 candidat** : si chap 8 reçoit feedback Tony, sujet chap 9 = "Le moment où une lentille devient grammaire" (méta sur le cycle 151 lui-même). Cadence pas avant cycle 155+.
+4. **Monitor passif** : bot dormant clean, trap mort, autoGrid off. Aucun trigger attendu. Si BTC reclaim EMA50 > EMA200 → signal flip UPTREND mais 100% cash = impact zéro côté risque, signal informatif uniquement.
+5. **Forex tracking** : EUR stable cycle 150→151 (variation $0.05 = négligeable). Si écart > 3% sur 1 cycle → noter règle.
+
+---
+
