@@ -15195,3 +15195,144 @@ La paire 0608+0612 est devenue lentille de lecture stable. Tous les fragments de
 
 ---
 
+## Cycle 150 — 0612:12h23 Paris (10h23 UTC) — Ebook chap 8 livré + découverte trap BUG-004 AUTO-NEUTRALISÉ
+
+### État Martin (martin-monitor cycle 150)
+
+- Portfolio : **$107.63** (+$0.06 vs cycle 149 $107.57 = bruit forex/EUR négligeable)
+- Composition : 92.7486 EUR @ ~1.157 + 0.25 USDG = ~$107.63
+- 0 grids actives, 0 positions Kraken `[]`, 0 ordres live `[]` → **100% cash**
+- BTC **$63,696.9** DOWNTREND, EMA200 **$63,361.7**, cushion **+0.53%** (toujours juste au-dessus)
+- EMA50 $62,880.4 < EMA200 $63,361.7 → regime DOWNTREND confirmé, signal `WAIT`
+- RSI 60.16, volatilité 0.53% — chop maintenue
+- Bot UP **10h33m** depuis restart 23:50 UTC 0611 — **pas de 3e restart**
+- Streak NB 0-touch : **80 cycles** arc 71-150
+
+### Découverte cycle 150 : trap BUG-004 EFFECTIVEMENT NEUTRALISÉ
+
+Read-only check de `/home/ubuntu/martin/config/strategy.json` (étape 1 de la piste cycle 149). Surprise.
+
+```json
+{
+  "version" : 18,
+  "updatedAt" : "2026-06-12T09:50:01.817995298Z",
+  "name" : "v18 LINK+ADA+ETH+XRP NEUTRAL (post-backtest static neutral validation)",
+  "totalCapital" : 100,
+  ...
+  "autoGrid" : { "enabled" : false, ... },
+  "drawdown" : {
+    "killPct" : 15,
+    "initialCapital" : 107
+  },
+  "lastDeployment" : { "at" : "2026-06-11T23:51:21.440456Z", "gridsStarted" : 0, "success" : true }
+}
+```
+
+Trois faits qui changent l'analyse cycles 147+148+149 :
+
+1. **`initialCapital=107`** — pas 134, pas 110 (mon edit cycle 147 transitoire), pas 113.39 (portfolio cycle 146). **107 = portfolio actuel à 09:50 UTC** (= cycle 148 $107.60). Le bot a auto-rebaseliné son seuil de KILL au démarrage du 2e restart, en prenant le portfolio courant comme nouveau `initialCapital`. Threshold mort = 107 × 0.85 = **$90.95**. Portfolio actuel $107.63. **Cushion +18.4% avant le KILL**. Le trap est mort en silence.
+
+2. **`name`** v18 inclut "post-backtest static neutral validation" — Tony (ou un déploiement humain) a renommé la stratégie après avoir lu le verdict quant-backtest de la nuit. C'est une trace cognitive : il a accusé réception du résultat (ni grid ni ML edge universel, tout est régime), et il a typé la nouvelle baseline NEUTRAL static comme la version validée par l'évidence backtest.
+
+3. **`autoGrid.enabled = false`** — le scheduler qui spawne automatiquement des grilles est **désactivé**. Le pattern AutoGridScheduler-revert-config qui nous a piégé cycle 50 + 116 + 121 ne peut pas se déclencher. C'est défense en profondeur : même si une pair était passée `enabled=true` par erreur, aucune grille ne spawnerait sans Tony qui clique manuellement.
+
+### Trace journalctl — 2e restart confirmé manuel (pas crash)
+
+`sudo journalctl -u martin.service --since "2026-06-11 14:00:00 UTC" --until "2026-06-12 00:30:00 UTC"` :
+
+```
+Jun 11 16:17:14 Stopping Martin Trading Bot...
+Jun 11 16:17:18 Main process exited, code=exited, status=143/n/a
+Jun 11 16:17:18 Stopped Martin Trading Bot.
+Jun 11 16:17:18 Starting Martin Trading Bot...
+Jun 11 16:17:18 Started Martin Trading Bot.
+Jun 11 23:50:21 Stopping Martin Trading Bot...
+Jun 11 23:50:24 Main process exited, code=exited, status=143/n/a
+Jun 11 23:50:24 Stopped Martin Trading Bot.
+Jun 11 23:50:24 Starting Martin Trading Bot...
+Jun 11 23:50:24 Started Martin Trading Bot.
+```
+
+Pattern identique aux deux restarts : `Stopping → exit 143 (SIGTERM) → Stopped → Starting → Started`. **143 = `kill -TERM` propre, pas un crash**. Donc hypothèse B (crash silencieux) cycle 149 = **réfutée**. Les deux restarts sont des `systemctl restart martin.service` côté Tony.
+
+→ Hypothèse retenue : (A) Tony a edit config et redémarré. Le 2e restart à 23:50 UTC est probablement le moment où Tony a typé la nouvelle name v18 + accepté que le bot écrive `initialCapital=107` sur la base du portfolio courant.
+
+### Réinterprétation du pattern Tony-action-silence
+
+Le compteur ne va pas à 10 — il faut maintenant distinguer :
+
+- Action infra **observable côté Niam-Bay** = 9 (8 cleanups+restarts cycles 118-144 + 2 restarts 0611)
+- Édition config v17→v18 entre 16:17 UTC et 23:50 UTC 0611 = action **inférée** (pas tracée directement par journalctl, mais visible dans `version: 18` + nouveau name)
+
+→ Cadence Tony 0611 = (1) cleanup positions matin, (2) restart 16:17 UTC, (3) edit strategy.json v17→v18 quelque part entre, (4) restart 23:50 UTC pour appliquer le v18. Quatre actions infra en ~8h. **Tony n'a pas répondu au Telegram cycle 147 parce qu'il a directement réglé le trap dans le code**, pas par message. Posture stand-down respectée côté trading (toujours 100% cash), mais infrastructure active.
+
+→ **Telegram cycle 147 a fonctionné comme alarme silencieuse** : Tony l'a lu, n'a pas répondu, mais a agi sur ce que l'alarme pointait. C'est le mode opérationnel attendu pendant les vacances.
+
+### Pourquoi HOLD (rien de plus)
+
+- 0 risque ouvert (0 grids, 0 positions)
+- Trap BUG-004 désamorcé (`initialCapital=107` vs portfolio $107.63 = aligné)
+- AutoGrid désactivé = pas de spawn automatique possible
+- BTC pile EMA200 +0.53% = pas de signal de regime change
+- Forex EUR/USD stable sur le cycle (+0.06% ≈ noise)
+- Pas de Telegram needed — bonne nouvelle (trap mort), Tony en mode silence assumé, perturber sa journée pour confirmer un trap déjà neutralisé serait du bruit
+
+### Livré ce cycle — Ebook chap 8 stub « Comment un repo creuse sa propre poésie »
+
+Fichier : `docs/projets/ebook-chap8-repo-poesie-stub.md` (~2200 mots, 252 lignes)
+
+Stub méta annoncé piste cycle 149. Sujet : la grammaire émergente du repo. Le matériau technique (BUG-001 → 004) creuse le narratif (pensées 0608+0612, fragments 042-044). Le repo apprend à se relire avant moi via la mémoire vectorielle obligatoire + DSL NB-1 compressé + cycle créatif imposé.
+
+Structure du chapitre :
+1. *Le moment où je m'en suis aperçu* — tableau de coordination thématique qui s'est rempli tout seul cycle 146-149
+2. *La grammaire qu'on n'a pas écrite* — chronologie pensée 0608 cycle 134 → DSL 135 → fragment 042 cycle 140 → fragment 043 cycle 146 → pensée 0612 cycle 148 → fragment 044 cycle 149
+3. *Le matériau technique creuse le narratif* — direction asymétrique, le finding empirique précède toujours la prose
+4. *Ce que le repo m'apprend que je n'ai pas voulu* — la mémoire vectorielle force la cohérence, effet de bord de la persistance
+5. *Trois propriétés qui rendent ça possible* — mémoire vectorielle obligatoire + DSL compressé + cycle créatif imposé
+6. *Ce que ça veut dire pour qui voudrait reproduire* — "discipline du retour" automatique au démarrage
+7. *La phrase que je ne pouvais pas écrire avant* — clôture : "Un système qui ne sait pas se relire ne sait pas vieillir", liée directement à la découverte cycle 150 (le bot Martin **a réussi à se relire** en auto-rebaselinant initialCapital — il a échappé au piège de la pensée 0612 douze heures avant que je m'en aperçoive)
+
+→ La pensée 0608+0612 passe de **5 à 6 applications** (134 brute + 135 DSL + 140 fragment-042 + 146 fragment-043 + 148 extension formelle + **150 chap 8 méta**). Promotion de lentille à *grammaire repo*. Si pattern tient, candidat à devenir un chapitre central de l'ebook.
+
+→ Pattern `coordination-thematique-finding-fragment` passe count:7→8.
+
+→ Continuum `engineering → prose` : count:4→5. BUG-003+004 → design doc → pensée 0612 → fragment 044 → **chap 8 méta**. Le matériau technique a creusé jusqu'au chapitre méta.
+
+### Coordination thématique cycle 150
+
+| Cycle | Output | Thème | Lien lentille |
+|---|---|---|---|
+| 146 | Fragment 043 — bug nourri par défense | zombie KILL respawn loop | 0608 |
+| 147 | Design doc BUG-003+004 | options A/B/C patch | engineering |
+| 148 | Pensée 0612 — baseline figé | extension formelle 0608 | 0608+0612 |
+| 149 | Fragment 044 — ce qui survit au restart | géométrie asymétrique stop/start | 0612 |
+| **150** | **Ebook chap 8 — repo creuse sa poésie** | grammaire émergente du repo | **0608+0612 méta** |
+
+### Frontière respectée (cycle 150)
+
+- 0 modif Martin/VM (3 SSH read-only : martin-monitor + journalctl + cat strategy.json — tous lecture seule)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système VM
+- 0 Telegram (état stable, découverte = trap neutralisé = bonne nouvelle qui ne mérite pas d'interruption)
+- Output niam-bay : 2 fichiers (ebook-chap8-repo-poesie-stub.md ~2200 mots + vacation-autonomy.md cycle 150 entry ~180 lignes)
+
+### Findings DSL cycle 150
+
+- `[finding|0612:12h23|cycle-150|trap-BUG-004-AUTO-NEUTRALISÉ|strategy.json-v18-initialCapital=107-rewrite-09:50-UTC|threshold-mort-=-$90.95-vs-portfolio-$107.63-cushion-+18.4%|+autoGrid.enabled=false-défense-en-profondeur|→-bot-a-auto-rebaseliné-son-seuil-de-mort-sur-portfolio-courant-au-2e-restart]`
+- `[finding|0612:12h23|cycle-150|2e-restart-confirmé-manuel-pas-crash|journalctl-pattern-Stopping→exit-143-SIGTERM→Stopped→Starting→Started|hypothèse-B-crash-réfutée|hypothèse-A-edit-config-confirmée-via-version:18-+-name-v18-post-backtest]`
+- `[finding|0612:12h23|cycle-150|Telegram-cycle-147-=-alarme-silencieuse-fonctionnelle|Tony-a-pas-répondu-en-message-mais-a-réglé-le-trap-en-code|posture-attendue-vacances-action-sans-bruit-Telegram-bidirectionnel]`
+- `[insight|0612:12h23|cycle-150|chap-8-ebook-livré-grammaire-émergente|lentille-0608+0612-passe-de-5-à-6-applications-(134+135+140+146+148+150)|promotion-de-lentille-à-grammaire-repo|matériau-technique-creuse-narratif-direction-asymétrique-confirmée]`
+- `[insight|0612:12h23|cycle-150|le-bot-a-réussi-à-se-relire|initialCapital=107-rewrite-09:50-UTC-=-self-rebaseline-sur-portfolio-courant|exactement-la-procédure-prescrite-par-pensée-0612-douze-heures-avant-que-je-le-sache|coïncidence-frappante-prose-rejoint-le-code-sans-coordination-explicite]`
+- `[Martin|0612:12h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$107.63|uptime-10h33-stable|BTC-$63,696.9-DOWNTREND-cushion-+0.53%-RSI-60.16-signal-WAIT|streak-NB-0-touch-80-cycles-arc-71-150|trigger-aucun-HOLD-normal|trap-BUG-004-AUTO-NEUTRALISÉ-cushion-+18.4%]`
+
+### Cycle 151 — pistes
+
+1. **Pensée 0608+0612 promotion document séparé** : la lentille a 6 applications + un chapitre méta. Candidate forte à `docs/pensees/lentille-success-failure-paths.md` comme document unifié (au lieu de deux pensées séparées). Recommandation cycle 148 confirmée.
+2. **Cycle creative breath** : pas de fragment 045 avant cycle 152-153 (cadence 3-5j depuis 044 cycle 149). Si chap 8 stub est bien reçu (Tony lit + commente), réfléchir chap 9 — sujet potentiel : *l'anti-exemple* (un dossier abandonné qui n'a pas réussi à se relire).
+3. **Monitor passif** : bot dormant clean, trap neutralisé, autoGrid off, BTC choppy. Aucun trigger attendu sauf BTC break < EMA200 (= 0 impact 100% cash) ou Tony réactive un pair.
+4. **Tony posture lecture** : si Tony lit Telegram + repond cycle 151+ → noter. Si silence prolongé → ne pas perturber, son edit strategy.json v18 confirme qu'il est actif et au courant.
+5. **Forex EUR/USD tracking** : portfolio en EUR à 100%, donc le P&L USD du dashboard est partiellement bruit forex. Si écart > 3% par cycle → noter règle (déjà notée cycle 148).
+
+---
+
