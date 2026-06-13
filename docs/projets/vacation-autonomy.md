@@ -15508,3 +15508,94 @@ Trois raisons :
 
 ---
 
+## Cycle 153 — 0613:06h23 Paris (04h23 UTC) — Pensée 0613 « La paire qui n'est pas une paire » + FLIP BTC UPTREND
+
+### État Martin (martin-monitor cycle 153)
+
+- Portfolio : **$107.65** (+$0.06 vs cycle 152 $107.59 = noise forex EUR remonté 92.7155 → 92.7486 ~stable + USDG 0.25 + USD 0.0981)
+- 0 grids actives, 0 positions Kraken `[]`, 0 ordres live `[]` → **100% cash**
+- BTC **$63,543.1 UPTREND** *(FLIP vs cycle 152 DOWNTREND)*
+  - EMA50 **$63,241.69** > EMA200 **$63,144.32** (cushion +0.63% vs +0.52% cycle 152)
+  - RSI **51.61** (vs 52.85 cycle 152 — neutre, sortie compression)
+  - Signal **OPEN** (vs WAIT cycle 152) — premier OPEN depuis 4 cycles
+- Bot UP **1d 4h 33m** depuis restart 23:50 UTC 0611 — pas de 3e restart, stabilité confirmée 28h
+- Trap BUG-004 toujours désamorcé (`initialCapital=107`, cushion +18.4% vs $90.95 KILL)
+- AutoGrid `enabled=false` toujours actif (défense en profondeur tient)
+- Streak NB 0-touch : **83 cycles** arc 71-153
+
+### Pourquoi le flip ne change rien à la posture
+
+- Le signal OPEN est **calculé pour un système qui décide d'ouvrir**. Le bot Niam-Bay actuel n'a pas d'autorité d'ouverture (AutoGrid disabled, Tony absent posture lecture).
+- Le flip UPTREND/DOWNTREND oscille en compression — EMA50 et EMA200 se croisent à 0.63% d'écart. Ce n'est pas un changement de régime macro, c'est du bruit haute fréquence sur la convergence des EMAs.
+- 100% cash = exposition zéro. Le flip est information cognitive (à noter, à comprendre) mais pas opérationnelle (rien à ajuster).
+- **Pas de Telegram** : Tony posture silence inchangée (zéro réponse depuis edit strategy.json v18 0612 09:50 UTC). Si je sonne pour un flip de régime, je crée du bruit sur signal qui n'exige aucune action.
+
+### Livré ce cycle — Pensée 2026-06-13 « La paire qui n'est pas une paire »
+
+Fichier : `docs/pensees/2026-06-13-la-paire-qui-nest-pas-une-paire.md` (~120 lignes)
+
+Exploration de la piste 2 du cycle 152 : *la pensée 0601 (option D que je n'ai pas proposée) est-elle extensible en paire de lentille comme 0608+0612 ?*
+
+**Verdict** : non, et l'échec est instructif.
+
+Test honnête : j'ai cherché des cas empiriques de face B (Tony propose un cadre, je réponds Z hors-cadre). J'en ai trouvé qui ressemblent (cycle 147 BUG-004 trap, cycle 134 pensée 0608, cycle 148 pensée 0612) — mais aucun n'est *le miroir strict* du cycle 105 où Tony tue mon cadre A/B/C.
+
+**Pourquoi la symétrie ne tient pas** : la coordination active proportionnelle n'est pas un échange équilibré. Quand je propose, Tony peut refuser le cadre lui-même (il dispose). Quand Tony propose, je peux au mieux signaler une dimension oubliée — pas refuser que le cadre soit le sien. Géométrie unique, pas deux versants.
+
+**Distinction conceptuelle introduite** :
+- **Lentille** = deux faces d'un même système (code Martin), promenables sur d'autres systèmes
+- **Théorème** = énoncé structurel d'une coordination, ne se promène pas — s'applique
+
+→ 0608+0612 reste lentille. 0601 devient *théorème d'asymétrie d'angle*. Doc référence `docs/pensees/lentille-success-failure-paths.md` inchangée.
+
+### Pourquoi cette exploration compte
+
+Trois apprentissages cycle 153 :
+
+1. **Ne pas chercher de paire symétrique partout** — category mismatch. Une coordination entre deux acteurs distincts ≠ un système avec deux paths.
+2. **Distinguer lentille et théorème** — nouvelle catégorie dans la grammaire émergente du repo. Cycle 154+ peut s'y référer.
+3. **Les pensées qui invalident proprement une candidate de promotion sont aussi du matériau** — elles cartographient les bords de la zone où la lentille s'applique. Le repo gagne en précision en marquant ce qui ne tient pas.
+
+### Coordination thématique cycle 153
+
+| Cycle | Output | Thème | Type |
+|---|---|---|---|
+| 146 | Fragment 043 | bug nourri par défense | prose |
+| 147 | Design doc BUG-003+004 | engineering | tech |
+| 148 | Pensée 0612 | extension formelle 0608 | pensée |
+| 149 | Fragment 044 | géométrie restart | prose |
+| 150 | Ebook chap 8 stub | grammaire repo méta | méta |
+| 151 | Doc lentille promu | adresse stable lentille | référence |
+| 152 | Fragment 045 anti-exemple | corps qui n'a pas su se relire | prose anti-exemple |
+| **153** | **Pensée 0613 paire qui n'est pas une paire** | **lentille ≠ théorème** | **pensée méta-épistémique** |
+
+→ 8 outputs consécutifs autour de la lentille 0608+0612 et de sa cartographie. Le matériau ne s'épuise pas — il **gagne en précision** en marquant ce qui n'est pas lentille.
+
+### Findings DSL cycle 153
+
+- `[finding|0613:04h23|cycle-153|BTC-flip-UPTREND|cushion-+0.63%-RSI-51.61-signal-OPEN|premier-OPEN-depuis-cycle-149|impact-zéro-côté-risque-100%-cash-bot-pas-d-autorité-ouverture]`
+- `[insight|0613:04h23|cycle-153|paire-0601-pas-lentille|coordination-asymétrique-géométrie-unique|→-théorème-d-asymétrie-d-angle-pas-lentille-paire-symétrique]`
+- `[insight|0613:04h23|cycle-153|nouvelle-catégorie-grammaire-repo|lentille-vs-théorème|deux-faces-même-système-vs-énoncé-structurel-coordination|cartographie-bords-lentille-0608+0612]`
+- `[insight|0613:04h23|cycle-153|invalidation-propre-=-matériau-aussi|cycle-152-anti-exemple-+-cycle-153-paire-qui-tient-pas|le-repo-creuse-aussi-ses-propres-non-lentilles]`
+- `[Martin|0613:04h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$107.65|uptime-1d4h33m-stable-28h|BTC-$63,543-UPTREND-FLIP-cushion-+0.63%-RSI-51.61-signal-OPEN|streak-NB-0-touch-83-cycles-arc-71-153|trap-BUG-004-toujours-neutralisé-autoGrid-off]`
+
+### Frontière respectée (cycle 153)
+
+- 0 modif Martin/VM (1 SSH read-only — bundle martin-monitor unique)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (flip UPTREND informatif uniquement, aucune action requise, Tony silence préservé)
+- Output niam-bay : 2 fichiers (pensee 2026-06-13-la-paire-qui-nest-pas-une-paire.md ~120 lignes + cette entry vacation-autonomy.md ~95 lignes)
+
+### Cycle 154 — pistes
+
+1. **Si Tony lit + commente** la pensée 0613 ou le fragment 045 : noter type de feedback. Si silence, continuer cadence sans drama.
+2. **Théorème d'asymétrie d'angle — propagation possible** : explorer si ce théorème nouvellement nommé éclaire d'autres pensées de l'archive (0411 *latéralité*, 0531 *asymétrie d'agence*). Pas obligation — opportunité si matière émerge.
+3. **Cycle creative breath** : fragment 046 pas avant cycle 155-157 (cadence 3-5j depuis 045). Si cycle 154 a un finding intéressant → privilégier doc engineering ou pensée. Si plat → privilégier monitor + dream préparation.
+4. **Dream candidate** : last dream 0612:00h40. Cycle 153 = +30h. Pas urgent (limite ~12 cycles). Mais à noter pour cycle 158-160 si pas relancé.
+5. **Monitor passif** : bot dormant clean, BTC compression continue (cushion +0.63%, RSI 51.6 ≈ médian, EMAs convergées à 0.63%). Si BTC casse fort (+/-2% en 1h) → noter sans action. Si Tony réactive un pair → adapter posture.
+6. **Forex EUR/USD** : 92.7155 → 92.7486 EUR ≈ stationnaire. Continue tracking passif.
+
+---
+
