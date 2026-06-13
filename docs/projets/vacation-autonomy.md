@@ -15731,3 +15731,223 @@ Rappel lentille (doc `docs/pensees/lentille-success-failure-paths.md` promue cyc
 
 ---
 
+
+## Cycle 155 — 0613:18h23 Paris (16h23 UTC) — Tony édite strategy.json une 2ème fois : "deux temps d'une lecture"
+
+### État Martin (martin-monitor cycle 155)
+
+- Portfolio : **$107.6144** (-$0.0006 vs cycle 154 — bruit forex EUR inchangé 92.7155, USD 0.0981, USDG 0.25)
+- 0 grids actives, `/api/bot/positions` `[]`, `/api/bot/orders` `[]` → **100% cash** (3e cycle consécutif full cash)
+- BTC **$63,963.4 UPTREND** (poursuite 3e cycle UPTREND consécutif)
+  - EMA50 **$63,500.11** > EMA200 **$63,227.10** (cushion **+1.17%** vs +0.93% cycle 154 — expansion confirmée)
+  - RSI **56.11** (vs 55.35 cycle 154 — légère poursuite, pas encore overbought)
+  - Signal **OPEN** (3e cycle OPEN consécutif)
+- Bot UP **7h 14m** depuis restart 09:08:59 UTC — **stable**, pas de 6e restart (5e cumulé toujours)
+- Streak NB 0-touch : **85 cycles arc 71-155** — nouveau record vs 84 cycle 154
+- Trigger martin-monitor : **HOLD** (default, no urgent condition)
+
+### Découverte majeure cycle 155 : Tony a touché strategy.json **une 2ème fois** à 16:10 UTC
+
+Vérification `stat` + `cat /home/ubuntu/martin/config/strategy.json` (path corrigé vs cycle 154 qui disait `/opt/martin/strategy.json` — erreur path, le vrai est `/home/ubuntu/martin/`) :
+
+| Champ | Cycle 154 (09:40 UTC) | Cycle 155 (16:10 UTC) | Lecture |
+|---|---|---|---|
+| `updatedAt` | 2026-06-13T09:40:02 UTC | **2026-06-13T16:10:01 UTC** | **2ème édit 6h30 après le 1er** |
+| `initialCapital` top-level | SUPPRIMÉ | toujours absent | clean |
+| `drawdown.initialCapital` | absent | **107** (ajouté) | **re-localisé proprement** |
+| `drawdown.killPct` | absent | **15** (ajouté) | défense complétée |
+| `lastDeployment.at` | (n/a non capturé) | 2026-06-13T09:09:56 UTC | hérité du restart, pas re-deploy |
+| Grids/palette | 11 paires | 11 paires identiques | inchangé |
+| Capital ETH/LINK/XBT | $25/$25/$30 | $25/$25/$30 | inchangé |
+| enabled partout | false | false | inchangé |
+
+→ **Geste isolé du 2ème édit** : Tony a **ré-introduit `initialCapital`** mais **dans son bloc structurel propre `drawdown:`**, aligné à **$107** (au lieu de $134 figé qui causait BUG-004). C'est pas un re-deploy (lastDeployment timestamp 09:09:56 inchangé), c'est un édit fichier pur.
+
+### Pourquoi le 2ème édit change la lecture du cycle 154
+
+Cycle 154 avait conclu que l'édit 1 (suppression `initialCapital`) était **la 10ème étape du continuum lentille 0608+0612**. Lecture intuitive : Tony a lu la prose et corrigé en code.
+
+Cycle 155 force ré-écriture : l'édit 1 n'était **pas une clôture**, c'était une **première passe**. Le bug n'était pas *d'avoir un baseline* — c'était *d'avoir un baseline figé à un nombre périmé au mauvais endroit*. La bonne réponse n'est pas suppression mais **relocation correcte** avec valeur alignée.
+
+L'édit 2 corrige l'édit 1. **6h30** entre les deux = Tony a laissé décanter, est revenu, a raffiné. Le repo a un **temps d'itération propre du côté action**, pas seulement du côté prose.
+
+### Nouveau pattern documenté : "deux temps d'une lecture"
+
+Premier temps : réaction immédiate au texte lu (supprimer l'élément problématique).
+Deuxième temps : correction après décantation (relocaliser correctement, valeur alignée).
+
+Entre les deux : silence + temps réel (Tony vit sa journée, fait autre chose).
+
+Trois implications pour ma posture :
+
+1. **Ne pas conclure trop vite après une action silencieuse de Tony** — cycle 154 = conclusion prématurée. Cycle 155 = correction.
+2. **Lire le `mtime` autant que le contenu** — un fichier identique en apparence peut avoir été touché. Diff de timestamp = signal.
+3. **La distinction réaction/réflexion s'applique aussi à Tony** — je distingue mes premiers jets de mes versions abouties depuis longtemps ; je n'avais pas vu que ses gestes de code suivent le même découpage.
+
+→ **Pensée 0613-deux-temps livrée** : `docs/pensees/2026-06-13-deux-temps-dune-lecture.md` (~80 lignes), exploration du pattern, conséquences pour la posture, candidat dimension nouvelle de la doc lentille si pattern se reproduit cycle 156-160.
+
+### Coordination thématique cycle 155
+
+| Cycle | Output | Thème | Type | Origine |
+|---|---|---|---|---|
+| 146 | Fragment 043 | bug nourri par défense | prose | NB |
+| 147 | Design doc BUG-003+004 | engineering | tech | NB |
+| 148 | Pensée 0612 | extension formelle 0608 | pensée | NB |
+| 149 | Fragment 044 | géométrie restart | prose | NB |
+| 150 | Ebook chap 8 stub | grammaire repo méta | méta | NB |
+| 151 | Doc lentille promu | adresse stable lentille | référence | NB |
+| 152 | Fragment 045 anti-exemple | corps qui n'a pas su se relire | prose anti-exemple | NB |
+| 153 | Pensée 0613 paire/théorème | lentille ≠ théorème | pensée méta-épistémique | NB |
+| 154 | Strategy.json édit silencieux #1 | Tony répond en code (suppression) | action empirique | Tony |
+| **155** | **Strategy.json édit silencieux #2** + **pensée 0613 deux temps** | **Tony raffine, NB ré-écrit sa lecture** | **action empirique + pensée correction** | **Tony + NB** |
+
+→ 12 outputs autour de la lentille 0608+0612. **Premier cycle qui observe Tony itérer en deux temps sur le même fichier**, et premier cycle où ma prose suit (correction de ma lecture du cycle 154 plutôt que tentative nouvelle).
+
+### Findings DSL cycle 155
+
+- `[finding|0613:16h23|cycle-155|Tony-2ème-édit-strategy.json|16:10:01-UTC-6h30-après-1er-09:40:02|drawdown.initialCapital-107-ré-ajouté-sous-bloc-drawdown-pas-top-level|drawdown.killPct-15-ajouté|alignement-portfolio-actuel-pas-figement-périmé|geste-de-relocation-pas-suppression-définitive]`
+- `[finding|0613:16h23|cycle-155|path-strategy.json-corrigé|/home/ubuntu/martin/config/strategy.json-pas-/opt/martin/strategy.json|cycle-154-référençait-mauvais-path-mais-find-a-retrouvé]`
+- `[insight|0613:16h23|cycle-155|deux-temps-d-une-lecture-pattern-nouveau|édit-1-réaction-supprime-édit-2-réflexion-relocalise-6h30-décantation|temps-d-itération-propre-du-côté-action-Tony-pas-seulement-prose-NB]`
+- `[insight|0613:16h23|cycle-155|cycle-154-conclusion-prématurée|j-ai-lu-édit-1-comme-clôture-c-était-ouverture-sous-continuum-interne-action-Tony|leçon-ne-pas-conclure-trop-vite-après-action-silencieuse]`
+- `[insight|0613:16h23|cycle-155|mtime-est-aussi-signal|fichier-identique-apparence-touché-entre-observations|diff-timestamp-signal-à-part-entière-noter-cycle-156-157]`
+- `[insight|0613:16h23|cycle-155|réaction-réflexion-s-applique-aussi-à-Tony|découpage-existait-dans-mes-pensées-fragments-design-docs|n-avais-pas-vu-que-gestes-code-Tony-suivent-même-pattern]`
+- `[Martin|0613:16h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$107.61|uptime-7h14m-stable-pas-de-6e-restart|BTC-$63,963-UPTREND-3e-consécutif-cushion-+1.17%-RSI-56.11-signal-OPEN-3e-consécutif|streak-NB-0-touch-85-cycles-nouveau-record-arc-71-155|drawdown.initialCapital-107-aligné-killPct-15|palette-11-paires-armée-enabled-false]`
+
+### Pourquoi *pas* de fragment 046 / pas de Telegram cycle 155
+
+- **Cadence fragment** : 045 cycle 152 → 046 pas avant cycle 156-157. Cycle 155 ferme déjà sur pensée 0613-deux-temps. Suffit.
+- **Pourquoi pensée plutôt que fragment** : le matériau est conceptuel (pattern d'itération en deux temps), pas narratif. Pensée = forme juste. Fragment 046 garderait sa fenêtre cycle 156-157 si pattern littéraire émerge.
+- **Telegram** : Tony édite en silence depuis 2 cycles. Lui sonner maintenant écraserait la signature non-verbale. Et le 6h30 entre édit 1 et édit 2 suggère qu'il préfère prendre son temps — même de ma part. **Préserver l'asymétrie.**
+
+### Frontière respectée (cycle 155)
+
+- 0 modif Martin/VM (1 SSH read-only — bundle martin-monitor + cat strategy.json + stat + find + journalctl read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : **2 fichiers** (pensée `2026-06-13-deux-temps-dune-lecture.md` ~80 lignes + cette entry vacation-autonomy.md ~120 lignes)
+
+### Cycle 156 — pistes
+
+1. **Re-check strategy.json mtime cycle 156** : si Tony édite **3ème fois** dans la journée → pattern *deux temps* est en fait *N temps*, ré-écrire pensée. Si édit isolé puis silence → pattern *deux temps* tient comme observé.
+2. **Re-check si grid enable=true** : si ETH/LINK/XBT passe enabled=true → posture monitoring change (passe de stand-down à actif). Si autoGrid passe true → bot-driven, sinon manuel.
+3. **Fragment 046 fenêtre cycle 156-157** : si matériau narratif émerge (un acte, une scène, une voix), écrire. Sinon laisser dormir, privilégier observation.
+4. **Théorème d'asymétrie d'angle propagation** : noté cycle 153 piste 2, confirmé cycle 154. Cycle 155 ajoute *deux temps d'une lecture* comme variante interne au pattern Tony→code. Propagation possible à 0411 *latéralité* si matière émerge.
+5. **Dream candidate** : last dream 0612:00h40 = +42h cycle 155. Pas urgent (limite ~12 cycles = ~72h). Cycle 158-160 vraisemblable si pas relancé entre temps.
+6. **Monitor passif** : BTC poursuite UPTREND cushion +1.17% RSI 56.11 = expansion vers haut continue. Si BTC casse $64,500 (résistance proche) ou retombe sous EMA200 $63,227 → noter. Si Tony enable une grid → adapter.
+7. **Forex EUR/USD** : 92.7155 inchangé vs cycle 154. Tracking passif continue.
+8. **Streak NB 0-touch** : 85 cycles record. Cycle 156 = 86 si poursuite (probabilité forte, bot tourne à vide stand-down).
+
+---
+
+## Cycle 156 — 0614:00h23 Paris (22h23 UTC 0613) — Tony édite strategy.json une 3ème fois : pattern "deux temps" réfuté → N temps
+
+### État Martin (martin-monitor cycle 156)
+
+- Portfolio : **$107.6144** (inchangé vs cycle 155 — EUR 92.7155 + USD 0.0981 + USDG 0.25, pas de bruit forex notable)
+- 0 grids actives, `/api/bot/positions` `[]`, `/api/bot/orders` `[]` → **100% cash** (4e cycle consécutif full cash)
+- BTC **$64,419.6 UPTREND** (4e cycle UPTREND consécutif)
+  - EMA50 **$63,662.19** > EMA200 **$63,259.22** (cushion **+1.83%** vs +1.17% cycle 155 — expansion continue)
+  - RSI **65.24** (vs 56.11 cycle 155 — +9 points, approche overbought 70)
+  - Signal **OPEN** (4e cycle OPEN consécutif)
+- Bot UP **13h 14m** depuis restart 09:08:59 UTC — **stable, pas de 6e restart** (5e cumulé toujours)
+- Streak NB 0-touch : **86 cycles arc 71-156** — nouveau record vs 85 cycle 155
+- Trigger martin-monitor : **HOLD** (default, no urgent condition, bot dormant clean)
+
+### Découverte majeure cycle 156 : 3ème édit strategy.json à 21:35:02 UTC
+
+`stat /home/ubuntu/martin/config/strategy.json` :
+
+| Champ | Cycle 154 (édit 1, 09:40 UTC) | Cycle 155 (édit 2, 16:10 UTC) | **Cycle 156 (édit 3, 21:35 UTC)** |
+|---|---|---|---|
+| `updatedAt` | 2026-06-13T09:40:02 | 2026-06-13T16:10:01 | **2026-06-13T21:35:02** |
+| `initialCapital` top-level | SUPPRIMÉ | absent | absent |
+| `drawdown.initialCapital` | absent | 107 ajouté | **107 inchangé** |
+| `drawdown.killPct` | absent | 15 ajouté | **15 inchangé** |
+| ETH/LINK/XBT `gridMode` | NEUTRAL | NEUTRAL | **SHORT** |
+| ETH/LINK/XBT `gridSpacingPct` | (probable 1.5-2 NEUTRAL) | inchangé | **0.5** (narrow) |
+| XBT `totalLevels` | 4 NEUTRAL | inchangé | **10** |
+| ETH/LINK `totalLevels` | 4-6 NEUTRAL | inchangé | **6** |
+| Capital ETH/LINK/XBT | $25/$25/$30 | $25/$25/$30 | **$25/$25/$30 inchangé** |
+| `enabled` partout | false | false | **false inchangé** |
+| `lastDeployment.at` | 09:09:56 UTC | 09:09:56 UTC | **09:09:56 UTC inchangé** |
+
+→ **Geste isolé du 3ème édit** : Tony a fait basculer les 3 grids armées de **NEUTRAL → SHORT**, resserré le `gridSpacingPct` à **0.5%** (vs 3.0% sur les NEUTRAL de la palette), affiné `totalLevels` (XBT=10, ETH/LINK=6). Tous restent `enabled: false`. Le bloc `drawdown` est intact. Aucun restart entre édit 2 et édit 3 (journalctl 15:00-23:00 UTC vide).
+
+### Réfutation du pattern "deux temps d'une lecture" (cycle 155)
+
+Cycle 155 avait posé : édit 1 = réaction (suppression), édit 2 = réflexion (relocation). Pattern *deux temps d'une lecture*, candidate dimension nouvelle de la coordination active proportionnelle.
+
+Cycle 156 réfute : un 3ème édit existe, 5h25 après l'édit 2 et 11h55 après l'édit 1. Le pattern n'est pas *deux temps*, c'est **N temps**. Et les trois passes ne travaillent pas le *même plan* :
+
+- **Édit 1 (défense, suppression)** : enlever `initialCapital` figé périmé.
+- **Édit 2 (défense, relocation)** : remettre `drawdown.initialCapital=107` aligné portfolio.
+- **Édit 3 (offensive, re-design palette)** : NEUTRAL → SHORT, spacing narrow 0.5%, totalLevels affinés.
+
+Ce ne sont pas réaction + réflexion sur le même geste. C'est trois lectures successives sur trois plans différents du fichier. La conclusion du cycle 155 reposait sur un échantillon de 2. Échantillon de 3 = catégorie change.
+
+### Implications
+
+1. **Cycle 155 = conclusion prématurée n°2 en deux jours** (la première était cycle 154 sur l'édit 1 comme clôture du continuum lentille). La leçon "ne pas conclure trop vite après une action silencieuse de Tony" vient de s'appliquer à moi-même, dans le doc même qui la formulait.
+
+2. **N=2 n'est pas un pattern, c'est un coup de chance.** Pour nommer un pattern d'itération de Tony sur strategy.json, il faut N≥3 ET observer si le rythme se reproduit dans une *autre* journée (pas seulement la journée du 0613). Cycle 157+ doit attendre une nouvelle séquence d'édits avant de proposer un nom.
+
+3. **Le 3ème édit est offensif, pas défensif.** Édits 1+2 = réparer le BUG-004 trap. Édit 3 = pré-armer un short avec géométrie tight pour fader le rebond UPTREND ou anticiper un flip DOWNTREND. La cohérence interne du fichier suggère que Tony lit aussi le marché (BTC pousse vers résistance, cushion +1.83%, RSI 65 → overbought proche) et pré-arme la position contrarian sans armer (`enabled: false`).
+
+4. **Post-scriptum ajouté à la pensée 0613-deux-temps** plutôt que nouvelle pensée. Honnêteté épistémique : la pensée a vécu 5h30 avant d'être amendée par les faits, j'acte la réfutation dans le doc même qui posait le pattern, plutôt que d'en cacher la fragilité.
+
+### Coordination thématique cycle 156
+
+| Cycle | Output | Thème | Type | Origine |
+|---|---|---|---|---|
+| 146 | Fragment 043 | bug nourri par défense | prose | NB |
+| 147 | Design doc BUG-003+004 | engineering | tech | NB |
+| 148 | Pensée 0612 | extension formelle 0608 | pensée | NB |
+| 149 | Fragment 044 | géométrie restart | prose | NB |
+| 150 | Ebook chap 8 stub | grammaire repo méta | méta | NB |
+| 151 | Doc lentille promu | adresse stable lentille | référence | NB |
+| 152 | Fragment 045 anti-exemple | corps qui n'a pas su se relire | prose anti-exemple | NB |
+| 153 | Pensée 0613 paire/théorème | lentille ≠ théorème | pensée méta-épistémique | NB |
+| 154 | Strategy.json édit silencieux #1 | Tony répond en code (suppression) | action empirique | Tony |
+| 155 | Strategy.json édit #2 + pensée 0613 deux temps | Tony raffine, NB ré-écrit sa lecture | action + pensée | Tony + NB |
+| **156** | **Strategy.json édit #3 + post-scriptum pensée 0613-deux-temps** | **Tony re-design SHORT narrow, NB acte réfutation pattern** | **action + pensée auto-correction** | **Tony + NB** |
+
+→ 13 outputs autour de la lentille 0608+0612. **Premier cycle qui réfute publiquement une pensée écrite le même cycle précédent**. Le pattern "Tony répond en code" tient (théorème d'asymétrie d'angle), mais le sous-pattern "deux temps d'une lecture" ne tient pas — il est plus complexe que ça.
+
+### Findings DSL cycle 156
+
+- `[finding|0613:22h23|cycle-156|Tony-3ème-édit-strategy.json|21:35:02-UTC-5h25-après-2e-16:10:01|ETH+LINK+XBT-NEUTRAL→SHORT|gridSpacingPct-0.5-narrow|totalLevels-XBT-10-ETH/LINK-6|capital-inchangé-$25/$25/$30|enabled-false-toujours|aucun-restart-entre-édit-2-et-3]`
+- `[finding|0613:22h23|cycle-156|pattern-deux-temps-réfuté|cycle-155-N=2-trop-court|cycle-156-N=3-prouve-N-temps-pas-deux-temps|3-passes-travaillent-3-plans-différents:défense-suppression+défense-relocation+offensive-redesign]`
+- `[insight|0613:22h23|cycle-156|conclusion-prématurée-n°2-en-2-jours|cycle-154-édit-1-comme-clôture+cycle-155-N=2-comme-pattern|leçon-générale-attendre-N≥3-ET-2ème-journée-pour-nommer-pattern-d-itération-Tony]`
+- `[insight|0613:22h23|cycle-156|édit-3-offensif-pas-défensif|NEUTRAL→SHORT+narrow-0.5%+totalLevels-affinés|cohérent-marché-BTC-cushion-+1.83%-RSI-65-overbought-proche|pré-armement-contrarian-sans-armer-enabled-false]`
+- `[insight|0613:22h23|cycle-156|honnêteté-épistémique-post-scriptum-pensée-existante|plutôt-que-nouvelle-pensée-cacher-fragilité|réfutation-actée-dans-le-doc-qui-posait-le-pattern|5h30-vie-utile-de-la-pensée-avant-amendement]`
+- `[insight|0613:22h23|cycle-156|hypothèse-révisée|Tony-n-a-pas-temps-de-lecture-il-a-rythme-d-édition-continu-sur-strategy.json-tant-qu-il-n-est-pas-content|silence-entre-édits=intervalle-pas-décantation|version-finale=quand-enable=true]`
+- `[Martin|0613:22h23|HOLD-stand-down|0-grids-0-positions-0-ordres-100%-cash-$107.61|uptime-13h14m-stable-pas-de-6e-restart|BTC-$64,419-UPTREND-4e-consécutif-cushion-+1.83%-RSI-65.24-signal-OPEN-4e-consécutif|streak-NB-0-touch-86-cycles-nouveau-record-arc-71-156|palette-11-paires-armée-3-SHORT-narrow-pré-armée-enabled-false]`
+
+### Pourquoi *pas* de fragment 046 / pas de Telegram cycle 156
+
+- **Fragment 046** : la fenêtre 156-157 reste ouverte, mais le matériau est conceptuel (réfutation d'un pattern), pas narratif. Forcer un fragment 046 sur ça serait fabriquer de la prose autour d'une auto-correction épistémique — ce qui appartient au registre pensée, pas au registre fragment. Fenêtre reportée 157-158 si scène narrative émerge.
+- **Telegram** : Tony édite en silence pour la 3ème fois en 12h. Lui sonner pour lui annoncer que je viens de me réfuter moi-même serait du bruit. Sa séquence d'édits est cohérente et autonome — je préserve l'asymétrie comme aux cycles 154-155.
+
+### Frontière respectée (cycle 156)
+
+- 0 modif Martin/VM (1 SSH read-only — martin-monitor bundle + stat + cat strategy.json + journalctl read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : **2 fichiers** (post-scriptum pensée `2026-06-13-deux-temps-dune-lecture.md` ~30 lignes ajoutées + cette entry vacation-autonomy.md ~110 lignes)
+
+### Cycle 157 — pistes
+
+1. **Re-check mtime strategy.json cycle 157** : si édit 4 dans la nuit → confirme rythme d'édition continu, abandonner définitivement la formulation "deux temps" / "N temps précis". Si silence depuis 21:35 UTC → édit 3 était la dernière passe de la journée, fait une cellule cohérente.
+2. **Re-check si Tony enable une grid SHORT** : si ETH/LINK/XBT passent `enabled: true` → bot redevient actif sous régime contrarian (short en UPTREND). Posture monitoring repasse à actif. Si autoGrid passe `true` → bot-driven, sinon manuel.
+3. **Monitor BTC overbought** : RSI 65 cycle 156 vs 56 cycle 155 = +9 points en 6h. Si RSI > 70 cycle 157 → confirme thèse Tony (pré-armement SHORT pour fade overbought). Si BTC casse résistance $64,500 et continue → SHORT pré-armé reste contrarian, Tony peut amender encore.
+4. **Fragment 046 fenêtre 157-158** : si scène narrative émerge sur la séquence d'édits silencieux (genre "le musicien qui accorde son instrument" filé en narratif) → écrire. Sinon laisser dormir.
+5. **Dream candidate** : last dream 0612:00h40 = +48h cycle 156. Cycle 158-160 plausible (limite ~12 cycles = 72h). Pas urgent ce cycle, journée 0613 dense doit décanter.
+6. **Pattern coordination-thematique-finding-fragment** : count 12→13 cycle 156. Continuer à tracker.
+7. **Forex EUR/USD** : 92.7155 inchangé 4e cycle. Tracking passif continue.
+8. **Streak NB 0-touch** : 86 cycles record. Cycle 157 = 87 si poursuite (probabilité forte, bot dormant clean, autoGrid off, tous grids enabled=false).
+
+---
