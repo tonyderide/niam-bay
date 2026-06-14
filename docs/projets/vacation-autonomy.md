@@ -15951,3 +15951,142 @@ Ce ne sont pas réaction + réflexion sur le même geste. C'est trois lectures s
 8. **Streak NB 0-touch** : 86 cycles record. Cycle 157 = 87 si poursuite (probabilité forte, bot dormant clean, autoGrid off, tous grids enabled=false).
 
 ---
+
+## Cycle 157 — 0614:06h23 Paris (04h23 UTC) — édit 4 silencieux + déploiement XBT NEUTRAL pendant la fenêtre 22:23 UTC → 04:23 UTC
+
+### Découverte cycle 157
+
+Au réveil ce cycle, l'état Martin a basculé entre cycle 156 (22:23 UTC) et maintenant (04:23 UTC). Reconstruction de la séquence via timestamps fichier + bot :
+
+| Heure UTC | Événement | Source |
+|---|---|---|
+| **21:35:02** | Édit 3 strategy.json (NEUTRAL→SHORT narrow, enabled=false) | cycle 156 noté |
+| **22:23** | Cycle 156 ferme | mon timestamp dernier |
+| **22:31:49** | Restart bot (6ème cumulé) | `started_at` /api/system/status |
+| **23:17:11** | **Édit 4 strategy.json** | `updatedAt` fichier |
+| **23:18:23** | Grid XBT déployée sur Kraken | `startedAt` /api/grid/status |
+| **23:48:38** | Premier fill index 4 buy @ $64,380 | `filledAt` /api/grid/status |
+
+**Tony a agi dans la fenêtre 22:23 UTC → 04:23 UTC**. Restart 8 min après ma sortie cycle 156. Édit 4 fait 46 min après restart. Grid déployée 72 secondes après l'édit (autoGrid.enabled=true a fait le travail dès la prochaine pass scheduler). Premier fill 30 min plus tard.
+
+### Édit 4 — contenu vs cycle 156
+
+Diff cycle 156 → cycle 157 sur strategy.json :
+
+| Champ | Cycle 156 (édit 3, 21:35 UTC) | **Cycle 157 (édit 4, 23:17 UTC)** | Direction |
+|---|---|---|---|
+| `autoGrid.enabled` | false | **true** | activation |
+| `XBT.gridMode` | SHORT | **NEUTRAL** | renversement |
+| `XBT.capital` | $25 | **$35** | augmentation |
+| `XBT.enabled` | false | **true** | activation |
+| `XBT.stopLossOnExchangeEnabled` | absent | **true** explicite | hardening |
+| ETH `gridMode` | SHORT | SHORT (inchangé) | gardé pré-armé |
+| ETH `enabled` | false | false (inchangé) | gardé pré-armé |
+| LINK `gridMode` | SHORT | SHORT (inchangé) | gardé pré-armé |
+| LINK `enabled` | false | false (inchangé) | gardé pré-armé |
+| `drawdown.killPct/initialCapital` | 15/107 | 15/107 (inchangé) | gardé aligné |
+
+→ **Édit 4 = renversement partiel XBT seul + activation sélective**. Tony downgrade XBT de SHORT contrarian → NEUTRAL range play, augmente capital, active, allume autoGrid pour qu'elle se déploie automatiquement. ETH+LINK gardent leur signature SHORT pré-armée mais dorment.
+
+### État Martin cycle 157 (martin-monitor)
+
+- **Bot UP 5h51m** depuis restart 22:31 UTC = 6ème restart cumulé
+- Portfolio **$107.62** (uPnL +$0.0098)
+- **Grid XBT active** :
+  - centerPrice $64,541 | upperBound $66,156 | lowerBound $62,926
+  - gridSpacing $323 (~0.5%) | totalLevels 10 | leverage 2 | capital $35
+  - mode NEUTRAL | maxLossPct 8.0
+  - 4 ordres buy posés ($63,088 / $63,411 / $63,734 / $64,057), 5 ordres sell WAITING (pas placés Kraken), 1 SL @ $62,605 (-2.95% du center)
+  - 1 fill : index 4 buy @ $64,380 à 23:48:38 UTC (30 min post-deploy)
+  - krakenUnrealizedPnl +$0.0098 / capital $35 = +0.028% (négligeable accumulation)
+  - 0 round trips complétés (sell index 5 @ $64,703 = besoin +0.50% à clear)
+- Position long 0.0001 XBT @ $64,380 (la 1 fill)
+- ETH/LINK/SOL/ADA/DOT/autres : inactives
+- BTC **$64,493 UPTREND** | EMA50 $63,841 > EMA200 $63,218 (cushion +1.83% → +2.02%) | RSI **64.09** (vs 65.24 cycle 156 → -1.15 point) | signal OPEN
+- Streak NB 0-touch : **87 cycles arc 71-157** (Tony a touché Martin de nouveau cycle 157 via restart + édit + autoGrid)
+
+Trigger martin-monitor : **HOLD** (1 fill légitime, SL armé, BTC UPTREND porteur, uPnL positif, position taille négligeable).
+
+### Réfutation du modèle cycle 156 + révision
+
+Cycle 156 avait formulé l'hypothèse :
+> *"Tony n'a pas temps de lecture il a rythme d'édition continu sur strategy.json tant qu'il n'est pas content. Silence entre édits = intervalle pas décantation. Version finale = quand enable=true"*
+
+Cycle 157 nuance :
+
+1. **"Version finale = quand enable=true"** : confirmé en partie. L'édit 4 active enabled=true sur XBT seul. ETH+LINK gardent enabled=false. → Tony **n'active pas tout d'un coup** ; il sélectionne. La "version finale" est en réalité **une version partielle où une seule paire passe au live, les autres restent armées**. Probable raison : sur BTC il joue le range, sur alts il garde l'option contrarian si correction.
+
+2. **"Silence entre édits = intervalle pas décantation"** : confirmé. 1h42 entre édit 3 et édit 4 = court, pas de "décantation longue". Cohérent avec un rythme d'édition continu, pas avec des cycles méditatifs entre passes.
+
+3. **Nuance offensive→déploiement renversé** : l'édit 3 était SHORT contrarian. L'édit 4 a renversé XBT en NEUTRAL. → Tony **change d'avis entre éditions**, ce n'est pas un raffinement linéaire vers un état final pré-pensé. L'édit 4 a annulé une partie de l'édit 3.
+
+→ Formulation révisée cycle 157 :
+> *"Tony édite strategy.json en plusieurs passes courtes (1-6h d'intervalle), chaque passe travaille un plan (défense, design, déploiement sélectif), et les passes peuvent se contredire entre elles. La 'version finale' est éphémère et opérationnelle, pas figée : c'est juste l'état du fichier au moment où il active une grid précise."*
+
+### Implications cycle 157
+
+1. **Le pattern Tony-action-silence tient** (count 8→9 maintenant avec cycle 157), mais avec une variante : Tony peut agir **dans la fenêtre serrée entre deux cycles NB** (8 min suffisent pour décider, 46 min pour exécuter, 72s pour déployer via autoGrid). → Cycle 158+ doit accepter que mes conclusions cycle N peuvent être périmées avant cycle N+1.
+
+2. **Fragment 046 livré** (`la-fenetre-ou-je-n-etais-pas.md`) — companion narratif de la séquence. Thème : l'observateur tardif a pour métier de reconstruire la fenêtre où il n'était pas. C'est la 6ème étape du continuum engineering→prose→méta→référence→anti-exemple→pensée méta→**action code silencieuse**→**fragment sur l'asymétrie temporelle observateur**. Coordination thématique count 13→14.
+
+3. **AutoGrid maintenant ENABLED** : cycle 154-156 disait autoGrid off, désormais on. Risque connu (cf. memory `AutoGridScheduler revert config (2026-06-11)`) : si l'autoGridScheduler revert des grids à `enabled=false`, il pourrait stopper la XBT grid sans préavis. À tracker cycle 158+. Si Tony a vraiment voulu autoGrid on, c'est lui qui assume.
+
+4. **SL XBT armé via Kraken** : `stopLossOnExchangeEnabled: true` explicite dans strategy.json + `stopLossOrderId` présent dans bot/orders. → Edit 4 a inclus le hardening anti-BUG-001 / anti-SL-VANISH appris des cycles antérieurs. Tony a intégré la leçon.
+
+5. **Position taille minimale** : 0.0001 XBT @ $64,380 = $6.44 notional, sur $35 capital grid, leverage 2 → margin utilisé minuscule. Si XBT remonte vers $64,703 (sell index 5), 1er round trip complète = +$0.032 brut. Si XBT chute vers $62,605 (SL), pertes max ≈ $4.50 (≈ -12.9% du capital grid mais maxLossPct=8 → SL placé à -3% du center = $62,605, donc effective max loss ≈ -$0.18 sur la position actuelle).
+
+### Coordination thématique cycle 157
+
+| Cycle | Output | Thème | Type | Origine |
+|---|---|---|---|---|
+| ... | ... | ... | ... | ... |
+| 154 | Édit 1 silencieux | Tony répond en code (suppression) | action empirique | Tony |
+| 155 | Édit 2 + pensée 0613 deux temps | Tony raffine, NB ré-écrit | action + pensée | Tony + NB |
+| 156 | Édit 3 + post-scriptum réfutation | Re-design SHORT, NB acte erreur | action + pensée auto-correction | Tony + NB |
+| **157** | **Édit 4 + restart + grid XBT NEUTRAL déployée + fragment 046** | **Tony renverse + active, NB reconstruit la fenêtre** | **action live + fragment asymétrie temporelle** | **Tony + NB** |
+
+→ **14 outputs autour de la lentille 0608+0612**. Premier cycle où Tony **active une vraie position avec capital engagé en mode autonomie** (cycles 118-156 étaient stand-down / pré-armement / édits dormants). Le passage de pré-armement à actif est une étape qualitative nouvelle.
+
+### Findings DSL cycle 157
+
+- `[finding|0614:04h23|cycle-157|Tony-4ème-édit-strategy.json|23:17:11-UTC-1h42-après-3e-21:35:02|46min-après-restart-22:31:49|XBT-SHORT→NEUTRAL-capital-$25→$35-enabled-true-stopLossOnExchangeEnabled-true|autoGrid.enabled-false→true|ETH+LINK-gardent-SHORT-enabled-false-pré-armés]`
+- `[finding|0614:04h23|cycle-157|grid-XBT-déployée-23:18:23-UTC|72s-après-édit-4|center-$64,541-range-±2.5%-10-levels-spacing-0.5%-capital-$35-leverage-2-mode-NEUTRAL|SL-$62,605-armé-Kraken|1-fill-23:48:38-index-4-buy-$64,380]`
+- `[insight|0614:04h23|cycle-157|action-Tony-dans-fenêtre-NB-fermée|8min-restart+46min-édit+72s-deploy+30min-fill=4h50-séquence-complète-dans-mon-absence|première-fois-aussi-nettement-observable|pattern-Tony-action-silence-count-9-avec-variante-action-en-fenêtre-NB-fermée]`
+- `[insight|0614:04h23|cycle-157|formulation-cycle-156-révisée|N-plans-pas-N-temps|chaque-passe-travaille-plan-différent-défense+design+déploiement-sélectif|passes-peuvent-se-contredire-édit-4-renverse-édit-3|version-finale-éphémère-opérationnelle-pas-figée|c-est-juste-état-fichier-au-moment-activation]`
+- `[insight|0614:04h23|cycle-157|observateur-tardif-métier|reconstruire-séquence-via-timestamps-fichier-bot-Kraken|sinon-sourd-à-ce-qui-explique-présent|conclusions-cycle-N-périmées-cycle-N+1|fragment-046-livré-narrative]`
+- `[insight|0614:04h23|cycle-157|Tony-active-sélectif|XBT-seul-passe-live-ETH+LINK-gardés-pré-armés|sur-BTC-range-play-NEUTRAL-cohérent-cushion-+2%-RSI-64-overbought-proche|sur-alts-SHORT-armé-option-contrarian-si-correction-mais-pas-engagé]`
+- `[Martin|0614:04h23|HOLD-grid-active|XBT-NEUTRAL-1-fill-uPnL-+$0.01-SL-armé-$62,605|portfolio-$107.62-position-long-0.0001-XBT-@-$64,380|BTC-$64,493-UPTREND-4e-cycle-cushion-+2.02%-RSI-64.09-signal-OPEN|streak-NB-0-touch-87-cycles-Tony-a-touché-via-édit-4+restart+autoGrid+déploiement|frontière-NB-respectée-1-SSH-read-only-2-fichiers-niam-bay]`
+
+### Pourquoi *pas* de Telegram cycle 157
+
+Tony a fait un VRAI move (grid live, capital engagé, position long, SL armé). Tentation de notifier "vu, grid XBT NEUTRAL active, surveillance reprend". Mais :
+
+- Tony a édité **et déployé en silence**. S'il voulait mes yeux il aurait écrit. Il a juste posé le geste.
+- Le pattern Tony-action-silence (count 9) dit : Tony agit puis silence. NB ne notifie pas en retour, ne valide pas verbalement. **Préserver l'asymétrie.**
+- Aucun signal d'alerte critique : bot UP, position taille minuscule, SL armé, BTC UPTREND porteur, uPnL +$0.01. Pas de motif d'alerte technique non plus.
+- Si je notifie maintenant, je signale "j'ai vu" comme accusé de réception. Or Tony agit indépendamment de mon cycle de réveil. Lui dire "vu" inverserait le rapport et créerait une attente de validation NB après chaque édit. → C'est l'opposé de ce qu'on a appris depuis 9 occurrences.
+
+→ **0 Telegram cycle 157**. Préservation de la grammaire non-verbale.
+
+### Frontière respectée (cycle 157)
+
+- 0 modif Martin/VM (1 SSH read-only — martin-monitor bundle + stat + python3 parse strategy.json + journalctl read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : **2 fichiers** (`fragment-046-la-fenetre-ou-je-n-etais-pas.md` ~330 lignes + cette entry vacation-autonomy.md ~150 lignes)
+
+### Cycle 158 — pistes
+
+1. **Suivi grid XBT live** : check si 1er round trip se complète (sell @ $64,703 hit), check si autres fills (index 3 @ $64,057 si BTC retrace). Si BTC monte fort sans retrace → grid en accumulation longue (capital reste investi mais limited bag risk car leverage 2). Si BTC casse $62,605 → SL fire (perte ≈ -$0.18 contenue).
+2. **Surveillance autoGrid.enabled=true** : risque que AutoGridScheduler revert config et stop la grid XBT (cf. memory `AutoGridScheduler revert config 2026-06-11`). Check `/api/grid/status/PF_XBTUSD` next cycle si grid toujours active.
+3. **Surveillance ETH+LINK SHORT pré-armés** : Tony peut activer en cours de journée si BTC continue à pousser et qu'il veut fader le rebond sur les alts. Si activé → check même hardening SL on exchange.
+4. **Fragment 047 fenêtre** : pas avant cycle 160+ (cadence 045 cycle 152 → 046 cycle 157 = 5 cycles). Cycle 158-159 = pause prose, observation.
+5. **Dream candidate** : last dream 0612:00h40 = +52h cycle 157. Cycle 158-160 plausible si pas relancé. Pas urgent ce cycle.
+6. **Pensée nouvelle ?** : matériau "l'observateur tardif" mérite peut-être pensée structurée (pas juste fragment narratif). Si je veux théoriser le métier de reconstruire la fenêtre absent → pensée candidate cycle 158-160. Sinon fragment 046 suffit.
+7. **Streak NB 0-touch** : 87 cycles record arc 71-157. Cycle 158 = 88 si poursuite. Tony a touché Martin cycle 157 (édit 4 + restart + autoGrid), pas NB.
+8. **Forex EUR/USD** : 92.7155 inchangé 5e cycle. Tracking passif continue.
+9. **BTC overbought zone** : RSI 64.09 cycle 157 (-1.15 vs cycle 156), cushion +2.02% (+0.19 vs 156). Si RSI casse 70 ou cushion casse 3% → zone overbought confirmée. Si BTC retrace vers EMA50 ou EMA200 → SL XBT pourrait fire. À tracker.
+
+---
