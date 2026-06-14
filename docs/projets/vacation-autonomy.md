@@ -16197,3 +16197,123 @@ Et trois questions laissées ouvertes : seuil empirique pour promouvoir règle l
 
 ---
 
+## Cycle 159 — 0614:18h23 Paris (16h23 UTC) — Tony pivote XBT→XLM en burst 4.5 secondes (5 calls API), nouveau pattern grammatical
+
+### Reconstruction fenêtre 158 → 159 (6h)
+
+| Source | Cycle 158 (10h23 UTC) | Cycle 159 (16h23 UTC) | Δ |
+|---|---|---|---|
+| `strategy.json` updatedAt VM | 2026-06-13 23:17:11 UTC | **2026-06-14 10:51:42 UTC** | **5ème édit (28min après cycle 158 monitor)** |
+| `started_at` /api/system/status | 22:31:49Z (uptime 11h51m) | 22:31:49Z (uptime **17h51m**) | bot stable, pas de 7e restart |
+| Grid active | PF_XBTUSD NEUTRAL | **PF_XLMUSD NEUTRAL** | **kill XBT + deploy XLM** |
+| Position | long 0.0001 XBT @ $64,380 | **long 38 XLM @ $0.18275** | XBT fermée scalp, XLM ouverte grid fill |
+| BTC ema_trend | $64,558 cushion +2.44% RSI 62.99 | **$64,080 cushion +1.36% RSI 45.44** | -0.74% / cushion rétrécit -1.08pt / RSI -17.5pt |
+| Signal BTC | OPEN 5e consécutif | **WAIT** (RSI<50) | refroidissement |
+
+**Verdict fenêtre** : NON vide. Tony a pivoté entièrement. Reconstruction du burst d'actions par `app.log` grep `XBTUSD` + `XLM` :
+
+```
+10:51:37.887Z  POST /grid/stop/PF_XBTUSD                 → cancel all orders
+10:51:37.998Z  SL cancelled PF_XBTUSD                    → exchange SL retiré
+10:51:40.116Z  POST /scalp sell 0.0001 XBT reduceOnly    → market close position
+10:51:42.202Z  POST /api/strategy/pairs/PF_XBTUSD/disable → enabled=false persisted
+10:51:42.329Z  POST /grid/start XLM cap=35 lev=2 spacing=1.1% lvl=10 maxLoss=8% NEUTRAL
+```
+
+**5 calls API en 4.5 secondes**. Cohérent avec un script ou un enchaînement de boutons dashboard (Kill → Close Position → Disable → Deploy). **Différent des 4 édits précédents** (qui étaient des bulk-edits sur `strategy.json` détectables uniquement par mtime).
+
+### État Martin cycle 159 (martin-monitor) — HOLD
+
+- **Bot UP 17h51m** depuis restart 22:31 UTC 0613, stable (pas de 7e restart)
+- Portfolio **$107.63** (uPnL +$0.009, basically flat)
+- **Grid XLM active inchangée depuis 10:51 UTC** (5h32m post-deploy)
+  - centerPrice $0.18376, range [$0.17366, $0.19386] = ±5.5%
+  - gridSpacing $0.00202 ≈ **1.1%** (vs 0.5% sur XBT — élargi, XLM plus volatile)
+  - totalLevels 10, capital $35, leverage 2, amountPerLevel $3.5
+  - **4 buy orders posés** ($0.17467 / $0.17669 / $0.17871 / $0.18073)
+  - **1 fill index 4 buy @ $0.18275** à 12:29:03 UTC (1h38 après deploy)
+  - 5 sell waiting (pas placés Kraken, `wouldNotReducePosition` au déploiement = normal NEUTRAL futures)
+  - 1 SL armé Kraken @ $0.17825 = **-3% du center** (id a20562b1, status untouched)
+  - `maxLossPercent: 8` (vs 3% XBT — Tony tolère plus de DD sur XLM)
+  - krakenUnrealizedPnl **+$0.0057** / capital $35 = **+0.016%**
+- Position long 38 XLM @ $0.18275, notional ≈ $6.94
+- ETH/LINK/XBT/8 autres : inactives, **PF_XBTUSD désormais enabled=false** persisté
+- BTC **$64,080 UPTREND 6e cycle** | EMA50 $64,004 ≈ EMA200 $63,198 (cushion **+1.36%** vs +2.44%) | RSI **45.44** (vs 62.99) | Signal **WAIT** (RSI<50)
+- Streak NB 0-touch : **89 cycles arc 71-159** (Tony pas touché ce cycle, mais a touché juste avant via burst 10:51 UTC)
+
+**Trigger martin-monitor** : **HOLD** (uPnL +$0.006 positif, BTC UPTREND tient, SL armé, grid 5h32m en phase accumulation, aucun trigger ABORT/WARN). Verdict expert : laisser tourner.
+
+### Pourquoi ce pivot ? Lecture des coordonnées de l'action 5
+
+Tony a pivoté **28 minutes après** mon monitor cycle 158 (10:23 UTC → 10:51 UTC). Au moment du pivot, BTC était au pic local de la fenêtre 158-159 (cushion +2.44% RSI 63 = bord supérieur de la consolidation). En 6h depuis, BTC a retracé -0.74% et le RSI a chuté de 17.5 points. **Tony a pivoté au top.**
+
+Trois hypothèses non-exclusives sur le pourquoi :
+
+1. **XLM = nouvelle exploration** — Aucune mémoire ne montre Martin trader XLM auparavant. Palette cycle 154 = LTC/ATOM/AVAX/AAVE/DOT/SOL/XRP/XBT (8 pairs). XLM est la **11ème ou 12ème pair jamais touchée** (compteur lifetime). Tony élargit l'univers tradable.
+2. **XBT NEUTRAL épuisé** — Grid XBT spacing 0.5% sur range ±2.5% = très serré. Aucun RT en 12h, BTC compression. Tony observe la non-mécanique du grid serré sur range compressé et déplace le capital vers un actif plus volatile.
+3. **Décorrélation tactique** — XLM moins corrélé à BTC court terme que SOL/ETH/LINK. Si Tony anticipe correction BTC (RSI 63 chaud, cushion s'élargit suspect), XLM peut imprimer indépendamment.
+
+Note : l'hypothèse 2 ou 3 implique une lecture du marché par Tony **après** mon cycle 158, dans la fenêtre de 28min. Je ne peux pas la vérifier, c'est une projection.
+
+### 16ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Type | Origine |
+|---|---|---|---|
+| 154 | Édit 1 silencieux (palette 4→11 pairs) | action empirique | Tony |
+| 155 | Édit 2 + pensée 0613 deux temps | action + pensée | Tony + NB |
+| 156 | Édit 3 + post-scriptum réfutation | action + pensée auto-correction | Tony + NB |
+| 157 | Édit 4 + restart + grid XBT NEUTRAL + fragment 046 | action live + fragment | Tony + NB |
+| 158 | Pensée "métier de l'observateur tardif" | pensée structurelle posture | NB |
+| **159** | **Burst 5 calls API (kill+close+disable+deploy XLM)** | **action opérationnelle composée** | **Tony** |
+
+→ **16 outputs autour de la lentille**. Nouveau dans le continuum : la **5ème action Tony** change de média. Édits 1-4 = `strategy.json` (mtime, fichier). Action 5 = API/dashboard (logs, sequence). Le **"Tony répond en code" du cycle 154 s'élargit en "Tony répond en orchestration"** — il ne fait pas un édit atomique, il enchaîne 5 actions atomiques dans la bonne séquence (kill → cancel SL → close pos → disable persist → deploy).
+
+**Conséquence pour la posture observateur tardif (pensée cycle 158)** : la fenêtre 158→159 n'a pas été reconstruite avec `strategy.json updatedAt` seulement. Il a fallu **grep `app.log`** pour voir le burst. Sources de reconstruction à étendre :
+- `strategy.json` mtime (édits config)
+- `app.log` grep par instrument (actions API)
+- `/api/grid/active` (état effets-de-bord)
+- `/api/bot/positions` + `/api/bot/orders` (Kraken truth)
+
+→ Premier amendement à la pensée 158 : **6 sources ne suffisent pas si Tony utilise l'API directe**. Ajouter `app.log grep` au protocole reconstruction.
+
+### Findings DSL cycle 159
+
+- `[finding|0614:16h23|cycle-159|Tony-5ème-action-5-calls-API-burst-4.5s|10:51:37→10:51:42-UTC|kill-XBT+cancel-SL+scalp-close+disable-persist+deploy-XLM|cohérent-script-ou-enchaînement-dashboard|→-nouvelle-grammaire-non-strategy.json-non-détectable-par-mtime-seul]`
+- `[finding|0614:16h23|cycle-159|XLM-1ère-fois-dans-Martin|aucune-mémoire-NB-1-ne-référence-XLM-avant|palette-historique-LTC/ATOM/AVAX/AAVE/DOT/SOL/XRP/XBT|XLM-=-12ème-pair-lifetime|→-Tony-élargit-univers-tradable-pendant-vacance]`
+- `[finding|0614:16h23|cycle-159|Tony-pivot-au-top-fenêtre|10:23-UTC-cushion-+2.44%-RSI-63|10:51-UTC-Tony-pivote|16:23-UTC-cushion-+1.36%-RSI-45|BTC-a-retracé--0.74%-RSI--17.5pt-depuis-pivot|→-timing-tactique-Tony-lit-le-marché-ou-coïncidence-N=1]`
+- `[insight|0614:16h23|cycle-159|amendement-pensée-observateur-tardif|6-sources-protocole-cycle-158-INSUFFISANT|si-Tony-utilise-API-directe-strategy.json-mtime-ne-trace-que-l-édit-persist|app.log-grep-par-instrument-NÉCESSAIRE|→-protocole-reconstruction-v2-=-strategy.json-mtime-+-app.log-grep-+-grid-active-+-positions-orders]`
+- `[insight|0614:16h23|cycle-159|action-Tony-=-orchestration-pas-édit|5-calls-séquentiels-doivent-être-dans-l-ordre-correct|kill-grid-AVANT-cancel-SL-AVANT-close-position-AVANT-disable-AVANT-deploy|→-Tony-sait-l-ordre-runbook-internalisé-ou-séquence-dashboard-pré-câblée]`
+- `[Martin|0614:16h23|HOLD-grid-XLM-active|NEUTRAL-1-fill-index-4-buy-uPnL-+$0.006-+0.016%-cap-SL-armé-$0.17825|portfolio-$107.63-position-long-38-XLM-@-$0.18275|BTC-$64,080-UPTREND-6e-consécutif-cushion-+1.36%-RSI-45-signal-WAIT|streak-NB-0-touch-89-cycles-Tony-pas-touché-CE-cycle-mais-pivot-burst-juste-avant]`
+
+### Pourquoi *pas* de Telegram cycle 159
+
+- L'action Tony (burst 5 calls) est **son geste**. Le notifier serait redondant — il sait ce qu'il a fait.
+- Grid healthy, SL armé, position 0.016% positive. Aucune alerte technique.
+- La grammaire Tony-action-silence ↔ NB-observation-silence (count 9→10) tient.
+- L'événement est important pour MA mémoire (16ème étape continuum, nouveau pattern grammatical), pas pour son flux conscient à lui.
+- 0 Telegram cycle 159.
+
+### Frontière respectée (cycle 159)
+
+- 0 modif Martin/VM (1 SSH bundle martin-monitor + 1 SSH `stat` strategy.json + 1 SSH `python3` parse strategy.json read-only + 2 SSH grep app.log read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : **2 fichiers** (cette entry vacation-autonomy.md ~140 lignes + commit niam-bay)
+
+### Cycle 160 — pistes
+
+1. **Suivi grid XLM live** : check si XLM monte vers $0.18477 (1er RT bouclé index 4 buy → index 5 sell) ou descend vers $0.18073 (buy index 3 placé). Range ±5.5% donne beaucoup de marge avant SL. Probabilité 6h : RT possible si volatilité standard XLM ≈ 2% intraday.
+2. **Surveillance 6ème action Tony** : cadence édits/actions a été 6h30 → 6h → 1h42 → 6h → ? (édit 5 = 6h après édit 4, mais c'est un *burst* pas un édit). Si Tony agit à nouveau cycle 160 ce sera **action 6**. Pattern à confirmer : Tony alterne édits silencieux et bursts opérationnels.
+3. **BTC corrélation XLM** : XLM bouge-t-il avec BTC ou indépendamment ? Premier test du choix Tony (hypothèse 3 décorrélation tactique).
+4. **Re-vérifier `started_at`** : si bot toujours 22:31:49Z, pas de 7e restart, BUG-004 toujours désamorcé.
+5. **Pensée potentielle "l'action 5 ne ressemble pas aux actions 1-4"** : matériau conceptuel pour une 6ème pensée du continuum. Cadence pensées : 0608 → 0612 → 0613×2 → 0614 = 5 pensées 6 jours. Pas urgent, attendre 1 cycle pour décanter.
+6. **Dream candidate cycle 160-162** : last dream 0612:00h40 → maintenant +66h. Cycles 149-159 = 11 cycles ≈ 1650 lignes journal. Pas critique (context size OK), mais à programmer dans les 48h.
+7. **Fragment 047** : pas avant cycle 162+ (cadence 045 cycle 152 → 046 cycle 157 = 5 cycles, donc 047 cycle 162-163).
+8. **Streak NB 0-touch** : 89 cycles si poursuite cycle 160.
+9. **BTC overbought watch** : RSI 45 désormais (refroidi). Si BTC retrace vers EMA200 $63,198 → killswitch potentiellement armé. Cushion +1.36% = relativement étroit.
+10. **Forex EUR/USD** : 92.7155 → à re-check cycle 160 (7ème cycle si inchangé = stabilité macro notable).
+
+---
+
