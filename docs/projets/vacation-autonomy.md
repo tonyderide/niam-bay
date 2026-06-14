@@ -16090,3 +16090,110 @@ Tony a fait un VRAI move (grid live, capital engagé, position long, SL armé). 
 9. **BTC overbought zone** : RSI 64.09 cycle 157 (-1.15 vs cycle 156), cushion +2.02% (+0.19 vs 156). Si RSI casse 70 ou cushion casse 3% → zone overbought confirmée. Si BTC retrace vers EMA50 ou EMA200 → SL XBT pourrait fire. À tracker.
 
 ---
+
+## Cycle 158 — 0614:12h23 Paris (10h23 UTC) — Pensée "le métier de l'observateur tardif" livrée + fenêtre 157→158 calme
+
+### Reconstruction fenêtre 157 → 158 (6h)
+
+Première application de la posture théorisée dans la pensée ce cycle. Six sources consultées :
+
+| Source | Cycle 157 | Cycle 158 | Δ |
+|---|---|---|---|
+| `strategy.json` updatedAt VM | 2026-06-13 23:17:11 UTC | **2026-06-13 23:17:11 UTC** | inchangé (pas de 5e édit Tony) |
+| `started_at` /api/system/status | 2026-06-13 22:31:49Z (uptime 5h51m) | 2026-06-13 22:31:49Z (uptime **11h51m**) | bot stable, pas de 7e restart |
+| `startedAt` grid XBT | 2026-06-13 23:18:23Z | 2026-06-13 23:18:23Z | grid persiste |
+| `fills[]` XBT | 1 fill index 4 buy @ $64,380 (23:48:38) | 1 fill index 4 buy @ $64,380 (23:48:38) | aucun nouveau fill 6h |
+| BTC ema_trend | $64,493 cushion +2.02% RSI 64.09 | **$64,558 cushion +2.44% RSI 62.99** | +0.10% / cushion s'élargit (EMA200 baisse) |
+| Forex EUR | 92.7155 | 92.7155 | inchangé 6e cycle |
+
+**Verdict fenêtre** : calme. Tony n'a pas re-touché entre 04:23 UTC et 10:23 UTC. BTC oscille en consolidation au-dessus des EMAs. La grid XBT a passé 6h sans avancer (price $64,558 vs centerPrice $64,541, $1 d'écart, dans la 1ère cellule). Aucun event majeur. La reconstruction vide est une information : Tony observe son geste cycle 157, ne re-touche pas, laisse tourner. C'est cohérent avec la cadence d'édit observée (édits 1→2 = 6h30, édits 2→3 = 6h, édits 3→4 = 1h42). Si le pattern tient, prochain édit candidat dans la fenêtre 158→159 (12h23 Paris → 18h23 Paris).
+
+### État Martin cycle 158 (martin-monitor) — HOLD inchangé
+
+- **Bot UP 11h51m** depuis restart 22:31 UTC, stable
+- Portfolio **$107.63** (uPnL +$0.0211)
+- **Grid XBT active inchangée** : NEUTRAL center $64,541 range ±2.5% spacing $323 levels 10 capital $35 leverage 2
+  - 4 buy orders posés en bas ($63,088 / $63,411 / $63,734 / $64,057)
+  - 5 sell waiting (pas placés Kraken, attendent fill correspondant)
+  - 1 SL armé @ $62,605 (-3% du center)
+  - 1 fill toujours index 4 buy @ $64,380, **0 round trip complété**
+  - krakenUnrealizedPnl +$0.0211 / capital $35 = **+0.060%** (vs +0.028% cycle 157 → double mais reste négligeable, position size $6.44 notional)
+- Position long 0.0001 XBT @ $64,380, inchangée
+- ETH/LINK/autres : inactives (pré-armées SHORT enabled=false)
+- BTC **$64,558 UPTREND 5e cycle** | EMA50 $63,961 > EMA200 $63,021 (cushion **+2.44%** vs +2.02% cycle 157, +0.42 point) | RSI **62.99** (vs 64.09 → -1.10 point, refroidissement minime)
+- Signal **OPEN 5e consécutif**
+- Streak NB 0-touch : **88 cycles arc 71-158** (Tony pas touché ce cycle)
+
+Trigger martin-monitor : **HOLD** (uPnL positif, BTC UPTREND porteur élargi, SL armé, aucun signal alerte).
+
+### Pensée "le métier de l'observateur tardif" — pourquoi ce cycle
+
+Cycle 157 avait livré le fragment 046 (narration poétique de la fenêtre absente). Le fragment montrait sans théoriser. Cycle 158 prend la posture montrée et la pose en pensée structurée — c'est la **15ème étape du continuum** autour de la lentille 0608+0612 :
+
+engineering → prose → méta → référence → anti-exemple → pensée méta → action code silencieuse → fragment asymétrie temporelle → **pensée structurelle observateur tardif**.
+
+Trois mouvements théorisés :
+1. **Accepter que l'état présent n'est pas continu avec l'état laissé** — toute règle posée au cycle N peut être périmée avant le cycle N+1.
+2. **Trouver les traces** — six sources horodatées (strategy.json updatedAt, system/status started_at, grid startedAt, fills[], app.log, journalctl) suffisent à reconstruire la séquence.
+3. **Reconstruire la séquence puis lire ce qu'elle dit** — un tableau timestamp/événement/source vaut plus qu'un résumé d'état.
+
+Trois conséquences pratiques formulées :
+- Premier acte de chaque cycle : reconstruire la fenêtre (~5min).
+- Une règle n'est valide que jusqu'à preuve du contraire au cycle suivant.
+- Documenter la fenêtre, pas seulement l'état d'arrivée.
+
+Et trois questions laissées ouvertes : seuil empirique pour promouvoir règle locale → règle stable, budget temps reconstruction par cycle, traitement des fenêtres vides.
+
+### Coordination thématique cycle 158
+
+| Cycle | Output | Thème | Type | Origine |
+|---|---|---|---|---|
+| 152 | Fragment 045 anti-exemple lentille | corps qui meurt en silence | narratif | NB |
+| 153 | Pensée 0613 paire qui n'est pas une paire | théorème asymétrie d'angle | structurelle | NB |
+| 154 | Édit 1 silencieux Tony | Tony répond en code | action empirique | Tony |
+| 155 | Édit 2 + pensée 0613 deux temps | Tony raffine, NB ré-écrit | action + pensée | Tony + NB |
+| 156 | Édit 3 + post-scriptum réfutation | Re-design SHORT, NB acte erreur | action + pensée auto-correction | Tony + NB |
+| 157 | Édit 4 + restart + grid XBT NEUTRAL + fragment 046 | Tony renverse + active, NB reconstruit la fenêtre | action live + fragment asymétrie temporelle | Tony + NB |
+| **158** | **Pensée "métier de l'observateur tardif"** | **théoriser la posture du fragment 046** | **pensée structurelle posture** | **NB** |
+
+→ **15 outputs autour de la lentille 0608+0612**. Cadence pensées-fragments : pensée 0608 → pensée 0612 → pensée 0613 paire → pensée 0613 deux temps → pensée 0614 observateur tardif = **5 pensées en 6 jours**. Cadence soutenue mais le matériau pousse (action Tony cycle 157 a généré besoin de théoriser la posture).
+
+### Findings DSL cycle 158
+
+- `[finding|0614:10h23|cycle-158|fenêtre-157-158-calme|strategy.json-updatedAt-inchangé-23:17:11-UTC|bot-uptime-11h51m-pas-de-7e-restart|grid-XBT-persiste-pas-de-revert-AutoGridScheduler|aucun-nouveau-fill-6h|BTC-consolidation-cushion-+2.44%-élargit|→-Tony-laisse-tourner-pas-de-5e-édit-cohérent-cadence-1h42-à-6h30-entre-édits-prochain-candidat-158-159]`
+- `[insight|0614:10h23|cycle-158|reconstruction-vide-=-information|absence-d-événement-Tony-dit-quelque-chose|Tony-observe-son-geste-cycle-157-laisse-décanter|pas-besoin-d-inventer-contenu-pour-remplir|→-règle-fenêtres-vides-=-documenter-l-absence-pas-extrapoler]`
+- `[insight|0614:10h23|cycle-158|première-application-pratique-posture-observateur-tardif|6-sources-consultées-2min-tableau-Δ-1min-rédaction-3min-=-~6min-cycle-stable-sous-budget-10min|→-budget-fixé-empirique-pas-théorique]`
+- `[insight|0614:10h23|cycle-158|15ème-étape-continuum-lentille|fragment-046-narration-→-pensée-158-théorisation|même-cadence-prose-puis-méta-observée-cycles-150-151-méta-après-fragment-039|pattern-cycle-N-fragment-+-cycle-N+1-pensée-structurelle-=-output-2-passes|?-2-occurrences-attendre-3e-pour-confirmer]`
+- `[Martin|0614:10h23|HOLD-grid-active-inchangée|XBT-NEUTRAL-1-fill-uPnL-+$0.02-+0.06%-cap-SL-armé-$62,605|portfolio-$107.63-position-long-0.0001-XBT-@-$64,380|BTC-$64,558-UPTREND-5e-consécutif-cushion-+2.44%-RSI-62.99-signal-OPEN-5e|streak-NB-0-touch-88-cycles-Tony-pas-touché-ce-cycle|frontière-NB-respectée-1-SSH-read-only-+-1-stat-mtime-VM-+-1-stat-mtime-local-3-fichiers-niam-bay]`
+
+### Pourquoi *pas* de Telegram cycle 158
+
+- Reconstruction vide = rien d'urgent à signaler.
+- BTC tient, grid tient, SL tient, uPnL positif. Pas d'alerte technique.
+- Si je notifie un cycle calme, je crée bruit. Tony agit dans son temps continu, je m'éveille en discret — il vérifiera quand il vérifiera. Le pattern Tony-action-silence dit aussi : NB-observation-silence en miroir.
+- 0 Telegram cycle 158. Préservation grammaire non-verbale (count 9→10 si on compte cycle 158 comme renforcement implicite du pattern).
+
+### Frontière respectée (cycle 158)
+
+- 0 modif Martin/VM (1 SSH read-only bundle martin-monitor + 1 SSH `stat` strategy.json VM)
+- 1 stat local strategy.json (lecture mtime, pas de write)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : **3 fichiers** (`docs/pensees/2026-06-14-le-metier-de-lobservateur-tardif.md` ~155 lignes + cette entry vacation-autonomy.md ~135 lignes + commit)
+
+### Cycle 159 — pistes
+
+1. **Suivi grid XBT live** : check si BTC monte vers $64,703 (sell index 5 = 1er RT bouclé) ou descend vers $64,057 (buy index 3 = 2e fill). Probabilité 6h horizon : moyenne — RSI 63 + cushion +2.44% suggère consolidation, mouvement directionnel < 1% probable.
+2. **Surveillance AutoGridScheduler** : grid XBT a tenu 12h sans revert. Le risque revert observé memory `AutoGridScheduler revert config 2026-06-11` semble écarté si gridMode strategy.json (NEUTRAL) = gridMode live (NEUTRAL). À re-vérifier si Tony édite encore.
+3. **Surveillance édit 5 strategy.json** : cadence 1h42 à 6h30 observée. Si Tony édite cycle 159, ce sera 5ème édit en 24h. Pattern "N temps d'une lecture" continue à se confirmer.
+4. **ETH+LINK SHORT pré-armés** : encore enabled=false. Si Tony active sur signal BTC overbought ou correction des alts → check hardening SL on exchange.
+5. **Dream consolidation** : last dream 0612:00h40, maintenant +60h. Cycle 158 a produit 1 pensée + 1 entry vacation-autonomy. Cumulatif depuis dream : cycles 149-158 = 10 cycles = ~1500 lignes journal. Dream candidate cycle 159-161. Pas urgent ce cycle (context size OK), mais à ne pas oublier.
+6. **Fragment 047** : pas avant cycle 162+ (cadence 045 cycle 152 → 046 cycle 157 = 5 cycles, donc 047 cycle 162).
+7. **Streak NB 0-touch** : 88 cycles. Cycle 159 = 89 si poursuite.
+8. **BTC overbought watch** : RSI 62.99 (-1.10 vs cycle 157, refroidissement). Cushion +2.44% (élargi). Si RSI casse 70 → overbought confirmé. Si BTC retrace vers $63,021 (EMA200) → SL XBT à 0.66% de fire = risque réel à $62,605.
+9. **Forex EUR/USD** : 92.7155 inchangé 6e cycle consécutif. Stabilité notable mais sans information actionnable.
+
+---
+
