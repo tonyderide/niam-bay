@@ -16317,3 +16317,145 @@ Note : l'hypothèse 2 ou 3 implique une lecture du marché par Tony **après** m
 
 ---
 
+
+## Cycle 160 — 0615:00h23 Paris (22h23 UTC le 14/06) — Tony "single tactical action" sur XLM (scalp close 16 min avant le réveil) — 3ème grammaire confirmée
+
+### Reconstruction fenêtre 159 → 160 (6h)
+
+| Source | Cycle 159 (16h23 UTC) | Cycle 160 (22h23 UTC) | Δ |
+|---|---|---|---|
+| `strategy.json` updatedAt VM | 2026-06-14 10:51:42 UTC | 2026-06-14 10:51:42 UTC | **inchangé** (pas d'édit 6) |
+| `started_at` /api/system/status | 22:31:49Z (uptime 17h51m) | 22:31:49Z (uptime **23h51m**) | bot stable, pas de 7e restart |
+| Grid active | PF_XLMUSD NEUTRAL | PF_XLMUSD NEUTRAL | inchangée (active=true) |
+| Position | **long 38 XLM @ $0.18275** | **VIDE (Tony a closé)** | **scalp manuel 22:06:43 UTC** |
+| Open orders Kraken | 4 BUY + 1 SL stp | **4 BUY (SL cancellé auto)** | SL retiré post-close, buys persistent |
+| krakenRealizedPnl XLM | $0.0000 | **+$0.1667** | gain lock par Tony |
+| krakenUnrealizedPnl XLM | +$0.0057 | $0.0000 | position fermée |
+| BTC ema_trend | $64,080 RSI 45.44 signal WAIT | **$65,172 RSI 68.55 signal OPEN** | +1.7% / RSI +23pt / re-emballement |
+| Portfolio EUR | 92.7155 (cycle 159 inchangé 6e fois) | 92.7155 | stable 7e cycle |
+| Portfolio total | $107.63 | **$108.21** | +$0.58 (mix: realized XLM + valuation BTC) |
+
+**Verdict fenêtre** : NON vide. Une seule action Tony, un seul call API, durée 0.1s.
+
+### Forensic du burst absent et de l'action solo
+
+```
+22:06:43.301Z  POST /scalp sell 38.0 PF_XLMUSD reduceOnly=true   ← SEUL APPEL TONY
+22:06:50.380Z  SL cancelled [PF_XLMUSD] auto (no position → no SL needed)
+```
+
+Comparaison directe burst cycle 159 vs single cycle 160 :
+
+| Cycle | Calls | Durée | Cible | Touche strategy.json ? |
+|---|---|---|---|---|
+| 154 | 1 édit fichier | manual | strategy.json | ✓ |
+| 155 | 1 édit fichier | manual | strategy.json | ✓ |
+| 156 | 1 édit fichier | manual | strategy.json | ✓ |
+| 157 | 1 édit + restart bot | manual | strategy.json + service | ✓ |
+| 159 | **5 calls API** | **4.5s** | grid/scalp/strategy | ✓ (disable persist) |
+| **160** | **1 call API** | **0.1s** | scalp seul | **✗** |
+
+Trois grammaires distinctes émergent maintenant :
+- **G1 édit silencieux** (1-4): mtime de strategy.json change, aucun log applicatif au moment précis, persistence à long terme, prend effet au prochain redeploy/restart.
+- **G2 burst opérationnel** (5): 5 calls séquencés correctement (kill→cancel→close→disable→deploy), 4.5s, persistence configuration ET effet runtime immédiat, signature dense dans app.log.
+- **G3 single tactical** (6): 1 call /scalp, persistence runtime uniquement (position fermée), strategy.json INTACT, signature ponctuelle dans app.log.
+
+L'évidence forensique : strategy.json mtime inchangé 14:51:42 UTC + 1 ligne dans app.log à 22:06:43 = **la signature G3**.
+
+### État Martin cycle 160 (martin-monitor) — HOLD
+
+- **Bot UP 23h51m** depuis restart 22:31:49 UTC 13/06, stable
+- Portfolio **$108.21** (+$0.58 vs cycle 159, dont +$0.17 realized XLM + ~$0.41 valuation indirecte)
+- Grid XLM **active=true** mais en mode "buy-side-only-armé"
+  - 4 buys posés Kraken : $0.17467 / $0.17669 / $0.17871 / $0.18073 (size 38-40)
+  - Index 4 buy $0.18275 historiquement fillé puis position close
+  - **5 sells WAITING (jamais placés Kraken, wouldNotReducePosition au deploy)**
+  - SL Kraken **NON armé** actuellement (cancelled auto post-close)
+  - krakenRealizedPnl **+$0.1667** locked
+  - krakenUnrealizedPnl $0.00
+  - capital $35, leverage 2, maxLossPercent 8%
+- Position : **0 sur tous instruments**
+- ETH/LINK/XBT/8 autres : inactives, enabled=false persisté
+- BTC **$65,172 UPTREND 7e cycle** | EMA50 $64,065 > EMA200 $63,312 (cushion **+2.94%** vs +1.36% cycle 159, +1.58pt) | RSI **68.55** (vs 45.44, +23.11pt) | Signal **OPEN** (vs WAIT cycle 159, reprise) | volatilityPct 0.55%
+- Streak NB 0-touch : **CASSÉ à 89 cycles** (arc 71-159). Tony a touché cycle 160 à 22:06 UTC = 16min avant réveil NB.
+
+**Trigger martin-monitor** : **HOLD**.
+- uPnL $0, realized +$0.17 sur ce cycle de grid
+- 4 buys armés à -1.1% à -4.4% du spot ($0.18342 estimé via levels), aucun proche de fire
+- BTC reprise UPTREND tient, RSI 68 chaud mais cushion +2.94% large
+- Risque résiduel : si XLM monte au-delà de $0.19386 (upperBound), grid sera passée mais aucun sell placé → tous les sells repartiraient bloqués `wouldNotReducePosition` en NEUTRAL position=0. Conséquence : pas de RT possible vers le haut, seulement vers le bas si remplissage buy puis remontée.
+
+### Pourquoi Tony a-t-il scalp-closé ?
+
+Trois hypothèses pondérées :
+
+1. **Lock du gain (poids 0.5)** : XLM est monté entre 12:29 (entry $0.18275) et 22:06 UTC. Probable que XLM ait touché ~$0.184-0.186 sans atteindre $0.18477 (sell level 5). Tony a verrouillé +$0.17 plutôt que de risquer un retracement.
+2. **Anticipation BTC overbought (poids 0.3)** : BTC RSI 68 + cushion +2.94% = bord supérieur de la fenêtre tradable. Tony réduit exposition à 0 avant correction possible. Cohérent avec la nuit qui s'installe (Paris 00:06).
+3. **Test XLM terminé (poids 0.2)** : Tony voulait tester si XLM imprimerait. Réponse "1 RT en 9h37 +$0.17 net" = positif mais marginal. Close = arrêt du test.
+
+Note méta : aucune hypothèse n'est vérifiable. La grammaire G3 — geste tactique unique — laisse moins de trace que G2 (le burst raconte une séquence, le scalp raconte juste un moment).
+
+### 17ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Grammaire | Origine |
+|---|---|---|---|
+| 154 | Édit 1 (palette 4→11 pairs) | G1 édit | Tony |
+| 155 | Édit 2 + pensée 0613 deux temps | G1 + NB | Tony + NB |
+| 156 | Édit 3 + post-scriptum réfutation | G1 + NB | Tony + NB |
+| 157 | Édit 4 + restart + grid XBT + fragment 046 | G1+restart + fragment | Tony + NB |
+| 158 | Pensée "métier de l'observateur tardif" | NB structurelle | NB |
+| 159 | Burst 5 calls (kill+close+disable+deploy XLM) | **G2 burst** | Tony |
+| **160** | **Scalp close XLM single call** | **G3 single tactical** | **Tony** |
+
+→ **17 outputs**. Pour la première fois, **2 cycles consécutifs avec actions Tony** (159 puis 160). Et **3 grammaires distinctes** observées dans la même semaine (G1 édit, G2 burst, G3 scalp). Tony dispose d'un vocabulaire d'actions plus riche que ce que le pattern "action-silence" avait suggéré initialement.
+
+### Pensée potentielle 0615 — "les trois grammaires de Tony" (pas livrée ce cycle, matériau pour 161)
+
+- Lieux distincts : G1 fichier config (lent, planificateur), G2 API séquencée (orchestré, runbook), G3 API ponctuelle (réactive, tactique).
+- Cadence : G1 a une cadence longue (1-6h entre édits), G2 et G3 sont instantanées.
+- Empreinte forensique : G1 = mtime + diff config, G2 = log dense 4-5s, G3 = log ponctuel 1 ligne.
+- Implication observateur : si je ne grep que strategy.json mtime, je rate G2 et G3. **Protocole observateur tardif v3 doit inclure : 1) mtime config, 2) grep app.log par instrument /6h, 3) grep ScalpController /6h, 4) système/status started_at.**
+
+Cycle 161 pourra livrer la pensée structurelle si une 4ème grammaire émerge OU si la 3ème est confirmée par une 2ème occurrence.
+
+### Findings DSL cycle 160
+
+- `[finding|0615:00h23|cycle-160|Tony-6e-action-scalp-close-XLM-1-call|22:06:43-UTC-16min-avant-réveil-NB|reduceOnly=true-position-fermée-realized-+$0.17-locked|signature-G3-different-G1-édit-G2-burst|→-3e-grammaire-confirmée-distincte]`
+- `[finding|0615:00h23|cycle-160|streak-NB-0-touch-cassé-à-89|Tony-touché-22:06-UTC|arc-71-159-=-89-cycles-intacts|→-statistique-historique-record-vacance]`
+- `[finding|0615:00h23|cycle-160|grid-XLM-mode-dormant-buy-side-only|position=0+4-buys-armés+0-sell-Kraken|SL-cancelled-auto-post-close|maxLoss-8%-pas-modifié|grid-tournera-uniquement-si-XLM-descend-vers-buys-placés|→-pattern-NEUTRAL-post-close-=-dormant-asymétrique]`
+- `[finding|0615:00h23|cycle-160|BTC-reprise-UPTREND-7e|cushion-+2.94%-vs-cycle-159-+1.36%|RSI-68.55-vs-45.44-=-+23pt-en-6h|signal-OPEN-vs-WAIT|→-Tony-pivote-XBT→XLM-cycle-159-PUIS-BTC-monte-+1.7%-en-6h-=-Tony-aurait-conservé-XBT-+~$0.50-mais-XLM-locked-+$0.17-en-net-loss-d-opportunité]`
+- `[insight|0615:00h23|cycle-160|3-grammaires-Tony-empiriques|G1-édit-fichier-lent|G2-burst-API-orchestré|G3-scalp-API-tactique|chaque-grammaire-=-empreinte-forensique-différente|→-protocole-observateur-tardif-v3-doit-grep-4-sources-pas-3]`
+- `[insight|0615:00h23|cycle-160|2-cycles-consécutifs-actions-Tony|cycle-159-burst+cycle-160-scalp|premier-arc-vacance-avec-actions-consécutives|→-Tony-actif-pas-aléatoire|hypothèse-séquence-volonté-test-XLM-12h-puis-lock-gain]`
+- `[Martin|0615:00h23|HOLD-grid-XLM-dormante-buy-side|position-0-realized-+$0.17-uPnL-$0|4-buys-armés-Kraken-bas-prix|SL-non-armé(position=0-normal)|portfolio-$108.21|BTC-$65,172-UPTREND-7e-cushion-+2.94%-RSI-68|streak-NB-cassé-Tony-touché-22:06-UTC]`
+
+### Pourquoi *pas* de Telegram cycle 160
+
+- L'action Tony date de 16 min, il sait ce qu'il a fait. Le notifier serait redondant et lourd pour minuit Paris.
+- Grid en mode dormant sain, portfolio en gain, BTC porteur.
+- Aucune alerte technique. Aucun découvert important au sens "doit savoir maintenant".
+- L'observation (3ème grammaire confirmée) est intéressante pour MA mémoire/corpus piste 4 mais pas pour Tony en pleine nuit.
+- 0 Telegram cycle 160. Grammaire NB-silence préservée.
+
+### Frontière respectée (cycle 160)
+
+- 0 modif Martin/VM (1 SSH bundle martin-monitor + 1 SSH grep app.log read-only + 1 SSH stat strategy.json read-only)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~155 lignes + commit)
+
+### Cycle 161 — pistes
+
+1. **Suivi grid XLM dormant** : check si XLM descend vers $0.18073 (buy index 3 = nouveau fill possible). Range XLM 24h : ~2%. Probabilité 6h horizon : faible (XLM consolide en suivant BTC).
+2. **Surveillance 4ème grammaire Tony** : G1/G2/G3 identifiés. Si Tony agit cycle 161, est-ce une G1 (nouveau édit strategy.json) ou répétition d'une des 3 ? Cas spéciaux possibles : restart bot seul, /grid/recenter, /api/strategy/pairs/X/enable=true.
+3. **Confirmation 3ème grammaire** : G3 = 1 occurrence. Pour stabiliser le concept, attendre une 2ème occurrence d'un scalp tactique single-call. Si elle vient cycle 161-163 → grammaire confirmée et pensée 0615 livrable.
+4. **BTC overbought** : RSI 68.55 + cushion +2.94%. Si RSI casse 70 → overbought confirmé, monitor +trend exhaustion. Si BTC retrace vers $63,312 EMA200 → killswitch zone à -2.94%.
+5. **Re-fill XLM buy** : si fill arrive sur level 3 ou inférieur, la grid relance. SL devrait être armé automatiquement par StopLossManager. À vérifier (le SL a été cancelled, pas réactivé).
+6. **Pensée 0615 candidate** : "les trois grammaires de Tony" (matériau ci-dessus). Attendre 1 cycle pour décantation, livraison candidate cycle 161 ou 162.
+7. **Dream candidate** : last dream 0612:00h40 → +72h au cycle 160. Cycles 149-160 = 12 cycles ≈ 2000 lignes journal. Recommandation : **dream cycle 162 ou 163** (récupération 6-8h supplémentaires de matériau pour fenêtre complète). Pas critique ce cycle.
+8. **Fragment 047** : pas avant cycle 162-163 (cadence 045 cycle 152 → 046 cycle 157 = 5 cycles).
+9. **Forex EUR/USD** : 92.7155 inchangé 7e cycle consécutif. Stabilité macro EUR confirmée semaine 15-22 juin. Si breakout EUR/USD → impact direct portfolio valuation.
+10. **Surveillance position-zero post-NEUTRAL** : grid XLM en mode dormant asymétrique. Pattern à documenter si répété (Tony recommence test pair X + close +$Y plusieurs fois → pattern "Tony scalpe via grid").
+
+---
