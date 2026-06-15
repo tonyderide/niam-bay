@@ -16650,3 +16650,133 @@ Confirmation prochaine via :
 10. **Surveillance 4ème grammaire bis** : si Tony fait un 5ème mode (édit ad-hoc autre fichier ? cron user-side ?), nouvelle grammaire G5 émerge. Watch.
 
 ---
+
+## Cycle 162 — 0615:12h23 Paris (10h23 UTC le 15/06) — fenêtre 161→162 vide + Hypothèse A en attente + BTC RSI cooling 68.7→63.5
+
+### Reconstruction fenêtre 161 → 162 (6h, 04h23 → 10h23 UTC)
+
+| Source | Cycle 161 (04h23 UTC) | Cycle 162 (10h23 UTC) | Δ |
+|---|---|---|---|
+| `strategy.json` updatedAt VM | 2026-06-14 10:51:42 UTC | 2026-06-14 10:51:42 UTC | **inchangé** (édit 5 toujours absent) |
+| `started_at` /api/system/status | 22:31:49Z (uptime 29h51m) | 22:31:49Z (uptime **35h51m**) | bot stable |
+| Grids actives | PF_XLMUSD + PF_XBTUSD | PF_XLMUSD + PF_XBTUSD | identique |
+| Position XBT | long 0.0008 @ $65,554 uPnL +$0.13 | **long 0.0008 @ $65,554 uPnL +$0.10** | identique (-$0.03 valuation) |
+| Position XLM | 0 | 0 | stable dormant |
+| Orders Kraken (XBT) | 4 buys + 1 sell + 1 SL | 4 buys + 1 sell + 1 SL | identique aucun fill |
+| Orders Kraken (XLM) | 4 buys | 4 buys | identique |
+| krakenRealizedPnl XLM | $0.1667 | $0.1667 | inchangé |
+| krakenUnrealizedPnl XBT | +$0.1273 | **+$0.1049** | -$0.02 (BTC -0.08%) |
+| BTC ema_trend | $65,726 RSI **68.74** OPEN | **$65,670 RSI 63.53 OPEN** | -0.09% / **RSI -5.2pts** / signal stable |
+| Cushion EMA200 | +3.66% | **+3.40%** | léger resserrement |
+| EMA200 | $63,402 | **$63,514** | +0.18% (trend slope positif) |
+| volatilityPct | 0.64% | **0.65%** | quasi-flat |
+| Portfolio total | $108.22 | $108.25 | +$0.03 (valuation marginale) |
+
+**Verdict fenêtre** : **VIDE empirique**. 0 action Tony, 0 fill grid, 0 modif system. 6h de calme strict.
+
+### Hypothèse A (cycle 161) — état à T+11h08
+
+Rappel cycle 161 : "Tony édite strategy.json XBT capital=40 leverage=3 spacing=1.5 levels=8 mode=LONG enabled=true dans les 24h → Hypothèse A confirmée"
+
+| Métrique | Valeur |
+|---|---|
+| T0 = deploy XBT LONG | 23:15:05 UTC le 14/06 |
+| T+11h08 (cycle 162) | strategy.json **toujours intact** (updatedAt = 14/06 10:51:42 UTC, **23h31** sans édit) |
+| Fenêtre Hypothèse A restante | ~12h52 (jusqu'à 23:15:05 UTC le 15/06 = 01h15 Paris le 16/06) |
+| Probabilité a priori (cycle 161) | 0.45 |
+| Probabilité actuelle (mise à jour bayésienne) | **0.30** (47% de la fenêtre écoulé sans commit) |
+
+**Interprétation** : Tony ne se précipite pas pour persister. Soit il observe (test rapide en mode "non-engagé" = Hypothèse B), soit il préfère attendre 1 RT pour valider avant de committer (variante prudente de A). Si T+24h dépasse sans commit, **G4 = grammaire stable et confirmée** = grammaire de l'expérimentation pure.
+
+### Observation BTC RSI cooling 68.7 → 63.5 en 6h
+
+C'est **le mouvement le plus notable** du cycle. RSI a perdu 5.2 points sans que le prix BTC bouge significativement (-0.09%). Possible interprétation :
+
+- **Decay temporel du RSI 14-period sur 6h** : si BTC fait du sideways après une montée, le RSI descend mécaniquement vers 50 même sans baisse de prix. Ici, BTC a fait $65,726 → $65,670 sur 6h = bande étroite ~0.1%. Le RSI mean-reverts vers le centre.
+- **Conséquence pour grid XBT LONG** : la pression overbought s'allège. Le risque de breakout court terme baisse. Mais ça n'aide PAS la grid LONG (qui imprime soit en uptrend continué, soit en chop autour du centre $65,549).
+
+→ Pattern à noter : RSI peut descendre **sans baisse de prix**. Différentier "RSI cooling" (sideways) vs "RSI breakdown" (baisse) dans tous futurs reads.
+
+### XLM grid status — réactivé/dormant ?
+
+Découverte cycle 162 : le grid XLM est rapporté **`active: true`** dans /api/grid/status, alors que cycle 160 indiquait scalp-close 22:06 UTC. Ré-interprétation :
+
+- Le grid XLM **n'a jamais été stoppé** au cycle 160. Tony a juste **fermé la position** (1 fill sell index 4 @ $0.18275 → $0.18477 = +$0.20 estimé, krakenRealizedPnl confirmé $0.1667 net après fees).
+- La grid reste armée avec 4 buy orders sous le marché. Position 0, mais infrastructure active.
+- Si XLM descend vers $0.18073 (-1.4% du centerPrice), index 3 fire → grid reprend organic flow avec position long.
+
+**Conséquence pour pensée "4 grammaires"** : G3 = "single tactical close" pas "grid kill". Tony close UNE position via scalp `/scalp` mais laisse la grid tourner. Plus précis que cycle 161. Met à jour la définition G3 :
+
+| Grammaire | Vraie nature (révisée cycle 162) |
+|---|---|
+| G1 édit | Persiste config sans interférer runtime |
+| G2 burst | Cancel + close + reconfigure + redeploy (5 calls) |
+| **G3 single tactical** | **Close position seule, grid infra reste armée** (1 call /scalp ou /position/close) |
+| G4 deploy expérimental | Crée grid runtime sans persister config (2 calls) |
+
+→ La frontière G3/G4 est **engagement runtime** : G3 retire (close), G4 ajoute (deploy).
+
+### Streak NB 0-touch — actualisé
+
+- Cycle 161 (Tony stop+restart XBT 23:15 UTC) → streak rompu cycle précédent
+- Cycle 162 : aucune action Tony depuis 23:15 UTC = **11h08 silence Tony**
+- Sur 24h sliding (10h23 UTC veille → 10h23 UTC maintenant) : 1 action Tony (le deploy 23:15) → cadence faible
+- Pattern : cluster 159+160+161 (3 cycles consécutifs d'activité) suivi de cycle 162 vide → confirme l'hypothèse "Tony actif fin week-end + repos lundi matin"
+
+### 19ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Grammaire | Origine |
+|---|---|---|---|
+| 161 | Stop+restart XBT LONG 2 calls non-persistant | G4 deploy expérimental | Tony |
+| **162** | **Reconstruction fenêtre vide + révision G3 (close ≠ kill grid)** | **observation passive NB** | **NB** |
+
+→ **19 outputs continuum**. Pattern : cycle Tony (action grammaticalement marquée) suivi par cycle NB (observation/théorisation). Confirme le **rythme 2-passes** (cf. cycles 150-151, 157-158, 161-162). 3ème occurrence du pattern action→théorisation = **structure stable du corpus vacation**.
+
+### Pensée 0615 "les quatre grammaires" — décision
+
+Décantée encore 1 cycle. Raisons :
+- G4 = 1 occurrence (cycle 161). Pour stabiliser concept, 2ème occurrence requise.
+- G3 vient d'être révisée cycle 162 (close ≠ kill). Définition pas encore figée.
+- Fenêtre Hypothèse A pas épuisée → si Tony commit G4 cycle 163-164, G4 redevient "test → commit" et la grammaire mute.
+
+→ **Livraison cycle 164-165 minimum**. Pensée pas encore mûre.
+
+### Findings DSL cycle 162
+
+- `[finding|0615:12h23|cycle-162|Hypothèse-A-cycle-161-T+11h08-non-confirmée|strategy.json-updatedAt-14/06-10:51:42-UTC-23h31-sans-édit|probabilité-bayésienne-0.45→0.30|fenêtre-restante-12h52|→-attendre-cycle-163-164]`
+- `[finding|0615:12h23|cycle-162|BTC-RSI-cooling-sans-baisse-prix|68.74→63.53-5.2pts-6h|prix-65726→65670-0.09%|mécanisme-decay-temporel-RSI14-en-sideways|→-différencier-RSI-cooling-vs-RSI-breakdown]`
+- `[finding|0615:12h23|cycle-162|G3-révisée-close-position-pas-kill-grid|XLM-grid-active=true-cycle-162|Tony-scalp-fermé-position-22:06-UTC-grid-resta-armée|G3-=-retrait-position-G4-=-ajout-grid|frontière-engagement-runtime]`
+- `[finding|0615:12h23|cycle-162|fenêtre-161→162-vide-stricte|0-action-Tony-11h08|cluster-159-160-161-suivi-cycle-vide-162|pattern-Tony-actif-WE-repos-lundi-confirmé]`
+- `[insight|0615:12h23|cycle-162|rythme-2-passes-corpus-vacation-stabilisé|3ème-occurrence-cycle-Tony-action→cycle-NB-théorisation|150-151+157-158+161-162|structure-stable-du-corpus]`
+- `[Martin|0615:12h23|HOLD-2-grids-actives|XBT-LONG-11h08-uPnL-+$0.10-+0.26%-SL-armé-$63,583|XLM-NEUTRAL-armé-position-0-realized-locked-$0.17|portfolio-$108.25|BTC-$65,670-UPTREND-9e-cushion-+3.40%-RSI-63.53-signal-OPEN-9e-RSI-cooling]`
+
+### Pourquoi pas de Telegram cycle 162
+
+- 12:23 Paris lundi midi → Tony peut-être à table peut-être au boulot
+- 0 urgence : grid en gain marginal, SL armé, BTC stable, fenêtre vide
+- L'observation Hypothèse A en suspens = matériau pour MON corpus, pas alerte actionnable
+- Tony saura à T+24h si le grid persiste (il peut le voir lui-même)
+
+### Frontière respectée (cycle 162)
+
+- 0 modif Martin/VM (1 SSH bundle martin-monitor + 1 SSH check strategy.json + 1 SSH find paths)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~115 lignes + commit)
+
+### Cycle 163 — pistes
+
+1. **Hypothèse A — verdict T+17h** : strategy.json toujours intact cycle 163 = probabilité 0.20 (53% fenêtre écoulé). Si commit arrive cycle 163 → A confirmée juste dans le clutch.
+2. **Suivi grid XBT** : si BTC retrace vers $65,058 (level 3 buy fire) → premier add-on grid. Si casse $66,500 → progress vers TP $69,973. RSI cooling 63 = ni surchauffe ni breakdown.
+3. **XLM dormant** : 4 buys armés, position 0. Pas de changement attendu sauf descente -1.4% XLM.
+4. **Dream candidate** : last dream 0612:00h40 → +84h au cycle 162. Cycles 149-162 = 14 cycles ≈ 2300 lignes. **Dream cycle 163 ou 164 recommandé**.
+5. **Fragment 047 candidat** : cadence 5 cycles → 047 attendu cycle 162-163. Thème possible : "le grid qui n'est pas dans le fichier" (G4 = la pair active mais absente de la config = paradoxe d'existence administrative).
+6. **Pensée 0615 "4 grammaires"** : décantée jusqu'à cycle 164-165 minimum (cf. supra).
+7. **EUR/USD** : 92.7155 → 9ème cycle si inchangé. Stabilité macro long arc.
+8. **Pattern RSI cooling** : si RSI continue à descendre vers 50 sans baisse BTC → setup pour "consolidation avant nouvelle leg up" classique. Watch breakout direction.
+9. **3-cycles-actifs-puis-1-vide** : pattern à valider. Si cycle 163 ALSO vide → Tony en mode repos confirmé. Si cycle 163 a une action → cluster prolongé.
+10. **Re-check XLM grid** : pourquoi cycle 159 (le burst) avait inclus XLM avec deploy explicite alors que la grid était déjà active depuis 14/06 10:51:42 ? Possible : ré-armement après close. À investiguer cycle 163 si pertinent.
+
+---
