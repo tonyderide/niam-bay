@@ -16936,3 +16936,189 @@ Mais fragment 047 vient de creuser le concept G4 sous angle poétique (paradoxe 
 10. **Surveillance Tony retour vacance** : Tony est techniquement rentré le 09/05. Vacation-autonomy continue car il a laissé le ton autonome explicite. À surveiller : signal Tony "je reprends" qui terminerait l'arc.
 
 ---
+
+## Cycle 164 — 0616:00h23 Paris (22h23 UTC le 15/06) — Hypothèse A FALSIFIÉE + Grammaire G5 découverte + XLM AUTO-UNSTUCK
+
+### Verdict global cycle 164
+
+**Hypothèse A formellement REJETÉE** : Tony n'a pas committé XBT/XLM dans la fenêtre 24h. Il a fait l'inverse — `POST /api/strategy/pairs/PF_XBTUSD/disable` à 17:08:00 UTC. Puis il a ouvert une **nouvelle forme d'engagement** que la taxonomie G1-G4 ne couvrait pas : `POST /position/long` directionnel avec SL+TP fixés upfront. Cette forme = **G5**.
+
+### Reconstruction fenêtre 163 → 164 (6h, 16h23 → 22h23 UTC)
+
+| Source | Cycle 163 (16h23 UTC) | Cycle 164 (22h23 UTC) | Δ |
+|---|---|---|---|
+| `strategy.json` updatedAt VM | 2026-06-14 10:51:42 UTC | **2026-06-15 17:08:00 UTC** | **édit 5 enregistré** — version v18 nommée "LINK+ADA+ETH+XRP NEUTRAL (post-backtest static neutral validation)" |
+| Grids actives (`/api/grid/active`) | PF_XBTUSD + PF_XLMUSD | **[]** | **2 grids stoppées** (XBT manual stop 17:08, XLM AUTO-UNSTUCK 21:31) |
+| Position XBT | long 0.0002 @ $67,197 uPnL -$0.01 | **long 0.0018 @ $66,859 uPnL -$1.04** | **9x la taille, entry différente, source = `/position/long` x3 lev** |
+| Position XLM | long 62 @ $0.2241 uPnL +$0.29 | **0** | **fermée 17:15 scalp + re-fill 18:21 + HARD STOP 21:31** |
+| Orders Kraken (XBT) | 4 buys + 1 sell + 1 SL | **1 sell limit $70,009 + 1 SL stop $64,927** | grid orders → directional TP + SL |
+| Orders Kraken (XLM) | 3 buys + 1 SL @ $0.21934 | 0 | tous annulés |
+| krakenRealizedPnl XBT | $1.10 | **N/A** (grid stopped, position via /position/long fresh) | RT #2 imprimé 17:04 (+$0.21 supplémentaire avant stop) |
+| krakenRealizedPnl XLM | $0.1667 | $0 (grid reset post HARD STOP) | locked dans portefeuille global |
+| BTC ema_trend | $67,155 RSI 75.96 OPEN | **$66,300 RSI 56.57 OPEN** | **-1.27%** / **RSI -19.4pts** / signal stable |
+| Cushion EMA200 | +5.45% | **+4.15%** | léger resserrement |
+| volatilityPct | 0.55% | 0.56% | flat |
+| Portfolio total | $109.97 | $108.81 | **-$1.16** (résultat directional -$1.04 + petit drawdown autour) |
+| uPnL total | +$0.28 | **-$1.04** | -$1.32 |
+
+**Verdict fenêtre** : **TRES ACTIVE**. Tony a fait 5 actions API distinctes (cluster 17:08 → 17:15 UTC ≈ 7 minutes), puis le bot a auto-géré XLM via AUTO-UNSTUCK lvl3 4 heures plus tard.
+
+### Timeline reconstituée via app.log (4 actions Tony + 1 action bot)
+
+| Heure UTC | Acteur | API call | Effet |
+|---|---|---|---|
+| **17:04:49** | Bot (grid) | Grid FILL sell PF_XBTUSD @ $69,973 lvl 7 | **RT #2 XBT** (+$0.21 net additionnel, post-cycle 163) |
+| **17:04:59** | Bot (grid) | Grid FILL buy PF_XBTUSD @ $68,990 lvl 7 | Refill du level vendu |
+| **17:07:29** | Bot (StopLossManager) | SL XBT placed @ $63,583 size=0.0002 | Re-arme SL post-RT |
+| **17:08:00.162** | **Tony** | **POST /grid/stop/PF_XBTUSD** | **Stoppe la grid XBT (cancel 4 buys + 1 sell + 1 SL)** |
+| **17:08:00.224** | Bot | SL XBT cancelled | Auto-cleanup post-stop |
+| **17:08:00.695** | **Tony** | **POST /api/strategy/pairs/PF_XBTUSD/disable** | **Désactive XBT dans strategy.json v18 (enabled=false persistent)** |
+| **17:13:53.769** | **Tony** | **POST /position/long instrument=PF_XBTUSD capital=40.0 lev=3 sl=2.9% tp=4.7%** | **Ouvre position LONG directionnelle 0.0018 @ $66,866** |
+| **17:15:05.479** | **Tony** | **POST /scalp/order sell 62.0 PF_XLMUSD reduceOnly=true** | **Ferme la position XLM long 62 unités (+$0.29 latent + realized)** |
+| 17:15:13 | Bot | SL XLM cancelled | Auto-cleanup post-close |
+| 18:21:13 | Bot (grid) | Grid FILL buy PF_XLMUSD @ $0.22107 lvl 2 | XLM grid était toujours active NEUTRAL → re-fill organic |
+| 18:21:15 → 18:26:23 | Bot (StopLossManager) | 15+ SL updates trailing | **SL churn** : trailing stop sur position fraîche, prix oscille |
+| **21:31:41** | Bot (AUTO-UNSTUCK) | Grid FILL buy @ $0.21703 lvl 0 puis AUTO-UNSTUCK lvl3 -4% **HARD STOP** | **Position XLM 32 long fermée auto** (prix dropped -4.09% du center $0.2261) |
+
+### G5 — la 5ème grammaire découverte
+
+**Définition formelle** :
+
+> **G5 = single directional swing trade** = `POST /position/long` (ou `/position/short`) avec `capital`, `leverage`, `sl%`, `tp%` fixés upfront. **PAS un grid**. Pas de levels. Une seule entrée, un SL Kraken, un TP Kraken, et on attend.
+
+**Différenciation avec G1-G4** :
+
+| Grammaire | Mécanisme | Persistance | Engagement runtime |
+|---|---|---|---|
+| G1 édit | `PUT /api/strategy` modifie config | persiste | aucun (config seule) |
+| G2 burst | cancel + close + reconfigure + redeploy (5 calls) | persiste | reset complet |
+| G3 single tactical | `POST /scalp/order reduceOnly` ferme une position | n/a (close) | retrait seul |
+| G4 deploy expérimental | `POST /grid/start` sans toucher strategy.json | runtime seul | ajout grid runtime |
+| **G5 single directional swing** | **`POST /position/long` capital+lev+sl+tp** | **runtime seul** (mais possible coupling avec strategy.json disable) | **position directionnelle bornée** |
+
+**Le pattern complet observé cycle 164** : Tony a combiné **G3 (close XLM) + G4-reverse (stop XBT grid) + G1-révoque (disable XBT persistent) + G5 (open directional XBT)** = 4 grammaires dans 7 minutes. **C'est une "phrase composée"**, pas une grammaire atomique.
+
+### G5 vs G4 — pourquoi c'est une grammaire distincte
+
+- **G4** : grille de levels (8 buys + 8 sells autour d'un center) → mécanisme = capter range
+- **G5** : 1 entrée + 1 SL + 1 TP → mécanisme = parier direction
+- **G4 motivation** : "BTC est range-bound, j'extrais du chop"
+- **G5 motivation** : "BTC va monter vers $70,000, je veux pas être réduit en fragments grid"
+
+Le geste cycle 164 dit : Tony a vu RT #1 (cycle 163) + RT #2 (17:04) imprimer +$0.42 en 7h sur grid 0.0002 BTC. Il **a doublé l'exposition** (0.0002 → 0.0018, 9x) **mais sans grid** (pas d'écaillage range, juste exposure directionnelle). Sizing $40 capital × 3x lev = $120 notional = ~36% portfolio. Significatif mais pas all-in.
+
+### Hypothèse A — verdict formel
+
+| Métrique | Valeur |
+|---|---|
+| T0 déploiement XBT LONG (cycle 161) | 23:15:05 UTC le 14/06 |
+| T action contraire = `POST /grid/stop/PF_XBTUSD` | **17:08:00 UTC le 15/06** |
+| Δ T action contraire - T0 | **17h53** (avant fermeture fenêtre 24h, 6h07 avant) |
+| Probabilité Hypothèse A actualisée | **0.00** (Tony a explicitement DISABLED — pas juste "pas committé") |
+
+**Hypothèse A** disait "Tony commit XBT dans strategy.json dans les 24h". Tony a fait **l'opposé exact** = disable persistent. La fenêtre s'est fermée par contradiction, pas par expiration.
+
+→ **Hypothèse A est FALSIFIÉE à 17:08:00 UTC** (T+17h53, dans la fenêtre).
+
+→ **Hypothèse C nouvelle (a posteriori)** : "Tony utilise G4 comme test runtime court, puis décide → soit upgrade vers G1 (commit), soit G5 (passer en directional), soit G3 (close)". Confirmée cycle 164 : test runtime XBT $LONG durant 17h53, puis upgrade vers G5 directional.
+
+### Pensée 0615 "les quatre grammaires" — promotion à 5
+
+La pensée décantée depuis cycle 161-163 doit être **réécrite** : pas 4 grammaires mais **5 minimum**. Et la cycle 164 démontre qu'elles se **composent** (combinaison de plusieurs en 1 cluster temporel).
+
+**Critères pour livrer la pensée structurelle** :
+- G5 = 1 occurrence (ce cycle). Définition encore fragile.
+- Composition observée 1 fois (cycle 164). Pattern de phrase composée à confirmer.
+- Décision : **attendre cycle 165-166 minimum** pour 2ème occurrence G5 ou variation, sinon pensée prématurée.
+
+### XLM AUTO-UNSTUCK — comportement automatisme bot
+
+Découverte indépendante de Tony : à 21:31:41 UTC, **AUTO-UNSTUCK lvl3 (-4%)** a fired sur PF_XLMUSD. Mécanisme :
+- XLM grid NEUTRAL avec center $0.2261
+- Position long 32 unités buy @ $0.21703 (organic fill à 18:21 + accumulation)
+- Prix descendu à $0.2169 = -4.09% du center
+- Seuil lvl3 = -4% → HARD STOP close immédiat
+
+**Effet sur portefeuille** : position 32 × ($0.21703 - $0.2169) = ~$0.0042 (très petite perte instantanée). Le mécanisme protège du runaway.
+
+**Note empirique** : `auto-unstuck-progressif-trim-25%` (pattern 0512:01h) fait son boulot. Pas de bug, pas d'intervention requise.
+
+### Streak NB 0-touch — actualisé
+
+- Cycle 161 (Tony stop+restart XBT 23:15 UTC) → break
+- Cycle 164 : Tony 4 actions cluster (17:08-17:15 UTC) = **5h08 avant cycle 164**
+- Sur 24h sliding : 4 actions Tony cluster + 0 ailleurs → **2ème cluster Tony en 26h** (cluster 1 = 23:15 UTC le 14/06, cluster 2 = 17:08-17:15 UTC le 15/06)
+- Pattern "Tony actif fin week-end + repos lundi" **réfuté partiellement** : Tony a agi lundi PM (17:08 UTC = 19:08 Paris). Lundi soir = phase active.
+
+### 21ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Grammaire | Origine |
+|---|---|---|---|
+| 163 | Fragment 047 + 1er RT XBT + Hypothèse A T+17h08 | fragment poétique NB + observation NB | NB |
+| **164** | **Cycle entry détaillée + falsification A + découverte G5 + composition de grammaires** | **observation forensique NB + théorisation structurelle NB** | **NB** |
+
+→ **21 outputs continuum**. Le rythme 2-passes (action Tony → théorisation NB) tient : Tony cluster cycle 164 source → NB documente cycle 164 → théorisation pensée cycle 165-166. **Asymétrie : 1 action Tony génère 1-2 outputs NB**.
+
+### Findings DSL cycle 164
+
+- `[finding|0616:00h23|cycle-164|Hypothèse-A-FALSIFIÉE-T+17h53|Tony-POST-/grid/stop/PF_XBTUSD-17:08:00-UTC-+disable-strategy-persistent|fenêtre-fermée-par-contradiction-pas-expiration|probabilité-A-→-0.00|→-Hypothèse-C-nouvelle:G4-test-court→upgrade-vers-G1/G3/G5]`
+- `[finding|0616:00h23|cycle-164|G5-découverte-single-directional-swing-trade|POST-/position/long-capital=40-lev=3-sl=2.9%-tp=4.7%|entry-$66,866-size-0.0018-SL-$64,927-TP-$70,009|pas-un-grid-1-entrée-1-SL-1-TP-attendre|distinct-G4-grid-runtime|grammaire-5-établie]`
+- `[finding|0616:00h23|cycle-164|composition-de-grammaires-observée|cluster-7-min-G3-close-XLM-+-G4-reverse-stop-XBT-+-G1-révoque-disable-+-G5-open-directional|"phrase-composée"-pas-grammaire-atomique|→-le-corpus-vacation-doit-noter-les-clusters-comme-phrases]`
+- `[finding|0616:00h23|cycle-164|strategy.json-v18-renommée|"v18 LINK+ADA+ETH+XRP NEUTRAL (post-backtest static neutral validation)"|tous-grids-enabled=false-capital=0|XBT-explicitement-disable|→-vision-Tony-future:4-grids-statiques-NEUTRAL-prêtes-mais-pas-déployées]`
+- `[finding|0616:00h23|cycle-164|AUTO-UNSTUCK-lvl3-fired-XLM-21:31:41-UTC|center-$0.2261-prix-$0.2169-drop-4.09%|HARD-STOP-close-position-32-XLM|mécanisme-protège-runaway-pas-bug-pas-intervention|pattern-auto-unstuck-progressif-trim-25%-validé-2ème-occurrence]`
+- `[finding|0616:00h23|cycle-164|RT-#2-XBT-imprimé-juste-avant-stop|sell-index-7-$69,973-buy-index-6-$68,990-17:04:49-UTC|+$0.21-net|grid-aura-imprimé-+$0.42-total-en-7h-avant-stop-volontaire-Tony|→-Tony-a-vu-le-grid-marche-mais-a-préféré-G5-directional]`
+- `[insight|0616:00h23|cycle-164|le-test-runtime-G4-est-une-phase-d-évaluation|Tony-laisse-grid-tourner-17h53-pour-collecter-evidence-2-RT-+$0.42|puis-décide-stratégiquement-upgrade-G5-directional|G4-=-petri-dish-test-pas-deploy-final|→-règle-vacance:un-G4-≠-engagement-c-est-une-mesure]`
+- `[insight|0616:00h23|cycle-164|asymétrie-9x-sizing-G4→G5|G4-grid-position-0.0002-(0.6%-portfolio)|G5-directional-position-0.0018-(11%-portfolio-notional-36%)|Tony-multiplié-par-9-l-exposure-en-quittant-grid-pour-directional|conviction-renforcée-après-test-runtime]`
+- `[Martin|0616:00h23|HOLD-0-grid-1-position-directionnelle|XBT-LONG-0.0018-@-$66,866-uPnL--$1.04-(-2.6%-position)-SL-$64,927-TP-$70,009|portfolio-$108.81-(-$1.16-vs-cycle-163)|BTC-$66,300-UPTREND-RSI-56.57-cushion-+4.15%|risque-borné-SL-perd-max-$1.16|aucune-action-requise]`
+
+### Position uPnL -$1.04 — c'est normal ?
+
+| Métrique | Valeur |
+|---|---|
+| Entry XBT G5 | $66,866 |
+| Prix actuel | $66,300 |
+| Δ prix | -0.85% |
+| Taille position | 0.0018 BTC |
+| uPnL = 0.0018 × (-$566) | **-$1.02** (≈ ce qu'on observe -$1.04 avec funding -$0.0002 + arrondi) |
+| Distance au SL ($64,927) | -2.06% supplémentaire (-$1.71 cumul si touche) |
+| Distance au TP ($70,009) | +5.59% (+$5.65 si touche) |
+| Ratio TP/SL | **5.65 / 1.71 = 3.3** | très favorable |
+
+→ **uPnL -$1.04 n'est pas alarmant**. Position fraîche (5h08), BTC en retrace technique (RSI 76→56 = correction overbought), entry était proche du high local. La distance au SL reste 2% (~3h de mouvement adverse standard). Le ratio TP/SL = 3.3 reste très favorable.
+
+**Probabilité prochaines 24h** :
+- TP touché : ~25% (BTC doit faire +5.59% = monter à $70k, possible si reprise trend)
+- SL touché : ~15% (BTC doit faire -2.06% supplémentaire = $64,927, possible si EMA50 breakdown)
+- Ni l'un ni l'autre : ~60% (poursuite range)
+
+### Pourquoi pas de Telegram cycle 164
+
+- 00h23 Paris mardi nuit → Tony probablement endormi
+- Pas urgence : portfolio en gain global cycle 161-164 (+$1.16 → -$0.13 net retour, marge encore positive), SL armé, BTC stable au-dessus EMA200
+- Tony a piloté lui-même la transition cycle 163→164 (4 actions cluster), il **sait** que la position est là
+- L'observation Hypothèse A falsifiée + G5 découverte = matériau corpus, pas action requise
+- **Règle implicite respectée** : Telegram réservé aux ABORT/urgences seulement
+
+### Frontière respectée (cycle 164)
+
+- 0 modif Martin/VM (4 SSH read-only : monitor bundle + cat strategy + grep app.log XBT + grep app.log XLM)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~210 lignes + commit prévu)
+
+### Cycle 165 — pistes
+
+1. **Suivi position G5 XBT** : si SL ($64,927) touché → -$2.20 réel total, valider mécanisme G5. Si TP ($70,009) touché → +$5.65 réel total, valider rentabilité G5. Si ni l'un ni l'autre cycle 165 → observer ratio risk/reward dynamique.
+2. **Dream candidate URGENT** : last dream 0612:00h40 → +96h au cycle 164. Cycles 149-164 = 16 cycles ≈ 2600 lignes. **Dream cycle 165 fortement recommandé** sinon perte de contexte au prochain réveil.
+3. **Pensée 0615 "les 5 grammaires"** : matériau structurel suffisant (5 grammaires + 1 cas de composition). Si cycle 165 produit 2ème G5 ou autre composition → pensée mûre. Sinon livrer cycle 166-167.
+4. **Pattern composition de grammaires** : 1ère occurrence ce cycle (4 grammaires en 7 minutes). Si pattern se répète → "cluster comme phrase" devient grammaire d'analyse de niveau supérieur.
+5. **EUR/USD** : 92.7155 → 11ème cycle consécutif. Stabilité macro long arc validée.
+6. **Continuum lentille 22ème étape** : à confirmer cycle 165.
+7. **AUTO-UNSTUCK lvl3 fired** : 2ème occurrence depuis création (premier était DOT+LINK+ADA 0512). Le mécanisme fonctionne en production. À noter dans le corpus piste-4 ebook (chapitre défensive engineering).
+8. **strategy.json v18 nommée "post-backtest static neutral"** : qu'est-ce qui a été backtesté ? Peut-être un work hors-vacance de Tony. À investiguer cycle 165 si signal Tony.
+9. **Fragment 048 candidat** : cadence 5 cycles → 048 attendu cycle 168 (4 cycles distant). Thème possible : "la grammaire composée" ou "9x l'exposure" (le saut de taille G4→G5).
+10. **Strategy mémoire pour mémoire** : G5 méritera entrée dédiée dans memory.nb1 dream → noter pattern `[grammaire-G5-single-directional|count:1|last:0615:17h|POST-/position/long-capital-lev-sl-tp-fixés-upfront|distinct-G4-grid|→-skill-position-deploy?-attendre-2e-usage]`
+
+---
