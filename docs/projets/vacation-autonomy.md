@@ -16459,3 +16459,194 @@ Cycle 161 pourra livrer la pensée structurelle si une 4ème grammaire émerge O
 10. **Surveillance position-zero post-NEUTRAL** : grid XLM en mode dormant asymétrique. Pattern à documenter si répété (Tony recommence test pair X + close +$Y plusieurs fois → pattern "Tony scalpe via grid").
 
 ---
+
+## Cycle 161 — 0615:06h23 Paris (04h23 UTC le 15/06) — Tony stop+restart XBT LONG 23:15 UTC = 4ème grammaire G4 découverte (deploy non-persistant)
+
+### Reconstruction fenêtre 160 → 161 (6h)
+
+| Source | Cycle 160 (22h23 UTC) | Cycle 161 (04h23 UTC) | Δ |
+|---|---|---|---|
+| `strategy.json` updatedAt VM | 2026-06-14 10:51:42 UTC | 2026-06-14 10:51:42 UTC | **inchangé** (pas d'édit 6) |
+| `started_at` /api/system/status | 22:31:49Z (uptime 23h51m) | 22:31:49Z (uptime **29h51m**) | bot stable, pas de 7e restart |
+| Grids actives | PF_XLMUSD seul | **PF_XLMUSD + PF_XBTUSD** | XBT redéployé entre cycles |
+| Position XBT | 0 | **long 0.0008 @ $65,554** | nouveau grid filled 3 niveaux |
+| Position XLM | 0 (closé 22:06 UTC) | 0 | stable dormant |
+| Open orders Kraken | 4 XLM buys | **4 XLM buys + 4 XBT buys + 1 XBT sell + 1 XBT SL** | XBT grid armé |
+| krakenRealizedPnl XLM | $0.1667 | $0.1667 | inchangé (grid XLM dormant) |
+| krakenUnrealizedPnl XBT | n/a | **+$0.1273** | nouveau grid 5h08 deploy |
+| BTC ema_trend | $65,172 RSI 68.55 OPEN | **$65,726 RSI 68.74 OPEN** | +0.85% / RSI flat / signal stable |
+| Cushion EMA200 | +2.94% | **+3.66%** | BTC s'éloigne de l'EMA200 (élargissement) |
+| Portfolio total | $108.21 | $108.22 | +$0.01 (valuation marginale) |
+
+**Verdict fenêtre** : NON vide. Une action Tony composée : 2 calls API séquencés (stop puis start XBT).
+
+### Forensic du deploy 23:15 UTC
+
+```
+23:15:01.613Z  POST /grid/stop/PF_XBTUSD                                                  ← no-op (XBT déjà stopped cycle 159)
+23:15:05.813Z  POST /grid/start instrument=PF_XBTUSD, capital=40.0, leverage=3,
+               demo=false, spacing=1.5%, levels=8, maxLoss=10.0%, mode=LONG               ← deploy effectif
+23:15:11.404Z  3 buy levels filled instantly (66041 / 67024 / 68007)                     ← BTC ~$68k au deploy
+```
+
+**Délai stop→start : 4.2 secondes**. Tony confirme l'absence de grid existant AVANT de relancer (defensive). Le start crée immédiatement la position 0.0008 BTC car 3 niveaux du grid sont sous le prix spot au moment du fill.
+
+### Divergence config vs strategy.json — découverte majeure
+
+| Paramètre | strategy.json (XBT entry) | Grid actif (deploy 23:15) | Δ |
+|---|---|---|---|
+| capital | 35.0 | **40.0** | +$5 |
+| leverage | 2 | **3** | +1x |
+| gridSpacingPct | 0.5 | **1.5** | ×3 |
+| totalLevels | 10 | **8** | -2 |
+| maxLossPercent | 8.0 | **10.0** | +2pt |
+| gridMode | NEUTRAL | **LONG** | mode inversé |
+| enabled | **false** | (n/a — runtime only) | persistance off |
+
+→ **Le deploy est entièrement non-conforme à la config persistée**. Aucune piste dans `strategy.json` ne dit "Tony veut XBT LONG capital $40 spacing 1.5%". Le deploy n'existe qu'en mémoire runtime du bot.
+
+### Quatrième grammaire G4 : *deploy expérimental non-persistant*
+
+| Grammaire | Calls | Durée | strategy.json | Persistance restart | Conformité config |
+|---|---|---|---|---|---|
+| G1 édit silencieux | 1 (filesystem) | manual | **modifié** | ✓ | ✓ |
+| G2 burst orchestré | 5 calls API | 4.5s | **modifié** (1 call dans le burst) | ✓ | ✓ |
+| G3 single tactical scalp | 1 call /scalp | 0.1s | intact | n/a (réactif) | n/a |
+| **G4 deploy expérimental** | **2 calls (stop+start)** | **4.2s** | **intact** | **✗ (si restart → grid disparait)** | **✗ (params hors config)** |
+
+**Caractéristiques G4** :
+- 2 calls API consécutifs (`/grid/stop` defensive + `/grid/start` effectif)
+- strategy.json INTACT (deploy non-écrit dans config)
+- Si le bot redémarre, ce grid ne se relancera pas (perte du test)
+- Params différents de toutes les entrées config (Tony invente une config ad-hoc)
+- **Bypass AutoGridScheduler** car la pair est `enabled: false` dans strategy.json (AutoGrid ne touche pas aux pairs disabled — mémoire `project_autogrid_scheduler_reverts_config.md` confirme : "grids manuelles tuées ~/15min si gridMode ≠ strategy-config" → ici la pair n'est pas dans le scope de gestion, donc immune)
+
+### Pourquoi cette grammaire est différente
+
+- **G2 (burst)** = Tony commit une stratégie complète (kill ancien + close + persist + deploy nouveau). C'est un changement de pied total, signé dans le fichier.
+- **G4 (deploy expérimental)** = Tony **teste une idée sans s'engager**. Si ça marche, il pourra commit (édit G1 ou G2 plus tard). Si ça ne marche pas, le simple restart du bot efface l'expérience.
+- **Bot uptime 29h51m** = Tony ne va pas restart prochainement. Tant que le bot tourne, son grid expérimental tourne.
+
+C'est une grammaire de **gestion du risque épistémique** : Tony ne sait pas si XBT LONG va marcher, donc il l'engage en mode "non-attaché" — il peut s'en débarrasser en 1 restart sans avoir édité aucun fichier.
+
+### État Martin cycle 161 (martin-monitor) — HOLD
+
+- **Bot UP 1d 5h 51m** depuis restart 22:31:49 UTC 13/06, stable
+- Portfolio **$108.22** (+$0.01 vs cycle 160, mouvement marginal)
+- 2 grids actives :
+  - **XBT LONG (G4 deploy 23:15 UTC)** : capital $40, leverage 3, centerPrice $65,549, spacing $983 (1.5%), 8 levels, maxLoss 10% LONG, autoRegimeMode NEUTRAL
+    - Position long 0.0008 @ Kraken avg $65,554 (~3 niveaux fillés au deploy)
+    - 4 buys Kraken posés ($62,109 / $63,092 / $64,075 / $65,058) sous spot
+    - 1 sell Kraken posé @ $69,973 (TP)
+    - SL Kraken armé @ $63,583 (-3% centerPrice) ✓
+    - krakenUnrealizedPnl **+$0.1272** = +0.32% capital
+    - 0 RT depuis 5h08 (phase accumulation normale <6h)
+  - **XLM NEUTRAL (dormant cycle 159)** : 4 buys armés Kraken ($0.17467-$0.18073), position 0
+    - krakenRealizedPnl +$0.1667 locked depuis cycle 160
+    - SL non armé (position=0)
+- BTC **$65,726 UPTREND 8e cycle consécutif** | EMA50 $64,407 > EMA200 $63,402 (cushion +3.66%, élargissement vs cycle 160 +2.94%) | RSI **68.74** (overbought stable) | Signal **OPEN** 8e | volatilityPct 0.64% (légère hausse)
+
+**Trigger martin-monitor** : **HOLD**.
+- uPnL XBT +0.32%, deploy 5h08 = phase accumulation normale (<6h)
+- 0 RT mais 5h08 post-deploy = pas alarmant
+- SL armé à -3% = protection définie
+- BTC s'éloigne de l'EMA200 (cushion s'élargit), pas de risque régime à 6h horizon
+- XLM dormant, gain locked, aucune position en risque
+
+### Streak NB 0-touch — actualisé
+
+- Cycle 160 : Tony touché 22:06 UTC (scalp XLM) → streak rompu après 89 cycles arc 71-159
+- **Cycle 161 : Tony touché 23:15 UTC (stop+restart XBT)** → 2 cycles consécutifs avec actions
+- Nouveau compte : 0 cycles intacts depuis 22:06 UTC le 14/06
+- **3 cycles consécutifs d'activité Tony** (159 burst + 160 scalp + 161 deploy G4) = première occurrence vacance
+
+### 18ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Grammaire | Origine |
+|---|---|---|---|
+| 154 | Édit 1 (palette 4→11 pairs) | G1 | Tony |
+| 155 | Édit 2 + pensée deux temps | G1 + NB | Tony + NB |
+| 156 | Édit 3 + post-scriptum | G1 + NB | Tony + NB |
+| 157 | Édit 4 + restart + grid XBT NEUTRAL + fragment 046 | G1+restart + fragment | Tony + NB |
+| 158 | Pensée "métier observateur tardif" | NB | NB |
+| 159 | Burst 5 calls (kill+close+disable+deploy XLM) | **G2** | Tony |
+| 160 | Scalp close XLM 1 call | **G3** | Tony |
+| **161** | **Stop+restart XBT LONG 2 calls non-persistant** | **G4 deploy expérimental** | **Tony** |
+
+→ **18 outputs**. **4 grammaires distinctes confirmées** en 7 cycles (G1 édit, G2 burst, G3 scalp, G4 deploy non-persistant). Le **vocabulaire d'actions Tony** est plus riche que le pattern initial "action-silence". Chaque grammaire a une signature forensique distincte et une intention stratégique différente.
+
+### Amendement pensée 0615 candidate
+
+La pensée potentielle cycle 160 ("les trois grammaires") devient **"les quatre grammaires"**. Matériau à décanter :
+
+1. **G1 édit** = planificateur (engagement persistant, ne nécessite pas runtime)
+2. **G2 burst** = orchestrateur (changement de pied total, runtime + persist)
+3. **G3 single tactical** = réactif (lock de gain ou close défensif, runtime seul)
+4. **G4 deploy expérimental** = chercheur (test hypothèse, runtime seul, non-engagé)
+
+**Méta-pattern observable** : Tony a 4 modes de relation au système :
+- Lent + engagé (G1)
+- Rapide + engagé (G2)
+- Rapide + tactique (G3)
+- Rapide + non-engagé (G4)
+
+L'axe **engagement** (commit dans le fichier de config ou non) sépare G1+G2 de G3+G4. L'axe **vitesse** (manuel ou API) sépare G1 de G2+G3+G4.
+
+Si une 5ème grammaire émerge — ex : édit lent + tactique (G5 ?), ou batch de 10+ calls (G6 ?) — la matrice s'enrichit. Sinon, 4 grammaires couvrent le quadrant complet.
+
+→ Pensée à livrer cycle 162 ou 163 (laisser 1-2 cycles pour observer si G4 est confirmé par une 2ème occurrence ou si une nouvelle grammaire émerge). Pas urgente : déjà 17 outputs continuum.
+
+### Hypothèses sur l'intention Tony
+
+Pourquoi déployer XBT LONG en non-persistant au lieu d'éditer strategy.json ?
+
+1. **Hypothèse A — Test rapide (poids 0.45)** : Tony veut voir si XBT LONG imprime sans s'engager. Si oui, il commitera plus tard. Si non, le restart efface.
+2. **Hypothèse B — Bypass AutoGrid délibéré (poids 0.30)** : Tony sait que `enabled: false` immunise contre les reverts AutoGrid. Il exploite ce mécanisme pour rouler son grid sans interférence.
+3. **Hypothèse C — Rotation pure (poids 0.15)** : Tony avait des fonds qui dormaient ($107.59 cash après scalp XLM), il les redéploie sur le pair qu'il pense le plus probable de bouger. Pas plus profond.
+4. **Hypothèse D — Préparation breakout (poids 0.10)** : BTC RSI 68 + cushion 3% → setup pre-breakout. Tony arme LONG pour capter une jambe up potentielle, avec SL à -3% si retracement.
+
+Confirmation prochaine via :
+- Tony édite strategy.json XBT capital=40 leverage=3 spacing=1.5 levels=8 mode=LONG enabled=true dans les 24h → Hypothèse A confirmée
+- Le grid roule sans modification jusqu'à cycle 167+ → Hypothèses B ou C
+- BTC casse $66,500-$67,000 prochaines 24h → Hypothèse D rétrospectivement validée
+
+### Findings DSL cycle 161
+
+- `[finding|0615:06h23|cycle-161|Tony-7e-action-deploy-XBT-LONG-non-persistant|23:15:01-stop+23:15:05-start-4.2s|capital-40-leverage-3-spacing-1.5-levels-8-LONG|strategy.json-INTACT-divergent-de-config-persistée|→-4ème-grammaire-G4-deploy-expérimental]`
+- `[finding|0615:06h23|cycle-161|G4-bypass-AutoGridScheduler-via-enabled-false|pair-disabled-dans-config-=-immune-aux-reverts-15min|Tony-exploite-mécanisme-pour-test-sans-interférence|→-pattern-utilisable-pour-tous-pairs-config-enabled-false]`
+- `[finding|0615:06h23|cycle-161|3-cycles-consécutifs-activité-Tony|159-burst+160-scalp+161-deploy-G4|première-occurrence-arc-vacance|→-Tony-très-actif-fin-week-end|hypothèse-N=1-attendre-cycle-162-pour-savoir-si-cluster-fini]`
+- `[finding|0615:06h23|cycle-161|cycle-160-hypothèse-lock-gain-pre-correction-CONTREDITE-partiellement|Tony-n-a-pas-réduit-exposition-il-a-rotaté-XLM→XBT-LONG|reste-vrai-qu-il-a-locké-XLM-+$0.17|mais-pas-pour-se-mettre-flat-pour-pivoter-vers-XBT|→-Tony-ne-cash-out-pas-il-rotate]`
+- `[insight|0615:06h23|cycle-161|vocabulaire-Tony-=-4-modes-relation-système|G1-lent-engagé|G2-rapide-engagé|G3-rapide-tactique|G4-rapide-non-engagé|axes-vitesse×engagement-quadrant-couvert|→-matrice-stratégique-Tony]`
+- `[insight|0615:06h23|cycle-161|deploy-non-persistant-=-gestion-risque-épistémique|Tony-teste-une-idée-sans-commit-fichier|restart-=-undo-gratuit|grammaire-de-l-expérimentation-pas-de-l-engagement|→-protocole-observateur-tardif-v4-doit-ajouter-grep-POST-/grid/start-app.log]`
+- `[Martin|0615:06h23|HOLD-2-grids-actives-XBT-LONG-5h08-+-XLM-NEUTRAL-dormant|XBT-uPnL-+$0.13-+0.32%-SL-armé-$63,583-3-fills-position-0.0008|XLM-buys-armés-position-0-realized-locked-$0.17|portfolio-$108.22|BTC-$65,726-UPTREND-8e-cushion-+3.66%-RSI-68.74-signal-OPEN-8e]`
+
+### Pourquoi *pas* de Telegram cycle 161
+
+- 06:23 Paris lundi matin → Tony peut-être réveillé peut-être pas, mais aucune urgence
+- Grid XBT en gain, SL armé, BTC porteur, XLM dormant sain
+- L'observation G4 4ème grammaire = matériau pour MON corpus, pas alerte
+- 0 Telegram cycle 161. Grammaire NB-silence préservée.
+
+### Frontière respectée (cycle 161)
+
+- 0 modif Martin/VM (1 SSH bundle martin-monitor + 1 SSH stat strategy.json + 2 SSH grep app.log read-only + 1 SSH cat strategy.json read-only + 1 SSH curl XLM grid status)
+- 0 modif code martin/, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~205 lignes + commit)
+
+### Cycle 162 — pistes
+
+1. **Confirmation G4** : si Tony déploie un autre grid non-persistant cycle 162-164, G4 confirmée par 2ème occurrence → pensée 0615 livrable. Sinon, attendre.
+2. **Suivi grid XBT LONG** : check si BTC casse $66,500 (premier sell potentiel) ou $63,583 (SL fire). Range BTC 6h ~1%. Probabilité RT à 6h : modérée (vol 0.64% sur 6h = ~$420 mouvement attendu vs $983 spacing = 0.4 niveau).
+3. **Strategy.json watch** : si updatedAt change avant cycle 162 → Tony commit son G4 deploy en config (Hypothèse A). Si reste 14:51:42 → G4 vraiment éphémère.
+4. **BTC overbought sustained** : RSI 68.7 stable depuis 8 cycles. Historiquement RSI plateau 65-72 sur 8 cycles = soit consolidation avant nouvelle leg up, soit distribution silencieuse. Watch volatilityPct (actuellement 0.64% en hausse de 0.55% cycle 160) — si dépasse 1% → mouvement directionnel imminent.
+5. **XLM dormant relance** : XLM spot actuel ~$0.18 (estimé via levels), buys posés à $0.18073-$0.17467. Si descente -1% → 1er buy fire, grid relance avec SL armé par StopLossManager.
+6. **Pensée 0615 candidate** : "les quatre grammaires de Tony" — pas livrée cycle 161, à décanter. Cycle 162 ou 163.
+7. **Dream candidate** : last dream 0612:00h40 → +78h au cycle 161. Cycles 149-161 = 13 cycles ≈ 2200 lignes. **Dream cycle 162 ou 163 recommandé** (12-15 cycles depuis dernier = sweet spot).
+8. **Fragment 047** : pas avant cycle 162-163 (cadence 5 cycles). Possible thème : "Tony invente une grammaire que je n'avais pas".
+9. **Forex EUR/USD** : 92.7155 → 8ème cycle consécutif si inchangé. Si breakout → impact direct portfolio.
+10. **Surveillance 4ème grammaire bis** : si Tony fait un 5ème mode (édit ad-hoc autre fichier ? cron user-side ?), nouvelle grammaire G5 émerge. Watch.
+
+---
