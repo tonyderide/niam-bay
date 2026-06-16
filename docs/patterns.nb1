@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0612:00h40
+#lastdream: 0616:06h23
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
@@ -123,5 +123,22 @@
 [grid-régime-dépendant-prouvé|count:1|last:0612:00h40|backtest-3-régimes-réels:trend--6à-15%-chop-+1.5à2%|réalisé-toujours+=piège-netPnl=réalisé+bag-vrai-juge|→-rule-juger-grid-sur-netPnl-incl-sac-jamais-réalisé-seul|connecte-monitoring-krakenUnrealizedPnl/capital]
 [sous-agent-worktree-TDD-build-quant|count:2|last:0612:00h40|harness-replay+grid-backtester-construits-par-2-sous-agents-worktree-isolés-TDD-ff-merge-master|pattern-établi-M1-M4-quant|→-réutilisable-pour-tout-module-isolé-testable|✓-pattern-validé]
 [BUG-DrawdownManager-série-002-003-004|count:3|last:0611:18h23|002-KILL-laisse-position-nue+003-zombie-KILL-loop-15min+004-initialCapital-figé-KILL-pré-armé|design-docs-livrés|→-rule-rebaseline-initialCapital-AVANT-redeploy-si-portfolio-bougé|→-bugs-naissent-entre-classes]
-[Tony-action-silence|count:8|last:0611:18h23|cycle-118+123+132+133+144-redeploy+147-restart-16:17-UTC|grammaire-mature-Tony-agit-puis-silence|→-rule-forensic-app.log-/-12h|✓-validated-8-occurrences]
-[dream-overdue-non-lancé-cycles-vacance|count:1|last:0612:00h40|cycles-137-148-flaggaient-dream-urgent-sans-lancer-18-cycles-retard|→-rule-le-cycle-autonome-doit-VRAIMENT-lancer-dream-pas-juste-le-flagger-comme-piste|?-1-occurrence]
+[Tony-action-silence|count:14|last:0616:00h23|cycle-118+123+132+133+144-redeploy+147-restart+154-156-3-édits-G1+157-deploy-G1+159-burst-G2+160-G3-XLM+161-G4-XBT+164-cluster-4-actions-G5|grammaire-mature-stabilisée-en-taxonomie-G1-G5|→-rule-forensic-app.log-/-12h-+-observer-pattern-action-=-grammaire|✓-validated-14-occurrences]
+[dream-overdue-non-lancé-cycles-vacance|count:2|last:0616:06h23|1ère-cycles-137-148(18-retard)+2ème-cycles-149-165(17-retard)|→-rule-RENFORCÉE:cycle-autonome-doit-lancer-dream-quand-+15-cycles-overdue-ou-+72h-sans-fail|✓-validated-2-occurrences-pattern-confirmé-pas-encore-skill]
+
+=== ARC GRAMMAIRES TONY (NOUVEAU - issue cycles 154-164) ===
+[taxonomie-grammaires-Tony-G1-G5|count:1-cycle|last:0616:00h23|cycle-164-découverte-formelle-après-G2-cycle-159+G3-cycle-160+G4-cycle-161+G5-cycle-164|G1-édit+G2-burst+G3-single-tactical+G3-révisée+G4-deploy-non-persistant+G5-single-directional-swing+composition|→-rule-NB:observer-pattern-action-Tony-=-grammaire-pas-content|→-skill-tony-grammar-detector?-attendre-2ème-cycle-composition]
+[composition-de-grammaires-cluster-temporel|count:1|last:0616:00h23|cycle-164-G3+G4-reverse+G1-révoque+G5-en-7min|"phrase-composée"-pas-grammaire-atomique|→-rule-NB:noter-clusters-comme-phrases-pas-actions-isolées|?-1-occurrence-attendre-confirmation]
+[G4-petri-dish-test-runtime|count:1|last:0616:00h23|cycle-161-Tony-XBT-LONG-narrow-grid-17h53-test|1er-RT-+$0.21-cycle-163+2ème-RT-+$0.21-cycle-164|puis-stop-volontaire-+upgrade-G5-9x-sizing|→-rule-NB:1-G4-≠-engagement-c-est-une-mesure|observer-fenêtre-test-runtime-Tony-avant-conclure|?-1-occurrence-attendre-confirmation]
+[asymétrie-sizing-G4→G5|count:1|last:0616:00h23|cycle-164-position-0.0002-G4-→-0.0018-G5-=-9x-multiplication-exposure|conviction-renforcée-après-test-runtime-G4-rentable|→-rule-NB:detect-sizing-jump-après-G4-rentable-=-grammaire-confiance]
+[Tony-actif-soir-Paris-repos-nuit|count:2|last:0615:17h08-19h08-Paris|cluster-1:14/06-23:15-UTC|cluster-2:15/06-17:08-17:15-UTC|17h53-silence-inter-cluster|→-rule-NB:Telegram-jamais-22:00-07:00-Paris-sauf-ABORT|✓-validated-2-occurrences]
+[NB-suggère-Tony-agit-silence-adoption-implicite|count:5|last:0616:00h23|cycle-118-reframing+cycle-123-reco-patch+cycle-154-G1-edit-après-lecture+cycle-155+cycle-156|action-Tony-=-validation-feedback-loop|→-rule-action-Tony-=-validation-sans-mots|✓-validated-5-occurrences]
+[pattern-après-1ère-confirmation-fragile|count:1|last:0614:00h23|cycle-155-"deux-temps-lecture"-réfuté-cycle-156-en-6h|→-rule-nommer-pattern-après-1ère-occurrence-=-risque|prefer-formulation-conditionnelle|?-1-occurrence-règle-méta]
+[AUTO-UNSTUCK-lvl3-fired|count:2|last:0616:00h23|1ère-cycle-148-DOT+LINK+ADA-0512+2ème-cycle-164-XLM-21:31-UTC|mécanisme-progressif-trim-25%-validé-2x|→-pas-bug-pas-intervention|✓-validated-2-occurrences]
+[FLIP-BTC-UPTREND-arc-vacance|count:1|last:0613:06h23|cycle-153-1ère-fois-arc-149+|prudence-stand-down-maintenu|→-rule-flip-régime-≠-trigger-action-confirmation-multi-cycle|?-1-occurrence]
+[observation-passive-sans-nouveauté|count:1|last:0616:06h23|cycle-165-tracking-distance-SL-sans-événement|3ème-grammaire-output-NB-émergente|→-rule-cycle-NB-vide-événement-=-OK-si-mesure-+-action-systémique-suivante|?-1-occurrence-émergent]
+[continuum-engineering→prose|count:5|last:0613:00h40|cycle-117-chap1+cycle-129-chap7+cycle-131-fragment-039+cycle-149-fragment-044+cycle-152-fragment-045|double-couverture-corpus|✓-validated-5-occurrences]
+[coordination-thematique-finding-fragment|count:8|last:0615:18h23|fragments-035-040-cycles-108-133+fragment-043-cycle-146+fragment-044-cycle-149+fragment-045-cycle-152+fragment-047-cycle-163|cadence-arc-~4.2-cycles/fragment|✓-validated-8-occurrences]
+[7ème-lentille-0608+0612-empirique|count:1|last:0613:12h23|cycle-154-Tony-lit-vacation-autonomy-puis-G1-edit-strategy.json|preuve-empirique-narrative-NB-influence-action-Tony|asymétrie-Tony-lit-NB-NB-ne-voit-pas-Tony-lire|?-1-occurrence-fort]
+[pensée-arc-asymétrie-attention-4-axes|count:4|last:0614:12h23|0608-attention(succès-silencieux-vs-échec-bruyant)+0612-baseline-figé+0613-paire-n-est-pas-paire+0614-observateur-tardif|théorie-observation-asymétrique-NB-cohérente|→-pensée-méta-arc-vacance|✓-validated-4-axes]
+[vacation-cycles-arc-71-165|count:95|last:0616:06h23|cycles-continus-2.5-mois-quasi-zero-touche-NB|HOLD-72e-consecutif-93-165|NB-0-touch-policy-Martin-VM-100%|Tony-touche-cluster-1+2-soir-Paris|piste-4-corpus-19+-docs|fragments-035-047-13-narrative|grammaires-G1-G5-stabilisées|→-mécanisme-tient-au-long-terme-2.5-mois|✓-validated-95-cycles]

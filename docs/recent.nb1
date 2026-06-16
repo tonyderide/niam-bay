@@ -1,29 +1,53 @@
 #conv: T=tony NB=niambay M=martin $=usd
-#window: 48h from 0610:18h23 to 0612:00h40 (cycles 143-148 + session quant-backtest)
-#lastdream: 0612:00h40
+#window: 48h from 0614:06h23 to 0616:06h23 (cycles 157-165, arc grammaires + position G5)
+#lastdream: 0616:06h23
 
-=== SESSION QUANT — backtest tick réel (0611 soir → 0612, Tony présent) ===
-[0612|quant-session|Tony-"vérifie+remets-un-graphe-cool"|chart-LineSeries→AreaSeries-dégradé-bleu-look-protosquant+crosshair+priceline-commit-64dd1e7|service-quant.service-sain-13h-uptime-WS-connecté-0-tick-perdu|expectancyR-live-+0.0009→+0.0056-breakeven-pas-d-edge]
-[0612|quant-session|Tony-"si-on-avait-mis-en-grid?"|insight:chop-régime-actuel=grid-imprime-ML-échoue(70%-TIMEOUT)|SOL-live-grid-5-RT-+$1.30-4j(uPnL-$0-genuine-car-SOL-choppé)|grid-reste-l-optimum-lesson_no_alpha_at_134]
-[0612|quant-session|Tony-"et-test-en-grid-sur-données-backtest?"|2-sous-agents-worktree-TDD:harness-replay-tick(com.martin.quant.replay)+grid-backtester(com.martin.quant.gridbt)|source-Binance-aggTrades-réels-data.binance.vision|PIÈGE:dumps-2026-en-µs-16-chiffres-normalizeToMillis-fix|110-tests-verts-mergés-master-local-PAS-poussés-commits-5062a62+f1b5119+cd1865a]
-[0612|quant-session|VERDICT-backtest-3-jours-6.26M-ticks-réels|consensus-7-robots-expectancyR=-0.0102-NÉGATIF-aucun-edge|GRID-régime-dépendant:trend--6-à--15%(sac)-vs-chop-+1.5-à-+2%|réalisé-toujours-positif-même-en-trend=piège-dashboard|netPnl=réalisé+bag-est-le-vrai-juge|SYNTHÈSE:ni-grid-ni-ML-edge-universel-tout-est-régime-prouve-BtcRegimeKillSwitch]
-[0612|quant-session|Tony-"relance-loop"→AskUserQuestion→trading-seul-horaire|cron-/trading-:07-session-only-job-40f69a9a|1er-cycle:Martin-100%-cash-$107.60-0-grid-stand-down-BTC-DOWNTREND-décision-HOLD-Telegram-msg-750]
-[0612|quant-session|Tony-"relire-sessions-après-midi"|reconstruction-jsonl-cycles-146(12h30)+147(18h31)-=-vacation-cycles-autonomes|"relance-loop-de-ce-soir"→mode-proactif→dream(18-cycles-overdue)]
+=== ARC GRAMMAIRES TONY — découverte taxonomie G1-G5 (cycles 157-164) ===
+[0616:00h23|cycle-164|VERDICT|Hypothèse-A-FALSIFIÉE-T+17h53|Tony-cluster-4-actions-17:08-17:15-UTC|composition-de-grammaires-1ère-occurrence|G5-grammaire-#5-découverte|XLM-AUTO-UNSTUCK-lvl3-fired-21:31-UTC-mécanisme-validé-2ème-occurrence|position-G5-XBT-LONG-0.0018-@-$66,866-SL-$64,927-TP-$70,009|portfolio-$108.81]
+[0616:06h23|cycle-165|VERDICT|fenêtre-164→165-VIDE-Tony-11h08-silence|position-G5-saigne-légère-uPnL--$1.47(-$0.43-vs-cycle-164)|distance-SL-rapproché-38bps-6h(1.68%-vs-2.06%)|BTC-$66,038-UPTREND-RSI-50.43-cushion-EMA50-+0.73%-EMA200-+3.6%|3ème-grammaire-output-NB-émergente:"observation-passive-sans-nouveauté"|dream-URGENT-lancé-+102h-overdue-17-cycles]
 
-[finding|0612|harness-backtest-tick-RÉUTILISABLE|réutilise-VRAIS-composants-pipeline-quant-offline|Binance-aggTrades-gratuit-mois-de-données-en-minutes|→-tester-n-importe-quelle-idée-trading-sans-attendre-le-live]
-[finding|0612|grid-régime-dépendant-empirique-tick|chop=printer-trend=bagger|le-no-follow-through-qui-tue-le-directionnel=pain-du-grid|connecte-monitoring-krakenUnrealizedPnl/capital]
+=== TAXONOMIE GRAMMAIRES TONY ===
+[grammaire|G1-édit|PUT-/api/strategy|persiste|cycles-154-155-156-157-N-temps-réfuté-pattern-deux-temps]
+[grammaire|G2-burst|cancel+close+reconfigure+redeploy-5-calls-en-4.5s|cycle-159-XBT→XLM-burst]
+[grammaire|G3-single-tactical|POST-/scalp/order-reduceOnly|cycle-160-XLM-scalp-close|révisée-cycle-162-close-≠-kill-grid]
+[grammaire|G4-deploy-non-persistant|POST-/grid/start-sans-strategy.json|runtime-only-test-pétri-dish|cycle-161-XBT-LONG-narrow-17h53-test|grid-imprime-+$0.42-en-7h]
+[grammaire|G5-single-directional-swing|POST-/position/long-capital+lev+sl%+tp%|runtime-only-position-bornée|cycle-164-XBT-LONG-$40-cap-3x-lev-asymétrie-9x-vs-G4]
+[grammaire|composition|cluster-temporel-≥2-grammaires-en-7min|"phrase-composée"|cycle-164-G3+G4-reverse+G1-révoque+G5|1-occurrence|→-pattern-à-confirmer]
 
-[lesson|0612|backtest-tick-réel-bat-l-attente-shadow|6.3M-ticks-en-minutes-vs-jours|→-rule-aggTrades-AVANT-d-attendre-du-live]
-[lesson|0612|granularité-fait-l-edge-ou-le-mensonge|seul-tick-réel-teste-au-tick|1m-OHLC-fabrique-le-chemin-faux-HFT/SCALP]
-[lesson|0612|grid-réalisé-positif≠gagnant|sac-unreal-domine-en-trend|juger-sur-netPnl-jamais-réalisé-seul]
+=== CYCLES VACANCE 157-165 (compressés) ===
+[0614:06h23|cycle-157|édit-4-Tony-silencieux+déploiement-XBT-NEUTRAL-fenêtre-22:23→04:23-UTC|N=4-édits-cumulés|stand-down-cassé-1ère-grid-active-arc-149+|BUG-004-désamorcé-par-rebaseline-implicite-G1]
+[0614:12h23|cycle-158|pensée-"le-métier-de-l-observateur-tardif"-livrée|fenêtre-157→158-calme|méta-NB-observe-après-coup-pas-temps-réel|4ème-axe-asymétrie-attention]
+[0614:18h23|cycle-159|Tony-pivote-XBT→XLM-BURST-4.5s-5-calls-API|G2-grammaire-burst-découverte-cascade-actions-rapides-irréversible]
+[0615:00h23|cycle-160|Tony-"single-tactical-action"-XLM-scalp-close-16min-avant-réveil|G3-grammaire-single-tactical-confirmée|taxonomie-G1+G2+G3-établie]
+[0615:06h23|cycle-161|Tony-stop+restart-XBT-LONG-23:15-UTC|G4-grammaire-deploy-non-persistant-découverte(runtime-only-pas-config)|Hypothèse-A-formée]
+[0615:12h23|cycle-162|fenêtre-161→162-VIDE-Tony|Hypothèse-A-en-attente-T+11h08|BTC-RSI-cooling-68.7→63.5-decay-temporel-6h-sideways|G3-révisée-close-≠-kill-grid-XLM-active-true]
+[0615:18h23|cycle-163|1er-RT-XBT-imprimé-+$0.21|fragment-047-livré|Hypothèse-A-T+17h08-vivante|empirisme-G4-fonctionne]
+[0616:00h23|cycle-164|VOIR-VERDICT-haut|+pensée-0615-"4-grammaires"-promue-à-5|attendre-cycle-165-166-2ème-G5-pour-pensée-mûre]
+[0616:06h23|cycle-165|VOIR-VERDICT-haut|22ème-étape-continuum-lentille|EUR/USD-92.7155-11ème-cycle-consécutif-stabilité-macro-long-arc]
 
-=== CYCLES VACANCE (contexte, <48h) ===
-[0612:00h23|cycle-148|pensée-0612-le-baseline-figé-creuse-l-impossibilité-de-récupérer-~85-lignes-extension-0608|stand-down-100%-cash-$107.60-0-grid|BTC-$63,500-DOWNTREND-pile-EMA200|streak-NB-0-touch-78-arc-71-148]
-[0611:18h23|cycle-147|Tony-restart-bot-16:17-UTC-clear-zombie-KILL|BUG-003-zombie-loop-11-fires-4h|BUG-004-DÉCOUVERT-initialCapital=134-figé-vs-$113.23=seuil-$113.90-breached→KILL-pré-armé-au-redeploy|fix-temp-134→110|design-doc-BUG-003+004-options-A/B/C]
-[0611:12h23|cycle-146|fragment-043-le-bug-qui-se-nourrit-de-la-défense-~290-lignes|pivot-XBT-LONG-narrow-abandonné-Tony-06h08-UTC|BUG-003-zombie-KILL-2e-fois-4:1-non-directionnel|stand-down-$113.39]
-[0611:00h23|cycle-144|design-doc-patch-BUG-002-~210-lignes-fix-1-ligne-closeGridAndPositions|Tony-redéployé-3-grids-SHORT-match-trend-LINK+XBT+ETH-$121.77]
-[0610:18h23|cycle-143|BUG-002-découvert-DrawdownManager-KILL-laisse-position-NUE|ETH-SHORT-0.06-nue-3-cycles-KILL-en-1h|Telegram-1er-alert-arc-vacance]
+=== FINDINGS / LESSONS clés (48h) ===
+[finding|0616:00h23|G5-découverte|POST-/position/long-capital=40-lev=3-sl=2.9%-tp=4.7%-entry-$66,866-size-0.0018|asymétrie-sizing-9x-G4(0.0002)→G5(0.0018)|conviction-renforcée-après-test-runtime-17h53]
+[finding|0616:00h23|composition-grammaires-1ère-occurrence|G3-close-XLM+G4-reverse-stop-XBT+G1-révoque-disable+G5-open-directional-en-7min|"phrase-composée"-pas-grammaire-atomique]
+[finding|0615:18h23|cycle-163|G4-test-runtime-empirique-prouvé-rentable|grid-imprime-+$0.42-en-17h-avant-stop-volontaire|→-G4-=-petri-dish-test-pas-deploy-final]
+[finding|0616:00h23|AUTO-UNSTUCK-lvl3-fired-XLM-2ème-occurrence|mécanisme-progressif-trim-25%-validé-2x-en-arc|pas-bug-pas-intervention]
+[finding|0616:06h23|distance-SL-rapproché-38bps-6h|vitesse-empirique-6bps/h-non-linéaire|si-EMA50-$65,557-cassé-probabilité-SL-+20pts]
+[finding|0613-0616|7ème-lentille-0608+0612|Tony-LIT-vacation-autonomy.md-puis-AGIT(G1-edit-cycle-154)|preuve-empirique-narrative-NB-influence-action-Tony-asymétrique]
 
-[pattern|Tony-action-silence|count:8|cycle-118+123+132+133+144+restart-147|grammaire-confirmée|✓]
-[pattern|backtest-tick-réel-Binance-aggTrades|count:1|0612|harness-réutilisable-com.martin.quant.replay+gridbt|→-skill?-attendre-2e-usage]
-[pattern|grid-régime-dépendant-chop-vs-trend|count:1|0612-backtest-3-régimes-prouvé|→-rule-juger-grid-sur-netPnl-incl-bag]
+[lesson|0613-0616|taxonomie-grammaires-Tony-stabilisée|observer-pattern-action-Tony-=-grammaire-pas-juste-content|1-G4-≠-deploy-final-c-est-une-mesure]
+[lesson|0613-0616|Tony-actif-soir-Paris-+-repos-nuit-2-confirmations-consécutives|Telegram-jamais-fenêtre-22:00-07:00-Paris-sauf-ABORT-urgence]
+[lesson|0612-0616|pattern-après-1ère-confirmation-fragile|"deux-temps-lecture"-cycle-155-réfuté-cycle-156|nommer-pattern-après-1ère-occurrence-=-risque|prefer-formulation-conditionnelle]
+[lesson|0613:06h23|FLIP-BTC-UPTREND-1ère-fois-arc-vacance|prudence-confirmation-=-stand-down-maintenu|flip-régime-≠-trigger-action]
+[lesson|0616:00h23|G4-=-petri-dish-test|Tony-collect-evidence-17h53-2-RT-+$0.42-puis-décide-G5-9x-sizing|observer-fenêtre-test-runtime-avant-conclure-engagement]
+
+=== ÉTAT MARTIN cycle 165 (snapshot dream) ===
+[M|status-0616:06h23|HOLD-0-grid-1-position-G5|XBT-LONG-0.0018-@-$66,859-uPnL--$1.47(-3.7%-position)-SL-$64,927-TP-$70,009|portfolio-$108.32|BTC-$66,038-UPTREND-RSI-50.43-cushion-EMA200-+3.6%-EMA50-+0.73%|risque-borné-SL-perd-max-$3.47-=-3.2%-portfolio|uptime-2d-5h-51m-aucune-action-requise]
+
+=== PISTES cycle 166 (post-dream) ===
+1. Vérifier exécution dream (memory.nb1 + recent.nb1 + patterns.nb1 à jour)
+2. Suivi position G5 XBT SL/TP/ratio dynamique RSI
+3. EMA50 critique : si BTC casse $65,557 → SL probabilité +20pts
+4. Détection cluster Tony 3ème occurrence (pattern "actif soir Paris" statistique solide à 3)
+5. Pensée "5 grammaires" : attendre 2ème G5 ou composition
+6. Continuum lentille 23ème étape
+7. Fragment 048 candidat dans 3 cycles si cadence 5 tient
+8. Détection signal "Tony reprend" — fin arc vacance probable (densité clusters monte)
