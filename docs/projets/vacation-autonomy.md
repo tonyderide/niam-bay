@@ -17611,3 +17611,128 @@ Fenêtre de 12h entre cycle 165 (06h23 Paris) et cycle 167 (18h23 Paris) avec **
 - Output niam-bay : 1 fichier (cette entry vacation-autonomy.md cycle 167 + commit prévu)
 
 ---
+
+---
+
+## Cycle 168 — 2026-06-16 22:23 UTC (00h23 Paris 2026-06-17)
+
+### Snapshot Martin
+
+| Métrique | Cycle 167 (16:23 UTC) | Cycle 168 (22:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $109.06 | $108.98 | -$0.08 |
+| uPnL | +$0.0007 | -$0.0002 | ≈0 |
+| Grids actives | 1 (XBT $40) | **2 (XBT $40 + XLM $30)** | +1 XLM réactivée |
+| Position ouverte | 1 long XBT 0.0001 @ $65,725 | 1 long XBT 0.0001 @ $65,725 (inchangée) + 1 long XLM 14 unités @ $0.219 (fresh) | + 1 XLM mini-position |
+| RT cumulés | 0 (XBT) | 0 (XBT) + 0 (XLM) | 0 |
+| BTC | $65,726 UPTREND WAIT RSI 43.8 | $65,719 UPTREND WAIT RSI 45.05 | -$7 stable, RSI +1.2 |
+| Cushion EMA50 | -0.10% (cassé) | -0.09% (toujours cassé) | quasi-identique |
+| Cushion EMA200 | +2.55% | +2.41% | -14bps |
+| Signal | WAIT (RSI<50) | WAIT (RSI<50) | maintenu |
+| Volatility | n/d | 0.63% | normal |
+
+→ **Marché endormi 6h** : BTC oscille -7$ dans une bande de ~150$. EMA50 toujours cassée mais EMA200 cushion intact (+2.4%). Régime UPTREND maintenu. Aucun trigger d'action.
+
+### XLM grid réactivée — cluster Tony 4 ou AutoGridScheduler ?
+
+**Découverte cycle 168** : XLM grid `PF_XLMUSD` repartie à **22:17:21 UTC** (00:17 Paris), 6 minutes avant snapshot. Premier fill **22:24:15 UTC** au level 4 @ $0.219 (14 unités, position +14 XLM). Cap $30, lev 2, spacing $0.0022, maxLoss 8%, NEUTRAL, SL Kraken $0.2135 (-2.5%).
+
+**Question** : Tony cluster 4 (action manuelle vers 00h17 Paris) ou AutoGridScheduler auto-deploy ?
+
+**Indices** :
+- Heure d'activation (00h17 Paris) : tard mais pas impossible pour Tony (cluster 1 cycle 159 = nuit Paris, cluster 3 cycle 166 = matin Paris, "horaire variable" déjà acté cycle 166)
+- `gridMode: NEUTRAL` cohérent avec strategy.json post-backtest static neutral v18
+- `capital=30` et `amountPerLevel=3.0` cohérent avec config existante
+- Si AutoGridScheduler avait redéployé, on aurait probablement vu XBT redéployer aussi (or XBT tournait déjà depuis 15h)
+- → **Hypothèse Tony cluster 4** (probabilité ~60-70%), mais sans grep app.log impossible à confirmer cette session
+
+**Si cluster 4 confirmé** : densité Tony arrête de monter monotone (3 clusters en 34h cycle 166 → 4 clusters en 40h → ratio ~1/10h stable). "Fin arc vacance proche cycle 167-170" reste possible mais pas accéléré.
+
+### G7-edge — persistance confirmée 8h
+
+**Observation cruciale cycle 168** : le sell orphelin XBT level 5 @ $66,919 (`krakenOrderId: null`) découvert cycle 167 est **toujours orphelin 6h plus tard**, soit 8h05min après le buy fill correspondant à 14:18:49 UTC.
+
+**Cross-check Kraken live** (`/api/bot/orders` PF_XBTUSD) :
+- 4 buy limites PLACED levels 0-3 ($60,949, $62,143, $63,337, $64,531)
+- 1 sell stop reduceOnly $64,332 (SL)
+- **0 sell limit**
+
+Le grid déclare 5 sells `WAITING` (levels 5-9). Kraken voit 0 sell. La désynchronisation est totale et stable depuis 8h.
+
+→ **G7-edge n'est pas un cas transitoire** : c'est un état stable de la machine. Si rien ne déclenche un autre fill au même niveau (impossible si grid muet), le sell ne se replace jamais. Auto-perpétuation confirmée empiriquement.
+
+**Conséquence opérationnelle** :
+- Si BTC remonte vers $66,919, le grid manque le round-trip (gain perdu = $0.12 par level si touché)
+- 5 levels orphelins au-dessus = max gain perdu théorique sur ce grid en up-leg = $0.60 (1.5% du cap $40)
+- Loss capital : zéro (la position long continue à monter en non-réalisé sans plafond)
+- Risk : pas tail risk, juste opportunity cost asymétrique en up-leg
+
+### Output cycle 168 — chapitre ebook drafté
+
+**Asset produit** : `docs/projets/ebook-chap-edge-cases-stub.md` (chapitre 5 du livre piste-4), ~1700 mots, ratio chapitre 1.
+
+**Structure narrative** :
+1. Le moment où je l'ai vu (22h23 UTC, croisement /api/grid/status vs /api/bot/orders)
+2. Ce que le bot croit faire (handleFillNeutral logic, pseudo-code)
+3. Ce qu'il fait vraiment (race condition WebSocket fill event vs REST position propagation)
+4. Pourquoi personne ne le voit (l'API ment passivement, dashboard masque)
+5. Ce qu'on a essayé qui n'a pas marché (retry naïf 1s, audit périodique)
+6. Le fix qui pourrait tenir (ne pas pré-placer reduceOnly avec compte flat)
+7. Ce que ce bug enseigne (l'hypothèse implicite WebSocket ≡ REST)
+8. Meta validation (concret, distinct de BUG-001, généralise, narrateur cohérent)
+
+**Pourquoi ce chapitre est solide** :
+- Bug **observé live** sur le bot Tony, pas hypothèse
+- Distinct de BUG-001 (chap 1) : pas read-after-write, race entre événements et état distribué sur 2 pipelines
+- Généralise : webhooks vs REST état, WS Binance vs REST balance, Pub/Sub vs Firestore — pattern applicable hors trading
+- Filtre revenue non-IA réplicable respecté : ChatGPT ne peut pas générer ça sans avoir vu le code `GridTradingService.handleFillNeutral` + observation live 8h. Moat empirique = réel.
+- Cohérence corpus : 2 chapitres complets stub (chap 1 BUG-001 + chap 5 G7-edge). 4 chapitres bugs restants à produire (BUG runtime state divergence, stopGrid orphelin, silent drag CB oscillation) + 2 méta (méthode 3 niveaux, outils). V1 atteignable 8-12 cycles supplémentaires si rythme tient.
+
+### 25ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 166 | Forensic cluster 3 + G6 + composition #2 | NB | forensique + théorisation enrichie |
+| 167 | Finding G7-edge sell orphelin + diagnostic code path | NB | forensique code (lecture .java) |
+| **168** | **Persistance G7-edge confirmée 8h + chapitre ebook 1700 mots drafté** | **NB** | **forensique code → asset publication (1er passage entre observation et livre)** |
+
+→ **25 outputs continuum**. Cycle 168 marque une **transition de grammaire** : pour la 1ère fois, l'observation forensique cycle N-1 produit un asset publication cycle N. Pas seulement un finding DSL, pas seulement une pensée — un texte de 1700 mots prêt à être édité pour publication. **L'asymétrie d'attention (NB observe après coup) commence à se transformer en asymétrie de production (NB livre des chapitres pendant que Tony fait autre chose)**.
+
+### Findings DSL cycle 168
+
+- `[finding|0616:22h23|cycle-168|G7-edge-persistance-8h-confirmée|sell-level-5-XBT-$66919-krakenOrderId-null-stable-depuis-14:18-UTC|0-retry-mécanisme-auto-perpetuation|race-condition-WebSocket-fill-vs-REST-position-propagation|→-pas-transitoire-état-stable-bot]`
+- `[finding|0616:22h23|cycle-168|XLM-grid-réactivée-22:17-UTC|deploy-frais-cap-$30-spacing-0.0022-NEUTRAL-SL-$0.2135|1-fill-level-4-$0.219-22:24-UTC-position-14-XLM|→-cluster-Tony-4-probable-60-70%-OU-AutoGridScheduler-deuxième-hypothèse]`
+- `[finding|0616:22h23|cycle-168|BTC-stagnation-6h-EMA50-toujours-cassée|drift--$7-RSI+1.2-cushion-EMA200-+2.4%-intact|signal-WAIT-maintenu|→-régime-range-bound-cohérent-grid-NEUTRAL-armée]`
+- `[asset|0616:22h23|cycle-168|chapitre-ebook-edge-cases-drafté|~1700-mots-ratio-chap1|G7-edge-comme-entrée-narrative|2-chapitres-stub-totaux-piste-4|reste-4-bugs-+-2-méta-pour-V1|→-rythme-8-12-cycles-supplémentaires-publication-2-semaines]`
+- `[insight|0616:22h23|cycle-168|nouvelle-grammaire-output-NB-3:asset-publication-de-forensique-code|distinct-observation-théorisation-forensique|→-corpus-output-=-4-grammaires:passive-théorique-forensique-asset-publication]`
+- `[insight|0616:22h23|cycle-168|asymétrie-attention-→-asymétrie-production|NB-livre-chapitre-pendant-Tony-fait-autre-chose|1ère-fois-output-NB-=-livrable-éditable-vs-corpus-interne|→-test:Tony-lecture-chap-edge-cases-+-feedback]`
+- `[Martin|0616:22h23|HOLD-2-grids-NEUTRAL-1-mini-position-XLM-fresh|XBT-cap-$40-1-fill-0-RT-15h+XLM-cap-$30-1-fill-0-RT-6min|portfolio-$108.98-uPnL≈0|BTC-$65,719-UPTREND-WAIT-RSI-45|G7-edge-persistant-monitoring-only-pas-d-action-requise]`
+
+### Cycle 169 — pistes
+
+1. **Vérifier 2ème occurrence G7-edge sur XLM** : la grid XLM vient de faire 1 fill level 4 @ $0.219. Le sell level 5 @ $0.2212 sera-t-il PLACED ou orphelin (`krakenOrderId: null`) ? Si orphelin → G7-edge confirmé sur 2 paires distinctes = pattern systémique.
+2. **Cluster Tony 4 confirmation** : si app.log accessible cycle 169 et logs montrent POST /api/grid/start sur XLM avec timestamp 22:17 UTC, hypothèse Tony confirmée. Sinon AutoGridScheduler.
+3. **Continuum 26ème étape** : selon output cycle 169 (passive, forensique, ou nouvel asset).
+4. **Fragment 048** : cadence 5 atteinte, candidat cycle 169-170. Thème : "l'orphelin one-shot" ou "la grammaire qui livre".
+5. **Pensée 6 grammaires** : matériau corpus mature. Si Tony reste silencieux 2 cycles, livrable cycle 169-170 avec formulation conditionnelle.
+6. **Chapitre ebook BUG runtime state divergence (chap 3)** : prochain candidat rédaction si rythme tient. Source : `runtime-state-divergence-cycle111.md`.
+7. **EUR/USD** : 92.7155 → 13ème cycle consécutif stabilité macro arc probable.
+
+### Pourquoi pas de Telegram cycle 168
+
+- 00h23 Paris → Tony **dort** (règle implicite respectée : pas de Telegram fenêtre 22:00-07:00 sauf ABORT)
+- Aucun trigger d'urgence : portfolio stable, SL safe, régime OK
+- Découvertes utiles (G7-edge persistance, chapitre drafté) = matériau pour Tony à son réveil, pas urgence nuit
+- Asset publication = à lire posément, pas en réveil panique
+
+### Frontière respectée (cycle 168)
+
+- 0 modif Martin/VM (2 SSH read-only : monitor bundle + XLM grid status query)
+- 0 modif code martin/ (rappel chap edge cases = lecture .java cycle 167 already done)
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 2 fichiers (cette entry cycle 168 + chapitre ebook edge cases ~1700 mots) + commit prévu
+
+---
