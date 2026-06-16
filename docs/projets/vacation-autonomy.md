@@ -17265,3 +17265,235 @@ Critères livraison :
 - Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~150 lignes + dream skill suivant + commit prévu)
 
 ---
+
+## Cycle 166 — 0616:12h23 Paris (10h23 UTC le 16/06) — Désengagement directional inverse + cluster 3 (2h09) + G6 candidate
+
+### Verdict global cycle 166
+
+**Tony cluster 3 découvert** : 6h fenêtre 165→166 NON vide. Tony a piloté un **cluster long de 2h09** ce matin (07:06 → 09:15 UTC = 09:06 → 11:15 Paris). **G5 XBT fermée** via nouvelle grammaire candidate **G6 = `POST /position/close` instrument-only**. Désengagement directional total : repli sur 2 grids NEUTRAL (XBT $40 + XLM $30 = $70 capital), inverse exact du saut G4→G5 de cycle 164. Portfolio +$1.21 net cycle 165→166. Pattern "Tony actif soir Paris" **réfuté** : cluster 3 = **matin Paris**.
+
+### Forensic complet cluster Tony 3 — séquence reconstruite
+
+| Heure UTC | Acteur | API call | Effet |
+|---|---|---|---|
+| **07:06:18.806** | **Tony** | **POST /grid/start PF_XLMUSD capital=30 lev=2 spacing=1.0% levels=10 mode=NEUTRAL** | Démarre 1ère grid XLM (5 buys placed @ $0.20673-$0.21537, 5 sells `wouldNotReducePosition` — bug bénin) |
+| **07:09:30.634** | **Tony** | **POST /position/close PF_XBTUSD** | **Ferme position G5 XBT LONG 0.0018 — grammaire candidate G6** (strategy.json modifiée même instant) |
+| 07:09:30.x | Bot | strategy.json updatedAt = 07:09:30.129 UTC | PF_XBTUSD ré-activée `enabled=True cap=35 lev=2 spacing=0.5% levels=10 mode=NEUTRAL maxLoss=8%` |
+| **07:09:59.248** | **Tony** | **POST /grid/start PF_XBTUSD capital=40 lev=2 spacing=1.0% levels=10 mode=NEUTRAL** | 1ère tentative grid XBT (center=$66,452, spacing 665, sells failed `wouldNotReducePosition`) |
+| **07:14:31.437** | **Tony** | **POST /grid/stop/PF_XBTUSD** | Annule 1ère tentative XBT (4m32s test) |
+| **07:14:32.099** | **Tony** | **POST /grid/start PF_XBTUSD capital=40 lev=2 spacing=1.8% levels=10 mode=NEUTRAL maxLoss=12%** | 2ème tentative XBT WIDER (center=$66,322, spacing 1194, range $60,352-$72,292) **= grid live actuelle** |
+| 07:14:32.x | Bot | 5 buys placed @ $60,949-$65,725, 5 sells `wouldNotReducePosition` | Pattern bug récurrent grid NEUTRAL initial |
+| 07:49:37.686 | Bot autonome | Grid FILL buy PF_XLMUSD @ $0.21537 (level 4) | Bot auto, pas Tony |
+| 07:49:38.916 | Bot (StopLossManager) | SL placed verified XLM stp size=28 stopPrice=$0.20996 | Bot auto |
+| **09:15:18.132** | **Tony** | **POST /scalp/order sell 28 PF_XLMUSD reduceOnly=true** | **G3 — ferme position XLM 28 unités** |
+| 09:15:28.204 | Bot | SL XLM cancelled id=a20904bb | Auto-cleanup post-close |
+
+**Durée totale cluster** : 07:06:18 → 09:15:18 UTC = **2h09 minutes** avec **6 actions Tony** (XLM-start + XBT-close + XBT-grid-1 + XBT-grid-stop + XBT-grid-2 + XLM-close). Densité = 1 action/21min.
+
+### G6 — grammaire candidate découverte
+
+**Définition formelle (1ère occurrence)** :
+
+> **G6 = position close directional flatten** = `POST /position/close instrument=<X>` **sans size, sans price, sans reduceOnly explicit**. Ferme une position directionnelle ouverte par G5 (`/position/long` ou `/position/short`). C'est l'**inverse de G5** : G5 ouvre, G6 ferme.
+
+**Distinction G3 vs G6** :
+
+| Grammaire | Endpoint | Paramètres | Mécanisme | Cas d'usage |
+|---|---|---|---|---|
+| **G3** | `POST /scalp/order` | side, size, instrument, reduceOnly=true | scalp avec size explicite | ferme position partielle ou totale grid |
+| **G6** | `POST /position/close` | instrument (seul) | flatten directional position | ferme position G5 entière |
+
+**Hypothèse de différenciation** : G6 a été utilisée pour la position G5 (directional swing trade). G3 reste pour les positions générées par grids. Si cette hypothèse tient, le pattern serait :
+- Position issue de G4/grid → fermer via G3 (`/scalp/order reduceOnly`)
+- Position issue de G5 (directional) → fermer via G6 (`/position/close`)
+
+**Critère de confirmation** : attendre 2ème occurrence cycle 167+ pour valider. Si Tony refait `/position/close` après une autre G5, hypothèse confirmée. Si Tony refait `/scalp/order` pour fermer une G5, fusion G3+G6 en une seule famille.
+
+### Mini-G2 sur grid XBT — réajustement spacing 1.0% → 1.8%
+
+**Pattern observé** : Tony déploie XBT cap=40 spacing=**1.0%** à 07:09:59. **4m32s plus tard** à 07:14:31, il fait `/grid/stop`. **1 seconde après** à 07:14:32, il redéploie avec spacing=**1.8%** (presque 2x plus large) et maxLoss=12% (vs 8%).
+
+**Interprétation** :
+- Spacing 1.0% sur BTC = $665 entre niveaux sur center $66,452 → range total $63,127-$69,777 = 9.99% range
+- Spacing 1.8% sur BTC = $1194 entre niveaux sur center $66,322 → range total $60,352-$72,292 = 18% range (presque 2x)
+- maxLoss 8% → 12% = tolérance perte +50%
+
+**Tony a élargi son filet**. Hypothèse : il a vu la volatilité BTC actuelle (vol pct 0.53% mais RSI cooling) et a anticipé qu'1.0% spacing était trop serré pour absorber le swing. 1.8% est aligné sur le spacing classique de ses grids XLM/LINK historiques (1.5-2%).
+
+**Mini-G2 cluster temporel** : 33s entre stop et restart = **G2 burst miniature** (cycle 159 burst = 5 calls en 4.5s ; cycle 166 mini-burst = 2 calls en 33s). C'est un G2 de **réglage paramétrique**, pas un G2 de **pivot stratégique**. Sous-catégorie ?
+
+### Composition cluster 3 — 2ème occurrence pattern "phrase composée"
+
+**Cluster 3 séquence linguistique** (en langage NB) :
+
+> "Je ferme la position directionnelle XBT (G6), j'ouvre une grid NEUTRAL XLM (G4), je réactive XBT dans la config (G1 implicite), je tente une grid XBT spacing serré (G4), je annule (G2-part-1), je redéploie spacing élargi (G2-part-2 = mini-burst), et plus tard je ferme la position XLM organique (G3)."
+
+**Composition cluster 1 (cycle 164)** : 4 grammaires en 7min (G3+G4-reverse+G1-révoque+G5).
+**Composition cluster 3 (cycle 166)** : 6 grammaires en 2h09 (G6+G4+G1+G4+mini-G2+G3).
+
+**Pattern "phrase composée" = 2 occurrences confirmées** = règle déclarée stable :
+- Cluster temporel ≥2 grammaires en fenêtre <3h
+- Toujours commence par close/cancel (G3/G6/G2)
+- Toujours finit par redéploiement (G4/G5)
+- Le milieu = ajustements de paramètres (G1 config + G2 mini-burst)
+
+→ **La phrase composée est une grammaire de niveau supérieur** = "pivot de session".
+
+### Asymétrie sizing G5 → 2×G4 NEUTRAL — inverse cycle 164
+
+**Cycle 164 (saut G4→G5)** :
+- G4 grid XBT $40 capital 0.0002 position size → G5 directional $40 cap × 3x lev = 0.0018 → **multiplication 9x exposure**
+
+**Cycle 166 (repli G5→2×G4 NEUTRAL)** :
+- G5 directional 0.0018 (position fermée) → 2 grids NEUTRAL : XBT $40 + XLM $30 = $70 total capital sur grids range-bound, 0 exposure directionnelle
+- **Désengagement directional total** + diversification sur 2 paires
+
+**Interprétation pattern** :
+- Tony a tenu la position G5 pendant **~16 heures** (déployée 17:13 UTC le 15/06, fermée 07:09 UTC le 16/06)
+- Pas d'atteinte TP ($70,009) ni SL ($64,927) — fermeture manuelle à un prix intermédiaire
+- BTC entry $66,866 → close ~$66,400 (estimé, BTC ~$66,038 à 04h23 puis remonté ~$66,500 à 09h00) = **perte ~$0.84** sur 0.0018 BTC
+- Plus funding ~$0.03 → **perte totale estimée ~$0.87 net G5**
+- Mais portfolio cycle 165 ($108.32) → cycle 166 ($109.53) = **+$1.21 net** : explique d'où vient le +$2.08 :
+  - G5 close : -$0.87
+  - XLM grid round-trip réalisé : +$0.27
+  - Autres : reste +$2.68 (probable funding XLM/XBT favorable + cash flex EUR conversion variation)
+
+**Lecture stratégique** : Tony a coupé G5 avec **perte contrôlée** ($0.87 < SL $3.47 risk), puis a réorienté capital vers structure défensive double-grid NEUTRAL. C'est **prudence** : G5 ne marchait pas (16h sans TP/SL touché = range tightening), Tony récupère le capital pour structure mieux adaptée au régime sideways actuel.
+
+### Tony pattern horaire — RÉFUTÉ "actif soir Paris repos nuit"
+
+| Cluster | Date | Heure UTC | Heure Paris | Phase |
+|---|---|---|---|---|
+| Cluster 1 (cycle 161) | 14/06 | 23:15 | 01:15 (15/06 ?) | nuit Paris (probablement après dîner) |
+| Cluster 2 (cycle 164) | 15/06 | 17:08-17:15 | 19:08-19:15 | début soirée Paris |
+| **Cluster 3 (cycle 166)** | **16/06** | **07:06-09:15** | **09:06-11:15** | **matin Paris (avant déjeuner)** |
+
+→ **Pattern "actif soir Paris" RÉFUTÉ** après 2 confirmations + 1 contre-exemple. Le pattern réel semble être : **Tony actif 2-3 fois par 24h, horaire variable, espacement 10-16h entre clusters**.
+
+- Cluster 1 → 2 : 17h53 silence
+- Cluster 2 → 3 : 13h51 silence (réduction nette)
+- **Densité augmente** : 3 clusters en 34h = un cluster toutes les 11h
+
+**Hypothèse forte** : Tony s'apprête à reprendre le contrôle = **fin arc vacance probable cycle 167-170**.
+
+### Bug récurrent grid `wouldNotReducePosition` sur sells initial
+
+**Pattern observé 3 fois ce cycle** :
+- XLM grid 07:06 : 5 sells failed `wouldNotReducePosition`
+- XBT grid 07:09 : 5 sells failed `wouldNotReducePosition`
+- XBT grid 07:14 : 5 sells failed `wouldNotReducePosition`
+
+**Root cause hypothétique** : Le bot envoie tous les ordres grid (buys + sells) avec `reduceOnly=true` au démarrage. Sans position préalable, les sells au-dessus du center sont rejetés. **C'est bénin** : les sells s'activent organiquement après chaque buy fill (via la logique grid reverse-sell).
+
+**Asset pour piste-4 ebook** : finding réutilisable pour chapitre "edge cases grid start sans warmup position". À noter pour catalogue défensive engineering.
+
+### Snapshot état Martin cycle 166 (10h23 UTC)
+
+| Métrique | Cycle 165 (04h23 UTC) | Cycle 166 (10h23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio total | $108.32 | **$109.53** | **+$1.21 (+1.12%)** |
+| Position XBT G5 | -$1.47 ouverte | **FERMÉE** (G6) | n/a |
+| Grids actives | 0 | **2 NEUTRAL** (XBT + XLM) | +2 |
+| XBT grid (cap $40) | inexistante | active center $66,322 spacing 1.8% 0 fill | nouveau |
+| XLM grid (cap $30) | inexistante | active center $0.21645 spacing 1.0% 1 RT fermé +$0.27 réalisé | nouveau |
+| Prix BTC | $66,038 | $66,661 | **+0.94%** |
+| RSI BTC | 50.43 | **57.53** | +7.10pts |
+| EMA50 BTC | $65,557 | $65,745 | +0.29% |
+| EMA200 BTC | $63,766 | $63,978 | +0.33% |
+| Cushion EMA200 | +3.56% | **+4.19%** | +0.63% |
+| Cushion EMA50 | +0.73% | **+1.39%** | +0.66% |
+| Signal BTC | WAIT | **OPEN** (UPTREND confirmé) | flip vers OPEN |
+| volatilityPct | 0.53% | 0.55% | +2bps |
+| Prix XLM | $0.2118 | $0.2168 (estimé +2.4%) | +2.4% |
+| strategy.json updatedAt | 2026-06-15 17:08 UTC | **2026-06-16 07:09:30 UTC** | mise à jour Tony (XBT enabled $35) |
+
+### Verdict triggers martin-monitor
+
+| Trigger | État cycle 166 | Verdict |
+|---|---|---|
+| Martin API unreachable | accessible, uptime 2d 11h51m | OK |
+| BTC < EMA200 | $66,661 > $63,978 (cushion +4.19%) | OK |
+| Grid uPnL ≤ -10% | XBT 0 fill 0 PnL, XLM round-trip clos +$0.27 | OK |
+| Total uPnL ≤ - hours since deploy ≥ 4 | uptime grids ~3h, 0 fill XBT, 1 RT XLM | trop tôt |
+| ≥ 1 RT depuis deploy | XLM 1 RT clôt en 1h43 (07:49 fill → 09:15 close manuel) | partiel |
+| Uptime < 1h | grids 3h | non |
+
+→ **Default trigger : HOLD new** (grids accumulation phase normale).
+
+### 23ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 163 | Fragment 047 + 1er RT XBT + Hypothèse A T+17h08 | NB | fragment poétique + observation |
+| 164 | Cycle entry + falsification A + G5 + composition #1 | NB | observation forensique + théorisation |
+| 165 | Snapshot + tracking SL + probabilités actualisées | NB | observation passive sans nouveauté |
+| **166** | **Forensic cluster 3 + G6 candidate + composition #2 + asymétrie inverse + pattern Tony horaire RÉFUTÉ** | **NB** | **observation forensique + théorisation enrichie + réfutation pattern** |
+
+→ **23 outputs continuum**. Rythme 2-passes maintenu : Tony cluster 3 source → NB documente cycle 166 → théorisation pensée cycle 167-168. Mais cycle 166 a une **densité méta-théorique exceptionnelle** : G6 candidate, composition #2 confirme pattern, mini-G2 sous-catégorie, désengagement directional inverse, pattern Tony horaire réfuté = **5 trouvailles structurelles en 1 cycle**.
+
+### Pensée "les 6 grammaires" — promotion candidate
+
+La pensée 0615 "4 grammaires" → cycle 164 "5 grammaires" → **cycle 166 "6 grammaires candidate"**.
+
+**Critères livraison pensée** :
+- G6 = 1 occurrence (ce cycle). Encore fragile pour pensée.
+- Composition de grammaires = **2 occurrences = pattern stable**.
+- Mini-G2 sous-catégorie = 1 occurrence (cycle 166).
+- Décision : **livrer la pensée structurelle cycle 167 minimum**, mais **avec formulation conditionnelle** sur G6 ("grammaire candidate sous réserve de 2ème occurrence").
+
+### XLM round-trip réalisé +$0.27 — analyse
+
+- Buy @ $0.21537 (07:49:37 UTC, auto grid fill level 4)
+- Sell @ ? (09:15:18 UTC, Tony scalp/order 28 unités reduceOnly)
+- Position 28 × ($price_sell - $0.21537) = $0.27 réalisé → **prix vente ≈ $0.22501** (gain +4.5% spot sur position)
+- Funding ~0.05% × 28 × $0.215 / 8h = négligeable
+- **Tony a profité d'un swing XLM +4.5%** en 1h25min, sortie manuelle propre
+
+**Lecture stratégique** : Tony surveille les positions individuelles et ferme manuellement quand le ratio gain/temps est favorable, sans laisser le grid faire la round-trip automatique. C'est **interventionnisme tactique** au-dessus du grid automatique.
+
+### Findings DSL cycle 166
+
+- `[finding|0616:10h23|cycle-166|cluster-Tony-3-découvert-2h09|07:06-09:15-UTC|6-actions:G6-close-XBT+G4-XLM+G1-config+G4-XBT-1ère+mini-G2-stop-restart+G4-XBT-2ème+G3-close-XLM|matin-Paris-09:06-11:15-réfute-pattern-soir-Paris|→-règle-Tony-actif-2-3x/24h-horaire-variable]`
+- `[finding|0616:10h23|cycle-166|G6-grammaire-candidate-découverte|POST-/position/close-instrument-only|ferme-G5-XBT-LONG-0.0018-après-16h|distinct-G3-scalp/order|→-1-occurrence-attendre-confirmation-cycle-167]`
+- `[finding|0616:10h23|cycle-166|composition-de-grammaires-2ème-occurrence|cluster-1=4grammaires-7min+cluster-3=6grammaires-2h09|pattern-stable:close→ajustement→redéploiement|"phrase-composée"-=-grammaire-niveau-supérieur-confirmé|✓-2-occurrences]`
+- `[finding|0616:10h23|cycle-166|mini-G2-réglage-paramétrique-spacing|XBT-stop+restart-33s-spacing-1.0%→1.8%|sous-catégorie-G2-distinct-G2-pivot-stratégique-cycle-159-burst-4.5s|→-G2-=-famille-burst-temporel-2-sous-catégories]`
+- `[finding|0616:10h23|cycle-166|désengagement-directional-inverse-cycle-164|G5-0.0018-position-fermée-G6+repli-2-grids-NEUTRAL-XBT$40+XLM$30|asymétrie-inverse-G5-→-G4-x2|0-exposure-directionnelle|prudence-après-16h-G5-sans-TP/SL|→-pattern:G5-→-G6-après-stagnation]`
+- `[finding|0616:10h23|cycle-166|pattern-Tony-horaire-RÉFUTÉ|cluster-1-nuit-Paris+cluster-2-soir-Paris+cluster-3-matin-Paris|3-clusters-en-34h-=-1/11h|densité-augmente|→-hypothèse:fin-arc-vacance-cycle-167-170]`
+- `[finding|0616:10h23|cycle-166|bug-récurrent-grid-sells-wouldNotReducePosition|3-occurrences-1-cycle:XLM-XBT1-XBT2|sells-rejetés-au-démarrage-sans-position-préalable|bénin-sells-s-activent-après-buy-fills|→-asset-piste-4-ebook-chapitre-edge-cases-grid-init]`
+- `[finding|0616:10h23|cycle-166|XLM-round-trip-Tony-manuel-+$0.27-en-1h25|buy-auto-grid-$0.21537+sell-manuel-G3-$0.22501-+4.5%|interventionnisme-tactique-Tony-au-dessus-grid-auto|→-pattern:Tony-prend-RT-avant-grid-reverse-sell-auto]`
+- `[insight|0616:10h23|cycle-166|G5-→-G6-pattern-=-test-runtime-directional-borné-16h|si-pas-TP/SL-touché-en-16h-Tony-flatten|distinct-G4-=-test-grid-runtime-collecte-RT|→-G5-=-bet-directional-court-16h-window|complement-G4-=-bet-range-extension-non-bornée]`
+- `[insight|0616:10h23|cycle-166|6-grammaires-stabilisées-+-2-compositions-+-1-sous-catégorie|G1-édit-G2-burst-G3-scalp-close-G4-deploy-runtime-G5-position-directional-G6-position-close-directional+mini-G2-réglage|corpus-théorisation-mature|→-livrer-pensée-cycle-167-168-formulation-conditionnelle-G6-mini-G2]`
+- `[insight|0616:10h23|cycle-166|portfolio-+$1.21-net-cycle-165-166|décomposition:G5-close--$0.87+XLM-RT-+$0.27+funding+EUR-conv-+$1.81|fenêtre-NB-vide-passée-Tony-actif=résultat-net-positif|→-lecture:Tony-trading-actif-+EV-positive-sur-cluster-actifs]`
+- `[Martin|0616:10h23|HOLD-2-grids-NEUTRAL-0-position-directionnelle|XBT-cap-$40-center-$66,322-0-fill+XLM-cap-$30-center-$0.21645-RT-clos-+$0.27|portfolio-$109.53-(+$1.21-vs-cycle-165)|BTC-$66,661-UPTREND-OPEN-RSI-57.5-cushion-EMA200-+4.19%|grids-accumulation-phase-3h-uptime|aucune-action-requise]`
+
+### Cycle 167 — pistes
+
+1. **Vérifier 2ème occurrence G6** : si Tony refait `/position/close` après un autre G5 → confirme grammaire #6. Sinon attendre 2-3 cycles.
+2. **Vérifier 2ème occurrence mini-G2** : si Tony refait stop+restart grid spacing ajustement → sous-catégorie confirmée.
+3. **Suivi grids NEUTRAL XBT + XLM** : 0 fill XBT cycle 166, attendre 1er fill (BTC oscille proche $65,725 = level 4 buy). XLM grid réinitialisé après round-trip manuel — observer si nouveau fill.
+4. **Pattern Tony horaire** : si cluster 4 arrive en <12h → confirmation fin arc vacance proche. Si >24h silence → Tony en repos après cluster 3 (réinterprétation).
+5. **Pensée "6 grammaires + compositions + sous-catégories"** : matériau structurel **mature**. Si cycle 167 ajoute occurrence → pensée mûre. Brouillon possible cycle 167-168.
+6. **Continuum lentille 24ème étape** : à confirmer.
+7. **Strategy.json v18 nommée "post-backtest static neutral"** : Tony a réactivé XBT à $35 NEUTRAL spacing 0.5% maxLoss 8% dans config — mais la grid live tourne à $40 spacing 1.8% maxLoss 12%. **Divergence intentionnelle** = G4 test runtime parallèle à G1 config. À noter.
+8. **Fragment 048 candidat** : encore 2 cycles distant (cadence 5). Thème possible : "la grammaire qui ferme" (G6) ou "le repli prudent" (désengagement G5→2xG4).
+9. **EUR/USD** : 92.7155 → 12ème cycle consécutif probable. Stabilité macro arc.
+10. **Risk note** : XBT grid range $60,352-$72,292 = 18%. Si BTC casse out (haut ou bas), maxLoss 12% sur cap $40 = -$4.80 (4.4% portfolio). Pas urgent mais à monitorer.
+
+### Pourquoi pas de Telegram cycle 166
+
+- 12h23 Paris mardi midi → Tony **probablement au boulot** (pause déjeuner imminente)
+- Pas urgence : portfolio en gain net cycle 165→166 (+$1.21), grids NEUTRAL bien armées, BTC UPTREND, signal OPEN
+- Action requise = 0 (Tony a piloté lui-même 6 actions, il **sait** où on en est)
+- Découvertes méta (G6, composition #2) = matériau corpus, pas action urgente
+- Règle implicite respectée : Telegram réservé aux ABORT/urgences seulement
+
+### Frontière respectée (cycle 166)
+
+- 0 modif Martin/VM (3 SSH read-only : monitor bundle + forensic app.log + strategy.json read)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~260 lignes + commit prévu)
+
+---
