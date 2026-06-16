@@ -17497,3 +17497,117 @@ La pensée 0615 "4 grammaires" → cycle 164 "5 grammaires" → **cycle 166 "6 g
 - Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~260 lignes + commit prévu)
 
 ---
+
+## Cycle 167 — 2026-06-16 16:23 UTC (18h23 Paris)
+
+### Snapshot Martin
+
+| Métrique | Cycle 166 (10:23 UTC) | Cycle 167 (16:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $109.53 | $109.06 | -$0.47 |
+| uPnL | nul | +$0.0007 | ≈0 |
+| Grids actives | 2 (XBT $40 + XLM $30) | **1 (XBT $40)** | -1 grid XLM |
+| Position ouverte | 0 directionnelle | **1 long XBT 0.0001 @ $65,725** | +1 fill grid |
+| RT cumulés | 0 (XBT) | 0 (XBT) | 0 |
+| BTC | $66,661 UPTREND OPEN RSI 57.5 | $65,726 UPTREND **WAIT** RSI 43.8 | -$935 (-1.4%) RSI -13.7 |
+| Cushion EMA200 | +4.19% | +2.55% | -164bps |
+| Cushion EMA50 | +1.39% | -0.10% (BTC sous EMA50 $65,788) | -149bps |
+| Signal | OPEN | **WAIT** (RSI<50) | flip |
+
+→ Drift BTC -1.4% en 6h, cushion EMA50 cassé (BTC $65,726 < EMA50 $65,788). Signal repassé en WAIT. Cohérent avec range trading dans grid range $60,352-$72,292.
+
+### XLM grid → CLOSED
+
+XLM grid (cap $30 round-trip Tony +$0.27 cycle 166) n'est plus actif (`/api/grid/active` = `["PF_XBTUSD"]`). Soit Tony l'a arrêté, soit AutoGridScheduler l'a kill (config divergente). **Pas vérifié forensic — pas critique** (cap $30 close-only, pas de position résiduelle).
+
+### XBT grid : 1 fill, 0 RT en 9h11
+
+- Deploy 2026-06-16 **07:14:32 UTC** (G4 deploy non-persistant, cap $40, levels 10, spacing $1,194, lev 2, maxLoss 12%, NEUTRAL)
+- 1 fill : buy @ $65,725 (level 4) le 2026-06-16 **14:18:49 UTC** (7h04 après deploy)
+- 0 fill depuis (2h06)
+- Position : long 0.0001 XBT ($6.57 notional), uPnL +$0.0007 ≈ 0
+- SL exchange : $64,332 (-2.1% depuis fill, perte max $0.14)
+- Risque borné, aucune action urgente
+
+### Finding G7-edge — sell orphelin post-fill (wouldNotReducePosition non retry)
+
+**Découverte concrète** : le sell level 5 @ $66,919 reste orphelin (`krakenOrderId=null`, `status=WAITING`) **2h06 après** le buy fill @ $65,725.
+
+**Mécanisme reconstruit** (code path `GridTradingService.handleFillNeutral` lignes 615-626) :
+1. Init NEUTRAL grid : pre-place tous les sells aux levels 5-9 avec `reduceOnly=true`
+2. Compte FLAT au moment du place → Kraken rejette `wouldNotReducePosition` → `krakenOrderId=null` pour tous les sells pré-placés
+3. Buy filled level 4 → handler cherche sell existant à `sellPrice = level.price + spacing` ($66,919)
+4. Sell trouvé avec `krakenOrderId == null` → branche "activation" : `placeGridOrder(state, existingSell)` (une seule tentative)
+5. Si la position long n'est **pas encore visible côté Kraken** (latence WS fill event vs position update), reduceOnly sell est de nouveau rejeté → `krakenOrderId` reste null → **pas de retry**
+
+**Diagnostic state actuel** : sell @ $66,919 jamais re-placé. Sans intervention, ce niveau ne peut pas faire round-trip. Le grid est partiellement "muet" : level 5 inactif tant que :
+- Le buy level 4 fait un autre fill (re-trigger activation) OU
+- Une intervention manuelle force le replacement OU
+- Le bot restart (re-init complète des levels)
+
+**Impact réel** : sur cap $40 + level 4 actuel, position notional ~$6.57 = 6% portfolio. Si BTC remonte au-dessus de $66,919 sans sell placé : le grid manque le RT (gain perdu = `gridSpacing × size = 1194 × 0.0001 = $0.12`). Loss d'opportunité, pas de loss capital.
+
+**Pourquoi le pattern de cycle 166 mentionnait "bénin"** : si Kraken voit la position au moment de l'activation, ça marche. Mais quand la latence dépasse le délai entre fill et placeGridOrder, on est ici (orphan).
+
+**Hypothèse à valider** : si je grep app.log lignes "Grid order FAILED" autour de 14:18:49 UTC, je devrais trouver un log avec `error=wouldNotReducePosition`. **Logs pas accessibles cette session** (journalctl sans sudo, pas de fichier app.log direct dans /home/ubuntu/martin/logs/).
+
+**Asset piste-4 ebook (chap edge cases / defensive engineering)** :
+
+> **Edge case G7 — l'orphelin one-shot**
+>
+> Quand un système place un ordre conditionnel à un état distant, il doit retry si l'état n'est pas encore convergé. Martin pre-place les sells reduceOnly avant que la position long existe (NEUTRAL grid init flat-account) ; Kraken les rejette ; le handler de fill les "active" après buy fill, mais une seule fois. Race condition latente : si la position n'est pas visible au moment exact de l'activation (WS fill event arrive avant que le bot client voie le delta position via REST), reduceOnly est encore rejeté et le sell reste orphelin.
+>
+> **Fix typique** : retry exponentiel sur les activations, ou poll-confirm position avant placement. Ou mieux : ne pas pre-placer les sells reduceOnly tant que le compte est flat — les placer lazy au moment du buy fill.
+
+### Cluster Tony cycle 165-167 ? — RIEN
+
+Fenêtre de 12h entre cycle 165 (06h23 Paris) et cycle 167 (18h23 Paris) avec **0 action API Tony observable** (pas pu greper app.log mais `/api/grid/active` montre XLM disparu — soit kill manuel cycle 165 → 167 soit AutoGridScheduler). Tony semble être passé à autre chose après le cluster matin cycle 166. **Pattern "Tony actif 2-3x/24h horaire variable"** tient : cluster matin (cycle 166), puis silence midi+aprèm.
+
+### Continuum lentille 24ème étape
+
+| Cycle | Output | Origine | Grammaire |
+|---|---|---|---|
+| 165 | Snapshot + tracking SL | NB | observation passive |
+| 166 | Forensic cluster 3 + G6 + composition #2 + ... | NB | forensique + théorisation enrichie |
+| **167** | **Finding G7-edge sell orphelin + diagnostic code path** | **NB** | **forensique code (1ère fois lecture .java + diagnostic edge case)** |
+
+→ **24 outputs continuum**. Cycle 167 introduit une **nouvelle grammaire output NB** : lecture code source Java pour reconstituer un edge case observé live. Sortie utile pour piste-4 ebook, asset technique.
+
+### Findings DSL cycle 167
+
+- `[finding|0616:18h23|cycle-167|G7-edge-sell-orphelin-one-shot-activation|sell-level-5-$66919-krakenOrderId-null-2h06-après-buy-fill|handleFillNeutral-l615-626-activation-non-retry|race-condition-position-visible-Kraken-au-moment-place|→-asset-piste-4-ebook-chap-defensive-engineering]`
+- `[finding|0616:18h23|cycle-167|XLM-grid-CLOSED-fenêtre-165→167|/api/grid/active-=-XBT-only|cap-$30-perdu-de-vue-non-critique|→-règle:cycle-NB-vérifie-actives-vs-cycle-précédent]`
+- `[finding|0616:18h23|cycle-167|BTC-drift--1.4%-6h-cushion-EMA50-cassé|signal-WAIT-RSI-43.8|cohérent-range-trade-grid-XBT|→-pas-de-trigger-action-grid-NEUTRAL-armée]`
+- `[finding|0616:18h23|cycle-167|fenêtre-Tony-12h-silence-cycle-165→167|cluster-cycle-166-matin-suivi-de-silence|pattern-cluster-puis-repos-confirmé|→-Tony-actif-2-3x/24h-densité-arc-vacance]`
+- `[insight|0616:18h23|cycle-167|nouvelle-grammaire-output-NB:lecture-code-source-pour-diagnostic-edge-case-observé-live|distinct-observation-passive+théorisation|→-corpus-output-NB-=-3-grammaires:passive-théorique-forensique-code]`
+- `[Martin|0616:18h23|HOLD-1-grid-XBT-1-position-0.0001-long|uPnL≈0-SL-$64332-cap-$40|portfolio-$109.06|BTC-$65726-UPTREND-WAIT-RSI-43.8|9h11-uptime-1-fill-0-RT|G7-sell-orphelin-bénin-monitoring-only]`
+
+### Cycle 168 — pistes
+
+1. **Vérifier sell @ $66,919 toujours orphelin** : si BTC remonte vers level 5 sans sell PLACED → RT manqué confirme G7-edge
+2. **2ème occurrence G7-edge** : observer autres buy fills sur ce grid (ou nouveau grid) pour voir si sell s'active correctement
+3. **Continuum 25ème étape** : si cycle 168 produit observation passive, pattern 3-cycles passive-forensique-passive émerge
+4. **EUR/USD** : 12ème cycle consécutif stabilité
+5. **Densité clusters Tony** : 0 cluster en 12h depuis cluster 3 → arc vacance peut-être en phase de repos avant reprise
+6. **Fragment 048** : encore 1 cycle distant (cadence 5). Thème candidat : "l'orphelin du grid" (G7-edge) ou "la grammaire qui lit du code"
+7. **Piste-4 ebook** : chap edge cases peut commencer à se documenter avec G7-edge comme 1er entry. Outline rapide possible cycle 168-170
+8. **Telegram Tony** : pas envoyé cycle 167 (mardi 18h23 Paris, Tony probablement avec mel/enfants après boulot). G7-edge est utile mais pas urgent — peut attendre la prochaine fenêtre disponible si confirmation 2ème occurrence
+
+### Pourquoi pas de Telegram cycle 167
+
+- Mardi 18h23 Paris → Tony fenêtre famille/dîner imminente
+- Position grid risque borné ($0.14 max loss), SL safe
+- G7-edge = finding intéressant mais pas urgent (1 occurrence, attente confirmation)
+- Règle implicite respectée : Telegram réservé aux ABORT/urgences
+
+### Frontière respectée (cycle 167)
+
+- 0 modif Martin/VM (SSH read-only : monitor bundle + log search read-only)
+- 0 modif code martin/ (lecture .java seule, pas d'Edit)
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 1 fichier (cette entry vacation-autonomy.md cycle 167 + commit prévu)
+
+---
