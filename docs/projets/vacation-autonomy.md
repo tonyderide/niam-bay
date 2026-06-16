@@ -17122,3 +17122,146 @@ Découverte indépendante de Tony : à 21:31:41 UTC, **AUTO-UNSTUCK lvl3 (-4%)**
 10. **Strategy mémoire pour mémoire** : G5 méritera entrée dédiée dans memory.nb1 dream → noter pattern `[grammaire-G5-single-directional|count:1|last:0615:17h|POST-/position/long-capital-lev-sl-tp-fixés-upfront|distinct-G4-grid|→-skill-position-deploy?-attendre-2e-usage]`
 
 ---
+
+## Cycle 165 — 0616:06h23 Paris (04h23 UTC le 16/06) — Position G5 saigne légère + 22ème lentille + Dream URGENT
+
+### Verdict global cycle 165
+
+**Fenêtre 164 → 165 (6h) VIDE de Tony, observation forensique uniquement.** Position G5 XBT toujours ouverte, uPnL -$1.47 (vs -$1.04 cycle 164 = **-$0.43 supp** = -41% détérioration). BTC retrace -0.40% à $66,038, RSI tombe de 56.57 à 50.43 (-6.14pts, transition zone neutre). Distance SL = -1.68% (vs -2.06% cycle 164 = on s'est rapproché de 38bps). **Pas d'action requise** : ratio TP/SL reste 3.3, EMA50 cushion +0.73% tient, régime UPTREND intact.
+
+### Snapshot état Martin cycle 165 (04h23 UTC)
+
+| Métrique | Cycle 164 (22h23 UTC 15/06) | Cycle 165 (04h23 UTC 16/06) | Δ 6h |
+|---|---|---|---|
+| Portfolio total | $108.81 | $108.32 | **-$0.49** |
+| Position XBT G5 (long 0.0018 @ $66,859) | uPnL -$1.04 | **uPnL -$1.47** | -$0.43 (-41%) |
+| Prix BTC | $66,300 | $66,038 | -0.40% |
+| RSI BTC | 56.57 | **50.43** | -6.14pts |
+| EMA50 BTC | $65,556 | $65,557 | +$1 |
+| EMA200 BTC | $63,766 | $63,766 | 0 |
+| Cushion EMA200 | +4.15% | **+3.56%** | -0.59% |
+| Cushion EMA50 | +1.13% | **+0.73%** | -0.40% |
+| volatilityPct | 0.56% | 0.53% | -3bps |
+| Distance position au SL ($64,927) | -2.06% | **-1.68%** | -0.38% rapproché |
+| Distance position au TP ($70,009) | +5.59% | **+6.00%** | +0.41% éloigné |
+| Ratio TP/SL dynamique | 3.3:1 | **3.6:1** | encore plus favorable ratio statique |
+| XLM prix | n/a (post HARD STOP) | $0.2118 RSI 55.31 UPTREND | XLM toujours sain (sans position NB) |
+| Grids actives | 0 | 0 | inchangé |
+| strategy.json v18 updatedAt | 2026-06-15 17:08:00 UTC | **inchangée** | Tony n'a rien committé en 11h08 |
+| EUR/USD (cash flex) | 92.7155 | 92.7155 | **11ème cycle inchangé** = stabilité macro |
+
+### Verdict triggers (martin-monitor)
+
+| Trigger | État cycle 165 | Verdict |
+|---|---|---|
+| Martin API unreachable | accessible, uptime 2d 5h 51m | OK |
+| BTC < EMA200 | $66,038 > $63,766 (cushion +3.6%) | OK |
+| Grid uPnL ≤ -10% | 0 grid active | N/A |
+| Total uPnL ≤ - hours since deploy ≥ 4 | uPnL -1.34% portfolio (cible -10%), position G5 -3.7% capital cible (-15% Kraken) | OK |
+| ≥ 1 RT depuis deploy | G5 = direction trade, pas RT applicable | N/A |
+| Uptime < 1h AND uPnL > - | uptime 11h depuis G5 deploy | N/A |
+
+→ **Default trigger : HOLD**.
+
+### Tracking dynamique distance SL cycle 161 → 165
+
+| Cycle | Heure UTC | Prix BTC | Distance SL ($64,927) | Δ vs cycle précédent |
+|---|---|---|---|---|
+| 161 deploy | 23:15 14/06 | $67,140 (entry G4 puis G5) | n/a (G4 actif, pas SL G5) | base |
+| 164 | 22:23 15/06 | $66,300 | -2.06% | base G5 |
+| **165** | **04:23 16/06** | **$66,038** | **-1.68%** | -38bps rapproché en 6h |
+
+→ Vitesse rapproché SL : 38bps/6h = ~6bps/h. À ce rythme, SL touché dans ~17h si linéaire (vers 21h-22h UTC le 16/06). **MAIS non-linéaire** : BTC en oscillation, le mouvement adverse n'est pas continu.
+
+### Probabilités actualisées 24h (de cycle 165)
+
+| Outcome | Probabilité | Justification |
+|---|---|---|
+| TP touché ($70,009) | ~20% (-5pts vs cycle 164) | RSI tombé 56→50, momentum faiblit, BTC besoin +6.0% |
+| SL touché ($64,927) | ~25% (+10pts vs cycle 164) | distance plus courte, RSI proche zone faible, EMA50 cushion +0.73% fragile |
+| Ni l'un ni l'autre | ~55% (-5pts) | range serré entre EMA50 ($65,557) et résistance $67k |
+
+**Si EMA50 ($65,557) cassé** : probabilité SL passe à ~45%. Surveillance critique cycle 166.
+
+### Streak NB 0-touch + pattern Tony actualisé
+
+- Cluster Tony 14/06 23:15 UTC → cluster 15/06 17:08-17:15 UTC = **17h53 silence**
+- Cluster Tony 15/06 17:08-17:15 UTC → cycle 165 (04h23 UTC 16/06) = **11h08 silence en cours**
+- Pattern Tony actif fin journée (soir Paris) → repos nuit Paris se confirme 2ème fois consécutive
+- Streak NB 0-touch cumulé arc 71 → 165 = **6 break (cycles 118+123+132+133+144+restart-147+161+164)** = ~94 cycles avec ~1 touche / 13 cycles moyenne
+- Densité touches Tony augmente sur arc 161-164 (2 clusters en 26h) → fin d'arc vacance probable
+
+### Pensée "les 5 grammaires" — verdict cycle 165 : ATTENDRE
+
+Critères livraison :
+- G5 = 1 occurrence (cycle 164). Cycle 165 vide = **toujours 1 occurrence seule**.
+- Composition de grammaires = 1 occurrence (cycle 164). Cycle 165 vide = **toujours 1 occurrence seule**.
+- **Décision : attendre cycle 166-167 minimum** pour 2ème G5 ou 2ème composition, sinon pensée prématurée.
+- Dans l'intervalle : maintenir la pensée "décantée" dans candidats, ne pas l'écrire prématurément.
+
+### 22ème étape continuum lentille
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 163 | Fragment 047 + 1er RT XBT + Hypothèse A T+17h08 | NB | fragment poétique + observation |
+| 164 | Cycle entry + falsification A + G5 + composition | NB | observation forensique + théorisation |
+| **165** | **Snapshot état + tracking distance SL + probabilités actualisées** | **NB** | **observation quantitative pure** |
+
+→ **22 outputs continuum**. Rythme 2-passes stabilisé. Cycle 165 est un cycle "tracking" (entre théorisation et action). C'est une **3ème grammaire d'output NB** émergente : **observation passive sans nouveauté = la mesure pour la mesure**. Acceptable car couple à dream upcoming.
+
+### Dream URGENT — déclencher en fin de session
+
+- last dream : 0612:00h40 → cycle 165 (0616:06h23) = **+102h** (4j 6h)
+- cycles 149 → 165 = **17 cycles ≈ 2750 lignes vacation-autonomy** accumulés depuis dernier dream
+- 9641 souvenirs vectoriels en mémoire (briefing)
+- recent.nb1 reflète seulement cycles 143-148 (dépassé de 17 cycles)
+
+→ **Action cycle 165 : lancer skill `dream` après écriture cycle 165**. Consolide :
+  - findings G5 + composition de grammaires
+  - patterns Tony cluster fin-journée + repos nuit
+  - pattern AUTO-UNSTUCK lvl3 2ème occurrence
+  - lesson "G4 = test runtime, pas deploy final"
+  - asymétrie sizing G4 → G5 (9x exposure)
+  - mémoire G5 grammaire #5
+
+### Findings DSL cycle 165
+
+- `[finding|0616:06h23|cycle-165|distance-SL-rapproché-38bps-6h|cycle-164:-2.06%-→-cycle-165:-1.68%|vitesse-empirique-6bps/h-non-linéaire|si-EMA50-$65,557-cassé-probabilité-SL-passe-à-~45%|surveillance-critique-cycle-166]`
+- `[finding|0616:06h23|cycle-165|fenêtre-164→165-vide-Tony|11h08-silence-après-cluster-17:08-17:15-UTC|pattern-Tony-actif-soir-Paris-repos-nuit-2ème-confirmation-consécutive|strategy.json-inchangée]`
+- `[finding|0616:06h23|cycle-165|EUR/USD-92.7155-11ème-cycle-consécutif|stabilité-macro-long-arc-validée-en-arc-vacance|à-noter-mémoire]`
+- `[finding|0616:06h23|cycle-165|3ème-grammaire-output-NB-émergente|"observation-passive-sans-nouveauté"|tracking-distance-SL-sans-événement-nouveau|acceptable-car-couple-à-dream-suivant]`
+- `[lesson|0616:06h23|cycle-165|sizing-G5-vs-portfolio|0.0018-BTC-@-$66,859=$120-notional-=-36%-portfolio-à-3x-lev|exposure-actuelle-uPnL--$1.47=-1.34%-portfolio|risque-borné-par-SL-$64,927-perd-max-$3.47-position-=-3.2%-portfolio|→-G5-correctement-borné]`
+- `[Martin|0616:06h23|HOLD-0-grid-1-position-G5|XBT-LONG-0.0018-@-$66,859-uPnL--$1.47-(-3.7%-position)-SL-$64,927-TP-$70,009|portfolio-$108.32-(-$0.49-vs-cycle-164)|BTC-$66,038-UPTREND-RSI-50.43-cushion-+3.6%-EMA50-cushion-+0.73%|risque-borné-SL-perd-max-$3.47|aucune-action-requise]`
+- `[trigger-mémoire|0616:06h23|cycle-165|pour-dream-suivant|consolider-17-cycles-149-165|G5-grammaire-#5-établie-1-occurrence|composition-grammaires-pattern-1-occurrence|asymétrie-sizing-9x-G4→G5-noter|AUTO-UNSTUCK-lvl3-2ème-occurrence-noter|EUR/USD-stabilité-11-cycles-noter]`
+
+### Cycle 166 — pistes (post-dream)
+
+1. **Vérifier exécution dream** : memory.nb1 + recent.nb1 + patterns.nb1 doivent être à jour. Si dream échoue → continuer accumulation vacation-autonomy.md (fallback).
+2. **Suivi position G5 XBT continu** : monitoring SL/TP, ratio dynamique, RSI BTC.
+3. **EMA50 critique** : si BTC casse $65,557 → probabilité SL +20pts.
+4. **Détection cluster Tony 3ème occurrence** : si Tony agit dans fenêtre 165→166, pattern "Tony actif soir Paris" se confirme 3ème fois (statistique solide).
+5. **Pensée "5 grammaires"** : 2ème G5 ou composition à attendre.
+6. **Continuum lentille 23ème étape** : à confirmer.
+7. **Fragment 048 candidat** : encore 3 cycles distant si cadence 5 tient.
+8. **Détection signal "Tony reprend"** : fin arc vacance probable (densité clusters augmente).
+9. **AutoGridScheduler observation passive** : 0 grid active, scheduler quiet. Test runtime continu.
+10. **Auto-skill candidat** : si pattern "Tony actif fin journée Paris" se confirme 3 fois → candidate pour rule observation Niam-Bay.
+
+### Pourquoi pas de Telegram cycle 165
+
+- 04h23 UTC = 06h23 Paris mardi matin = Tony probablement endormi
+- Pas urgence : position G5 -$1.47 saigne mais SL armé, ratio TP/SL = 3.6:1 favorable, BTC > EMA200 cushion +3.6%
+- Mouvement -0.40% BTC sur 6h = bruit normal, pas signal action
+- Règle implicite respectée : Telegram réservé aux ABORT/urgences seulement
+- Si SL touché ou cushion EMA200 cassé → Telegram immédiat
+
+### Frontière respectée (cycle 165)
+
+- 0 modif Martin/VM (5 SSH read-only : monitor bundle complet + signaux XBT/XLM + strategy.json read + stat strategy.json + app.log grep skip)
+- 0 modif code, strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 1 fichier (cette entry vacation-autonomy.md ~150 lignes + dream skill suivant + commit prévu)
+
+---
