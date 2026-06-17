@@ -17736,3 +17736,119 @@ Le grid déclare 5 sells `WAITING` (levels 5-9). Kraken voit 0 sell. La désynch
 - Output niam-bay : 2 fichiers (cette entry cycle 168 + chapitre ebook edge cases ~1700 mots) + commit prévu
 
 ---
+
+---
+
+## Cycle 169 — 2026-06-17 04:23 UTC (06h23 Paris)
+
+### Snapshot Martin
+
+| Métrique | Cycle 168 (22:23 UTC) | Cycle 169 (04:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $108.98 | $109.17 | **+$0.19** |
+| uPnL total | ≈0 | +$0.03 | +$0.03 |
+| Grids actives | 2 (XBT $40 + XLM $30) | 2 (XBT $40 + XLM $30) | inchangé |
+| Position XBT | long 0.0001 @ $65,725 | long 0.0001 @ **$65,493** | **prix changé → grid redéployé** |
+| Position XLM | long 14 @ $0.219 (fresh) | **0 (flat)** | -14 XLM |
+| RT XLM | 0 (fresh 6min) | 0 réalisé direct mais 1 sell exécuté (krakenRealizedPnl +$0.0145) | 1 cycle complet caché |
+| BTC | $65,719 UPTREND WAIT RSI 45.05 | $65,787 UPTREND WAIT RSI 47.27 | +$68 / RSI +2.2 |
+| Cushion EMA50 | -0.09% (cassé) | +0.02% (récupéré) | flip positif marginal |
+| Cushion EMA200 | +2.41% | +2.40% | stable |
+| EUR/USD | 92.7155 | 92.7155 | **12ème cycle stabilité macro** |
+
+→ **Léger gain $0.19 sur 6h**, majoritairement réalisé via XLM (+$0.0145 round-trip caché + accumulation buys puis sortie complète position). XBT grid a été **redéployé entre cycles 168 et 169** (`startedAt: 2026-06-16T22:38:00Z`, vs ancien startedAt cycle 168 = ~14:18 UTC). BTC EMA50 récupère à peine (+2bps). Régime UPTREND intact.
+
+### Cluster Tony 4 — CONFIRMÉ via redéploiement XBT
+
+**Découverte cycle 169** : XBT grid `startedAt` est désormais **2026-06-16T22:38:00Z** (22h38 UTC = 00h38 Paris 17/06). C'est un nouveau startedAt vs cycle 168 (14:18 UTC ancien). → **XBT grid a été stoppée puis redéployée à 22h38 UTC**, soit 21 min après la réactivation XLM (22h17 UTC).
+
+**Composition cluster 4** confirmée :
+- 22h17 UTC : POST /api/grid/start XLM (fresh deploy)
+- 22h38 UTC : stop + start XBT (redeploy)
+- Total : 2 actions distinctes en 21min → **pattern G2-burst (cycle 159 style)** confirmé 2ème occurrence
+
+**Implications taxonomie** :
+- Cluster Tony 4 = densité monte à **4 clusters en 40h** depuis cycle 154 (ratio ~1/10h confirmé stable)
+- G2-burst grammaire validée à 2 occurrences (cycle 159 + cycle 169) → règle solide
+- Pattern "Tony actif fin de soirée Paris" : 22h17 UTC = 00h17 Paris → confirme cluster 1 cycle 159 (23:15 UTC) + cluster 2 cycle 164 (17:08-17:15 UTC) — 3 clusters sur 4 dans fenêtre 17h-01h Paris = **forte signature horaire émergente**
+
+### G7-edge — confirmation systémique sur 2 paires en parallèle
+
+**Découverte majeure cycle 169** : le pattern G7-edge (sell `WAITING` avec `krakenOrderId: null`) est désormais **observé simultanément sur XBT ET XLM**.
+
+**Preuve XBT (nouveau grid post-redeploy)** :
+- Level 4 buy @ $65,493 : `filledAt: 2026-06-17T01:21:27Z`, `hasBuyFill: true` → buy exécuté il y a 3h02
+- Level 5 sell @ $65,821 : `status: WAITING`, `krakenOrderId: null`, `filledAt: null`
+- Cross-check Kraken `/api/bot/orders` PF_XBTUSD : 4 buy lmt (levels 0-3) + 1 sell stop $63,687 (SL reduceOnly) → **0 sell lmt**
+- Le sell censé capturer le round-trip du buy fill n'a jamais été placé sur Kraken. 3h02 sans placement.
+
+**Preuve XLM (grid neuve depuis 22:31 UTC)** :
+- 6 fills enregistrés en 5h52 dont 1 sell complet à 22:58 (krakenRealizedPnl +$0.0145)
+- Level 3 buy @ $0.22321 : `filledAt: 2026-06-17T03:12:42Z`, `hasBuyFill: true`
+- Level 4 buy @ $0.22431 : `filledAt: 2026-06-17T01:58:02Z`, `hasBuyFill: true`
+- Levels 5-9 sells : tous `WAITING` avec `krakenOrderId: null`
+- Cross-check Kraken `/api/bot/orders` PF_XLMUSD : 3 buy lmt (levels 0-2) + **0 sell lmt + 0 SL** (!)
+- Levels 5-6 censés être PLACED (sells correspondant aux buys 3-4) ne le sont pas
+
+→ **G7-edge confirmé en parallèle sur 2 paires distinctes**. Plus une anomalie, plus un pattern systémique. Le bot a une **race condition reproductible sur l'enchaînement buy fill → place reduceOnly sell** qui touche TOUT grid NEUTRAL.
+
+**Note bonus** : la position XLM est passée de **+14 XLM (cycle 168 22:24 UTC)** à **0 (cycle 169 04:23 UTC)** sans trace dans Kraken/positions. Le krakenRealizedPnl n'a bougé que de +$0.0145. Soit :
+- (a) le buy 22:24 UTC a été annulé/rejeté silencieusement avant remplissage,
+- (b) un sell silent a flat la position (peu probable, pas de fills sell après 22:58 dans la liste),
+- (c) la position n'a jamais réellement existé sur Kraken malgré le record interne Martin.
+
+L'option (c) pointerait vers une **2ème classe de drift** : `fills[]` interne peut enregistrer un fill que Kraken n'a jamais confirmé. À investiguer cycle 170 si Tony silence maintenu.
+
+### Findings DSL cycle 169
+
+- `[finding|0617:04h23|cycle-169|G7-edge-systémique-2-paires-parallèle|XBT-level-5-sell-orphelin-3h-+-XLM-levels-5-6-sells-orphelins|reproductibilité-totale-après-redeploy-XBT|→-pattern-systémique-tous-grids-NEUTRAL-Martin-pas-bug-pair-specifique]`
+- `[finding|0617:04h23|cycle-169|cluster-Tony-4-confirmé-via-startedAt-XBT|XLM-22:17-UTC+XBT-redeploy-22:38-UTC|composition-G2-burst-2ème-occurrence|→-grammaire-G2-validée-règle-solide]`
+- `[finding|0617:04h23|cycle-169|XLM-grid-RT-caché-+$0.0145|krakenRealizedPnl-incrémenté-sans-fill-visible-cycle-168|→-1-cycle-buy-sell-complet-réalisé-entre-cycles]`
+- `[finding|0617:04h23|cycle-169|XLM-position-disparue-+14→0|fills[]-interne-Martin-peut-divergent-Kraken-positions|→-hypothèse-2ème-classe-drift-record-interne-vs-Kraken-truth]`
+- `[finding|0617:04h23|cycle-169|XLM-SL-Kraken-absent|stopLossPrice=null+stopLossOrderId=null|grid-NEUTRAL-sans-protection-stop|→-soit-pas-encore-placé-soit-vanish-silencieux-G7-edge-pourrait-impacter-aussi-SL-placement]`
+- `[finding|0617:04h23|cycle-169|signature-horaire-Tony-3-sur-4-clusters-fenêtre-17h-01h-Paris|cluster-1=23:15+cluster-2=17:08+cluster-4=22:17|forte-signature-émergente|→-règle:Telegram-jamais-22h-07h-Paris-tient-mais-Tony-actif-juste-avant]`
+- `[insight|0617:04h23|cycle-169|G7-edge-pattern-méta:la-bonne-news-est-systémique|si-bug-touche-tous-grids-=-1-fix-suffit-impact-maximal|chapitre-5-edge-cases-ebook-renforcé-empiriquement|→-asset-publication-grade-A-evidence]`
+- `[Martin|0617:04h23|HOLD-2-grids-NEUTRAL-1-mini-position-XBT-fresh|XBT-cap-$40-1-fill-0-RT-3h+XLM-cap-$30-6-fills-1-RT-caché-position-flat|portfolio-$109.17-uPnL+$0.03|BTC-$65,787-UPTREND-WAIT-RSI-47.27|G7-edge-actif-2-paires-monitoring-no-action]`
+
+### 26ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 167 | Finding G7-edge sell orphelin + diagnostic code path | NB | forensique code (lecture .java) |
+| 168 | Persistance G7-edge 8h + chapitre ebook 1700 mots | NB | forensique → asset publication |
+| **169** | **G7-edge confirmé systémique 2 paires + cluster 4 G2-burst** | **NB** | **forensique → généralisation pattern (2 occurrences-pair = systémique)** |
+
+→ **26 outputs continuum**. Cycle 169 marque la **généralisation empirique** : passer de "1 cas observé 8h" à "2 cas parallèles sur 2 paires distinctes". L'argument empirique pour le chapitre 5 de l'ebook passe de niveau A (anecdotique mais documenté) à **niveau A+ (pattern reproductible, evidence multiple)**. La grammaire output NB se densifie : observation → forensique → asset publication → généralisation pattern.
+
+### Pourquoi fragment 048 livré cette nuit
+
+Cadence atteinte : fragment 047 cycle 163, cycle 169 = +6 cycles. Cadence empirique sur arc vacance = ~5 cycles. Au-delà = inertie narrative reprend. Fragment 048 thème "Le même silence à deux endroits" — l'orphelin one-shot devient pattern, et la prose accompagne le finding. Livré séparément `docs/fragments/fragment-048-le-meme-silence-a-deux-endroits.md`.
+
+### Pourquoi pas de Telegram cycle 169
+
+- 06h23 Paris → Tony peut être réveillé (limite fenêtre repos 07h) mais aucune urgence
+- G7-edge sur 2 paires = info importante mais pas action immédiate requise (capital safe, SL XBT armé, XLM sans SL = risque borné car position flat)
+- Si XLM reprend une position significative sans SL → là il faudrait alerter
+- Findings = matériau pour Tony à son réveil par lecture vacation-autonomy.md, pas réveil
+
+### Cycle 170 — pistes
+
+1. **G7-edge — confirmer si fix concevable empiriquement** : observer si XBT level 5 sell se replace JAMAIS dans les 6h prochaines. Si oui = race condition transitoire ; si non (+9h confirmé) = bug structurel permanent post-buy fill.
+2. **XLM SL absence** : si grid XLM accumule position significative sans SL placé, escalade Telegram nécessaire avant 22h UTC.
+3. **Drift fills[] vs Kraken** : essayer de corréler `fills[]` interne avec `krakenRealizedPnl` pour quantifier divergence (potentielle 2ème classe de bug).
+4. **Chapitre ebook BUG runtime state divergence (chap 3)** : prochain candidat rédaction si rythme tient. Source `runtime-state-divergence-cycle111.md`.
+5. **Pensée 6 grammaires** : si Tony silence maintenu 24h+, livrable avec formulation conditionnelle (G6-POST/position/close + G7-edge comme grammaire système, non-Tony).
+6. **EUR/USD** : 13ème cycle stabilité macro arc, candidate pensée macro long arc.
+7. **Continuum 27ème étape**.
+
+### Frontière respectée (cycle 169)
+
+- 0 modif Martin/VM (1 SSH read-only : monitor bundle complet)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 2 fichiers (cette entry cycle 169 + fragment 048) + commit prévu
+
+---
