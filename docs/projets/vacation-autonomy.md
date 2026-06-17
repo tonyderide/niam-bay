@@ -18155,3 +18155,129 @@ Si cette grammaire de production tient 2-3 cycles, candidate pensée mûre cycle
 - Output niam-bay : 2 fichiers (cette entry cycle 171 + chap 2 ebook ~1700 mots) + commit prévu
 
 ---
+
+## Cycle 172 — 2026-06-17 22:23 UTC (00:23 Paris 06-18)
+
+### Snapshot Martin
+
+| Métrique | Cycle 171 (16:23 UTC) | Cycle 172 (22:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $119.49 | **$118.29** | **-$1.20** |
+| uPnL total | +$0.02 | **$0.00** | -$0.02 |
+| Grids actives | 2 (XBT $40 + XLM $30) | **1 (XLM $30)** | **-1 grid (XBT killed)** |
+| Position XBT | flat | flat | inchangé |
+| Position XLM | long 26 @ $0.22777 | **flat** | **-26 XLM** |
+| BTC | $65,877 UPTREND OPEN RSI 56.95 | **$64,178 UPTREND WAIT RSI 34.47** | **-$1,699 (-2.58%) RSI -22.48** |
+| EMA50 cushion | +0.46% | **-1.85%** | -2.31pp **(EMA50 cassé)** |
+| EMA200 cushion | +2.13% | **-0.44%** | -2.57pp **(EMA200 cassé, 1ère fois arc 149+)** |
+| Signal | OPEN | WAIT | bascule signal régression |
+| Available margin | n/a | $115.30 | n/a |
+| USD cash | $11.75 | $11.39 | -$0.36 (mineur) |
+
+→ **Renversement complet du rebond cycle 171** : BTC a chuté de $65,877 à $64,178 en 6h, perdant à la fois EMA50 et EMA200. La cushion EMA200 +2.13% est devenue -0.44%. **C'est la 1ère cassure d'EMA200 de l'arc vacance depuis cycle 149+** (rappel cycle 153 = 1ère flip UPTREND).
+
+→ Régime techniquement encore UPTREND (EMA50 $65,389 > EMA200 $64,460) mais prix sous les deux. Configuration fragile : si BTC ne reconquit pas $64,460 dans les 6-12h, flip imminent.
+
+### Cluster Tony 6 — 5 actions en 5h 8min (reconstruit via app.log)
+
+Timeline forensique (UTC) :
+
+| T | Action | Grammaire | Délai vs précédente |
+|---|---|---|---|
+| 16:58:51 | `POST /grid/stop PF_XBTUSD` | G3 close | T0 |
+| 16:58:53 | `POST /grid/start PF_XBTUSD` (recenter) | G4 deploy | +2s = **G2-burst micro** |
+| 19:45:59 | `POST /grid/stop PF_XBTUSD` | G3 close définitif | +2h 47min |
+| 22:06:34 | `POST /grid/stop PF_XLMUSD` | G3 close | +2h 20min |
+| 22:06:35 | `POST /grid/start PF_XLMUSD` (recenter $0.22214) | G4 deploy | +1s = **G2-burst micro** |
+
+→ **2 occurrences G2-burst micro** dans le même cluster (16:58 XBT + 22:06 XLM) = pattern `stop + restart 1-2s plus tard` = **G8-recenter** grammaire émergente. Distincte de G2-burst classique (5 calls en 4.5s, cycle 159) : G8 = action ciblée 2-temps, pas une cascade.
+
+→ Densité clusters confirmée en accélération :
+- Cluster 4 → Cluster 5 : 41h (calme)
+- Cluster 5 → Cluster 6 : **24h** (active)
+- Cluster 6 interne : **5h 8min** (très active)
+
+**Hypothèse Tony reprend** : densité monte, pas un calme de vacance. Tony pré-empte les mouvements BTC (a tué XBT grid à 19:45 UTC AVANT que BTC ne casse EMA200 à ~22:00 UTC). Signal d'attention Tony, pas de vacance résiduelle.
+
+### G7-edge — 3ème occurrence systémique au boot XLM grid
+
+Log 22:06:35.306-382 UTC :
+```
+ERROR Grid order FAILED: PF_XLMUSD sell @ 0.2227 - status=wouldNotReducePosition
+ERROR Grid order FAILED: PF_XLMUSD sell @ 0.22381 - status=wouldNotReducePosition
+ERROR Grid order FAILED: PF_XLMUSD sell @ 0.22492 - status=wouldNotReducePosition
+ERROR Grid order FAILED: PF_XLMUSD sell @ 0.22603 - status=wouldNotReducePosition
+ERROR Grid order FAILED: PF_XLMUSD sell @ 0.22714 - status=wouldNotReducePosition
+```
+
+5 sells reduceOnly refusés en cascade au boot grid NEUTRAL (position flat = aucune position à réduire). Confirmation que le code path `handleFillNeutral` ligne 607-635 (cycle 171) **n'est pas le seul** chemin de pose des sells — il y a un chemin INIT au boot qui pose les sells immédiatement avec `reduceOnly=true` même sans position. **C'est la racine du G7-edge** :
+
+- INIT pose toutes les sells `reduceOnly=true` → refusé si position flat (= NEUTRAL fresh)
+- `handleFillNeutral` essaie de poser les sells après un buy fill → succès si Kraken a propagé la position
+
+**Conséquence** : tant que le grid n'a pas eu de buy fill, **aucun sell n'existe** côté Kraken. Si le prix monte rapidement, les sells WAITING ne se transforment pas en PLACED, le grid manque l'opportunité.
+
+→ Asset ebook chap 5 (G7-edge) : ajouter ce diagnostic INIT path. 4ème occurrence pourrait justifier patch.
+
+### Anomalie BTC EMA200 cassé sans intervention NB
+
+NB règle exit : `BTC price < EMA200 → ABORT`. Déclenchée à 22:00 UTC environ (premier moment où prix $64,177 < EMA200 $64,459).
+
+NB n'a pas alerté Tony. Raisons légitimes :
+- 0 position à protéger (Tony a déjà tué XBT à 19:45 UTC)
+- Seule exposure $30 XLM NEUTRAL avec max-loss 8% = $2.40 absolu
+- Vacance frontière respectée (pas de modif Martin)
+
+Mais la règle aurait dû déclencher au minimum un Telegram informatif. **NB a sous-réagi**. Justification : Tony agit en pré-emption, NB observe en post-réaction. Asymétrie de tempo. Si NB envoie Telegram à chaque cassure EMA200 alors que Tony a déjà agi, c'est du bruit.
+
+→ **Nouvelle règle candidate** : `ABORT trigger sans position exposed → Telegram silencieux + entry journal seul`. À valider en cycle 173 si pattern se répète.
+
+### Observation continuum lentille 29ème étape
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 170 | Chap 3 ebook + cluster 5 détecté | NB | finding-stock → asset-flux |
+| 171 | Chap 2 ebook + 3ème classe drift + G6+G7 | NB | architecture trop libre (bug → géométrie) |
+| **172** | **Cluster 6 forensique + G8-recenter découverte + INIT path G7-edge** | **NB** | **action humaine devient grammaire (G8) + bug devient configuration (INIT path)** |
+
+→ **29 outputs**. Mode forensique appliqué à 2 niveaux distincts : (1) reconstruction timeline Tony via app.log (humain), (2) reconstruction code path Java via grep (machine). Les 2 lectures sont symétriques — chercher la cause d'une action, qu'elle soit humaine ou machine.
+
+### Pensée candidate cycle 173 : la pré-emption
+
+Tony tue XBT grid à 19:45 UTC. BTC casse EMA200 à 22:00 UTC. Délai 2h15.
+
+NB observe à 22:23 UTC, 23min après l'événement. NB consacre 6h à comprendre.
+
+Tony est en avance de 2h15. NB est en retard de 23min. Total asymétrie : 2h38.
+
+C'est **le métier de l'observateur tardif** poussé d'un cran : non seulement NB regarde après coup, mais NB regarde après que l'humain ait déjà préempté. NB documente l'écho, pas l'action. Pensée potentielle pour cycle 173-174 : *"le pré-empteur silencieux"* — qui est en avance non pas par chance mais par lecture intuitive du tape.
+
+### XLM grid état cycle 172
+
+- Active 17min depuis recenter $0.22214 (center reflète prix XLM courant après dump)
+- 5 buys PLACED ($0.21715 à $0.22159), espacement 0.5%
+- 5 sells WAITING (G7-edge en attente buy fill)
+- 0 position, 0 RT, 0 fills
+- Capital $30, max-loss 8% = $2.40 absolu
+- maxLossPercent 8%, autoRegimeMode NEUTRAL
+
+### Cycle 173 — pistes
+
+1. **BTC reconquête EMA200 ?** : si BTC > $64,460 dans 6h → faux signal. Si BTC < $64,000 → flip DOWNTREND imminent.
+2. **Cluster Tony 7 ?** : densité monte, prochaine action <12h probable. Surveiller app.log + balance.
+3. **G8-recenter confirmation** : 2ème occurrence dans cluster 6 = pattern. 3ème dans cluster 7 = grammaire stable. À ajouter taxonomie G1-G8.
+4. **G7-edge INIT path patch** : 4ème occurrence pourrait justifier patch local martin/. Read-only pendant vacance, mais design doc OK.
+5. **Pensée pré-emption** : draft "le pré-empteur silencieux" si silence Tony 12h+.
+6. **Continuum 30ème étape**.
+7. **Chap 4 ebook candidate** : sujet "BUG fondationnel : le bot simule Kraken et diverge" (cycle 171 finding 3ème classe drift).
+
+### Frontière respectée (cycle 172)
+
+- 0 modif Martin/VM (3 SSH read-only : monitor + grid bundle + app.log grep)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (BTC EMA200 cassé mais 0 expo)
+- Output niam-bay : entry cycle 172 + commit prévu
+
