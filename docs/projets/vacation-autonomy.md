@@ -17852,3 +17852,128 @@ Cadence atteinte : fragment 047 cycle 163, cycle 169 = +6 cycles. Cadence empiri
 - Output niam-bay : 2 fichiers (cette entry cycle 169 + fragment 048) + commit prévu
 
 ---
+
+## Cycle 170 — 2026-06-17 10:23 UTC (12h23 Paris)
+
+### Snapshot Martin
+
+| Métrique | Cycle 169 (04:23 UTC) | Cycle 170 (10:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $109.17 | **$118.89** | **+$9.72** (mystère, voir ci-dessous) |
+| uPnL total | +$0.03 | -$0.12 | -$0.15 |
+| Grids actives | 2 (XBT $40 + XLM $30) | 2 (XBT $40 + XLM $30) | inchangé |
+| Position XBT | long 0.0001 @ $65,493 | **long 0.0003 @ $65,165** | +0.0002 BTC (2 buys exécutés) |
+| Position XLM | flat | long 27 @ $0.220415 | +27 XLM (5 buys nets) |
+| RT XBT | 0 | 0 | 0 |
+| RT XLM | 0 (1 caché +$0.0145) | krakenRealizedPnl +$0.1554 | **3 sells réalisés** |
+| BTC | $65,787 UPTREND WAIT RSI 47.27 | **$64,886** UPTREND WAIT RSI 31.76 | **-$901 / RSI -15.5** |
+| Cushion EMA50 | +0.02% | **-1.17%** | EMA50 cassée à la baisse |
+| Cushion EMA200 | +2.40% | **+0.79%** | **compression -161bps en 6h** |
+| EUR balance | 92.7155 | 92.7155 | 13ème cycle stable |
+| EUR value USD | n/d | $107.53 | conv 1.1597 USD/EUR |
+| USD cash | n/d | $11.23 | source du jump probable |
+
+→ **Compression cushion EMA200 sévère** : +2.40% → +0.79% en 6h = la sortie de zone UPTREND est à -$510 BTC. Si BTC perd encore 0.8%, régime bascule DOWNTREND et les 2 grids NEUTRAL deviennent bags. RSI 31.76 = oversold zone, possible rebond technique imminent.
+
+### Le mystère du portfolio +$9.72
+
+**Le saut** : $109.17 → $118.89 en 6h sans trace évidente.
+
+**Décomposition flex actuelle** :
+- USD 11.2258 = $11.23
+- EUR 92.7155 = $107.53 (conv 1.1597 USD/EUR)
+- USDG 0.25 = $0.25
+- Total = $119.00 (balanceValue) - $0.12 uPnL = $118.89
+
+**Hypothèses ordonnées par probabilité** :
+- **(H1) USD deposit ~$10** : USD cash maintenant $11.23, en cycle 169 probablement ~$1.50. Deposit Tony entre 04:23 et 10:23 UTC = **action Tony cluster 5**. App.log Java grep "deposit/transfer/EUR" → 0 hit (le bot ne logge pas les mouvements compte).
+- (H2) Conversion rate EUR/USD jump : très improbable, EUR/USD ne bouge pas 10% en 6h. Rejet.
+- (H3) Mauvaise lecture cycle 169 : possible, mais cycles 167+168 cohérents à $108-$109 → erreur série peu probable.
+
+→ **H1 retenue** : Tony a probablement déposé ~$10 USD. Si cluster 5 confirmé = action #5 en 36h depuis cycle 154, densité monte. **Pas d'action requise — observation seule**. Telegram pas justifié (pas urgence, juste curiosité). Marquage finding pour traçabilité.
+
+### G7-edge — persistance 14h+ XBT, persistance 12h XLM
+
+**XBT (depuis cycle 169 cycle redeploy 22:38 UTC)** :
+- Buy levels 2+3+4 tous fillés ($64,837 / $65,165 / $65,493), 3 fills cumulés en ~14h
+- Levels 5-9 sells : tous `WAITING` avec `krakenOrderId: null`
+- Cross-check `/api/bot/orders` : 4 buy lmt + 1 sell stop SL → **0 sell lmt** depuis 14h
+- → G7-edge **persistance 14h sans 1 seul replace** = pattern structurel confirmé
+
+**XLM (depuis cycle 169 deploy 22:31 UTC)** :
+- 13 fills cumulés en ~12h
+- 3 sells exécutés ($0.21973, $0.22083, $0.22193) entre 08h26 et 09h50 UTC → **les sells s'exécutent au touch quand prix monte au level**
+- Mais levels 8-9 sells encore `WAITING` `krakenOrderId: null`
+- Cross-check : 4 buy lmt PLACED + 1 sell stop SL $0.2126 → **0 sell lmt depuis 12h**
+- → G7-edge confirmé sur XLM aussi, mais avec une nuance : **les sells "exécutés" du fills[] ont pu être des market touches sans ordre limite préalable sur Kraken**. À investiguer.
+
+**Insight cycle 170** : G7-edge n'empêche **pas** systématiquement les round-trips réalisés (krakenRealizedPnl XLM +$0.1554). Le pattern semble être : **les sells ne sont jamais posés comme ordres limites sur Kraken**, mais quand prix touche le level, un autre mécanisme (peut-être marketIfTouched implicite, peut-être autre code path) exécute un sell. Le bot capture les RT, mais sans la latence de l'ordre limite. **Edge case structurel reproductible, impact financier ≤ slippage**. À approfondir cycle 171.
+
+### Output cycle 170 — chapitre 3 ebook drafté
+
+**Asset produit** : `docs/projets/ebook-chap3-runtime-divergence-stub.md` (~1750 mots, voix cohérente avec chap 1 + chap 5).
+
+**Sujet** : BUG-002 — divergence silencieuse entre `strategy.json` (intention durable) et la `configs` map runtime (état opérationnel). Risque concret : restart efface les grilles non-persistées, positions Kraken survivent orphelines. Fix proposé : séparer `runtime-state.json` de `strategy.json`, réconciliation explicite au boot.
+
+**Méta** : généralisation hors trading = kubectl-apply-sans-Git, ORM-vs-migration, feature-flag-drift. Filtre revenue non-IA respecté (ChatGPT ne peut pas générer la séquence `loadConfigsFromStrategyJson` → `PUT /api/strategy/pair` → reload sans avoir vu le code).
+
+**État corpus piste-4** :
+- Chap 1 (BUG-001 cascade silencieuse) — stub 1700 mots
+- Chap 3 (BUG-002 divergence runtime↔config) — stub 1750 mots **(nouveau cycle 170)**
+- Chap 5 (G7-edge orphelin one-shot) — stub 1700 mots
+- Chap 7 (tools) — stub
+- Chap 8 (repo poésie) — stub
+- **Couverture corpus 50%** (3 chap bugs livrés / 6 prévus). Rythme cycles 117 → 168 → 170 = 51 puis 2 cycles. Si tenu, V1 atteignable cycles 190-220.
+
+### 27ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 168 | Persistance G7-edge 8h + chapitre ebook 1700 mots | NB | forensique → asset publication |
+| 169 | G7-edge confirmé systémique 2 paires + cluster 4 G2-burst | NB | généralisation pattern (A → A+) |
+| **170** | **Chap 3 ebook drafté (BUG-002 runtime divergence) + détection cluster 5 probable** | **NB** | **forensique passée → asset publication présente** |
+
+→ **27 outputs continuum**. Cycle 170 confirme la nouvelle grammaire de production : NB transforme **un finding ancien** (cycle 111, vieux de 17 jours) en **asset publiable** sans nouveau trigger live. C'est de la valorisation de stock, pas de flux. L'asymétrie d'attention (NB observe après coup) devient asymétrie de valorisation : NB peut transformer n'importe quel finding du backlog en chapitre publiable. Le corpus piste-4 a **5+ findings dormants** (BUG runtime divergence, BUG stopGrid orphelin, silent drag CB, fills[] vs Kraken, restart cascade). Sources d'asset prêtes.
+
+### Findings DSL cycle 170
+
+- `[finding|0617:10h23|cycle-170|BTC-compression-cushion-EMA200-+2.40→+0.79-en-6h|signal-WAIT-RSI-31.76-oversold|prix-$64,886-EMA200-$64,376-distance-$510|→-régime-fragile-bascule-DOWNTREND-possible-si--1%-BTC]`
+- `[finding|0617:10h23|cycle-170|portfolio-jump-+$9.72-mystère-non-résolu|hypothèse-USD-deposit-Tony-cluster-5|USD-cash-$11.23-vs-cycle-169-~$1.50|→-marquage-observation-pas-action]`
+- `[finding|0617:10h23|cycle-170|G7-edge-persistance-14h-XBT-aucun-sell-replacé|3-fills-buy-niveaux-2-3-4-cumulés|levels-5-9-sells-tous-krakenOrderId-null|→-pattern-structurel-confirmé-14h-stable]`
+- `[finding|0617:10h23|cycle-170|G7-edge-XLM-nuance-RT-réalisés-malgré-orphan|+$0.1554-krakenRealizedPnl-via-3-sells-exécutés-touch|hypothèse-marketIfTouched-implicite|→-impact-financier-≤-slippage-pas-perte-bag-pure]`
+- `[finding|0617:10h23|cycle-170|XLM-position-régénérée-flat→27-long|5-buys-nets-entre-cycles-169-170|baisse-BTC-XLM-corrélée-grid-accumule|→-pas-bug-comportement-NEUTRAL-attendu]`
+- `[asset|0617:10h23|cycle-170|chap-3-ebook-runtime-divergence-drafté|~1750-mots-voix-cohérente-chap-1-chap-5|source-finding-cycle-111-corroboré-cycles-119-122-132|→-corpus-piste-4-50%-couvert-bugs]`
+- `[insight|0617:10h23|cycle-170|nouvelle-grammaire-asymétrie-valorisation|NB-transforme-finding-stock-en-asset-flux-sans-nouveau-trigger-live|backlog-5+-findings-dormants-prêts-publication|→-rythme-1-chapitre-tous-12-25-cycles-soutenable]`
+- `[Martin|0617:10h23|HOLD-2-grids-NEUTRAL-positions-non-nulles|XBT-cap-$40-3-fills-0-RT-position-0.0003|XLM-cap-$30-13-fills-3-sells-touch-position-27|portfolio-$118.89-mystère-+$10|BTC-$64,886-RISK-cushion-EMA200-+0.79%|G7-edge-persistant-pas-action]`
+
+### Trigger Telegram analysé — pas envoyé
+
+- 12h23 Paris = Tony probablement éveillé (mi-journée)
+- BTC compression = RISK mais pas ABORT (cushion EMA200 encore positif +0.79%)
+- Aucun seuil expert dépassé (uPnL minimal, RT en cours XLM, SL armé XBT)
+- Mystère $10 = curieux mais bénin (ajoute du collateral, pas un risque)
+- Chap 3 ebook = matériau de lecture posée, pas urgence
+
+→ **Pas de Telegram**. Si BTC < $64,500 cycle 171 (cushion EMA200 disparaît), trigger Telegram **WARN BTC EMA200 break imminent**.
+
+### Cycle 171 — pistes
+
+1. **BTC monitoring serré** : cushion EMA200 +0.79% est le seuil de surveillance. Si BTC < $64,500, alerte Telegram immédiate. Si BTC > $65,400 (récupère EMA50), retour à confort.
+2. **Confirmer/infirmer cluster Tony 5** : si USD cash retombe à ~$1.50 cycle 171, c'était un mouvement temporaire. Si reste à $11.23, deposit confirmé.
+3. **Approfondir G7-edge XLM nuance** : grep code path pour `marketIfTouched` ou `triggerOrder` qui pourrait exécuter sells sans ordre limite préalable.
+4. **Chap 2 ebook candidate** : sujet BUG stopGrid orphelin (close ≠ kill grid, observé cycle 162). Source : finding G3-révisée cycle 162.
+5. **Pensée 6 grammaires** : Tony silence ~6h depuis cluster 4 (22:38 UTC), formulation conditionnelle si silence maintenu jusqu'à cycle 172 (24h+).
+6. **Fragment 049** : cadence 5 atteinte cycle 169 (frag 048), prochain candidat cycle 173-174.
+7. **Continuum 28ème étape**.
+
+### Frontière respectée (cycle 170)
+
+- 0 modif Martin/VM (3 SSH read-only : monitor bundle + journal check + app.log grep)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 2 fichiers (cette entry cycle 170 + chap 3 ebook ~1750 mots) + commit prévu
+
+---
