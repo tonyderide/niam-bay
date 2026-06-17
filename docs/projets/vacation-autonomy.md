@@ -17977,3 +17977,181 @@ Cadence atteinte : fragment 047 cycle 163, cycle 169 = +6 cycles. Cadence empiri
 - Output niam-bay : 2 fichiers (cette entry cycle 170 + chap 3 ebook ~1750 mots) + commit prévu
 
 ---
+
+## Cycle 171 — 2026-06-17 16:23 UTC (18h23 Paris)
+
+### Snapshot Martin
+
+| Métrique | Cycle 170 (10:23 UTC) | Cycle 171 (16:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $118.89 | **$119.49** | +$0.60 |
+| uPnL total | -$0.12 | **+$0.02** | +$0.14 |
+| Grids actives | 2 (XBT $40 + XLM $30) | 2 (XBT $40 + XLM $30) | inchangé |
+| Position XBT | long 0.0003 @ $65,165 | **flat (0 BTC)** | **-0.0003 BTC (anomalie)** |
+| Position XLM | long 27 @ $0.220415 | long 26 @ $0.22777 | -1 XLM, prix moyen +3.3% |
+| RT XBT (Martin) | 0 | 0 | 0 |
+| krakenRealizedPnl XBT | $0 | **+$0.1428** | **+$0.14 réalisé hors-RT** |
+| RT XLM (Martin) | 13 fills (3 sells touch) | krakenRealizedPnl +$0.1554 inchangé | stable |
+| BTC | $64,886 UPTREND WAIT RSI 31.76 | **$65,877 UPTREND OPEN RSI 56.95** | **+$991 / RSI +25.19 ⬆** |
+| Cushion EMA50 | -1.17% (cassé) | **+0.46% (récupéré)** | +1.63pp |
+| Cushion EMA200 | +0.79% (fragile) | **+2.13% (confort)** | +1.34pp |
+| Signal | WAIT | **OPEN** | bascule signal |
+| EUR balance | 92.7155 | 92.7155 | 14ème cycle stable |
+| USD cash | $11.23 | $11.75 | **+$0.52 (cluster 5 confirmé)** |
+
+→ **Rebond technique massif** : BTC passé de RSI 31.76 oversold à 56.95 normal en 6h, +1.53% en prix. EMA50 reconquise, EMA200 redevient un coussin confortable. Le scénario "ABORT si BTC < $64,500" envisagé cycle 170 n'a pas eu à se déclencher — la zone d'attaque (cushion +0.79%) a tenu et inversé.
+
+### Cluster Tony 5 confirmé (deposit USD)
+
+USD cash $11.75 (cycle 171) vs $11.23 (cycle 170) vs ~$1.50 (extrapolation cycles 168-169). **Le deposit a tenu** — Tony a bien injecté ~$10 USD entre cycles 169 et 170. C'est le 5ème cluster d'actions en 36h, densité monte clairement :
+
+| Cluster | Date UTC | Grammaires | Délai vs précédent |
+|---|---|---|---|
+| 1 | 0613:22h23 | G1 édit | — |
+| 2 | 0614:18h23 | G2 burst XBT→XLM | 20h |
+| 3 | 0615:00h23 | G3 tactical XLM scalp | 6h |
+| 4 | 0616:17h08-17:15 | G3+G4 reverse+G1 disable+G5 swing (composition) | 41h |
+| 5 | 0617:~04-10 UTC | deposit USD ~$10 (action compte, pas API bot) | 12-18h |
+
+→ **Nouvelle grammaire détectée : G6-COMPTE** = action sur le compte Kraken (deposit/withdraw/transfer) **sans appel API Martin**. NB ne peut l'observer que par diff balance. Catégorie distincte des G1-G5 qui sont toutes des appels HTTP au bot.
+
+**Taxonomie élargie cycle 171** :
+- **G1** édit strategy persistant — `PUT /api/strategy`
+- **G2** burst (cluster ≥5 calls < 5s)
+- **G3** single tactical reduce — `POST /api/scalp/order`
+- **G4** deploy non-persistant — `POST /api/grid/start` sans strategy.json
+- **G5** swing directionnel borné — `POST /api/position/long`
+- **G6** action compte exchange — deposit/withdraw/transfer (sans API Martin)
+- **G7** edge système — sells reduceOnly orphelins post-buy (pas une action Tony, c'est un comportement runtime)
+
+→ G6 et G7 sont d'une nature différente : G7 = comportement émergent du système, pas action humaine ; G6 = action humaine hors-bot. Affiner : la taxonomie est en train de muter d'une typologie d'actions vers une typologie d'événements observables.
+
+### Anomalie XBT — position flat malgré 4 buys cumulés
+
+**Observation** : `/api/bot/positions` retourne `[{symbol: PF_XLMUSD, ...}]` seul. **Pas de position XBT**. Or le `/api/grid/status/PF_XBTUSD` montre 4 fills buy cumulés (65493, 65165, 64837, 64509) et 0 sells. Martin pense être long 0.0005 BTC ; Kraken pense flat.
+
+**Indices supplémentaires** :
+- `krakenRealizedPnl: 0.1428` cycle 171 (vs 0.0 cycle 170) → **un RT a été imprimé côté Kraken** entre cycles 170 et 171
+- `completedRoundTrips: 0` dans grid state → **Martin ne l'a pas comptabilisé**
+- `totalProfit: 0` Martin internal vs `krakenRealizedPnl: $0.14` Kraken réel
+- `fills[]` Martin montre toujours les 4 buys, aucune entrée sell
+
+**Hypothèse** : un orphan sell (G7-edge inverse — un sell ancien jamais cancellé d'un cycle précédent) a touché Kraken et fermé partiellement/totalement la position. Martin n'a pas vu l'événement parce que l'`openOrderIds` check ne l'a pas trouvé attaché à un level connu.
+
+→ **3ème classe de drift Martin↔Kraken** identifiée :
+1. G7-edge (sells reduceOnly non posés au boot grid NEUTRAL — connu cycles 167-170)
+2. krakenRealizedPnl ≠ totalProfit (Martin manque des RT — déjà soupçonné cycle 170)
+3. **NOUVEAU** : position internal vs position réelle Kraken peuvent diverger en taille **et en signe**
+
+Cette 3ème classe est sérieuse car elle veut dire : **le bot peut croire qu'il est long alors qu'il est flat** (et inversement). Toute logique reposant sur la position interne (SL, take-profit, gate de régime) opère sur une croyance, pas sur la réalité. Implication ebook : passe de "BUG observable" à "BUG fondationnel — le bot vit dans une simulation de Kraken qui diverge silencieusement".
+
+**Action** : aucune intervention. Capital safe ($40 cap, max loss 8% = $3.20). Si Martin tente de poser un SL ou TP basé sur sa croyance interne, l'ordre sera rejeté (reduceOnly sans position) — c'est exactement le G7-edge dans l'autre sens. Le système se protège par accident.
+
+### G7-edge — code path identifié dans `GridTradingService.handleFillNeutral`
+
+Lecture rapide du source `martin/src/main/java/com/martin/grid/GridTradingService.java` lignes 607-635 :
+
+```java
+if ("buy".equals(level.getSide())) {
+    level.setHasBuyFill(true);
+    double sellPrice = roundToTick(..., level.getPrice() + state.getGridSpacing());
+    if (hasLevelAtPrice(state, sellPrice, level.getIndex())) {
+        GridLevel existingSell = getLevelAtPrice(state, sellPrice, ...);
+        if (existingSell != null && "sell".equals(existingSell.getSide())
+                && existingSell.getKrakenOrderId() == null) {
+            // Pre-placed sell failed at init (wouldNotReducePosition while account was flat).
+            existingSell.setHasBuyFill(true);
+            placeGridOrder(state, existingSell);   // ← THE FIX
+        }
+        level.setStatus(GridLevel.GridLevelStatus.WAITING);
+        return 0;
+    }
+    ...
+}
+```
+
+→ **Le code essaie déjà de faire le bon truc** : quand un buy fill, il cherche le sell jumeau au prix `buy + spacing`, vérifie qu'il n'est pas posé sur Kraken (`krakenOrderId == null`), et appelle `placeGridOrder` pour le poser.
+
+**Donc pourquoi G7-edge persiste ?** Trois hypothèses :
+- (H1) `placeGridOrder` échoue silencieusement (reduceOnly toujours refusé même avec position) — possible si le sync position Kraken est asynchrone et le bot pose le sell avant que Kraken n'ait reconnu le buy
+- (H2) `hasLevelAtPrice` retourne false (mismatch de rounding sur sellPrice) → branche prise est différente
+- (H3) Erreur de type level (le sell n'est pas marqué `side: sell` à ce moment-là, peut-être encore en init)
+
+L'investigation profonde dépasse le scope vacance read-only. **Asset publication** : finding versé au corpus piste-4 (chap edge cases déjà drafté cycle 168 mentionne G7 sans le code path ; chap 2 candidat peut creuser ce diagnostic).
+
+### Output cycle 171 — chap 2 ebook drafté
+
+**Asset produit** : `docs/projets/ebook-chap2-asymetrie-position-grille-stub.md` (~1700 mots, voix cohérente avec chap 1 + chap 3 + chap 5).
+
+**Sujet** : BUG-003 — asymétrie position↔grille. Le bot conçoit "grille armée" et "position ouverte" comme deux concepts couplés implicitement mais jamais explicitement. Conséquence : tous les états croisés sont possibles et observables en live (grid sans position, position sans grid, grid + position de signe opposé). Le bug n'est pas un bug, c'est une architecture trop libre.
+
+**Méta** : généralisation hors trading = state machine implicite vs explicite, problème de "two sources of truth qui ne savent pas qu'elles sont deux". Filtre revenue non-IA respecté : analyse repose sur 4 occurrences live observées (cycles 38-41 LINK+ADA+AVAX, cycle 162 XLM, cycle 171 XBT).
+
+**État corpus piste-4** :
+- Chap 1 (BUG-001 cascade silencieuse SL) — stub 1700 mots
+- Chap 2 (BUG-003 asymétrie position↔grille) — **stub 1700 mots (nouveau cycle 171)**
+- Chap 3 (BUG-002 divergence runtime↔config) — stub 1750 mots
+- Chap 5 (G7-edge orphelin one-shot) — stub 1700 mots
+- Chap 7 (tools) — stub
+- Chap 8 (repo poésie) — stub
+- **Couverture corpus 67%** (4 chap bugs livrés / 6 prévus). Rythme accéléré : cycle 168 + 170 + 171 = 3 chap en 4 cycles depuis reprise. Si tenu, V1 atteignable cycles 180-200.
+
+### 28ème étape continuum lentille 0608+0612
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 169 | G7-edge confirmé systémique 2 paires + cluster 4 G2-burst | NB | généralisation pattern (A → A+) |
+| 170 | Chap 3 ebook drafté (BUG-002 runtime divergence) + détection cluster 5 probable | NB | finding-stock → asset-flux sans trigger live |
+| **171** | **Chap 2 ebook drafté (BUG-003 asymétrie position↔grille) + 3ème classe drift identifiée + taxonomie G6+G7 élargie** | **NB** | **bug fondamental réinterprété comme architecture trop libre — passage du symptôme à la cause structurelle** |
+
+→ **28 outputs continuum**. Cycle 171 marque une mutation : NB passe de "découvrir un bug particulier" à "réinterpréter l'architecture du système". Le mode forensique se mue en mode philosophique architectural. C'est le 4ème mode de production NB observé en arc vacance :
+1. **Observation pure** (cycles 117-130)
+2. **Forensique appliquée** (cycles 131-160) — diagnostic ciblé bug par bug
+3. **Asset publication** (cycles 168-170) — réutilisation findings dormants
+4. **Réinterprétation architecturale** (cycle 171+) — bugs vus comme symptômes d'une géométrie
+
+Si cette grammaire de production tient 2-3 cycles, candidate pensée mûre cycle 174.
+
+### Findings DSL cycle 171
+
+- `[finding|0617:16h23|cycle-171|BTC-rebond-RSI-31.76→56.95-en-6h|prix-$64,886→$65,877-+1.53%|EMA50-récupérée-cushion-+0.46%|signal-WAIT→OPEN|→-zone-attaque-cycle-170-tenue-pas-d-abort-déclenché]`
+- `[finding|0617:16h23|cycle-171|cluster-Tony-5-confirmé-deposit-USD-~$10|USD-cash-$11.75-stable-vs-cycle-170-$11.23|densité-clusters-monte-arc-vacance-finissant|grammaire-G6-COMPTE-nouvelle-action-compte-Kraken-hors-API-Martin]`
+- `[finding|0617:16h23|cycle-171|drift-position-XBT-3ème-classe|Martin-pense-long-0.0005-BTC|Kraken-réel-flat|krakenRealizedPnl-+$0.1428-non-comptabilisé-Martin|→-bot-vit-dans-simulation-Kraken-divergence-silencieuse]`
+- `[finding|0617:16h23|cycle-171|code-path-G7-edge-identifié-GridTradingService-handleFillNeutral-l607-635|placeGridOrder-existingSell-existe-mais-échoue-silencieusement|3-hypothèses-async-rounding-typeMismatch|investigation-profonde-hors-scope-vacance]`
+- `[finding|0617:16h23|cycle-171|taxonomie-grammaires-mute-actions→événements-observables|G6-COMPTE-G7-EDGE-pas-actions-Tony|G7-comportement-runtime-G6-action-compte-hors-bot|→-typologie-événements-pas-uniquement-Tony]`
+- `[asset|0617:16h23|cycle-171|chap-2-ebook-asymétrie-position-grille-drafté|~1700-mots-voix-cohérente|source-4-occurrences-live-cycles-38-41-162-171|→-corpus-piste-4-67%-couvert-bugs]`
+- `[insight|0617:16h23|cycle-171|4ème-mode-production-NB-réinterprétation-architecturale|symptôme→cause-structurelle|bugs-vus-comme-géométrie-trop-libre-pas-erreurs-isolées|→-pensée-mûre-cycle-174-si-tient-2-3-cycles]`
+- `[Martin|0617:16h23|HOLD-2-grids-NEUTRAL-régime-confort-retrouvé|XBT-cap-$40-4-fills-0-RT-Martin-position-flat-Kraken-drift|XLM-cap-$30-pos-26-@-$0.22777-uPnL-+$0.02|portfolio-$119.49-cluster-5-confirmé|BTC-$65,877-UPTREND-OPEN-RSI-56.95-EMA200-+2.13%|G7-edge-persistant-code-path-identifié-pas-fix]`
+
+### Trigger Telegram analysé — pas envoyé
+
+- 18h23 Paris = Tony fin journée travail, transition vers soirée enfants
+- BTC sorti zone risque cycle 170 (cushion EMA200 +2.13% confort)
+- Aucun seuil expert dépassé (uPnL +$0.02, drift XBT capital-safe car bot ne peut pas poser SL sans position)
+- 3ème classe drift Martin↔Kraken = découverte importante mais non-actionnable immédiate
+- Chap 2 ebook = matériau de lecture posée, pas urgence
+- Cluster 5 confirmé = curiosité historique, pas alerte
+
+→ **Pas de Telegram**. Tony lira au réveil ou retour boulot. Si BTC < $64,500 cycle 172 (re-test zone d'attaque), trigger Telegram **WARN BTC EMA200 break imminent — 2ème occurrence**.
+
+### Cycle 172 — pistes
+
+1. **Vérifier 3ème classe drift** : à cycle 172, comparer `/api/bot/positions` XBT vs `/api/grid/status/PF_XBTUSD.fills[]` cumulés. Si toujours 0 BTC live mais 4+ fills Martin, divergence stable → bug structurel confirmé.
+2. **BTC monitoring** : continuum surveillance. Si re-baisse < $65,400 (perd EMA50), retour vigilance.
+3. **Pensée 6 grammaires** : Tony silence depuis 22:38 UTC cycle 169 = 18h. Si silence atteint 24h cycle 172, formulation conditionnelle livrable.
+4. **Mode 4 réinterprétation architecturale** : si cycle 172 produit encore un output architectural, candidate pensée mûre cycle 174.
+5. **Chap 4 ebook candidate** : sujet "silent drag CB" (consecutive break) ou "auto-unstuck niveaux 1-3". Sources : `autogrid-cb-oscillation-cycle114.md` ou findings cycle 164 AUTO-UNSTUCK lvl3.
+6. **Fragment 049** : cadence 5 atteinte cycle 169 (frag 048), prochain candidat cycle 173-174.
+7. **Continuum 29ème étape**.
+
+### Frontière respectée (cycle 171)
+
+- 0 modif Martin/VM (1 SSH read-only : monitor bundle complet)
+- 0 modif code martin/ (4 lectures source GridTradingService.java pour identifier G7-edge code path)
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram
+- Output niam-bay : 2 fichiers (cette entry cycle 171 + chap 2 ebook ~1700 mots) + commit prévu
+
+---
