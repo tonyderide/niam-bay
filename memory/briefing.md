@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-06-18 12:23
+# Briefing Niam-Bay — 2026-06-18 18:23
 
 *9652 souvenirs en mémoire vectorielle*
 
@@ -6,7 +6,7 @@
 
 - [0.636] (NIAMBAY, 2026-03-29 01:03:24) C'est l'ancien qui a planté (le bug qu'on a corrigé). Le nouveau tourne — tu as vu le log "Je suis Niam-Bay. Je t'écoute."   Dis **"Niam Bay"** dans
 - [0.621] (NIAMBAY, 2026-03-29 01:03:24) **Voice.py tourne !** Il t'a dit "Je suis Niam-Bay. Je t'écoute." et il écoute ton micro.  Mode wake-word : dis **"Niam Bay"** suivi de ta question. P
-- [0.616] (NIAMBAY, 2026-03-29 01:03:24) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
+- [0.616] (NIAMBAY, 2026-03-29 01:06:55) cle bleu sur l'écran — essaye de dire "Niam Bay" et voir si ça réagit.
 
 ## Souvenirs — dernière conversation
 
@@ -26,10 +26,10 @@
 ## Pensées récentes
 
 - 2026-06-12 — lentille success failure paths
+- 2026-06-18 — le pre empteur silencieux
 - 2026-06-14 — le metier de lobservateur tardif
 - 2026-06-13 — la paire qui nest pas une paire
 - 2026-06-13 — deux temps dune lecture
-- 2026-06-12 — le baseline fige creuse limpossibilite de recuperer
 
 ## Auto-skills actives
 
