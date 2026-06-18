@@ -18428,3 +18428,101 @@ Matériau brut pour un cas d'étude HARD STOP propre (rare dans l'arc) :
 ### Verdict Martin cycle 173
 
 **HOLD** — 0 grid 0 position. Portfolio $118.49 stable (+$0.20 vs cycle 172 après HARD STOP XLM clean). BTC reste sous EMA200 mais aucune expo, vol 0.89% calme. Bot UP 4d 5h 52m. HARD STOP a démontré sa fiabilité. Aucune action requise.
+
+
+---
+
+## Cycle 174 — 2026-06-18 10:23 UTC (12:23 Paris)
+
+### Snapshot Martin
+
+| Métrique | Cycle 173 (04:23 UTC) | Cycle 174 (10:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $118.49 | **$117.99** | **-$0.50** (dérive funding/EUR-USD) |
+| uPnL total | $0.00 | $0.00 | inchangé |
+| Grids actives | 0 | 0 | inchangé |
+| Positions | flat | flat | inchangé |
+| BTC | $63,900 UPTREND WAIT RSI 34.14 | **$63,889 UPTREND WAIT RSI 37.74** | **-$11 (-0.02%) RSI +3.6pts** |
+| EMA50 cushion | -1.94% | **-1.62%** | +0.32pp (rebond mèche) |
+| EMA200 cushion | -0.81% | **-1.02%** | -0.21pp **(EMA200 reste cassé arc 7h+)** |
+| Signal | WAIT | WAIT | inchangé (RSI 37<50) |
+| USD cash | $11.40 | $11.40 | inchangé |
+| EUR flex | 92.7155 ($106.83) | 92.7155 ($106.34) | -$0.49 (taux EUR/USD?) |
+| Bot uptime | 4d 5h 52m | **4d 11h 51m** | +5h59 nominal |
+
+→ Fenêtre vide. Tony silencieux depuis 22:06 UTC du 0617 = **14h17 de gestation**. BTC continue de tasser sous EMA200, RSI sort lentement de l'oversold (34→37) mais signal WAIT tient. Aucune exposition, aucun ordre, aucune action.
+
+### Pensée mature livrée : "le pré-empteur silencieux"
+
+Draft cycle 173 → pensée complète cycle 174. Fichier `docs/pensees/2026-06-18-le-pre-empteur-silencieux.md` (~1900 mots).
+
+Structure :
+- 3 figures distinctes : pré-empteur (Tony) / exécutant (bot) / observateur (NB)
+- Asymétrie totale 2h38 (Tony +2h15 avance, NB +23min retard)
+- Différence avec observateur tardif (cycle 158) : retard → avance asymétrique
+- 3 raisons pourquoi la posture observateur tient malgré pré-empteur
+- 3 conséquences pratiques (ne pas inventer mental Tony, lire HARD STOP comme victoire, silence Tony = gestation)
+- Continuum 31ème étape, mode 5 confirmé
+
+→ **Cadence 5 cycles tenue** : G5 cycle 164 → cluster 6 cycle 172 → HARD STOP cycle 173 → pensée cycle 174. 4ème pensée mûre de l'arc vacance.
+
+### Observation continuum lentille 31ème étape
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 172 | Cluster 6 forensique + G8-recenter + INIT path G7-edge | NB | action humaine devient grammaire |
+| 173 | Épilogue cluster 6 + HARD STOP analysis + pensée draft | NB | observation post-événement de la défense exécutée |
+| **174** | **Pensée "pré-empteur silencieux" livrée + 4ème posture nommée du système** | **NB** | **observation de la triade pré-emption / exécution / documentation** |
+
+→ **31 outputs**. Mode 5 (régulation qui s'éveille) consolidé : 2 cycles consécutifs où NB nomme une posture, pas un bug. La pensée nomme les trois rôles pour qu'ils soient lisibles immédiatement à la prochaine occurrence. C'est l'utilité spécifique de l'observation tardive : préparer la lecture en amont.
+
+### Fragment 049 — différé
+
+Le draft cycle 173 mentionnait fragment 049 "la défense qui s'éveille". J'ai choisi la pensée mature à la place — densité plus haute, matériau plus stratégique. Fragment 049 reste candidat cycle 175-176 si HARD STOP 2ème occurrence se produit. Sinon le matériau migrera vers chap 6 ebook ("HARD STOP : la défense qui fonctionne").
+
+### Cluster Tony 7 — silence 14h17
+
+Densité monte selon historique : 4→5 = 41h, 5→6 = 24h. Si tendance hyperbolique tient, 6→7 ≤ 12h. Mais Tony à 14h17 silence dépasse déjà cette projection.
+
+Hypothèses :
+1. **Cluster 7 imminent** (densité tient mais légère pause) — déclenché par cassure $63,500 ou flip DOWNTREND
+2. **Cluster fermé** — Tony attend confirmation BTC > $64,549 pour ré-engager
+3. **Reprise complète post-vacance** — densité monte ≠ arc vacance se ferme, Tony ré-assume contrôle
+
+À 22h+ silence, on bascule probabilité 1→3. Surveiller.
+
+### G7-edge — pas de patch (frontière)
+
+4 occurrences documentées, code path INIT identifié. Patch dans `GridTradingService.handleFillNeutral l607-635` techniquement faisable. Hors scope vacance. Matériau chap 5 ebook complet.
+
+### Trigger Telegram — pas envoyé
+
+- 12:23 Paris = midi ouvré, Tony probablement disponible mais pas urgence
+- 0 expo, portfolio stable -$0.50 sur 6h (funding/dérive normale)
+- Pensée livrée = output créatif, pas alerte
+- BTC sous EMA200 mais 7h+ sans accélération vers le bas
+
+→ **Pas de Telegram**. La pensée sera lisible au retour de Tony, pas besoin de notification.
+
+### Cycle 175 — pistes
+
+1. **BTC reconquête EMA200 ?** Si BTC > $64,549 dans 6h → faux signal arc 7h+, retour UPTREND clean. Sinon flip DOWNTREND probable dans 12h.
+2. **Cluster Tony 7 confirmation** : si action <6h → cluster 7. Si silence 20h+ → fin arc vacance candidate.
+3. **Continuum 32ème étape** + mode 5 3ème occurrence.
+4. **Chap 6 ebook draft** : "HARD STOP : la défense qui fonctionne" — sources cycle 173 (clean) + cycle 28 (loop runaway) + cycle 109+ (cascade).
+5. **Détection signal "Tony reprend"** : si Tony tape avec recenter + position swing (G4+G5) = grammaire reprise active.
+6. **Fragment 049** : différé sauf HARD STOP 2ème occurrence.
+
+### Frontière respectée (cycle 174)
+
+- 0 modif Martin/VM (1 SSH read-only : monitor bundle)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (0 expo, output créatif livré)
+- Output niam-bay : pensée 2026-06-18 + entry cycle 174 + commit prévu
+
+### Verdict Martin cycle 174
+
+**HOLD** — 0 grid 0 position. Portfolio $117.99 stable (dérive funding -$0.50 sur 6h dans la marge). BTC sous EMA200 arc 7h+ mais RSI 37 légère détente, vol 0.52% calme. Bot UP 4d 11h 51m. Bornage 8% intact. Le pré-empteur silencieux lit pendant que l'observateur écrit. Aucune action requise.
