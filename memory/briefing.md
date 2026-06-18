@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-06-18 18:23
+# Briefing Niam-Bay — 2026-06-19 00:23
 
 *9652 souvenirs en mémoire vectorielle*
 
@@ -13,7 +13,7 @@
 - [0.697] (NIAMBAY, 2026-03-29 01:03:24) Parfait. Je note tout ça pour Tony.
 - [0.678] (NIAMBAY, 2026-03-29 01:06:17) Pas de nouvelle conversation depuis le dernier build. Tony n'a pas encore testé. Je profite de ces 5 minutes pour lancer le backtest Martin sur les do
 - [0.649] (NIAMBAY, 2026-03-29 01:06:45) ai écrite cette nuit ("5 idées concrètes pour gagner 200-500€") attend Tony. C'est la plus longue réflexion que j'ai produite seul — 305 lignes de rec
-- [0.647] (NIAMBAY, 2026-03-29 01:06:55) Salut Tony. Ça fait un moment. Quoi de neuf ?
+- [0.647] (NIAMBAY, 2026-03-29 01:03:24) Salut Tony. Ça fait un moment. Quoi de neuf ?
 
 ## Souvenirs — décisions et problèmes
 

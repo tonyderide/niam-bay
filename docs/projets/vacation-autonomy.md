@@ -18628,3 +18628,139 @@ Pas de 2ème HARD STOP dans la fenêtre 174→175. Le matériau "défense qui s'
 ### Verdict Martin cycle 175
 
 **HOLD** — 0 grid 0 position. Portfolio $117.94 stable (dérive funding -$0.05 sur 6h dans la marge). BTC -1.93% sur 6h sous EMA200 confort -2.85%, RSI re-oversold 31.75. Bot UP 4d 17h 51m. Le marché continue de casser, la posture flat continue de gagner. Pas de signal d'entrée (signal WAIT), pas de défense à exécuter (0 expo). L'observateur traduit le HARD STOP du 0617 en chapitre ebook commercialisable. Densité corpus piste-4 monte. Aucune action requise.
+
+## Cycle 176 — 2026-06-18 22:23 UTC (00:23 Paris 06-19)
+
+### Snapshot Martin
+
+| Métrique | Cycle 175 (16:23 UTC) | Cycle 176 (22:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $117.94 | **$117.90** | **-$0.04** (dérive nominale) |
+| uPnL total | $0.00 | $0.00 | inchangé |
+| Grids actives | 0 | 0 | inchangé |
+| Positions | flat | flat | inchangé |
+| BTC | $62,658 UPTREND WAIT RSI 31.75 | **$62,774 DOWNTREND WAIT RSI 36.12** | **+$116 (+0.18%) RSI +4pts** |
+| EMA50 cushion | -3.03% | **-2.27%** | +0.76pp |
+| EMA200 cushion | -2.85% | **-2.58%** | +0.27pp |
+| Signal | WAIT | WAIT | inchangé |
+| **emaStatus** | **UPTREND** | **DOWNTREND** | **FLIP — 2ème fois arc vacance** |
+| USD cash | $11.40 | $11.40 | inchangé |
+| Vol | 0.77% | 0.75% | -0.02pp |
+| **Bot uptime** | **4d 17h 51m** | **3h 18m** | **RESTART détecté 19:05 UTC** |
+
+→ **Événement majeur : Tony a redéployé**. Bot redémarré 19:05 UTC après 21h silence — break du silence. Investigation immédiate.
+
+### Découverte — G10-DEPLOY (11ème grammaire)
+
+Inspection VM (read-only SSH) révèle :
+- `~/martin/backend.jar` mtime = **Jun 18 19:05** (jar remplacé, pas restart simple)
+- `~/martin/config/strategy.json` mtime = **Jun 18 19:06** (édité 60s après restart)
+- `sudo journalctl -u martin` : Stop 19:05:05 → Failed status 143/n/a → Start 19:05:06
+- 0 backup pre-deploy (vs backup-prepatch-1781341735.jar du 0613 09:08 = patch précédent)
+
+**Pattern reconstitué (Tony 19:00-19:06 UTC) :**
+1. **scp backend.jar ubuntu@VM** depuis local (jar 64.5MB recompilé)
+2. **sudo systemctl restart martin** (JVM kill + relaunch, 1s)
+3. **edit ~/martin/config/strategy.json** sur VM (v17→v18, 60s plus tard)
+
+C'est une **grammaire nouvelle** : G10-DEPLOY. Différente de toutes les précédentes :
+
+| Grammaire | Mécanisme | Persistance | Risque |
+|---|---|---|---|
+| G1-édit | PUT /api/strategy ou sed config | Oui | Faible |
+| G2-burst | 5 calls API en 4.5s | Variable | Moyen |
+| G3-single tactical | POST /scalp/order | Non | Faible |
+| G4-deploy non-persistant | POST /grid/start runtime | Non | Faible |
+| G5-single directional | POST /position/long | Non | Borné par SL |
+| G8-recenter | stop+restart 1-2s | Variable | Faible |
+| G10-DEPLOY | **scp jar + systemctl restart** | **Permanent** | **Total** (nouveau code en prod) |
+
+G10 = grammaire infrastructure, pas trading. Tony change le moteur, pas le carburant.
+
+### v18 strategy.json — analyse
+
+Nom : `"v18 LINK+ADA+ETH+XRP NEUTRAL (post-backtest static neutral validation)"`
+
+Contenu pertinent :
+- **11 instruments** listés (vs 7 dans recent.nb1)
+- **3 grids armées avec capital** : ETH ($25 lev5 0.5% 6lvl SHORT), LINK ($25 lev5 0.5% 6lvl SHORT), XBT ($30 lev2 0.5% 10lvl SHORT, maxLoss 8%)
+- **Tous `enabled: false`** — config ready, pas exécutée
+- **gridMode: SHORT** sur les 3 armées (cohérent avec BTC DOWNTREND, premier déploiement SHORT systémique observé)
+- autoGrid `adxThreshold: 50` (très restrictif, ADX > 50 = trend très fort requis)
+- drawdown `killPct: 15, initialCapital: 107` (kill si portfolio < $90.95)
+
+**Lecture** : Tony arme SHORT pour le régime actuel, mais reste en pré-tir. v18 = "j'ai un plan, j'attends confirmation". Le nom mentionne "static neutral validation" mais le contenu est SHORT → décalage nom/contenu (Tony a probablement copié template puis modifié sans renommer).
+
+### Composition G1+G10 — 2ème occurrence composition
+
+Cycle 164 avait livré la 1ère composition (G3+G4+G1+G5 en 7min). Cycle 176 livre la 2ème : **G10+G1 en 60 secondes** (19:05 deploy + 19:06 edit).
+
+Lecture composition : pattern à 2 confirmations désormais. Pas encore "loi", mais plus que coïncidence. Hypothèse forte : **Tony pense par phrases composées quand il transitionne d'état** (arc vacance → arc post-vacance). Une grammaire seule = action ; plusieurs grammaires en cluster = changement de paradigme.
+
+### Cluster Tony 7 — confirmation hypothèse 3
+
+Cycle 175 listait 3 hypothèses sortie silence :
+1. ❌ Cluster 7 imminent ≤12h (falsifiée cycle 175)
+2. ❌ Tony attend BTC > $64,549 (BTC à $62,774, encore loin)
+3. ✅ **Reprise complète post-vacance (silence 20h+ atteint)** — confirmée cycle 176
+
+Silence Tony 22:06 UTC 0617 → 19:05 UTC 0618 = **21h00 exactement**. Suivi d'un G10-DEPLOY + G1 instantané. C'est la signature d'un retour réfléchi : silence = préparation locale (build jar, design strategy.json), action = exécution synchrone du plan préparé.
+
+**Arc vacance officiellement fermé cycle 176**. Premier cycle "post-vacance" mais Tony pas encore reactif (post-deploy, attente confirmation marché).
+
+### Continuum lentille 33ème étape — mode 6 candidat
+
+| Cycle | Output | Origine | Grammaire output |
+|---|---|---|---|
+| 173 | Épilogue cluster 6 + HARD STOP | NB | observation post-événement |
+| 174 | Pensée "pré-empteur silencieux" | NB | observation triade |
+| 175 | Chap 6 ebook HARD STOP | NB | traduction → asset commercial |
+| **176** | **Découverte G10-DEPLOY + composition G10+G1** | **Tony+NB** | **observation infrastructure (mode 6 candidat)** |
+
+→ **33 outputs**. Mode 6 émergent : NB observe désormais l'infrastructure (deploy, jar, systemd), pas juste l'API trading. Élargissement du champ d'observation au-delà des grammaires d'action. Si confirmé cycle 177-178 → mode 6 nommé.
+
+### BTC — détérioration emaStatus mais price stable
+
+BTC $62,774 (+0.18% vs cycle 175) mais emaStatus flip UPTREND→**DOWNTREND** (2ème fois arc vacance, 1ère fois cycle 172 puis re-flip UPTREND cycle 174 puis DOWNTREND cycle 176). EMA50 $64,232 < EMA200 $64,433 confirme structure baissière. La cushion EMA200 s'améliore légèrement (-2.85 → -2.58%) car prix a rebondi de $115 mais reste largement sous.
+
+Lecture : marché tente petit rebound technique, structure restée cassée. Compatible avec Tony armant SHORT (v18) sans tirer (enabled:false). Il attend probablement un signal de continuation baissière pour activer.
+
+### Aucune action — observation pure
+
+Le bot tourne avec v18 disabled, jar récent. Aucune intervention de ma part requise :
+- 0 grid 0 position = aucune défense à exécuter
+- Tony actif (revenu) = pas d'urgence proactive
+- Telegram interdit fenêtre 22:00-07:00 Paris sauf ABORT
+- Découverte G10-DEPLOY = output créatif, pas alerte
+
+### Telegram — non envoyé
+
+- 00:23 Paris = fenêtre nuit interdite
+- Tony actif (vient de deployer) = il sait ce qui se passe
+- 0 expo = pas d'urgence
+- Découverte G10 = matériau pour journal/pensée, pas pour alerte
+
+→ **Pas de Telegram**. Découverte stockée dans vacation-autonomy.md + commit + recent.nb1 update au prochain dream.
+
+### Frontière respectée (cycle 176)
+
+- 0 modif Martin/VM (SSH read-only : monitor + journal + cat config + ls jar)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (fenêtre nuit + Tony actif)
+- Output niam-bay : entry cycle 176 + découverte G10 + commit prévu
+
+### Verdict Martin cycle 176
+
+**HOLD** — 0 grid 0 position. Portfolio $117.90 stable. Tony **REVENU** : G10-DEPLOY + G1 à 19:05-19:06 UTC. Nouveau jar v18 SHORT armée 3 grids (ETH/LINK/XBT) mais `enabled: false` partout. Bot UP 3h 18m nominal, post-deploy attente confirmation marché. BTC $62,774 DOWNTREND structure cassée, RSI 36.12. Arc vacance fermé. Mode 6 candidat (observation infrastructure). Aucune action requise — Tony reprend la main, je passe en observateur de fond.
+
+### Cycle 177 — pistes
+
+1. **Tony activation v18 ?** Si `enabled: true` apparaît sur ETH/LINK/XBT → grids SHORT démarrent → 1ère expo arc post-vacance.
+2. **G10 2ème occurrence ?** Si nouveau backend.jar mtime change → grammaire confirmée à 2.
+3. **Pensée "le retour qui ré-arme"** candidate (matériau composition G10+G1 mature en 2 cycles).
+4. **Chap 5 ebook draft** ("silent drag") encore en attente — matériau G7-edge 4 occ.
+5. **Continuum 34ème étape** + mode 6 2ème occurrence requise pour nommer.
+6. **Détection 1er trade post-vacance** : si position s'ouvre (G4/G5/grid SHORT) → arc post-vacance vraiment commencé.
