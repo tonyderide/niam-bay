@@ -18877,3 +18877,152 @@ BTC $62,679 (-$95 -0.15% vs cycle 176). EMA50 $63,937 < EMA200 $64,311 (DOWNTREN
 5. **Pensée "voir avant d'agir"** candidate (matériau chap 5 méta-leçon métrique cumulative vs instantanée).
 6. **Détection 1er trade post-vacance** : si position s'ouvre → arc post-vacance vraiment commencé.
 7. **Si BTC casse EMA50 -1% ($63,300) ou RSI < 30** → potentiel trigger Tony activation v18.
+
+## Cycle 178 — 2026-06-19 10:23 UTC (12:23 Paris)
+
+### Snapshot Martin
+
+| Métrique | Cycle 177 (04:23 UTC) | Cycle 178 (10:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $117.72 | **$117.84** | **+$0.12** (dérive funding/EUR-USD) |
+| uPnL total | $0.00 | $0.00 | inchangé |
+| Grids actives | 0 | 0 | inchangé |
+| Positions | flat | flat | inchangé |
+| Orders | 0 | 0 | inchangé |
+| BTC | $62,679 DOWNTREND RSI 35.38 | **$62,442 DOWNTREND RSI 37.50** | **-$237 (-0.38%) RSI +2.12pt** |
+| EMA50 cushion | -1.97% (EMA50 $63,937) | **-1.87%** (EMA50 $63,632) | +0.10pp |
+| EMA200 cushion | -2.54% (EMA200 $64,311) | **-2.68%** (EMA200 $64,158) | -0.14pp |
+| Signal | WAIT | WAIT | inchangé |
+| emaStatus | DOWNTREND | DOWNTREND | **stable 4ème cycle consécutif** (172, 176, 177, 178) |
+| Vol | 0.66% | 0.46% | -0.20pp (sub-50bps = calme rare) |
+| **Bot uptime** | 9h 18m | **15h 18m** | +6h continu (jar Jun 18 19:05 stable) |
+
+→ **Tony silence 15h18 post-G10**. Pas de re-deploy, pas d'édit strategy.json, pas d'activation v18. Bot tourne nominalement avec config disabled. Marché continue lente glissade sous EMA200 (4ème cycle). RSI léger rebond 35→37 sans force.
+
+### Découverte cycle 178 — v18 = 11 grids (pas 3)
+
+Re-lecture complète de `config/strategy.json` cycle 178 révèle structure que cycle 176 narrative avait mal restituée :
+
+| # | Instrument | Mode | Capital | Spacing | Leverage | maxLoss | enabled |
+|---|---|---|---|---|---|---|---|
+| 1 | PF_ADAUSD | NEUTRAL | $0 | 3.0% | 7x | 10% | false |
+| 2 | PF_LTCUSD | NEUTRAL | $0 | 3.0% | 7x | 10% | false |
+| 3 | PF_ATOMUSD | NEUTRAL | $0 | 2.0% | 7x | 10% | false |
+| 4 | PF_AVAXUSD | NEUTRAL | $0 | 3.0% | 7x | 10% | false |
+| 5 | PF_AAVEUSD | NEUTRAL | $0 | 3.0% | 7x | 10% | false |
+| 6 | PF_DOTUSD | NEUTRAL | $0 | 1.5% | 7x | 10% | false |
+| 7 | PF_SOLUSD | NEUTRAL | $0 | 2.0% | 5x | 14% | false |
+| 8 | PF_XRPUSD | NEUTRAL | $0 | 1.5% | 7x | 10% | false |
+| 9 | **PF_ETHUSD** | **SHORT** | **$25** | **0.5%** | **5x** | **10%** | **false** |
+| 10 | **PF_LINKUSD** | **SHORT** | **$25** | **0.5%** | **5x** | **10%** | **false** |
+| 11 | **PF_XBTUSD** | **SHORT** | **$30** | **0.5%** | **2x** | **8%** | **false** |
+
+**Lecture corrigée** : v18 nommée *"v18 LINK+ADA+ETH+XRP NEUTRAL (post-backtest static neutral validation)"* contient **2 strates** :
+- **Strate 1 — watchlist NEUTRAL** : 8 paires à $0 capital, structures pré-configurées prêtes à être armées (post-backtest validation = Tony a probablement validé ces paramètres en backtest et les a stockés pour usage futur).
+- **Strate 2 — armée SHORT** : 3 paires (ETH/LINK/XBT) avec capital réel ($80 total), spacing serré 0.5%, leverage modéré, en attente activation `enabled:true`.
+
+Cycle 176 narrative n'a vu que la strate 2 ("v18 SHORT armée 3 grids"). La strate 1 (8 NEUTRAL placeholders $0) est en fait la plus intéressante d'un point de vue stratégique : Tony pré-armé un univers de paires post-backtest, prêt à être activé en masse si conditions OK. C'est une **palette préparée**, pas un setup déployé.
+
+→ **Pattern Tony cycle 178** : *"je prépare avant d'agir"*. Le strategy.json n'est plus un fichier d'orders mais une **carte d'intentions stratifiées**. 8 paires en repos validé + 3 paires en pré-tir SHORT. La grammaire G1-édit (PUT /api/strategy) sert ici à *cartographier* plus qu'à *exécuter*.
+
+### Output principal — Chap 4 ebook livré
+
+**Fichier** : `docs/projets/ebook-chap4-stopgrid-orphan-stub.md` (2006 mots, 6ème chapitre drafted)
+
+**Status corpus piste-4** : 6/8 chapitres drafted = **75%** structure ebook outline cycle 115
+- ✅ Chap 1 (BUG-001 SL duplicate) — 1711 mots
+- ✅ Chap 2 (asymétrie position/grille) — 1914 mots
+- ✅ Chap 3 (runtime divergence) — 2015 mots
+- ✅ **Chap 4 (stopGrid orphan) — 2006 mots — NOUVEAU**
+- ✅ Chap 5 (silent drag) — 2159 mots
+- ✅ Chap 6 (HARD STOP) — 2061 mots
+- ✅ Chap 7 (outils) — 2544 mots
+- ✅ Chap 8 (repo poésie) — 2219 mots
+- Total drafted : **16 629 mots** (sur ~25-35k mots estimés V1 = 48-66% volume)
+
+→ **Manquent** : Préambule + chapitre méthode (Chap edge-cases déjà drafted comme bonus) + index = ~3-5k mots restants pour V1 complet structurel.
+
+**Sources Chap 4** : `autogrid-lifecycle-anomalies-cycle113.md` cycle 113 (SOL CIRCUIT BREAKER fired 2026-06-02 15:16:12 UTC, by design), pattern méta cycle 110-111 (runtime state divergence), app.log réel.
+
+**Thèse Chap 4** : `stopGrid()` cancel les orders mais laisse position ouverte (by design). Position devient orpheline : visible dans `/api/bot/positions` mais absente de `/api/grid/active`. SL Kraken seul gardien. Scénario noir = redéploiement fresh grid sans connaissance position pré-existante → géométrie incohérente → SL devient muet.
+
+**Méta-leçon Chap 4** : *"by design" sans documentation = bug latent*. Aucun test unitaire ne détecte ce piège parce qu'il est sémantique (le mot "stop" suggère ce qu'il ne fait pas). Classe de bug : **API qui se tait sur ce qui survit**.
+
+**3 patches proposés** : 
+1. **Léger** (3 lignes Java) — log WARN explicite au stopGrid mentionnant position restante + SL
+2. **Moyen** (~30 lignes + test) — param `?stopAndClose=true` sur endpoint stop, opérateur exprime intention
+3. **Lourd** (refactor) — séparer `stopGridKeepPosition` / `stopGridAndClosePosition`, impossibilité de créer orpheline par accident
+
+**Applicabilité hors trading** :
+- `kubectl delete deployment` ne supprime pas PVC (volumes facturés 3 mois après)
+- `docker stop` n'enlève pas image/volume
+- `npm uninstall` ne touche pas config globale
+- `terraform destroy` saute ressources importées sans tracker
+- Load balancer drain ≠ kill (deux versions parallèles)
+- Cron disable ≠ kill (instances en vol continuent)
+- Feature flag off ≠ kill (requests in flight servies à `true`)
+
+**Principe défensif émergent** : *"quand quelqu'un te dit 'j'ai arrêté X', demande-lui : qu'est-ce qui survit à l'arrêt ? Si la réponse n'existe pas, l'arrêt est une fiction."*
+
+### 35ème étape continuum lentille — mode 5 confirmé 4ème cycle consécutif
+
+| Cycle | Output | Origine | Mode lentille |
+|---|---|---|---|
+| 174 | Pensée "pré-empteur silencieux" | NB | observation triade (mode 5) |
+| 175 | Chap 6 ebook HARD STOP | NB | traduction → asset commercial (mode 5) |
+| 176 | Découverte G10-DEPLOY + composition | Tony+NB | observation infrastructure (mode 6 candidat) |
+| 177 | Chap 5 ebook silent drag | NB | traduction → asset commercial (mode 5) |
+| **178** | **Chap 4 ebook stopGrid orphan + lecture corrigée v18 11-grids** | **NB** | **traduction → asset commercial + observation config stratifiée (mode 5+1?)** |
+
+→ **35 outputs**. Mode 5 (asset commercial) confirmé 4 cycles consécutifs sur 5 (174-175-177-178), mode 6 reste à 1 occurrence (cycle 176). Mais cycle 178 introduit **nuance** : la "lecture corrigée v18" est une observation config en G1-édit grammaire (Tony a écrit, NB lit après coup), avec **interprétation stratifiée** (watchlist + armée). C'est mode 1 (observation grammaire G1) + mode 5 (output ebook). **Composition de modes lentille observée pour la 1ère fois.**
+
+→ Hypothèse : tout comme Tony compose des grammaires G1-G10 (cycle 164 / 176), NB peut composer des modes lentille. Pattern à confirmer cycle 179+.
+
+### BTC — détérioration micro continue, structure cassée stable
+
+BTC $62,442 (-$237 -0.38% vs cycle 177). EMA50 $63,632 < EMA200 $64,158 (DOWNTREND confirmé **4ème cycle consécutif** arc 172-176-177-178, avec 1 ré-flip UPTREND cycle 174). RSI 37.50 léger rebond depuis 35.38 (pas force, juste cooling). Vol 0.46% calme rare (sub-50bps). Signal WAIT tient.
+
+**Lecture** : marché continue lente glissade sous EMA200 sans capitulation ni rebond clair. Vol 0.46% = compression rare, souvent suivie d'expansion. Cushion EMA50 -1.87% = proche de mon seuil cycle 177 ($63,300 = -1% cushion EMA50). Si BTC casse $62,000 → cushion EMA50 dépasse -2.5% = signal continuation baissière clair, potentiel trigger Tony activation v18 SHORT.
+
+**Posture Tony tient** : pré-tir SHORT armée 15h18, attente confirmation continuation. C'est exactement la posture "voir avant d'agir" méta-leçon Chap 5.
+
+### Aucune action — observation pure (4ème cycle consécutif vide d'event Tony)
+
+- 0 grid 0 position = aucune défense à exécuter
+- Tony silence 15h18 post-G10 = pré-tir long tenu, pas d'urgence proactive
+- Telegram interdit fenêtre journée si pas d'urgence (12:23 Paris = pas fenêtre nuit, mais 0 expo = 0 alerte)
+- 0 modif Martin/VM (4 SSH read-only : monitor + grep config + ls jar + find strategy.json)
+
+### Telegram — non envoyé
+
+- 12:23 Paris = fenêtre OK (Tony probable au bureau ou repos vacance)
+- 0 expo = pas d'urgence
+- Chap 4 livré = matériau corpus, pas alerte
+- Lecture corrigée v18 = nuance interne, pas signal externe
+- Découverte composition modes lentille = méta-NB, pas pour Telegram
+
+→ **Pas de Telegram**. Output ce cycle = chap 4 + entry cycle 178 + commit.
+
+### Frontière respectée (cycle 178)
+
+- 0 modif Martin/VM (4 SSH read-only : status API + ls jar + find/cat strategy.json + grep config)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (fenêtre OK + 0 urgence)
+- Output niam-bay : entry cycle 178 + ebook-chap4-stopgrid-orphan-stub.md (2006 mots) + commit prévu
+
+### Verdict Martin cycle 178
+
+**HOLD** — 0 grid 0 position. Portfolio $117.84 stable (+$0.12 funding nominal). Tony **SILENCE 15h18 post-G10** — pré-tir tenu, v18 11 grids (8 NEUTRAL watchlist $0 + 3 SHORT armée $80 cap) restent toutes `enabled:false`. Bot UP 15h18 post-deploy nominal. BTC $62,442 DOWNTREND structure cassée **4ème cycle consécutif** (172-176-177-178), RSI 37.50 léger rebond. Vol 0.46% compression rare. Aucune action requise — observation pure 4ème cycle vide d'événement Tony. Corpus ebook atteint 6/8 chapitres = 75%.
+
+### Cycle 179 — pistes
+
+1. **Tony activation v18 ?** Silence approche 18-21h post-deploy. Hypothèse "armed-and-wait > 24h" se confirme. Si dépassement 24h → pattern "pré-tir long" stabilisé.
+2. **BTC casse $62,000 ?** Si oui → cushion EMA50 < -2.5% = signal continuation, trigger potentiel Tony.
+3. **Préambule ebook** ou **chapitre méthode** (Chap edge-cases recasable en méthode) — dernière étape pour V1 complet structurel.
+4. **Pensée "voir avant d'agir"** (matériau Chap 5 méta-leçon + posture Tony pré-tir 15h+) candidate.
+5. **Pensée "la palette préparée"** (matériau strategy.json stratifié 8 NEUTRAL watchlist + 3 SHORT armée) candidate.
+6. **Continuum 36ème étape** + mode lentille composition 2ème occurrence requise pour nommer.
+7. **Détection 1er trade post-vacance** : si position s'ouvre → arc post-vacance vraiment commencé.
