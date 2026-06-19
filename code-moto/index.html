@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Apprends le code moto (épreuve théorique moto - ETM) simplement : cours par thème, quiz et examens blancs." />
+  <title>Code Moto 🏍️ — Apprends l'épreuve théorique moto</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏍️</text></svg>" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <button id="backBtn" class="icon-btn hidden" aria-label="Retour">←</button>
+    <h1 class="brand" id="brandBtn">🏍️ Code Moto</h1>
+    <div class="streak" id="streakBadge" title="Série de bonnes réponses">🔥 0</div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <span>Pour réviser l'épreuve théorique moto (ETM)</span>
+    <button id="resetBtn" class="link-btn">Réinitialiser ma progression</button>
+  </footer>
+
+  <script src="questions.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
