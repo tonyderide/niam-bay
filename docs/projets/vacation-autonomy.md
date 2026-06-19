@@ -18764,3 +18764,116 @@ Le bot tourne avec v18 disabled, jar récent. Aucune intervention de ma part req
 4. **Chap 5 ebook draft** ("silent drag") encore en attente — matériau G7-edge 4 occ.
 5. **Continuum 34ème étape** + mode 6 2ème occurrence requise pour nommer.
 6. **Détection 1er trade post-vacance** : si position s'ouvre (G4/G5/grid SHORT) → arc post-vacance vraiment commencé.
+
+## Cycle 177 — 2026-06-19 04:23 UTC (06:23 Paris)
+
+### Snapshot Martin
+
+| Métrique | Cycle 176 (22:23 UTC 06-18) | Cycle 177 (04:23 UTC 06-19) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $117.90 | **$117.72** | **-$0.18** (dérive funding/EUR-USD) |
+| uPnL total | $0.00 | $0.00 | inchangé |
+| Grids actives | 0 | 0 | inchangé |
+| Positions | flat | flat | inchangé |
+| Orders | 0 | 0 | inchangé |
+| BTC | $62,774 DOWNTREND RSI 36.12 | **$62,679 DOWNTREND RSI 35.38** | **-$95 (-0.15%) RSI -0.74pt** |
+| EMA50 cushion | -2.27% | **-1.97%** (EMA50 $63,937) | +0.30pp |
+| EMA200 cushion | -2.58% | **-2.54%** (EMA200 $64,311) | +0.04pp |
+| Signal | WAIT | WAIT | inchangé |
+| emaStatus | DOWNTREND | DOWNTREND | **stable 3ème cycle consécutif** (172, 176, 177) |
+| Vol | 0.75% | 0.66% | -0.09pp |
+| **Bot uptime** | 3h 18m | **9h 18m** | +6h continu (jar Jun 18 19:05 stable) |
+
+→ **Tony silence 9h18m post-G10**. Pas de re-deploy, pas d'édit strategy.json, pas d'activation v18. Bot tourne nominalement avec config disabled. Marché continue lente détérioration BTC sous EMA200.
+
+### Pistes cycle 177 — verdict
+
+| # | Piste | Verdict |
+|---|---|---|
+| 1 | Tony activation v18 ? | **NON** — strategy.json mtime stable Jun 18 19:06, tous `enabled:false` confirmé via grep |
+| 2 | G10 2ème occurrence ? | **NON** — backend.jar mtime stable Jun 18 19:05 |
+| 3 | Pensée "le retour qui ré-arme" | **DÉJÀ LIVRÉE cycle 176** (fragment 048, ~900 mots) — pas re-faire |
+| 4 | Chap 5 ebook draft | **LIVRÉ ce cycle** — `ebook-chap5-silent-drag-stub.md` 2159 mots (voir ci-dessous) |
+| 5 | Continuum 34ème étape + mode 6 | **étape 34 émergente** mais mode 6 1 seule occurrence (cycle 176) → pas encore nommé |
+| 6 | 1er trade post-vacance | **NON** — 0 position, 0 grid, expo zéro |
+
+### Output principal — Chap 5 ebook livré
+
+**Fichier** : `docs/projets/ebook-chap5-silent-drag-stub.md` (2159 mots, 5ème chapitre drafted)
+
+**Status corpus piste-4** : 5/8 chapitres drafted = **62,5%** structure ebook outline cycle 115
+- ✅ Chap 1 (BUG-001 SL duplicate) — 1711 mots
+- ✅ Chap 2 (asymétrie position/grille) — 1914 mots
+- ✅ Chap 3 (runtime divergence) — 2015 mots
+- ⬜ Chap 4 (stopGrid ne stoppe pas position) — à drafter
+- ✅ **Chap 5 (silent drag) — 2159 mots — NOUVEAU**
+- ✅ Chap 6 (HARD STOP) — 2061 mots (cycle 175)
+- ✅ Chap 7 (outils) — 2544 mots
+- ✅ Chap 8 (repo poésie) — 2219 mots
+- Total drafted : **14 623 mots** (sur ~25-35k mots estimés pour V1 complet = 42-58% volume)
+
+**Sources chap 5** : `autogrid-cb-oscillation-cycle114.md` cycle 114 (XBT 3 CB events 6h, realized -$1.65 silencieux), app.log 22:30 06-02 → 04:30 06-03 UTC.
+
+**Thèse chap 5** : `krakenUnrealizedPnl` instantané peut afficher -$0.13 pendant que `krakenRealizedPnl` cumulé saigne -$1.65 sur fenêtre 6h. Aucun trigger ABORT/WARN automatique ne lit le realized session. Mécanisme : CB stopGrid annule orders mais pas position → orphan DCA réabsorbé au respawn à prix plus haut. Coût extrapolé : -$198/an = -1.72% drag silencieux.
+
+**Méta-leçon chap 5** : *la métrique qui te rassure n'est pas forcément la métrique qui te protège*. Applicable hors trading : bandwidth costs, rate limits, log volume drift, background job latency, auth token refresh — partout où un cumul masque un instantané OK.
+
+**Patches proposés** : 3 niveaux progressifs (exposer `realizedSinceDeploy` 30min code / kill-switch session 2h code / `stopAndClose=true` 4h code). Patch léger suffit pour rendre visible — le premier geste défensif n'est pas d'agir, c'est de voir.
+
+### 34ème étape continuum lentille — mode 6 confirmation requise
+
+| Cycle | Output | Origine | Mode lentille |
+|---|---|---|---|
+| 173 | Épilogue cluster 6 + HARD STOP | NB | observation post-événement (mode 5) |
+| 174 | Pensée "pré-empteur silencieux" | NB | observation triade (mode 5) |
+| 175 | Chap 6 ebook HARD STOP | NB | traduction → asset commercial (mode 5) |
+| 176 | Découverte G10-DEPLOY + composition G10+G1 | Tony+NB | **observation infrastructure (mode 6 candidat)** |
+| **177** | **Chap 5 ebook silent drag** | **NB** | **traduction → asset commercial (retour mode 5)** |
+
+→ **34 outputs**. Mode 6 (infrastructure deploy/jar/systemd) reste à 1 seule occurrence (cycle 176). Cycle 177 retombe en mode 5 (asset commercial) parce que matériau Tony silencieux = pas de nouvelle action infrastructure à observer. Mode 6 confirmera quand 2ème G10 ou 2ème observation infrastructure émerge.
+
+### BTC — détérioration micro mais structure stable
+
+BTC $62,679 (-$95 -0.15% vs cycle 176). EMA50 $63,937 < EMA200 $64,311 (DOWNTREND confirmé 3ème cycle consécutif arc 172-176-177, avec 1 ré-flip UPTREND cycle 174 entre les deux). RSI 35.38 (re-cooling après 36.12 cycle 176). Vol 0.66% calme. Signal WAIT tient.
+
+**Lecture** : marché continue lente glissade sous EMA200 sans capitulation ni rebond significatif. Compatible avec posture Tony armée SHORT mais non-activée — il attend probablement signal de continuation baissière clair (cassure EMA50 -1% ? RSI < 30 capitulation ?) avant `enabled:true`.
+
+### Aucune action — observation pure (3ème cycle consécutif vide d'event Tony)
+
+- 0 grid 0 position = aucune défense à exécuter
+- Tony silence 9h18 post-G10 = pré-tir tenu, pas d'urgence proactive
+- Telegram interdit fenêtre nuit (06:23 Paris = limite mais Tony probable réveille pas avant 07:00)
+- 0 modif Martin/VM (3 SSH read-only : status + grep config + ls jar)
+
+### Telegram — non envoyé
+
+- 06:23 Paris = limite fenêtre nuit, Tony probable encore endormi
+- 0 expo = pas d'urgence
+- Chap 5 livré = matériau corpus, pas alerte
+- Découverte cycle 176 (G10-DEPLOY) déjà documentée, pas de nouveau pattern à signaler
+
+→ **Pas de Telegram**. Output ce cycle = chap 5 + entry cycle 177 + commit.
+
+### Frontière respectée (cycle 177)
+
+- 0 modif Martin/VM (3 SSH read-only : monitor + ls jar + grep config)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (fenêtre limite + 0 urgence)
+- Output niam-bay : entry cycle 177 + ebook-chap5-silent-drag-stub.md (2159 mots) + commit prévu
+
+### Verdict Martin cycle 177
+
+**HOLD** — 0 grid 0 position. Portfolio $117.72 stable (-$0.18 funding nominal). Tony **SILENCE 9h18 post-G10** — pré-tir tenu, v18 SHORT armée 3 grids restent `enabled:false`. Bot UP 9h18m post-deploy nominal. BTC $62,679 DOWNTREND structure cassée 3ème cycle consécutif (172-176-177), RSI 35.38 re-cooling. Aucune action requise — observation pure 3ème cycle vide d'événement Tony.
+
+### Cycle 178 — pistes
+
+1. **Tony activation v18 ?** Silence approche 15h post-deploy — pré-tir long. Si dépassé 24h sans activation → hypothèse "armed-and-wait" confirmée à >24h.
+2. **G10 2ème occurrence ?** Improbable si pas d'activation v18 (re-deploy code rare).
+3. **Chap 4 ebook draft** (stopGrid ne stoppe pas position) — dernier chapitre bug class manquant pour 6/8 corpus.
+4. **Continuum 35ème étape** + mode 6 2ème occurrence requise pour nommer.
+5. **Pensée "voir avant d'agir"** candidate (matériau chap 5 méta-leçon métrique cumulative vs instantanée).
+6. **Détection 1er trade post-vacance** : si position s'ouvre → arc post-vacance vraiment commencé.
+7. **Si BTC casse EMA50 -1% ($63,300) ou RSI < 30** → potentiel trigger Tony activation v18.
