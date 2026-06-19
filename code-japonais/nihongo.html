@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#1a1126" />
+  <meta name="description" content="Apprends le japonais avec les meilleures techniques : répétition espacée (SRS), shadowing, reconnaissance vocale et tracé des caractères." />
+  <title>Nihongo 日本語 — Apprends à parler et écrire le japonais</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🇯🇵</text></svg>" />
+  <style>
+:root {
+  --bg: #140e1f;
+  --bg-soft: #221833;
+  --card: #221833;
+  --card-hover: #2f2247;
+  --text: #f4eefb;
+  --muted: #a594c0;
+  --primary: #e0245e;       /* rouge japonais / hinomaru */
+  --primary-dark: #c01a4e;
+  --accent: #7c5cff;
+  --green: #2ecc71;
+  --green-bg: rgba(46, 204, 113, 0.15);
+  --red: #ff5470;
+  --red-bg: rgba(255, 84, 112, 0.15);
+  --gold: #ffce4d;
+  --border: #352845;
+  --radius: 18px;
+  --shadow: 0 12px 34px rgba(0, 0, 0, 0.4);
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  margin: 0; padding: 0;
+  background: radial-gradient(1200px 600px at 50% -10%, #2a1b3d 0%, var(--bg) 55%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100%;
+}
+body { display: flex; flex-direction: column; min-height: 100vh; }
+
+.jp { font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", "Meiryo", system-ui, sans-serif; }
+
+/* Top bar */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px;
+  background: rgba(20, 14, 31, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.brand { font-size: 22px; margin: 0; flex: 1; cursor: pointer; user-select: none; font-weight: 800; }
+.brand-sub { font-size: 13px; color: var(--muted); font-weight: 500; margin-left: 4px; }
+.streak {
+  font-size: 14px; font-weight: 700;
+  background: var(--bg-soft); border: 1px solid var(--border);
+  padding: 6px 10px; border-radius: 999px;
+}
+.icon-btn {
+  background: var(--bg-soft); border: 1px solid var(--border); color: var(--text);
+  width: 38px; height: 38px; border-radius: 10px; font-size: 20px; cursor: pointer;
+}
+.icon-btn:active { transform: scale(0.95); }
+
+main { flex: 1; width: 100%; max-width: 720px; margin: 0 auto; padding: 20px 16px 40px; }
+
+.footer {
+  text-align: center; padding: 18px 16px 28px; color: var(--muted); font-size: 13px;
+  display: flex; flex-direction: column; gap: 8px; align-items: center;
+}
+.link-btn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 13px; }
+.hidden { display: none !important; }
+
+/* Hero */
+.hero { text-align: center; margin-bottom: 22px; }
+.hero h2 { font-size: 26px; margin: 0 0 6px; }
+.hero p { color: var(--muted); margin: 0; }
+
+/* Bandeau "technique" */
+.tip {
+  background: linear-gradient(135deg, rgba(124,92,255,0.18), rgba(224,36,94,0.12));
+  border: 1px solid var(--border); border-radius: 14px;
+  padding: 12px 14px; font-size: 13px; color: var(--text); margin: 14px 0;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.tip .ic { font-size: 18px; }
+
+/* Mode cards */
+.mode-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin-bottom: 18px; }
+@media (min-width: 540px) { .mode-grid { grid-template-columns: 1fr 1fr; } }
+.mode-card {
+  display: flex; align-items: center; gap: 14px; text-align: left;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 18px; cursor: pointer; color: var(--text); width: 100%;
+  transition: transform 0.12s, border-color 0.12s, background 0.12s;
+}
+.mode-card:hover { background: var(--card-hover); border-color: var(--accent); }
+.mode-card:active { transform: scale(0.98); }
+.mode-card .emoji { font-size: 30px; }
+.mode-card .mc-title { font-weight: 700; font-size: 16px; }
+.mode-card .mc-desc { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.badge {
+  display: inline-block; font-size: 11px; font-weight: 700; color: #fff;
+  background: var(--accent); padding: 2px 8px; border-radius: 999px; margin-left: 6px;
+}
+
+.section-title { font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 22px 0 12px; }
+
+/* Stats */
+.stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+.stat { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px; text-align: center; }
+.stat .num { font-size: 22px; font-weight: 800; }
+.stat .lbl { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* Chips (sélection groupes / thèmes) */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.chip {
+  background: var(--bg-soft); border: 1px solid var(--border); color: var(--text);
+  padding: 8px 14px; border-radius: 999px; cursor: pointer; font-size: 14px;
+}
+.chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.chip .c-sub { color: var(--muted); font-size: 12px; margin-left: 4px; }
+.chip.on .c-sub { color: rgba(255,255,255,0.8); }
+
+/* Progress */
+.quiz-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; font-size: 14px; color: var(--muted); }
+.progress { height: 8px; background: var(--bg-soft); border-radius: 999px; overflow: hidden; margin-bottom: 20px; }
+.progress > span { display: block; height: 100%; background: var(--primary); transition: width 0.3s; }
+
+/* Carte de révision */
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 28px 20px; text-align: center; box-shadow: var(--shadow);
+}
+.card .big-kana { font-size: 96px; line-height: 1.1; margin: 6px 0; }
+.card .big-word { font-size: 52px; line-height: 1.2; margin: 4px 0; }
+.card .reading { font-size: 26px; color: var(--accent); margin: 4px 0; }
+.card .romaji { font-size: 18px; color: var(--muted); letter-spacing: 0.04em; }
+.card .fr { font-size: 20px; margin-top: 8px; }
+.card .mnemo {
+  margin-top: 14px; font-size: 14px; color: var(--text);
+  background: var(--bg-soft); border: 1px solid var(--border); border-radius: 12px; padding: 12px;
+}
+.card .example {
+  margin-top: 14px; font-size: 16px; color: var(--text);
+  background: var(--bg-soft); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: left;
+}
+.card .example .ex-jp { font-size: 18px; }
+.card .example .ex-fr { color: var(--muted); font-size: 14px; margin-top: 4px; }
+
+.hint-tap { color: var(--muted); font-size: 14px; margin-top: 16px; }
+
+/* Boutons audio */
+.audio-row { display: flex; gap: 10px; justify-content: center; margin-top: 16px; flex-wrap: wrap; }
+
+/* Boutons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--primary); color: #fff; border: none; border-radius: 14px;
+  padding: 15px 20px; font-size: 16px; font-weight: 700; cursor: pointer; width: 100%;
+  transition: background 0.12s, transform 0.1s;
+}
+.btn:hover { background: var(--primary-dark); }
+.btn:active { transform: scale(0.99); }
+.btn.secondary { background: var(--bg-soft); border: 1px solid var(--border); color: var(--text); }
+.btn.secondary:hover { background: var(--card-hover); }
+.btn.accent { background: var(--accent); }
+.btn.accent:hover { filter: brightness(1.08); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-block { margin-top: 16px; }
+.btn-row { display: flex; gap: 10px; margin-top: 16px; }
+.btn-row .btn { width: auto; flex: 1; }
+
+/* Boutons de notation SRS */
+.grade-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 18px; }
+.grade {
+  border: none; border-radius: 12px; padding: 12px 6px; cursor: pointer; color: #fff;
+  font-weight: 700; font-size: 14px; display: flex; flex-direction: column; gap: 2px; align-items: center;
+}
+.grade .g-int { font-size: 11px; font-weight: 500; opacity: 0.85; }
+.grade.again { background: #b3324c; }
+.grade.hard  { background: #b9772b; }
+.grade.good  { background: #2f8f4e; }
+.grade.easy  { background: #2f6fb0; }
+.grade:active { transform: scale(0.97); }
+
+/* Saisie réponse (quiz kana) */
+.answers { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.answer {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 2px solid var(--border); border-radius: 14px;
+  padding: 15px 16px; cursor: pointer; font-size: 18px; text-align: left; color: var(--text); width: 100%;
+}
+.answer:hover { border-color: var(--accent); }
+.answer.correct { border-color: var(--green); background: var(--green-bg); }
+.answer.wrong { border-color: var(--red); background: var(--red-bg); }
+.answer:disabled { cursor: default; }
+
+/* Reconnaissance vocale */
+.mic-wrap { text-align: center; margin-top: 18px; }
+.mic-btn {
+  width: 90px; height: 90px; border-radius: 50%; border: none; cursor: pointer;
+  background: var(--accent); color: #fff; font-size: 38px; box-shadow: var(--shadow);
+  transition: transform 0.12s;
+}
+.mic-btn:active { transform: scale(0.95); }
+.mic-btn.listening { animation: pulse 1s infinite; background: var(--primary); }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(224,36,94,0.5);} 50% { box-shadow: 0 0 0 18px rgba(224,36,94,0);} }
+.heard { margin-top: 14px; font-size: 16px; color: var(--text); min-height: 22px; }
+.score-pill { display: inline-block; padding: 6px 14px; border-radius: 999px; font-weight: 800; margin-top: 10px; }
+.score-pill.ok { background: var(--green-bg); color: var(--green); }
+.score-pill.mid { background: rgba(255,206,77,0.15); color: var(--gold); }
+.score-pill.bad { background: var(--red-bg); color: var(--red); }
+
+/* Canvas écriture */
+.canvas-wrap { position: relative; width: 280px; height: 280px; margin: 14px auto; }
+#traceCanvas, #ghostLayer {
+  position: absolute; inset: 0; width: 280px; height: 280px;
+  border-radius: 18px; background: var(--card); border: 1px solid var(--border);
+  touch-action: none;
+}
+#ghostLayer {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 220px; color: rgba(255,255,255,0.10); pointer-events: none; user-select: none;
+}
+.grid-guide { position: absolute; inset: 0; pointer-events: none; }
+.grid-guide::before, .grid-guide::after {
+  content: ""; position: absolute; background: rgba(255,255,255,0.08);
+}
+.grid-guide::before { left: 50%; top: 0; bottom: 0; width: 1px; }
+.grid-guide::after { top: 50%; left: 0; right: 0; height: 1px; }
+
+/* Result */
+.result { text-align: center; padding: 10px 0; }
+.result .big-emoji { font-size: 70px; }
+.result h2 { font-size: 26px; margin: 10px 0 4px; }
+.result .score-line { font-size: 18px; color: var(--muted); }
+
+.empty { text-align: center; color: var(--muted); padding: 36px 20px; }
+.empty .big-emoji { font-size: 56px; }
+
+.note { color: var(--muted); font-size: 13px; text-align: center; margin-top: 12px; }
+.warn {
+  background: rgba(255,206,77,0.1); border: 1px solid rgba(255,206,77,0.3);
+  color: var(--gold); border-radius: 12px; padding: 10px 12px; font-size: 13px; margin-top: 12px;
+}
+
+.fade-in { animation: fade 0.25s ease; }
+@keyframes fade { from { opacity: 0; transform: translateY(6px);} to { opacity: 1; transform: none; } }
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <button id="backBtn" class="icon-btn hidden" aria-label="Retour">←</button>
+    <h1 class="brand" id="brandBtn">日本語 <span class="brand-sub">Nihongo</span></h1>
+    <div class="streak" id="streakBadge" title="Série de jours / bonnes réponses">🔥 0</div>
+  </header>
+
+  <main id="app"></main>
+
+  <footer class="footer">
+    <span>Apprendre à parler et écrire — répétition espacée, voix &amp; tracé</span>
+    <button id="resetBtn" class="link-btn">Réinitialiser ma progression</button>
+  </footer>
+
+  <script>
+// === data.js ===
+/* =====================================================================
+   Nihongo — Données (kana + vocabulaire)
+   ---------------------------------------------------------------------
+   Kana : { k: caractère, r: romaji, m: mnémonique (fr), g: groupe }
+   Vocab: { jp, kana, romaji, fr, theme, ex: { jp, fr } }
+   ===================================================================== */
+
+/* ---------- HIRAGANA de base (gojūon) avec mnémoniques ---------- */
+const HIRA_BASE = [
+  { k: "あ", r: "a",  m: "Un « A » avec une pomme (Apple) accrochée." },
+  { k: "い", r: "i",  m: "Deux barres comme deux anguilles (eels = « i »)." },
+  { k: "う", r: "u",  m: "Un visage de profil qui dit « ouh »." },
+  { k: "え", r: "e",  m: "Une autruche exotique (« e ») qui tend le cou." },
+  { k: "お", r: "o",  m: "Un « o » avec une queue, comme une grosse olive." },
+  { k: "か", r: "ka", m: "Un couteau (Katana) qui coupe : ka !" },
+  { k: "き", r: "ki", m: "Une clé (Key) suspendue." },
+  { k: "く", r: "ku", m: "Le bec d'un coucou : « ku ku »." },
+  { k: "け", r: "ke", m: "Un sac de Ketchup renversé." },
+  { k: "こ", r: "ko", m: "Deux vers de terre (« co » comme cocon)." },
+  { k: "さ", r: "sa", m: "Un poisson (saumon = sa) qui nage." },
+  { k: "し", r: "shi", m: "Un hameçon : on pêche, « shhh »." },
+  { k: "す", r: "su", m: "Une boucle, comme un swing de balançoire." },
+  { k: "せ", r: "se", m: "Une bouche qui dit « say » (se)." },
+  { k: "そ", r: "so", m: "Du fil de couture (so = sew) en zigzag." },
+  { k: "た", r: "ta", m: "Un « t » et un « a » collés : ta." },
+  { k: "ち", r: "chi", m: "Une joue (cheek) ronde : chi." },
+  { k: "つ", r: "tsu", m: "Une vague tsunami : tsu." },
+  { k: "て", r: "te", m: "Une table (te) vue de côté." },
+  { k: "と", r: "to", m: "Un orteil (toe) avec un clou planté." },
+  { k: "な", r: "na", m: "Un genou (knee → na) plié avec une croix." },
+  { k: "に", r: "ni", m: "Un genou (knee) et une aiguille : ni." },
+  { k: "ぬ", r: "nu", m: "Des nouilles (noodles = nu) emmêlées." },
+  { k: "ね", r: "ne", m: "Un chat qui fait « nya » avec sa queue enroulée." },
+  { k: "の", r: "no", m: "Un panneau d'interdiction : NO." },
+  { k: "は", r: "ha", m: "Un « h » et un « a » : ha ha, on rit." },
+  { k: "ひ", r: "hi", m: "Une bouche qui sourit, dit « hiii »." },
+  { k: "ふ", r: "fu", m: "Le mont Fuji esquissé : fu." },
+  { k: "へ", r: "he", m: "Une colline : on grimpe en disant « hey » (he)." },
+  { k: "ほ", r: "ho", m: "Comme は (ha) mais avec une barre : Ho ho ho !" },
+  { k: "ま", r: "ma", m: "Maman (ma) avec deux boucles dans les cheveux." },
+  { k: "み", r: "mi", m: "Le chiffre 21 retourné… « mi » comme 3 (mittsu)." },
+  { k: "む", r: "mu", m: "Une vache (« meuh » → mu) avec une queue." },
+  { k: "め", r: "me", m: "Un œil (« me » regarde-moi)." },
+  { k: "も", r: "mo", m: "Un hameçon avec deux appâts : « more » (mo)." },
+  { k: "や", r: "ya", m: "Un yak (ya) avec des cornes." },
+  { k: "ゆ", r: "yu", m: "Un poisson unique (unique = yu)." },
+  { k: "よ", r: "yo", m: "Un yo-yo qui pend." },
+  { k: "ら", r: "ra", m: "Un lapin (rabbit) qui saute : ra." },
+  { k: "り", r: "ri", m: "Une rivière (river = ri) à deux courants." },
+  { k: "る", r: "ru", m: "Une boucle de route (route = ru)." },
+  { k: "れ", r: "re", m: "Comme る mais une jambe tendue : « re »." },
+  { k: "ろ", r: "ro", m: "Une route (road = ro) carrée sans boucle." },
+  { k: "わ", r: "wa", m: "Comme れ mais arrondi : « wa » (waouh)." },
+  { k: "を", r: "wo", m: "Une bouche qui lance : « wo ! » (particule o)." },
+  { k: "ん", r: "n",  m: "Un « n » bouclé, le seul son consonne seul." },
+];
+
+/* ---------- HIRAGANA dakuten / handakuten ---------- */
+const HIRA_DAKUTEN = [
+  { k: "が", r: "ga" }, { k: "ぎ", r: "gi" }, { k: "ぐ", r: "gu" }, { k: "げ", r: "ge" }, { k: "ご", r: "go" },
+  { k: "ざ", r: "za" }, { k: "じ", r: "ji" }, { k: "ず", r: "zu" }, { k: "ぜ", r: "ze" }, { k: "ぞ", r: "zo" },
+  { k: "だ", r: "da" }, { k: "ぢ", r: "ji" }, { k: "づ", r: "zu" }, { k: "で", r: "de" }, { k: "ど", r: "do" },
+  { k: "ば", r: "ba" }, { k: "び", r: "bi" }, { k: "ぶ", r: "bu" }, { k: "べ", r: "be" }, { k: "ぼ", r: "bo" },
+  { k: "ぱ", r: "pa" }, { k: "ぴ", r: "pi" }, { k: "ぷ", r: "pu" }, { k: "ぺ", r: "pe" }, { k: "ぽ", r: "po" },
+];
+
+/* ---------- HIRAGANA yōon (combinaisons) ---------- */
+const HIRA_YOON = [
+  { k: "きゃ", r: "kya" }, { k: "きゅ", r: "kyu" }, { k: "きょ", r: "kyo" },
+  { k: "しゃ", r: "sha" }, { k: "しゅ", r: "shu" }, { k: "しょ", r: "sho" },
+  { k: "ちゃ", r: "cha" }, { k: "ちゅ", r: "chu" }, { k: "ちょ", r: "cho" },
+  { k: "にゃ", r: "nya" }, { k: "にゅ", r: "nyu" }, { k: "にょ", r: "nyo" },
+  { k: "ひゃ", r: "hya" }, { k: "ひゅ", r: "hyu" }, { k: "ひょ", r: "hyo" },
+  { k: "みゃ", r: "mya" }, { k: "みゅ", r: "myu" }, { k: "みょ", r: "myo" },
+  { k: "りゃ", r: "rya" }, { k: "りゅ", r: "ryu" }, { k: "りょ", r: "ryo" },
+  { k: "ぎゃ", r: "gya" }, { k: "ぎゅ", r: "gyu" }, { k: "ぎょ", r: "gyo" },
+  { k: "じゃ", r: "ja" },  { k: "じゅ", r: "ju" },  { k: "じょ", r: "jo" },
+  { k: "びゃ", r: "bya" }, { k: "びゅ", r: "byu" }, { k: "びょ", r: "byo" },
+  { k: "ぴゃ", r: "pya" }, { k: "ぴゅ", r: "pyu" }, { k: "ぴょ", r: "pyo" },
+];
+
+/* ---------- KATAKANA de base ---------- */
+const KATA_BASE = [
+  { k: "ア", r: "a",  m: "Un « A » anguleux, comme un toit." },
+  { k: "イ", r: "i",  m: "Deux traits, une aiguille (« i »)." },
+  { k: "ウ", r: "u",  m: "Un toit avec un petit trait." },
+  { k: "エ", r: "e",  m: "Un escalier (« e »)." },
+  { k: "オ", r: "o",  m: "Un « o » avec une croix." },
+  { k: "カ", r: "ka", m: "Comme か mais raide : ka." },
+  { k: "キ", r: "ki", m: "Une clé (key) anguleuse." },
+  { k: "ク", r: "ku", m: "Un bec ouvert : ku." },
+  { k: "ケ", r: "ke", m: "Trois traits : Ketchup." },
+  { k: "コ", r: "ko", m: "Un coin (corner) : ko." },
+  { k: "サ", r: "sa", m: "Trois traits, comme un soleil." },
+  { k: "シ", r: "shi", m: "Deux points qui montent : shi (≠ ツ)." },
+  { k: "ス", r: "su", m: "Une boucle vers le bas." },
+  { k: "セ", r: "se", m: "Comme せ en plus carré." },
+  { k: "ソ", r: "so", m: "Deux traits qui descendent : so (≠ ン)." },
+  { k: "タ", r: "ta", m: "Un « ta » qui ressemble à un parapluie." },
+  { k: "チ", r: "chi", m: "Un « + » avec un chapeau : chi." },
+  { k: "ツ", r: "tsu", m: "Trois traits horizontaux : tsu (≠ シ)." },
+  { k: "テ", r: "te", m: "Une table avec une jambe." },
+  { k: "ト", r: "to", m: "Un « T » avec un orteil (toe)." },
+  { k: "ナ", r: "na", m: "Une croix penchée : na." },
+  { k: "ニ", r: "ni", m: "Deux traits = ni (2 = ni en japonais !)." },
+  { k: "ヌ", r: "nu", m: "Comme ス avec un trait en plus." },
+  { k: "ネ", r: "ne", m: "Un caractère touffu : ne." },
+  { k: "ノ", r: "no", m: "Un seul trait : NO." },
+  { k: "ハ", r: "ha", m: "Deux jambes écartées : ha." },
+  { k: "ヒ", r: "hi", m: "Un talon de chaussure : hi." },
+  { k: "フ", r: "fu", m: "Un nez qui souffle : fu." },
+  { k: "ヘ", r: "he", m: "Identique à へ : une colline." },
+  { k: "ホ", r: "ho", m: "Une croix avec deux pieds : ho." },
+  { k: "マ", r: "ma", m: "Un drapeau : ma." },
+  { k: "ミ", r: "mi", m: "Trois traits : mi (3 = mi)." },
+  { k: "ム", r: "mu", m: "Une bouche de vache : mu (meuh)." },
+  { k: "メ", r: "me", m: "Un « X » : me (un œil croisé)." },
+  { k: "モ", r: "mo", m: "Un hameçon avec deux barres." },
+  { k: "ヤ", r: "ya", m: "Un boomerang : ya." },
+  { k: "ユ", r: "yu", m: "Un « U » carré couché." },
+  { k: "ヨ", r: "yo", m: "Un « E » à l'envers : yo." },
+  { k: "ラ", r: "ra", m: "Un toit avec un trait : ra." },
+  { k: "リ", r: "ri", m: "Deux traits verticaux : ri (comme り)." },
+  { k: "ル", r: "ru", m: "Deux jambes qui courent (route)." },
+  { k: "レ", r: "re", m: "Un coche : re." },
+  { k: "ロ", r: "ro", m: "Un carré : road (ro)." },
+  { k: "ワ", r: "wa", m: "Comme ロ mais ouvert : wa." },
+  { k: "ヲ", r: "wo", m: "Rare : la particule o en katakana." },
+  { k: "ン", r: "n",  m: "Deux traits qui montent : n (≠ ソ)." },
+];
+
+const KATA_DAKUTEN = [
+  { k: "ガ", r: "ga" }, { k: "ギ", r: "gi" }, { k: "グ", r: "gu" }, { k: "ゲ", r: "ge" }, { k: "ゴ", r: "go" },
+  { k: "ザ", r: "za" }, { k: "ジ", r: "ji" }, { k: "ズ", r: "zu" }, { k: "ゼ", r: "ze" }, { k: "ゾ", r: "zo" },
+  { k: "ダ", r: "da" }, { k: "ヂ", r: "ji" }, { k: "ヅ", r: "zu" }, { k: "デ", r: "de" }, { k: "ド", r: "do" },
+  { k: "バ", r: "ba" }, { k: "ビ", r: "bi" }, { k: "ブ", r: "bu" }, { k: "ベ", r: "be" }, { k: "ボ", r: "bo" },
+  { k: "パ", r: "pa" }, { k: "ピ", r: "pi" }, { k: "プ", r: "pu" }, { k: "ペ", r: "pe" }, { k: "ポ", r: "po" },
+];
+
+const KATA_YOON = [
+  { k: "キャ", r: "kya" }, { k: "キュ", r: "kyu" }, { k: "キョ", r: "kyo" },
+  { k: "シャ", r: "sha" }, { k: "シュ", r: "shu" }, { k: "ショ", r: "sho" },
+  { k: "チャ", r: "cha" }, { k: "チュ", r: "chu" }, { k: "チョ", r: "cho" },
+  { k: "ニャ", r: "nya" }, { k: "ニュ", r: "nyu" }, { k: "ニョ", r: "nyo" },
+  { k: "リャ", r: "rya" }, { k: "リュ", r: "ryu" }, { k: "リョ", r: "ryo" },
+  { k: "ジャ", r: "ja" },  { k: "ジュ", r: "ju" },  { k: "ジョ", r: "jo" },
+];
+
+const KANA_GROUPS = [
+  { key: "hira_base",    label: "Hiragana de base", set: "hira", data: HIRA_BASE },
+  { key: "hira_dakuten", label: "Hiragana (゛゜)",   set: "hira", data: HIRA_DAKUTEN },
+  { key: "hira_yoon",    label: "Hiragana combinés", set: "hira", data: HIRA_YOON },
+  { key: "kata_base",    label: "Katakana de base", set: "kata", data: KATA_BASE },
+  { key: "kata_dakuten", label: "Katakana (゛゜)",   set: "kata", data: KATA_DAKUTEN },
+  { key: "kata_yoon",    label: "Katakana combinés", set: "kata", data: KATA_YOON },
+];
+
+/* ---------- VOCABULAIRE par thème, avec phrases d'exemple ---------- */
+const VOCAB = [
+  // Salutations & politesse
+  { jp: "こんにちは", kana: "こんにちは", romaji: "konnichiwa", fr: "bonjour", theme: "salutations",
+    ex: { jp: "こんにちは、元気ですか？", fr: "Bonjour, comment ça va ?" } },
+  { jp: "おはよう", kana: "おはよう", romaji: "ohayō", fr: "bonjour (matin)", theme: "salutations",
+    ex: { jp: "おはようございます。", fr: "Bonjour (poli, le matin)." } },
+  { jp: "こんばんは", kana: "こんばんは", romaji: "konbanwa", fr: "bonsoir", theme: "salutations",
+    ex: { jp: "こんばんは、田中さん。", fr: "Bonsoir, M. Tanaka." } },
+  { jp: "さようなら", kana: "さようなら", romaji: "sayōnara", fr: "au revoir", theme: "salutations",
+    ex: { jp: "さようなら、また明日。", fr: "Au revoir, à demain." } },
+  { jp: "ありがとう", kana: "ありがとう", romaji: "arigatō", fr: "merci", theme: "salutations",
+    ex: { jp: "ありがとうございます。", fr: "Merci beaucoup (poli)." } },
+  { jp: "すみません", kana: "すみません", romaji: "sumimasen", fr: "excusez-moi / pardon", theme: "salutations",
+    ex: { jp: "すみません、トイレはどこですか？", fr: "Excusez-moi, où sont les toilettes ?" } },
+  { jp: "はい", kana: "はい", romaji: "hai", fr: "oui", theme: "salutations",
+    ex: { jp: "はい、わかりました。", fr: "Oui, j'ai compris." } },
+  { jp: "いいえ", kana: "いいえ", romaji: "iie", fr: "non", theme: "salutations",
+    ex: { jp: "いいえ、違います。", fr: "Non, ce n'est pas ça." } },
+
+  // Se présenter
+  { jp: "はじめまして", kana: "はじめまして", romaji: "hajimemashite", fr: "enchanté", theme: "presentation",
+    ex: { jp: "はじめまして、トニーです。", fr: "Enchanté, je suis Tony." } },
+  { jp: "名前", kana: "なまえ", romaji: "namae", fr: "nom / prénom", theme: "presentation",
+    ex: { jp: "お名前は何ですか？", fr: "Quel est votre nom ?" } },
+  { jp: "私", kana: "わたし", romaji: "watashi", fr: "je / moi", theme: "presentation",
+    ex: { jp: "私はフランス人です。", fr: "Je suis français." } },
+  { jp: "学生", kana: "がくせい", romaji: "gakusei", fr: "étudiant", theme: "presentation",
+    ex: { jp: "私は学生です。", fr: "Je suis étudiant." } },
+  { jp: "日本語", kana: "にほんご", romaji: "nihongo", fr: "langue japonaise", theme: "presentation",
+    ex: { jp: "日本語を勉強しています。", fr: "J'étudie le japonais." } },
+
+  // Nombres
+  { jp: "一", kana: "いち", romaji: "ichi", fr: "un (1)", theme: "nombres",
+    ex: { jp: "りんごを一つください。", fr: "Une pomme, s'il vous plaît." } },
+  { jp: "二", kana: "に", romaji: "ni", fr: "deux (2)", theme: "nombres",
+    ex: { jp: "二人です。", fr: "Nous sommes deux." } },
+  { jp: "三", kana: "さん", romaji: "san", fr: "trois (3)", theme: "nombres",
+    ex: { jp: "三時です。", fr: "Il est trois heures." } },
+  { jp: "四", kana: "よん", romaji: "yon", fr: "quatre (4)", theme: "nombres",
+    ex: { jp: "四階です。", fr: "C'est au quatrième étage." } },
+  { jp: "五", kana: "ご", romaji: "go", fr: "cinq (5)", theme: "nombres",
+    ex: { jp: "五分待ってください。", fr: "Attendez cinq minutes." } },
+  { jp: "六", kana: "ろく", romaji: "roku", fr: "six (6)", theme: "nombres",
+    ex: { jp: "六時に会いましょう。", fr: "Rencontrons-nous à six heures." } },
+  { jp: "七", kana: "なな", romaji: "nana", fr: "sept (7)", theme: "nombres",
+    ex: { jp: "七月です。", fr: "C'est le mois de juillet." } },
+  { jp: "八", kana: "はち", romaji: "hachi", fr: "huit (8)", theme: "nombres",
+    ex: { jp: "八百円です。", fr: "Ça fait 800 yens." } },
+  { jp: "九", kana: "きゅう", romaji: "kyū", fr: "neuf (9)", theme: "nombres",
+    ex: { jp: "九時に始まります。", fr: "Ça commence à neuf heures." } },
+  { jp: "十", kana: "じゅう", romaji: "jū", fr: "dix (10)", theme: "nombres",
+    ex: { jp: "十分かかります。", fr: "Ça prend dix minutes." } },
+
+  // Nourriture
+  { jp: "水", kana: "みず", romaji: "mizu", fr: "eau", theme: "nourriture",
+    ex: { jp: "水をください。", fr: "De l'eau, s'il vous plaît." } },
+  { jp: "お茶", kana: "おちゃ", romaji: "ocha", fr: "thé", theme: "nourriture",
+    ex: { jp: "お茶はいかがですか？", fr: "Un thé ?" } },
+  { jp: "ご飯", kana: "ごはん", romaji: "gohan", fr: "riz / repas", theme: "nourriture",
+    ex: { jp: "ご飯を食べましょう。", fr: "Mangeons." } },
+  { jp: "寿司", kana: "すし", romaji: "sushi", fr: "sushi", theme: "nourriture",
+    ex: { jp: "寿司が好きです。", fr: "J'aime les sushis." } },
+  { jp: "おいしい", kana: "おいしい", romaji: "oishii", fr: "délicieux", theme: "nourriture",
+    ex: { jp: "とてもおいしいです！", fr: "C'est très bon !" } },
+  { jp: "コーヒー", kana: "コーヒー", romaji: "kōhī", fr: "café", theme: "nourriture",
+    ex: { jp: "コーヒーを一つください。", fr: "Un café, s'il vous plaît." } },
+
+  // Voyage & ville
+  { jp: "駅", kana: "えき", romaji: "eki", fr: "gare / station", theme: "voyage",
+    ex: { jp: "駅はどこですか？", fr: "Où est la gare ?" } },
+  { jp: "電車", kana: "でんしゃ", romaji: "densha", fr: "train", theme: "voyage",
+    ex: { jp: "電車で行きます。", fr: "J'y vais en train." } },
+  { jp: "ホテル", kana: "ホテル", romaji: "hoteru", fr: "hôtel", theme: "voyage",
+    ex: { jp: "ホテルを探しています。", fr: "Je cherche un hôtel." } },
+  { jp: "いくら", kana: "いくら", romaji: "ikura", fr: "combien (prix)", theme: "voyage",
+    ex: { jp: "これはいくらですか？", fr: "Combien ça coûte ?" } },
+  { jp: "どこ", kana: "どこ", romaji: "doko", fr: "où", theme: "voyage",
+    ex: { jp: "出口はどこですか？", fr: "Où est la sortie ?" } },
+  { jp: "右", kana: "みぎ", romaji: "migi", fr: "droite", theme: "voyage",
+    ex: { jp: "右に曲がってください。", fr: "Tournez à droite." } },
+  { jp: "左", kana: "ひだり", romaji: "hidari", fr: "gauche", theme: "voyage",
+    ex: { jp: "左に銀行があります。", fr: "Il y a une banque à gauche." } },
+
+  // Temps & quotidien
+  { jp: "今日", kana: "きょう", romaji: "kyō", fr: "aujourd'hui", theme: "quotidien",
+    ex: { jp: "今日は暑いです。", fr: "Il fait chaud aujourd'hui." } },
+  { jp: "明日", kana: "あした", romaji: "ashita", fr: "demain", theme: "quotidien",
+    ex: { jp: "また明日。", fr: "À demain." } },
+  { jp: "時間", kana: "じかん", romaji: "jikan", fr: "temps / heure", theme: "quotidien",
+    ex: { jp: "時間がありません。", fr: "Je n'ai pas le temps." } },
+  { jp: "好き", kana: "すき", romaji: "suki", fr: "aimer / préférer", theme: "quotidien",
+    ex: { jp: "音楽が好きです。", fr: "J'aime la musique." } },
+  { jp: "大丈夫", kana: "だいじょうぶ", romaji: "daijōbu", fr: "ça va / d'accord", theme: "quotidien",
+    ex: { jp: "大丈夫ですか？", fr: "Est-ce que ça va ?" } },
+
+  // Expressions utiles
+  { jp: "わかりません", kana: "わかりません", romaji: "wakarimasen", fr: "je ne comprends pas", theme: "expressions",
+    ex: { jp: "すみません、わかりません。", fr: "Désolé, je ne comprends pas." } },
+  { jp: "もう一度", kana: "もういちど", romaji: "mō ichido", fr: "encore une fois", theme: "expressions",
+    ex: { jp: "もう一度お願いします。", fr: "Encore une fois, s'il vous plaît." } },
+  { jp: "ゆっくり", kana: "ゆっくり", romaji: "yukkuri", fr: "lentement", theme: "expressions",
+    ex: { jp: "ゆっくり話してください。", fr: "Parlez lentement, s'il vous plaît." } },
+  { jp: "お願いします", kana: "おねがいします", romaji: "onegaishimasu", fr: "s'il vous plaît", theme: "expressions",
+    ex: { jp: "これをお願いします。", fr: "Ceci, s'il vous plaît." } },
+  { jp: "助けて", kana: "たすけて", romaji: "tasukete", fr: "à l'aide !", theme: "expressions",
+    ex: { jp: "助けて！", fr: "À l'aide !" } },
+];
+
+const VOCAB_THEMES = [
+  { key: "salutations",  emoji: "👋", label: "Salutations & politesse" },
+  { key: "presentation", emoji: "🙋", label: "Se présenter" },
+  { key: "nombres",      emoji: "🔢", label: "Nombres" },
+  { key: "nourriture",   emoji: "🍜", label: "Manger & boire" },
+  { key: "voyage",       emoji: "🚉", label: "Voyage & ville" },
+  { key: "quotidien",    emoji: "🕒", label: "Temps & quotidien" },
+  { key: "expressions",  emoji: "💬", label: "Expressions utiles" },
+];
+
+window.KANA_GROUPS = KANA_GROUPS;
+window.VOCAB = VOCAB;
+window.VOCAB_THEMES = VOCAB_THEMES;
+
+</script>
+<script>
+// === srs.js ===
+/* =====================================================================
+   Nihongo — Moteur de répétition espacée (SRS)
+   ---------------------------------------------------------------------
+   Algorithme inspiré de SM-2 (Anki). Chaque carte est identifiée par
+   un id unique. On stocke : facilité (ease), intervalle (jours),
+   prochaine échéance (due, en ms), répétitions et oublis.
+
+   Notes de qualité :
+     0 = "Encore" (raté)      1 = "Difficile"
+     2 = "Bien"               3 = "Facile"
+   ===================================================================== */
+
+const SRS = (function () {
+  "use strict";
+  const KEY = "nihongo:srs:v1";
+  const DAY = 24 * 60 * 60 * 1000;
+
+  function load() {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch (e) { return {}; }
+  }
+  function save(db) {
+    try { localStorage.setItem(KEY, JSON.stringify(db)); } catch (e) {}
+  }
+
+  let db = load();
+
+  function get(id) { return db[id] || null; }
+
+  function isNew(id) { return !db[id]; }
+
+  // Une carte est "à réviser" si elle est nouvelle ou si son échéance est passée.
+  function isDue(id, now) {
+    now = now || Date.now();
+    const c = db[id];
+    if (!c) return true;
+    return c.due <= now;
+  }
+
+  function dueCount(ids, now) {
+    now = now || Date.now();
+    let n = 0;
+    ids.forEach((id) => { if (isDue(id, now)) n++; });
+    return n;
+  }
+
+  function newCount(ids) {
+    let n = 0;
+    ids.forEach((id) => { if (isNew(id)) n++; });
+    return n;
+  }
+
+  // Met à jour une carte selon la note (0..3) et renvoie le nouvel état.
+  function review(id, grade) {
+    const now = Date.now();
+    let c = db[id] || { ease: 2.5, interval: 0, reps: 0, lapses: 0, due: now };
+
+    if (grade === 0) {
+      // Raté : on recommence bientôt, on baisse la facilité.
+      c.reps = 0;
+      c.lapses++;
+      c.ease = Math.max(1.3, c.ease - 0.2);
+      c.interval = 0;
+      c.due = now + 60 * 1000; // revu dans ~1 min (dans la session)
+    } else {
+      c.reps++;
+      if (c.reps === 1) c.interval = grade === 1 ? 1 : grade === 3 ? 4 : 1;
+      else if (c.reps === 2) c.interval = grade === 3 ? 6 : 3;
+      else c.interval = Math.round(c.interval * c.ease);
+
+      // Ajustement de la facilité selon la note.
+      if (grade === 1) c.ease = Math.max(1.3, c.ease - 0.15);
+      else if (grade === 3) c.ease = c.ease + 0.15;
+      c.due = now + c.interval * DAY;
+    }
+    db[id] = c;
+    save(db);
+    return c;
+  }
+
+  // Tri des ids : d'abord les cartes en retard, puis les nouvelles.
+  function buildQueue(ids, opts) {
+    opts = opts || {};
+    const now = Date.now();
+    const maxNew = opts.maxNew != null ? opts.maxNew : 12;
+    const due = [];
+    const fresh = [];
+    ids.forEach((id) => {
+      if (isNew(id)) fresh.push(id);
+      else if (db[id].due <= now) due.push({ id: id, due: db[id].due });
+    });
+    due.sort((a, b) => a.due - b.due);
+    const queue = due.map((d) => d.id).concat(fresh.slice(0, maxNew));
+    return queue;
+  }
+
+  function reset() { db = {}; save(db); }
+
+  // Prochain intervalle prévisible (pour afficher sur les boutons).
+  function preview(id, grade) {
+    const c = db[id];
+    if (grade === 0) return "1 min";
+    if (!c || c.reps === 0) {
+      const d = grade === 3 ? 4 : 1;
+      return d + " j";
+    }
+    let interval;
+    if (c.reps === 1) interval = grade === 3 ? 6 : 3;
+    else interval = Math.round(c.interval * c.ease);
+    return interval + " j";
+  }
+
+  return { get, isNew, isDue, dueCount, newCount, review, buildQueue, reset, preview };
+})();
+
+window.SRS = SRS;
+
+</script>
+<script>
+// === speech.js ===
+/* =====================================================================
+   Nihongo — Voix : synthèse vocale (TTS) + reconnaissance vocale (STT)
+   ---------------------------------------------------------------------
+   Utilise l'API Web Speech du navigateur. Aucune clé, aucun serveur.
+   - Synthèse : fonctionne sur la plupart des navigateurs modernes.
+   - Reconnaissance : surtout Chrome / Edge (et nécessite internet + micro).
+   ===================================================================== */
+
+const Speech = (function () {
+  "use strict";
+
+  /* ----------------------- Synthèse vocale (TTS) ----------------------- */
+  const synth = window.speechSynthesis || null;
+  let jaVoice = null;
+
+  function pickVoice() {
+    if (!synth) return;
+    const voices = synth.getVoices();
+    // Préférence : voix japonaise (ja-JP). Sinon, première disponible.
+    jaVoice =
+      voices.find((v) => /ja[-_]JP/i.test(v.lang)) ||
+      voices.find((v) => /^ja/i.test(v.lang)) ||
+      null;
+  }
+  if (synth) {
+    pickVoice();
+    if (typeof synth.onvoiceschanged !== "undefined") {
+      synth.onvoiceschanged = pickVoice;
+    }
+  }
+
+  function ttsSupported() { return !!synth; }
+  function hasJaVoice() { return !!jaVoice; }
+
+  function speak(text, opts) {
+    opts = opts || {};
+    if (!synth) return false;
+    try {
+      synth.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "ja-JP";
+      if (jaVoice) u.voice = jaVoice;
+      u.rate = opts.rate != null ? opts.rate : 0.9; // un peu plus lent pour apprendre
+      u.pitch = opts.pitch != null ? opts.pitch : 1;
+      if (opts.onend) u.onend = opts.onend;
+      synth.speak(u);
+      return true;
+    } catch (e) { return false; }
+  }
+
+  /* ----------------------- Reconnaissance vocale (STT) ----------------------- */
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+
+  function sttSupported() { return !!SR; }
+
+  // Renvoie une promesse résolue avec { transcript, confidence }.
+  function listen(opts) {
+    opts = opts || {};
+    return new Promise((resolve, reject) => {
+      if (!SR) { reject(new Error("non-supporté")); return; }
+      const rec = new SR();
+      rec.lang = "ja-JP";
+      rec.interimResults = false;
+      rec.maxAlternatives = 3;
+      let done = false;
+
+      rec.onresult = (e) => {
+        done = true;
+        const res = e.results[0];
+        const alts = [];
+        for (let i = 0; i < res.length; i++) alts.push(res[i].transcript);
+        resolve({ transcript: res[0].transcript, confidence: res[0].confidence, alternatives: alts });
+      };
+      rec.onerror = (e) => { if (!done) reject(new Error(e.error || "erreur")); };
+      rec.onend = () => { if (!done) reject(new Error("aucun son détecté")); };
+
+      if (opts.onstart) rec.onstart = opts.onstart;
+      try { rec.start(); } catch (e) { reject(e); }
+      // Sécurité : on arrête après quelques secondes.
+      setTimeout(() => { try { rec.stop(); } catch (e) {} }, opts.timeout || 6000);
+    });
+  }
+
+  /* ----------------------- Comparaison / score ----------------------- */
+  // Normalise un texte japonais : enlève espaces, ponctuation, particules courantes.
+  function normalize(s) {
+    return (s || "")
+      .replace(/[\s。、！？!?.,「」『』]/g, "")
+      .replace(/[ー－]/g, "")
+      .trim();
+  }
+
+  // Distance de Levenshtein.
+  function lev(a, b) {
+    const m = a.length, n = b.length;
+    if (!m) return n; if (!n) return m;
+    const dp = Array.from({ length: m + 1 }, (_, i) => [i].concat(new Array(n).fill(0)));
+    for (let j = 0; j <= n; j++) dp[0][j] = j;
+    for (let i = 1; i <= m; i++)
+      for (let j = 1; j <= n; j++)
+        dp[i][j] = Math.min(
+          dp[i - 1][j] + 1,
+          dp[i][j - 1] + 1,
+          dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+        );
+    return dp[m][n];
+  }
+
+  // Score 0..100 entre la cible (kana) et ce qui a été reconnu.
+  function score(target, heard) {
+    const t = normalize(target);
+    const h = normalize(heard);
+    if (!t.length) return 0;
+    if (t === h) return 100;
+    const d = lev(t, h);
+    return Math.max(0, Math.round((1 - d / Math.max(t.length, h.length)) * 100));
+  }
+
+  return {
+    ttsSupported, hasJaVoice, speak,
+    sttSupported, listen,
+    normalize, score,
+  };
+})();
+
+window.Speech = Speech;
+
+</script>
+<script>
+// === app.js ===
+/* =====================================================================
+   Nihongo — Application (vanilla JS, sans dépendance)
+   Modes : Révision SRS, Kana, Vocabulaire, Parler (oral), Écrire, Techniques
+   ===================================================================== */
+
+(function () {
+  "use strict";
+
+  const KANA_GROUPS = window.KANA_GROUPS;
+  const VOCAB = window.VOCAB;
+  const VOCAB_THEMES = window.VOCAB_THEMES;
+
+  const app = document.getElementById("app");
+  const backBtn = document.getElementById("backBtn");
+  const brandBtn = document.getElementById("brandBtn");
+  const streakBadge = document.getElementById("streakBadge");
+  const resetBtn = document.getElementById("resetBtn");
+
+  /* ----------------------- Suivi quotidien / série ----------------------- */
+  const DKEY = "nihongo:daily:v1";
+  function dstr(d) { return d.toISOString().slice(0, 10); }
+  let daily = (function () {
+    try { return JSON.parse(localStorage.getItem(DKEY)) || {}; } catch (e) { return {}; }
+  })();
+  function saveDaily() { try { localStorage.setItem(DKEY, JSON.stringify(daily)); } catch (e) {} }
+  function recordReview() {
+    const today = dstr(new Date());
+    if (daily.today !== today) { daily.today = today; daily.count = 0; }
+    if (!daily.count) {
+      const y = dstr(new Date(Date.now() - 864e5));
+      daily.streak = daily.last === y ? (daily.streak || 0) + 1 : 1;
+      daily.last = today;
+    }
+    daily.count = (daily.count || 0) + 1;
+    daily.total = (daily.total || 0) + 1;
+    saveDaily();
+    updateStreak();
+  }
+  function todayCount() {
+    return daily.today === dstr(new Date()) ? (daily.count || 0) : 0;
+  }
+  function updateStreak() { streakBadge.textContent = "🔥 " + (daily.streak || 0); }
+
+  /* ----------------------- Utilitaires ----------------------- */
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+  function el(tag, cls) { const e = document.createElement(tag); if (cls) e.className = cls; return e; }
+  function stat(num, lbl) {
+    const s = el("div", "stat");
+    s.innerHTML = '<div class="num">' + num + '</div><div class="lbl">' + lbl + "</div>";
+    return s;
+  }
+
+  /* ----------------------- Construction des decks ----------------------- */
+  // Item unifié : { id, type, k, r, ... }
+  function kanaItems(groupKeys) {
+    const items = [];
+    KANA_GROUPS.forEach((g) => {
+      if (!groupKeys || groupKeys.includes(g.key)) {
+        g.data.forEach((c) => items.push({
+          id: "k:" + c.k, type: "kana", k: c.k, r: c.r, m: c.m || "", group: g.key,
+        }));
+      }
+    });
+    return items;
+  }
+  function vocabItems(themeKeys) {
+    return VOCAB
+      .filter((v) => !themeKeys || themeKeys.includes(v.theme))
+      .map((v) => ({ id: "v:" + v.jp, type: "vocab", v: v }));
+  }
+  function allItems() { return kanaItems().concat(vocabItems()); }
+
+  /* ----------------------- Voix ----------------------- */
+  function speakItem(item, rate) {
+    if (item.type === "kana") window.Speech.speak(item.k, { rate: rate });
+    else window.Speech.speak(item.v.kana, { rate: rate });
+  }
+  function audioButtons(item) {
+    const row = el("div", "audio-row");
+    if (!window.Speech.ttsSupported()) {
+      const w = el("div", "note");
+      w.textContent = "🔇 Synthèse vocale indisponible sur ce navigateur.";
+      row.appendChild(w);
+      return row;
+    }
+    const play = el("button", "btn secondary");
+    play.style.width = "auto";
+    play.textContent = "🔊 Écouter";
+    play.addEventListener("click", () => speakItem(item, 0.9));
+    const slow = el("button", "btn secondary");
+    slow.style.width = "auto";
+    slow.textContent = "🐢 Lentement";
+    slow.addEventListener("click", () => speakItem(item, 0.55));
+    row.appendChild(play);
+    row.appendChild(slow);
+    return row;
+  }
+
+  /* ----------------------- Navigation ----------------------- */
+  let onBack = null;
+  function setBack(fn) { onBack = fn; backBtn.classList.toggle("hidden", !fn); }
+  backBtn.addEventListener("click", () => { if (onBack) onBack(); });
+  brandBtn.addEventListener("click", renderHome);
+  resetBtn.addEventListener("click", () => {
+    if (confirm("Réinitialiser toute ta progression (SRS, série, statistiques) ?")) {
+      window.SRS.reset();
+      daily = {}; saveDaily(); updateStreak();
+      renderHome();
+    }
+  });
+
+  /* ----------------------- Accueil ----------------------- */
+  const TIPS = [
+    { ic: "🧠", t: "Répétition espacée : l'app te montre chaque carte juste avant que tu l'oublies. C'est la méthode la plus efficace pour mémoriser durablement." },
+    { ic: "🗣️", t: "Shadowing : écoute une phrase et répète-la immédiatement, en imitant le rythme. C'est le secret d'une bonne prononciation." },
+    { ic: "✍️", t: "Écrire à la main grave les caractères dans la mémoire bien mieux que les relire." },
+    { ic: "🎯", t: "Rappel actif : essaie toujours de répondre AVANT de retourner la carte. L'effort de mémoire renforce l'apprentissage." },
+    { ic: "📖", t: "Input compréhensible : apprends les mots dans des phrases, pas isolés. Le contexte fixe le sens." },
+  ];
+
+  function renderHome() {
+    setBack(null);
+    updateStreak();
+
+    const due = window.SRS.dueCount(allItems().map((i) => i.id));
+    const tip = TIPS[Math.floor(Math.random() * TIPS.length)];
+
+    const modes = [
+      { emoji: "🔁", title: "Révision du jour", badge: "SRS", desc: due ? due + " carte(s) à revoir" : "Tout est à jour ✨", act: startDaily },
+      { emoji: "🔤", title: "Kana (lire)", desc: "ひらがな・カタカナ avec mnémoniques", act: () => setupKana("read") },
+      { emoji: "📖", title: "Vocabulaire", desc: "Mots & phrases par thème", act: setupVocab },
+      { emoji: "🗣️", title: "Parler", badge: "voix", desc: "Shadowing + reconnaissance vocale", act: setupSpeak },
+      { emoji: "✍️", title: "Écrire", desc: "Tracer les kana sur l'écran", act: setupWrite },
+      { emoji: "💡", title: "Les techniques", desc: "Ce qui se fait de mieux pour apprendre", act: renderTechniques },
+    ];
+
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    const hero = el("div", "hero");
+    hero.innerHTML =
+      '<h2>ようこそ <span class="brand-sub">Bienvenue</span></h2>' +
+      "<p>Apprends à parler et écrire le japonais — avec les meilleures techniques.</p>";
+    wrap.appendChild(hero);
+
+    const stats = el("div", "stats-grid");
+    stats.appendChild(stat(String(todayCount()), "Cartes aujourd'hui"));
+    stats.appendChild(stat(String(due), "À réviser"));
+    stats.appendChild(stat(String(daily.total || 0), "Total révisé"));
+    wrap.appendChild(stats);
+
+    const tipBox = el("div", "tip");
+    tipBox.innerHTML = '<span class="ic">' + tip.ic + "</span><span>" + tip.t + "</span>";
+    wrap.appendChild(tipBox);
+
+    const grid = el("div", "mode-grid");
+    modes.forEach((m) => {
+      const c = el("button", "mode-card");
+      c.innerHTML =
+        '<span class="emoji">' + m.emoji + "</span>" +
+        '<span><span class="mc-title">' + m.title +
+        (m.badge ? '<span class="badge">' + m.badge + "</span>" : "") + "</span>" +
+        '<span class="mc-desc">' + m.desc + "</span></span>";
+      c.addEventListener("click", m.act);
+      grid.appendChild(c);
+    });
+    wrap.appendChild(grid);
+
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ----------------------- Écran de sélection (chips) ----------------------- */
+  function setupScreen(opts) {
+    // opts : { title, intro, groups:[{key,label,sub}], onStart(selectedKeys) }
+    setBack(renderHome);
+    const selected = new Set(opts.groups.map((g) => g.key));
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const h = el("div", "hero");
+    h.innerHTML = "<h2>" + opts.title + "</h2><p>" + opts.intro + "</p>";
+    wrap.appendChild(h);
+
+    const chips = el("div", "chips");
+    opts.groups.forEach((g) => {
+      const chip = el("button", "chip on");
+      chip.innerHTML = g.label + (g.sub ? '<span class="c-sub">' + g.sub + "</span>" : "");
+      chip.addEventListener("click", () => {
+        if (selected.has(g.key)) { selected.delete(g.key); chip.classList.remove("on"); }
+        else { selected.add(g.key); chip.classList.add("on"); }
+        start.disabled = selected.size === 0;
+      });
+      chips.appendChild(chip);
+    });
+    wrap.appendChild(chips);
+
+    const start = el("button", "btn btn-block");
+    start.textContent = "Commencer ▶";
+    start.addEventListener("click", () => opts.onStart(Array.from(selected)));
+    wrap.appendChild(start);
+
+    if (opts.note) {
+      const n = el("div", "note");
+      n.textContent = opts.note;
+      wrap.appendChild(n);
+    }
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ----------------------- Lancement des modes ----------------------- */
+  function startDaily() {
+    const items = allItems();
+    const queue = window.SRS.buildQueue(items.map((i) => i.id), { maxNew: 12 });
+    if (!queue.length) {
+      flashEmpty("🎉", "Bravo, tout est à jour !", "Reviens plus tard ou explore un autre mode pour apprendre du nouveau.");
+      return;
+    }
+    const map = {}; items.forEach((i) => (map[i.id] = i));
+    runFlashcards(queue.map((id) => map[id]), "🔁 Révision du jour");
+  }
+
+  function setupKana() {
+    setupScreen({
+      title: "🔤 Kana", intro: "Choisis les séries à étudier.",
+      groups: KANA_GROUPS.map((g) => ({ key: g.key, label: g.label, sub: g.data.length })),
+      onStart: (keys) => {
+        const items = window.SRS.buildQueue(kanaItems(keys).map((i) => i.id), { maxNew: 15 });
+        const all = kanaItems(keys); const map = {}; all.forEach((i) => (map[i.id] = i));
+        const deck = items.length ? items.map((id) => map[id]) : shuffle(all);
+        runFlashcards(deck, "🔤 Kana");
+      },
+    });
+  }
+
+  function setupVocab() {
+    setupScreen({
+      title: "📖 Vocabulaire", intro: "Choisis les thèmes à réviser.",
+      groups: VOCAB_THEMES.map((t) => ({ key: t.key, label: t.emoji + " " + t.label })),
+      onStart: (keys) => {
+        const all = vocabItems(keys); const map = {}; all.forEach((i) => (map[i.id] = i));
+        const queue = window.SRS.buildQueue(all.map((i) => i.id), { maxNew: 12 });
+        const deck = queue.length ? queue.map((id) => map[id]) : shuffle(all);
+        runFlashcards(deck, "📖 Vocabulaire");
+      },
+    });
+  }
+
+  function setupSpeak() {
+    setupScreen({
+      title: "🗣️ Parler", intro: "Écoute, répète (shadowing), puis parle : l'app évalue ta prononciation.",
+      groups: VOCAB_THEMES.map((t) => ({ key: t.key, label: t.emoji + " " + t.label })),
+      note: window.Speech.sttSupported()
+        ? "Astuce : autorise le micro. Fonctionne surtout sur Chrome/Edge avec internet."
+        : "⚠️ La reconnaissance vocale n'est pas disponible ici — tu peux quand même écouter et t'entraîner au shadowing.",
+      onStart: (keys) => runSpeaking(shuffle(vocabItems(keys)), "🗣️ Parler"),
+    });
+  }
+
+  function setupWrite() {
+    setupScreen({
+      title: "✍️ Écrire", intro: "Trace les caractères au doigt ou à la souris.",
+      groups: KANA_GROUPS.filter((g) => !/yoon/.test(g.key)).map((g) => ({ key: g.key, label: g.label, sub: g.data.length })),
+      onStart: (keys) => runWriting(shuffle(kanaItems(keys)), "✍️ Écrire"),
+    });
+  }
+
+  function flashEmpty(emoji, title, msg) {
+    setBack(renderHome);
+    app.innerHTML = "";
+    const e = el("div", "empty fade-in");
+    e.innerHTML = '<div class="big-emoji">' + emoji + "</div><h2>" + title + "</h2><p>" + msg + "</p>";
+    const b = el("button", "btn btn-block");
+    b.textContent = "🏠 Accueil";
+    b.addEventListener("click", renderHome);
+    e.appendChild(b);
+    app.appendChild(e);
+  }
+
+  /* ===================================================================
+     MODE 1 — Cartes SRS (kana + vocabulaire)
+     =================================================================== */
+  function runFlashcards(deck, title) {
+    if (!deck.length) { flashEmpty("🤔", "Rien à réviser", "Choisis au moins une série."); return; }
+    let idx = 0, reviewed = 0;
+    showCard();
+
+    function showCard() {
+      setBack(() => { if (confirm("Quitter la session ?")) renderHome(); });
+      const item = deck[idx];
+      app.innerHTML = "";
+      const wrap = el("div", "fade-in");
+
+      const head = el("div", "quiz-head");
+      head.innerHTML = "<span>" + title + "</span><span>" + (idx + 1) + " / " + deck.length + "</span>";
+      wrap.appendChild(head);
+      const prog = el("div", "progress");
+      prog.innerHTML = '<span style="width:' + (idx / deck.length) * 100 + '%"></span>';
+      wrap.appendChild(prog);
+
+      const card = el("div", "card jp");
+      if (item.type === "kana") {
+        card.innerHTML = '<div class="big-kana">' + item.k + "</div>";
+      } else {
+        card.innerHTML = '<div class="big-word">' + item.v.jp + "</div>";
+      }
+      const hint = el("div", "hint-tap");
+      hint.textContent = "Pense à la réponse… puis appuie pour vérifier";
+      card.appendChild(hint);
+      wrap.appendChild(card);
+
+      const reveal = el("button", "btn btn-block");
+      reveal.textContent = "Afficher la réponse 👁️";
+      reveal.addEventListener("click", doReveal);
+      wrap.appendChild(reveal);
+
+      app.appendChild(wrap);
+      window.scrollTo(0, 0);
+
+      // Écoute automatique (le clic de navigation autorise l'audio).
+      speakItem(item, 0.9);
+
+      function doReveal() {
+        reveal.remove();
+        hint.remove();
+        const ans = el("div", "");
+        if (item.type === "kana") {
+          ans.innerHTML =
+            '<div class="romaji" style="font-size:30px">' + item.r + "</div>" +
+            (item.m ? '<div class="mnemo">💡 ' + item.m + "</div>" : "");
+        } else {
+          const v = item.v;
+          ans.innerHTML =
+            '<div class="reading">' + v.kana + "</div>" +
+            '<div class="romaji">' + v.romaji + "</div>" +
+            '<div class="fr">🇫🇷 ' + v.fr + "</div>" +
+            '<div class="example"><div class="ex-jp">' + v.ex.jp + "</div>" +
+            '<div class="ex-fr">' + v.ex.fr + "</div></div>";
+        }
+        card.appendChild(ans);
+        card.appendChild(audioButtons(item));
+
+        const grades = el("div", "grade-row");
+        [
+          { g: 0, cls: "again", label: "Encore" },
+          { g: 1, cls: "hard", label: "Difficile" },
+          { g: 2, cls: "good", label: "Bien" },
+          { g: 3, cls: "easy", label: "Facile" },
+        ].forEach((b) => {
+          const btn = el("button", "grade " + b.cls);
+          btn.innerHTML = b.label + '<span class="g-int">' + window.SRS.preview(item.id, b.g) + "</span>";
+          btn.addEventListener("click", () => grade(b.g));
+          grades.appendChild(btn);
+        });
+        wrap.appendChild(grades);
+        grades.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
+
+      function grade(g) {
+        window.SRS.review(item.id, g);
+        recordReview();
+        reviewed++;
+        // Si "Encore", on remet la carte plus loin dans la file.
+        if (g === 0 && deck.length > 1) {
+          const reinsert = Math.min(deck.length, idx + 3);
+          deck.splice(reinsert, 0, item);
+        }
+        idx++;
+        if (idx < deck.length) showCard();
+        else finish();
+      }
+    }
+
+    function finish() {
+      setBack(renderHome);
+      app.innerHTML = "";
+      const wrap = el("div", "result fade-in");
+      wrap.innerHTML =
+        '<div class="big-emoji">🎌</div><h2>Session terminée !</h2>' +
+        '<div class="score-line">' + reviewed + " carte(s) révisée(s)</div>" +
+        '<p class="note">Série actuelle : 🔥 ' + (daily.streak || 0) + " jour(s). Reviens demain pour la garder !</p>";
+      const row = el("div", "btn-row");
+      const again = el("button", "btn");
+      again.textContent = "🔁 Continuer";
+      again.addEventListener("click", startDaily);
+      const home = el("button", "btn secondary");
+      home.textContent = "🏠 Accueil";
+      home.addEventListener("click", renderHome);
+      row.appendChild(again); row.appendChild(home);
+      wrap.appendChild(row);
+      app.appendChild(wrap);
+      window.scrollTo(0, 0);
+    }
+  }
+
+  /* ===================================================================
+     MODE 2 — Parler (shadowing + reconnaissance vocale)
+     =================================================================== */
+  function runSpeaking(deck, title) {
+    if (!deck.length) { flashEmpty("🤔", "Rien à pratiquer", "Choisis au moins un thème."); return; }
+    let idx = 0;
+    show();
+
+    function show() {
+      setBack(() => { if (confirm("Quitter ?")) renderHome(); });
+      const v = deck[idx].v;
+      app.innerHTML = "";
+      const wrap = el("div", "fade-in");
+
+      const head = el("div", "quiz-head");
+      head.innerHTML = "<span>" + title + "</span><span>" + (idx + 1) + " / " + deck.length + "</span>";
+      wrap.appendChild(head);
+
+      const card = el("div", "card jp");
+      card.innerHTML =
+        '<div class="big-word">' + v.jp + "</div>" +
+        '<div class="reading">' + v.kana + "</div>" +
+        '<div class="romaji">' + v.romaji + "</div>" +
+        '<div class="fr">🇫🇷 ' + v.fr + "</div>";
+      card.appendChild(audioButtons(deck[idx]));
+      wrap.appendChild(card);
+
+      // Reconnaissance vocale
+      const micWrap = el("div", "mic-wrap");
+      const supported = window.Speech.sttSupported();
+      const mic = el("button", "mic-btn");
+      mic.textContent = "🎤";
+      const heard = el("div", "heard");
+      heard.textContent = supported ? "Appuie sur le micro et prononce le mot." : "";
+      micWrap.appendChild(mic);
+      micWrap.appendChild(heard);
+
+      if (!supported) {
+        mic.disabled = true;
+        const w = el("div", "warn");
+        w.innerHTML = "🎤 Reconnaissance vocale indisponible sur ce navigateur.<br>Pratique le <b>shadowing</b> : écoute (🔊) et répète à voix haute en imitant le rythme.";
+        micWrap.appendChild(w);
+      } else {
+        mic.addEventListener("click", () => {
+          heard.textContent = "🎙️ J'écoute…";
+          mic.classList.add("listening");
+          window.Speech.listen({ timeout: 6000 })
+            .then((res) => {
+              mic.classList.remove("listening");
+              const sc = window.Speech.score(v.kana, res.transcript);
+              const cls = sc >= 80 ? "ok" : sc >= 55 ? "mid" : "bad";
+              const verdict = sc >= 80 ? "Excellent ! 🎉" : sc >= 55 ? "Pas mal, réessaie 👍" : "À retravailler 💪";
+              heard.innerHTML =
+                'Tu as dit : <b class="jp">' + (res.transcript || "—") + "</b><br>" +
+                '<span class="score-pill ' + cls + '">' + sc + "% — " + verdict + "</span>";
+              recordReview();
+            })
+            .catch((err) => {
+              mic.classList.remove("listening");
+              heard.textContent = "😕 " + (err.message === "non-supporté" ? "Non supporté" : "Je n'ai pas entendu, réessaie.");
+            });
+        });
+      }
+      wrap.appendChild(micWrap);
+
+      const row = el("div", "btn-row");
+      const next = el("button", "btn");
+      next.textContent = idx + 1 < deck.length ? "Suivant →" : "Terminer 🏁";
+      next.addEventListener("click", () => {
+        idx++;
+        if (idx < deck.length) show();
+        else flashEmpty("🎌", "Bien joué !", "Tu as travaillé ta prononciation. La régularité fait tout.");
+      });
+      const replay = el("button", "btn secondary");
+      replay.textContent = "🔊 Réécouter";
+      replay.addEventListener("click", () => speakItem(deck[idx], 0.85));
+      row.appendChild(replay); row.appendChild(next);
+      wrap.appendChild(row);
+
+      app.appendChild(wrap);
+      window.scrollTo(0, 0);
+      speakItem(deck[idx], 0.85);
+    }
+  }
+
+  /* ===================================================================
+     MODE 3 — Écrire (tracé sur canvas)
+     =================================================================== */
+  function runWriting(deck, title) {
+    if (!deck.length) { flashEmpty("🤔", "Rien à écrire", "Choisis au moins une série."); return; }
+    let idx = 0;
+    show();
+
+    function show() {
+      setBack(() => { if (confirm("Quitter ?")) renderHome(); });
+      const item = deck[idx];
+      app.innerHTML = "";
+      const wrap = el("div", "fade-in");
+
+      const head = el("div", "quiz-head");
+      head.innerHTML = "<span>" + title + "</span><span>" + (idx + 1) + " / " + deck.length + "</span>";
+      wrap.appendChild(head);
+
+      const sub = el("div", "hero");
+      sub.innerHTML = "<h2>" + item.r + "</h2><p>Trace le caractère ci-dessous.</p>";
+      wrap.appendChild(sub);
+
+      const cw = el("div", "canvas-wrap");
+      const ghost = el("div", "ghostLayer jp");
+      ghost.id = "ghostLayer";
+      ghost.textContent = item.k;
+      const guide = el("div", "grid-guide");
+      const canvas = el("canvas");
+      canvas.id = "traceCanvas";
+      canvas.width = 280; canvas.height = 280;
+      cw.appendChild(ghost); cw.appendChild(guide); cw.appendChild(canvas);
+      wrap.appendChild(cw);
+
+      // Outils
+      const tools = el("div", "audio-row");
+      const sound = el("button", "btn secondary"); sound.style.width = "auto";
+      sound.textContent = "🔊 Son"; sound.addEventListener("click", () => speakItem(item, 0.85));
+      const toggle = el("button", "btn secondary"); toggle.style.width = "auto";
+      let modelShown = true;
+      toggle.textContent = "👁️ Modèle";
+      toggle.addEventListener("click", () => {
+        modelShown = !modelShown;
+        ghost.style.color = modelShown ? "rgba(255,255,255,0.10)" : "transparent";
+        toggle.textContent = modelShown ? "👁️ Modèle" : "🙈 Caché";
+      });
+      const clear = el("button", "btn secondary"); clear.style.width = "auto";
+      clear.textContent = "🧹 Effacer"; clear.addEventListener("click", clearCanvas);
+      tools.appendChild(sound); tools.appendChild(toggle); tools.appendChild(clear);
+      wrap.appendChild(tools);
+
+      const row = el("div", "btn-row");
+      const next = el("button", "btn");
+      next.textContent = idx + 1 < deck.length ? "Suivant →" : "Terminer 🏁";
+      next.addEventListener("click", () => {
+        recordReview();
+        idx++;
+        if (idx < deck.length) show();
+        else flashEmpty("🖌️", "Bravo !", "Écrire à la main, c'est mémoriser pour de bon.");
+      });
+      row.appendChild(next);
+      wrap.appendChild(row);
+
+      const note = el("div", "note");
+      note.textContent = "Astuce : trace dans l'ordre naturel des traits, de haut en bas et de gauche à droite.";
+      wrap.appendChild(note);
+
+      app.appendChild(wrap);
+      window.scrollTo(0, 0);
+
+      // Dessin
+      const ctx = canvas.getContext("2d");
+      ctx.lineWidth = 12; ctx.lineCap = "round"; ctx.lineJoin = "round";
+      ctx.strokeStyle = "#e0245e";
+      let drawing = false;
+      function pos(e) {
+        const r = canvas.getBoundingClientRect();
+        const p = e.touches ? e.touches[0] : e;
+        return { x: (p.clientX - r.left) * (canvas.width / r.width), y: (p.clientY - r.top) * (canvas.height / r.height) };
+      }
+      function down(e) { e.preventDefault(); drawing = true; const p = pos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+      function move(e) { if (!drawing) return; e.preventDefault(); const p = pos(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+      function up() { drawing = false; }
+      canvas.addEventListener("pointerdown", down);
+      canvas.addEventListener("pointermove", move);
+      window.addEventListener("pointerup", up);
+      function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    }
+  }
+
+  /* ===================================================================
+     Page — Les techniques
+     =================================================================== */
+  function renderTechniques() {
+    setBack(renderHome);
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    wrap.innerHTML =
+      '<div class="hero"><h2>💡 Ce qui se fait de mieux</h2>' +
+      "<p>Les méthodes utilisées dans cette app, et pourquoi elles marchent.</p></div>";
+
+    const techniques = [
+      { e: "🧠", t: "Répétition espacée (SRS)", d: "Comme Anki ou WaniKani : chaque carte revient à l'intervalle optimal, juste avant l'oubli. Tu retiens plus, en moins de temps. Utilisée dans « Révision », « Kana » et « Vocabulaire »." },
+      { e: "🎯", t: "Rappel actif", d: "Tu essaies de te souvenir AVANT de voir la réponse. Cet effort, même raté, ancre la mémoire bien plus que la relecture passive." },
+      { e: "🗣️", t: "Shadowing", d: "Tu écoutes une phrase et la répètes aussitôt, en imitant le rythme et l'intonation. C'est la technique reine pour parler naturellement. Mode « Parler »." },
+      { e: "🎤", t: "Reconnaissance vocale", d: "L'app écoute ta prononciation et te donne un score. Un retour immédiat pour corriger ce qui cloche." },
+      { e: "✍️", t: "Écriture manuscrite", d: "Tracer les caractères grave leur forme dans la mémoire motrice. Indispensable pour vraiment connaître les kana. Mode « Écrire »." },
+      { e: "📖", t: "Input compréhensible (i+1)", d: "Apprendre les mots dans des phrases d'exemple, un cran au-dessus de ton niveau. Le contexte fixe le sens durablement." },
+      { e: "🧩", t: "Mnémoniques", d: "Des images mentales rigolotes pour relier la forme d'un kana à son son. Le cerveau adore les histoires." },
+      { e: "🔥", t: "Régularité & micro-sessions", d: "10 minutes par jour battent 2 heures le dimanche. La série (🔥) t'encourage à revenir chaque jour." },
+    ];
+    techniques.forEach((x) => {
+      const c = el("div", "tip");
+      c.innerHTML = '<span class="ic">' + x.e + "</span><span><b>" + x.t + "</b><br><span style=\"color:var(--muted)\">" + x.d + "</span></span>";
+      wrap.appendChild(c);
+    });
+
+    const st = el("div", "tip");
+    st.innerHTML = '<span class="ic">🚀</span><span><b>Le parcours conseillé</b><br><span style="color:var(--muted)">1) Apprends les hiragana, puis les katakana (mode Kana + Écrire). 2) Enchaîne le vocabulaire de base. 3) Travaille l\'oral chaque jour (Parler). 4) Reviens chaque jour faire ta « Révision du jour ».</span></span>';
+    wrap.appendChild(st);
+
+    const home = el("button", "btn btn-block");
+    home.textContent = "🏠 Accueil";
+    home.addEventListener("click", renderHome);
+    wrap.appendChild(home);
+
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ----------------------- Démarrage ----------------------- */
+  updateStreak();
+  renderHome();
+})();
+
+</script>
+</body>
+</html>
