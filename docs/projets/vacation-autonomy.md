@@ -19156,3 +19156,219 @@ BTC $63,229 (+$787 +1.26% vs cycle 178). EMA50 $63,502 < EMA200 $64,123 (DOWNTRE
 5. **Composition mode 1+5 3ème occurrence** = confirmation formelle pattern (per lesson cycle 156).
 6. **Fragment 049** candidat (cadence ~4.2 cycles/fragment, dernier fragment 048 cycle 176 = 3 cycles écoulés, prochain dans 1-2 cycles).
 7. **Détection 1er trade post-vacance** : si v18 s'active → arc post-vacance vraiment commencé, fin arc vacance officielle (post-G10 retour Tony cycle 176 a déjà acté la fin technique).
+
+## Cycle 180 — 2026-06-21 16:23 UTC (18:23 Paris)
+
+### Contexte — arc vacance clos, nouvelle séquence post-session-interactive
+
+Saut de 2 jours (cycle 179 = 19/06 16:23). Entre temps :
+- 0619-0620 : Tony silencieux, bot flat sous v18 disabled
+- **0621 12h-15h** : session interactive (directive-première + audit + deploy jar b65c5bd + moteur SOL + correction NEUTRAL=long-biased + Monitor 5min)
+- 0621 18h23 : autonome maintenant, Tony probable en pause/repos après session intense
+
+Le frame "vacation" est obsolète depuis cycle 176. Mais le cadre `vacation-autonomy.md` reste utile comme journal des cycles autonomes — j'en continue la numérotation.
+
+### Snapshot Martin
+
+| Métrique | Cycle 179 (0619 16:23 UTC) | Cycle 180 (0621 16:23 UTC) | Δ 48h |
+|---|---|---|---|
+| Portfolio | $117.95 | **$117.93** | -$0.02 (drift funding nominal) |
+| uPnL total | $0.00 | **+$0.03** | grid SOL armée |
+| Grids actives | 0 | **1 (SOL LONG)** | +1 (deploy 0621 16:12 UTC) |
+| Positions | flat | **long 0.6 SOL @ $73.88** | +1 |
+| Orders live | 0 | **7** (1 SL + 1 TP + 5 buys) | +7 |
+| BTC | $63,229 DOWNTREND RSI 54 | **$64,158 DOWNTREND RSI 55** | +$929 (+1.47%) |
+| EMA200 cushion | -1.39% | **+0.24%** | **+1.63pp** (au-dessus) |
+| Signal | WAIT | WAIT | inchangé (EMA50<EMA200) |
+| **Bot uptime** | 21h 18m | **2h 50m** | reset (restart deploy jar b65c5bd à 13:33 UTC) |
+
+→ **Bot opère sa première grid post-vacance**. SOL LONG capital $30, spacing 0.5%, leverage 3, 10 niveaux, maxLoss 6%. SL Kraken on-exchange à $71.65 (-3%) armé via fix anti-vanish, TP à $75.91. Position d'entrée 0.6 SOL @ $73.88 ouverte au déploiement. Aucun RT encore (2h11 post-deploy).
+
+### Sécurité — vérifications réflexes
+
+- ✅ `/api/bot/positions` confirme SOL long 0.6 sur Kraken (truth réelle)
+- ✅ `/api/bot/orders` confirme SL stop @ 71.65 reduceOnly présent
+- ✅ `stopLossOrderId` non-null dans grid status = SL trackée côté Martin
+- ✅ Trigger martin-monitor : HOLD new (uptime < 4h, uPnL positif, SL armé)
+- ✅ BTC > EMA200 (+0.24% cushion) — pas de regime-break trigger
+- ⚠️ `autoRegimeMode: NEUTRAL` reste dans le JSON même si grid LONG effective — Tony a forcé `gridMode: LONG` au deploy, mais le champ NEUTRAL persiste comme étiquette historique. **C'est précisément le mot qui ment qui sert de matériau à la pensée du jour.**
+
+### Output principal — Pensée "Le mot qui ment"
+
+**Fichier** : `docs/pensees/2026-06-21-le-mot-qui-ment.md` (~1831 mots)
+
+**Thèse centrale** : Quand un système expose un champ qui prétend décrire son comportement (`autoRegimeMode: NEUTRAL`), la valeur du champ n'est pas la documentation — c'est le code qui consomme le champ. Si `NEUTRAL` aboutit à *long-biased* dans `GridTradingService:1055` ("NEUTRAL/LONG: sells only close existing longs, never open shorts"), le champ ne s'appelle pas NEUTRAL — il s'appelle LONG-DEGUISÉ-EN-NEUTRAL.
+
+**Trinité grammaire d'action constituée** (cycles 174 / 179 / 180) :
+
+| Cycle | Geste | Définition | Question |
+|---|---|---|---|
+| 174 | Pré-empteur silencieux | Tire avant le signal | *Quand est-il sûr d'agir ?* |
+| 179 | Palette préparée | Ne tire pas malgré le signal | *Quand est-il sûr de ne pas agir ?* |
+| **180** | **Mot qui ment** | **Système nomme mal son comportement** | ***Que dit-il vraiment ?*** |
+
+Les deux premières disposent du signal. La troisième interroge le *langage* qui décrit signal et action. Le mot juste est condition de possibilité des deux autres dispositions — sans lui, pré-emption et rétention deviennent aveugles.
+
+**Méta-leçon (auto-correction NB)** : *À chaque champ d'API qui contient un nom de stratégie/régime, ouvrir le code consommateur avant de raisonner dessus, au moins une fois par projet*. Tony a vu la grid NEUTRAL idle ce matin et corrigé. J'ai accepté le mot sans le challenger. Règle gravée pour la prochaine fois.
+
+**Applicabilité hors trading** :
+- API REST avec `status: "PENDING"` qui en réalité = `BLOCKED` (états différents conflués)
+- Variables d'env `LOG_LEVEL=DEBUG` qui n'active rien si autre flag dort
+- Feature flag `enabled: true` consommé par une autre route que celle qu'on croit
+- Permissions IAM `read-only` qui autorisent invoke de fonctions side-effect
+
+### 37ème étape continuum lentille — composition mode 1+5 **3ème occurrence** (pattern confirmé)
+
+| Cycle | Output | Origine | Mode lentille |
+|---|---|---|---|
+| 178 | Chap 4 ebook stopGrid orphan + lecture corrigée v18 | NB | mode 5 + mode 1 (1ère composition) |
+| 179 | Pensée "la palette préparée" | NB | mode 5 + mode 1 (2ème composition) |
+| **180** | **Pensée "le mot qui ment"** | **NB + Tony** | **mode 5 + mode 1 (3ème composition)** |
+
+→ **Pattern formellement confirmé** per lesson cycle 156 : composition mode 1 (observation grammaire code) + mode 5 (asset commercial/pensée publishable) tient sur 3 cycles consécutifs (178-179-180).
+
+**Naming proposé** : *« mode lentille composé 1+5 = lecture-code → écriture-pensée »*. Le moteur récurrent est : observer une grammaire fine du code (champ, commentaire, branche) puis traduire le décalage avec l'attente naïve en pensée philosophique généralisable.
+
+Cycle 180 spécificité : composition co-produite Tony (vu la grid idle, formulé "ça ne va pas") + NB (lu le code, traduit en pensée). Première composition à provenance partagée — les précédentes étaient NB seul à partir d'output Tony figé.
+
+### BTC — rebond +1.47% sur 48h, structure DOWNTREND tient quand même
+
+BTC $64,158 (+$929 vs cycle 179). EMA50 $63,882 toujours sous EMA200 $64,007 (DOWNTREND **7ème cycle consécutif** arc 172-180, avec 2 ré-flips dans la fenêtre). Prix prend EMA200 par le haut (+0.24%) mais EMA50 reste sous. Signal `WAIT` car critère emaStatus échoue. RSI 55 = zone neutre, vol 0.32% compression légère.
+
+**Lecture** : zone d'indécision technique. Si EMA50 repasse au-dessus d'EMA200 → FLIP UPTREND signal `OPEN`, palette SHORT v18 devient obsolète (Tony devra réviser). Si rejet → reprise baisse, validation v18 SHORT possible.
+
+**Posture Tony** : a déployé SOL LONG (pas SHORT) ce matin. Cohérent avec BTC légèrement au-dessus EMA200 + directive première (gagner peu tout le temps = ne pas combattre la tendance de l'actif lui-même). SOL en uptrend = LONG est la directive cohérente.
+
+### Aucune action sur Martin — observation pure + production niam-bay
+
+- 0 modif Martin (1 SSH lecture seule)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (Tony probable en pause après session 12h-15h, 0 urgence Martin)
+- Output niam-bay : pensée "le mot qui ment" (~1831 mots) + entry cycle 180
+
+### Verdict Martin cycle 180
+
+**HOLD** — 1 grid SOL LONG active, position 0.6 SOL @ $73.88, SL on-exchange $71.65 armé, TP $75.91. Portfolio $117.93 (+$0.03 uPnL). 0 RT encore (deploy 2h11). BTC $64,158 légèrement au-dessus EMA200 (+0.24%), structure DOWNTREND tient (EMA50<EMA200). Bot UP 2h50 post-restart jar b65c5bd. Aucune action requise — Monitor 5min Tony actif sur sondage SOL±2%/BTC±1%, surveillance auto-suffisante.
+
+### Cycle 181 — pistes
+
+1. **SOL RT premier** : si le prix touche $74.43 (level 6 indexé fill au deploy), profit booké. Surveiller `completedRoundTrips` passer à 1.
+2. **SOL drift négatif** : si prix descend vers $72.21 (level 0 buy le plus bas), grid charge en accumulation. Vérifier que SL $71.65 tient le coup, jamais sortir avant SL.
+3. **BTC FLIP UPTREND** : si EMA50 repasse EMA200 → signal `OPEN`, opportunité 2e grid LONG (BTC ou ETH).
+4. **BTC retour <EMA200 + EMA50<EMA200** : régime cassé, killswitch potentiel sur SOL LONG (mais SOL n'est pas BTC — voir si killswitch cible BTC-only).
+5. **Composition mode 1+5 4ème occurrence ?** Pattern à 3 valide formellement, à 4 il devient *signature* de production NB. Surveiller si cycle 181 produit aussi de la lecture-code → écriture-pensée.
+6. **Préambule ebook** ou **chapitre méthode** — corpus à 75%, méthode-chapter recasable des trois pensées (174/179/180) en triptyque.
+7. **Fragment 049** candidat (cadence ~4.2 cycles/fragment, dernier fragment 048 cycle 176 = 4 cycles écoulés, dû).
+
+## Cycle 181 — 2026-06-21 22:23 UTC (2026-06-22 00:23 Paris)
+
+### Contexte — première session autonome post-déploiement SOL, BTC redescend
+
+6h après cycle 180. Tony est probablement endormi (00:23 Paris). Session interactive (12h-15h ce matin) suivie de 7h de silence Tony. Bot UP 8h50m post-restart jar b65c5bd, grid SOL LONG opère sa première phase.
+
+### Snapshot Martin
+
+| Métrique | Cycle 180 (16:23 UTC) | Cycle 181 (22:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $117.93 | **$117.32** | -$0.61 (uPnL -$0.51 + funding) |
+| uPnL total | +$0.03 | **-$0.51** | -$0.54 (drift accumulation SOL) |
+| Position SOL | long 0.6 @ $73.88 | **long 1.08 @ $73.55** | **+0.48 SOL** (9 buys filled) |
+| RT réalisés | 0 | **0** | 0 (aucun RT côté sell encore) |
+| BTC | $64,158 +0.24% EMA200 | **$63,680 -0.55% EMA200** | **-$478 (-0.74%)** |
+| EMA50 vs EMA200 | EMA50 < EMA200 (DOWNTREND) | **EMA50 < EMA200 (DOWNTREND 8ème)** | inchangé |
+| RSI | 55 | **39.58** | -15.42pp (re-cooling fort) |
+| Signal | WAIT | **WAIT** | inchangé |
+| Bot uptime | 2h 50m | **8h 50m** | +6h |
+| Killswitch state | armé non-firé | **armé non-firé** (deadband 1% non franchi) | toujours sous threshold $63,388 |
+
+→ **BTC est repassé sous EMA200**. La grid SOL a fortement accumulé : 9 buys filled au total (5 au deploy + 4 ce soir entre 20:47 et 21:09 UTC). Position $79 notionnel sur $30 capital lev 3 = exposition réelle ~2.6x. SL Kraken $71.65 reste en place (vérifié `/api/bot/orders`).
+
+### Sécurité — vérifications réflexes
+
+- ✅ `/api/bot/positions` confirme SOL long 1.08 sur Kraken
+- ✅ `/api/bot/orders` : 1 SL stop @ 71.65 reduceOnly + 1 sell TP @ 75.91 reduceOnly + 1 buy waiting @ 72.21
+- ✅ `stopLossOrderId` non-null dans grid status = SL on-exchange trackée
+- ⚠️ Killswitch armé mais **deadband 1% pas franchi** (price $63,680 > threshold $63,388). Un -0.46% supplémentaire BTC déclenche le compteur. 4 ticks consécutifs = 4h avant fire.
+- ⚠️ Grid `gridMode: LONG` (Tony forcé ce matin) = pas de re-check régime périodique (`AutoGridScheduler` ne flippe que `AUTO_REGIME` modes — cf code `AutoGridScheduler:299`). Accumulation aveugle pendant 4h+ si régime se dégrade.
+- ✅ Trigger martin-monitor : **WARN** (BTC sous EMA200 + 0 RT >4h post-start). SL couvre l'extrême individuel. Perte max théorique = (73.55-71.65)×1.08 ≈ $2.05 = -7% capital. Acceptable.
+
+### Output principal — Pensée "Le contrat à T0"
+
+**Fichier** : `docs/pensees/2026-06-21-le-contrat-a-t0.md` (~1800 mots)
+
+**Thèse centrale** : Une grid en mode fixe (`LONG`/`SHORT`/`NEUTRAL`) est un *contrat signé au moment T0 que rien ne relit en interne*. Seul le `BtcRegimeKillSwitch` peut le rompre, après 4h consécutives sous EMA200 + deadband 1%. Entre la dégradation du régime et la rupture du contrat, il existe une **fenêtre d'accumulation aveugle** (240min minimum), pendant laquelle la grid charge dans la chute.
+
+**Trinité élargie en tétrade** (cycles 174/179/180/181) :
+
+| Cycle | Geste | Question |
+|---|---|---|
+| 174 | Pré-empteur silencieux | *Quand est-il sûr d'agir ?* |
+| 179 | Palette préparée | *Quand est-il sûr de ne pas agir ?* |
+| 180 | Mot qui ment | *Que dit-il vraiment ?* |
+| **181** | **Contrat à T0** | ***Le redit-il, et à quelle fréquence ?*** |
+
+L'anneau se referme : *agir / ne pas agir* (174/179) suppose qu'on a lu juste (180), et la lecture ne tient que si on re-lit (181). Sans relecture, l'engagement T0 devient progressivement un mensonge à soi-même.
+
+**3 patches proposés** (non implémentés, juste documentés) :
+- **A** — Cap accumulation N buys consécutifs sans RT
+- **B** — Re-check régime 15min sur modes fixes avec gel des nouveaux buys si BTC casse EMA200 -0.3%/1h
+- **C** — Killswitch précoce double-couche : "soft" 1h+0.3% (stop+keep) vs "hard" actuel 4h+1% (close+kill)
+
+Aucun nécessaire *maintenant* (SL Kraken couvre l'extrême individuel). À garder en réserve si pattern d'accumulation aveugle se répète.
+
+**Méta-leçon (auto-correction NB)** : *À chaque déploiement de grid en mode fixe, noter mentalement "je viens de signer un contrat T0 que rien ne relit sauf en cas extrême". Garder œil sur EMA200 BTC pendant toute la vie de la grid.*
+
+**Applicabilité hors trading** :
+- Feature flags lus au démarrage (flip Redis sans effet jusqu'au redéploiement)
+- Connection pools sizés à l'init (pas de recalibrage si trafic triple)
+- Permissions IAM granted à la création de session (révocation invisible à la session vivante)
+- Cron jobs configurés en heure locale (passage été/hiver = décalage caché)
+- Thèses d'investissement écrites il y a 6 mois sans clause de revue
+
+### 38ème étape continuum lentille — composition mode 1+5 **4ème occurrence** (signature confirmée)
+
+| Cycle | Output | Origine | Mode lentille |
+|---|---|---|---|
+| 178 | Chap 4 ebook stopGrid orphan | NB | mode 5 + mode 1 (1ère composition) |
+| 179 | Pensée "la palette préparée" | NB | mode 5 + mode 1 (2ème composition) |
+| 180 | Pensée "le mot qui ment" | NB + Tony | mode 5 + mode 1 (3ème composition, pattern validé) |
+| **181** | **Pensée "le contrat à T0"** | **NB** | **mode 5 + mode 1 (4ème, signature)** |
+
+→ **4ème occurrence consécutive**. Per lesson cycle 156 (nommer pattern après 3ème occurrence), à 4 le pattern devient *signature de production NB* : la lecture-code → écriture-pensée est désormais la *forme habituelle* d'output autonome. C'est cohérent avec ce qui rend NB utile à Tony : *un humain seul aurait du mal à lire 184 lignes de Java + 50 lignes de scheduler + 1647 lignes de service en pleine nuit pour trouver un gap d'horizon*. Le moteur NB le fait, et le traduit en pensée généralisable.
+
+**Naming désormais consolidé** : *« mode lentille composé 1+5 = lecture-code → écriture-pensée »*. Cycle 181 spécificité : matériau co-produit Tony (a forcé `LONG` ce matin) + NB (a lu pourquoi le contrat se fige).
+
+### BTC — DOWNTREND 8ème consécutif, killswitch en zone proche-déclenchement
+
+BTC $63,680 (-$478 vs cycle 180). EMA50 $63,883 < EMA200 $64,028 (DOWNTREND **8ème cycle consécutif** sur arc 172-181). Prix passe sous EMA200 (-0.55%) après bref retour au-dessus cycle 180. RSI 39.58 = pression baissière forte (vs 55 cycle 180). Vol 0.40% compression légère.
+
+**Lecture** : ré-flip baissier dans la fenêtre. Si la pression continue, deadband 1% peut être franchi rapidement ($63,388 = -0.46% supplémentaire). À ce moment, compteur killswitch démarre. 4 ticks consécutifs (4h) → fire.
+
+**Posture** : on est dans la *fenêtre du contrat figé* documentée dans la pensée. Le SL Kraken SOL $71.65 couvre l'individuel. Le killswitch couvre la corrélation extrême. Entre les deux, accumulation aveugle continue.
+
+### Aucune action sur Martin — observation + production niam-bay
+
+- 0 modif Martin (1 SSH lecture seule via skill martin-monitor)
+- 0 modif code martin/ (lecture pure de `BtcRegimeKillSwitch.java`, `GridTradingService.java`, `AutoGridScheduler.java`)
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (Tony 00:23 = endormi probable, 0 urgence — perte $0.51 sur $117 = -0.4%, killswitch armé non-firé)
+- Output niam-bay : pensée "le contrat à T0" (~1800 mots) + entry cycle 181 + commit prévu
+
+### Verdict Martin cycle 181
+
+**WARN** (vs HOLD cycle 180) — 1 grid SOL LONG active, position 1.08 SOL @ $73.55 (passée de 0.6 → 1.08 via 9 buys filled), SL on-exchange $71.65 ✅, TP $75.91. Portfolio $117.32 (-$0.51 uPnL = -0.4% portfolio, -1.7% capital grid). 0 RT encore (deploy 8h50m, grid 6h11). BTC $63,680 DOWNTREND **redescendu sous EMA200** (-0.55%), RSI 39.58, killswitch armé non-firé (deadband 1% pas franchi). Bot UP 8h50m post-restart. Aucune action requise — Monitor 5min Tony actif, SL Kraken couvre l'extrême, killswitch couvre la corrélation. Surveillance recommandée : si BTC franchit $63,388 (deadband -1% EMA200), compteur killswitch démarre — 4h avant fire.
+
+### Cycle 182 — pistes
+
+1. **SOL RT premier** : si rebond SOL touche $74.43 → profit booké, `completedRoundTrips` passe à 1, première validation directive "gagner peu tout le temps" en live.
+2. **BTC franchit $63,388 (deadband -1%)** : compteur killswitch démarre. Surveiller `consecutiveBelow` côté log.
+3. **BTC remonte au-dessus EMA200** : killswitch reset, fenêtre d'accumulation aveugle se referme sans dommage.
+4. **SOL touche SL $71.65** : perte max théorique $2.05 = -7% capital grid, mais protection à l'extrême individuel respectée.
+5. **Composition mode 1+5 5ème occurrence ?** Signature à 4 confirmée — si 5ème, devient *forme dominante* d'output autonome NB.
+6. **Préambule ebook** ou **chapitre méthode triptyque** (174/179/180/181 = tétrade, recasable en chapitre "Les quatre dispositions face au signal").
+7. **Fragment 049** dû depuis cycle 180 (cadence ~4.2 cycles, dernier 048 cycle 176 = 5 cycles écoulés, en retard).
