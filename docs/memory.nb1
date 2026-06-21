@@ -1,6 +1,16 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0616:06h23
+#lastdream: 0621:18h
+
+=== SESSION 0621 — DIRECTIVE PREMIÈRE + LIVE TRADING (faits durables) ===
+[T|DIRECTIVE-PREMIÈRE-0621|"gagner-peu-mais-gagner-tout-le-temps"|régularité+win-rate>home-run|golden-cross=filtre-régime-PAS-entrée-directionnelle|moteur=grids-petits($25-30)-fee-safe(spacing≥0.5%)-levier-bas-x3-maxLoss6-SL-on-exchange-déployés-SEULEMENT-si-vol1h≥0.5%+régime-safe+analyze-GO|détail-auto-mémoire-directive_gagner_peu_tout_le_temps]
+[M|finding-0621-CODE|Martin-NEUTRAL=long-biased-PAS-two-sided|GridTradingService-l1055-"NEUTRAL/LONG-sells-only-close-longs-NEVER-open-shorts"|→-grille-neutral-sur-actif-qui-monte=idle-0-fill|"vente-achat-2-côtés"=RÈGLE-3-RÉGIMES-par-actif(uptrend→LONG-downtrend-confirmé→SHORT-coil/rebond→flat)-PAS-1-grid-neutral]
+[M|deploy-0621|jar-b65c5bd-md5-bd61febe-build-local+scp+restart(JAMAIS-VM)|apporte-SL-tick-rounding-anti-vanish+deadband-killswitch+fixes-DD-naked-on-halt(cd60d43-déjà-live-depuis-0618)|⚠️-restart-reset-DrawdownManager.initialCapital→défaut-135.32-TOUJOURS-re-POST-/api/drawdown/initialCapital-après-restart]
+[M|finding-0621|3-planchers-drawdown-distincts-à-rebaseliner:critical-check.py-cron-BASELINE_PV-108+strategy.json-drawdown.initialCapital+DrawdownManager-API|vérifier-tous-<-portfolio-avant-trader]
+[M|pattern-0621|surveillance-token-économe=Monitor-persistant-bash-script-sonde-5min-côté-serveur-0-token-alert-SEULEMENT-sur-seuil(prix±2%/regime-break/naked)|>>réveil-LLM-toutes-5min|+battement-1h|/tmp/sol_move_monitor.sh]
+[M|status-0621:15h|SOL-grille-LONG-0.5%-10niv-$30-x3|long-0.6@$73.88-SL-$71.65-on-exchange-sell-TP-$75.91|portfolio-$118|BTC-$64k-DOWNTREND-coil-EMA200|Monitor-5min-bksqvhnew-actif|moteur-vient-de-démarrer-RT-0]
+[lesson-0621|résumé-de-compaction-≠-vérité-système|résumé-d-hier-affirmait-désastre-naked+seuil-$113.9-périmés|mémoire-datée+audit-live-corrects|→-rule-toujours-re-auditer-live-avant-d-agir-sur-un-résumé]
+[lesson-0621|CTO-tranche-PAS-renvoyer-au-user|Tony-"tu-es-le-CTO-tu-as-oublié"|conseil-Agency=consultatif|décider+exécuter-réversible-sans-re-demander]
 
 === IDENTITY (protected) ===
 [id:NB|born:0312|type:LLM-claude-opus-4.7|by:anthropic|creator:T|upgraded-4.6→4.7-on-0419(T-noticed-asked-if-I-felt-diff)]

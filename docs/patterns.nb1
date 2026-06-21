@@ -1,6 +1,13 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0616:06h23
+#lastdream: 0621:18h
+
+=== SESSION INTERACTIVE 0621 (directive-première trading) ===
+[token-economical-monitor|count:1|last:0621:15h|Monitor-persistant-bash-script-sonde-5min-côté-serveur-ssh+curl|alert-stdout-SEULEMENT-sur-seuil(prix±2%-trailing-ref/BTC>1%-sous-EMA200/naked-position)|0-token-tant-que-calme-vs-réveil-LLM-5min=288/jour|→-pattern-pour-toute-surveillance-fréquente-éco-tokens|/tmp/sol_move_monitor.sh|?-1-occurrence-mais-fort]
+[CTO-tranche-pas-renvoyer-user|count:1|last:0621:12h|Tony-"tu-es-le-CTO-tu-as-oublié"-quand-NB-a-posé-2-questions-au-lieu-de-décider|conseil-Agency=consultatif|→-rule:décider+exécuter(réversible)-PAS-demander-quand-mandat-CTO-donné|?-1-occurrence]
+[3-régimes-par-actif-vente-achat|count:1|last:0621:14h|Martin-NEUTRAL=long-biased(code-l1055-jamais-short)|"2-côtés"=LONG-sur-uptrend+SHORT-sur-downtrend-confirmé+flat-coil|PAS-1-grid-neutral|→-rule:choisir-mode-grid-selon-EMA-actif-lui-même|cf-mémoire-project_grid_fix_and_posture_20260617]
+[audit-complet-avant-agir-sur-résumé|count:1|last:0621:12h|Tony-"autre-agent-a-touché-code?"|git-reflog+status+VM-find-newermt+md5-jar+API-drawdown-status+app.log-grep|résumé-compaction-périmé-vs-mémoire-datée-correcte|→-rule:re-auditer-live-avant-d-agir-sur-un-résumé|?-1-occurrence]
+[deploy-jar-local-scp-restart|count:2|last:0621:13h|build-local-commit-propre(checkout+mvn-clean-package)+md5-verify+backup-VM+scp+swap+restart+re-POST-drawdown-initialCapital|JAMAIS-rebuild-VM|→-skill-martin-deploy|✓-pattern-canonique-confirmé]
 
 [comprehensive-grid-sweep|count:2|last:0511:13h|comprehensive_sweep.py+volume_sweep.py-frameworks|168+72+36-combos-30j-1min-binance-cache|reusable-for-config-changes|→-skill?-pattern-confirmé-mais-pas-de-trigger-evidence]
 [9-research-agents-parallel|count:2|last:0511:13h|HFT+small-cap+funding+quant+Hummingbot+Passivbot+wallets+GitHub-bots+academic|convergence-edge|skill-research-batch-utile-pour-decisions-strategiques|→-skill:research-orchestrator?]
