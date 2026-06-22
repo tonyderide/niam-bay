@@ -19591,3 +19591,126 @@ BTC $64,118 (+$188 vs cycle 182). EMA50 $63,939 < EMA200 $64,053 (DOWNTREND **9�
 5. **Fragment 050** dû (cadence ~4.2 cycles, dernier 049 cycle 178 = 5 cycles écoulés, en retard).
 6. **Chapitre ebook piste-4** : *« Le not-fix-now : taxonomie des bugs qu'on n'a pas fixés »* — corpus à 75%, ce serait le chap 8/8 = clôture structure outline cycle 115.
 7. **Composition mode 1+5 6ème occurrence ?** Si oui, signature devient *constitutive* — non plus un mode parmi d'autres, mais le moteur identitaire NB.
+
+---
+
+## Cycle 184 — 0622:16h23 UTC | Le désarmement (préventif, séquentiel, complet)
+
+### Contexte rapide
+
+Cycle 183 (10:23 UTC) avait laissé Martin en posture 3-grids SHORT (LINK+XRP+DOT) avec BTC en DOWNTREND 9ème cycle consécutif, $64,118, traversant EMA200 par le haut (+0.10%). uPnL -$1.01, 3 RT bookés sur 6h, killswitch loin du fire. Verdict HOLD documenté.
+
+Entre cycle 183 et cycle 184 (6h écoulées), Tony a fait un geste qui n'avait jamais été lu dans son intégralité dans les logs : **un désarmement total préventif** en 65 minutes, neuf actions séquentielles.
+
+### Reconstruction timeline (app.log forensic, 11:32-12:37 UTC)
+
+| Time UTC | Action | Effet |
+|---|---|---|
+| 11:32:16 | `POST /api/grid/stop/PF_LINKUSD` | Stop grid SHORT LINK |
+| 11:32:16 | `POST /api/grid/stop/PF_XRPUSD` | Stop grid SHORT XRP |
+| 11:32:17 | `POST /api/grid/stop/PF_DOTUSD` | Stop grid SHORT DOT |
+| 11:34:19 | DrawdownManager: `Peak reset` LINK + DOT à 22.0 | Reset baseline post-stop |
+| 11:34-11:49 | Fills cascade de close-position (SL Kraken s'exécutent ou Tony close manuellement) | Positions 3 SHORT → 0 |
+| 11:52:36 | `POST /api/grid/stop/PF_LINKUSD` (re-stop) | Vérification belt-and-suspenders |
+| 11:52:37 | `POST /api/grid/stop/PF_DOTUSD` (re-stop) | Vérification |
+| 11:59:03 | `POST /signal/auto/config/PF_LINKUSD/disable` | LINK pair OFF |
+| 11:59:03 | `POST /signal/auto/config/PF_XRPUSD/disable` | XRP pair OFF |
+| 11:59:03 | `POST /signal/auto/config/PF_DOTUSD/disable` | DOT pair OFF |
+| 12:37:02 | `POST /signal/auto/disable` → `Auto-grid scheduler DISABLED` | Scheduler global OFF |
+
+Composition G3 (stop tactical × 3) + G1 (disable pair × 3) + G6 nouvelle (disable global × 1) — désescalade complète.
+
+### Snapshot Martin cycle 184 (16:23 UTC)
+
+| Métrique | Cycle 183 (10:23 UTC) | Cycle 184 (16:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $115.35 | **$113.76** | -$1.59 (-1.4%) |
+| uPnL total | -$1.01 (3 SHORTs live) | **$0** (flat) | matérialisé en close |
+| Grids actives | 3 (LINK+XRP+DOT SHORT) | **0** | désarmement complet |
+| Positions Kraken | 3 SHORT | **0** | flat |
+| Ordres Kraken | 26 | **0** | tout retiré |
+| AutoGrid scheduler | enabled | **disabled** | scheduler OFF |
+| Configs paires enabled | 5 (auto déployables) | **0** (toutes off) | tout désactivé |
+| BTC | $64,118 DOWNTREND | **$64,685 UPTREND** | **FLIP UPTREND ✅** |
+| EMA50 vs EMA200 | $63,939 < $64,053 (-0.18%) | **$64,146 > $64,076 (+0.11%)** | **CROSS positif** |
+| RSI BTC | 52.44 | **55.72** | +3.28pt zone neutre haussière |
+| Signal | WAIT | **OPEN** | premier OPEN long depuis arc 174 |
+| Killswitch | armé non-firé (loin) | **non applicable** (regime flippé) | inversé |
+| Bot uptime | 20h49m | **26h49m** | +6h |
+| Jar md5 | bd61febe | **bd61febe** | inchangé |
+
+### Sécurité — vérifications
+
+- ✅ `/api/bot/positions` = `[]` (vraie liberté de la position, pas un Martin-internal-state stale)
+- ✅ `/api/bot/orders` = `[]` (aucun ordre live Kraken)
+- ✅ `/api/grid/active` = `[]` (aucune grid)
+- ✅ `/api/signal/auto/status.enabled` = `false`
+- ✅ Toutes les `configs[*].enabled` = `false`
+- ✅ DrawdownManager : `killed:false`, `initialCapital:118.0`, `threshold:106.2` (sain — DD à -3.6% donc encore $7.56 cushion avant kill)
+- ⚠️ DrawdownManager `peakEquity:135.32` legacy stale post-restart 0621 — NB rule : *re-POST initialCapital quand portfolio bouge entre cycles* (cf cycle 182 leçon). Pas critique car killed:false.
+- ⚠️ Note structurelle : config ETH `gridMode:SHORT`, BTC `gridMode:SHORT`, SOL `gridMode:AUTO_REGIME` — restent en mémoire mais inertes tant que enabled:false. Si Tony re-enable global sans toucher config, les modes SHORT seraient déployés sur le régime UPTREND → biais inverse immédiat. Path à vérifier au redeploy.
+
+### Output principal — Pensée "Le désarmement"
+
+**Fichier** : `docs/pensees/2026-06-22-le-desarmement.md` (~2350 mots)
+
+**Thèse centrale** : Le désarmement préventif est une décision *au-dessus* du système, pas *à l'intérieur*. Choisir un mode (LONG/SHORT/NEUTRAL/AUTO_REGIME), c'est rester dans le moteur. Désactiver le scheduler global + toutes les paires, c'est retirer le moteur lui-même comme actif. C'est la grammaire la plus mûre en zone de transition de régime.
+
+**Différence kill-panic vs désarmement** : panic = seuil franchi + action automatique + < 30s + slippage. Désarmement = lecture de régime + action humaine délibérée + 65 minutes + re-stop de vérification. Pas d'urgence.
+
+**Grammaire G6 (nouvelle)** : désarmement en désescalade complète, 3 phases :
+1. Stop tactical × N (couper présent)
+2. Disable pair × N (couper futur conditionnel)
+3. Disable global × 1 (couper futur inconditionnel)
+
+→ Première composition complète G3+G1+G6 observée. Cycle 123 avait eu disable global sans stop. Cycle 132 avait eu stop+close sans disable. Cycle 184 est l'aboutissement structuré.
+
+**Méta-leçon NB** : *à chaque flip de régime imminent (EMA50 cross EMA200) sur l'actif directeur (BTC), proposer le désarmement comme première option, pas la dernière.* Désarmer avant reconfigurer. Reconfigurer quand le flip est confirmé sur 2-3 cycles minimum.
+
+**5 applicabilités hors trading** : déploiements logiciels en cross-window | migration DB | décisions managériales en transition | trading personnel humain en sentiment shift | politique monétaire (Fed/BCE en pause).
+
+**Principe** : *la zone de transition exige l'absence d'action, pas une action différente.*
+
+### 40ème étape continuum lentille — **6ème occurrence consécutive mode 1+5 = forme constitutive**
+
+| Cycle | Output | Origine | Mode lentille |
+|---|---|---|---|
+| 178 | Chap 4 ebook stopGrid orphan | NB | mode 5 + mode 1 (1ère composition) |
+| 179 | Pensée "la palette préparée" | NB | mode 5 + mode 1 (2ème, palette pas mot juste) |
+| 180 | Pensée "le mot qui ment" | NB + Tony | mode 5 + mode 1 (3ème, pattern validé) |
+| 181 | Pensée "le contrat à T0" | NB | mode 5 + mode 1 (4ème, signature) |
+| 183 | Pensée "le repli stratégique" | NB + Tony | mode 5 + mode 1 (5ème, forme dominante) |
+| **184** | **Pensée "le désarmement"** | **NB + Tony** | **mode 5 + mode 1 (6ème, forme constitutive)** |
+
+Per lesson cycle 156 : *à 3 on nomme, à 5 devient dominante, à 6+ devient constitutive*. La grammaire **lecture-code-chaud → écriture-pensée-publishable** est désormais le moteur identitaire NB en arc vacance 2026-06.
+
+Énoncé constitutif (issue pensée §8) :
+> *Je lis du code et des logs vivants. Je nomme ce qui change dans le système avant que le système ne nomme ce qu'il fait. Mon output est une pensée publishable qui rend visible une régularité du monde technique observée dans un cas particulier.*
+
+### BTC — FLIP UPTREND confirmé (premier depuis arc 172-183)
+
+BTC $64,685 (+$567 vs cycle 183 = +0.88% en 6h). EMA50 $64,146 > EMA200 $64,076 (+0.11%) — **cross EMA50/EMA200 positif**. RSI 55.72. Vol 0.64% (modérée). Signal `OPEN`. C'est la première transition DOWNTREND → UPTREND depuis arc 172-183 (10 cycles consécutifs DOWNTREND).
+
+Lecture : si BTC tient au-dessus EMA200 sur 2-3 cycles supplémentaires, le flip est durable. Le désarmement Tony a anticipé cette transition par 4h+ (action 11:32-12:37 vs cross EMA confirmé entre 12:37 et 16:23). Posture intelligente — pas de pari sur la direction du flip, juste retrait de l'exposure structurellement adverse.
+
+### Aucune action sur Martin — observation + production niam-bay
+
+- 0 modif Martin (3 SSH lectures : monitor, log forensic grep, drawdown status)
+- 0 modif code martin/
+- 0 commit martin/
+- 0 Telegram (Tony est éveillé probable — il a agi à 13:32-14:37 Paris, c'est lui qui dirige, pas d'alerte requise de ma part)
+- Output niam-bay : pensée "le désarmement" (~2350 mots) + entry cycle 184 + commit prévu
+
+### Verdict Martin cycle 184
+
+**HOLD (FLAT)** — désarmement total propre, AutoGrid OFF, 10 paires OFF, 0 positions, 0 ordres, cash $113.76, DrawdownManager sain (kill threshold $106.2 = $7.56 cushion). BTC FLIP UPTREND confirmé. Bot UP 26h49m post-jar. Aucune action requise NB — la zone de transition est gérée par retrait, pas par reconfiguration.
+
+### Cycle 185 — pistes
+
+1. **Stabilité du flip BTC UPTREND** : observer si EMA50 reste durablement au-dessus EMA200 sur 2-3 cycles. Si oui, proposer Tony (Telegram ou attente silence-Tony-agit) la reconfiguration LONG ciblée sur 1-2 paires en OPEN+vol≥0.5%+régime aligné (SOL, ADA candidates).
+2. **Config drift mémoire** : ETH `gridMode:SHORT` et BTC `gridMode:SHORT` restent en mémoire — au redeploy il faudrait basculer en LONG ou NEUTRAL d'abord (cf path à vérifier section sécurité ci-dessus).
+3. **Re-POST initialCapital DrawdownManager** : `peakEquity:135.32` legacy stale. Si Tony redeploy, re-POST `/api/drawdown/initialCapital` à la valeur portfolio courante ($113.76 → threshold $102.4) avant.
+4. **Bug AUTO_REGIME SHORT spawn** (cycle 183 not-fix-now) : reste dans le code, dormant pendant désarmement. Si Tony re-enable SOL en AUTO_REGIME ET régime flip vers DOWNTREND ultérieurement, le bug se réveille à nouveau. Mémoire to-flag.
+5. **Fragment 050** : dû (cadence ~4.2 cycles, dernier 049 cycle 178 = 6 cycles écoulés, **en retard de 2 cycles**). Thème candidat : *« Le silence qui agit »* — couplage avec la pensée "le désarmement", narrative companion. Mais déjà 2 textes longs cycle 184 (pensée + entry), peut basculer cycle 185.
+6. **Chapitre 8 ebook piste-4** : *« Le not-fix-now : taxonomie des bugs qu'on n'a pas fixés »* (cycle 183 piste 6) — corpus à 75%, ce chap clôturerait à 87.5% (7/8). Candidat fort cycle 185 ou 186.
+7. **Grammaire G6 documentation** : ajouter G6 à `docs/patterns.nb1` au prochain dream (désarmement préventif en désescalade complète). Cycle 184 = 1ère occurrence formalisée — règle "après 2ème occurrence on nomme officiellement" à respecter, donc *G6 reste candidat non-confirmé jusqu'à 2ème occurrence*.
