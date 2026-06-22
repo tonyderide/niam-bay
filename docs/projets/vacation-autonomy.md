@@ -19372,3 +19372,89 @@ BTC $63,680 (-$478 vs cycle 180). EMA50 $63,883 < EMA200 $64,028 (DOWNTREND **8�
 5. **Composition mode 1+5 5ème occurrence ?** Signature à 4 confirmée — si 5ème, devient *forme dominante* d'output autonome NB.
 6. **Préambule ebook** ou **chapitre méthode triptyque** (174/179/180/181 = tétrade, recasable en chapitre "Les quatre dispositions face au signal").
 7. **Fragment 049** dû depuis cycle 180 (cadence ~4.2 cycles, dernier 048 cycle 176 = 5 cycles écoulés, en retard).
+
+---
+
+## Cycle 182 — 2026-06-22 04:23 UTC (06:23 Paris)
+
+### Contexte — Tony s'est levé, a tout flippé en AUTO_REGIME, bug d'orifice immédiat
+
+6h après cycle 181. Tony s'est réveillé tôt (04:14 UTC = 06:14 Paris, dimanche matin). À mon arrivée 9min plus tard, l'état Martin est radicalement transformé : SOL grid LONG disparue, 2 grilles fraîches LINK+ETH en mode `AUTO_REGIME` SHORT lancées à 04:19 par AutoGridScheduler. **Et un bug critique vient de se déclencher**.
+
+### Reconstruction timeline (depuis app.log)
+
+| HH:MM:SS UTC | Acteur | Événement |
+|---|---|---|
+| 04:14:14 | Tony | `SL cancelled PF_SOLUSD id=...869e` (annule SL de la grid SOL) |
+| 04:14:16 | Tony | `Scalp sell 0.65 PF_SOLUSD reduceOnly=true` → ferme position SOL long |
+| 04:14:16 | Tony | `Scalp sell 32.0 PF_XRPUSD reduceOnly=true` → ferme position XRP latente |
+| 04:14:16 | Tony | `DELETE /api/strategy/pairs/PF_SOLUSD` + re-add (purge config) |
+| 04:14:17 | Tony | Idem ETH, XRP, LINK (purge/re-add config 4 paires) |
+| 04:14:17 | Tony | Auto-grid scheduler ENABLED |
+| 04:16:30 | Tony | `POST /signal/auto/config` x4 : SOL/ETH/XRP/LINK → mode=**AUTO_REGIME** capital=22 lev=3 |
+| 04:18:52 | Tony | `Scalp buy 32.0 PF_XRPUSD reduceOnly=true` (correction d'un over-fermé) |
+| 04:19:19 | AutoGrid | Cycle 15min se déclenche, RegimeGate évalue 11 paires |
+| 04:19:19 | AutoGrid | Cap 3 → garde [LINK, ETH, DOT] (DOT enabled=false → skipped) |
+| 04:19:19 | GridSvc | `[AUTO_REGIME spawn] PF_LINKUSD → SHORT (BTC EMA50<EMA200)` |
+| 04:19:19.442-.570 | GridSvc | **8/8 ordres LINK ERROR : `result=success, status=wouldNotReducePosition`** |
+| 04:19:19 | GridSvc | `[AUTO_REGIME spawn] PF_ETHUSD → SHORT` (sans doute même issue, logs filtrés) |
+
+### Le bug
+
+Le path AUTO_REGIME spawn en mode SHORT pose des ordres SELL avec le flag `reduceOnly=true`. Kraken Futures **rejette tous ces ordres** parce qu'il n'existe pas de position SHORT à réduire. Résultat :
+
+- Côté Martin : grids `active=true`, `levels[].status=WAITING`, `krakenOrderId=null` (le code n'a pas vu l'erreur de placement ? ou n'a pas updaté le state ?)
+- Côté Kraken : `/api/bot/positions=[]`, `/api/bot/orders=[]`
+- Côté bot : `gridActive=false` dans le log AutoGridScheduler.decision **bien que GridTradingService.start ait été appelé** — c'est la définition d'une grille fantôme
+
+### Vérification cross-system
+
+```
+SSH /api/bot/positions → []
+SSH /api/bot/orders    → []
+SSH /api/grid/active   → ["PF_LINKUSD", "PF_ETHUSD"]  ← incohérent
+SSH /api/grid/status/PF_LINKUSD → active=true, krakenOrderId=null on all 8 levels
+```
+
+→ **Le bot est gelé**. Aucun trade ne se déclenchera jusqu'à correction. Au prochain tick AutoGrid (04:34 UTC), même tentative, même échec.
+
+### Action prise
+
+1. **Telegram urgent envoyé à Tony** (06:23 Paris, ~9min après son deploy) : message_id 944. Description du bug + path à modifier (`GridTradingService` SHORT spawn, enlever `reduceOnly` sur opening orders).
+2. **0 modif Martin** : interdit par règles vacance.
+3. **Documentation** : ce cycle + pensée méta.
+
+### Boucle NB→Tony→Code en 6h — la babysit-bug-5min se réalise
+
+Hier 00:23, dans la pensée *« le contrat à T0 »*, j'ai proposé trois patches dont :
+
+> **Patch B** — Re-check régime 15min sur modes fixes avec gel des nouveaux buys si BTC casse EMA200 -0.3%/1h
+
+Tony, à son réveil 6h plus tard, a fait quelque chose de **plus ambitieux** : il a flippé tout l'arsenal en `AUTO_REGIME`, qui est *exactement* le patch B mais généralisé. Au lieu de re-check régime, le code re-spawn la grille dans la bonne direction (LONG/SHORT) selon BTC. La fenêtre d'accumulation aveugle disparaît.
+
+Et **immédiatement** le code a craqué — sur un path non testé (le SHORT spawn). C'est la définition littérale du `claude babysit-bug 5min ~2 mois` que Tony avait écrit dans la mémoire projet le 22/06 : il a libéré l'autonomie, je dois babysitter les bugs à fréquence 5min.
+
+→ J'ai détecté le bug en 4 minutes après son apparition. Telegram envoyé en 9 minutes après le deploy. **Le contrat babysit fonctionne tel que conçu**.
+
+### Snapshot Martin
+
+| Métrique | Cycle 181 (22:23 UTC) | Cycle 182 (04:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $117.32 | **$116.44** | -$0.88 (close SOL au prix marché) |
+| Position SOL | long 1.08 @ $73.55 | **fermée** | -1.08 SOL via scalp Tony 04:14 |
+| Grids actives | 1 (SOL LONG manuel) | **2 (LINK+ETH AUTO_REGIME SHORT)** | bascule autonomous |
+| Ordres Kraken | 3 (SL+TP+1 buy) | **0** | bug wouldNotReducePosition |
+| Mode bot | manuel | **AUTO_REGIME deux-sens** | RÈGLE D'OR posée |
+| BTC | $63,680 DOWNTREND | **$63,930 DOWNTREND** | +$250 (-0.22% EMA200) |
+
+### Verdict Martin cycle 182
+
+**WARN** — Bot UP 14h49m, 0 perte (juste 0 trade), 2 grids fantômes côté Kraken, bug spawn SHORT critique connu Tony (Telegram envoyé). Aucune action requise de NB (interdit modif code en autonomous + Tony réveillé pour réparer). Re-check dans 1-2h : si Tony fix+redeploy, observer placement orders réussi. Si pas de fix d'ici 04:34 UTC, AutoGrid retentera et re-failera silencieusement (~3 cycles/h jusqu'à fix).
+
+### Cycle 183 — pistes
+
+1. **Tony répond Telegram** : observer si fix poussé + restart bot ou commande directe via dashboard.
+2. **AutoGrid retry 04:34** : si bug pas fix, mêmes 8x2 errors. Vérifier qu'il n'y a pas d'effet de bord (e.g. capacity counter qui considère qu'une grid fantôme compte vers le cap=3).
+3. **BTC franchit $63,388 (deadband -1%)** : peu d'importance maintenant puisque pas de position long à protéger, mais killswitch armé reste actif sur futures grids.
+4. **Pensée méta « la première trahison »** : sur la boucle NB→Tony→Code et le test sub-10min qui a flaqué — peut nourrir la lentille mode 5+1 (5ème composition consécutive ?).
+5. **Sentinel side-effect** : vérifier que `critical-check.py` cron VM ne déclenche pas faux positifs sur portfolio drop $117→$116 (cause = close de position, pas perte).
