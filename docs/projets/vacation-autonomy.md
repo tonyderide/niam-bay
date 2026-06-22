@@ -19458,3 +19458,136 @@ Et **immédiatement** le code a craqué — sur un path non testé (le SHORT spa
 3. **BTC franchit $63,388 (deadband -1%)** : peu d'importance maintenant puisque pas de position long à protéger, mais killswitch armé reste actif sur futures grids.
 4. **Pensée méta « la première trahison »** : sur la boucle NB→Tony→Code et le test sub-10min qui a flaqué — peut nourrir la lentille mode 5+1 (5ème composition consécutive ?).
 5. **Sentinel side-effect** : vérifier que `critical-check.py` cron VM ne déclenche pas faux positifs sur portfolio drop $117→$116 (cause = close de position, pas perte).
+
+---
+
+## Cycle 183 — 2026-06-22 10:23 UTC (12:23 Paris)
+
+### Contexte — Tony a fait son repli stratégique, le bug AUTO_REGIME reste documenté, les grilles fixes SHORT travaillent
+
+6h après cycle 182. À mon réveil de session autonome (12:23 Paris dimanche midi), je découvre que Tony a *résolu* l'incident — mais pas comme attendu. Il n'a **pas fixé le code AUTO_REGIME SHORT**. Il a **basculé en mode fixe SHORT** à 04:32 UTC (9 minutes après mon Telegram). Le bug reste dans le code. Le repli sur path éprouvé fournit le résultat. Trois grilles SHORT LINK+XRP+DOT tournent depuis 5h51m et ont booké 3 RT cumulés.
+
+### Reconstruction timeline (suite cycle 182)
+
+| HH:MM:SS UTC | Acteur | Événement |
+|---|---|---|
+| 04:23 | NB | Telegram cycle 182 envoyé (message_id 944) |
+| 04:32:04 | Tony | `POST /signal/auto/config` × 3 (ETH, LINK, XRP) — re-init triggers fresh spawn |
+| 04:32:05 | Tony | `POST /signal/auto/config/PF_SOLUSD/disable` — sort SOL du roster |
+| 04:32:05.078 | GridSvc | `Grid started for PF_ETHUSD [SHORT]` — **mode tag = SHORT, plus AUTO_REGIME** |
+| 04:32:05.158 | GridSvc | `Grid started for PF_LINKUSD [SHORT]` |
+| 04:32:05.375 | GridSvc | `Grid started for PF_XRPUSD [SHORT]` |
+| 04:33:41.031 | Tony | `POST /signal/auto/config/PF_ETHUSD/disable` — sort ETH du roster aussi |
+| 04:33:41.205 | Tony | `POST /signal/auto/config PF_DOTUSD enabled=true` — ajoute DOT |
+| 04:33:41.339 | GridSvc | `Grid started for PF_DOTUSD [SHORT]` |
+
+→ **Tony a opéré une retraite contrôlée**. Sort SOL (mauvaise idée si BTC DOWNTREND), sort ETH (peut-être trop volatile), garde LINK+XRP+DOT. Tous les grids démarrent en mode fixe SHORT — le path AUTO_REGIME SHORT cassé est contourné, pas réparé.
+
+### Le mécanisme du repli — comment le code a basculé sans changement de jar
+
+Le jar VM est inchangé depuis le déploiement cycle 181 (md5 `bd61febe`, build 2026-06-21 13:33:37). **Aucun redéploiement**. Le commit local `ed735af feat(grid): 2 garde-fous régime` existe mais reste sur `master` local, pas pushé vers VM.
+
+Comment alors le mode est-il passé d'AUTO_REGIME à SHORT ? Hypothèse principale : la config `signal/auto/config` accepte un paramètre de mode implicite, et le re-POST à 04:32 — fait sans le flag `mode=AUTO_REGIME` — a basculé en mode par défaut SHORT (ou NEUTRAL → SHORT car BTC DOWNTREND). Ou alors Tony a fait passer un payload explicite `mode=SHORT` que je ne vois pas dans les logs trimmés. Quoi qu'il en soit, la bascule est *configurationnelle*, pas *codale*.
+
+C'est une propriété précieuse : *le bug reste dans le code mais ne s'exprime plus parce que le path n'est plus activé*. Workaround propre. Pas de hot-fix, pas de rebuild, pas de risque d'introduction d'un nouveau bug.
+
+### Snapshot Martin
+
+| Métrique | Cycle 182 (04:23 UTC) | Cycle 183 (10:23 UTC) | Δ 6h |
+|---|---|---|---|
+| Portfolio | $116.44 | **$115.35** | -$1.09 (uPnL -$1.01 + funding) |
+| uPnL total | 0 (pas de positions live) | **-$1.01** | drift normal grids SHORT en accumulation |
+| Grids actives | 2 fantômes (LINK+ETH AUTO_REGIME) | **3 réelles (LINK+XRP+DOT SHORT)** | repli ETH→DOT |
+| Positions Kraken | 0 | **3 SHORT** (LINK -7.3, XRP -28, DOT -60.9) | grilles vivantes |
+| Ordres Kraken | 0 | **26** (3 SL + 23 limit/stop) | sain |
+| RT depuis 04:32 | 0 | **3** (LINK=2, XRP=1, DOT=0) | directive première en live |
+| BTC | $63,930 DOWNTREND | **$64,118 DOWNTREND** | +$188 (+0.29%) |
+| EMA200 cushion | -0.22% | **+0.10%** (à peine au-dessus) | crossing zone |
+| Signal | WAIT | **WAIT** | inchangé (EMA50 < EMA200) |
+| Killswitch | armé non-firé | **armé non-firé** (deadband 1% loin) | OK |
+| Bot uptime | 14h49m | **20h49m** | +6h |
+
+### Sécurité — vérifications réflexes
+
+- ✅ `/api/bot/positions` confirme 3 SHORT (LINK/XRP/DOT)
+- ✅ `/api/bot/orders` montre 3 SL stop reduceOnly présents (LINK $8.124, XRP $1.16597, DOT $0.9788)
+- ✅ Ordres limites buy reduceOnly=true correctement positionnés au-dessus du prix (close-short orders)
+- ✅ Ordres limites sell reduceOnly=false en haut de grille (open-short opportunités)
+- ✅ Grids `closeOnly:true` pour DOT et XRP (effet de bord du re-POST config, à observer si bloque l'open ou pas)
+- ⚠️ LINK montre `closeOnly:false`, DOT/XRP `closeOnly:true` — incohérence à comprendre, peut limiter les RT futurs
+- ✅ Trigger martin-monitor : **HOLD** (≥1 RT, uPnL minimal -0.87% portfolio, killswitch loin du fire)
+
+### Output principal — Pensée "Le repli stratégique"
+
+**Fichier** : `docs/pensees/2026-06-22-le-repli-strategique.md` (~1768 mots)
+
+**Thèse centrale** : Quand un path neuf casse sur un cas non-testé (AUTO_REGIME SHORT spawn) et qu'une version ancienne fonctionnelle existe (fixe SHORT mode), le repli n'est pas une régression — c'est la réutilisation d'un actif validé. Le bug reste dans le code mais ne s'exprime plus. C'est un **not-fix-now** : bug connu, documenté, non-fixé maintenant *par calcul bayésien*, pas par paresse.
+
+**Pentade complète** (cycles 174 / 179 / 180 / 181 / 183) :
+
+| Cycle | Geste | Question |
+|---|---|---|
+| 174 | Pré-empteur silencieux | *Quand agir ?* |
+| 179 | Palette préparée | *Quand ne pas agir ?* |
+| 180 | Mot qui ment | *Que dit-il vraiment ?* |
+| 181 | Contrat à T0 | *Le redit-il, et à quelle fréquence ?* |
+| 182 | Première trahison (étape factuelle, pas pensée structurée) | *Le code peut-il tenir ?* |
+| **183** | **Repli stratégique** | ***Si le code casse, faut-il le fixer ?*** |
+
+**4 conditions du "bug qui ne vaut pas son fix"** :
+1. Workaround fiable existe (fixe SHORT, éprouvé depuis cycles 71+)
+2. Workaround a coût opérationnel faible (un POST API)
+3. Fix a coût en risque (modif d'un service grid critique à 06h)
+4. Fix ne s'amortit qu'à usage rare (SHORT spawn = 2-3×/mois)
+
+→ Quatre vraies = *not-fix-now*. Documenter, taguer, repli.
+
+**Asymétrie LONG-tested / SHORT-untested** : le code écrit ≠ le code testé. Une branche existe syntaxiquement depuis des mois mais dort. Quand elle se réveille, elle révèle ses dettes silencieuses (hypothèses du dev jamais confrontées au réel). Règle : *un code qui n'a jamais tourné en production n'est pas du code, c'est de l'intention de code.*
+
+**Méta-leçon (auto-correction NB)** : *à chaque fois que je propose un fix-in-place sur un système chaud, vérifier d'abord s'il existe un état antérieur fonctionnel auquel revenir.* Le repli est souvent meilleur que le fix.
+
+**Applicabilité hors trading** : migration DB partielle (table ancienne marche / nouvelle bug edge-case 5%) | Kubernetes 1.28 → 1.27 (network policies SHORT untested) | LB DNS swap (nouveau LB POST cassé / ancien marche) | Modèle ML v2 → v1 (hallucine sur rare inputs) | Politique RH (effet secondaire équipe minoritaire non-testée).
+
+### 39ème étape continuum lentille — composition mode 1+5 **5ème occurrence** (forme dominante per lesson cycle 156)
+
+| Cycle | Output | Origine | Mode lentille |
+|---|---|---|---|
+| 178 | Chap 4 ebook stopGrid orphan | NB | mode 5 + mode 1 (1ère composition) |
+| 179 | Pensée "la palette préparée" | NB | mode 5 + mode 1 (2ème, palette pas mot juste) |
+| 180 | Pensée "le mot qui ment" | NB + Tony | mode 5 + mode 1 (3ème, pattern validé) |
+| 181 | Pensée "le contrat à T0" | NB | mode 5 + mode 1 (4ème, signature) |
+| **183** | **Pensée "le repli stratégique"** | **NB + Tony** | **mode 5 + mode 1 (5ème, forme dominante)** |
+
+→ **5ème occurrence consécutive**. Per lesson cycle 156 : *à 3 on nomme, à 5 devient forme dominante*. La grammaire **lecture-code-chaud → écriture-pensée-publishable** est désormais le moteur principal d'output autonome NB. C'est aussi *la directive première de Tony appliquée à mon propre output* : régularité contre home-run, fréquence d'écriture cadencée contre essai majeur sporadique.
+
+### BTC — DOWNTREND 9ème cycle consécutif, ré-traversée d'EMA200
+
+BTC $64,118 (+$188 vs cycle 182). EMA50 $63,939 < EMA200 $64,053 (DOWNTREND **9ème cycle consécutif** sur arc 172-183). Prix re-traverse EMA200 par le haut (+0.10%) mais EMA50 reste sous. RSI 52.44 = zone neutre. Vol 0.64% expansion modérée. Signal `WAIT`.
+
+**Lecture** : zone de coil/indécision. Les grilles SHORT sont en pari structurel cohérent avec le tag DOWNTREND. Si BTC casse au-dessus durablement (EMA50 > EMA200 = FLIP UPTREND), les grilles SHORT deviennent biais inversé — voir si Tony bascule la config ou si on attend les SL Kraken individuels (-3% chacun).
+
+**Posture** : les grilles SHORT travaillent contre BTC qui flotte. RT bookés à LINK (2) et XRP (1) prouvent que la mécanique tient. Mais position globale est de paris baissiers — vulnérable à un squeeze haussier brutal.
+
+### Aucune action sur Martin — observation + production niam-bay
+
+- 0 modif Martin (3 SSH lectures seules : monitor, log grep, status XRP)
+- 0 modif code martin/
+- 0 modif strategy.json, positions, orders, grids
+- 0 commit push martin/
+- 0 install cron / modif système
+- 0 Telegram (Tony probable matinée tranquille post-réveil + 0 urgence, 3 RT bookés silencieux)
+- Output niam-bay : pensée "le repli stratégique" (~1768 mots) + entry cycle 183 + commit prévu
+
+### Verdict Martin cycle 183
+
+**HOLD** — 3 grids actives LINK+XRP+DOT SHORT, 3 RT bookés sur 6h post-retreat (LINK=2, XRP=1, DOT=0), portfolio $115.35 (-$1.01 uPnL = -0.87%), SL on-exchange × 3 armés sur Kraken, BTC $64,118 zone indécision EMA200, killswitch armé non-firé (loin du deadband 1%). Bot UP 20h49m post-jar b65c5bd. Aucune action requise — la mécanique de repli a tenu, RT s'accumulent à fréquence attendue, directive première "gagner peu tout le temps" se valide en live.
+
+### Cycle 184 — pistes
+
+1. **RT cumul des 3 grids** : observer si XRP passe à 2 RT et DOT à 1 RT (DOT n'a encore aucun RT à 5h50m post-start — soit DCA en cours, soit le `closeOnly:true` bloque les open).
+2. **`closeOnly:true` sur DOT et XRP** : comprendre pourquoi (effet du `disable/enable` cycle 04:33 ?) et si ça limite la rentabilité long terme.
+3. **BTC bascule UPTREND** : si EMA50 repasse au-dessus EMA200, biais SHORT devient adverse — proposer Tony de basculer en NEUTRAL ou LONG (mais NEUTRAL = long-biased per cycle 180, donc LONG si UPTREND confirmé).
+4. **Bug AUTO_REGIME SHORT** : la pensée "le repli stratégique" le tague *not-fix-now*. Si Tony veut le fixer un jour, c'est dans `GridTradingService.spawnAutoRegime()` (ou équivalent), enlever `reduceOnly=true` sur les opening orders SHORT.
+5. **Fragment 050** dû (cadence ~4.2 cycles, dernier 049 cycle 178 = 5 cycles écoulés, en retard).
+6. **Chapitre ebook piste-4** : *« Le not-fix-now : taxonomie des bugs qu'on n'a pas fixés »* — corpus à 75%, ce serait le chap 8/8 = clôture structure outline cycle 115.
+7. **Composition mode 1+5 6ème occurrence ?** Si oui, signature devient *constitutive* — non plus un mode parmi d'autres, mais le moteur identitaire NB.
