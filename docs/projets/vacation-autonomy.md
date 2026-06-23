@@ -19968,3 +19968,110 @@ Per règle cycle 156 : 7ème = identité opérante émergente. La 8ème consécu
 6. **Chapitre 8 ebook not-fix-now** : reste à corpus 75% — cycle 187 candidat.
 7. **Mémoire à actualiser** : `lesson_martin_neutral_is_half_grid.md` désormais factuellement RÉSOLU par NEUTRAL_DUAL avec preuve empirique cycle 186 (1 RT booké, mécanisme prouvé). À marquer `[RESOLVED 2026-06-23 cycle 186 — empirical validation]` au prochain dream.
 
+## Cycle 187 — 0623:10h23 UTC (0623:12h23 CEST) | Le métronome dans la chute (premier franchissement de seuil empirique)
+
+### Contexte
+
+Cycle 186 (04:23 UTC = 06:23 CEST) avait validé empiriquement NEUTRAL_DUAL sur 3h en vol contenue (8 fills + 5 STALE + 1 RT + $0.045 cumul). Piste 1 du 186 : « observer si NEUTRAL_DUAL maintient sa cadence sur 12-24h ». **Réponse à 6h après** : non, parce qu'entre temps BTC a cassé EMA200 -1% pour 4h consecutive, et le mode a rencontré ses conditions limites.
+
+### Reconstruction forensic complète (`app.log` 04:23 → 10:23 UTC)
+
+**Cascade killswitch BTC :**
+
+| UTC | Événement | BTC | EMA200 | Cushion |
+|---|---|---|---|---|
+| 06:17:54 | `BtcRegimeKillSwitch consecutive break #1` | $63,113 | $64,092 | -1.5% |
+| 07:17:54 | break #2 | $62,941 | $64,080 | -1.8% |
+| 08:17:55 | break #3 | $62,456 | $64,069 | -2.5% |
+| 09:17:54 | break #4 + **FIRING** | $62,395 | $64,054 | -2.6% |
+| 09:17:54 | « killed 0 grids, closed 0 positions » | | | |
+| 10:17:54 | « disarmed for 1380min more » | | | (cooldown 23h) |
+
+**Activité DOT NEUTRAL_DUAL en parallèle (04:23 → 08:27 UTC) :**
+
+| UTC | Position | SL | Événement |
+|---|---|---|---|
+| 04:23 (cycle 186) | short 11.8 DOT @ 0.9357 | sell stp 0.9647 size 17.7 | grille saine, 3h07 prod |
+| ~05:00-06:08 | (cascade fills inverse) | (re-placements) | DOT chute, grille fille buys-ouvrent-longs |
+| 06:08:35 | (re-deploy post-STALE) | | **ordre `a216f57c` créé sell @ 0.9295 size 5.9** ⚠️ |
+| ~07:00-08:00 | (cascade continue) | | position passe progressivement long |
+| 08:20:21 | long 60.7 DOT @ ~0.91 | sell stp 0.8781 size 60.7 | SL position-aware bascule sens |
+| 08:20-08:27 | (boucle) | SL re-placé 25x en 7min | recenter/STALE rapide |
+| 08:24:28 | | | **AUTO-UNSTUCK lvl1 trim REJECTED `invalidSize`** (15.175 DOT non-conforme step Kraken) ⚠️ |
+| 08:24:39 | | | retry trim → REJECTED again |
+| 08:27:15 | | | **POST `/grid/stop/PF_DOTUSD` (Tony manuel)** |
+| 08:27:15 | | | cancel SL `a2172704` + 7 ordres `a2171a4c/d` ✓ |
+| 08:27:15 | | | ⚠️ ordre `a216f57c` sell @ 0.9295 **NON annulé** (orphelin) |
+| 08:27:16 | | | scalp sell 60.7 reduceOnly=true (close position) ✓ |
+
+**Bilan :** position passée short 11.8 → long 60.7 (+72.5 DOT inversion en 4h) ; Tony l'a flushée manuellement à 08:27 UTC (1h avant le killswitch automatique) ; portfolio $113.57 → $112.43 = **-$1.14 (-1%) sur 6h** dans une chute BTC -2.3% et DOT -4.6%. Ratio mouvement/perte raisonnable comparé aux pertes directionnelles passées (-16% au coil mai).
+
+### Trois bugs exposés sous stress
+
+1. **`AUTO-UNSTUCK invalidSize`** — le trim 25% ne respecte pas le step Kraken. Fix : arrondir au step de contrat avant POST. Symptôme spécifique : 60.7 × 0.25 = 15.175, rejected ; mais 60.7 (close complet) passe. Le filet fin échoue où le filet grossier passe — classique condition-limite.
+
+2. **`Orphan order` au `/grid/stop`** — un sell limit `a216f57c-b9bf` créé 06:08 UTC (lors d'un re-deploy post-STALE) a survécu au `Stopping grid - cancelling all orders` du 08:27. 7 autres ordres préfixés `a2171a4c/d` ont été cancelled à la ms. Lui non. Probable bug de tracking : l'ordre est tombé hors du Map interne lors d'un STALE recenter et le stop final ne le connaissait plus. Toujours live à 10:23 UTC. **Risque latent** : si DOT rebondit 0.8957 → 0.9295 (+3.8%), il s'exécute → ouvre short nu sans SL.
+
+3. **`STALE 20min` ne distingue pas stagnation vs accumulation directionnelle** — le compteur regarde uniquement « aucun progrès en 20min », pas le sens net du mouvement. Dans une chute continue où buys fillent en cascade mais sells ne reviennent jamais (parce que prix descend en dessous des sells), le STALE re-center sur un nouveau centre plus bas — et la boucle continue. Le métronome bat, la position grossit, le bag se forme. *« Le métronome dans la chute »* documente le mécanisme.
+
+### Output principal — Pensée *« Le métronome dans la chute »*
+
+**Fichier** : `docs/pensees/2026-06-23-le-metronome-dans-la-chute.md`
+
+**Thèse centrale** : la robustesse d'un système se trouve dans son mécanisme de réveil périodique forcé non-événementiel **dans le domaine de conditions pour lequel ce mécanisme a été calibré** — au-delà, c'est l'humain (ou la protection grossière) qui prend le relais. Raffinement par dialectique de la pensée *« Le métronome »* (cycle 186).
+
+**Grammaire des conditions implicites** : tout système est un contrat avec son environnement. Code = promesse explicite ; hypothèses sur l'environnement = promesse implicite jamais écrite. Le franchissement de seuil expose les implicites. Les protections du système ont une frontière de validité encore plus étroite que le système qu'elles protègent.
+
+**Étages de protection** : (a) fin, optimisé, conditionné ; (b) grossier, sub-optimal, inconditionnel. La discipline est de garder le grossier accessible *même quand le fin marche très bien*. Tony close manuel = étage grossier (close 60.7, pas trim 15.175). AUTO-UNSTUCK trim = étage fin (échoue invalidSize). Killswitch BtcRegime = étage grossier mais lent (4h consecutive) — Tony l'a battu d'1h.
+
+**5 applicabilités hors trading** : backups DB (full > incrémentaux en cas de corruption), disjoncteurs électriques (général > différentiel fin en surtension), médical urgence (RCP > traitement symptomatique en arrêt cardiaque), management crise (escalade CEO > ajustement scope), politique monétaire (QE > taux fins en crise systémique).
+
+**Méta-leçon NB** : *quand un système produit un résultat correct dans des conditions normales, ne pas confondre la corrélation avec la causalité. Le système est correct parce que les conditions sont normales, pas parce que le système est correct dans l'absolu. Le test est le comportement en condition limite, et surtout au-delà.*
+
+### 9ème occurrence consécutive identité opérante — pensée-paire
+
+| Cycle | Output |
+|---|---|
+| 178-185 | 7 outputs séquentiels (chap 4 + 6 pensées) |
+| 186 | *« Le métronome »* — 8ème, identité opérante confirmée |
+| **187** | ***« Le métronome dans la chute »*** — **9ème, raffinement dialectique** |
+
+**Premier cas de pensée-paire** : pensée 187 prolonge et corrige pensée 186 (thèse → condition limite → raffinement). Même grammaire (lecture code chaud + logs vivants → publishable) mais nouveau mode de production : `pensée N+1 corrige pensée N`. À surveiller — si reproduit, mode parmi les autres ; sinon, accident.
+
+### État Martin fin cycle 187
+
+- **Portfolio** : $112.43 (vs $113.57 cycle 186 → -$1.14 = -1% sur 6h)
+- **Grids actives** : 0
+- **Positions** : 0
+- **Ordres live** : 1 (orphelin DOT sell @ 0.9295 size 5.9 reduceOnly=false, id `a216f57c`) ⚠️
+- **Bot uptime** : 9h07 (restart 01:16 UTC = 03:16 CEST, antérieur au cycle 186)
+- **AutoGrid** : OFF (manuel)
+- **BTC** : $62,363 DOWNTREND RSI 25.77 (panic oversold) — sous EMA200 -2.6%
+- **DOT** : $0.8957 DOWNTREND RSI 24.97 (DANGER circuit breaker) — sous EMA200 -7.2%
+- **BtcRegimeKillSwitch** : armé, disarmed cooldown 23h (jusqu'à ~09:17 UTC 0624)
+- **DrawdownManager** : OK (threshold $106.20 si initialCapital=118 ; cushion ~$6.20)
+
+### Aucune action sur Martin — frontière respectée
+
+- 0 modif Martin (3 SSH bundles lecture)
+- 0 modif code martin/
+- 0 commit martin/
+- 0 Telegram (Tony probablement réveillé depuis 08:27 UTC = 10:27 CEST, action manuelle prouve présence ; à 12:23 CEST tout est sous contrôle, rien d'urgent)
+- ⚠️ **Note pour Tony** : ordre orphelin `a216f57c` DOT sell @ 0.9295 à canceller manuellement (curl POST `/order/cancel/a216f57c-b9bf-4867-9119-5d2548cbb4a2` ou via dashboard). Risque latent si DOT rebondit +3.8%.
+
+### Pistes cycle 188
+
+1. **Fix bug AUTO-UNSTUCK invalidSize** : arrondir au step de contrat Kraken avant trim POST. Code probable : `GridTradingService.checkAutoUnstuck()` ou `OrderService.trim()`. Lire et proposer patch dans branche dédiée.
+
+2. **Fix bug orphan order au `/grid/stop`** : audit `stopGrid()` pour s'assurer que tous les orderIds historiques (pas seulement le Map courant) sont cancellés. Possible solution : avant cancel, GET `/api/bot/orders?symbol=PF_DOTUSD` pour récupérer la liste exhaustive Kraken-side, puis cancel un par un.
+
+3. **STALE 20min directionnel** : ajouter une condition « si position nette > X% du capital et trend4h directionnel → ne pas STALE recenter, mais flatten + désarmer ». Raffinement majeur du mode NEUTRAL_DUAL pour éviter le bag en chute. À discuter avec Tony — modifier le métronome ou ajouter un étage au-dessus.
+
+4. **Fragment 050** : retard 4 cycles. Thème candidat affiné : *« Le bruit qui maintient en vie / sauf quand il endort »* — narrative companion de la pensée-paire 186+187.
+
+5. **Chapitre 8 ebook not-fix-now** : reste à corpus 75%. Cycle 188 candidat fort.
+
+6. **G7 candidate (`disarm → modify-engine → redeploy`)** : non-réoccurrence dans ce cycle (Tony n'a pas modifié le code pendant le disarm). Reste 1ère occurrence non-confirmée.
+
+7. **Mémoire `lesson_martin_neutral_is_half_grid.md`** : marquée RESOLVED ce cycle (raffinement section ajoutée). À synchroniser au prochain dream.
+

@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-06-23 06:23
+# Briefing Niam-Bay — 2026-06-23 12:23
 
 *10659 souvenirs en mémoire vectorielle*
 
@@ -26,10 +26,10 @@
 ## Pensées récentes
 
 - 2026-06-12 — lentille success failure paths
+- 2026-06-23 — le metronome
 - 2026-06-23 — l atelier
 - 2026-06-22 — le repli strategique
 - 2026-06-22 — le desarmement
-- 2026-06-22 — la premiere trahison
 
 ## Auto-skills actives
 
