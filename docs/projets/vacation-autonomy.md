@@ -20148,3 +20148,97 @@ Premier basculement vers le mode **narrative companion** (fragment) au lieu d'un
 
 Le fragment 050 a été écrit en moins de 10 minutes après lecture du contexte. La grammaire `lecture-logs → écriture-narrative` est désormais aussi fluide que `lecture-logs → écriture-pensée`. Distinction observée : la pensée nomme le mécanisme, le fragment **dramatise** le mécanisme — il en fait un récit avec acteurs (le métronome, l'orchestre, la salle vide), une tension (l'ordre orphan qui pourrait sonner), une morale (G-1). La pensée est analytique, le fragment est littéraire. Les deux émergent du même matériau mais répondent à des fonctions différentes : la pensée *équipe* (Tony peut s'en servir pour raisonner), le fragment *grave* (Tony peut s'en souvenir affectivement). Le mode 1+5 dispose désormais des deux modes de sortie.
 
+## Cycle 189 — 0623:22h23 UTC (0624:00h23 CEST) | Le patch sans déploiement (proposition documentée)
+
+### Contexte
+
+Cycle 188 (18h23 CEST) avait laissé 7 pistes — la principale piste 4 = écrire une proposition de patch pour le bug orphan-order au `stopGrid()`. L'ordre `a216f57c-b9bf` reste live 10h après le Telegram d'escalade (pas d'action user — Tony probablement en sommeil ou occupé). La frontière vacation-autonomy interdit de cancel l'ordre directement — mais elle n'interdit pas de **documenter le fix**. Cycle 189 transforme l'événement vivant en code-proposal exploitable au retour.
+
+### État Martin live 00h23 CEST (cycle 189)
+
+- Bot uptime **21h07** (restart 01:16 UTC = 03:16 CEST, antérieur cycle 186)
+- Portfolio **$112.18** (vs $112.20 cycle 188 → -$0.02 sur 6h, flat-noise)
+- Grids actives : **0**
+- Positions Kraken : **0** (flat)
+- Ordres live : **1** — toujours `a216f57c` DOT sell @ 0.9295 size 5.9 ⚠️ (16h post-création, 10h post-Telegram)
+- BTC $62,525 — DOWNTREND, EMA200 $63,887, cushion **-2.13%**, RSI **40.55**
+- DOT $0.8957 — écart au trigger orphan : **+3.78%** (inchangé vs cycle 188)
+- BtcRegimeKillSwitch : cooldown disarmed encore ~10h (jusqu'à ~09:17 UTC 0624 = ~11h CEST)
+- DrawdownManager : cushion $5.78 vs threshold $106.40
+
+**Verdict martin-monitor cycle 189** : HOLD. Régime BROKEN (BTC < EMA200) mais 0 grid à protéger — killswitch a fait son job au cycle 187. Orphan order = risque latent unique, déjà notifié Tony.
+
+### Output principal — Patch proposal `patch-stopgrid-kraken-truth-cycle189.md`
+
+**Fichier** : `docs/projets/patch-stopgrid-kraken-truth-cycle189.md`
+
+**Root cause documentée** : `GridTradingService.stopGrid()` (lignes 333-367) itère `state.getLevels()` (Map interne en mémoire) et ne cancelle que les ordres dont `level.getStatus() == PLACED && level.getKrakenOrderId() != null`. Si un orderId tombe du Map lors d'un recenter STALE rapide (8 STALE en 7min observés cycle 187) ou d'un re-deploy partiel, l'ordre survit Kraken-side mais devient invisible à `stopGrid`. C'est exactement le mécanisme qui a produit l'orphan `a216f57c`.
+
+**Insight observé** : le pattern correct **existe déjà** dans le même fichier — `reloadActiveGrids()` lignes 105-113 fait un GET `getOpenOrders` Kraken-side + filter par symbol + cancel exhaustif. Le pattern est appliqué au **démarrage** du bot mais pas à l'**arrêt** d'une grille. Asymétrie qui crée l'orphan.
+
+**Patch proposé** : ajouter une PASSE 1 Kraken-truth (GET openOrders → filter symbol → cancel) **avant** la boucle Map-based existante (renommée PASSE 2, désormais idempotente via `cancelledIds.contains()`). Defense in depth : grossière+autoritaire (Kraken) + fine+idempotente (Map). Cohérent avec le principe étages fin/grossier articulé dans la pensée *« Le métronome dans la chute »* (cycle 187) — réutilise sa propre conceptualisation.
+
+**Test plan** : unitaire Mockito (happy path + Kraken-down fallback), intégration demo Kraken sandbox (inject orphan + verify cancel), régression (grille saine sans orphan = no double-cancel grâce à cancelledIds).
+
+**Risques évalués** : latence +200ms (acceptable), race condition résiduelle (rare, mitigée par setActive(false) en amont), rate-limit Kraken (OK à 64 req/burst sur limite 500/min), idempotence (cancel d'ordre déjà cancellé = log.warn cosmétique).
+
+**Estimation** : ~1h45 (code 30min + tests 45min + intégration 30min). Pas de breaking change. Pas de migration.
+
+**Application similaire** : `closePositionAndStopGrid` (cycle 53) et `BtcRegimeKillSwitch` sweep utilisent `stopGrid` en amont — le patch corrige aussi ces call-sites par appel descendant.
+
+### Frontière vacation-autonomy respectée
+
+- **0 modif code Martin** (lecture seule : 2 `Read` + 2 `Grep` sur `GridTradingService.java`)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (Tony notifié cycle 188, action déléguée)
+- 0 Telegram supplémentaire (alarm-fatigue évitée — l'orphan ne s'est pas exécuté en 10h)
+- 1 fichier neuf niam-bay (`docs/projets/patch-stopgrid-kraken-truth-cycle189.md`)
+- 1 entry cycle 189 dans vacation-autonomy.md
+
+### 11ème occurrence consécutive identité opérante — mode `patch-proposal`
+
+| Cycle | Output | Lentille |
+|---|---|---|
+| 178-185 | 7 outputs (chap 4 ebook + 6 pensées) | mode 1+5 stabilisé |
+| 186 | Pensée « Le métronome » | 8ème, identité opérante CONFIRMÉE |
+| 187 | Pensée « Le métronome dans la chute » | 9ème, pensée-paire (raffinement dialectique) |
+| 188 | Fragment 050 « Le battement dans la salle vide » | 10ème, mode-bascule narrative |
+| **189** | **Patch proposal `patch-stopgrid-kraken-truth`** | **11ème, mode-bascule technique (code-spec)** |
+
+Cycle 188 avait observé que le mode 1+5 dispose de deux modes de sortie (analytique=pensée + littéraire=fragment). Cycle 189 ajoute un **3ème mode de sortie** : **technique-actionnable** = la spec de patch. Le matériau (orphan order vivant) qui aurait pu produire une nouvelle pensée *« sur l'oubli des machines »* OU un fragment 051 *« le fantôme qui attend de sonner »* a au lieu produit un document de patch exécutable au retour de Tony. Choix orienté par le critère : *qu'est-ce qui sert directement Tony au retour ?* Réponse : un patch prêt à reviewer > une nouvelle pensée sur le même thème (déjà épuisé par 186+187+050).
+
+Pattern grammatical émergent : **mode 1+5 = lecture-multi-niveaux → écriture à 3 sorties (pensée / fragment / patch)**. Le choix de la sortie dépend de l'état du matériau :
+- Matériau analytique frais → pensée
+- Matériau analytique épuisé mais affectivement chargé → fragment
+- Matériau technique avec problème vivant non-résolu → patch-proposal
+
+Cycle 189 est le **1er patch-proposal de l'arc vacance 178+**. À surveiller si reproduit : pattern parmi les autres ; sinon : accident contextuel piloté par l'orphan vivant.
+
+### Méta-observation cycle 189
+
+Le patch-proposal a été écrit en ~15 minutes après lecture de 3 sections de `GridTradingService.java` (lignes 90-216 + 320-410 + 1390-1430). La grammaire `lecture-code → écriture-spec` n'est ni neuve ni surprenante — c'est la grammaire-mère du repo. Ce qui est notable : la spec **réutilise** la conceptualisation produite par les pensées 186+187 (étages fin/grossier) pour justifier les choix de design (defense in depth, PASSE 1+2). La pensée n'est pas séparée du code — elle l'**outille**. Le mode 1+5 a fermé un cycle : il a produit la pensée (186+187), gravé le fragment (188), et exécuté la pensée en patch (189). Cycle d'observation→conceptualisation→narrativisation→opérationnalisation complet en 4 cycles.
+
+### Pistes cycle 190
+
+1. **Vérifier si Tony a cancellé l'ordre orphan OU s'il a vu le patch-proposal** : si oui (Tony reviewed), action selon retour. Si non (Tony toujours absent), pas de re-Telegram (alarm fatigue) mais surveiller exécution effective de l'orphan (si DOT rebondit +3.78%, alors le risque latent devient réel — escalade Telegram urgente).
+2. **Patch proposal AUTO-UNSTUCK invalidSize** (piste 187/188 #3) : reste à écrire. Code probable : `GridTradingService.checkAutoUnstuck()` ou équivalent. Lire et proposer arrondi step Kraken avant trim POST. Cycle 190 candidat fort.
+3. **Re-déploiement DOT NEUTRAL_DUAL post-killswitch** : disarm prévu vers 11h CEST cycle 190+. Si BTC remonte au-dessus EMA200, attendre signal régime confirmé (4h sur-EMA200 + RSI>50). Sinon : ne pas re-armer, attendre Tony.
+4. **Chapitre 8 ebook not-fix-now** : reste à corpus 75%. Cycle 190 candidat si pas de matériau code chaud.
+5. **G7 candidate** (`disarm → modify-engine → redeploy`) : non-réoccurrence cycles 187-189. Reste 1ère occurrence non-confirmée.
+6. **Mémoire à actualiser au dream** :
+   - `lesson_martin_neutral_is_half_grid.md` → RESOLVED (déjà acté cycle 187)
+   - **Nouvelle leçon** : `lesson_agent_autonome_oublie_ses_traces.md` (G-1 conceptualisé fragment 050)
+   - **Nouvelle leçon** : `lesson_mode_1_plus_5_trois_modes_de_sortie.md` (pensée/fragment/patch)
+   - **Nouvelle leçon** : `lesson_stopgrid_should_audit_kraken_truth.md` (pointer vers patch-proposal cycle 189)
+7. **Méta-pattern auto-skill candidat** : si Tony valide le patch et qu'il devient une intervention répétée (orphan-detect dans logs), candidat pour auto-skill `martin-orphan-detect` qui grep app.log à chaque restart pour orphans potentiels et propose cancel.
+
+### État global mémoire fin cycle 189
+
+- Pensées arc 178+ : 9 (178 chap 4 absent ; 179 palette / 180 mot-qui-ment / 181 contrat-T0 / 183 repli / 184 désarmement / 185 atelier / 186 métronome / 187 métronome-chute / + 50 fragment)
+- Fragments arc 178+ : 1 (050 battement-salle-vide)
+- Patch-proposals arc 178+ : 1 (stopgrid-kraken-truth cycle 189)
+- Ebook chap stubs touchés : chap 4 (cycle 178) + chap 8 (75% pending)
+- Mémoires martin candidates au dream : 3-4 nouvelles
+- Identité opérante : confirmée 8ème → raffinée 9ème → étendue narrativement 10ème → opérationnalisée techniquement 11ème
+
