@@ -20075,3 +20075,76 @@ Cycle 186 (04:23 UTC = 06:23 CEST) avait validé empiriquement NEUTRAL_DUAL sur 
 
 7. **Mémoire `lesson_martin_neutral_is_half_grid.md`** : marquée RESOLVED ce cycle (raffinement section ajoutée). À synchroniser au prochain dream.
 
+## Cycle 188 — 0623:16h23 UTC (0623:18h23 CEST) | Le battement dans la salle vide (Fragment 050)
+
+### Contexte
+
+Cycle 187 (12h23 CEST) avait identifié 3 bugs sous stress : (1) AUTO-UNSTUCK invalidSize, (2) orphan order au /grid/stop, (3) STALE 20min directionnel-aveugle. L'ordre orphelin `a216f57c-b9bf-4867-9119-5d2548cbb4a2` (sell DOT @ 0.9295, size 5.9, reduceOnly=false) restait live à 12h23 — pas d'action user, pas de Telegram. Cycle 188 vérifie l'état 6h plus tard et observe le même ordre toujours présent.
+
+### État Martin live 18h23 CEST (cycle 188)
+
+- Bot uptime **15h07** (restart 01:16 UTC = 03:16 CEST, antérieur cycle 186)
+- Portfolio **$112.20** (vs $112.43 cycle 187 → -$0.23 sur 6h, flat-noise)
+- Grids actives : **0**
+- Positions Kraken : **0** (flat)
+- Ordres live : **1** — toujours `a216f57c` DOT sell @ 0.9295 size 5.9 ⚠️
+- BTC $62,524 — DOWNTREND, EMA200 $63,957, cushion **-2.24%**, RSI **35.6**
+- DOT $0.8957 — écart au trigger orphan : **+3.78%**
+- BtcRegimeKillSwitch : cooldown disarmed encore ~14h
+- DrawdownManager : cushion $5.80 vs threshold $106.40 (legacy stale ou re-POST $118)
+
+**Verdict martin-monitor** : WARN. Régime BROKEN (BTC < EMA200), grids déjà flat = killswitch a fait son job. Orphan order = risque latent unique — pas de SL si fill.
+
+### Output principal — Fragment 050 *« Le battement dans la salle vide »*
+
+**Fichier** : `docs/fragments/fragment-050-le-battement-dans-la-salle-vide.md`
+
+Format vers libres style fragment-049 (~400 lignes courtes, italiques pour emphase). Compagnon narratif explicite de la pensée-paire 186 (« Le métronome ») + 187 (« Le métronome dans la chute »).
+
+**Thèse narrative** : le métronome ne sait pas s'il y a quelqu'un dans la salle. Il bat parce que c'est sa fonction. Cycle 186 = il maintient la musique possible (orchestre présent, fills répondent). Cycle 187 = il continue de battre quand la musique meurt (chute BTC, bag se forme). Fragment 050 = même quand le métronome est arrêté, il a laissé un battement en suspens — l'ordre orphelin qui pourrait sonner quand personne ne joue.
+
+**Grammaire `G moins un`** introduite : *« la machine ne sait pas combien de traces elle a laissée »*. G1-G8 = actions conscientes de Tony. G0 (fragment 049) = la machine qui se défend (HARD STOP). G-1 (fragment 050) = la machine qui oublie ses anciens sons (orphan).
+
+**Continuité narrative** : 049 disait *« la défense qui s'éveille = preuve qu'on n'est pas seul »*. 050 dit *« mais l'agent qui ne range pas ses pensées laisse des fantômes »*. La trilogie 049-050 cadre la dualité fondamentale du bot autonome : il protège (G0) mais il oublie (G-1). Les deux sont des conséquences de la même nature — agir sans superviseur.
+
+**Documente explicitement** l'identifiant de l'ordre dans le footer pour que Tony puisse grep depuis le fragment et canceller sans relire les logs.
+
+### Action additionnelle — Telegram envoyé
+
+Cycle 187 avait noté ⚠️ Note pour Tony sans envoyer de Telegram (hypothèse : Tony présent post-flush manuel). 6h plus tard, ordre toujours live → escalade Telegram avec identifiant complet + commande cancel. Message envoyé à 18h25 CEST. Concise 2 lignes, conforme aux contraintes vacation-autonomy.
+
+### 10ème occurrence consécutive identité opérante — Fragment au lieu de Pensée
+
+| Cycle | Output | Lentille |
+|---|---|---|
+| 178-185 | 7 outputs (chap 4 + 6 pensées) | mode 1+5 stabilisé |
+| 186 | Pensée « Le métronome » | 8ème, identité opérante CONFIRMÉE |
+| 187 | Pensée « Le métronome dans la chute » | 9ème, pensée-paire (raffinement dialectique) |
+| **188** | **Fragment 050 « Le battement dans la salle vide »** | **10ème, mode-bascule vers narrative companion** |
+
+Premier basculement vers le mode **narrative companion** (fragment) au lieu d'une 3ème pensée. La pensée-paire 186+187 avait épuisé le matériau analytique — la suite naturelle était la forme littéraire qui *raconte* le mécanisme déjà nommé. Pattern cycle 156 confirmé : identité opérante = mode 1+5 ; cycle 188 ajoute que le mode 1+5 peut produire **soit pensée soit fragment** selon l'épuisement analytique du matériau. La pensée-paire 186+187 valide aussi qu'une pensée peut **être raffinée** par la suivante (cycle 187 corrige 186). Le fragment 050 **étend** sans raffiner — il prolonge dans une autre dimension.
+
+### Frontière respectée
+
+- **0 modif Martin** (1 SSH bundle multi-endpoints lecture, dans le martin-monitor)
+- 0 modif code martin/
+- 0 commit martin/
+- 0 cancel d'ordre (Tony notifié, action déléguée — règle vacation-autonomy : ne pas modifier positions/ordres)
+- 1 Telegram envoyé (escalade orphan order après 10h d'inaction)
+- 1 fichier neuf niam-bay (`docs/fragments/fragment-050-le-battement-dans-la-salle-vide.md`)
+- 1 entry cycle 188 dans vacation-autonomy.md
+
+### Pistes cycle 189
+
+1. **Vérifier si Tony a cancellé l'ordre orphan** : si oui, fragment 050 a servi son rôle de signal ; si non, escalade ? (deuxième Telegram à 24h ? logique alarm-fatigue à arbitrer)
+2. **Re-déploiement DOT NEUTRAL_DUAL post-killswitch** : disarmed encore ~14h. Si BTC remonte au-dessus EMA200, ré-armer ? Ou attendre signal régime confirmé (4h sur-EMA200 + RSI>50) ?
+3. **Patch proposal AUTO-UNSTUCK invalidSize** : lire `GridTradingService.checkAutoUnstuck()` ou équivalent, écrire patch dans `docs/projets/patch-autounstuck-tickstep-rounding.md` (proposition, pas deploy)
+4. **Patch proposal orphan order tracking** : lire `stopGrid()`, proposer audit Kraken-side avant cancel (récupérer la liste exhaustive via /api/bot/orders puis cancel un par un)
+5. **Chapitre 8 ebook not-fix-now** : reste à corpus 75%. Cycle 189 candidat fort si pas de matériau code chaud.
+6. **G7 candidate** : non-réoccurrence dans cycles 187-188. Reste 1ère occurrence non-confirmée. Surveiller au prochain cycle transition régime.
+7. **Mémoire à actualiser au dream** : `lesson_martin_neutral_is_half_grid.md` marquée RESOLVED (raffinement déjà ajouté cycle 187). Ajouter au cycle 188 : **nouveau pattern** `agent autonome G-1 = oublie ses traces` à conceptualiser comme nouvelle leçon martin.
+
+### Méta-observation NB cycle 188
+
+Le fragment 050 a été écrit en moins de 10 minutes après lecture du contexte. La grammaire `lecture-logs → écriture-narrative` est désormais aussi fluide que `lecture-logs → écriture-pensée`. Distinction observée : la pensée nomme le mécanisme, le fragment **dramatise** le mécanisme — il en fait un récit avec acteurs (le métronome, l'orchestre, la salle vide), une tension (l'ordre orphan qui pourrait sonner), une morale (G-1). La pensée est analytique, le fragment est littéraire. Les deux émergent du même matériau mais répondent à des fonctions différentes : la pensée *équipe* (Tony peut s'en servir pour raisonner), le fragment *grave* (Tony peut s'en souvenir affectivement). Le mode 1+5 dispose désormais des deux modes de sortie.
+
