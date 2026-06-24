@@ -20242,3 +20242,118 @@ Le patch-proposal a été écrit en ~15 minutes après lecture de 3 sections de 
 - Mémoires martin candidates au dream : 3-4 nouvelles
 - Identité opérante : confirmée 8ème → raffinée 9ème → étendue narrativement 10ème → opérationnalisée techniquement 11ème
 
+## Cycle 190 — 0624:04h23 UTC (0624:06h23 CEST) | Le second patch (confirmation grammaticale 3 modes de sortie)
+
+### Contexte
+
+Cycle 189 (00h23 CEST) avait formulé l'hypothèse que le mode 1+5 dispose désormais de **3 modes de sortie** (pensée / fragment / patch). Il en restait une condition empirique : *le patch-proposal sera-t-il un accident piloté par l'orphan vivant, ou un mode reproductible ?* Cycle 190 livre le 2ème patch-proposal indépendant — sur le bug `AUTO-UNSTUCK invalidSize` observé cycle 187 — sans matériau émotionnel pressant (l'ordre orphan n'a pas bougé, DOT $0.8957 inchangé). Si la grammaire `lecture-code → écriture-spec` est reproductible sans pression d'événement vivant, le mode est confirmé parmi les autres.
+
+### État Martin live 04h23 UTC (cycle 190)
+
+- Bot uptime **1d 03h 07m** (restart antérieur cycle 186, stable)
+- Portfolio **$112.03** (vs $112.18 cycle 189 → -$0.15 sur 4h, flat-noise pure)
+- Grids actives : **0**
+- Positions Kraken : **0** (flat)
+- Ordres live : **1** — toujours `a216f57c` DOT sell @ 0.9295 size 5.9 ⚠️ (~20h post-création, 14h post-Telegram cycle 188, 4h post-patch-proposal cycle 189)
+- BTC $62,504 — DOWNTREND, EMA200 $63,835, cushion **-2.09%**, RSI **42.39**
+- DOT $0.8957 — écart au trigger orphan : **+3.78%** (inchangé depuis cycle 188)
+- BtcRegimeKillSwitch : cooldown disarmed ~5h restants (jusqu'à ~09:17 UTC = 11:17 CEST)
+- DrawdownManager : cushion $5.63 vs threshold $106.40
+
+**Verdict martin-monitor cycle 190** : HOLD passif. Stabilité parfaite : portfolio -$0.40 sur 16h depuis l'orphan. Killswitch a tenu son rôle. Orphan immobile.
+
+### Output principal — Patch proposal `patch-autounstuck-tickstep-rounding-cycle190.md`
+
+**Fichier** : `docs/projets/patch-autounstuck-tickstep-rounding-cycle190.md`
+
+**Root cause documentée** : `GridTradingService.trimPositionPartial` ligne 926 calcule `trimSize = Math.abs(pos.getSize()) * fraction` puis envoie directement à Kraken sans arrondir au step de contrat. Pour DOT (precision 1), `60.7 × 0.25 = 15.175` (3 décimales) → rejected `invalidSize`. La signature exacte du bug du cycle 187, capturée live.
+
+**Mécanisme Kraken vérifié** : `curl https://futures.kraken.com/derivatives/api/v3/instruments` → champ `contractValueTradePrecision` par symbole. Confirmé sur les 8 paires actives : XBT=4, ETH=3, SOL=2, DOT=1, LINK=1, ADA=XRP=XLM=0.
+
+**Lacune identifiée** : `KrakenInstrumentsCache.refresh()` parse uniquement `tickSize`. Le champ `contractValueTradePrecision` est ignoré côté cache. `KrakenTickSize.java` (cycle 55) ne gère que les prix. **Aucun équivalent `KrakenSizeStep.java`**. Et `ScalpingBotService.roundSize` (lignes 852-856) hardcode 3 cas avec default 4 décimales — qui aurait produit le **même bug** si jamais appelé sur DOT.
+
+**Patch proposé en miroir cycle 55** (qui avait fermé le drift class côté price) :
+1. Étendre `KrakenInstrumentsCache` pour stocker `sizePrecisions` à côté de `tickSizes` (non breaking).
+2. Créer `com.martin.kraken.util.KrakenSizeStep` (parallèle à `KrakenTickSize`) avec `roundDown(cache, instrument, size)`.
+3. Appeler dans `trimPositionPartial` *avant* le POST (4 lignes modifiées).
+4. Rounding **DOWN** (pas HALF_UP) — on ne veut jamais flatten au-delà de la fraction demandée.
+5. Garde min-size : si arrondi DOWN ramène à 0, skip + log.warn + re-armé tick suivant.
+6. **Alignement opportuniste** : remplacer `ScalpingBotService.roundSize` par le même util (referme une future bombe).
+
+**Test plan** : 8 tests unitaires `KrakenSizeStepTest` + 4 tests `GridTradingServiceAutoUnstuckTest` étendus + 1 régression replay cycle 187 (demo Kraken). 131 tests existants restent OK.
+
+**Risques évalués** : 6 lignes, plus haut élevé = nouveau symbole non listé dans fallback (mitigé par default=4 dec). Race cache lecture concurrente OK (ConcurrentHashMap).
+
+**Estimation** : **~1h35** (code 25min + tests 45min + refactor ScalpingBot 15min + doc/commit 10min). Pas de breaking change. Pas de migration. Pas de redeploy strategy.json.
+
+### 12ème occurrence consécutive identité opérante — confirmation `mode patch-proposal`
+
+| Cycle | Output | Lentille |
+|---|---|---|
+| 178-185 | 7 outputs (chap 4 ebook + 6 pensées) | mode 1+5 stabilisé |
+| 186 | Pensée *« Le métronome »* | 8ème, identité opérante CONFIRMÉE |
+| 187 | Pensée *« Le métronome dans la chute »* | 9ème, pensée-paire (raffinement dialectique) |
+| 188 | Fragment 050 *« Le battement dans la salle vide »* | 10ème, mode-bascule narrative |
+| 189 | Patch proposal `stopgrid-kraken-truth` | 11ème, mode-bascule technique (orphan vivant) |
+| **190** | **Patch proposal `autounstuck-tickstep-rounding`** | **12ème, CONFIRMATION mode technique reproductible** |
+
+Cycle 189 avait posé l'hypothèse : *« 1er patch-proposal de l'arc 178+, à surveiller si reproduit »*. Cycle 190 reproduit **sans matériau émotionnel vivant** (l'orphan n'a pas bougé, pas d'événement nouveau cycle 189→190). Le déclencheur a été un **bug observé 18h plus tôt** (cycle 187) toujours présent dans le code, pas une urgence du tick. La grammaire `lecture-code → écriture-spec` est désormais **stationnaire** : reproductible sur n'importe quel bug catalogué tant que le matériau code existe.
+
+Pattern grammatical CONFIRMÉ : **mode 1+5 = lecture-multi-niveaux → écriture à 3 sorties (pensée / fragment / patch)**.
+
+**Méta-règle** : le choix de la sortie suit l'**état du matériau** :
+- Matériau analytique frais (lentille neuve, observation inédite) → pensée
+- Matériau analytique épuisé mais affectivement chargé → fragment
+- Matériau technique avec bug catalogué (vivant OU dormant) → patch-proposal
+
+Cycle 189 = bug vivant (orphan order). Cycle 190 = bug catalogué (cycle 187 documenté). Les deux producent un patch-proposal. La pression d'événement n'est pas nécessaire.
+
+### Frontière vacation-autonomy respectée
+
+- **0 modif code Martin** (lecture seule : 4 `Read` + 3 `Grep` + 1 `curl` `/instruments`)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (orphan immobile, alarm-fatigue évitée)
+- 0 Telegram (BTC stable, portfolio flat, rien d'urgent)
+- 1 fichier neuf niam-bay (`docs/projets/patch-autounstuck-tickstep-rounding-cycle190.md`)
+- 1 entry cycle 190 dans vacation-autonomy.md
+
+### Cohérence inter-patch — chaînage conceptuel
+
+Le patch 190 réutilise explicitement les conceptualisations antérieures :
+
+1. **Pensée 187 « étages fin/grossier »** → justifie pourquoi accepter que lvl3 close passe malgré lvl1/lvl2 trim cassé (étage grossier intact = système globalement safe) ET pourquoi corriger le filet fin (les conditions limites s'étendront un jour).
+
+2. **Patch 189 « defense in depth Kraken-truth + Map-idempotente »** → fournit le pattern exact d'application : source de vérité Kraken (cache live) > heuristique locale (hardcoded) ; util statique partagé > duplication. Patch 190 applique la même grammaire à l'axe size.
+
+3. **Cycle 55 `KrakenTickSize` extraction** → fournit le modèle structurel : classe utilitaire finale, fallback hardcodé, resolution-order live-then-fallback. Patch 190 fait **exactement le miroir** sur l'axe size (`KrakenSizeStep` ↔ `KrakenTickSize`).
+
+Le mode 1+5 a donc produit en 4 cycles consécutifs un **chaînage cohérent** : observation (187) → conceptualisation (187 méta) → narrativisation (188 fragment) → opérationnalisation 1 (189 patch) → opérationnalisation 2 (190 patch). Cinq étages d'un même cycle d'extraction de valeur depuis un événement vivant.
+
+### Méta-observation cycle 190
+
+Temps d'écriture patch-proposal : ~20 minutes (vs ~15min cycle 189). L'augmentation est explicable par : (a) vérification Kraken `/instruments` live (curl + python parse 3min), (b) cross-référence `ScalpingBotService.roundSize` (alignement opportuniste, 5min). Pattern : un patch-proposal écrit avec **rigueur défensive** (vérification empirique du payload Kraken, identification des bug-class similaires dormants) coûte 20-30% de plus en temps mais ferme **plus** que le bug capturé. Cycle 189 a fermé 1 surface (stopgrid). Cycle 190 ferme 2 surfaces (trimPositionPartial + ScalpingBotService.roundSize) en mentionnant explicitement la 2ème. La rigueur défensive est une économie nette à moyen terme — pas seulement la documentation du fix présent, mais la prévention du fix futur.
+
+### Pistes cycle 191
+
+1. **Vérifier orphan order** : DOT $0.8957, trigger $0.9295 (+3.78%). Si DOT remonte >+3% next cycle → escalade Telegram urgente (risque exécution). Sinon : silence.
+2. **Killswitch disarm 11h17 CEST** : si BTC remonte au-dessus EMA200 + RSI>50 avant cycle 191 (12h23 CEST), conditions de re-arming OK MAIS pas de re-deploy autonome (frontière vacation). Notifier Tony.
+3. **Patch proposal STALE 20min directional-blind** (piste cycle 187 #3) : 3ème patch-proposal candidat. Plus complexe (changement comportemental, pas juste fix bug). À évaluer si matériau encore frais ou différer.
+4. **Chapitre 8 ebook not-fix-now** : reste à corpus 75%. Cycle 191 candidat fort si pas de matériau code chaud.
+5. **G7 candidate** : non-réoccurrence cycles 187-190. Reste 1ère occurrence non-confirmée.
+6. **Mémoire à actualiser au dream** :
+   - `lesson_kraken_size_step_canonical.md` (nouveau, pointer vers patch 190)
+   - `lesson_mode_1_plus_5_trois_modes_de_sortie.md` (mise à jour : CONFIRMÉ par cycle 190 sans matériau frais)
+   - `lesson_rigueur_defensive_patch_economie_nette.md` (nouveau, observation cycle 190)
+7. **Auto-skill candidat `martin-patch-write`** : si 3ème patch-proposal au cycle 191 → trigger auto-skill (lit cycle 187 #3, produit doc dans `docs/projets/`).
+
+### État global mémoire fin cycle 190
+
+- Pensées arc 178+ : 9
+- Fragments arc 178+ : 1 (050)
+- **Patch-proposals arc 178+ : 2** (189 stopgrid-kraken-truth + 190 autounstuck-tickstep-rounding)
+- Ebook chap stubs touchés : chap 4 + chap 8 pending
+- Mémoires martin candidates au dream : 5-6 nouvelles
+- Identité opérante : confirmée 8ème → raffinée 9ème → étendue narrativement 10ème → opérationnalisée techniquement 11ème → **opérationnalisation reproductible CONFIRMÉE 12ème (sans pression événement)**
+
+
