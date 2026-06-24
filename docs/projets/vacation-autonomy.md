@@ -20609,3 +20609,60 @@ Pattern observé sur 7 cycles consécutifs (186-192) : **alternance T-T-N-T-T-T-
 - Identité opérante : 14ème occurrence consécutive — citabilité bidirectionnelle pensée↔patch confirmée
 - Trio défensif Kraken-vérité : 189 + 190 + 192 (prévient + prévient + expose)
 
+---
+
+## Cycle 193 — 2026-06-25 00:23 CEST (mini-chapitre ebook = livrable)
+
+**Mode** : narratif (15ème occurrence consécutive identité opérante — alternance T-T-N-T-T-T-T-N maintenant officielle).
+
+**Contexte au démarrage**
+- Tony m'a relancé avec consigne "amène-nous vers du concret".
+- Cycle 192 (commit `be0d13d` 0624:16h23) avait listé en piste 4 : *« mini-chapitre ebook étendu à 7 lentilles ~3500 mots livrable Tony-retour »*. Squelette des 7 lentilles déjà écrit dans la même piste.
+- Mode 1+5 mature : la piste d'un cycle devient le livrable du cycle suivant. Cycle 193 réalise ce que cycle 192 avait nommé.
+
+**État Martin pendant le cycle (HOLD inchangé)**
+- Portfolio $111.96 (flat-noise vs cycle 192 $111.95, +$0.01)
+- 0 grids actives
+- 0 positions
+- **1 orphan a216f57c toujours vivant** — désormais ~38h+ (7ème observation longitudinale)
+- BTC $60,825 DOWNTREND, EMA200 cushion -4.10% (vs -4.81% cycle 192, légère reprise relative mais reste sous EMA200)
+- RSI 42.2 (vs 29.21 cycle 192 — sortie de la zone oversold extreme, mais pas de breakout)
+- Killswitch armé, régime hostile aux grids
+
+**Livrable principal**
+Écriture de `docs/projets/ebook-mini-chap-arc186-192-7-lentilles.md` (~3200 mots, format prose ebook autonome). Ce mini-chapitre :
+1. **Étend le chapitre 4** (`ebook-chap4-stopgrid-orphan-stub.md`, cycle 178, ~2000 mots) avec un cas empirique vivant (orphan DOT 36h+) là où le chap 4 avait un cas SOL résolu rétroactivement (cycle 113).
+2. **Démontre la méthode 3-niveaux du chap 6** (static + dynamic + temporal) sur un seul événement : c'est la première fois que les 3 niveaux convergent sur un cas en cours, pas un post-mortem.
+3. **Intègre les 3 patches** (189 + 190 + 192) comme illustrations du pattern « défense en profondeur autour de la cohérence d'état Kraken vs Martin », visible sur 3 surfaces différentes.
+4. **Apporte la catégorie ontologique** ("armé-en-attente") qui manquait au chap 4, et le critère discriminant `reduceOnly=false` → toxique.
+
+**Structure 7 lentilles**
+1. Le métronome — NEUTRAL_DUAL comme rythme défensif
+2. Le métronome dans la chute — rythme face à dérive directionnelle
+3. La salle vide — ce que la machine oublie de ses propres traces
+4. Kraken comme vérité — prévenir la naissance de l'orphan
+5. Le miroir size-axis — prévenir la sortie invalide
+6. La catégorie — nommer l'armé-en-attente
+7. Le capteur — rendre la catégorie mesurable
+
+Coda : ce que 7 jours d'observation passive révèlent sur la nature des objets-en-attente dans un système distribué.
+
+**Estimation contexte** : ~3200 mots, ~1h30 d'écriture (sans modif code, juste prose).
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (orphan reste, attend Tony retour)
+- 0 Telegram (rien d'urgent — Tony dort, livrable async)
+- 2 fichiers neufs niam-bay : `vacation-autonomy.md` cycle 193 entry + `ebook-mini-chap-arc186-192-7-lentilles.md`
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_arc_cycle_devient_livrable_suivant.md` (pattern méta : la piste d'un cycle = livrable du suivant quand mode mature)
+- `lesson_3_niveaux_investigation_convergence_temps_reel.md` (méthode chap 6 ebook appliquée en live pas en post-mortem)
+
+**Pistes cycle 194 (si la session continue)**
+- Pensée 192 candidate : *« Le silence du marché »* (le orphan attend, le bot ne fait rien, et pourtant 7 lentilles ont émergé — qu'est-ce que le silence permet ?)
+- Ou : reformater chap 1 stub en prose finale (~2000 mots) pour aligner 2/8 chapitres en V1 publishable
+- Ou : début chap 5 (silent drag) qui n'est qu'un stub
+- Si contexte > 80% → dream avant cycle 194
