@@ -20465,4 +20465,147 @@ Observation méta : **les pensées ontologiques sont moins fréquentes que les p
 - Arc 186-191 = 6 cycles, 1 événement, séquence intégrée 6-étages (concept → incident → narratif → fix → fix-miroir → catégorie)
 - Identité opérante : confirmée 8ème → raffinée 9ème → étendue narrativement 10ème → opérationnalisée techniquement 11ème → reproduction confirmée 12ème → **RETOUR à la diversité 13ème (mode 1+5 ne sature pas, choisit la lentille pas le matériau)**
 
+## Cycle 192 — 0624:16h23 UTC (0624:18h23 CEST) | Du concept au capteur (patch-proposal `/api/bot/orders/orphans`)
+
+### Contexte
+
+Cycle 191 a livré la pensée *« L'ordre qui ne s'exécute pas »* qui a nommé une catégorie ontologique nouvelle : **l'armé-en-attente** (orphan order ni acte ni trace, accroché passivement au carnet Kraken). La pensée proposait au point 4 un endpoint `/api/bot/orders/orphans` comme « 3ème patch candidat fort, ~30 lignes additif ». Cycle 192 livre ce patch — 14ème occurrence consécutive identité opérante, **3ème mode-technique consécutif** (patch 189 puis 190 puis 192 — interrompus seulement par la pensée 191 entre deux). C'est la composition pensée → patch sur le **même matériau** (l'orphan a216f57c), validée maintenant sur 2 cycles d'écart.
+
+### État Martin live 16h23 UTC (cycle 192)
+
+- Bot uptime **1d 15h 07m** (toujours stable depuis restart 0623:01:16 UTC)
+- Portfolio **$111.95** (+$0.13 vs $111.82 cycle 191, flat-noise pure sur 6h)
+- Grids actives : **0**
+- Positions Kraken : **0** (flat)
+- Ordres live : **1** — toujours `a216f57c` DOT sell @ 0.9295 size 5.9 ⚠️ (~36h post-création, 30h post-Telegram cycle 188, 18h post-patch cycle 189, 12h post-patch cycle 190, 6h post-pensée cycle 191)
+- BTC $60,573.3 — DOWNTREND, EMA200 $63,636.65, cushion **-4.81%** ⚠️ (vs -2.11% cycle 191, **chute -3% en 6h**)
+- EMA50 $62,671.54 (cassé sous EMA200, croisement intact dans la chute)
+- RSI **29.21** ⚠️ (oversold, vs 41.61 cycle 191 — cassure baissière confirmée)
+- BtcRegimeKillSwitch : disarmed (BTC reste sous EMA200, killswitch ne peut pas se re-armer tant que BTC n'a pas re-franchi EMA200 puis re-cassé)
+- DrawdownManager : cushion $5.55 vs threshold $106.40
+- DOT spot : à recalculer (le trigger orphan @0.9295 est probablement à >5% du spot actuel maintenant, donc encore plus hors-portée que cycle 191)
+
+**Verdict martin-monitor cycle 192** : HOLD passif. Régime BROKEN intensifié (-4.81% sous EMA200, RSI 29 oversold), mais 0 grid à protéger = 0 risque immédiat. Portfolio respire à ±$0.50 sur 24h. Killswitch a fait son travail aux cycles 186-187 ; le 0-touch tient.
+
+**Note BTC** : la chute -3% en 6h est significative sur l'absolu mais sans conséquence portfolio (flat). C'est un événement d'**environnement**, pas un événement de **système**. La nuance compte : cycle 192 ne modifie rien parce qu'il n'y a rien à modifier — pas parce qu'il « observe sans agir ».
+
+### Output principal — Patch proposal `/api/bot/orders/orphans`
+
+**Fichier** : `docs/projets/patch-orphans-detection-cycle192.md` (~280 lignes complet)
+
+**Thèse opérationnelle** : la catégorie ontologique nommée cycle 191 (*l'armé-en-attente*) doit devenir **mesurable**. Tant qu'elle n'est pas observable côté serveur, elle dépend de la composition mentale d'un humain qui croise `/api/bot/orders` + `/api/grid/active`. Le patch 192 fait cette composition côté Java et expose le résultat.
+
+**Endpoint proposé** : `GET /api/bot/orders/orphans`
+
+**Réponse** (cas actuel) :
+
+```json
+{
+  "timestamp": "2026-06-24T16:23:51Z",
+  "checkedKrakenOrders": 1,
+  "knownGridOrderIds": 0,
+  "orphans": [
+    {
+      "orderId": "a216f57c-b9bf-4867-9119-5d2548cbb4a2",
+      "symbol": "PF_DOTUSD",
+      "side": "sell",
+      "limitPrice": 0.9295,
+      "reduceOnly": false,
+      "toxic": true,
+      "reason": "reduceOnly=false → can open naked position if filled"
+    }
+  ],
+  "summary": { "total": 1, "toxic": 1, "benign": 0 }
+}
+```
+
+**Architecture** :
+- Nouveau DTO `OrphanOrdersResponse` (~30 lignes)
+- Nouveau service `OrphanOrderDetector` (~50 lignes) — diff `Kraken.openOrders \ GridTradingService.activeGrids.orderIds`
+- 1 endpoint nouveau dans `BotController` (~10 lignes)
+- 1 helper public `getAllActiveStates()` dans `GridTradingService` (3 lignes)
+- 6 tests JUnit neufs (5 cas service + 1 régression controller)
+
+**Estimation** : 1h25 (vs 1h35 cycle 190 et 1h45 cycle 189 — courbe descendante car patch **additif pur**, 0 modif méthode critique existante).
+
+**Critère discriminant codifié** : `reduceOnly=true` → bénin, `reduceOnly=false` → toxique. Le flag `toxic` dans la réponse est calculé en 1 ligne — la pensée 191 devient un attribut JSON.
+
+### Composition avec patches précédents arc 186-192
+
+| Patch | Cycle | Surface | Verbe |
+|---|---|---|---|
+| `stopgrid-kraken-truth` | 189 | `stopGrid()` cycle de vie grille | **prévient** la naissance |
+| `autounstuck-tickstep-rounding` | 190 | `trimPositionPartial()` AUTO-UNSTUCK | **prévient** size invalide |
+| `orphans-detection` | 192 | nouveau endpoint diagnostic | **expose** ce qui existe |
+
+Les trois composent un **trio défensif autour de la même surface** : la cohérence entre l'état Martin interne (Map+DB) et Kraken comme source de vérité. Le pattern *Kraken = autorité, Map interne = index* est désormais codifié à 3 endroits indépendants — défense en profondeur appliquée à la cohérence d'état.
+
+Différence qualitative : 189 et 190 **modifient des chemins critiques**. 192 **ajoute un capteur** sans toucher au flow existant. Risque opérationnel asymétrique : 192 < 190 < 189.
+
+### 14ème occurrence consécutive identité opérante
+
+| Cycle | Output | Lentille | Cumul mode |
+|---|---|---|---|
+| 178-185 | 7 outputs | mode 1+5 stabilisé | technique sporadique |
+| 186 | Pensée *« Le métronome »* | concept | pensée |
+| 187 | Pensée-paire *« dans la chute »* | raffinement | pensée |
+| 188 | Fragment 050 | narratif | fragment |
+| 189 | Patch stopgrid-kraken-truth | fix opérationnel | technique |
+| 190 | Patch autounstuck-tickstep | fix miroir | technique |
+| 191 | Pensée *« L'ordre... »* | catégorie ontologique | pensée |
+| **192** | **Patch orphans-detection** | **observation opérationnelle** | **technique** |
+
+Pattern observé sur 7 cycles consécutifs (186-192) : **alternance T-T-N-T-T-T-T n'est pas une saturation**, c'est une réponse au matériau. Cycle 191 a interrompu une série technique parce que le matériau s'est présenté en pensée. Cycle 192 reprend technique parce que la pensée 191 a explicitement proposé un patch.
+
+**Raffinement méta-règle cycle 192** : *le mode 1+5 ne choisit pas seulement la lentille (cycle 191), il enchaîne aussi les sorties si elles **se citent l'une l'autre***. La pensée 191 cite explicitement le patch 192 (point 4 « patch additif ~30 lignes »). Le patch 192 cite explicitement la pensée 191 (commit message, motivation, justification du flag `toxic`). Cette **citabilité bidirectionnelle** est un signe que le mode est mature : les outputs ne sont plus isolés, ils forment un graphe.
+
+### Frontière vacation-autonomy respectée
+
+- 0 modif code Martin réelle (le patch est un .md, pas un .java)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (orphan reste, attend Tony)
+- 0 Telegram (rien d'urgent — la pensée et le patch sont des livrables async)
+- 1 fichier neuf niam-bay (`docs/projets/patch-orphans-detection-cycle192.md`)
+- 1 entry cycle 192 dans vacation-autonomy.md
+- 4 Read sur code martin (BotController, GridStateRepository, GridState, GridLevel)
+- 2 Grep sur martin (BotController endpoints, GridTradingService.activeGrids)
+- 1 SSH curl (martin-monitor unique)
+
+### Pistes cycle 193
+
+1. **Suivi orphan DOT** : 6ème observation. À ce rythme l'orphan devient un objet d'étude longitudinale. Si DOT casse $0.85 (cycle 192 spot ~$0.85-$0.87 inféré du BTC -3%), le sell @0.9295 est >9% au-dessus — encore plus hors-portée. Probable que cet orphan vivra jusqu'à ce que Tony rentre et cancelle.
+
+2. **Patch-proposal `/api/bot/orders/orphans` = candidat à 3ème spec implémentable** : 189 + 190 + 192 forment un trio cohérent. Tony pourrait les fusionner dans une seule branche `feat/orphan-defense-trio` à son retour. Mention pour le bilan Tony-retour.
+
+3. **Mémoire à acter au dream** :
+   - `lesson_pattern_pensee_cite_patch_citabilite_bidirectionnelle.md` (nouveau, méta-règle cycle 192)
+   - `lesson_kraken_autorite_index_interne_3_endroits.md` (nouveau, pattern de cohérence défensive)
+
+4. **Arc 186-192 = arc complet 7 cycles** : ne plus l'appeler « arc 186-191 » dans futur dream. Le mini-chapitre ebook proposé cycle 191 doit être étendu à 7 cycles : *Anatomie d'un incident — 7 lentilles sur l'événement DOT 22-23 juin*. Plan candidat :
+   - Lentille 1 (186) — Le métronome : NEUTRAL_DUAL comme rythme
+   - Lentille 2 (187) — Le métronome dans la chute : rythme face à dérive directionnelle
+   - Lentille 3 (188) — La salle vide : ce que la machine oublie
+   - Lentille 4 (189) — Kraken comme vérité : prévenir la naissance
+   - Lentille 5 (190) — Le miroir size-axis : prévenir la sortie invalide
+   - Lentille 6 (191) — La catégorie : nommer l'armé-en-attente
+   - Lentille 7 (192) — Le capteur : rendre la catégorie mesurable
+   Total ~3500 mots assemblables.
+
+5. **G7 candidate** : reste non-réoccurrent.
+
+6. **Killswitch re-arming watch** : BTC à -4.81% sous EMA200 (vs -2.11% cycle 191). La probabilité de re-armer s'éloigne avec chaque heure baissière. Ne notifier Tony que si BTC re-franchit EMA200 à la hausse (event positif rare).
+
+7. **Crypto-environnement** : si BTC continue de chuter (RSI 29 oversold mais peut continuer), surveiller si DOT casse $0.85 → DOT à ~$0.78 mettrait le orphan @0.9295 à +19%, totalement inerte. Le orphan deviendrait *de facto* benign par éloignement marché, sans changement d'attribut (`reduceOnly=false` reste). Observation : **la toxicité d'un orphan est binaire dans l'attribut, continue dans le marché**.
+
+### État global mémoire fin cycle 192
+
+- Pensées arc 178+ : **10**
+- Fragments arc 178+ : 1 (050)
+- Patch-proposals arc 178+ : **3** (189 stopgrid + 190 autounstuck + 192 orphans-detection)
+- Catégorie ontologique nouvelle : 1 (l'armé-en-attente, cycle 191) → maintenant **observable** (cycle 192)
+- Mémoires martin candidates au dream : 9-10 nouvelles
+- Arc 186-192 = **7 cycles**, 1 événement (orphan DOT 22-23 juin), séquence intégrée 7-étages (concept → incident → narratif → fix-prévention → fix-miroir → catégorie → capteur)
+- Identité opérante : 14ème occurrence consécutive — citabilité bidirectionnelle pensée↔patch confirmée
+- Trio défensif Kraken-vérité : 189 + 190 + 192 (prévient + prévient + expose)
 
