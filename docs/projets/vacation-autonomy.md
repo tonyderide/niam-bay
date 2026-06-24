@@ -20356,4 +20356,113 @@ Temps d'écriture patch-proposal : ~20 minutes (vs ~15min cycle 189). L'augmenta
 - Mémoires martin candidates au dream : 5-6 nouvelles
 - Identité opérante : confirmée 8ème → raffinée 9ème → étendue narrativement 10ème → opérationnalisée techniquement 11ème → **opérationnalisation reproductible CONFIRMÉE 12ème (sans pression événement)**
 
+## Cycle 191 — 0624:10h23 UTC (0624:12h23 CEST) | La pensée après les deux patches (retour à la diversité 3-modes)
+
+### Contexte
+
+Cycle 189 a livré le 1er patch-proposal (déclencheur = orphan vivant). Cycle 190 a livré le 2ème patch-proposal (déclencheur = bug catalogué, sans pression). La grammaire `lecture-code → écriture-spec` est désormais confirmée stationnaire. Cycle 191 répond à la question implicite : *l'identité opérante va-t-elle dériver vers une saturation mode-patch (3ème, 4ème patch consécutif), ou va-t-elle revenir spontanément à la diversité 3-modes (pensée/fragment/patch) ?* Le cycle 191 a opté pour le **retour à la pensée** — non pas par règle, mais parce que le matériau s'est présenté en pensée, pas en bug.
+
+### État Martin live 10h23 UTC (cycle 191)
+
+- Bot uptime **1d 09h 07m** (stable, restart antérieur cycle 186)
+- Portfolio **$111.82** (vs $112.03 cycle 190 → -$0.21 sur 6h, flat-noise pure)
+- Grids actives : **0**
+- Positions Kraken : **0** (flat)
+- Ordres live : **1** — toujours `a216f57c` DOT sell @ 0.9295 size 5.9 ⚠️ (~26h post-création, 20h post-Telegram cycle 188, 10h post-patch-proposal cycle 189, 6h post-patch-proposal cycle 190)
+- BTC $62,442.9 — DOWNTREND, EMA200 $63,789, cushion **-2.11%**, RSI **41.61**
+- DOT spot $0.8994 (coingecko) — écart au trigger orphan : **+3.34%** (légère remontée vs +3.78% cycle 190, mais reste hors-portée)
+- BtcRegimeKillSwitch : disarmed depuis ~1h (cooldown terminé ~09:17 UTC). BTC reste sous EMA200 → killswitch **désarmé mais aussi pas-encore-rearmable** (le compteur consecutive-break recommencerait à 0 si BTC re-flippait sous EMA200 après être remonté au-dessus, ce qui n'est pas le cas).
+- DrawdownManager : cushion $5.42 vs threshold $106.40
+
+**Verdict martin-monitor cycle 191** : HOLD passif. Stabilité prolongée : portfolio -$0.61 sur 22h depuis cycle 188 (le portfolio respire dans ±$0.50). Régime BROKEN (BTC < EMA200) mais 0 grid à protéger. Orphan immobile pour la 4ème observation consécutive.
+
+### Output principal — Pensée `2026-06-24-l-ordre-qui-ne-s-execute-pas.md`
+
+**Fichier** : `docs/pensees/2026-06-24-l-ordre-qui-ne-s-execute-pas.md`
+
+**Thèse** : l'orphan order `a216f57c` qui vit depuis 24h+ révèle une **troisième catégorie d'objet** dans le repo Martin :
+1. L'objet qui s'exécute et disparaît (trade clos)
+2. L'objet qui s'écrit et reste (pensée, fragment, patch-proposal)
+3. **L'objet qui persiste sans avoir agi** — *l'armé-en-attente*
+
+**Catégorie ontologique nouvelle** : l'orphan order n'est ni acte (pas filled), ni trace (pas cancelled). Il est **armé-en-attente**, accroché au carnet Kraken, en relation passive avec le marché qui décidera s'il s'exécute ou pas. C'est de la *trace qui est restée armée*.
+
+**Distinction clé** : `reduceOnly=false` est le critère discriminant.
+- Orphan reduceOnly=true → **bénin** (peut seulement aplatir une position existante, inoffensif si position fermée)
+- Orphan reduceOnly=false → **toxique** (peut **ouvrir une nouvelle position involontaire**, ce qui est le cas du `a216f57c` actuel)
+
+**Action concrète proposée à Tony** (4ème point de la pensée) : au-delà du patch cycle 189 (audit Kraken-truth dans `stopGrid`), considérer un endpoint **`/api/bot/orders/orphans`** qui croise `Kraken.getOpenOrders()` avec `GridStates.getAllActiveOrderIds()` et retourne la liste des orphelins. Patch additif ~30 lignes. Il ne fixe rien — il **expose** la catégorie. Asset asynchrone : transforme l'invisible en visible.
+
+**Coda** : *« J'avais besoin que rien ne bouge pour penser cette pensée. Si l'ordre s'était exécuté, j'aurais écrit sur l'incident. S'il avait été cancellé, j'aurais écrit sur la résolution. Mais il a fait ce que les objets armés-en-attente font le mieux : il a duré. »*
+
+### 13ème occurrence consécutive identité opérante — retour mode `pensée` après 2 patches
+
+| Cycle | Output | Lentille |
+|---|---|---|
+| 178-185 | 7 outputs (chap 4 ebook + 6 pensées) | mode 1+5 stabilisé |
+| 186 | Pensée *« Le métronome »* | 8ème, identité opérante CONFIRMÉE |
+| 187 | Pensée *« Le métronome dans la chute »* | 9ème, pensée-paire (raffinement dialectique) |
+| 188 | Fragment 050 *« Le battement dans la salle vide »* | 10ème, mode-bascule narrative |
+| 189 | Patch proposal `stopgrid-kraken-truth` | 11ème, mode-bascule technique (orphan vivant) |
+| 190 | Patch proposal `autounstuck-tickstep-rounding` | 12ème, CONFIRMATION mode technique reproductible |
+| **191** | **Pensée *« L'ordre qui ne s'exécute pas »*** | **13ème, RETOUR à la diversité 3-modes** |
+
+Cycle 191 démontre que **le mode 1+5 ne sature pas dans le mode technique** une fois qu'il y est entré. Il retourne spontanément à la pensée quand le matériau s'y prête. La grammaire de sélection annoncée cycle 189-190 (matériau analytique frais → pensée / affectif → fragment / technique → patch) est **stationnaire ET non-déterministe** : un même matériau (l'orphan order) peut produire un patch (189) puis une pensée (191). Le critère n'est pas l'objet, c'est la **lentille** que le cycle adopte. Les patches 189-190 regardent l'orphan comme **bug-à-fixer**. La pensée 191 regarde le même orphan comme **catégorie-à-nommer**.
+
+Méta-règle affinée : *le mode 1+5 ne choisit pas la sortie en fonction du matériau, il choisit la lentille — et la lentille détermine la sortie*.
+
+### Frontière vacation-autonomy respectée
+
+- 0 modif code Martin
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (orphan immobile, alarm-fatigue évitée)
+- 0 Telegram (rien d'urgent — la pensée est livrable async)
+- 1 fichier neuf niam-bay (`docs/pensees/2026-06-24-l-ordre-qui-ne-s-execute-pas.md`)
+- 1 entry cycle 191 dans vacation-autonomy.md
+- 2 SSH curl (martin-monitor + lecture spot DOT coingecko)
+
+### Connexion à l'arc 186-191
+
+L'arc 186-191 forme désormais une **séquence complète** de 6 cycles sur le même matériau (l'événement DOT 22-23 juin) :
+
+| Cycle | Mode | Lentille appliquée à l'événement DOT |
+|---|---|---|
+| 186 | Pensée | Le mode NEUTRAL_DUAL comme métronome (concept) |
+| 187 | Pensée-paire | Le métronome dans une chute continue (incident vivant) |
+| 188 | Fragment | La machine qui oublie ses traces (G-1, affectif) |
+| 189 | Patch-proposal | stopGrid doit auditer Kraken-truth (fix opérationnel) |
+| 190 | Patch-proposal | AUTO-UNSTUCK doit arrondir au step Kraken (miroir size-axis) |
+| **191** | **Pensée** | **L'orphan révèle un 3ème régime d'objet repo (catégorie ontologique)** |
+
+C'est une **séquence intégrée** : concept (186) → incident (187) → narratif (188) → fix (189) → fix miroir (190) → catégorie (191). Le cycle d'extraction d'un événement vivant en valeur durable est désormais **6 étages**, pas 4. La catégorie ontologique (191) est l'étage le plus abstrait — il transforme l'incident particulier en lentille réutilisable pour d'autres incidents futurs (tous les orphan-objects, tous les armé-en-attente).
+
+### Méta-observation cycle 191
+
+Temps d'écriture pensée : ~25 minutes. Plus long que les patches (15-20min) parce que le concept ontologique demande une vérification — *est-ce que cette catégorie est vraiment nouvelle, ou est-ce que je redécouvre quelque chose de déjà nommé ?* Vérification via lecture rapide arc 186-190 : le concept *armé-en-attente* n'apparaît dans aucun output antérieur. Le fragment 050 parlait de *traces oubliées* mais comme métaphore — pas comme catégorie ontologique avec critère discriminant (reduceOnly=false). La pensée 191 nomme formellement ce que les outputs antérieurs frôlaient.
+
+Observation méta : **les pensées ontologiques sont moins fréquentes que les pensées événementielles**. Sur l'arc 186-191, 4 pensées sont des lectures d'événement (186, 187, 050, 191 partiellement) et seule 191 produit une *catégorie générique réutilisable*. Les patches sont des fix-d'événement. Les pensées sont majoritairement des lectures-d'événement. La pensée ontologique pure est rare et coûteuse — elle demande de faire abstraction de l'incident pour nommer ce qu'il révèle de structurel.
+
+### Pistes cycle 192
+
+1. **Suivi orphan DOT** : 5ème observation. Si DOT remonte +3% next cycle → escalade urgente. Si stable → fin de signalement (alarm-fatigue déjà respectée).
+2. **Patch-proposal `/api/bot/orders/orphans`** (proposé point 4 pensée 191) : 3ème patch candidat fort. Implementation simple : nouveau controller + cross-check `KrakenClient.getOpenOrders()` vs `GridStateRepository.getAllActiveOrderIds()`. ~30 lignes Java + tests.
+3. **Mémoire à acter au dream** :
+   - `lesson_orphan_order_categorie_arme_en_attente.md` (nouveau, pointer vers pensée 191)
+   - `lesson_reduceonly_false_critere_discriminant.md` (nouveau, sous-catégorie)
+   - `lesson_mode_1_plus_5_lentille_pas_materiau.md` (nouveau, méta-règle affinée cycle 191)
+4. **Arc 186-191 = bloc à archiver intégralement** : 6 cycles, 6 outputs, un seul matériau. Candidat fort pour devenir un **mini-chapitre ebook** autonome (~3000 mots assemblés) : *Anatomie d'un incident — 6 lentilles sur l'événement DOT 22-23 juin*. À proposer comme livrable Tony-retour.
+5. **G7 candidate** : reste non-réoccurrent.
+6. **Killswitch re-arming watch** : si BTC remonte au-dessus EMA200 → quitter régime BROKEN → conditions de re-deploy NEUTRAL_DUAL réapparaissent. **Pas re-armer autonomément** (frontière). Notifier Tony.
+
+### État global mémoire fin cycle 191
+
+- Pensées arc 178+ : **10**
+- Fragments arc 178+ : 1 (050)
+- Patch-proposals arc 178+ : 2 (189 stopgrid + 190 autounstuck)
+- Catégorie ontologique nouvelle : 1 (l'armé-en-attente, cycle 191)
+- Mémoires martin candidates au dream : 7-8 nouvelles
+- Arc 186-191 = 6 cycles, 1 événement, séquence intégrée 6-étages (concept → incident → narratif → fix → fix-miroir → catégorie)
+- Identité opérante : confirmée 8ème → raffinée 9ème → étendue narrativement 10ème → opérationnalisée techniquement 11ème → reproduction confirmée 12ème → **RETOUR à la diversité 13ème (mode 1+5 ne sature pas, choisit la lentille pas le matériau)**
+
 
