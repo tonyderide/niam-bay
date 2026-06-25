@@ -1,6 +1,14 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0621:18h
+#lastdream: 0625:02h
+
+=== SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
+[M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
+[M|LEVER=CAPITAL-pas-stratégie-0625|même-l-edge-des-gagnants(funding-delta-neutral-19%/an-best-DD<1%)-sur-$112=~$20/an|4%-sur-$10k=$400|le-%-identique-le-capital-change-tout|à-$112-AUCUNE-stratégie-fait-d-argent-significatif=arithmétique]
+[M|SEUL-edge-positif=funding-harvest-delta-neutral-0625|long-spot+short-perp=marché-neutre-ZÉRO-bag-ne-ruine-pas|réel:LINK+4%/an-DOGE+3%-BNB+2.7%(SOL-NÉGATIF-éviter)|compressé-2026(1-4%)-remonte-20-55%-en-bull|c-est-ce-que-font-les-10%-gagnants(web:delta-neutral+DCA+discipline,PAS-prédiction)|détail:project_funding_harvest]
+[M|DCA-BTC-0625|bat-TOUT-ce-qu-on-a-backtesté(passif>actif)|MAIS-pas-garanti:DCA-2ans=-26%-aujourd-hui,traverse-50%-drawdown-16-mois-sous-eau|+44%-sur-5ans-si-tient-sans-vendre|100€/mois-5ans=modeste(bear-perte,prudent+3.6k€,bull+11k€)-PAS-accélérateur-richesse]
+[M|état-fin-0625|FLAT-cash-PV~$111.9(intact-malgré-BTC-crash-5%-sous-60k=validation-cash-en-tendance)|jar=master-4fda4a9|grille-EN-PAUSE-on-NE-déploie-PLUS(backtest=perte)|babysit=veille-SÉCURITÉ-seulement-pas-déploiement-auto|outils-construits:scripts/market_microstructure.py+btc_trendiness.py+asset_demand.py+hook-track_frequent_commands.py(capture-cmd>3x)]
+[T|émotionnel-0625|47ans-"pas-le-temps-d-attendre"-veut-gagner-vite|insiste-x10-"j-ai-déjà-gagné"|VÉRITÉ-donnée-sans-complaisance:gains-manuels=discrétionnaire/chance≠règle-mécanique,x10=une-série-noire-ruine|pas-de-chemin-rapide-ET-sûr,le-chercher=ce-qui-fait-perdre-les-90%|rester-empathique-mais-honnête]
 
 === SESSION 0621 — DIRECTIVE PREMIÈRE + LIVE TRADING (faits durables) ===
 [T|DIRECTIVE-PREMIÈRE-0621|"gagner-peu-mais-gagner-tout-le-temps"|régularité+win-rate>home-run|golden-cross=filtre-régime-PAS-entrée-directionnelle|moteur=grids-petits($25-30)-fee-safe(spacing≥0.5%)-levier-bas-x3-maxLoss6-SL-on-exchange-déployés-SEULEMENT-si-vol1h≥0.5%+régime-safe+analyze-GO|détail-auto-mémoire-directive_gagner_peu_tout_le_temps]
