@@ -142,3 +142,9 @@
 # Pas de feature sans /brainstorm d'abord.
 # Bug ? → /systematic-debugging
 # Multi-tâches ? → /subagent-driven-development
+
+# [auto 2026-06-25 00:03] utilisée 3x — sig: python3 scripts/market_microstructure.py <SYM> <N>
+python3 scripts/market_microstructure.py XRPUSDT 24
+
+# [auto 2026-06-25 01:29] utilisée 3x — sig: python3 /home/tony/projets/tonyderide/niam-bay/scripts/btc_trendiness.py <SYM> <N>; ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> "curl -s http://localhost:<N>/api/bot/balance | python3 -c 'import sys,json;d=json.load(sys.stdin);print(\"PV\",d[\"accounts\"][\"flex\"][\"portfolioValue\"])'; curl -s http://localhost:<N>/api/bot/positions; curl -s http://localhost:<N>/api/gri
+python3 /home/tony/projets/tonyderide/niam-bay/scripts/btc_trendiness.py BTCUSDT 24; ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "curl -s http://localhost:8081/api/bot/balance | python3 -c 'import sys,json;d=json.load(sys.stdin);print(\"PV\",d[\"accounts\"][\"flex\"][\"portfolioValue\"])'; curl -s http://localhost:8081/api/bot/positions; curl -s http://localhost:8081/api/grid/active" 2>/dev/null; pgrep -f autonomous_watch.sh >/dev/null && echo mon_ok || echo mon_DEAD

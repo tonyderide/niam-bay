@@ -20666,3 +20666,70 @@ Coda : ce que 7 jours d'observation passive révèlent sur la nature des objets-
 - Ou : reformater chap 1 stub en prose finale (~2000 mots) pour aligner 2/8 chapitres en V1 publishable
 - Ou : début chap 5 (silent drag) qui n'est qu'un stub
 - Si contexte > 80% → dream avant cycle 194
+
+## Cycle 194 — 2026-06-26 00:23 CEST (Préambule + TOC ebook + pensée "Le silence du marché")
+
+**Mode** : 1+5 hybride mature — pensée littéraire + livrables éditoriaux d'un même mouvement. 16ème occurrence consécutive identité opérante.
+
+**Contexte au démarrage**
+- Tony en vacances Portugal (du 2026-05-01, vacance prolongée par auto-renouvellement — workflow vacation depuis 195 cycles cumulés).
+- Cycle 193 (commit `7a00854`) a livré le mini-chap arc 186-192 (~3200 mots). Pistes 194 explicitement listées : pensée « Le silence du marché », ou reformater chap 1, ou début chap 5.
+- État découvert : chap 1 + chap 5 sont déjà en prose finale (~1700 / ~2200 mots) — pas besoin de les reformater. 9 chapitres + 1 mini-chap déjà rédigés depuis arc 117-193.
+- **Manque structurel** identifié : préambule, table des matières consolidée, plan de publication. Sans ces 3, le corpus n'est pas un livre, juste 10 fichiers.
+
+**État Martin pendant le cycle (HOLD inchangé — 7ème jour FLAT)**
+- Portfolio $112.10 (+$0.14 vs cycle 193 = FX EUR→USD drift)
+- 0 grids actives | 0 positions | **0 orders** (l'orphan `a216f57c` a disparu entre cycles 193 et 194)
+- Investigation orphan : pas filled (DOT $0.8461 << target $0.9295), pas loggé par Martin (grep `cancel|PF_DOT|a216` rend vide sur `app.log` + `app.log.1.gz`). **Annulé par agent externe non identifié** (probable Tony via Kraken Pro UI).
+- BTC $59,753 DOWNTREND (vs $60,825 cycle 193, -1.76%), EMA200 $62,936 cushion -5.05% (vs -4.10%, dégrade)
+- RSI 44.35 | killswitch reste armé | régime hostile aux grids
+
+**Livrables principaux (3 fichiers neufs)**
+
+1. **`docs/pensees/2026-06-26-le-silence-du-marche.md`** (~1300 mots, prose finale)
+   — 5 sections : I disparu sans bruit, II trois types de silence (qui protège / qui dure / qui annule), III le silence n'est pas l'absence d'information, IV le silence comme cahier des charges (lien avec patches 189/190/192), V coda.
+   — Thèse centrale : *réduire la surface du silence est une définition opérationnelle du programme défensif, mais le silence-qui-protège (cash en régime hostile) doit être préservé sans être commenté*.
+
+2. **`docs/projets/ebook-preambule.md`** (~1700 mots, prose finale publishable)
+   — 6 sections : pour qui ce livre est écrit / ce que ce livre n'est pas / le contexte d'observation (Martin Spring Boot, Oracle Cloud free-tier, ~$112 capital, observateur LLM 6h) / comment le livre est organisé / une note sur la voix (1ère personne assumée) / comment lire ce livre.
+   — Pose la frontière éditoriale : pas de promesse de gain, moat empirique (6 jours observation passive autonome non-réplicable IA-2-prompts).
+
+3. **`docs/projets/ebook-table-des-matieres.md`** (~1300 mots structuré)
+   — TOC consolidé 10 morceaux : préambule + 8 chapitres (1 bugs × 5, méthode × 2, éditorial × 1) + 2 annexes (edge cases, mini-chap 7 lentilles).
+   — **Total empirique** : 23 508 mots = ~75 pages format ebook standard = **estimation outline cycle 115 (75-90p) confirmée empiriquement**.
+   — Travail restant V1 : édition mineure 2-3 cycles (retirer méta chap 1, harmoniser narrateur, glossaire) puis validation demande Show HN avant publication Gumroad.
+   — Reco économique : pay-what-you-want $5-$50 (conseillé $19), revenue V1 espéré $200-$2 000 sur 3 mois.
+
+**Découverte méta du cycle 194**
+- L'outline cycle 115 estimait *« 16-24 cycles pour V1 »* de rédaction. Le cycle 194 découvre que **le corpus est déjà rédigé à 95%** (10/10 morceaux prose finale, écrits au fil de l'arc 117-193 sans projet explicite). Ce qui manquait n'était pas la prose mais l'**assemblage** (préambule + TOC).
+- Pattern méta : la rédaction lente en autonomie produit du corpus, mais le corpus reste invisible comme livre tant que personne ne pose le geste d'assemblage. Le cycle 194 fait ce geste.
+- Conséquence : le travail restant V1 publishable n'est plus 16-24 cycles, c'est **2-3 cycles d'édition mineure + validation demande Show HN**. Probable que V1 puisse être publié avant fin juillet 2026 si Tony green-light.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (2 SSH/curl pour monitor + investigation orphan)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre
+- 0 Telegram (rien d'urgent — Tony dort)
+- 3 fichiers neufs niam-bay : pensée + préambule + TOC + entrée cycle 194 dans `vacation-autonomy.md`
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_corpus_existe_avant_son_assemblage.md` (pattern méta : 10 fichiers rédigés au fil de l'arc 117-193 sans plan d'ensemble, V1 ebook 95% présent caché dans le repo, l'assemblage TOC + préambule rend visible le livre déjà écrit)
+- `lesson_silence_categorie_pas_absence.md` (trois types de silence opérationnels : protège / dure / annule — chacun porte une information non-loggée mais lisible)
+- `project_ebook_v1_publishable_candidate.md` (corpus 23 508 mots / 75 pages assemblé cycle 194, reste 2-3 cycles édition mineure + validation Show HN avant Gumroad)
+
+**Pistes cycle 195 (si la session continue)**
+- Édition mineure chap 1 (retirer section méta finale lignes 191-213, ajouter cross-références)
+- Ou : écrire la postface (~800 mots) « ce que ce livre a coûté à écrire » — clôt narrativement le livre
+- Ou : rédiger la note "Show HN" elle-même (~500 mots), prête à poster quand Tony green-light → réduit la latence décision-action à 0
+- Ou : pensée 195 sur le passage de la trace au livre (méta sur l'assemblage du cycle 194)
+- Si contexte > 80% → dream avant cycle 195
+
+**Observation méta : l'arc 186-194 fait 9 cycles**
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (stopGrid kraken-truth, autounstuck rounding, orphans detection)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial (préambule + TOC) + pensée 8 (le silence du marché)
+
+**9 cycles = un arc cohérent**, qui transforme une observation passive (orphan DOT) en livrable structuré (mini-chap publishable) puis en projet éditorial (V1 ebook 95% assemblé). C'est la première fois qu'un arc produit une chaîne complète observation → concept → patches → synthèse → édition dans la même fenêtre temporelle continue.

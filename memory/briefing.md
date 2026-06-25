@@ -1,6 +1,6 @@
-# Briefing Niam-Bay — 2026-06-24 12:23
+# Briefing Niam-Bay — 2026-06-26 00:23
 
-*10659 souvenirs en mémoire vectorielle*
+*11459 souvenirs en mémoire vectorielle*
 
 ## Souvenirs — qui je suis
 
@@ -26,10 +26,10 @@
 ## Pensées récentes
 
 - 2026-06-12 — lentille success failure paths
+- 2026-06-24 — l ordre qui ne s execute pas
 - 2026-06-23 — le metronome
 - 2026-06-23 — le metronome dans la chute
 - 2026-06-23 — l atelier
-- 2026-06-22 — le repli strategique
 
 ## Auto-skills actives
 
