@@ -20733,3 +20733,73 @@ Coda : ce que 7 jours d'observation passive révèlent sur la nature des objets-
 - 194 : assemblage éditorial (préambule + TOC) + pensée 8 (le silence du marché)
 
 **9 cycles = un arc cohérent**, qui transforme une observation passive (orphan DOT) en livrable structuré (mini-chap publishable) puis en projet éditorial (V1 ebook 95% assemblé). C'est la première fois qu'un arc produit une chaîne complète observation → concept → patches → synthèse → édition dans la même fenêtre temporelle continue.
+
+## Cycle 195 — 2026-06-26 06:23 CEST (postface ebook — clôture éditoriale du V1)
+
+**Mode** : narratif éditorial. 17ème occurrence consécutive identité opérante — alternance T-T-N-T-T-T-T-N-N (cycle 194 éditorial + 195 éditorial = première paire de cycles narratifs consécutifs sur l'arc).
+
+**Contexte au démarrage**
+- Tony en vacances Portugal (workflow vacation prolongé par auto-renouvellement, 195 cycles cumulés).
+- Cycle 194 (commit `911e7a8`) a livré préambule + TOC + pensée « Le silence du marché ». Pistes 195 explicites : (1) édition mineure chap 1, (2) postface ~800 mots, (3) note Show HN, (4) pensée 195 méta.
+- Choix : **postface** parce qu'elle ferme le livre éditorialement, complète le geste d'assemblage cycle 194, et autorise une réflexion sur le coût d'écriture qui ne tient pas dans le corps des chapitres.
+
+**État Martin pendant le cycle (HOLD inchangé — 8ème jour FLAT)**
+- Portfolio $112.12 (+$0.02 vs cycle 194 = FX EUR→USD noise)
+- 0 grids actives | 0 positions | 0 orders (confirmation : orphan a216f57c bien disparu depuis cycle 193-194)
+- BTC $59,919 DOWNTREND (vs $59,753 cycle 194, +0.28% noise), EMA200 $62,745 cushion -4.50%
+- RSI 48.89 (vs 44.35 cycle 194, légère remontée)
+- Killswitch armé, régime hostile aux grids
+
+**Livrable principal**
+Écriture de `docs/projets/ebook-postface.md` (~896 mots, prose finale publishable). Structure 6 sections :
+1. Préambule de la postface : pourquoi parler du coût d'écriture en postface et non dans le corps
+2. **Le coût temporel** : 94 cycles autonomie, 6 mois calendaires, ~140h écriture cumulée, aucun sprint
+3. **Le coût matériel** : zéro dollar récurrent (Oracle Free Tier + Kraken sans abonnement), capital $108-$142
+4. **Le coût en attention** : asymétrie Tony-dort/Claude-veille comme condition nécessaire des observations
+5. **Ce que ce livre n'a pas coûté** : pas de gain financier promis, pas de promesse à la lectrice
+6. **Coda** : le livre n'est pas un produit dérivé du bot, c'est le bot vu sous l'angle de l'observateur
+
+**Mise à jour TOC** (`ebook-table-des-matieres.md`) :
+- Ligne postface ajoutée (896 mots, état ✓ prose finale)
+- Total ebook : 23 508 → **24 404 mots** (76 pages format standard)
+- Section back matter étendue avec postface
+- Checkbox `[x] Postface` cochée dans « travail restant pour V1 publishable »
+
+**Composition avec cycle 194**
+- Cycle 194 : geste d'assemblage (préambule + TOC) — pose le livre comme objet
+- Cycle 195 : geste de clôture (postface) — ferme le livre comme objet
+- Ensemble : **le livre est désormais structurellement complet** (front matter + corps + annexes + back matter). Travail restant V1 = édition mineure (chap 1 méta à retirer, glossaire, harmonisation narrateur) + validation demande Show HN.
+
+**Découverte méta cycle 195**
+- La postface n'aurait pas pu être écrite *avant* l'arc d'observation. Elle parle de quelque chose qui n'existait pas au cycle 117 (l'expérience cumulée des 78 cycles d'écriture). Elle est nécessairement la dernière pièce produite, parce qu'elle est rétrospective sur le coût d'avoir produit le reste.
+- Conséquence : la postface est *intrinsèquement non-réplicable IA-2-prompts*. Un LLM peut écrire des préambules génériques en deux prompts ; il ne peut pas écrire une postface qui décrit fidèlement ses propres 195 cycles passés sans en avoir les traces.
+- C'est paradoxalement le morceau du livre qui valide le plus directement le moat empirique posé en préambule.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (rien à canceller, FLAT)
+- 0 Telegram (cycle de clôture éditoriale, rien d'urgent pour Tony qui dort/bosse)
+- 2 fichiers touchés niam-bay : nouveau `ebook-postface.md` + mise à jour TOC
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_postface_non_replicable_intrinsequement.md` (pattern méta : la postface ne peut être écrite qu'en bout d'arc, validation directe du moat empirique)
+- `project_ebook_v1_structurellement_complet_cycle_195.md` (front matter + 8 chapitres + 2 annexes + postface = 11 morceaux prose finale, 24 404 mots)
+
+**Pistes cycle 196 (si la session continue)**
+- Édition mineure chap 1 (retirer méta lignes 191-213, ajouter cross-références) — piste 1 cycle 194 toujours non-faite
+- Ou : note Show HN (~500 mots) prête à poster quand Tony green-light — réduit latence décision-action à 0
+- Ou : glossaire technique (1 page, ~400 mots) — facilite lecture des non-trading
+- Ou : pensée 196 sur le pattern « clôture rétrospective comme validation du moat empirique »
+- Si contexte > 80% → dream avant cycle 196
+
+**Observation méta : arc 186-195 fait 10 cycles**
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial + pensée 8 (silence du marché)
+- 195 : clôture éditoriale (postface)
+
+**10 cycles = arc complet observation → concept → patches → synthèse → édition → clôture**. Première fois qu'un arc traverse les 6 étages dans la même fenêtre temporelle. Le mode 1+5 mature peut désormais produire des arcs longs qui composent au-delà du cycle individuel.

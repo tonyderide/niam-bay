@@ -1,6 +1,6 @@
 # Table des matières — Defensive Engineering for Grid Trading Bots
 
-*Index consolidé, cycle 194 (2026-06-26). Statut : V1 PUBLISHABLE-CANDIDATE — 10 morceaux de prose finale + outline structurel. ~23 500 mots = ~75 pages format ebook standard.*
+*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée). Statut : V1 PUBLISHABLE-CANDIDATE — 11 morceaux de prose finale + outline structurel. ~24 400 mots = ~76 pages format ebook standard.*
 
 ---
 
@@ -19,7 +19,8 @@
 | 8 | Le repo comme produit (méta / éditorial) | `ebook-chap8-repo-poesie-stub.md` | 2 219 | ✓ prose finale | 150 |
 | — | Edge cases (annexe) | `ebook-chap-edge-cases-stub.md` | 2 151 | ✓ prose finale | (env) |
 | — | Mini-chapitre 7 lentilles (arc 186-192) | `ebook-mini-chap-arc186-192-7-lentilles.md` | 3 024 | ✓ prose finale | 193 |
-| **Total** | — | — | **23 508** | — | — |
+| — | Postface — ce que ce livre a coûté à écrire | `ebook-postface.md` | 896 | ✓ prose finale | 195 |
+| **Total** | — | — | **24 404** | — | — |
 
 **Volume** : ~75 pages format ebook standard (320 mots/page) ou ~94 pages format compact mobile (250 mots/page). Estimation outline cycle 115 (75-90p) confirmée empiriquement.
 
@@ -64,6 +65,8 @@
   — Bugs rares vus une fois et patches partiels. Pas dans le corps parce que pattern unique pas généralisé.
 - **Annexe B — Mini-chapitre vivant : 7 lentilles sur un orphan** (~3 000 mots) — `ebook-mini-chap-arc186-192-7-lentilles.md`
   — Illustration méthode chap 6 sur un cas observé en temps réel, pas reconstitué.
+- **Postface — Ce que ce livre a coûté à écrire** (~900 mots) — `ebook-postface.md`
+  — Le coût temporel, matériel et en attention. Ferme le livre éditorialement et expose la frontière promise/livré.
 - **Note sur les sources** : liste des findings DSL `docs/projets/` qui ont fondé chaque chapitre.
 - **Page de licence et remerciements**.
 
@@ -83,7 +86,7 @@
 
 - [ ] **Densifier chapitres courts** : chap 1 (1 700 mots) est le plus léger. Possible d'ajouter un cas d'analogie hors trading (DNS records duplicate, webhook subscriptions) en ~300 mots pour passer à 2 000.
 - [ ] **Ajouter un chapitre « Ce que cet ebook ne dit pas »** (explicite, ~1 200 mots) avant la conclusion. Format inspiré de l'outline cycle 115 « Chapitre 8 — Ce que cet ebook NE dit PAS ». Délimite la frontière éditoriale.
-- [ ] **Postface** (~800 mots) : ce que ce livre a coûté à écrire (six jours d'observation passive autonome), pourquoi le format ebook plutôt qu'un blog, et ce que la lectrice peut en faire pratiquement.
+- [x] **Postface** (~900 mots) : ce que ce livre a coûté à écrire — coût temporel, matériel, en attention, et ce qu'il n'a pas coûté (gain, promesse). Livré cycle 195 → `ebook-postface.md`.
 
 ### Travail de publication (hors rédaction)
 
