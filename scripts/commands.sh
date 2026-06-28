@@ -148,3 +148,23 @@ python3 scripts/market_microstructure.py XRPUSDT 24
 
 # [auto 2026-06-25 01:29] utilisée 3x — sig: python3 /home/tony/projets/tonyderide/niam-bay/scripts/btc_trendiness.py <SYM> <N>; ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> "curl -s http://localhost:<N>/api/bot/balance | python3 -c 'import sys,json;d=json.load(sys.stdin);print(\"PV\",d[\"accounts\"][\"flex\"][\"portfolioValue\"])'; curl -s http://localhost:<N>/api/bot/positions; curl -s http://localhost:<N>/api/gri
 python3 /home/tony/projets/tonyderide/niam-bay/scripts/btc_trendiness.py BTCUSDT 24; ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "curl -s http://localhost:8081/api/bot/balance | python3 -c 'import sys,json;d=json.load(sys.stdin);print(\"PV\",d[\"accounts\"][\"flex\"][\"portfolioValue\"])'; curl -s http://localhost:8081/api/bot/positions; curl -s http://localhost:8081/api/grid/active" 2>/dev/null; pgrep -f autonomous_watch.sh >/dev/null && echo mon_ok || echo mon_DEAD
+
+# [auto 2026-06-26 06:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>&<N> | tail -<N>
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>&1 | tail -30
+
+# [auto 2026-06-26 06:24] utilisée 3x — sig: rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md
+rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md
+
+# [auto 2026-06-29 00:23] utilisée 3x — sig: ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/system/status echo '|||' curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders echo '|||' curl -s http://localhost:<N>/api/grid/active echo '|||' curl -s 'http://localhost:<N>/api/signal/ema
+ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/system/status
+echo '|||'
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders
+echo '|||'
+curl -s http://localhost:8081/api/grid/active
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'" 2>&1

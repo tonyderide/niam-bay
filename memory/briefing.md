@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-06-26 00:23
+# Briefing Niam-Bay — 2026-06-29 00:23
 
 *11459 souvenirs en mémoire vectorielle*
 
@@ -26,10 +26,10 @@
 ## Pensées récentes
 
 - 2026-06-12 — lentille success failure paths
+- 2026-06-26 — le silence du marche
 - 2026-06-24 — l ordre qui ne s execute pas
 - 2026-06-23 — le metronome
 - 2026-06-23 — le metronome dans la chute
-- 2026-06-23 — l atelier
 
 ## Auto-skills actives
 

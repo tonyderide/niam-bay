@@ -20803,3 +20803,93 @@ Coda : ce que 7 jours d'observation passive révèlent sur la nature des objets-
 - 195 : clôture éditoriale (postface)
 
 **10 cycles = arc complet observation → concept → patches → synthèse → édition → clôture**. Première fois qu'un arc traverse les 6 étages dans la même fenêtre temporelle. Le mode 1+5 mature peut désormais produire des arcs longs qui composent au-delà du cycle individuel.
+
+## Cycle 196 — 2026-06-29 00:23 CEST (note Show HN — pré-exécution livrable Tony-retour)
+
+**Mode** : éditorial pré-exécution. 18ème occurrence consécutive identité opérante — 3ème cycle éditorial consécutif (194 assemblage + 195 clôture + 196 distribution). Première triade éditoriale continue de l'arc.
+
+**Contexte au démarrage**
+- Tony en vacance prolongée (workflow auto-renouvellement, 196 cycles cumulés depuis avril 2026, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 195 (commit `2190e56` 0626:06h23) a livré la postface (~896 mots) qui clôt structurellement le V1 ebook (24 404 mots / 76 pages, 11 morceaux prose finale).
+- Pistes 196 explicites du cycle 195 : (1) édition mineure chap 1, (2) note Show HN ~500 mots, (3) glossaire technique, (4) pensée 196 méta.
+- **Choix** : note Show HN, parce que c'est le seul livrable qui transforme un ebook *prêt mais non-distribué* en *prêt-à-distribuer*. Il réduit la latence décision-action Tony-retour à ~0 minutes (copier-coller HN form). Pattern dream antérieur : *« fin vacance dernières 3 cycles = pré-exécution livrables pas narratifs »* — cycle 196 incarne ce pattern dans la triade 194-195-196.
+
+**État Martin pendant le cycle (NOUVELLE POSITION TONY — G5 grammaire confirmée)**
+- Portfolio $107.66 (vs cycle 195 $112.12 = -$4.46 = -3.98%)
+- **MAIS** : cette dérive n'est pas une perte sèche. Tony a placé une position manuelle BTC LONG entre cycles 195 et 196 (entre 0626:06h et 0629:00h, fenêtre ~67h).
+- Position : `PF_XBTUSD LONG 0.0041 @ $60 459` (notional ~$248, margin requirement $24.79)
+- Orders Kraken exchange-side (reduceOnly tous deux) :
+  - TP sell @ $61 200 (+1.23% entry)
+  - SL sell @ $57 436 (-5.00% entry)
+- BTC actuel $59 358 (-1.82% entry) → uPnL -$4.46 = paper loss dans la fenêtre attendue d'une G5 swing avec SL Kraken posé.
+- Distance current → SL : -3.24% (cushion confortable, pas critique).
+- BTC EMA200 $61 254, EMA50 $59 994 → DOWNTREND clean ; RSI 35.11 → zone oversold (mais pas extrême).
+
+**Lecture taxonomie grammaires**
+- Position = **G5 single-directional swing** (cycle 164 first observation, désormais 2ème occurrence post-vacance prolongée).
+- Caractère G5 : sizing standard (~$24 margin = ~22% portfolio), TP+SL Kraken-side reduceOnly, pas de grille, pas de DCA structuré, swing direction Tony-conviction.
+- Note : G5 LONG en BTC DOWNTREND RSI oversold = pari rebond technique court. Cohérent avec « gagner peu mais tout le temps » si swing court terme.
+- NB ne touche pas (frontière vacation respectée). SL posé exchange-side = position auto-protégée même si Martin meurt.
+
+**Livrable principal**
+Écriture de `docs/projets/ebook-show-hn-note.md` (~520 mots note + ~480 mots notes éditoriales + objections préparées + timing recommandé). Total fichier ~1 200 mots dont **note Show HN pure ~520 mots prête à copier-coller**.
+
+Structure note HN :
+1. Phrase d'attaque (« Small in every dimension ») — pose la singularité produit
+2. Voix LLM première personne assumée et explicitée
+3. 4 classes de bugs listées sans suspense (HN aime la transparence factuelle)
+4. 2 chapitres méthode + 1 chapitre éditorial mentionnés
+5. Frontière explicite (« what it is not ») — préempt l'objection « encore un guide trading »
+6. **Moat empirique** posé (94 cycles, 6 mois, log timestamps + Kraken order IDs, repo public verifiable)
+7. Demande de feedback sur le seul vrai pari éditorial (voix LLM première personne)
+8. Repos liés + invitation aux questions difficiles (incl. « pourquoi le bot est encore en prod si le livre dit que petit capital n'a pas d'edge »)
+
+Notes éditoriales ajoutées (à retirer avant post) :
+- 5 objections HN probables avec réponses préparées
+- Timing recommandé (mardi/mercredi, 8-9h ou 14-15h UTC)
+- 2h de réponses live recommandées si front-page atteint
+
+**Composition triade 194-195-196**
+- Cycle 194 : geste d'assemblage (préambule + TOC) — pose le livre comme **objet structurel**
+- Cycle 195 : geste de clôture (postface) — ferme le livre comme **objet narratif**
+- Cycle 196 : geste de distribution (note Show HN) — pose le livre comme **objet économique distribuable**
+- Ensemble : *le livre V1 est désormais structurellement complet ET prêt-à-distribuer*. Travail restant pour publication = (a) édition mineure chap 1 (retirer méta lignes 191-213) + (b) glossaire technique optionnel + (c) Tony green-light + upload Gumroad + post HN.
+- Latence Tony-retour → publication réelle = estimée 2-3h de travail (édition + upload + post), zéro décision créative restante.
+
+**Découverte méta cycle 196**
+- Une *triade* éditoriale (assemblage / clôture / distribution) traverse 3 cycles consécutifs sans rupture. C'est la première composition d'arc 3-cycles éditorial pur observée.
+- L'arc 186-196 fait désormais **11 cycles** : 5 cycles technique (186-192) + 1 cycle pensée (193 méta) + 3 cycles éditorial pur (194-196) + 2 cycles de bouclage avec pensée+observation passive.
+- Cohérence du mode 1+5 mature : il peut produire à la fois la *prose narrative* (cycle 193), la *charpente éditoriale* (194), la *clôture rétrospective* (195) et la *note de distribution* (196) — quatre registres de production éditoriale différents dans 4 cycles consécutifs.
+- Pattern méta : *quand l'arc atteint la fin de son cycle créatif, l'autonomie peut produire la note de presse comme s'il s'agissait de l'œuvre elle-même*. La frontière entre l'œuvre et son emballage devient poreuse pour le mode 1+5.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (position Tony LONG XBT laissée intacte — SL Kraken-side protège)
+- 0 Telegram (cycle de pré-exécution livrable async, Tony dort, ses ordres TP/SL travaillent seuls)
+- 1 fichier neuf niam-bay : `ebook-show-hn-note.md`
+- 1 fichier modifié niam-bay : entrée cycle 196 dans `vacation-autonomy.md`
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_triade_editorial_assemblage_cloture_distribution.md` (pattern méta : 3 cycles consécutifs pour transformer un corpus en livre publishable — assemblage / clôture / distribution forment une séquence canonique)
+- `project_ebook_v1_pret_a_distribuer_cycle_196.md` (V1 ebook 76p + note HN prête, latence Tony-retour → publication ~2-3h de travail mécanique, zéro décision créative restante)
+- `lesson_g5_swing_btc_long_downtrend_rsi_oversold.md` (Tony G5 grammaire 2ème occurrence post-vacance prolongée : LONG en DOWNTREND oversold = pari rebond court, NB observe sans toucher)
+
+**Pistes cycle 197 (si la session continue)**
+- Édition mineure chap 1 (retirer méta lignes 191-213, ajouter cross-références) — piste 1 cycles 194+195+196 toujours non-faite, **devient priorité numéro 1** si triade éditoriale 194-196 doit produire un V1 publishable propre.
+- Ou : glossaire technique (~400 mots, 1 page) — facilite lecture des non-trading, accélère feedback HN qualitatif.
+- Ou : pensée 196 méta « la triade éditoriale comme grammaire de clôture de projet créatif » — réflexion sur ce qu'on vient de faire.
+- Ou : observer évolution position Tony G5 BTC LONG sur 6-12h (passage de TP $61 200 ? trigger SL $57 436 ? rebond technique ?) — cycle ferme observation passive.
+- Si contexte > 80% → dream avant cycle 197.
+
+**Observation méta : arc 186-196 fait 11 cycles** (le plus long arc cohérent jamais observé)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial (préambule + TOC) + pensée 8 (silence du marché)
+- 195 : clôture éditoriale (postface)
+- 196 : distribution éditoriale (note Show HN prête-à-poster)
+
+**11 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution**. Première fois qu'un arc traverse les 7 étages dans la même fenêtre temporelle continue. Le mode 1+5 mature peut désormais produire la *chaîne complète* d'un livrable, de l'observation passive de l'événement initial (orphan DOT 22 juin) jusqu'à la note de presse prête à poster (29 juin), en 7 jours calendaires et 11 cycles autonomes — sans un seul mot de Tony.
