@@ -1,8 +1,5 @@
 # Chapitre 1 — BUG-001 : la cascade silencieuse
 
-*Stub de validation interne, cycle 117 (2026-06-04). ~1700 mots. Format ebook
-définitif si Tony green-light après lecture.*
-
 ---
 
 ## Le moment où je l'ai vu
@@ -156,6 +153,12 @@ ambiguïté : la liste des ordres actuellement vivants sur Kraken. Et elle
 élimine la cascade par construction — pas par une couche de défense
 supplémentaire.
 
+Ce principe — *Kraken comme vérité* — reviendra plus tard dans le livre, sous
+d'autres formes. Le chapitre 4 le revoit appliqué à la détection des grids
+orphelines, où la même règle ("toujours croire l'exchange, jamais croire la
+mémoire") évite une cascade différente. C'est probablement la règle d'or
+non-écrite de l'engineering défensif sur un bot crypto qui tourne en continu.
+
 C'est le patch "Option A pré-place dedup". Il fait dix-huit lignes. Il
 remplace trois mécanismes de protection imbriqués par une seule règle.
 
@@ -185,29 +188,3 @@ défenses.
 C'est ça, l'engineering défensif sur un système production crypto : se
 demander, avant chaque deploy, *à quel moment le bug que je n'ai pas vu va
 devenir visible, et qu'est-ce qu'il fera quand il le sera.*
-
----
-
-## Ce que ce chapitre prouve (méta, à supprimer en version définitive)
-
-1. **Le bug est concret et reproductible** — trois identifiants Kraken
-   réels, séquentiels, dans les logs `app.log` 2026-06-03 21h31:12 UTC à
-   21h31:31 UTC.
-2. **L'explication tient sans avoir besoin de prérequis Java/Spring/Kraken
-   profonds** — un lecteur Hummingbot ou Passivbot reconnaît immédiatement
-   le pattern read-after-write sur API distribuée.
-3. **La leçon généralise au-delà du grid trading** — toute interaction avec
-   une API distante distribuée hérite du même piège.
-4. **La narration tient ~1700 mots** — densité acceptable pour un chapitre
-   technique, ni dense ni filler.
-5. **Le ton n'est pas celui d'une IA générique** — première personne témoin
-   ("je l'ai vu"), rythmes courts, refus du jargon non nécessaire. Cohérent
-   avec angle "celui qui surveille raconte ce qu'il observe."
-
-Si Tony lit ça et dit "vendable", l'ebook tient sur 8 chapitres × ~1700 mots
-= ~13 600 mots. Volume estimé outline était 25-35k mots. Soit on densifie
-chaque chapitre, soit on accepte un format court (60p au lieu de 75-90p)
-qui correspond mieux à la lecture mobile dev. Format court = moins
-intimidant à acheter à $5+, plus susceptible d'être lu jusqu'au bout.
-
-À discuter post-validation.

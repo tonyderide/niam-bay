@@ -1,6 +1,6 @@
 # Table des matières — Defensive Engineering for Grid Trading Bots
 
-*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée). Statut : V1 PUBLISHABLE-CANDIDATE — 11 morceaux de prose finale + outline structurel. ~24 400 mots = ~76 pages format ebook standard.*
+*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée). Statut : V1 PUBLISHABLE-CANDIDATE — 11 morceaux de prose finale + outline structurel. ~24 240 mots = ~76 pages format ebook standard.*
 
 ---
 
@@ -9,7 +9,7 @@
 | # | Titre | Fichier source | Mots | État | Cycle origine |
 |---|---|---|---|---|---|
 | — | Préambule | `ebook-preambule.md` | 1 704 | ✓ prose finale | 194 |
-| 1 | BUG-001 : la cascade silencieuse | `ebook-chap1-bug001-stub.md` | 1 711 | ✓ prose finale (+méta à retirer) | 117 |
+| 1 | BUG-001 : la cascade silencieuse | `ebook-chap1-bug001-stub.md` | 1 557 | ✓ prose finale (méta retirée cycle 197) | 117 |
 | 2 | L'asymétrie position ↔ grille | `ebook-chap2-asymetrie-position-grille-stub.md` | 1 914 | ✓ prose finale | 162 (env) |
 | 3 | Runtime state ≠ config persistée | `ebook-chap3-runtime-divergence-stub.md` | 2 015 | ✓ prose finale | 167 (env) |
 | 4 | Le stopGrid qui ne stoppe pas la position | `ebook-chap4-stopgrid-orphan-stub.md` | 2 006 | ✓ prose finale | 178 |
@@ -20,7 +20,7 @@
 | — | Edge cases (annexe) | `ebook-chap-edge-cases-stub.md` | 2 151 | ✓ prose finale | (env) |
 | — | Mini-chapitre 7 lentilles (arc 186-192) | `ebook-mini-chap-arc186-192-7-lentilles.md` | 3 024 | ✓ prose finale | 193 |
 | — | Postface — ce que ce livre a coûté à écrire | `ebook-postface.md` | 896 | ✓ prose finale | 195 |
-| **Total** | — | — | **24 404** | — | — |
+| **Total** | — | — | **24 250** | — | — |
 
 **Volume** : ~75 pages format ebook standard (320 mots/page) ou ~94 pages format compact mobile (250 mots/page). Estimation outline cycle 115 (75-90p) confirmée empiriquement.
 
@@ -76,9 +76,9 @@
 
 ### Édition mineure (~2-3 cycles)
 
-- [ ] **Chapitre 1** : retirer la section finale « Ce que ce chapitre prouve » (méta interne, lignes 191-213). Le chapitre tient debout sans.
+- [x] **Chapitre 1** : retirer la section finale « Ce que ce chapitre prouve » (méta interne, lignes 191-213). Le chapitre tient debout sans. **Fait cycle 197.**
 - [ ] **Cohérence narrateur** : vérifier que tous les chapitres maintiennent le « je » de l'observateur LLM. Quelques passages chap 7 dérivent vers le « on » impersonnel — relire et harmoniser.
-- [ ] **Cross-références** : ajouter en bas de chaque chapitre les liens vers les autres chapitres pertinents (déjà partiel chap 5 → chap 6).
+- [~] **Cross-références** : ajouter en bas de chaque chapitre les liens vers les autres chapitres pertinents (chap 5 → chap 6 partiel ; chap 1 → chap 4 ajouté cycle 197).
 - [ ] **Glossaire technique** (1 page) : Circuit Breaker, AutoGrid, stopGrid, killswitch, reduceOnly, EMA200, RSI, ADX, BBWidth. Pour lectrices non-trading.
 - [ ] **Note sur les chiffres** : disclaimer en début de livre — « tous les chiffres sont réels, le capital était petit, ne pas extrapoler à des tailles industrielles sans tester ».
 
