@@ -1,11 +1,5 @@
 # Chapitre 7 — Outils utilisés (pragmatique, pas magique)
 
-*Stub de validation interne, cycle 129 (2026-06-07). ~2000 mots. Companion du
-script `scripts/bot-audit.sh` livré cycle 128. Format ebook définitif si Tony
-green-light après lecture.*
-
----
-
 ## Le matin où le script a vu ce que je n'avais pas vu
 
 Cycle 126. J'avais passé soixante-quinze minutes à éplucher trois sources
@@ -104,8 +98,8 @@ strategy_pairs=$(run_remote "cat ${STRATEGY_PATH}" | \
   jq -r '.grids[] | select(.enabled == true) | .instrument')
 ```
 
-Trois `curl`, un `cat` à travers `ssh`. On agrège les trois listes en un set
-unique avec `sort -u`, on parcourt chaque paire, on regarde dans quelles
+Trois `curl`, un `cat` à travers `ssh`. Le script agrège les trois listes en
+un set unique avec `sort -u`, parcourt chaque paire, regarde dans quelles
 sources elle apparaît. La signature `YYY` veut dire alignée. Tout le reste
 est un drift.
 
@@ -125,9 +119,9 @@ purger configs map, désactiver strategy.json) ont des conséquences trading
 différentes que seul l'opérateur peut arbitrer.
 
 **Section trois — détecteur de BUG-001.** Le bug des stops dupliqués
-(chapitre 1). On récupère tous les ordres ouverts sur Kraken via
-`/api/bot/orders`, on filtre `orderType=stop ∧ reduceOnly=true`, on groupe
-par symbole, on flag tout groupe de cardinal supérieur ou égal à deux.
+(chapitre 1). Le script récupère tous les ordres ouverts sur Kraken via
+`/api/bot/orders`, filtre `orderType=stop ∧ reduceOnly=true`, groupe par
+symbole, et flag tout groupe de cardinal supérieur ou égal à deux.
 
 ```bash
 [.[] | select(.orderType == "stop" and .reduceOnly == true)]
@@ -157,10 +151,10 @@ serait silencieuse — annuler deux stops, c'est une action mutative sur la
 position de l'opérateur, et le script reste read-only par contrat de chapitre 7.
 
 **Section quatre — distance du stop-loss à la position.** Pour chaque position
-ouverte, on lit le prix d'entrée, on cherche le stop-loss min sur Kraken (le
-plus proche du prix, donc le plus protecteur), on calcule la distance en
+ouverte, le script lit le prix d'entrée, cherche le stop-loss min sur Kraken
+(le plus proche du prix, donc le plus protecteur), calcule la distance en
 pourcentage. Une bande de tolérance configurable (par défaut entre 1% et 8%).
-Hors bande, on flag.
+Hors bande, le script flag.
 
 ```
 PF_XBTUSD: pos 60805.0 SL 58981.0 cushion 3.00%
@@ -309,24 +303,3 @@ Trente minutes pour le lire en entier. Une demi-journée pour le porter sur
 un autre bot. Le retour sur investissement attendu : un seul bug invisible
 détecté avant qu'il devienne un incident, et le coût d'écriture du script
 est amorti pour la décennie.
-
----
-
-## Notes de production (interne — à supprimer en V finale)
-
-- Stub écrit cycle 129 (2026-06-07 06h23 Paris) en ~50 min après livraison de
-  `bot-audit.sh` cycle 128.
-- Continuité style chap 1 : narration premier-personne, ancrage technique
-  précis, ouverture sur un moment-pivot vécu.
-- Moment-pivot choisi : le finding `PF_ETHUSD` raté cycle 126 / détecté
-  cycle 128. C'est l'événement réel qui valide la thèse du chapitre.
-- Sections couvertes : ouverture / 3 sources / anatomie / dashboard / API bot
-  vs API exchange / clôture méthode / disclaimer généralisabilité.
-- Volume actuel : ~280 lignes markdown, ~1950 mots. Cible chapitre court :
-  10-12 pages PDF. ✓
-- Risque rédactionnel à surveiller : éviter de répéter les bugs traités aux
-  chapitres 1-5 (BUG-001 chap 1, runtime divergence chap 3, etc). Ici, on
-  les *référence* sans les ré-expliquer.
-- Si Tony approuve ce stub → écrire chap 6 (méthode 3 niveaux) avec même
-  qualité, puis préambule + chap 8 (anti-promesse). Chapitres 2-3-4-5 peuvent
-  être expansés à partir des docs cycles 110-113-114.

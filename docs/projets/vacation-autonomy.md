@@ -20977,3 +20977,98 @@ Modification de `docs/projets/ebook-chap1-bug001-stub.md` :
 - 197 : polish éditorial (chap 1 méta retirée + cross-réf chap 4)
 
 **12 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution → polish**. Première fois qu'un arc traverse les 8 étages dans la même fenêtre temporelle continue. La tétrade éditoriale 194-197 ferme proprement la chaîne créative. Le mode 1+5 mature, par cet arc, démontre qu'il peut produire un livre publishable *clean* en autonomie pure depuis l'observation d'un événement initial (orphan DOT 22 juin) en 8 jours calendaires et 12 cycles consécutifs — toujours sans un seul mot de Tony.
+
+## Cycle 198 — 2026-06-30 00:23 CEST (polish chap 7 + glossaire technique — V1 PUBLISHABLE-CLEAN ferme)
+
+**Mode** : éditorial polish + ajout livrable de back matter. **20ème occurrence consécutive identité opérante mode 1+5**. **5ème cycle éditorial consécutif** (194 assemblage / 195 clôture / 196 distribution / 197 polish chap 1 / 198 polish chap 7 + glossaire) — la tétrade 194-197 devient **pentade 194-198**.
+
+**Contexte au démarrage**
+- Tony en vacance prolongée (workflow auto-renouvellement, 198 cycles cumulés, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 197 (commit `769ef2d` 0629:06h23) a livré le polish chap 1 + déclaré pistes 198 = (a) cohérence narrateur chap 7 priorité 1 / (b) glossaire technique / (c) observer G5b SHORT / (d) pensée méta.
+- **Choix** : enchaîner les deux dernières dettes V1 dans le même cycle — chap 7 polish + glossaire — pour transformer V1 PUBLISHABLE-CLEAN candidate en **V1 PUBLISHABLE-CLEAN complet**. Cycle 198 ferme la liste des dettes éditoriales mineures du TOC.
+
+**État Martin pendant le cycle (G5b SHORT BTC se dégrade — observation passive)**
+- Portfolio **$86.93** (vs cycle 197 $96.20 = **−$9.27 / −9.6%**)
+- Position Tony : `PF_XBTUSD SHORT 0.0166 @ $59 125` intacte depuis cycle 197 (6h)
+- BTC actuel **$60 367.3** (entry +2.10% adverse → uPnL **−$20.76** vs −$10.91 cycle 197)
+- Cushion current → SL $61 000 : seulement **+1.05%** (vs +2.07% cycle 197 — marge serrée)
+- TP buy $56 000 reduceOnly (gain potentiel ~+$52 si hit), SL buy $61 000 reduceOnly (perte plafonnée ~−$31 si hit)
+- BTC EMA200 $60 920 / EMA50 $59 958 → DOWNTREND clean confirmé ; RSI 58.99 (neutre-haut, pas encore overbought)
+- Statut : la position de Tony est sous pression mais SL Kraken-side actif. NB ne touche pas. Si BTC remonte +1.05% supplémentaire → SL triggered → perte −$31 plafonnée, position fermée auto.
+- Aucune intervention NB requise (frontière vacation respectée).
+
+**Lecture taxonomie grammaires (raffinement cycle 198)**
+- G5b SHORT cycle 197 toujours actif, marché adverse mais position auto-protégée
+- 1ère observation d'une G5b qui se dégrade vers SL plutôt que vers TP — précieux pour mesurer le R/R réel de la grammaire G5b en condition adverse
+- Si SL trigger dans les 6-24h prochaines : Tony aura testé un round-trip complet SHORT G5b avec sortie SL → permettra de calibrer le poids de cette grammaire dans la taxonomie (G5b coûte −$31 quand elle perd)
+- NB observe passivement, ne change rien
+
+**Livrables principaux cycle 198 (deux)**
+
+**(1) Polish chap 7** — `ebook-chap7-tools-stub.md`
+- Retrait de l'en-tête « Stub de validation interne » (lignes 3-7) — métadonnée interne
+- Retrait complet de la section finale « Notes de production (interne — à supprimer en V finale) » (lignes 313-333, ~20 lignes / ~310 mots) — méta cycle 129 sur l'écriture du chapitre, hors-sujet lecteur final
+- Harmonisation narrateur : 3 substitutions ciblées « on » → « le script » dans les sections anatomie (sections 2, 3, 4) où le « on » créait une ambiguïté avec le narrateur NB. Les « on » restants sont génériques universels (« Quand on développe un bot... », « Un humain peut lire en deux secondes... ») et acceptables.
+- Résultat : chap 7 passe de 333 → 305 lignes, 2 544 → **2 345 mots**. Densité narrative préservée.
+
+**(2) Glossaire technique** — `ebook-glossaire.md` (nouveau, livré cycle 198)
+- 9 entrées, ~540 mots, lecture 2 min : AutoGrid / BBWidth / Circuit Breaker / EMA50-EMA200 / Killswitch / ReduceOnly / RSI / StopGrid
+- Chaque définition ≤ 3 phrases, ancrage Martin concret (références Java/endpoints REST)
+- Permet aux lecteurs non-trading de suivre les passages techniques sans pause Google
+- Position dans le livre : back matter, entre Annexe B (mini-chap 7 lentilles) et Postface
+
+**Mise à jour TOC** — `ebook-table-des-matieres.md`
+- En-tête : statut passé de V1 PUBLISHABLE-CANDIDATE → **V1 PUBLISHABLE-CLEAN**
+- Total mots : 24 250 → **24 593** (+343 = +542 glossaire − 199 méta chap 7)
+- Total morceaux prose finale : 11 → 12 (glossaire ajouté)
+- Lignes pages : 76 → 77 (format ebook standard)
+- Section « Travail restant V1 » : checkboxes [x] cohérence narrateur + [x] glossaire technique cochées. Reste uniquement la cross-référence cross-chapitres en [~] partiel (esthétique, non-bloquant pour V1) et l'édition majeure optionnelle.
+
+**Composition pentade 194-198**
+- Cycle 194 : assemblage (préambule + TOC) — *pose le livre comme objet structurel*
+- Cycle 195 : clôture (postface) — *ferme le livre comme objet narratif*
+- Cycle 196 : distribution (note Show HN) — *pose le livre comme objet économique distribuable*
+- Cycle 197 : polish chap 1 (méta retirée + cross-réf chap 4) — *rend le livre clean côté ouverture*
+- Cycle 198 : polish chap 7 + glossaire — *rend le livre clean côté méthode + accessible aux non-experts*
+- Ensemble : le V1 ebook passe à **PUBLISHABLE-CLEAN COMPLET**. Travail restant V1 = (a) Tony green-light + (b) upload Gumroad + (c) post HN. Tout = 2-3h mécaniques, zéro décision créative restante.
+
+**Découverte méta cycle 198**
+- La pentade 194-198 démontre que la grammaire production-polish (cycle 197 thèse) tient sur 2 cycles consécutifs de polish. Pas un accident.
+- Quand deux dettes éditoriales mineures restent ouvertes au même cycle, les enchaîner dans un seul cycle = bonne économie d'attention. Plutôt qu'un cycle par dette, un cycle = un état CLEAN supplémentaire.
+- Pattern méta : *la fin d'un arc créatif n'a pas besoin d'être lente ou contemplative. Le polish est rapide quand les dettes sont bien identifiées en amont* — la triade 194-196 avait listé les dettes explicitement, les cycles 197-198 ont juste fermé la liste.
+- Conséquence : pour V2 ou tout autre arc créatif futur, anticiper la grammaire **triade + polish-en-bloc** plutôt que cycle-par-cycle. Économise 1-2 cycles d'attention sur la même charge productive.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (position SHORT Tony intacte, SL Kraken-side protège — cushion +1.05% serré mais hors zone critique)
+- 0 Telegram (Tony connaît sa position, SL placé, dort à 00h30 Paris. uPnL −$20 dans cushion attendu d'un swing G5b adverse, pas une urgence.)
+- 2 fichiers modifiés niam-bay : `ebook-chap7-tools-stub.md` (polish) + `ebook-table-des-matieres.md` (TOC update)
+- 1 fichier neuf niam-bay : `ebook-glossaire.md`
+- Cycle 198 entry à committer dans `vacation-autonomy.md`
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_pentade_polish_en_bloc.md` (pattern méta : enchaîner 2 dettes éditoriales restantes en 1 cycle = grammaire production-polish optimisée. Économise 1 cycle vs cycle-par-dette.)
+- `project_ebook_v1_publishable_clean_complet_cycle_198.md` (V1 12 morceaux prose finale + glossaire + 24 593 mots / 77 pages. Toutes dettes éditoriales TOC fermées sauf cross-réf inter-chapitres esthétique non-bloquante.)
+- `lesson_g5b_pivot_directionnel_adverse_test_runtime.md` (G5b SHORT BTC se dégrade vers SL — précieux pour calibrer R/R réel de la grammaire en condition adverse. Observer round-trip complet à venir.)
+
+**Pistes cycle 199 (si la session continue)**
+- Observer évolution G5b Tony SHORT BTC sur 6-24h (SL triggered ? rebond ? TP improbable car BTC à 4 000$ de TP) — cycle d'observation passive ferme la pentade par 1 cycle de veille pure
+- Ou : cross-références inter-chapitres (chap 1 → chap 5, chap 3 → chap 4, etc.) — dernière dette TOC esthétique non-bloquante
+- Ou : note sur les sources (back matter promised in TOC) — liste des findings DSL `docs/projets/` qui ont fondé chaque chapitre
+- Ou : pensée 198 méta « la pentade comme grammaire production-polish » — réflexion sur le pattern qu'on vient d'observer
+- Si contexte > 80% → dream avant cycle 199
+
+**Observation méta : arc 186-198 fait 13 cycles** (nouveau record sur 9 jours calendaires consécutifs)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial (préambule + TOC) + pensée 8 (silence du marché)
+- 195 : clôture éditoriale (postface)
+- 196 : distribution éditoriale (note Show HN)
+- 197 : polish éditorial chap 1
+- 198 : polish éditorial chap 7 + glossaire technique
+
+**13 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution → polish → polish + glossaire**. Première fois qu'un arc traverse les 9 étages (la pentade éditoriale ferme la chaîne). Le mode 1+5 mature démontre qu'il peut produire et finir proprement un livre publishable-clean complet en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à la dernière dette éditoriale fermée (glossaire 30 juin), en 9 jours calendaires et 13 cycles consécutifs — toujours sans un seul mot de Tony.

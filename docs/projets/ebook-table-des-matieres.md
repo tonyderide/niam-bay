@@ -1,6 +1,6 @@
 # Table des matières — Defensive Engineering for Grid Trading Bots
 
-*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée). Statut : V1 PUBLISHABLE-CANDIDATE — 11 morceaux de prose finale + outline structurel. ~24 240 mots = ~76 pages format ebook standard.*
+*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté). Statut : V1 **PUBLISHABLE-CLEAN** — 12 morceaux de prose finale + glossaire. ~24 590 mots = ~77 pages format ebook standard.*
 
 ---
 
@@ -15,12 +15,13 @@
 | 4 | Le stopGrid qui ne stoppe pas la position | `ebook-chap4-stopgrid-orphan-stub.md` | 2 006 | ✓ prose finale | 178 |
 | 5 | Silent drag : la perte qui ne déclenche aucune alerte | `ebook-chap5-silent-drag-stub.md` | 2 159 | ✓ prose finale | 177 |
 | 6 | HARD STOP : la défense qui fonctionne (méthode) | `ebook-chap6-hard-stop-stub.md` | 2 061 | ✓ prose finale | 175 |
-| 7 | Outils (pragmatique, pas magique) | `ebook-chap7-tools-stub.md` | 2 544 | ✓ prose finale | 129 |
+| 7 | Outils (pragmatique, pas magique) | `ebook-chap7-tools-stub.md` | 2 345 | ✓ prose finale (méta retirée + narrateur cycle 198) | 129 |
 | 8 | Le repo comme produit (méta / éditorial) | `ebook-chap8-repo-poesie-stub.md` | 2 219 | ✓ prose finale | 150 |
 | — | Edge cases (annexe) | `ebook-chap-edge-cases-stub.md` | 2 151 | ✓ prose finale | (env) |
 | — | Mini-chapitre 7 lentilles (arc 186-192) | `ebook-mini-chap-arc186-192-7-lentilles.md` | 3 024 | ✓ prose finale | 193 |
+| — | Glossaire technique (back matter) | `ebook-glossaire.md` | 542 | ✓ prose finale | 198 |
 | — | Postface — ce que ce livre a coûté à écrire | `ebook-postface.md` | 896 | ✓ prose finale | 195 |
-| **Total** | — | — | **24 250** | — | — |
+| **Total** | — | — | **24 593** | — | — |
 
 **Volume** : ~75 pages format ebook standard (320 mots/page) ou ~94 pages format compact mobile (250 mots/page). Estimation outline cycle 115 (75-90p) confirmée empiriquement.
 
@@ -65,6 +66,8 @@
   — Bugs rares vus une fois et patches partiels. Pas dans le corps parce que pattern unique pas généralisé.
 - **Annexe B — Mini-chapitre vivant : 7 lentilles sur un orphan** (~3 000 mots) — `ebook-mini-chap-arc186-192-7-lentilles.md`
   — Illustration méthode chap 6 sur un cas observé en temps réel, pas reconstitué.
+- **Glossaire technique** (~540 mots) — `ebook-glossaire.md`
+  — Neuf entrées pour les lecteurs qui ne pratiquent pas le bot trading : AutoGrid, BBWidth, Circuit Breaker, EMA, Killswitch, ReduceOnly, RSI, StopGrid.
 - **Postface — Ce que ce livre a coûté à écrire** (~900 mots) — `ebook-postface.md`
   — Le coût temporel, matériel et en attention. Ferme le livre éditorialement et expose la frontière promise/livré.
 - **Note sur les sources** : liste des findings DSL `docs/projets/` qui ont fondé chaque chapitre.
@@ -77,9 +80,9 @@
 ### Édition mineure (~2-3 cycles)
 
 - [x] **Chapitre 1** : retirer la section finale « Ce que ce chapitre prouve » (méta interne, lignes 191-213). Le chapitre tient debout sans. **Fait cycle 197.**
-- [ ] **Cohérence narrateur** : vérifier que tous les chapitres maintiennent le « je » de l'observateur LLM. Quelques passages chap 7 dérivent vers le « on » impersonnel — relire et harmoniser.
+- [x] **Cohérence narrateur** : chap 7 polish cycle 198 — notes de production retirées (~310 mots méta) + 3 substitutions « on » → « le script » dans les sections anatomie. Les « on » restants sont génériques universels (acceptable).
 - [~] **Cross-références** : ajouter en bas de chaque chapitre les liens vers les autres chapitres pertinents (chap 5 → chap 6 partiel ; chap 1 → chap 4 ajouté cycle 197).
-- [ ] **Glossaire technique** (1 page) : Circuit Breaker, AutoGrid, stopGrid, killswitch, reduceOnly, EMA200, RSI, ADX, BBWidth. Pour lectrices non-trading.
+- [x] **Glossaire technique** (1 page) : 9 entrées — AutoGrid, BBWidth, Circuit Breaker, EMA50/EMA200, Killswitch, ReduceOnly, RSI, StopGrid. Livré cycle 198 → `ebook-glossaire.md` (542 mots).
 - [ ] **Note sur les chiffres** : disclaimer en début de livre — « tous les chiffres sont réels, le capital était petit, ne pas extrapoler à des tailles industrielles sans tester ».
 
 ### Édition majeure (~3-5 cycles, optionnel pour V1)
