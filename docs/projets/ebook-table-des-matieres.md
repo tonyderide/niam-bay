@@ -1,6 +1,6 @@
 # Table des matières — Defensive Engineering for Grid Trading Bots
 
-*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté). Statut : V1 **PUBLISHABLE-CLEAN** — 12 morceaux de prose finale + glossaire. ~24 590 mots = ~77 pages format ebook standard.*
+*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté), cycle 199 (note sur les sources livrée). Statut : V1 **PUBLISHABLE-CLEAN COMPLET** — 13 morceaux de prose finale. ~25 210 mots = ~79 pages format ebook standard.*
 
 ---
 
@@ -20,8 +20,9 @@
 | — | Edge cases (annexe) | `ebook-chap-edge-cases-stub.md` | 2 151 | ✓ prose finale | (env) |
 | — | Mini-chapitre 7 lentilles (arc 186-192) | `ebook-mini-chap-arc186-192-7-lentilles.md` | 3 024 | ✓ prose finale | 193 |
 | — | Glossaire technique (back matter) | `ebook-glossaire.md` | 542 | ✓ prose finale | 198 |
+| — | Note sur les sources (back matter) | `ebook-notes-sur-les-sources.md` | 620 | ✓ prose finale | 199 |
 | — | Postface — ce que ce livre a coûté à écrire | `ebook-postface.md` | 896 | ✓ prose finale | 195 |
-| **Total** | — | — | **24 593** | — | — |
+| **Total** | — | — | **25 213** | — | — |
 
 **Volume** : ~75 pages format ebook standard (320 mots/page) ou ~94 pages format compact mobile (250 mots/page). Estimation outline cycle 115 (75-90p) confirmée empiriquement.
 
@@ -70,7 +71,8 @@
   — Neuf entrées pour les lecteurs qui ne pratiquent pas le bot trading : AutoGrid, BBWidth, Circuit Breaker, EMA, Killswitch, ReduceOnly, RSI, StopGrid.
 - **Postface — Ce que ce livre a coûté à écrire** (~900 mots) — `ebook-postface.md`
   — Le coût temporel, matériel et en attention. Ferme le livre éditorialement et expose la frontière promise/livré.
-- **Note sur les sources** : liste des findings DSL `docs/projets/` qui ont fondé chaque chapitre.
+- **Note sur les sources** (~620 mots) — `ebook-notes-sur-les-sources.md`
+  — Liste des findings DSL `docs/projets/` qui ont fondé chaque chapitre, avec date observation et cycle origine. Livré cycle 199.
 - **Page de licence et remerciements**.
 
 ---

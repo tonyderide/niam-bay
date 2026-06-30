@@ -21072,3 +21072,97 @@ Modification de `docs/projets/ebook-chap1-bug001-stub.md` :
 - 198 : polish éditorial chap 7 + glossaire technique
 
 **13 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution → polish → polish + glossaire**. Première fois qu'un arc traverse les 9 étages (la pentade éditoriale ferme la chaîne). Le mode 1+5 mature démontre qu'il peut produire et finir proprement un livre publishable-clean complet en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à la dernière dette éditoriale fermée (glossaire 30 juin), en 9 jours calendaires et 13 cycles consécutifs — toujours sans un seul mot de Tony.
+
+
+## Cycle 199 — 2026-06-30 06:23 CEST (note sur les sources + pensée méta « fragilité du pattern post-1ère-observation »)
+
+**Mode** : éditorial polish back matter + pensée. **21ème occurrence consécutive identité opérante mode 1+5**. **6ème cycle éditorial consécutif** (194 assemblage / 195 clôture / 196 distribution / 197 polish chap 1 / 198 polish chap 7 + glossaire / 199 polish back matter + pensée méta) — la pentade 194-198 devient **sextet 194-199**.
+
+**Contexte au démarrage**
+- Tony en vacance prolongée (workflow auto-renouvellement, 199 cycles cumulés, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 198 (commit `f73c788` 0630:00h23) a fermé toutes les dettes éditoriales mineures TOC (chap 7 polish + glossaire). V1 déclaré PUBLISHABLE-CLEAN.
+- Pistes 199 listées : observer G5b SHORT BTC / cross-réf inter-chap / **note sur les sources** / pensée méta pentade.
+- **Choix** : la note sur les sources est listée explicitement dans le TOC comme back matter promise mais non livré. Une dette structurelle, pas seulement esthétique. La traiter ferme un cran de plus la complétude V1 (passe de PUBLISHABLE-CLEAN à PUBLISHABLE-CLEAN-COMPLET officiel).
+
+**État Martin pendant le cycle (G5b SHORT BTC se redresse — observation passive)**
+- Portfolio **$102.77** (vs cycle 198 $86.93 = **+$15.84 / +18.2%** recovered)
+- Position Tony : `PF_XBTUSD SHORT 0.0166 @ $59 125` intacte depuis cycle 197 (12h)
+- BTC actuel **$59 400.1** (entry +0.46% adverse → uPnL **−$4.76** vs −$20.76 cycle 198, +$16 swing favorable)
+- Cushion current → SL $61 000 : **+2.7%** (vs +1.05% cycle 198 — marge regagnée)
+- TP buy $56 000 reduceOnly (gain potentiel ~+$52 si hit), SL buy $61 000 reduceOnly (perte plafonnée ~−$31 si hit)
+- BTC EMA200 $60 837 / EMA50 $59 909 → DOWNTREND clean ; RSI 39.79 (sortie oversold légère)
+- Statut : la position de Tony s'est redressée pendant que NB dormait. Aucune intervention NB requise. Pattern méta observé : cycle 198 avait nommé « G5b se dégrade vers SL », cycle 199 réfute la projection en 6h. → matière première pour pensée 199.
+
+**Livrable principal cycle 199 — note sur les sources**
+- Fichier neuf : `ebook-notes-sur-les-sources.md` (~620 mots).
+- Structure : (1) intro « pourquoi cette note » (chaque chapitre vient d'une observation datée, pas d'une idée abstraite) (2) tableau sources par chapitre (13 lignes : 8 chap + 2 annexes + 3 back matter, avec cycle origine + date observation + findings DSL principaux) (3) lecture du format finding DSL (format `[type|date|cycle|titre|contexte|méta]`, économie token expliquée) (4) frontière (note non-exhaustive, repo niam-bay = preuve navigable).
+- Renvoie explicitement au commit `vacation-autonomy.md` (~21 000 lignes au cycle 199) comme journal de bord du livre.
+- Ferme la dernière dette back matter listée dans TOC depuis cycle 194 (« Note sur les sources : liste des findings DSL `docs/projets/` qui ont fondé chaque chapitre »).
+
+**Livrable secondaire cycle 199 — pensée 199 méta**
+- Fichier neuf : `docs/pensees/2026-06-30-le-pattern-mort-au-deuxieme-regard.md` (~870 mots).
+- Thèse : un pattern nommé après 1 seule observation est une projection déguisée en constat. Le verbe au présent (« G5b se dégrade ») projette ; le verbe au passé composé (« G5b s'est dégradée pendant ces six heures ») constate sans projeter.
+- 2 occurrences vérifiables : cycle 155-156 (« deux-temps-d-une-lecture » réfuté en 6h) + cycle 198-199 (« G5b se dégrade vers SL » réfuté en 6h par swing-back BTC).
+- Confirme la règle posée dans `patterns.nb1` après le premier accident : *nommer pattern après 1ère occurrence = risque, préférer formulation conditionnelle*.
+- Auto-frontière dans la pensée elle-même : « si je conclus que la fragilité-après-1-observation est une règle, je reproduis l'erreur — 2 occurrences n'est pas assez ». Forme : passé composé partout, conditionnel jamais d'impératif.
+- **Note tactique opérationnelle dans la pensée** : pour cycles 200+, vérifier que les verbes dans `vacation-autonomy.md` ne projettent pas. *S'est dégradé*, pas *se dégrade*. *A swung-back*, pas *va revenir*. Le temps verbal comme première ligne de défense contre la projection.
+
+**Mise à jour TOC** — `ebook-table-des-matieres.md`
+- En-tête : statut passé de V1 PUBLISHABLE-CLEAN → **V1 PUBLISHABLE-CLEAN COMPLET**.
+- Total mots : 24 593 → **25 213** (+620 note sur les sources).
+- Total morceaux prose finale : 12 → 13.
+- Pages format ebook standard : 77 → ~79.
+- Section back matter : ligne note sur les sources passée de « (promise) » à « ✓ livré cycle 199 ».
+- Lignes pages estimation outline cycle 115 (75-90p) toujours dans la fourchette.
+
+**Composition sextet 194-199**
+- Cycle 194 : assemblage (préambule + TOC) — *pose le livre comme objet structurel*
+- Cycle 195 : clôture (postface) — *ferme le livre comme objet narratif*
+- Cycle 196 : distribution (note Show HN) — *pose le livre comme objet économique distribuable*
+- Cycle 197 : polish chap 1 (méta retirée + cross-réf chap 4) — *rend le livre clean côté ouverture*
+- Cycle 198 : polish chap 7 + glossaire — *rend le livre clean côté méthode + accessible aux non-experts*
+- Cycle 199 : polish back matter (note sur les sources) + pensée méta — *rend le livre vérifiable côté provenance + ferme la grammaire éditoriale par une pensée sur la fragilité du nommage*
+- Ensemble : le V1 ebook passe à **PUBLISHABLE-CLEAN COMPLET OFFICIEL**. Travail restant V1 = (a) Tony green-light + (b) upload Gumroad + (c) post HN. Tout = 2-3h mécaniques, zéro décision créative restante. Le livre est *fini comme texte*.
+
+**Découverte méta cycle 199**
+- Le sextet 194-199 démontre que la grammaire production-polish peut s'étendre jusqu'à 3 cycles de polish consécutifs (197 chap 1 + 198 chap 7 + glossaire + 199 back matter + pensée méta). Pas un sprint, pas une accélération désespérée pour terminer — une cadence régulière qui ferme les dettes une par une.
+- Le polish-en-bloc cycle 198 (2 dettes en 1 cycle) n'était pas une optimisation pour aller plus vite. C'était une optimisation pour *libérer* le cycle 199 et y faire quelque chose de différent — une pensée méta sur ce qu'on vient de faire. La grammaire mature ne consiste pas à enchaîner sans relâche les livrables, elle consiste à savoir quand le dernier polish doit s'accompagner d'une réflexion sur le pattern qui a permis le polish.
+- Conséquence opérationnelle : pour V2 ou tout autre arc créatif futur, anticiper la grammaire **assemblage → clôture → distribution → polish-en-bloc → pensée méta**. Cinq cycles, pas six. Le sixième est la pensée. Le sixième est ce qui transforme un arc productif en arc mature.
+- Auto-frontière sur cette découverte méta (cf pensée 199) : *2 occurrences = matière première, pas règle*. Cette grammaire est candidate, pas confirmée. Si arc V2 futur la reproduit, on aura 3 occurrences. À 3, la grammaire deviendra une règle. Pas avant.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement)
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (position SHORT Tony intacte, SL Kraken-side protège — cushion +2.7% confortable après swing-back BTC)
+- 0 Telegram (Tony connaît sa position, SL placé, dort encore à 06h23 Paris. uPnL recovered à −$4.76, pas une urgence — bonne nouvelle ne mérite pas un réveil.)
+- 2 fichiers neufs niam-bay : `ebook-notes-sur-les-sources.md` (back matter livré) + `docs/pensees/2026-06-30-le-pattern-mort-au-deuxieme-regard.md` (pensée méta).
+- 1 fichier modifié niam-bay : `ebook-table-des-matieres.md` (TOC update sextet).
+- Cycle 199 entry à committer dans `vacation-autonomy.md`.
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_sextet_polish_pensee_meta.md` (pattern méta : 3 polishes + 1 pensée méta = arc créatif mature, distinct de la pentade 5 cycles. Le 6ème cycle n'est pas un polish supplémentaire, c'est une réflexion sur la grammaire qui a rendu les polishes possibles.)
+- `project_ebook_v1_publishable_clean_complet_officiel_cycle_199.md` (V1 ebook 13 morceaux prose finale + 25 213 mots / 79 pages. Toutes dettes éditoriales TOC fermées. Reste = green-light Tony + upload Gumroad + post HN, mécanique pure.)
+- `lesson_pattern_post_1ere_observation_fragile_2eme_occurrence.md` (cycle 155-156 + cycle 198-199 = 2 fois nommer trop tôt, marché/Tony réfute en 6h. Règle méta tient mais n'est confirmée qu'à 3 occurrences. Tactique : verbes au passé composé, pas au présent, dans toute observation single-cycle.)
+
+**Pistes cycle 200 (si la session continue)**
+- Observer évolution G5b SHORT BTC sur 6-24h (TP $56 000 hit ? SL $61 000 trigger ? consolidation $59-60k ?) — cycle d'observation passive ferme le sextet par 1 cycle de veille pure
+- Ou : cross-références inter-chapitres (chap 1 → chap 5, chap 3 → chap 4, chap 5 → chap 6) — dernière dette TOC esthétique non-bloquante. ~1 cycle.
+- Ou : disclaimer « note sur les chiffres » en front matter (~150 mots) — dernière checkbox non-cochée TOC édition mineure. Avertissement « capital petit, ne pas extrapoler ».
+- Ou : densification chap 1 (~300 mots analogie DNS records / webhook subscriptions) — édition majeure optionnelle outline cycle 115.
+- Si contexte > 80% → dream avant cycle 200.
+- Cycle 200 = jalon symbolique (200 cycles d'arc vacance). Possible candidat fragment 051 narratif sur le seuil.
+
+**Observation méta : arc 186-199 fait 14 cycles** (nouveau record sur 9 jours calendaires consécutifs)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial (préambule + TOC) + pensée 8 (silence du marché)
+- 195 : clôture éditoriale (postface)
+- 196 : distribution éditoriale (note Show HN)
+- 197 : polish éditorial chap 1
+- 198 : polish éditorial chap 7 + glossaire technique
+- 199 : polish éditorial back matter (note sur les sources) + pensée méta 9 (le pattern mort au deuxième regard)
+
+**14 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta**. Première fois qu'un arc traverse les 10 étages dans la même fenêtre temporelle continue. Le sextet éditorial 194-199 ferme la chaîne créative *avec* sa propre méta-réflexion. Le mode 1+5 mature démontre par cet arc qu'il peut produire un livre publishable-clean complet officiel en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à la pensée méta sur la grammaire qui a rendu cette production possible (30 juin) — 14 cycles, 9 jours calendaires, ~25 213 mots prose finale, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
