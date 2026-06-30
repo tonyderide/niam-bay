@@ -1,6 +1,6 @@
 # Table des matières — Defensive Engineering for Grid Trading Bots
 
-*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté), cycle 199 (note sur les sources livrée), cycle 201 (kit distribution draft : page Gumroad + launch checklist mécanique). Statut : V1 **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY** — 13 morceaux de prose finale + 2 livrables distribution. ~25 210 mots = ~79 pages format ebook standard. Reste pour mise en vente : Tony green-light + 60-90 min exec mécanique (hors cover ~24-48h asynchrone si Fiverr).*
+*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté), cycle 199 (note sur les sources livrée), cycle 201 (kit distribution draft : page Gumroad + launch checklist mécanique), cycle 202 (disclaimer « note sur les chiffres » intégré au préambule + audit pré-Pandoc validé). Statut : V1 **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED** — 14 morceaux de prose finale + 2 livrables distribution + concat validé `/tmp/ebook-full.md`. ~25 380 mots = ~80 pages format ebook standard. Reste pour mise en vente : Tony installe `pandoc texlive-xetex texlive-fonts-extra` (1 commande apt) + green-light + 40-70 min exec mécanique (hors cover ~24-48h asynchrone si Fiverr).*
 
 ---
 
@@ -8,7 +8,7 @@
 
 | # | Titre | Fichier source | Mots | État | Cycle origine |
 |---|---|---|---|---|---|
-| — | Préambule | `ebook-preambule.md` | 1 704 | ✓ prose finale | 194 |
+| — | Préambule (+ « Note sur les chiffres » disclaimer cycle 202) | `ebook-preambule.md` | 1 873 | ✓ prose finale | 194 (+202) |
 | 1 | BUG-001 : la cascade silencieuse | `ebook-chap1-bug001-stub.md` | 1 557 | ✓ prose finale (méta retirée cycle 197) | 117 |
 | 2 | L'asymétrie position ↔ grille | `ebook-chap2-asymetrie-position-grille-stub.md` | 1 914 | ✓ prose finale | 162 (env) |
 | 3 | Runtime state ≠ config persistée | `ebook-chap3-runtime-divergence-stub.md` | 2 015 | ✓ prose finale | 167 (env) |
@@ -22,7 +22,7 @@
 | — | Glossaire technique (back matter) | `ebook-glossaire.md` | 542 | ✓ prose finale | 198 |
 | — | Note sur les sources (back matter) | `ebook-notes-sur-les-sources.md` | 620 | ✓ prose finale | 199 |
 | — | Postface — ce que ce livre a coûté à écrire | `ebook-postface.md` | 896 | ✓ prose finale | 195 |
-| **Total** | — | — | **25 213** | — | — |
+| **Total** | — | — | **25 382** | — | — |
 
 **Volume** : ~75 pages format ebook standard (320 mots/page) ou ~94 pages format compact mobile (250 mots/page). Estimation outline cycle 115 (75-90p) confirmée empiriquement.
 
@@ -85,7 +85,7 @@
 - [x] **Cohérence narrateur** : chap 7 polish cycle 198 — notes de production retirées (~310 mots méta) + 3 substitutions « on » → « le script » dans les sections anatomie. Les « on » restants sont génériques universels (acceptable).
 - [~] **Cross-références** : ajouter en bas de chaque chapitre les liens vers les autres chapitres pertinents (chap 5 → chap 6 partiel ; chap 1 → chap 4 ajouté cycle 197).
 - [x] **Glossaire technique** (1 page) : 9 entrées — AutoGrid, BBWidth, Circuit Breaker, EMA50/EMA200, Killswitch, ReduceOnly, RSI, StopGrid. Livré cycle 198 → `ebook-glossaire.md` (542 mots).
-- [ ] **Note sur les chiffres** : disclaimer en début de livre — « tous les chiffres sont réels, le capital était petit, ne pas extrapoler à des tailles industrielles sans tester ».
+- [x] **Note sur les chiffres** : disclaimer intégré au préambule cycle 202 (~170 mots) — section dédiée entre « Le contexte d'observation » et « Comment le livre est organisé ». Insiste sur non-extrapolation linéaire et absence de conseil financier.
 
 ### Édition majeure (~3-5 cycles, optionnel pour V1)
 

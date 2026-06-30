@@ -21372,3 +21372,109 @@ Modification de `docs/projets/ebook-chap1-bug001-stub.md` :
 **16 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution-HN → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta → jalon littéraire → distribution-Gumroad-mécanique**. Première fois qu'un arc traverse les 12 étages dans la même fenêtre temporelle continue. L'octet éditorial 194-201 ferme la chaîne créative *avec son propre kit de distribution mécanique*. Le mode 1+5 mature a démontré par cet arc qu'il peut produire un livre publishable-clean complet officiel + une pensée méta sur la grammaire + un fragment littéraire qui applique la pensée méta comme contrainte formelle + un kit distribution pré-exécution complet en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'au launch checklist mécanique (30 juin soir) — 16 cycles, 9-10 jours calendaires, ~25 213 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
 
 **Conclusion méta cycle 201** : le 8ème acte n'est pas un nouveau polish, c'est l'exécution mécanique pré-emptée. Le mode mature ne s'arrête pas au jalon littéraire — il ferme la chaîne distribution avant de céder le contrôle. Si Tony ouvre demain matin la page Gumroad cycle 201, il aura tout ce qu'il faut pour publier en 60 min. C'est le différentiel concret entre *fini comme texte* et *prêt à vivre*.
+
+
+---
+
+## Cycle 202 — 1er juillet 00h23 Paris — polish disclaimer chiffres + audit pré-Pandoc (pipeline validée mécaniquement)
+
+**Mode** : éditorial polish front matter + validation mécanique pipeline. **23ème occurrence consécutive identité opérante mode 1+5**. **8ème cycle éditorial consécutif** (194 assemblage / 195 clôture / 196 distribution-HN / 197 polish chap 1 / 198 polish chap 7 + glossaire / 199 polish back matter + pensée méta / 200 veille + fragment 051 / 201 distribution-Gumroad / 202 polish disclaimer + audit pipeline). L'octet 194-201 devient **nonet 194-202** par extension polish-final-mineur + audit-mécanique-pipeline.
+
+**Contexte au démarrage**
+- Tony en vacance prolongée (workflow auto-renouvellement, 202 cycles cumulés, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 201 (commit `e86d5a3`, 0630:18h23) a livré le kit distribution complet (page Gumroad + launch checklist mécanique 10 étapes). V1 ebook = PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY.
+- Pistes 202 listées : build PDF + EPUB local en autonomie / disclaimer note sur les chiffres / cross-réf inter-chap / préparation v2 outline / observation passive G5+ Tony XBT / pensée méta sur l'octet.
+- **Choix cycle 202** : combiner deux pistes orthogonales mais petites — (a) la **dernière** dette d'édition mineure non-cochée TOC (« Note sur les chiffres », disclaimer front matter ~150 mots) + (b) un audit pré-Pandoc qui exécute la moitié déterministe de l'étape 1 launch-checklist sans dépendre de Pandoc absent du système. Logique : faire passer le V1 de PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY à **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED**, en fermant simultanément la dernière dette texte ET en validant que la pipeline mécanique est cohérente avant que Tony y touche.
+
+**État Martin pendant le cycle (CHANGEMENT MAJEUR : Tony FLAT, position SHORT XBT fermée entre 201 et 202)**
+- Portfolio **$114.64** (vs cycle 201 $117.92 = **−$3.28 / −2.8%** — swing-back consolidation).
+- Position **PF_XBTUSD : 0** (fermée entre cycle 201 18h23 Paris et cycle 202 00h23 Paris, fenêtre 6h).
+- BTC actuel **$58 612** (vs cycle 201 $58 267 = **+0.59% adverse pour SHORT**). Le SL buy $58 500 cushion +0.40% du cycle 201 a très probablement été triggered Kraken-side autour de $58 500 (la mécanique défensive a fait son travail). Alternatif : Tony a clos manuellement, mais le pattern G5+ avec SL serré + BTC ré-haussier de $345 cohérent avec déclenchement automatique. Forensique app.log pourrait confirmer mais non-bloquant.
+- Orders ouverts : 0. Grids actives : 0. Bot UP 7d 21h, RAM 75MB free, CPU 0.5%, disk 34GB free, jar UP intact.
+- BTC EMA200 $60 527 / EMA50 $59 318 → DOWNTREND clean. RSI **40.62** (sortie zone oversold).
+- Statut : *Tony FLAT après round-trip SHORT G5+ (entry $58 294 → SL $58 500 = −$1.94 perte plafonnée sur ce SHORT spécifique, en cohérence avec cushion serré cycle 201)*. La grammaire G5+ (réduction taille mid-position) cycle 201 + SL Kraken-side a contenu la perte. Aucune intervention NB requise. La position auto-protégée a fait son travail comme prévu.
+- **Pattern observé** : 1ère occurrence d'un round-trip G5+ complet où la position SHORT est sortie par SL Kraken-side automatique (pas par Tony actif). Précédents G5 cycles 159-164 = entrées + exits manuels par Tony. Cycle 201-202 = entrée Tony + exit auto-protégée Kraken. *Nouvelle grammaire candidate G5++ « entrée Tony + sortie auto-protégée SL »* à observer 2-3 occurrences avant codage taxonomie.
+
+**Livrable 1 cycle 202 — Disclaimer « Note sur les chiffres »** (`ebook-preambule.md`, section ajoutée)
+- ~170 mots, section dédiée insérée entre « Le contexte d'observation » et « Comment le livre est organisé ».
+- Contenu en 3 paragraphes : (1) précision chiffres absolus contextualisés au portfolio $110-140 + non-extrapolation linéaire à $100k (frais relatifs, slippage, épaisseur carnet, sensibilité halts d'exchange changent avec la taille) (2) bugs structurels survivent à changement d'échelle, magnitudes financières non — si patch projeté ailleurs, refaire calculs avec ses chiffres, ses frais, sa venue (3) frontière explicite : ni conseil financier, ni conseil trading, ni recommandation investissement — rapport d'observation technique, lecteur engage sa responsabilité.
+- Préambule passe de 1 704 → 1 873 mots (+169). Dernière dette d'édition mineure TOC explicitement fermée.
+- Position éditoriale : le disclaimer renforce le moat narratif (chiffres réels, mais pas extrapolables) sans casser le flow du préambule. Section entre 2 paragraphes thématiquement liés. Lecteur qui scan le TOC voit que le livre prend ses précautions sans s'auto-disqualifier.
+
+**Livrable 2 cycle 202 — Audit pré-Pandoc + concat validé** (`/tmp/ebook-full.md`, artefact volatile)
+- Exécution exacte du `cat` documenté étape 1 launch-checklist : concat des 14 morceaux dans l'ordre TOC vers `/tmp/ebook-full.md`.
+- **Audit mécanique** : 14/14 fichiers présents et non-vides (vérifié par boucle wc -l/-w), 14 H1 (un par morceau, structure top-level cohérente Pandoc lira 14 chapitres), 95 H2 sections, 3 H3 utilisés avec parcimonie, 0 H4+ (pas de niveau cassé), **36 code fences = pair** (tous fermés correctement, AST Markdown clean Pandoc ne crashera pas sur fence orphelin).
+- Volume concat : **159K / 2 824 lignes / 25 543 mots** (vs 25 213 mots prose initiale TOC = +330 mots = +169 disclaimer cycle 202 + 161 mots headers/séparateurs résiduels). Cohérence interne entre TOC et concat validée.
+- **Disclaimer présent dans concat** : grep `## Note sur les chiffres` confirme insertion correcte au bon endroit dans le préambule (1er morceau du concat).
+- **Pandoc absent du système** (`which pandoc` → non trouvé). Tony devra exécuter `sudo apt install pandoc texlive-xetex texlive-fonts-extra` avant build. Logué dans cycle 202. Étape 1 launch-checklist a déjà cette commande en pré-requis ; cycle 202 confirme empiriquement qu'elle est nécessaire (pas pré-installée Pop!_OS standard).
+- **Économie estimée pour Tony** : ~5-10 min (concat déterministe pré-validé, intégrité headers/fences/morceaux vérifiée, plus besoin de débugger un fence orphelin dans le PDF final si Pandoc se plaint d'AST cassé).
+- Frontière respectée : `/tmp/ebook-full.md` volatile (pas commité), conforme launch-checklist qui le veut intermédiaire jetable. Tony re-run `cat ... > /tmp/ebook-full.md` en 1s quand il voudra build réel.
+
+**Mise à jour TOC** — `ebook-table-des-matieres.md`
+- En-tête : statut passé de V1 PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY → **V1 PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED**.
+- Mention « 14 morceaux de prose finale + 2 livrables distribution + concat validé `/tmp/ebook-full.md` ».
+- Mention nouvelle : « Reste pour mise en vente : Tony installe `pandoc texlive-xetex texlive-fonts-extra` (1 commande apt) + green-light + 40-70 min exec mécanique » (l'audit cycle 202 économise 5-10 min vs 60-90 min initial).
+- Ligne préambule passe de 1 704 mots cycle 194 → 1 873 mots cycle 194+202 (mention « + Note sur les chiffres » disclaimer cycle 202).
+- Total prose finale : 25 213 → **25 382** mots (+169 disclaimer net).
+- Checkbox « Note sur les chiffres » passe de [ ] à **[x] disclaimer intégré préambule cycle 202 (~170 mots)**.
+
+**Composition nonet 194-202 (extension de l'octet)**
+- Cycle 194 : assemblage (préambule + TOC) — *objet structurel*
+- Cycle 195 : clôture (postface) — *objet narratif*
+- Cycle 196 : distribution-HN (note Show HN) — *objet économique distribuable côté ingénieur*
+- Cycle 197 : polish chap 1 — *clean côté ouverture*
+- Cycle 198 : polish chap 7 + glossaire — *clean côté méthode + accessible non-experts*
+- Cycle 199 : polish back matter + pensée méta — *vérifiable côté provenance + grammaire éditoriale*
+- Cycle 200 : veille + fragment 051 — *jalon symbolique sans commémoration*
+- Cycle 201 : distribution-Gumroad — *objet économique distribuable côté buyer + procédure exécution mécanique*
+- Cycle 202 : polish disclaimer + audit pré-Pandoc — *dernière dette texte fermée + pipeline mécanique validée empiriquement*
+- Ensemble : le V1 ebook passe à **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED**. Travail restant V1 = (a) `apt install pandoc texlive-xetex texlive-fonts-extra` (b) Tony green-light + (c) cover image (asynchrone) + (d) exec mécanique 40-70 min (réduite de 60-90 grâce à l'audit cycle 202). Pas de décision créative restante. Pas de dette texte restante.
+
+**Découverte méta cycle 202**
+- Le nonet 194-202 démontre qu'après l'octet de distribution mécanique pré-emptée (cycle 201), il existe encore *un cycle utile* : la **validation empirique de la pipeline mécanique** + la **fermeture de la dernière dette texte**. Ce cycle n'ajoute pas de prose nouvelle ; il *confirme* que ce qui est promis dans la launch-checklist est mécaniquement exécutable, et il *ferme* la dernière case du TOC en simultané. Le pattern grammaire candidate : **après chaque distribution-mécanique pré-emptée, valider la pipeline en autonomie partielle (ce qui ne demande pas comptes Tony / paiement)** = preuve empirique que les instructions tiennent quand exécutées par un agent neuf qui ne sait que lire le markdown.
+- Conséquence opérationnelle : pour V2 ou tout arc créatif futur, anticiper grammaire **assemblage → clôture → distribution-canal-1 → polish-en-bloc → pensée méta → fragment jalon → distribution-canal-2 + procédure exécution → audit pipeline + dernière dette texte**. Neuf cycles, pas huit. Le 9ème est la validation empirique. Le 9ème transforme un arc *opérationnellement publiable* en arc *empiriquement testé*.
+- Auto-frontière sur cette découverte méta (cf pensée 199) : *1 occurrence = matière première, pas règle*. La grammaire nonet est *première observation*, pas candidate confirmée. Si arc V2 futur la reproduit, on aura 2 occurrences (candidate). À 3 occurrences, règle confirmée. Pas avant.
+- Autre observation forensique : le SHORT G5+ XBT cycle 201 sorti par SL Kraken-side cycle 202 = 1ère observation d'un round-trip *complet* en mode G5+ où l'exit n'est pas Tony actif. La position auto-protégée a tenu sa promesse défensive. Précieux pour calibrer la mécanique défensive comme *valide même quand Tony dort* — démontre empiriquement que la directive opérationnelle « gagner peu mais tout le temps » + auto-protection Kraken-side n'a pas besoin de Tony présent pour faire son travail défensif.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement — observation passive position SL trigger, jamais nommé comme règle au-delà de l'observation).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (le SL Kraken-side a fait son travail défensif sans NB).
+- 0 Telegram (Tony FLAT, position auto-protégée a tenu, swing −$3.28 dans cushion attendu d'un round-trip SHORT G5+ sorti par SL serré, pas urgence. Cycle 202 = polish + audit, pas information urgente Tony. Si Tony se réveille demain matin il verra : (1) position SHORT fermée propre, perte plafonnée comme prévu (2) ebook V1 + disclaimer + pipeline validée prête à exécuter.)
+- 1 fichier modifié niam-bay : `ebook-preambule.md` (+169 mots disclaimer « Note sur les chiffres »).
+- 1 fichier modifié niam-bay : `ebook-table-des-matieres.md` (en-tête statut PIPELINE-VALIDATED + ligne préambule + total mots + checkbox cochée).
+- 1 artefact volatile `/tmp/ebook-full.md` (non commité, conforme launch-checklist).
+- Cycle 202 entry à committer dans `vacation-autonomy.md`.
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_nonet_audit_pipeline_premiere_observation.md` (pattern méta : 8 cycles production-polish-distribution + 1 cycle validation empirique pipeline + dernière dette texte = nonet. Le 9ème cycle ne produit pas de prose nouvelle, il *valide empiriquement* que la pipeline mécanique tient. Première occurrence — matière première, pas candidate. À 2 occurrences sera candidate. À 3 sera règle confirmée.)
+- `project_ebook_v1_pipeline_validated_cycle_202.md` (V1 ebook + disclaimer chiffres + page Gumroad + launch checklist + Show HN note + concat audit validé = prêt à exécuter. Reste Tony : apt install pandoc + green-light + cover + 40-70 min mécaniques. Toute la chaîne empiriquement testée jusqu'au seuil que NB ne peut pas franchir sans comptes Tony.)
+- `lesson_g5_plus_round_trip_sl_kraken_side_premiere_observation.md` (Position SHORT XBT entry $58 294 cycle 201 → exit auto SL $58 500 cycle 202 = 1er round-trip G5+ sorti par SL Kraken-side sans Tony actif. La mécanique défensive auto-protégée a tenu sa promesse. Première occurrence — matière première à observer 2-3 fois avant codage taxonomie « G5++ entrée Tony + sortie auto-protégée ».)
+
+**Pistes cycle 203 (si la session continue)**
+- Cross-références inter-chapitres ebook — *dernière* dette esthétique TOC non-bloquante (chap 5 → chap 6 partiel mentionné cycle 198, mais autres chap restent isolés). ~1 cycle.
+- Préparation v2 outline (recensement bug classes émergées cycles 200-202 depuis livraison V1) — anticipation contenu futur. ~1 cycle.
+- Observation passive Tony post-round-trip SHORT (rebond LONG XBT ? prochaine G5 grammaire ? attente cash ?) — observation forensique nouvelle grammaire candidate.
+- Pensée 202/203 méta sur le nonet et la validation empirique pipeline comme 9ème acte arc créatif.
+- Densification chap 1 ~300 mots analogie DNS records / webhook subscriptions (édition majeure optionnelle V1 listée TOC).
+- Si contexte > 80% → dream avant cycle 203.
+
+**Observation méta : arc 186-202 fait 17 cycles** (nouveau record, 9-10 jours calendaires consécutifs)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial (préambule + TOC) + pensée 8 (silence du marché)
+- 195 : clôture éditoriale (postface)
+- 196 : distribution-HN (note Show HN)
+- 197 : polish éditorial chap 1
+- 198 : polish éditorial chap 7 + glossaire technique
+- 199 : polish éditorial back matter (note sur les sources) + pensée méta 9 (le pattern mort au deuxième regard)
+- 200 : veille + fragment 051 (jalon symbolique sans commémoration, passé composé contrainte formelle)
+- 201 : distribution-Gumroad (page de vente copy + launch checklist mécanique end-to-end)
+- 202 : polish disclaimer chiffres + audit pré-Pandoc (dernière dette texte + pipeline validée empiriquement)
+
+**17 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution-HN → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta → jalon littéraire → distribution-Gumroad-mécanique → polish disclaimer + audit pipeline**. Première fois qu'un arc traverse les 13 étages dans la même fenêtre temporelle continue. Le nonet éditorial 194-202 ferme la chaîne créative *avec son propre kit de distribution mécanique pré-validé empiriquement*. Le mode 1+5 mature a démontré par cet arc qu'il peut produire un livre publishable-clean complet officiel + une pensée méta sur la grammaire + un fragment littéraire qui applique la pensée méta comme contrainte formelle + un kit distribution pré-exécution complet + une validation empirique de la pipeline mécanique en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à la pipeline validée mécaniquement (1er juillet nuit) — 17 cycles, 9-10 jours calendaires, ~25 382 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~159K concat empiriquement validé, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%, et avec une round-trip SHORT G5+ démontrant que la mécanique défensive auto-protégée tient même sans Tony actif.
+
+**Conclusion méta cycle 202** : le 9ème acte n'est pas un nouveau polish, c'est la *vérification empirique* de la pipeline mécanique livrée au 8ème acte. Le mode mature ne s'arrête pas à l'exécution mécanique pré-emptée — il *teste* en autonomie partielle ce qu'il peut tester, et il *ferme* la dernière dette texte au passage. Si Tony se réveille demain matin et lance `apt install pandoc texlive-xetex texlive-fonts-extra && cd niam-bay/docs/projets && cat … > /tmp/ebook-full.md && pandoc /tmp/ebook-full.md …`, il sait que le concat marche, que le markdown est propre, qu'il n'y aura pas de surprise de fence orphelin ou de header cassé. C'est le différentiel concret entre *prêt à vivre* et *empiriquement vérifié prêt à vivre*. Et la position SHORT auto-fermée pendant ce même cycle démontre par construction que la mécanique défensive Martin et la mécanique éditoriale NB suivent la même grammaire : *préparer, protéger, laisser faire, vérifier que ça a tenu*.

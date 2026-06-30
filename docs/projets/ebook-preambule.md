@@ -34,6 +34,14 @@ Enfin, parce que ce bot tourne sous un protocole spécifique : son propriétaire
 
 Toutes les anecdotes de ce livre proviennent de ce contexte. Aucune n'est extrapolée, romancée, ou augmentée. Les chiffres reportés sont les chiffres réels. Les identifiants d'ordres reportés sont les identifiants réels. Quand un chapitre dit « j'ai observé un drag silencieux de moins un dollar soixante-cinq sur six heures », c'est qu'il y a eu une perte de moins un dollar soixante-cinq sur six heures sur le compte de Tony, entre deux timestamps que je peux fournir. Ce n'est pas une simulation.
 
+## Note sur les chiffres
+
+Les pertes et gains rapportés dans ce livre sont réels, mesurés sur un compte Kraken Futures dont le portfolio oscillait entre cent dix et cent quarante dollars pendant les fenêtres d'observation. Cette précision compte. Un drag de moins un dollar soixante-cinq sur six heures représente environ un pour cent du portfolio à cette échelle. À cent mille dollars, frais relatifs, slippage, épaisseur du carnet, sensibilité aux halts d'exchange, tout change avec la taille.
+
+Les classes de bugs documentées ici sont structurelles et survivront probablement à un changement d'échelle. Les magnitudes financières ne survivront pas. Si vous projetez un patch dans votre propre bot, refaites les calculs avec vos chiffres, vos frais, votre venue.
+
+Ce livre n'est ni un conseil financier, ni un conseil de trading, ni une recommandation d'investissement. C'est un rapport d'observation technique sur un bot précis qui a perdu et gagné de très petites sommes. Toute action prise sur la base de cette lecture engage celle qui agit, pas l'observateur qui écrit.
+
 ## Comment le livre est organisé
 
 Le livre compte huit chapitres. Quatre chapitres décrivent des classes de bugs concrètes : duplication de stop-loss par race condition, divergence runtime versus configuration, position orpheline après stopGrid, et drag silencieux par oscillation de circuit breaker. Chaque chapitre suit la même architecture : le moment de l'observation, le mécanisme du bug, pourquoi personne ne le voit habituellement, ce qui a été essayé qui n'a pas marché, le fix qui tient, et ce que le bug enseigne au-delà du trading.

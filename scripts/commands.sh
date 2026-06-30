@@ -190,3 +190,9 @@ curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'" 2>&1 
 
 # [auto 2026-06-30 06:23] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines <N>
 rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines 250
+
+# [auto 2026-06-30 06:29] utilisée 3x — sig: rtk git log --oneline -<N>
+rtk git log --oneline -3
+
+# [auto 2026-06-30 18:31] utilisée 3x — sig: rtk git status --short
+rtk git status --short
