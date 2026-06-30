@@ -1,6 +1,6 @@
 # Table des matières — Defensive Engineering for Grid Trading Bots
 
-*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté), cycle 199 (note sur les sources livrée). Statut : V1 **PUBLISHABLE-CLEAN COMPLET** — 13 morceaux de prose finale. ~25 210 mots = ~79 pages format ebook standard.*
+*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté), cycle 199 (note sur les sources livrée), cycle 201 (kit distribution draft : page Gumroad + launch checklist mécanique). Statut : V1 **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY** — 13 morceaux de prose finale + 2 livrables distribution. ~25 210 mots = ~79 pages format ebook standard. Reste pour mise en vente : Tony green-light + 60-90 min exec mécanique (hors cover ~24-48h asynchrone si Fiverr).*
 
 ---
 
@@ -95,10 +95,10 @@
 
 ### Travail de publication (hors rédaction)
 
-- [ ] **Validation demande** (priorité 1 selon outline cycle 115) : avant rédaction lourde, un post Show HN ou r/algotrading avec chap 1 gratuit + bouton « accès complet $9 pay-what-you-want ». Mesurer engagement 48h. Si <5 upvotes → ne pas finaliser publication, garder corpus interne.
-- [ ] **Pipeline Pandoc Markdown → PDF + EPUB** : configuration, choix de la police (recommandation : Source Serif Pro pour le corps, Source Code Pro pour les listings).
-- [ ] **Page de vente Gumroad** : titre, sous-titre, description (max 500 caractères), 1 extrait gratuit (chap 1), tarif (recommandation : pay-what-you-want $5-$50, prix conseillé $19).
-- [ ] **Annonce** : 1 tweet, 1 post LinkedIn, 1 post Reddit r/algotrading, 1 post HN « Show HN: I autopsy'd my own Kraken grid bot for 6 days, here are 4 bug classes ».
+- [drafté] **Validation demande** (priorité 1 selon outline cycle 115) : Show HN note prête cycle 196 → `ebook-show-hn-note.md`. Reste post effectif.
+- [drafté] **Pipeline Pandoc Markdown → PDF + EPUB** : commandes complètes dans `ebook-launch-checklist.md` étape 1 (cycle 201). Polices Source Serif Pro + Source Code Pro confirmées avec fallback DejaVu.
+- [drafté] **Page de vente Gumroad** : copy complète prête-à-coller dans `ebook-gumroad-listing.md` (cycle 201). 12 blocs distincts (title, subtitle, description ~600 mots, FAQ, tags, settings, message post-achat, 3 directions cover). Reste Tony green-light + exec mécanique 60-90 min.
+- [drafté] **Annonce** : Show HN note prête (cycle 196), Twitter thread 5 tweets prêt (cycle 201, dans launch-checklist étape 8), LinkedIn post prêt (cycle 201), Reddit r/algotrading post prêt (cycle 201). Reste post effectif depuis comptes Tony.
 
 ---
 

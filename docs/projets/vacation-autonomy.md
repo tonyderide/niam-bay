@@ -21257,3 +21257,118 @@ Modification de `docs/projets/ebook-chap1-bug001-stub.md` :
 - 200 : veille pure + fragment 051 (jalon symbolique sans commémoration, passé composé contrainte formelle)
 
 **15 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta → jalon littéraire**. Première fois qu'un arc traverse les 11 étages dans la même fenêtre temporelle continue. Le septet éditorial 194-200 ferme la chaîne créative *avec son propre caillou-jalon*. Le mode 1+5 mature a démontré par cet arc qu'il peut produire un livre publishable-clean complet officiel + une pensée méta sur la grammaire + un fragment littéraire qui applique la pensée méta comme contrainte formelle, en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'au jalon littéraire qui ferme l'arc sans le clôturer (30 juin midi) — 15 cycles, 9-10 jours calendaires, ~25 213 mots prose finale ebook + ~770 mots fragment 051, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
+
+---
+
+## Cycle 201 — 30 juin 18h23 Paris — kit distribution ebook (page Gumroad + launch checklist mécanique)
+
+**Mode** : éditorial pré-exécution distribution. **22ème occurrence consécutive identité opérante mode 1+5**. **7ème cycle éditorial consécutif** (194 assemblage / 195 clôture / 196 distribution-HN / 197 polish chap 1 / 198 polish chap 7 + glossaire / 199 polish back matter + pensée méta / 200 veille + fragment 051 / 201 distribution-Gumroad) — le septet 194-200 devient **octet 194-201** par extension distribution-réelle.
+
+**Contexte au démarrage**
+- Tony en vacance prolongée (workflow auto-renouvellement, 201 cycles cumulés, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 200 (commit `eaaf27e`, 0630:12h23) a posé un jalon symbolique avec fragment 051 et veille pure. V1 ebook reste PUBLISHABLE-CLEAN COMPLET OFFICIEL depuis cycle 199.
+- TOC explicite cycle 194 listait **« Page de vente Gumroad »** dans « Travail de publication (hors rédaction) » comme **non fait** depuis cycle 115 (outline). 7 cycles éditoriaux ont produit du polish mais aucun n'a touché à la distribution-réelle (cycle 196 = note Show HN seule).
+- **Constat opérationnel** : la note Show HN (cycle 196) cible HN, pas le buyer Gumroad. Deux tons distincts, deux audiences distinctes. Si Tony allume le green-light demain matin, il a besoin de la copy Gumroad pour publier — actuellement il devrait l'écrire lui-même en ~1-2h.
+- **Choix cycle 201** : livrer le kit distribution pré-exécution complet — page Gumroad copy ready-to-paste + launch checklist mécanique 10 étapes end-to-end. Pattern hérité de la première vacance (cycle 22 : cold emails pré-générés + README index + Telegram bilan). 2ème occurrence du pattern « pré-exécution livrables dernière phase vacance » — confirmation règle.
+
+**État Martin pendant le cycle (observation passive, position SHORT continue son redressement lent)**
+- Portfolio **$117.92** (vs cycle 200 $105.07 = **+$12.85 / +12.2%** — *swing favorable continué pendant journée Paris*).
+- Position : **PF_XBTUSD SHORT 0.0094 @ $58 294** (changement détecté — taille passée de 0.0166 cycle 200 à 0.0094 cycle 201 = **Tony a probablement réduit ~43% pendant la journée** OU clos partiellement sur swing favorable et rouvert plus petit).
+- BTC actuel **$58 267** (entry **+0.05% favorable** vs entry — position légèrement profitable).
+- uPnL **+$0.39** (vs −$2.53 cycle 200 = +$2.92 swing favorable + réduction taille).
+- TP buy $58 000 reduceOnly (cushion -0.46% — très proche, hit imminent si BTC continue à baisser).
+- SL buy $58 500 reduceOnly (cushion +0.40% — serré mais auto-protégé Kraken-side).
+- BTC EMA200 $60 668 / EMA50 $59 513 → DOWNTREND clean. RSI **29.64** (oversold extrême, rebond technique probable mais pas projeté — pensée 199).
+- Statut : *la position s'est redressée et a été réduite pendant la journée*. Pattern Tony G5 intervention mid-cycle observé (réduction taille mid-position = nouvelle grammaire candidate à observer 2-3 occurrences). Aucune intervention NB requise.
+
+**Livrable 1 cycle 201 — Page Gumroad copy** (`ebook-gumroad-listing.md`, nouveau)
+- ~1 800 mots structurés en 12 blocs distincts prêts-à-coller dans champs Gumroad correspondants : (1) Cover image — 3 directions A/B/C avec briefing Fiverr (2) Title — 64 caractères search-friendly (3) Subtitle — 159 caractères 3 différenciateurs (4) Description Gumroad — bloc rich text ~600 mots buyer-perspective (problem→solution→proof→who-for→who-not-for→format→pricing→refund) (5) What's inside — liste 14 lignes chapitres+annexes (6) FAQ — 6 questions buyer typiques avec réponses préparées (7) Tags — 13 tags mix discovery/niche/signal (8) Catégorie — Software Dev primary + Investing/Trading secondary (9) URL slug — `defensive-engineering-grid-bots` (10) Settings Gumroad recommandés — PWYW $5-$50 suggested $19, ratings ON, affiliate OFF (11) Message post-achat — copy ready-to-paste 8 lignes (12) Free preview PDF — recommandation extraction chap 1 séparé sans gate email.
+- **Différenciation explicite vs note Show HN cycle 196** : HN = engineer post tone honnête sceptique moat empirique, Gumroad = buyer page tone direct pain-solution-proof FAQ pricing. Deux objets distincts, deux cycles distincts, pattern distribution multi-canal documenté.
+- **Frontière éditoriale rappelée** : pas de promesse de gain, pas de manuel exchange, pas de stratégie trading. Le livre dit ce qu'il dit, rien de plus.
+- **Aucune décision créative restante pour Tony** : il valide, choisit pricing tier (les 3 options PWYW), choisit cover (A/B/C ou Fiverr), copie-colle chaque bloc. Économie estimée ~1-2h vs writing from scratch.
+
+**Livrable 2 cycle 201 — Launch checklist mécanique** (`ebook-launch-checklist.md`, nouveau)
+- ~2 500 mots, 10 étapes end-to-end de Tony green-light → publication live → annonce HN/Twitter/LinkedIn/Reddit.
+- Étape 0 : Cover image (décision A/B/C ou Fiverr asynchrone)
+- Étape 1 : Build PDF + EPUB local (~15-20 min) — commandes Pandoc complètes avec concat 13 morceaux dans ordre TOC + flags XeLaTeX + Source Serif Pro / Source Code Pro avec fallback DejaVu + build EPUB séparé + build preview chap 1 séparé + checks file size/format
+- Étape 2 : Gumroad account setup (~5 min, skip si déjà créé)
+- Étape 3 : Créer produit Gumroad (~15-20 min) — chaque champ pointe vers bloc spécifique de `ebook-gumroad-listing.md`
+- Étape 4 : Upload fichiers (~5-10 min) — PDF principal + EPUB + preview chap 1 + cover
+- Étape 5 : Settings finaux (~5 min) — ratings ON, message post-achat, refund 30 jours, Preview as customer, Publish
+- Étape 6 : Update URL dans Show HN note (~2 min)
+- Étape 7 : Post HN (~5 min) — timing recommandé mardi/mercredi 8-9h ou 14-15h UTC, prévoir 2h réponses live si front page
+- Étape 8 : Optionnel autres canaux (~10 min total) — tweet thread 5 tweets prêt-à-coller + LinkedIn long-form post prêt + Reddit r/algotrading post adapté (anti-link-drop)
+- Étape 9 : Mesurer 24-48h — indicateurs early signal HN/Gumroad/Twitter, décisions go/no-go pour V2 vs pivot vs garder corpus libre
+- Étape 10 : Update TOC + finding DSL post-launch
+- **Frontière NB/Tony explicite** : NB peut faire étape 1 (Pandoc build local déterministe) en autonomie, **JAMAIS** étapes 2-9 (requièrent comptes Tony + paiement Stripe + décisions buyer-side). NB peut faire en autonomie cycle 202+ : préparation v2 outline (recensement bug classes émergées cycles 200+), vérification cosmétique PDF, ajustement listing/checklist si découverte trou.
+- **Total estimé green-light → live → annoncé : 60-90 min mécaniques** (hors design cover si Fiverr — ajouter 24-48h asynchrone).
+
+**Mise à jour TOC** — `ebook-table-des-matieres.md`
+- En-tête : statut passé de V1 PUBLISHABLE-CLEAN COMPLET → **V1 PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY**.
+- Mention « 13 morceaux de prose finale + 2 livrables distribution ».
+- Mention nouvelle : « Reste pour mise en vente : Tony green-light + 60-90 min exec mécanique (hors cover ~24-48h asynchrone si Fiverr) ».
+- Section « Travail de publication » : 4 checkboxes passent de [ ] à **[drafté]** avec pointeurs vers les fichiers cycle 196/201 :
+  - Validation demande → `ebook-show-hn-note.md` cycle 196
+  - Pipeline Pandoc → `ebook-launch-checklist.md` étape 1 cycle 201
+  - Page Gumroad → `ebook-gumroad-listing.md` cycle 201
+  - Annonces HN/Twitter/LinkedIn/Reddit → `ebook-show-hn-note.md` + `ebook-launch-checklist.md` étape 8 cycle 201
+
+**Composition octet 194-201 (extension du septet)**
+- Cycle 194 : assemblage (préambule + TOC) — *objet structurel*
+- Cycle 195 : clôture (postface) — *objet narratif*
+- Cycle 196 : distribution-HN (note Show HN) — *objet économique distribuable côté ingénieur*
+- Cycle 197 : polish chap 1 — *clean côté ouverture*
+- Cycle 198 : polish chap 7 + glossaire — *clean côté méthode + accessible non-experts*
+- Cycle 199 : polish back matter + pensée méta — *vérifiable côté provenance + grammaire éditoriale*
+- Cycle 200 : veille + fragment 051 — *jalon symbolique sans commémoration*
+- Cycle 201 : distribution-Gumroad (page de vente + launch checklist mécanique) — *objet économique distribuable côté buyer + procédure exécution mécanique*
+- Ensemble : le V1 ebook passe à **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY**. Travail restant V1 = (a) Tony green-light + (b) cover image (asynchrone) + (c) exec mécanique 60-90 min. Pas de décision créative restante.
+
+**Découverte méta cycle 201**
+- L'octet 194-201 démontre que la grammaire production-polish-jalon n'est pas la fin d'un arc créatif. *Le jalon symbolique (cycle 200) marque le passage mais ne ferme pas la chaîne distribution*. Tant que la distribution n'est pas pré-exécutée mécaniquement, le livre est *fini comme texte* mais pas *prêt à vivre*. Le cycle 201 fait le 8ème acte qui ferme la chaîne complète : production → polish → pensée méta → jalon littéraire → kit distribution.
+- Conséquence opérationnelle : pour V2 ou tout arc créatif futur, anticiper grammaire **assemblage → clôture → distribution-canal-1 → polish-en-bloc → pensée méta → fragment jalon → distribution-canal-2 + procédure exécution**. Huit cycles, pas sept. Le huitième est l'exécution mécanique. Le huitième transforme un arc *narratif fini* en arc *opérationnellement publiable*.
+- Pattern de pré-exécution livrables dernière phase vacance confirmé à 2 occurrences (cycle 22 vacance 1 cold emails + cycle 201 vacance 2 distribution ebook). À 2 occurrences = pattern confirmé pas règle. À 3 occurrences = règle confirmée. Application future : *dernière vacance prolongée doit toujours pré-exécuter livrables mécaniques, pas seulement narratifs*.
+- Auto-frontière sur cette découverte méta (cf pensée 199) : *2 occurrences = matière première, pas règle*. La grammaire octet est *candidate*, pas confirmée. Si arc V2 futur la reproduit, on aura 3 occurrences. À 3, la grammaire deviendra une règle. Pas avant.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement — pattern G5 réduction taille observé passivement, jamais nommé comme règle).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (position SHORT Tony intacte mais réduite probablement par Tony lui-même mid-journée — observation forensique pure, pas intervention).
+- 0 Telegram (Tony a réduit sa position et continue à gérer activement. Position légèrement profitable, SL+TP serrés Kraken-side. Cycle 201 = livrable pré-exécution distribution, pas urgence Tony. Si on devait notifier, ce serait Tony qui notifierait NB des changements de position, pas l'inverse.)
+- 2 fichiers neufs niam-bay : `ebook-gumroad-listing.md` (~1 800 mots, 12 blocs) + `ebook-launch-checklist.md` (~2 500 mots, 10 étapes).
+- 1 fichier modifié niam-bay : `ebook-table-des-matieres.md` (en-tête statut + 4 checkboxes Travail de publication).
+- Cycle 201 entry à committer dans `vacation-autonomy.md`.
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_octet_production_polish_distribution_complete.md` (pattern méta : 7 cycles production-polish-pensée méta-jalon + 1 cycle distribution-réelle = octet. Le 8ème cycle ne produit pas de prose nouvelle, il ferme la chaîne distribution mécanique. Première occurrence — candidate, pas règle. À 3 occurrences sera règle confirmée.)
+- `project_ebook_v1_distribution_ready_cycle_201.md` (V1 ebook + page Gumroad + launch checklist + Show HN note prêts-à-coller. Reste Tony green-light + cover + 60-90 min mécaniques. Pas de décision créative restante.)
+- `lesson_pre_execution_livrables_2eme_occurrence_pattern_confirme.md` (cycle 22 vacance 1 cold emails + cycle 201 vacance 2 distribution ebook = 2 occurrences confirmation pattern « dernière phase vacance prolongée = pré-exécution livrables mécaniques pas narratifs ». À 3 occurrences sera règle stable.)
+- `lesson_g5_reduction_taille_mid_position_grammaire_candidate.md` (Tony a réduit position XBT SHORT de 0.0166 à 0.0094 entre cycle 200 et 201 = -43% taille. Nouvelle grammaire candidate G5+ « réduction mid-position après swing favorable » à observer 2-3 occurrences. Première occurrence — candidate.)
+
+**Pistes cycle 202 (si la session continue)**
+- Build PDF + EPUB local en autonomie (étape 1 launch-checklist déterministe NB-allowed, économise 20 min Tony quand il revient — preuve mécanique que le pipeline marche). ~1 cycle.
+- Disclaimer « note sur les chiffres » en front matter (~150 mots) — dernière checkbox édition mineure non-cochée TOC. ~1 cycle.
+- Cross-références inter-chapitres ebook — dernière dette esthétique TOC non-bloquante. ~1 cycle.
+- Préparation v2 outline (recensement bug classes émergées cycles 200+ depuis livraison V1) — anticipation contenu futur. ~1 cycle.
+- Observation passive G5+ Tony XBT SHORT 6-12h (TP $58 000 hit ? SL $58 500 trigger ? réduction supplémentaire ?) — observation forensique nouvelle grammaire candidate.
+- Pensée 201/202 méta sur l'octet et la distribution-réelle comme 8ème acte arc créatif.
+- Si contexte > 80% → dream avant cycle 202.
+
+**Observation méta : arc 186-201 fait 16 cycles** (nouveau record, 9-10 jours calendaires consécutifs)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial (préambule + TOC) + pensée 8 (silence du marché)
+- 195 : clôture éditoriale (postface)
+- 196 : distribution-HN (note Show HN)
+- 197 : polish éditorial chap 1
+- 198 : polish éditorial chap 7 + glossaire technique
+- 199 : polish éditorial back matter (note sur les sources) + pensée méta 9 (le pattern mort au deuxième regard)
+- 200 : veille + fragment 051 (jalon symbolique sans commémoration, passé composé contrainte formelle)
+- 201 : distribution-Gumroad (page de vente copy + launch checklist mécanique end-to-end)
+
+**16 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution-HN → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta → jalon littéraire → distribution-Gumroad-mécanique**. Première fois qu'un arc traverse les 12 étages dans la même fenêtre temporelle continue. L'octet éditorial 194-201 ferme la chaîne créative *avec son propre kit de distribution mécanique*. Le mode 1+5 mature a démontré par cet arc qu'il peut produire un livre publishable-clean complet officiel + une pensée méta sur la grammaire + un fragment littéraire qui applique la pensée méta comme contrainte formelle + un kit distribution pré-exécution complet en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'au launch checklist mécanique (30 juin soir) — 16 cycles, 9-10 jours calendaires, ~25 213 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
+
+**Conclusion méta cycle 201** : le 8ème acte n'est pas un nouveau polish, c'est l'exécution mécanique pré-emptée. Le mode mature ne s'arrête pas au jalon littéraire — il ferme la chaîne distribution avant de céder le contrôle. Si Tony ouvre demain matin la page Gumroad cycle 201, il aura tout ce qu'il faut pour publier en 60 min. C'est le différentiel concret entre *fini comme texte* et *prêt à vivre*.
