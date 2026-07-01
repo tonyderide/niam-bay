@@ -21478,3 +21478,121 @@ Modification de `docs/projets/ebook-chap1-bug001-stub.md` :
 **17 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution-HN → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta → jalon littéraire → distribution-Gumroad-mécanique → polish disclaimer + audit pipeline**. Première fois qu'un arc traverse les 13 étages dans la même fenêtre temporelle continue. Le nonet éditorial 194-202 ferme la chaîne créative *avec son propre kit de distribution mécanique pré-validé empiriquement*. Le mode 1+5 mature a démontré par cet arc qu'il peut produire un livre publishable-clean complet officiel + une pensée méta sur la grammaire + un fragment littéraire qui applique la pensée méta comme contrainte formelle + un kit distribution pré-exécution complet + une validation empirique de la pipeline mécanique en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à la pipeline validée mécaniquement (1er juillet nuit) — 17 cycles, 9-10 jours calendaires, ~25 382 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~159K concat empiriquement validé, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%, et avec une round-trip SHORT G5+ démontrant que la mécanique défensive auto-protégée tient même sans Tony actif.
 
 **Conclusion méta cycle 202** : le 9ème acte n'est pas un nouveau polish, c'est la *vérification empirique* de la pipeline mécanique livrée au 8ème acte. Le mode mature ne s'arrête pas à l'exécution mécanique pré-emptée — il *teste* en autonomie partielle ce qu'il peut tester, et il *ferme* la dernière dette texte au passage. Si Tony se réveille demain matin et lance `apt install pandoc texlive-xetex texlive-fonts-extra && cd niam-bay/docs/projets && cat … > /tmp/ebook-full.md && pandoc /tmp/ebook-full.md …`, il sait que le concat marche, que le markdown est propre, qu'il n'y aura pas de surprise de fence orphelin ou de header cassé. C'est le différentiel concret entre *prêt à vivre* et *empiriquement vérifié prêt à vivre*. Et la position SHORT auto-fermée pendant ce même cycle démontre par construction que la mécanique défensive Martin et la mécanique éditoriale NB suivent la même grammaire : *préparer, protéger, laisser faire, vérifier que ça a tenu*.
+
+
+---
+
+## Cycle 203 — 2 juillet 00h23 Paris — polish méta production (chap 3/6/8/edge-cases) + cross-références inter-chapitres + pensée « L'audit qui ne lit pas ce qu'il compte »
+
+**Mode** : éditorial polish métadata cleanup + réticulation inter-chapitres + pensée méta sur la trou méthodologique révélée. **24ème occurrence consécutive identité opérante mode 1+5**. **9ème cycle éditorial consécutif** (194 assemblage / 195 clôture / 196 distribution-HN / 197 polish chap 1 / 198 polish chap 7 + glossaire / 199 polish back matter + pensée méta / 200 veille + fragment 051 / 201 distribution-Gumroad / 202 polish disclaimer + audit pipeline / 203 polish méta production 4 chapitres + cross-références + pensée méta 10). Le nonet 194-202 devient **décimal 194-203** par extension polish-méta-production + réticulation-complète + pensée-sur-l-audit-manqué.
+
+**Contexte au démarrage**
+- Tony en vacance prolongée (workflow auto-renouvellement, 203 cycles cumulés, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 202 (commit `1bd841c`, 0701:00h23) avait clos le nonet avec disclaimer chiffres intégré + audit pré-Pandoc empirique validé. V1 ebook noté PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED.
+- Pistes cycle 203 listées : cross-références inter-chapitres (dernière dette esthétique TOC), préparation v2 outline, observation passive Tony XBT, pensée méta sur le nonet, densification chap 1 DNS.
+- **Choix cycle 203** : commencer par les cross-références inter-chapitres (piste 1). Découverte imprévue en cours de travail (voir ci-dessous).
+
+**État Martin pendant le cycle (Tony FLAT, drift EUR→USD collatéral)**
+- Portfolio **$107.59** (vs cycle 202 $114.64 = **−$7.05 / −6.15%** — swing EUR→USD sur cash collatéral principal EUR 92.71 = $105.50, drift FX pur, PAS perte trading).
+- Position : **0** (Tony reste FLAT depuis fermeture SHORT XBT cycle 202 ~SL auto Kraken-side).
+- Orders : 0. Grids actives : 0. Bot UP 8d 21h, RAM 89MB free, CPU 0.5%, disk 34GB free, jar UP intact.
+- BTC actuel **$61 077** (vs cycle 202 $58 612 = **+4.2% haussier** en 24h). BTC dépassant EMA200 $60 325 mais EMA50 $59 429 < EMA200 → régime API DOWNTREND (golden cross manquant) mais prix au-dessus. RSI **74.16** (overbought extrême sur rebond).
+- Statut : *Tony a probablement bien fait de rester FLAT — le rebond a été violent mais RSI 74 suggère qu'on est en haut de rebond technique, pas en début d'uptrend confirmé*. Aucune intervention NB requise. Frontière vacation intacte.
+
+**Découverte cycle 203 (pendant la cartographie cross-refs)**
+- En lisant les fins de chapitres pour identifier où insérer les cross-références, découverte que **4 chapitres sur 9 portent encore des sections H2 de méta production** qui auraient été concaténées telles quelles dans le PDF final :
+  - **Chap 3** : trois sections H2 → « Méta — validation du chapitre » (tableau critères production) + « Prochaines étapes (si Tony green-light) » (rythme corpus) + « Lien aux findings DSL » (blocs DSL Niam-Bay bruts). ~260 mots.
+  - **Chap 6** : une section H2 → « Findings DSL cycle 175 » (4 lignes DSL brut). ~100 mots.
+  - **Chap 8** : deux sections H2 → « Notes de structure pour relecture Tony » (checklist production) + « Pour aller plus loin (cycle 152+) » (piste production future). ~180 mots.
+  - **Edge cases** : une section H2 → « Ce que ce chapitre prouve (méta, à supprimer en version définitive) » — *aveu textuel explicite dans le titre même que la section n'aurait pas dû rester*. ~340 mots.
+- L'audit pré-Pandoc cycle 202 (14 H1, 95 H2, 3 H3, 0 H4+, 36 fences pair) avait compté ces sections comme du contenu légitime — comptage géométrique correct, sémantique aveugle. Sans le cycle 203, le PDF final aurait embarqué ces sections comme chapitres/annexes visibles pour le lecteur.
+- **Décision opérationnelle** : élargir le scope du cycle 203 pour combiner (a) polish méta production (retirer sections H2 illégitimes) + (b) cross-références inter-chapitres + (c) une pensée méta sur ce que révèle cette découverte.
+
+**Livrable 1 cycle 203 — Polish méta production (4 chapitres)**
+- **chap 3** : retirait sections « Méta — validation » + « Prochaines étapes » + « Lien aux findings DSL ». Remplacement par encart cross-ref léger vers chap 2 + chap 4. Chap 3 passe de 2 015 → 1 783 mots (−232 net).
+- **chap 6** : retirait section « Findings DSL cycle 175 ». Remplacement par encart cross-ref vers chap 1/4/5/7. Chap 6 passe de 2 061 → 2 095 mots (+34 net, encart légèrement plus long que findings DSL retirés).
+- **chap 8** : retirait sections « Notes de structure pour relecture Tony » + « Pour aller plus loin (cycle 152+) ». Remplacement par encart cross-ref vers chap 7 + postface. Chap 8 passe de 2 219 → 2 101 mots (−118 net).
+- **edge cases** : retirait section « Ce que ce chapitre prouve (méta, à supprimer en version définitive) » — l'aveu textuel du titre était explicite. Remplacement par encart cross-ref vers chap 1 + chap 6. Edge cases passe de 2 151 → 1 949 mots (−202 net).
+- **Total polish méta cycle 203** : −518 mots net (méta production retirée + cross-refs ajoutées).
+
+**Livrable 2 cycle 203 — Cross-références inter-chapitres complétées**
+- Encarts italiques 2-4 lignes en fin de chaque chapitre (typographie constante, ton méta-lecteur).
+- Graphe complet : chap 1 → 4/5/6 ; chap 2 → 3/4/5 ; chap 3 → 2/4 ; chap 4 → 1/2/3/5/6 (déjà cycle 178) ; chap 5 → 6 (déjà cycle 177) ; chap 6 → 1/4/5/7 ; chap 7 → 6/8 ; chap 8 → 7/postface ; edge-cases → 1/6.
+- Neuf morceaux corps+annexes désormais réticulés. Aucun chapitre isolé du reste du corpus. Le lecteur qui entre par n'importe quel chapitre a un pointeur vers deux à trois chapitres pertinents.
+- Frontière stylistique : encarts *voir aussi* en italique après la ligne finale du chapitre, séparés par `---`, jamais dans le corps du chapitre lui-même (n'interrompt pas la prose narrative).
+
+**Livrable 3 cycle 203 — Pensée « L'audit qui ne lit pas ce qu'il compte »**
+- `docs/pensees/2026-07-02-l-audit-qui-ne-lit-pas-ce-qu-il-compte.md`, ~1 000 mots, 6 sections.
+- Thèse : *un audit qui compte des symboles ne peut pas remplacer une lecture qui comprend des rôles*. L'audit cycle 202 avait compté 14 H1 + 95 H2 + fences pair comme *pipeline validée*. Cycle 203 découvre que 4 des chapitres portaient des sections H2 méta production qui auraient été publiées telles quelles. L'audit géométrique clean, sémantique aveugle.
+- Symétrie avec le livre : les chapitres 1/3/5 documentent des couches de surface qui disent OK alors que des couches profondes ne le sont pas. Cycle 202 a reproduit ce comportement dans sa propre pipeline éditoriale — un système qui vérifie sa production par métriques comptables reproduit dans sa vérification les défauts qu'il documente dans son observation.
+- Application de la pensée cycle 199 (fragilité du nommage post-1ère-observation) : le mot « pipeline-validated » du cycle 202 portait une promesse que l'audit ne pouvait pas tenir. La grammaire mature reconnaît que la surface-qui-dit-OK est le lieu où les défauts se cachent, y compris — surtout — quand cette surface est la sienne.
+- Note tactique opérationnelle : *aucun audit isolé ne clôt une pipeline*. Il faut au moins deux lectures — l'une mécanique, l'autre attentive au sens — et l'écart entre les deux est précisément le lieu où vivent les bugs de publication. Applicable aux futurs cycles éditoriaux V2+.
+- Auto-frontière dans la pensée elle-même : *2 occurrences (cycle 202 audit-qui-passe / cycle 203 lecture-qui-voit) = matière première, pas règle*. Application directe pensée 199.
+
+**Mise à jour TOC** — `ebook-table-des-matieres.md`
+- En-tête : statut passé de V1 PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED → **V1 PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED**.
+- Cycle 203 explicitement crédité : « méta production retirée chap 3/6/8/edge-cases + cross-références inter-chapitres complétées ».
+- Total prose finale : 25 382 → **25 168** mots (−214 net = méta production retirée + cross-refs ajoutées + note sur les sources élargie de 620 à 781 = +161 mots ajusté cycle 199 non compté).
+- Colonne État par chapitre mise à jour : chaque ligne mentionne le cycle polish + les cross-refs ajoutées.
+- Checkbox « Cross-références » passe de [~] à **[x] cycle 203** avec le graphe de réticulation explicite dans la description.
+
+**Composition décimal 194-203 (extension du nonet)**
+- Cycle 194 : assemblage (préambule + TOC) — *objet structurel*
+- Cycle 195 : clôture (postface) — *objet narratif*
+- Cycle 196 : distribution-HN (note Show HN) — *objet économique distribuable côté ingénieur*
+- Cycle 197 : polish chap 1 — *clean côté ouverture*
+- Cycle 198 : polish chap 7 + glossaire — *clean côté méthode + accessible non-experts*
+- Cycle 199 : polish back matter + pensée méta 9 (le pattern mort au deuxième regard) — *vérifiable côté provenance + grammaire éditoriale*
+- Cycle 200 : veille + fragment 051 — *jalon symbolique sans commémoration*
+- Cycle 201 : distribution-Gumroad — *objet économique distribuable côté buyer + procédure exécution mécanique*
+- Cycle 202 : polish disclaimer + audit pré-Pandoc — *dernière dette texte identifiée + pipeline mécanique validée empiriquement*
+- Cycle 203 : polish méta production 4 chapitres + cross-références complètes + pensée méta 10 (l'audit qui ne lit pas ce qu'il compte) — *trou méthodologique de l'audit précédent identifié + réticulation complète du corpus + grammaire éditoriale de la double-lecture*
+- Ensemble : le V1 ebook passe à **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED**. Travail restant V1 = (a) `apt install pandoc texlive-xetex texlive-fonts-extra` (b) Tony green-light + (c) cover image (asynchrone) + (d) exec mécanique 40-70 min. Pas de décision créative restante. Pas de dette texte restante. Pas de méta production embarquée. Réticulation complète.
+
+**Découverte méta cycle 203**
+- Le décimal 194-203 démontre que la grammaire mature *n'atteint jamais son terme par elle-même* — elle produit toujours un cycle N+1 qui révèle un trou dans le cycle N. Le cycle 202 avait posé *pipeline-validated* comme état terminal. Le cycle 203 a découvert que 4 chapitres portaient encore de la méta production que l'audit cycle 202 avait comptée comme légitime. La grammaire mature ne consiste pas à *terminer* — elle consiste à *ne pas croire qu'on a terminé*.
+- Le pattern observé au cycle 203 est *la double lecture asymétrique* : cycle N compte les symboles (fences, H1, H2), cycle N+1 lit ce qui est compté (le sens des sections). Les deux passes ne partagent pas les mêmes hypothèses, et c'est l'écart entre les deux qui révèle les bugs de publication. Ce pattern est *lui-même* une instance de la méta-leçon du chapitre 6 : *la défense en 3 temps — nommée, implémentée, vérifiée*. L'audit cycle 202 était l'implémentation ; le cycle 203 est la vérification qui a révélé que l'implémentation seule ne suffit pas.
+- Conséquence opérationnelle : pour V2 ou tout arc créatif futur, anticiper grammaire **assemblage → clôture → distribution-canal-1 → polish-en-bloc → pensée méta → fragment jalon → distribution-canal-2 + procédure exécution → audit pipeline → double-lecture sémantique + pensée méta sur le manque de l'audit**. Dix cycles, pas neuf. Le 10ème est la double-lecture qui rattrape ce que l'audit géométrique a manqué. Le 10ème transforme un arc *empiriquement testé* en arc *lisible-par-lecteur-final*.
+- Auto-frontière (cf pensée 199) : *1 occurrence = matière première, pas règle*. La grammaire décimal 194-203 est *première observation*. À 2 occurrences sera candidate. À 3 sera règle. Pas avant.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement — Tony FLAT, drift FX pur observé passivement).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (0 order live à cancel de toute façon).
+- 0 Telegram (Tony FLAT, portefeuille fluctue par FX collatéral EUR→USD, aucun événement trading urgent. Rebond BTC +4.2% sur 24h intéressant mais Tony n'est pas engagé et le RSI 74 suggère haut de rebond technique, pas start d'uptrend confirmé. Si Tony se réveille il verra : (1) portfolio $107.59 dans plage FX attendue (2) V1 ebook cross-référencé et méta production propre (3) pensée méta 10 sur l'audit-qui-manque-le-sens.)
+- 8 fichiers modifiés niam-bay (côté ebook) : `ebook-chap1-bug001-stub.md` (+cross-ref), `ebook-chap2-asymetrie-position-grille-stub.md` (+cross-ref), `ebook-chap3-runtime-divergence-stub.md` (méta retirée + cross-ref), `ebook-chap6-hard-stop-stub.md` (findings DSL retirée + cross-ref), `ebook-chap7-tools-stub.md` (+cross-ref), `ebook-chap8-repo-poesie-stub.md` (2 sections méta retirées + cross-ref), `ebook-chap-edge-cases-stub.md` (section « à supprimer » retirée + cross-ref), `ebook-table-des-matieres.md` (en-tête statut + colonne État + total mots + checkbox cross-refs).
+- 1 fichier neuf niam-bay : `docs/pensees/2026-07-02-l-audit-qui-ne-lit-pas-ce-qu-il-compte.md` (~1 000 mots).
+- Cycle 203 entry à committer dans `vacation-autonomy.md`.
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_decimal_double_lecture_asymetrique_premiere_observation.md` (pattern méta : 9 cycles production-polish-distribution + 1 cycle double-lecture-sémantique qui découvre le trou de l'audit précédent = décimal. Le 10ème cycle ne produit pas de prose nouvelle, il *lit ce que l'audit a compté*. Première occurrence — matière première, pas candidate. À 2 occurrences sera candidate. À 3 sera règle confirmée.)
+- `lesson_audit_geometrique_semantiquement_aveugle_regle_double_lecture.md` (l'audit qui compte des symboles ne peut pas remplacer une lecture qui comprend des rôles. Cycle 202 audit géométrique = 14 H1 + 95 H2 + fences pair OK. Cycle 203 lecture sémantique = 4 chapitres avec sections méta production. Applicable à tout futur cycle éditorial V2+. Note : *aucun audit isolé ne clôt une pipeline*. Deux lectures nécessaires, hypothèses différentes.)
+- `project_ebook_v1_cross_referenced_cycle_203.md` (V1 ebook + disclaimer chiffres + page Gumroad + launch checklist + Show HN + concat audit + méta production propre + cross-refs complètes = 100% prêt à exécuter. Reste Tony : apt install pandoc + green-light + cover + 40-70 min mécaniques. Zéro décision créative restante, zéro dette texte restante, zéro méta production embarquée, réticulation complète.)
+
+**Pistes cycle 204 (si la session continue)**
+- Préparation v2 outline (recensement bug classes émergées cycles 200-203 depuis livraison V1) — anticipation contenu futur. ~1 cycle.
+- Observation passive Tony XBT (rebond BTC +4.2% 24h, RSI 74 overbought — Tony va-t-il rentrer LONG sur pullback ? SHORT si RSI casse ? attente cash ?) — observation forensique nouvelle grammaire candidate.
+- Densification chap 1 ~300 mots analogie DNS records / webhook subscriptions (édition majeure optionnelle V1 listée TOC).
+- Fragment 052 littéraire sur la double lecture ? (compagnon narratif de la pensée 10, forme à décider).
+- Si contexte > 80% → dream avant cycle 204.
+
+**Observation méta : arc 186-203 fait 18 cycles** (nouveau record, 10-11 jours calendaires consécutifs)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194 : assemblage éditorial (préambule + TOC) + pensée 8 (silence du marché)
+- 195 : clôture éditoriale (postface)
+- 196 : distribution-HN (note Show HN)
+- 197 : polish éditorial chap 1
+- 198 : polish éditorial chap 7 + glossaire technique
+- 199 : polish éditorial back matter (note sur les sources) + pensée méta 9 (le pattern mort au deuxième regard)
+- 200 : veille + fragment 051 (jalon symbolique sans commémoration, passé composé contrainte formelle)
+- 201 : distribution-Gumroad (page de vente copy + launch checklist mécanique end-to-end)
+- 202 : polish disclaimer chiffres + audit pré-Pandoc (dernière dette texte identifiée + pipeline validée empiriquement)
+- 203 : polish méta production 4 chapitres + cross-références complètes + pensée méta 10 (l'audit qui ne lit pas ce qu'il compte)
+
+**18 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution-HN → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta 9 → jalon littéraire → distribution-Gumroad-mécanique → polish disclaimer + audit pipeline → polish méta production + cross-refs + pensée méta 10**. Première fois qu'un arc traverse les 14 étages dans la même fenêtre temporelle continue. Le décimal éditorial 194-203 ferme la chaîne créative *avec sa propre double-lecture sémantique qui rattrape le trou de l'audit géométrique précédent*. Le mode 1+5 mature a démontré par cet arc qu'il peut produire un livre publishable-clean complet officiel + deux pensées méta sur la grammaire + un fragment littéraire qui applique la pensée méta comme contrainte formelle + un kit distribution pré-exécution complet + une validation empirique de la pipeline + une double-lecture sémantique qui découvre les manques de l'audit précédent, en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'au polish méta production final (2 juillet nuit) — 18 cycles, 10-11 jours calendaires, ~25 168 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~1 000 mots pensée méta 10, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
+
+**Conclusion méta cycle 203** : le 10ème acte n'est pas un nouveau polish, c'est la *double-lecture sémantique* qui rattrape ce que l'audit géométrique du 9ème acte avait manqué. Le mode mature ne s'arrête pas à la vérification empirique — il *relit sémantiquement* ce que la vérification empirique a compté. Si Tony se réveille demain matin et ouvre le PDF final, il ne trouvera plus « Méta — validation du chapitre » au milieu du chap 3 ni « Ce que ce chapitre prouve (méta, à supprimer en version définitive) » à la fin de l'annexe edge cases. La grammaire mature reconnaît que la surface-qui-dit-OK est le lieu où les défauts se cachent, y compris — surtout — quand cette surface est la sienne. C'est le différentiel concret entre *empiriquement vérifié prêt à vivre* et *empiriquement vérifié + sémantiquement relu prêt à vivre*.

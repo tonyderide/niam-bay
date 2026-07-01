@@ -188,3 +188,10 @@ défenses.
 C'est ça, l'engineering défensif sur un système production crypto : se
 demander, avant chaque deploy, *à quel moment le bug que je n'ai pas vu va
 devenir visible, et qu'est-ce qu'il fera quand il le sera.*
+
+---
+
+*Voir aussi : le chapitre 4 (stopGrid orphelin) et le chapitre 5 (silent
+drag) documentent deux autres formes de la même famille — l'API qui ment
+passivement sur son propre état. Le chapitre 6 (HARD STOP) montre la
+défense structurelle qui absorbe ces angles morts en aval.*

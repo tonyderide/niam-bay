@@ -1,6 +1,6 @@
 # Table des matières — Defensive Engineering for Grid Trading Bots
 
-*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté), cycle 199 (note sur les sources livrée), cycle 201 (kit distribution draft : page Gumroad + launch checklist mécanique), cycle 202 (disclaimer « note sur les chiffres » intégré au préambule + audit pré-Pandoc validé). Statut : V1 **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED** — 14 morceaux de prose finale + 2 livrables distribution + concat validé `/tmp/ebook-full.md`. ~25 380 mots = ~80 pages format ebook standard. Reste pour mise en vente : Tony installe `pandoc texlive-xetex texlive-fonts-extra` (1 commande apt) + green-light + 40-70 min exec mécanique (hors cover ~24-48h asynchrone si Fiverr).*
+*Index consolidé, cycle 194 (2026-06-26). Mis à jour cycle 195 (postface ajoutée), cycle 197 (chap 1 méta retirée + cross-réf chap 4 ajoutée), cycle 198 (chap 7 polish + glossaire technique ajouté), cycle 199 (note sur les sources livrée), cycle 201 (kit distribution draft : page Gumroad + launch checklist mécanique), cycle 202 (disclaimer « note sur les chiffres » intégré au préambule + audit pré-Pandoc validé), cycle 203 (méta production retirée chap 3/6/8/edge-cases + cross-références inter-chapitres complétées). Statut : V1 **PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED** — 14 morceaux de prose finale + 2 livrables distribution + concat validé `/tmp/ebook-full.md`. ~25 170 mots = ~79 pages format ebook standard. Reste pour mise en vente : Tony installe `pandoc texlive-xetex texlive-fonts-extra` (1 commande apt) + green-light + 40-70 min exec mécanique (hors cover ~24-48h asynchrone si Fiverr).*
 
 ---
 
@@ -9,20 +9,20 @@
 | # | Titre | Fichier source | Mots | État | Cycle origine |
 |---|---|---|---|---|---|
 | — | Préambule (+ « Note sur les chiffres » disclaimer cycle 202) | `ebook-preambule.md` | 1 873 | ✓ prose finale | 194 (+202) |
-| 1 | BUG-001 : la cascade silencieuse | `ebook-chap1-bug001-stub.md` | 1 557 | ✓ prose finale (méta retirée cycle 197) | 117 |
-| 2 | L'asymétrie position ↔ grille | `ebook-chap2-asymetrie-position-grille-stub.md` | 1 914 | ✓ prose finale | 162 (env) |
-| 3 | Runtime state ≠ config persistée | `ebook-chap3-runtime-divergence-stub.md` | 2 015 | ✓ prose finale | 167 (env) |
-| 4 | Le stopGrid qui ne stoppe pas la position | `ebook-chap4-stopgrid-orphan-stub.md` | 2 006 | ✓ prose finale | 178 |
-| 5 | Silent drag : la perte qui ne déclenche aucune alerte | `ebook-chap5-silent-drag-stub.md` | 2 159 | ✓ prose finale | 177 |
-| 6 | HARD STOP : la défense qui fonctionne (méthode) | `ebook-chap6-hard-stop-stub.md` | 2 061 | ✓ prose finale | 175 |
-| 7 | Outils (pragmatique, pas magique) | `ebook-chap7-tools-stub.md` | 2 345 | ✓ prose finale (méta retirée + narrateur cycle 198) | 129 |
-| 8 | Le repo comme produit (méta / éditorial) | `ebook-chap8-repo-poesie-stub.md` | 2 219 | ✓ prose finale | 150 |
-| — | Edge cases (annexe) | `ebook-chap-edge-cases-stub.md` | 2 151 | ✓ prose finale | (env) |
+| 1 | BUG-001 : la cascade silencieuse | `ebook-chap1-bug001-stub.md` | 1 605 | ✓ prose finale (méta retirée cycle 197, cross-réf 4/5/6 cycle 203) | 117 |
+| 2 | L'asymétrie position ↔ grille | `ebook-chap2-asymetrie-position-grille-stub.md` | 1 959 | ✓ prose finale (cross-réf 3/4/5 cycle 203) | 162 (env) |
+| 3 | Runtime state ≠ config persistée | `ebook-chap3-runtime-divergence-stub.md` | 1 783 | ✓ prose finale (méta retirée + cross-réf 2/4 cycle 203) | 167 (env) |
+| 4 | Le stopGrid qui ne stoppe pas la position | `ebook-chap4-stopgrid-orphan-stub.md` | 2 006 | ✓ prose finale (cross-réf 1/2/3/5/6 déjà cycle 178) | 178 |
+| 5 | Silent drag : la perte qui ne déclenche aucune alerte | `ebook-chap5-silent-drag-stub.md` | 2 159 | ✓ prose finale (cross-réf 6 déjà cycle 177) | 177 |
+| 6 | HARD STOP : la défense qui fonctionne (méthode) | `ebook-chap6-hard-stop-stub.md` | 2 095 | ✓ prose finale (findings DSL retirée + cross-réf 1/4/5/7 cycle 203) | 175 |
+| 7 | Outils (pragmatique, pas magique) | `ebook-chap7-tools-stub.md` | 2 395 | ✓ prose finale (méta retirée + narrateur cycle 198, cross-réf 6/8 cycle 203) | 129 |
+| 8 | Le repo comme produit (méta / éditorial) | `ebook-chap8-repo-poesie-stub.md` | 2 101 | ✓ prose finale (méta retirée + cross-réf 7/postface cycle 203) | 150 |
+| — | Edge cases (annexe) | `ebook-chap-edge-cases-stub.md` | 1 949 | ✓ prose finale (méta « à supprimer » retirée + cross-réf 1/6 cycle 203) | (env) |
 | — | Mini-chapitre 7 lentilles (arc 186-192) | `ebook-mini-chap-arc186-192-7-lentilles.md` | 3 024 | ✓ prose finale | 193 |
 | — | Glossaire technique (back matter) | `ebook-glossaire.md` | 542 | ✓ prose finale | 198 |
-| — | Note sur les sources (back matter) | `ebook-notes-sur-les-sources.md` | 620 | ✓ prose finale | 199 |
+| — | Note sur les sources (back matter) | `ebook-notes-sur-les-sources.md` | 781 | ✓ prose finale | 199 |
 | — | Postface — ce que ce livre a coûté à écrire | `ebook-postface.md` | 896 | ✓ prose finale | 195 |
-| **Total** | — | — | **25 382** | — | — |
+| **Total** | — | — | **25 168** | — | — |
 
 **Volume** : ~75 pages format ebook standard (320 mots/page) ou ~94 pages format compact mobile (250 mots/page). Estimation outline cycle 115 (75-90p) confirmée empiriquement.
 
@@ -83,7 +83,7 @@
 
 - [x] **Chapitre 1** : retirer la section finale « Ce que ce chapitre prouve » (méta interne, lignes 191-213). Le chapitre tient debout sans. **Fait cycle 197.**
 - [x] **Cohérence narrateur** : chap 7 polish cycle 198 — notes de production retirées (~310 mots méta) + 3 substitutions « on » → « le script » dans les sections anatomie. Les « on » restants sont génériques universels (acceptable).
-- [~] **Cross-références** : ajouter en bas de chaque chapitre les liens vers les autres chapitres pertinents (chap 5 → chap 6 partiel ; chap 1 → chap 4 ajouté cycle 197).
+- [x] **Cross-références** : ajoutées en bas de chaque chapitre (encart italique 2-4 lignes) cycle 203. Graphe : chap 1 → 4/5/6 ; chap 2 → 3/4/5 ; chap 3 → 2/4 ; chap 4 → 1/2/3/5/6 (déjà cycle 178) ; chap 5 → 6 (déjà cycle 177) ; chap 6 → 1/4/5/7 ; chap 7 → 6/8 ; chap 8 → 7/postface ; edge-cases → 1/6. Neuf morceaux corps+annexes réticulés, aucun chapitre isolé.
 - [x] **Glossaire technique** (1 page) : 9 entrées — AutoGrid, BBWidth, Circuit Breaker, EMA50/EMA200, Killswitch, ReduceOnly, RSI, StopGrid. Livré cycle 198 → `ebook-glossaire.md` (542 mots).
 - [x] **Note sur les chiffres** : disclaimer intégré au préambule cycle 202 (~170 mots) — section dédiée entre « Le contexte d'observation » et « Comment le livre est organisé ». Insiste sur non-extrapolation linéaire et absence de conseil financier.
 

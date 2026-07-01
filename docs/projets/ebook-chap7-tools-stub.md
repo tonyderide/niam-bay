@@ -303,3 +303,10 @@ Trente minutes pour le lire en entier. Une demi-journée pour le porter sur
 un autre bot. Le retour sur investissement attendu : un seul bug invisible
 détecté avant qu'il devienne un incident, et le coût d'écriture du script
 est amorti pour la décennie.
+
+---
+
+*Voir aussi : le chapitre 6 (HARD STOP) montre la défense en amont que
+ces outils rendent vérifiable en aval. Le chapitre 8 (Le repo comme
+produit) prolonge la question : pourquoi un script comme `bot-audit.sh`
+prend sa valeur seulement quand il est versionné à côté de ses findings.*

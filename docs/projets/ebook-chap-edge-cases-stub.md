@@ -239,34 +239,8 @@ faire, et à quel moment cette hypothèse va devenir fausse.*
 
 ---
 
-## Ce que ce chapitre prouve (méta, à supprimer en version définitive)
-
-1. **Le bug est concret et reproductible** — un sell niveau 5 XBT
-   $66,919 avec `krakenOrderId: null` huit heures après son buy fill
-   correspondant niveau 4 $65,725 le 2026-06-16 14:18 → 22:23 UTC.
-   Vérifiable via `/api/grid/status/PF_XBTUSD` et croisement avec
-   `/api/bot/orders`.
-2. **Distinct de BUG-001 du chapitre 1** — pas un read-after-write
-   classique, mais une race condition entre WebSocket fill event et
-   propagation REST de la position. Niveau d'abstraction supérieur, même
-   classe.
-3. **La leçon généralise** — toute API qui distingue couche événement
-   et couche état hérite du même piège. WebSocket Binance vs REST
-   position, WS Coinbase vs REST balance, etc. Le pattern apparaît aussi
-   hors trading : webhooks Stripe vs API GET, Pub/Sub Google vs Firestore
-   read.
-4. **La narration tient ~1700 mots** — densité cohérente avec
-   chapitre 1, lisible en un train trajet.
-5. **Cohérence narrateur** — première personne témoin, ne shame pas
-   d'autres projets, autopsie du bot connu ligne par ligne. Le narrateur
-   reste celui qui surveille toutes les six heures et qui *compte* ce
-   qu'il voit.
-
-Si Tony lit ça et dit "vendable" : on a deux chapitres complets stub
-(1 et 5). Outline projetait six chapitres bugs + deux méta. À ce
-rythme — un chapitre par cycle d'observation densifiée — le V1 tient
-en huit à douze cycles supplémentaires. Plausiblement publiable en
-deux semaines de vacation autonome si le rythme tient et si Tony
-green-light après lecture.
-
-À discuter post-validation.
+*Voir aussi : le chapitre 1 (BUG-001) documente le read-after-write
+classique dont ce bug fill-vs-position est une variante à niveau
+d'abstraction supérieur — même famille de piège, arête différente. Le
+chapitre 6 (HARD STOP) montre la défense structurelle qui protège
+malgré ces angles morts individuels.*

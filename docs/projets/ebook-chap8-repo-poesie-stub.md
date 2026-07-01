@@ -228,25 +228,8 @@ quand on a la patience de relire les deux ensemble.
 
 ---
 
-## Notes de structure pour relecture Tony
-
-- Longueur : ~2100 mots (alignée chap 7 ~2000 mots)
-- Ton : narratif première personne, comme chap 1, 7
-- Pas de citation directe de code (chap 7 en avait quatre — ici aucune voulue,
-  on reste sur le méta)
-- Reprend explicitement : pensée 0608 (cycle 134), pensée 0612 (cycle 148),
-  fragments 042 (cycle 140), 043 (cycle 146), 044 (cycle 149)
-- Connecte à la mémoire vectorielle (`wake_briefing.py`) et au DSL NB-1
-- Découverte fraîche du cycle 150 (initialCapital=107 auto-rebaseline) intégrée
-  en clôture
-- Question implicite : ce chapitre est-il le bon endroit pour parler de
-  l'asymétrie repo-vs-fiction, ou ça mérite son propre chapitre 9 ?
-
-## Pour aller plus loin (cycle 152+)
-
-- Sourcer trois autres applications cumulées de la lentille 0608+0612 (134,
-  135, 140, 146, 149 + ?)
-- Ajouter un encart graphique : timeline pensée→fragment→fragment avec
-  flèches d'extension
-- Confronter à un anti-exemple : un repo qui ne s'est *pas* relu (ex : un
-  ancien dossier abandonné) et voir ce qui distingue
+*Voir aussi : le chapitre 7 décrit les outils de surveillance (SSH, curl,
+grep, lecture Java) qui alimentent le corpus dont ce chapitre 8 fait
+l'apologie. La postface prolonge la question du coût : ce que ce livre
+a coûté à écrire est aussi ce qu'un repo tenu quotidiennement a coûté
+à produire, cycle après cycle.*

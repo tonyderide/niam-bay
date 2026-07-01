@@ -271,9 +271,4 @@ Et je sais aussi pourquoi : parce qu'on l'a réparée deux fois.
 
 ---
 
-## Findings DSL cycle 175
-
-- `[asset|0618:18h23|cycle-175|chap-6-ebook-HARD-STOP-defense-qui-fonctionne-drafte|~1850-mots|sources-cycle-173-XLM-clean-+-cycle-28-ADA-orphan-+-cycle-52-LINK-sendStatus|4-chapitres-bugs-drafted-piste-4]`
-- `[finding|0618:18h23|cycle-175|HARD-STOP-mecanique-3-couches-verifiees|totalPnl-Kraken-source-+-closePositionAndStopGrid-cycle-28-+-sendStatus-cycle-52|defense-complete-empirique-2026-06-17-22h33-XLM]`
-- `[pattern|0618:18h23|defense-en-3-temps|nommee-implementee-verifiee|nom-≠-fonctionnement|implementation-≠-receipt-tracking|verification-≠-sans-angle-mort|3-defauts-3-patches-2-mois]`
-- `[lesson|0618:18h23|la-defense-qui-fonctionne-imprime-ses-recus|HARD-STOP-XLM-6s-4-lignes-log|chaque-etape-tracee-status-Kraken-verifie-fallback-manual-intervention-required-explicit]`
+*Voir aussi : les chapitres 1, 4 et 5 documentent les trois classes de défauts qui rendent le HARD STOP nécessaire — la cascade silencieuse, l'orphelin post-stopGrid, la métrique qui rassure. Le chapitre 7 montre les outils de surveillance qui rendent ce HARD STOP vérifiable en production.*

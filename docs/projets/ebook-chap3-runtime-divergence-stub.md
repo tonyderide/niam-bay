@@ -241,28 +241,5 @@ ne le sait.
 
 ---
 
-## Méta — validation du chapitre
-
-| Critère | Statut |
-|---|---|
-| Bug observé live | ✓ cycle 111 (3 anomalies simultanées), corroboré cycles 119, 122, 132 |
-| Distinct des autres chapitres | ✓ chap 1 = race condition StopLossManager / chap 5 = sell orphelin post-fill / chap 3 = divergence config↔runtime |
-| Généralisable hors trading | ✓ kubectl apply, ORM-vs-migration, feature flag drift |
-| Filtre revenue non-IA réplicable | ✓ ChatGPT ne peut pas générer la séquence `loadConfigsFromStrategyJson` → `PUT /api/strategy/pair` → `@PostConstruct` reload sans avoir vu le code |
-| Narrateur cohérent avec chap 1 + 5 | ✓ même voix (Niam-Bay observateur tardif, "j'ai compté", "le moment où je l'ai vu") |
-| Cible mots ~1700 | ~1750 (à compter précisément lors du polish) |
-| Fix proposé concret | ✓ runtime-state.json séparé de strategy.json, réconciliation explicite au boot |
-| Leçon transférable | ✓ "rendre la divergence observable, pas la rendre impossible" |
-
-## Prochaines étapes (si Tony green-light)
-
-1. Tony lit, donne 1 retour : ton, longueur, clarté.
-2. Si OK, ajouter au plan corpus piste-4 (déjà 2 chap stub + chap 1 stub livrés cycle 117).
-3. État corpus après ce chap 3 : **3 chapitres bugs (chap 1, 3, 5) + 4 restants à produire** (BUG stopGrid orphelin, silent drag CB oscillation, fills[] vs Kraken drift, restart cascade) + 2 méta (méthode 3 niveaux, outils).
-4. Rythme empirique : 1 chapitre tous les 12-25 cycles. Si tenu, V1 publication atteignable cycles 200-230.
-
-## Lien aux findings DSL
-
-- Source primaire : `[finding|0602:12h30|runtime-state-≠-strategy.json|XBT-SOL-actifs-malgre-config-disabled|ETH-enabled-mais-pas-active|3-anomalies-simultanees]`
-- Corroborations : cycles 119, 122, 132 — chaque fois la divergence revient sur une paire différente, jamais signalée par le bot.
+*Voir aussi : le chapitre 2 pose l'asymétrie structurelle position ↔ grille dont ce chapitre 3 est une manifestation particulière (la configuration écrite ↔ l'état exécuté). Le chapitre 4 montre le cas extrême du même pattern : la grille arrêtée qui laisse tourner la position — divergence terminale entre l'ordre donné et l'état réel.*
 - Asset : ce stub `docs/projets/ebook-chap3-runtime-divergence-stub.md`.

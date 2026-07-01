@@ -235,3 +235,11 @@ autre chose. Mais la géométrie est la même. Une fois qu'on a appris
 le seul avantage durable de passer six mois à regarder un bot
 tourner. On apprend à voir les asymétries avant qu'elles ne
 deviennent des bugs.
+
+---
+
+*Voir aussi : le chapitre 3 (runtime state ≠ config persistée) et le
+chapitre 4 (stopGrid orphelin) sont deux instanciations concrètes de
+l'asymétrie posée ici — l'écart entre l'intention déclarée et l'état
+qui persiste. Le chapitre 5 (silent drag) en est la conséquence
+comptable.*
