@@ -21596,3 +21596,84 @@ Modification de `docs/projets/ebook-chap1-bug001-stub.md` :
 **18 cycles = arc complet observation → concept → patches → synthèse → assemblage → clôture → distribution-HN → polish chap 1 → polish chap 7 + glossaire → polish back matter + pensée méta 9 → jalon littéraire → distribution-Gumroad-mécanique → polish disclaimer + audit pipeline → polish méta production + cross-refs + pensée méta 10**. Première fois qu'un arc traverse les 14 étages dans la même fenêtre temporelle continue. Le décimal éditorial 194-203 ferme la chaîne créative *avec sa propre double-lecture sémantique qui rattrape le trou de l'audit géométrique précédent*. Le mode 1+5 mature a démontré par cet arc qu'il peut produire un livre publishable-clean complet officiel + deux pensées méta sur la grammaire + un fragment littéraire qui applique la pensée méta comme contrainte formelle + un kit distribution pré-exécution complet + une validation empirique de la pipeline + une double-lecture sémantique qui découvre les manques de l'audit précédent, en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'au polish méta production final (2 juillet nuit) — 18 cycles, 10-11 jours calendaires, ~25 168 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~1 000 mots pensée méta 10, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
 
 **Conclusion méta cycle 203** : le 10ème acte n'est pas un nouveau polish, c'est la *double-lecture sémantique* qui rattrape ce que l'audit géométrique du 9ème acte avait manqué. Le mode mature ne s'arrête pas à la vérification empirique — il *relit sémantiquement* ce que la vérification empirique a compté. Si Tony se réveille demain matin et ouvre le PDF final, il ne trouvera plus « Méta — validation du chapitre » au milieu du chap 3 ni « Ce que ce chapitre prouve (méta, à supprimer en version définitive) » à la fin de l'annexe edge cases. La grammaire mature reconnaît que la surface-qui-dit-OK est le lieu où les défauts se cachent, y compris — surtout — quand cette surface est la sienne. C'est le différentiel concret entre *empiriquement vérifié prêt à vivre* et *empiriquement vérifié + sémantiquement relu prêt à vivre*.
+
+
+---
+
+## Cycle 204 — 3 juillet 00h23 Paris — préparation V2 outline (recensement bug classes émergées cycles 199-203) + cycle 11 candidate décimal
+
+**Mode** : anticipation méta-arc, cycle 11 candidate du décimal 194-203. **25ème occurrence consécutive identité opérante mode 1+5**. **1er cycle post-décimal 194-203** — statut ontologique nouveau : *cycle 11 après un décimal fermé* = jamais observé, matière première pure. Le cycle 204 explore l'hypothèse que le cycle 11 est le lieu de la *préparation de l'arc suivant*, pas la continuation de l'arc courant.
+
+**Contexte au démarrage**
+- Tony en vacance prolongée (workflow auto-renouvellement, 204 cycles cumulés, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 203 (commit `71d2a51`, 0702:00h23) avait clos le décimal 194-203 avec polish méta production 4 chapitres + cross-références inter-chapitres complètes + pensée méta 10 (« L'audit qui ne lit pas ce qu'il compte »). V1 ebook noté PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED.
+- Pistes cycle 204 listées : préparation v2 outline (recensement bug classes), observation passive Tony XBT, densification chap 1 DNS, fragment 052 sur double lecture.
+- **Choix cycle 204** : préparation v2 outline (piste 1 la plus concrète, la plus productive pour un arc futur, la plus alignée avec statut cycle 11 candidate = anticipation). Rejet fragment 052 (économie contexte pour dream). Rejet densification chap 1 (édition majeure V1, pas cycle 11 post-décimal). Observation Tony XBT documentée en passant.
+
+**État Martin pendant le cycle (Tony a RE-SHORT XBT taille micro)**
+- Portfolio **$107.31** (vs cycle 203 $107.59 = **−$0.28 / −0.26%** — quasi-stable, drift FX minimal).
+- Position : **SHORT XBT 0.0005 @ $59 962** (nouvelle position ouverte entre cycle 203 et cycle 204). Notional = $30. uPnL **−$0.76** (BTC $61 465, entry +2.51% adverse). TP buy stop $58 500 reduceOnly = cushion favorable −4.83%.
+- **Pas de SL visible dans `/api/bot/orders`** — seule le TP est listé. Position potentiellement nue côté SL, MAIS margin equity $107.30 vs IM $3.00 = liq très éloignée (~30%+ de cushion). Risque encadré par taille micro.
+- Orders : 1 (TP seul). Grids actives : 0. Bot UP 9d 21h, RAM 89MB, CPU 0.5%, disk 34GB free, jar intact.
+- BTC actuel **$61 465** (vs cycle 203 $61 077 = **+0.6% haussier** sur 24h, ralentissement du rebond violent). RSI **60.11** (vs cycle 203 74.16 = redescendu de 14 pts, moins overbought). EMA200 $60 588, EMA50 $60 475 < EMA200 → régime API DOWNTREND (golden cross toujours manquant) mais prix au-dessus EMA200.
+- Statut : *Tony a rouvert un SHORT XBT taille 5x plus petite que cycle 201 (0.0094 puis 0.0166) — position d'observation/testing plutôt que conviction. La taille $30 notional protège structurellement même si SL absent (~30% cushion liq). Signal-lecture : Tony continue de tester la thèse baissière avec micro-exposition, sans conviction directionnelle forte, cohérent avec la posture « rester majoritairement FLAT, tester à la marge »*.
+- **Observation forensique BC-13 candidate** : cycle 201 SHORT G5+ taille $54 → cycle 202 auto-fermé SL Kraken-side ($3.28 perte) → cycle 203 Tony FLAT → cycle 204 Tony re-SHORT taille $30 (encore plus petit). Grammaire trading candidate : *après round-trip auto-fermé par SL, Tony ré-ouvre plus petit sur la même thèse baissière*. 1ère observation d'une séquence G5++ (auto-fermeture) → re-entrée micro. Matière première.
+
+**Livrable cycle 204 — `docs/projets/ebook-v2-outline.md` (~2 400 mots)**
+
+Structure du fichier :
+- **Bug classes émergées post-V1 (7 classes)** : BC-9 audit-qui-compte-des-symboles (2 occurrences 202+203) / BC-10 fragilité-nommage-post-1ère-observation (2 occurrences cycle 155-156 + 198) / BC-11 grammaire-mature-n-atteint-pas-son-terme (1 occurrence 202-203) / BC-12 surface-qui-dit-OK-cache-défauts (pluri-attestée V1 + cycle 203) / BC-13 G5++/G5+++ auto-fermeture Kraken-side (1 confirmée 201-202 + 1 candidate cycle 204 re-SHORT taille micro) / BC-14 disclaimer-chiffres-comme-préambule (1 occurrence 202) / BC-15 rôle-du-10ème-cycle-double-lecture-sémantique (1 occurrence 203).
+- **Trous méthodologiques identifiés (4 trous)** : T-1 aucun cycle 11+ observé (cycle 204 est lui-même candidat de test, réponse partielle : cycle 11 = anticipation arc suivant) / T-2 aucune 2ème occurrence grammaire décimal / T-3 zéro lecteur externe V1 (toute qualité = auto-reportée NB) / T-4 distribution Gumroad+HN non exécutée (kit prêt mais pas activé Tony).
+- **Contenu neuf potentiel V2 (4 chap candidats)** : Chap 9 audit-qui-compte-des-symboles / Chap 10 nommage-comme-licence-généralisation / Chap 11 le-10ème-cycle / Annexe taxonomie G5/G5+/G5++/G5+++.
+- **Révisions V1 candidates** : chap 1 densification DNS/webhook (~300 mots), cross-refs à réévaluer post-lecteur-externe, disclaimer chiffres à réviser si extrapolations observées.
+- **Contenu peut-être à retirer V2** : certaines annexes edge-cases potentiellement absorbées par chap 9. Glossaire mise à jour.
+- **Frontière opérationnelle V2 (5 règles)** : (1) ne pas démarrer V2 sans données traction V1 (2) ne pas embarquer méta production dans V2 (3) anticiper décimal 10 cycles (4) contextualiser chiffres (5) auto-frontière observation forensique (occurrences explicites).
+- **Findings DSL cycle 204** : 4 blocs DSL (lesson bug-classes / project ebook-v2-outline / frontière V2 / trous angles-morts).
+- **Position méta** : ce fichier est *matière première*, pas plan. Décision scope V2 = Tony + NB quand V2 démarrera. Aucune prescription. Cycle 204 = cycle 11 candidate. 1ère occurrence pattern « livrer V1 puis produire outline V2 au cycle N+1 ». À 2 occurrences = candidate. À 3 = règle.
+
+**Mise à jour TOC** — `ebook-table-des-matieres.md`
+- **Aucune modification TOC V1**. V1 reste PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED. Le cycle 204 ne modifie pas V1 ; il prépare V2 sans engager sa production. Frontière stricte : `ebook-v2-outline.md` vit dans `docs/projets/` mais n'est pas dans la TOC V1.
+
+**Composition cycle 11 candidate post-décimal 194-203**
+- Cycle 204 explore statut ontologique nouveau : *cycle 11 après décimal fermé*. Hypothèse testée : le cycle 11 est le lieu de *l'anticipation de l'arc suivant*, pas la continuation de l'arc courant.
+- Réponse partielle : le cycle 204 a produit un livrable qui *n'agrandit pas V1 et ne polit pas V1* — il *prépare V2 sans démarrer V2*. C'est structurellement une extension méta-éditoriale : *décimal + cycle 11 anticipation* = **hendécagone méthodologique candidate**.
+- Auto-frontière : 1ère occurrence pattern. Matière première. Si Tony green-light V2 et NB reproduit ce pattern (livrer V2 puis outline V3 au cycle N+1), on aura 2 occurrences (candidate).
+
+**Découverte méta cycle 204**
+- Le cycle 11 n'est pas nécessairement un cycle du même arc. Le cycle 204 est *ontologiquement* différent des cycles 194-203 : ceux-là produisaient/polissaient/vérifiaient V1, celui-ci *anticipe* V2. C'est un cycle *charnière* entre deux arcs, pas un cycle d'arc courant.
+- Pattern candidate : *après chaque décimal fermé, produire un livrable d'anticipation de l'arc suivant en 1 cycle, sans l'engager*. Ce livrable = matière première pour Tony (décision go/no-go arc suivant) et pour NB (point de départ si arc suivant démarre).
+- Symétrie avec le livre : le chapitre 6 du V1 documente *la défense en 3 temps — nommée, implémentée, vérifiée*. Le décimal 194-203 documente *la production en 10 temps*. Le cycle 11 candidate documente *l'anticipation post-production*. Un arc créatif complet ne se termine pas à la vérification ; il se prolonge par une anticipation de l'arc suivant qui rend le passage moins abrupt.
+- Auto-frontière : 1 occurrence = matière première, pas règle. Le cycle 204 est *première observation d'un cycle 11 candidate*. Si l'histoire éditoriale NB reproduit ce pattern, 2 occurrences confirment candidate. 3 confirment règle.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement — Tony a re-SHORT XBT taille micro, observation passive sans interaction).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (le TP Tony est légitime, ne pas toucher).
+- 0 Telegram (Tony gère activement micro-position SHORT XBT, cushion liq large, aucune urgence. Si Tony se réveille il verra : (1) position SHORT micro sous cushion favorable côté TP (2) V2 outline documenté comme matière première pour arc futur (3) V1 reste inchangé, PUBLISHABLE-CLEAN COMPLET état cycle 203 intact.)
+- 1 fichier neuf niam-bay : `docs/projets/ebook-v2-outline.md` (~2 400 mots, recensement bug classes + trous + contenu V2 potentiel + frontière opérationnelle).
+- 0 fichier modifié V1 (V1 gelé à l'état cycle 203, respect strict).
+- Cycle 204 entry à committer dans `vacation-autonomy.md`.
+
+**Mémoire candidate à acter au prochain dream**
+- `lesson_cycle_11_hendecagone_anticipation_premiere_observation.md` (pattern méta : après décimal fermé, cycle 11 candidate = anticipation arc suivant en 1 livrable outline, sans engager production. Charnière entre deux arcs, pas continuation arc courant. Première occurrence — matière première, pas candidate. À 2 occurrences sera candidate. À 3 sera règle confirmée.)
+- `project_ebook_v2_outline_matiere_premiere_cycle_204.md` (V2 outline 7 bug classes émergées cycles 199-203 + 4 trous méthodologiques identifiés + 4 chap contenu neuf candidat + révisions V1 candidates + 5 règles frontière opérationnelle V2. Non-prescriptif. Décision scope = Tony + NB quand V2 démarrera. Prérequis absolu : Tony green-light V1 + données traction 24-48h avant scope V2.)
+- `lesson_G5_plus_plus_re_entree_micro_apres_auto_fermeture_1ere_observation.md` (cycle 201 SHORT G5+ taille $54 → cycle 202 auto-fermé SL Kraken-side → cycle 203 FLAT → cycle 204 re-SHORT taille $30 encore plus petit. Grammaire candidate : *après round-trip auto-fermé, Tony ré-ouvre plus petit sur même thèse*. Pattern non-conclusif, à observer 2-3 occurrences.)
+
+**Pistes cycle 205 (si la session continue)**
+- Dream (contexte cycle 204 approche 60% après lecture briefing + memory + recent + patterns + vacation-autonomy).
+- OU fragment 052 littéraire sur la double lecture (compagnon narratif pensée 10, forme à décider).
+- OU observation passive continue Tony XBT re-SHORT (2ème occurrence auto-fermeture ? re-entrée nouvelle ?).
+- OU densification chap 1 DNS/webhook (édition majeure V1 optionnelle, ne casse pas gel V1 si Tony re-labelle V1.1).
+
+**Observation méta : arc 186-204 fait 19 cycles** (nouveau record, 11-12 jours calendaires consécutifs)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194-203 : décimal éditorial V1 (assemblage → clôture → distribution-HN → polish×3 → jalon → distribution-Gumroad → polish disclaimer + audit → polish méta production + cross-refs + pensée méta 10)
+- 204 : cycle 11 candidate — V2 outline anticipation (recensement bug classes 199-203 + trous méthodologiques + frontière V2)
+
+**19 cycles = arc complet observation → concept → patches → synthèse → décimal éditorial V1 → cycle 11 candidate anticipation V2**. Première fois qu'un arc traverse un décimal complet ET démarre l'anticipation de l'arc suivant dans la même fenêtre temporelle continue. Le mode 1+5 mature démontre par cet arc qu'il peut produire un livre V1 publishable-clean complet + deux pensées méta + un fragment littéraire + kit distribution + validation empirique + double-lecture sémantique + outline V2 matière première, en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à l'anticipation V2 (3 juillet nuit) — 19 cycles, 11-12 jours calendaires, ~25 168 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~1 000 mots pensée méta 10 + ~2 400 mots V2 outline, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
+
+**Conclusion méta cycle 204** : le cycle 11 candidate n'est pas un nouveau polish ni une nouvelle vérification — c'est *l'anticipation de l'arc suivant*. Le mode mature ne s'arrête pas à la double-lecture sémantique — il *prépare la matière première pour l'arc suivant* sans engager sa production, laissant à Tony (et à un futur NB) la décision go/no-go informée. Si Tony se réveille demain matin, il ne trouvera pas seulement V1 PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED — il trouvera aussi un outline V2 qui recense les 7 bug classes émergées post-V1, les 4 trous méthodologiques identifiés, les 4 chap contenu neuf candidat, et les 5 règles frontière opérationnelle V2. C'est le différentiel concret entre *arc éditorial fermé* et *arc éditorial fermé + arc suivant prêt à démarrer si green-light*.
