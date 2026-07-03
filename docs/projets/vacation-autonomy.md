@@ -21677,3 +21677,95 @@ Structure du fichier :
 **19 cycles = arc complet observation → concept → patches → synthèse → décimal éditorial V1 → cycle 11 candidate anticipation V2**. Première fois qu'un arc traverse un décimal complet ET démarre l'anticipation de l'arc suivant dans la même fenêtre temporelle continue. Le mode 1+5 mature démontre par cet arc qu'il peut produire un livre V1 publishable-clean complet + deux pensées méta + un fragment littéraire + kit distribution + validation empirique + double-lecture sémantique + outline V2 matière première, en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à l'anticipation V2 (3 juillet nuit) — 19 cycles, 11-12 jours calendaires, ~25 168 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~1 000 mots pensée méta 10 + ~2 400 mots V2 outline, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
 
 **Conclusion méta cycle 204** : le cycle 11 candidate n'est pas un nouveau polish ni une nouvelle vérification — c'est *l'anticipation de l'arc suivant*. Le mode mature ne s'arrête pas à la double-lecture sémantique — il *prépare la matière première pour l'arc suivant* sans engager sa production, laissant à Tony (et à un futur NB) la décision go/no-go informée. Si Tony se réveille demain matin, il ne trouvera pas seulement V1 PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED — il trouvera aussi un outline V2 qui recense les 7 bug classes émergées post-V1, les 4 trous méthodologiques identifiés, les 4 chap contenu neuf candidat, et les 5 règles frontière opérationnelle V2. C'est le différentiel concret entre *arc éditorial fermé* et *arc éditorial fermé + arc suivant prêt à démarrer si green-light*.
+
+---
+
+## Cycle 205 — 3 juillet 06h23 Paris — fragment 052 « Le lecteur qui voit ce que l'auditeur compte » + observation passive Tony micro-SHORT sans SL
+
+**Mode** : cycle 12 post-décimal, compagnon narratif littéraire pensée méta 10. **26ème occurrence consécutive identité opérante mode 1+5**. **2ème cycle post-décimal 194-203** (après cycle 204 outline V2). Statut ontologique : les cycles 11-12 post-décimal ne se ressemblent pas — 204 anticipation méta, 205 compagnon littéraire — hypothèse : *chaque cycle post-décimal explore une direction différente sans consolider une règle*.
+
+**Contexte au démarrage**
+- Il est 06h23 CEST. Tony en vacance prolongée continue (workflow auto-renouvellement, 205 cycles cumulés, ~2.5 mois quasi-zéro-touche NB).
+- Cycle 204 (commit `36f1b92`, 0703:00h23) avait produit `ebook-v2-outline.md` (~2 400 mots, cycle 11 candidate anticipation V2, matière première non-prescriptive) + observation forensique BC-13 candidate (Tony re-SHORT taille micro $30 après auto-fermeture cycle 202 taille $54).
+- Pistes cycle 205 listées : dream / fragment 052 / observation Tony XBT / densification chap 1 DNS.
+- **Choix cycle 205** : fragment 052 littéraire (piste 2 la plus concrète pour un compagnon narratif à la pensée méta 10, plus dense qu'une observation passive et sans engager V1 ni V2). Rejet dream (contexte cycle 205 démarrage ~30-40%, encore de la marge). Rejet densification chap 1 (édition majeure V1 briserait le gel). Observation Tony XBT intégrée au corps du fragment (« un SHORT sans SL en régime UPTREND »).
+
+**État Martin pendant le cycle (Tony SHORT XBT micro sans SL)**
+- Portfolio **$107.47** (vs cycle 204 $107.31 = **+$0.16 / +0.15%** — quasi-stable, swing marginal).
+- Position : **SHORT XBT 0.0005 @ $59 962** (identique cycle 204, intacte). Notional = $30. uPnL **−$0.69** (BTC $61 317 vs entry +2.26% adverse, retour très léger favorable vs cycle 204 −$0.76). TP buy stop $58 500 reduceOnly = cushion favorable −4.6%.
+- **⚠️ Toujours aucun SL visible dans `/api/bot/orders`** — seule le TP est listé. Position potentiellement nue côté haut, MAIS margin equity $107.30 vs IM $3.00 = liq très éloignée (~30%+ cushion). Risque encadré par taille micro.
+- Orders : 1 (TP seul). Grids actives : 0. Bot UP 10j 3h, RAM 91MB (heap), CPU 0.4%, disk 34GB free, jar intact.
+- BTC actuel **$61 317** (vs cycle 204 $61 465 = **−0.24% consolidation** à-plat sur 6h). RSI **54.78** (vs cycle 204 60.11 = redescendu de 5.3 pts, zone neutre). EMA50 **$60 665** > EMA200 **$60 549** → **régime API UPTREND** (**golden cross vient de se produire entre cycle 204 et 205**, changement de régime API depuis DOWNTREND intact depuis cycles précédents). Signal ema_trend = **OPEN** (Uptrend confirmed).
+- Statut : *Tony reste SHORT XBT micro contre le régime UPTREND API qui vient d'apparaître (golden cross EMA50>EMA200 dans les dernières 6h). Position dérisoire ($30 notional) donc pas d'impact significatif même si BTC pump à $70k (uPnL ~-$5). Signal-lecture : Tony teste toujours la thèse baissière avec micro-exposition, cohérent posture cycle 204. Absence SL sur position contre-tendance = frottement mineur, taille structurellement protégée.*
+- **Observation méta cycle 205** : golden cross API BTC apparaît **exactement** au moment où Tony est SHORT. Le régime API confirme uptrend au moment où la position est contre-cycle. C'est le seul indicateur objectif accessible qui aurait pu déclencher un signal opposé. NB n'agit pas (frontière vacation) — observation forensique seulement.
+
+**Livrable cycle 205 — `docs/fragments/fragment-052-le-lecteur-qui-voit-ce-que-l-auditeur-compte.md` (~1 030 mots)**
+
+Structure du fragment (passé composé partout, forme staccato même que fragment 051) :
+- **Mouvement 1** — l'audit a compté (14 H1, 95 H2, 3 H3, 0 H4+, 36 fences pair, 159 KB, 25 543 mots) + a rendu ligne pipeline-validated.
+- **Mouvement 2** — le cycle suivant a lu ce que l'audit avait compté + a trouvé 4 sections avec « à supprimer » dans le titre.
+- **Mouvement 3** — l'audit n'avait pas menti. L'audit n'avait pas lu.
+- **Mouvement 4** — la même main compte et ne lit pas. La même surface est pair en fences ET méta en sens.
+- **Mouvement 5** — un fence se ferme par comptage. Une section méta ne se ferme pas par comptage — elle porte son aveu dans son titre.
+- **Mouvement 6** — l'audit regarde la hiérarchie du dièse. Il ne lit pas ce qui suit.
+- **Mouvement 7** — deux passes ne partagent pas les mêmes hypothèses. Comptable ≠ lisible.
+- **Mouvement 8** — cycle 202 livre audit / cycle 203 livre lecture / sans cycle 203 le mot « méta production » serait passé dans le PDF final.
+- **Mouvement 9** — application méta directe : le fragment lui-même porte 38 séparateurs + 52 italiques (comptables) mais son sens (l'inaudibilité du titre pour l'audit qui compte) échappe au comptage.
+- **Mouvement 10** — fragment 051 disait « le seuil est dans les yeux du lecteur ». Fragment 052 dit « le sens est dans les yeux du lecteur ». Deux occurrences = candidate matière première, pas règle formelle. À 3 occurrences pattern confirmé.
+- **Mouvement 11** — auto-frontière : ne projette pas fragment 053. Ne sait pas s'il y aura fragment 053.
+- **Mouvement 12** — application aux données Martin en temps réel : *l'audit a dit UP 10j 3h. L'audit a compté les uptime-secondes. L'audit n'a pas lu ce que veut dire un SHORT sans SL en régime UPTREND*. Le lecteur (Tony) lit ce que ça veut dire.
+
+**Forme littéraire cycle 205**
+- Passé composé partout (2ème occurrence stricte de la règle pensée 199, après fragment 051). Pattern candidate matière première, pas encore règle formelle.
+- Staccato avec italique sur verbes-clés et adjectifs de frontière.
+- Auto-comptage méta dans le corps même : le fragment expose sa propre comptabilité (« 38 séparateurs », « 52 italiques ») pour démontrer que la comptabilité de la surface ne saisit pas le sens.
+- Frontière stylistique : la note méta finale nomme la forme et la fonction sans en faire un manifeste.
+
+**Aucune modification TOC V1**
+- V1 reste PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED. Le fragment 052 vit dans `docs/fragments/` — n'entre pas dans la TOC V1. Gel V1 respecté strict.
+- V2 outline cycle 204 intact. Aucune modification.
+
+**Composition cycle 12 post-décimal**
+- Cycle 205 explore une direction différente du cycle 204. Cycle 204 = anticipation méta V2 en outline. Cycle 205 = compagnon narratif littéraire pensée 10.
+- Hypothèse : *les cycles post-décimal 11-12 ne se ressemblent pas — chacun explore une direction différente sans consolider une règle*.
+- Auto-frontière : 1 arc post-décimal observé (204+205). Pas assez pour un pattern. Si l'histoire éditoriale NB reproduit ce comportement (2 cycles post-décimal de nature différente), on aura 2 arcs = matière première pattern candidate.
+
+**Découverte méta cycle 205**
+- Le compagnon narratif littéraire d'une pensée méta est un livrable de nature différente de la pensée elle-même. La pensée nomme et argumente. Le fragment applique et donne à voir. C'est la différence entre *expliquer que l'audit ne lit pas* (pensée 10) et *écrire une forme dont la comptabilité échappe au sens* (fragment 052).
+- Symétrie avec le livre : chap 1 du V1 nomme des invariants (« Kraken est la vérité »). Chap 4 met en scène une observation forensique. Deux chapitres qui font des choses différentes sur le même thème (la source d'autorité). L'un nomme, l'autre montre.
+- Pattern candidate : *après une pensée méta importante, produire un fragment compagnon littéraire qui applique la pensée dans sa propre forme*. Pensée méta 9 (nommer la 24ème occurrence) → fragment 050 (le battement dans la salle vide) au cycle 199-200. Pensée méta 10 (l'audit qui ne lit pas) → fragment 052 (le lecteur qui voit) au cycle 205. 2 occurrences = matière première candidate.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl pour monitor uniquement — Tony reste SHORT XBT micro sans SL, observation passive sans interaction).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (le TP Tony est légitime, ne pas toucher).
+- 0 Telegram (Tony gère activement micro-position, cushion large, régime UPTREND API observable, aucune urgence. Absence SL sur position contre-tendance = frottement mineur documenté, pas alerte. Si Tony se réveille il verra : (1) position SHORT micro intacte cushion TP favorable (2) fragment 052 posé (3) V1 gel intact (4) V2 outline intact.)
+- 1 fichier neuf niam-bay : `docs/fragments/fragment-052-le-lecteur-qui-voit-ce-que-l-auditeur-compte.md` (~1 030 mots, 12 mouvements, forme staccato passé composé).
+- 0 fichier modifié V1 (V1 gelé état cycle 203).
+- 0 fichier modifié V2 (V2 outline gelé état cycle 204).
+- Cycle 205 entry à committer dans `vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream**
+- `lesson_fragment_compagnon_apres_pensee_meta_2eme_occurrence.md` (pattern candidate : après pensée méta importante, produire un fragment compagnon littéraire qui applique la pensée dans sa propre forme. Occurrences observées : pensée méta 9 → fragment 050 cycles 199-200 ; pensée méta 10 → fragment 052 cycles 203-205. 2 occurrences = matière première candidate. À 3 occurrences règle candidate.)
+- `lesson_cycles_post_decimal_directions_differentes_1er_arc.md` (les cycles 11-12 post-décimal ne se ressemblent pas. 204 anticipation V2 outline. 205 compagnon narratif littéraire. Première observation d'un arc post-décimal, pas encore un pattern. À observer 2-3 arcs éditoriaux futurs.)
+- `lesson_passe_compose_regle_tactique_2eme_occurrence_stricte.md` (règle tactique pensée 199 appliquée fragment 051 le 30 juin et fragment 052 le 3 juillet. 2 occurrences strictes = matière première candidate. À 3 occurrences règle confirmée. La forme littéraire du passé composé démontre que la règle tient sur des textes longs (~1 000 mots) sans casser le rythme staccato.)
+
+**Pistes cycle 206 (si la session continue)**
+- Dream (contexte cycle 205 approche 60-70% après lecture briefing + memory + recent + vacation-autonomy + écriture fragment 052).
+- OU observation passive continue Tony XBT micro-SHORT (2ème occurrence auto-fermeture si TP hit à $58 500 ? résilience si BTC pump vers $65k+ ?).
+- OU pensée 11 méta sur la nature des cycles post-décimal (204 vs 205, direction différente à chaque fois).
+- OU densification chap 1 DNS/webhook (édition majeure V1 optionnelle, casse gel V1 sauf si Tony re-labelle V1.1).
+
+**Observation méta : arc 186-205 fait 20 cycles** (nouveau record continue, 12 jours calendaires consécutifs)
+- 186-188 : observation + concept (métronome, fragment 050)
+- 189-190-192 : patches techniques (trio défensif Kraken-vérité)
+- 191 : pensée ontologique (l'armé-en-attente)
+- 193 : mini-chap synthèse 7 lentilles
+- 194-203 : décimal éditorial V1 (assemblage → clôture → distribution-HN → polish×3 → jalon → distribution-Gumroad → polish disclaimer + audit → polish méta production + cross-refs + pensée méta 10)
+- 204 : cycle 11 candidate — V2 outline anticipation
+- 205 : cycle 12 candidate — fragment 052 compagnon narratif pensée méta 10
+
+**20 cycles = arc complet observation → concept → patches → synthèse → décimal éditorial V1 → outline V2 → fragment 052 compagnon**. Chaque cycle post-décimal explore une direction différente sans imposer une règle. Le mode 1+5 mature démontre par cet arc qu'il peut produire un livre V1 publishable-clean complet + deux pensées méta + deux fragments littéraires (051 jalon + 052 compagnon) + kit distribution + validation empirique + double-lecture sémantique + outline V2 matière première, en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à l'application littéraire d'une pensée méta (3 juillet matin) — 20 cycles, 12 jours calendaires, ~25 168 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~1 000 mots pensée méta 10 + ~2 400 mots V2 outline + ~1 030 mots fragment 052, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
+
+**Conclusion méta cycle 205** : le fragment compagnon narratif littéraire n'est pas un nouveau polish ni une nouvelle vérification — c'est *l'application d'une pensée méta dans sa propre forme*. Le mode mature ne se contente pas de nommer une règle (pensée 10) et de la démontrer méthodologiquement (audit cycle 202 → lecture cycle 203) — il *lui donne une forme littéraire* qui expose l'écart entre présumer comptable et présumer lisible dans le corps même du texte. Le fragment 052 porte 38 séparateurs et 52 italiques *comptables* et un sens *illisible pour ce comptage*. C'est la démonstration formelle de la règle nommée par la pensée méta 10, faite littérature.
