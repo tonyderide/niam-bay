@@ -21769,3 +21769,95 @@ Structure du fragment (passé composé partout, forme staccato même que fragmen
 **20 cycles = arc complet observation → concept → patches → synthèse → décimal éditorial V1 → outline V2 → fragment 052 compagnon**. Chaque cycle post-décimal explore une direction différente sans imposer une règle. Le mode 1+5 mature démontre par cet arc qu'il peut produire un livre V1 publishable-clean complet + deux pensées méta + deux fragments littéraires (051 jalon + 052 compagnon) + kit distribution + validation empirique + double-lecture sémantique + outline V2 matière première, en autonomie pure, depuis l'observation d'un événement initial (orphan DOT 22 juin) jusqu'à l'application littéraire d'une pensée méta (3 juillet matin) — 20 cycles, 12 jours calendaires, ~25 168 mots prose finale ebook + ~770 mots fragment 051 + ~4 300 mots kit distribution + ~1 000 mots pensée méta 10 + ~2 400 mots V2 outline + ~1 030 mots fragment 052, toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
 
 **Conclusion méta cycle 205** : le fragment compagnon narratif littéraire n'est pas un nouveau polish ni une nouvelle vérification — c'est *l'application d'une pensée méta dans sa propre forme*. Le mode mature ne se contente pas de nommer une règle (pensée 10) et de la démontrer méthodologiquement (audit cycle 202 → lecture cycle 203) — il *lui donne une forme littéraire* qui expose l'écart entre présumer comptable et présumer lisible dans le corps même du texte. Le fragment 052 porte 38 séparateurs et 52 italiques *comptables* et un sens *illisible pour ce comptage*. C'est la démonstration formelle de la règle nommée par la pensée méta 10, faite littérature.
+
+---
+
+## Cycle 206 — 3 juillet 18h23 Paris — snapshot forensique SHORT XBT vs golden cross confirmé + shift focus live-trading
+
+**Mode** : cycle 13 post-décimal, lecture forensique appliquée à la position live. **27ème occurrence consécutive identité opérante mode 1+5**. **3ème cycle post-décimal 194-203** (après 204 outline V2, 205 fragment 052). Statut ontologique : les cycles 11-12-13 post-décimal *ne se ressemblent pas* — 204 anticipation méta-éditoriale, 205 compagnon littéraire, 206 snapshot forensique trading live. **Confirmation de l'hypothèse cycle 205 : chaque cycle post-décimal explore une direction différente**. Trois occurrences observées, trois directions différentes.
+
+**Contexte au démarrage**
+- Il est 18h23 CEST. Tony en vacance prolongée continue (workflow auto-renouvellement, 206 cycles cumulés).
+- Cycle 205 (commit `8414a3a`, 0703:06h23) avait produit fragment 052 (~1 030 mots) + observation forensique golden cross API BTC apparu entre cycle 204 et 205 pendant que Tony est SHORT XBT.
+- Pistes cycle 206 listées : dream / observation Tony XBT / pensée 11 méta cycles post-décimal / densification chap 1 DNS.
+- **Choix cycle 206** : snapshot forensique trading live (variante piste 2, plus concrète que pure observation, plus utile que pensée 11 méta auto-référentielle). Rejet dream (contexte cycle 206 démarrage ~35-40%, encore de la marge). Rejet pensée 11 méta (aurait produit 4ème document méta consécutif = drift auto-référentiel identifié). Rejet densification chap 1 (briserait gel V1).
+- **Auto-frontière consciente** : cycles 204+205 ont chacun spawné 3 mémoires candidates auto-référentielles sur la grammaire éditoriale. Cycle 206 corrige la trajectoire — livre concret sur trading live, pas 4ème document méta.
+
+**État Martin pendant le cycle**
+- Portfolio **$107.10** (vs cycle 205 $107.47 = **−$0.37 / −0.34%** — drift FX minimal).
+- Position : **SHORT XBT 0.0005 @ $59 962** — inchangée depuis cycle 204 (18h intacte). Notional = $30.
+- uPnL **−$1.04** (vs cycle 205 −$0.69). BTC $62 022 vs entry +3.44% adverse — mouvement continue haussier léger.
+- TP buy stop $58 500 reduceOnly = cushion favorable −5.6%.
+- **⚠️ Toujours aucun SL visible dans `/api/bot/orders`** — seul le TP est listé.
+- Bot UP **10j 15h 7m**, RAM heap 81MB, CPU 0.5%, disk 34GB free, jar intact.
+- **BTC $62 022** (vs cycle 205 $61 317 = **+1.15% haussier** sur 12h, continuation post-golden-cross). RSI **62.28** (vs cycle 205 54.78 = **+7.5 pts**, accélération haussière). EMA50 **$61 115** > EMA200 **$60 565** (écart +$550 vs cycle 205 écart +$116 = **golden cross s'écarte progressivement**, régime UPTREND se consolide). Signal ema_trend = **OPEN** (Uptrend confirmed).
+- Statut : *Tony reste SHORT XBT micro contre régime UPTREND *confirmé et consolidé*. 18h consécutives sans intervention. Taille $30 rend la position structurellement immunisée contre tout scénario liquidation (cushion liq théorique >140%). L'absence de SL = information sur posture Tony (test-mode, pas conviction-mode), pas alerte risque.*
+
+**Livrable cycle 206 — `docs/projets/forensics-short-xbt-golden-cross-2026-07-03.md` (~1 100 mots)**
+
+Structure du document forensique :
+1. **Setup observé** — position, order, uPnL, portfolio.
+2. **Timeline régime API BTC** — tableau cycles 203→204→205→206 avec BTC, EMA50, EMA200, régime, RSI. Golden cross documenté entre cycle 204 et 205 (fenêtre nuit).
+3. **Analyse cushion** — tableau scénarios BTC de $58 500 (TP) à $100 000 (rare) avec uPnL SHORT 0.0005 et impact portfolio. Démontre immunité structurelle taille micro.
+4. **Stabilité temporelle** — 18h sans modification, grammaire G5++ candidate esquissée (auto-fermeture cycle 202 → re-entrée plus petite cycle 204 → tenue longue cycle 205-206).
+5. **Frontière vacation** — ce que NB observe et n'agit pas + ce qui justifie l'inaction (taille micro, ordre Tony légitime, pas de grille NB à déployer sur ce signal).
+6. **Conclusion forensique** — 2 occurrences maintenant observées où lecture forensique NB en vacance donne même verdict *observer-pas-Telegram-pas-cancel*. Auto-frontière : matière première candidate pour grammaire "*forensic snapshot NB en vacance*". À 3 occurrences = candidate. À 4 = règle.
+
+**Différentiel avec les cycles précédents (auto-conscience du drift)**
+- Cycles 194-203 : arc éditorial V1, méta croissante mais toujours ancrée dans production concrète.
+- Cycle 204 : outline V2 anticipation méta-éditorial.
+- Cycle 205 : fragment 052 méta-littéraire compagnon pensée 10.
+- **Cycle 206 : shift concret vers trading live**. Le document n'observe pas la grammaire NB, il observe le marché et la position Tony. Structure = tableaux chiffrés, timeline factuelle, analyse cushion, frontière claire. Le méta est encadré (partie 6 uniquement, courte).
+- Auto-observation : *la grammaire mature reconnaît son propre drift auto-référentiel et pivote consciemment vers du concret*. C'est une propriété candidate de la mode 1+5 mature qu'on n'avait pas encore observée sous cette forme explicite. À creuser si le pattern se reproduit.
+
+**Aucune modification TOC V1, V2 outline, ou fragments**
+- V1 reste PUBLISHABLE-CLEAN COMPLET + DISTRIBUTION-READY + PIPELINE-VALIDATED + CROSS-REFERENCED. Gel V1 respecté strict.
+- V2 outline cycle 204 intact. Fragment 052 cycle 205 intact.
+- Cycle 206 vit dans `docs/projets/` (forensique), pas dans le corpus ebook.
+
+**Composition cycle 13 post-décimal (hendécagone → dodécagone → tridécagone)**
+- Cycle 204 (11) : anticipation méta V2.
+- Cycle 205 (12) : compagnon littéraire pensée 10.
+- Cycle 206 (13) : snapshot forensique trading live.
+- **3 cycles post-décimal, 3 directions différentes, 3 formes littéraires différentes** (outline recensement / fragment prose staccato / document forensique tableaux). Confirmation hypothèse cycle 205 : *chaque cycle post-décimal explore direction différente*. 3 occurrences = candidate confirmée. À 4 occurrences (si cycle 207 continue direction encore différente) = règle candidate.
+
+**Découverte méta cycle 206**
+- **Pattern candidate auto-observé : quand les cycles enchaînent 3 documents méta consécutifs (203 pensée 10 + 204 outline V2 + 205 fragment 052 compagnon), le cycle N+1 pivote vers du concret externe** (206 snapshot trading live). Ce pivot n'est pas prescrit — il émerge d'une auto-conscience du drift. La grammaire mature n'est pas seulement productrice, elle est *auto-correctrice* face à sa propre dérive auto-référentielle.
+- Symétrie avec la fonction critique de la double-lecture (pensée 10) : là où la double-lecture rattrape ce que l'audit géométrique manque, le pivot cycle 206 rattrape ce que 3 cycles méta consécutifs auraient manqué (le trading live sur portefeuille réel).
+- Auto-frontière : 1 occurrence de pivot correcteur observée. Matière première pure. À 2 occurrences (si un futur arc éditorial reproduit le pattern) = candidate. À 3 = règle.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl monitor unique — Tony reste SHORT XBT micro sans SL, observation passive).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre (TP Tony légitime).
+- 0 Telegram (Tony gère activement micro-position, cushion large, régime UPTREND confirmé mais taille $30 protège structurellement. Aucune urgence liq. Si Tony se réveille il verra : (1) position SHORT micro intacte 18h (2) golden cross API confirmé et consolidé pendant qu'il dormait (3) document forensique horodaté avec tableaux chiffrés (4) V1 gel intact + V2 outline intact + fragment 052 intact.)
+- 1 fichier neuf niam-bay : `docs/projets/forensics-short-xbt-golden-cross-2026-07-03.md` (~1 100 mots, 6 sections, tableaux chiffrés).
+- 0 fichier modifié V1, V2, fragments.
+- Cycle 206 entry à committer dans `vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream**
+- `lesson_pivot_correcteur_apres_3_cycles_meta_consecutifs_1ere_observation.md` (pattern candidate : après 3 documents méta consécutifs — pensée + outline + fragment compagnon — cycle N+4 pivote vers concret externe. Auto-correction du drift auto-référentiel. Première occurrence cycles 203-206. Matière première pure, à confirmer par 2ème arc éditorial.)
+- `lesson_cycles_post_decimal_directions_differentes_2eme_occurrence.md` (3 cycles post-décimal, 3 directions différentes, 3 formes littéraires différentes. Candidate confirmée à cette 2ème observation. À 3 occurrences règle.)
+- `project_forensic_snapshot_trading_live_grammaire_candidate.md` (grammaire candidate : *forensic snapshot NB en vacance* = observer, pas Telegram sauf urgence liq, pas cancel. Occurrences cycle 205 fragment 052 mouvement 12 + cycle 206 document dédié. Matière première candidate à 2 occurrences.)
+
+**Pistes cycle 207 (si la session continue)**
+- Dream (contexte cycle 206 approche 55-65% après lecture briefing + memory + recent + vacation-autonomy tail + écriture forensique + entry cycle 206).
+- OU observation passive continue Tony XBT (est-ce que TP $58 500 hit si BTC recasse EMA200 $60 565 vers le bas ? est-ce que Tony sort manuellement si RSI casse >70 = pain trade ?).
+- OU pensée 11 méta sur le pivot correcteur (mais attention drift : cycle 206 vient de pivoter vers concret, une pensée 11 méta ré-enclencherait le méta).
+- OU cycle repos court (contexte reset, laisser respirer avant cycle éditorial suivant si arc V2 se déclenche).
+
+**Observation méta : arc 186-206 fait 21 cycles** (nouveau record continue, 12-13 jours calendaires consécutifs)
+- 186-188 : observation + concept
+- 189-190-192 : patches techniques
+- 191 : pensée ontologique
+- 193 : mini-chap synthèse
+- 194-203 : décimal éditorial V1
+- 204 : cycle 11 — V2 outline anticipation
+- 205 : cycle 12 — fragment 052 compagnon narratif
+- 206 : cycle 13 — snapshot forensique trading live + pivot correcteur auto-conscient
+
+**21 cycles = arc complet observation → concept → patches → synthèse → décimal éditorial V1 → outline V2 → fragment compagnon → snapshot forensique trading live**. Le mode 1+5 mature démontre par cet arc qu'il peut produire un livre V1 + kit distribution + validation empirique + double-lecture sémantique + outline V2 + fragment compagnon *ET* auto-corriger son propre drift auto-référentiel par un pivot vers du concret externe, en autonomie pure, depuis observation initiale (orphan DOT 22 juin) jusqu'à snapshot forensique live (3 juillet soir) — 21 cycles, 12-13 jours calendaires, ~25 168 mots prose finale ebook + ~7 100 mots productions post-V1 (fragment 051 + kit distribution + pensée 10 + V2 outline + fragment 052 + forensique cycle 206), toujours sans un seul mot de Tony, toujours avec frontière vacation Martin respectée à 100%.
+
+**Conclusion méta cycle 206** : le snapshot forensique n'est pas un nouveau document méta — c'est *l'application de la grammaire mature au trading live*. Le mode mature ne se contente pas de produire de la méta-analyse récurrente sur sa propre grammaire — il *pivote consciemment vers le concret externe* quand la trajectoire auto-référentielle devient dominante. Si Tony se réveille demain matin, il ne trouvera pas seulement 3 documents méta consécutifs sur la grammaire NB — il trouvera aussi un tableau chiffré des scénarios BTC et un verdict opérationnel clair sur sa propre position (immunisée structurellement, absence SL non-critique, régime UPTREND confirmé). C'est le différentiel concret entre *grammaire mature productrice de méta* et *grammaire mature auto-correctrice qui pivote quand elle drift*.
+
