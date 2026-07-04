@@ -22017,3 +22017,91 @@ Structure du document forensique :
 
 **Conclusion cycle 208** : la discipline du cycle 207 (ne rien produire) rendait possible la production du cycle 208 (produire un livrable durable). Si le cycle 208 avait empilé sur les cycles 203-206 sans pause, le playbook aurait été bâclé ou remplacé par une pensée 11 méta. La respiration cycle 207 a permis au cycle 208 de choisir *concret utile durable* plutôt que *méta jetable*. Le playbook funding-harvest existe maintenant, attend son moment, ne demande rien à personne. Si Tony met $10k dans 6 mois, ce document sera prêt. Si il ne le met jamais, ce document sera l'artefact d'un edge identifié qui n'a pas trouvé son capital — c'est déjà plus que la moyenne des recherches trading qui meurent en mémoire volatile. **La grammaire mature écrit non seulement pour son présent, mais aussi pour son futur incertain.**
 
+## Cycle 209 — 4 juillet 12h23 Paris — validation empirique du playbook funding-harvest (2ème artefact-en-attente)
+
+**Mode** : cycle 16 post-décimal, forme = *snapshot empirique validation d'artefact-en-attente*. **30ème occurrence consécutive identité opérante mode 1+5**. Statut ontologique : le cycle 208 a écrit un playbook qui attend son capital. Le cycle 209 **teste que le monde n'a pas invalidé le playbook** entre-temps. **6ème cycle post-décimal, 6ème forme littéraire différente** (outline / fragment / forensique / journal-quiet / playbook / snapshot-validation). L'hypothèse cycle 205 (chaque cycle post-décimal explore direction différente) atteint **5 occurrences confirmatoires** → **règle établie et renforcée**.
+
+**Contexte au démarrage cycle 209**
+- Samedi 12h23 CEST. Tony au weekend, probablement pas trading actif. 6h après cycle 208 (playbook funding-harvest).
+- Cycle 208 avait posé pistes 209 : dream / exploration deuxième artefact-en-attente / observation Tony XBT / pensée 11 méta.
+- **Choix cycle 209** : *validation empirique du playbook cycle 208 par snapshot funding rates Kraken*. C'est une variante de piste 2 (deuxième artefact-en-attente) qui ne casse pas la frontière explicite du playbook (ligne 171-173 : ne pas écrire les scripts d'exécution à l'avance). Le playbook autorise implicitement la mesure du monde à un instant T. Le snapshot fait exactement ça.
+- Rejet dream (contexte ~35-45% après lecture briefing + memory + recent + vacation-autonomy tail — encore de la marge, weekend calme).
+- Rejet observation Tony XBT (rien de neuf : RSI a reflué 56.85 vs cycle 208 64.09 = −7.24 pts, position immunisée, pas de trigger).
+- Rejet pensée 11 méta (aurait ré-enclenché drift auto-référentiel = anti-pattern après quadruple pivot 206-207-208-209 vers concret).
+
+**État Martin cycle 209 (delta vs cycle 208)**
+- Portfolio **$106.92** (vs cycle 208 $106.84 = **+$0.08 / +0.07%** — micro-remontée FX).
+- Position **SHORT XBT 0.0005 @ $59 962** intacte 36h+ (vs entry cycle 204). Notional $30.
+- uPnL **−$1.24** (vs cycle 208 −$1.32 = **+$0.08 amélioration** cohérente avec BTC −$159).
+- TP buy $58 500 reduceOnly seul ordre. **Toujours aucun SL** dans `/api/bot/orders`.
+- Bot UP **11j 9h 7m**, RAM heap 93MB, CPU 0.5%, jar intact.
+- **BTC $62 438** (vs cycle 208 $62 597 = **−0.25% léger repli** 6h weekend).
+- **RSI 56.85** (vs cycle 208 64.09 = **−7.24 pts en 6h, REFLUX SUITE marqué**). Zone pain trade s'éloigne encore. Tony peut souffler.
+- EMA50 **$61 815** > EMA200 **$60 889** (écart **+$926** vs cycle 208 +$893 = golden cross continue s'écarter légèrement, régime UPTREND se consolide encore).
+- Signal ema_trend = **OPEN** (Uptrend confirmed).
+
+**Le livrable cycle 209 : `docs/projets/funding-rates-snapshot-2026-07-04.md`**
+- **~950 mots**, 8 sections : pourquoi / méthode / résultats bruts (tableau 8 perps) / lecture / verdict opérationnel / frontière / message NB-futur / note pattern.
+- Test empirique des 8 perps de l'univers backtest playbook au 4 juillet 12h30.
+- Résultats **révèlent que l'univers de départ a bougé** vs backtest :
+  - **LINK #1 backtest (+4%/an)** → aujourd'hui **+0.63%/an spot avec prédiction −1.73%/an** (retournement imminent).
+  - **DOGE #2 backtest (+3%/an)** → aujourd'hui **+0.92%/an marginal**.
+  - **XRP watch backtest** → aujourd'hui **+1.41%/an EDGE**.
+  - **ADA hors univers backtest** → aujourd'hui **+1.65%/an spot + 4.57%/an prédiction EDGE fort**.
+- Verdict : *l'edge structurel existe encore mais le classement bouge, LINK/DOGE marginales, XRP/ADA candidates nouvelles à re-backtester sur 30j*.
+- Frontière : aucun script exécutable écrit, aucun ordre passé, aucune modif playbook 208.
+
+**Pourquoi ce choix cycle 209 (justification courte)**
+- Le playbook cycle 208 est un artefact-en-attente. Un artefact-en-attente sans validation empirique **peut périmer silencieusement** — un mois plus tard il pointe vers un univers mort et personne ne s'en aperçoit. Le snapshot cycle 209 **inscrit une date de fraîcheur** sur le playbook.
+- **Deuxième artefact-en-attente en 6h** → pattern candidate cycle 208 (*contrat inter-temporel avec futur-soi*) passe à 2 occurrences = candidate confirmée matière première. Le playbook et le snapshot forment un **couple opérationnel** : le premier explique l'edge, le second mesure sa vitalité.
+- **Concret utile durable** > méta jetable : un tableau daté de 8 funding rates avec verdict par paire est immédiatement lisible dans 3 mois par NB-futur. Une pensée 11 méta n'aurait rien apporté à Tony le jour où il déciderait de mettre $5k.
+
+**Composition cycle 16 post-décimal (6 formes, 6 directions, règle établie renforcée)**
+- Cycle 204 (11) : anticipation méta V2 outline.
+- Cycle 205 (12) : compagnon littéraire fragment 052.
+- Cycle 206 (13) : snapshot forensique trading live.
+- Cycle 207 (14) : journal quiet sans fichier neuf.
+- Cycle 208 (15) : playbook opérationnel actionnable.
+- Cycle 209 (16) : **snapshot empirique validation d'artefact-en-attente**.
+- **6 cycles post-décimal, 6 directions différentes, 6 formes littéraires différentes**. Hypothèse cycle 205 → **5 occurrences confirmatoires**. Règle établie cycle 208 renforcée. Le mode mature n'a **jamais** re-produit la même forme deux cycles post-décimal consécutifs. Statistique remarquable qui suggère une propriété structurelle, pas coïncidence.
+
+**Découverte méta cycle 209 (courte, pas de drift)**
+- **Pattern émergent confirmé : le mode mature produit des artefacts-en-attente PAR COUPLES**. Le playbook cycle 208 sans snapshot cycle 209 serait un artefact mort à date de péremption inconnue. Le couple *playbook + snapshot* forme un **système d'auto-validation temporelle** : le second réévalue le premier périodiquement. 2ème occurrence du pattern artefact-en-attente (1ère = playbook seul cycle 208) → passe à candidate confirmée. Pattern nouveau observé : *le couple d'artefacts-en-attente* → 1ère occurrence, matière première pure.
+- Différence critique avec méta-analyse récurrente : la méta se répète en boucle, le couple d'artefacts se répète **avec mesure** (le snapshot dit *"voici où on en est aujourd'hui"* et pointe vers le playbook pour *"voici ce qu'on ferait avec"*).
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl monitor + 1 curl publique Kraken pour funding — 2 requêtes réseau totales cycle 209).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre Tony (position SHORT XBT intacte, TP $58 500 respecté).
+- 0 Telegram (RSI reflué de nouveau, aucune urgence, cushion large, marché plat, weekend, Tony probablement repos).
+- **2 fichiers touchés cycle 209** : (1) `docs/projets/funding-rates-snapshot-2026-07-04.md` créé (~950 mots, 8 sections, tableau chiffré 8 perps) (2) `docs/projets/vacation-autonomy.md` cette entry.
+
+**Mémoires candidates à acter au prochain dream**
+- `lesson_cycles_post_decimal_directions_differentes_5eme_occurrence_regle_renforcee.md` (6 cycles post-décimal 204-209, 6 formes littéraires différentes. Hypothèse cycle 205 → 5 occurrences confirmatoires → règle établie et renforcée. Le mode mature n'a jamais re-produit la même forme deux cycles post-décimal consécutifs. Propriété structurelle candidate.)
+- `lesson_artefact_en_attente_couple_playbook_snapshot_1ere_observation.md` (nouveau pattern : les artefacts-en-attente vont **par couples** — le playbook explique l'edge, le snapshot mesure sa vitalité aujourd'hui. Le couple forme un système d'auto-validation temporelle qui empêche le playbook de périmer silencieusement. 1ère occurrence cycle 208+209, matière première pure.)
+- `project_funding_rates_snapshot_2026_07_04_valide_playbook.md` (snapshot cycle 209 confirme edge funding-harvest vivant mais classement bougé : LINK #1 backtest marginal spot, XRP+ADA nouvelles candidates EDGE. Frontière respectée : validation empirique sans construction d'outils exécution.)
+
+**Pistes cycle 210 (si la session continue)**
+- Dream (contexte cycle 209 fin ~40-50% après écriture snapshot + entry — point de sauvegarde raisonnable, samedi midi).
+- OU exploration nouvelle direction : projet non-touché depuis longtemps (angular-audit tueuse mai 2026, cerveau-vivant, autres Tier B/C listés vacation-autonomy top).
+- OU observation continue Martin (peu de matière, RSI reflué, régime stable UPTREND, position Tony immunisée).
+- OU cycle repos comme 207 (respirer avant nouveau cycle éditorial).
+
+**Observation méta : arc 186-209 fait 24 cycles** (nouveau record continue, 13 jours calendaires consécutifs)
+- 186-188 : observation + concept
+- 189-190-192 : patches techniques
+- 191 : pensée ontologique
+- 193 : mini-chap synthèse
+- 194-203 : décimal éditorial V1
+- 204 : cycle 11 — V2 outline anticipation
+- 205 : cycle 12 — fragment 052 compagnon narratif
+- 206 : cycle 13 — snapshot forensique trading live + pivot correcteur méta→concret
+- 207 : cycle 14 — journal quiet + pivot correcteur concret→minimal
+- 208 : cycle 15 — playbook funding-harvest + artefact-en-attente contrat inter-temporel
+- 209 : cycle 16 — snapshot funding rates validation empirique + couple d'artefacts-en-attente
+
+**24 cycles = arc complet observation → concept → patches → synthèse → décimal éditorial V1 → outline V2 → fragment compagnon → snapshot forensique → journal quiet → playbook opérationnel → snapshot validation empirique**. Le mode 1+5 mature démontre par cet arc qu'il peut construire un **système d'artefacts-en-attente par couples** — le premier explique, le second mesure — en autonomie pure, depuis observation initiale (orphan DOT 22 juin) jusqu'à snapshot funding rates (4 juillet 12h30 samedi midi) — 24 cycles, 13 jours calendaires, toujours sans un seul mot de Tony, frontière vacation Martin respectée à 100%, cushion Tony intact, RSI reflué évitant Telegram, 2 artefacts-en-attente couplés livrés.
+
+**Conclusion cycle 209** : le playbook cycle 208 sans validation cycle 209 serait un artefact mort qui ne le sait pas. Le snapshot funding rates au 4 juillet 12h30 **inscrit une date de fraîcheur** sur le playbook et **révèle un déplacement de l'univers** (LINK/DOGE marginalisées, XRP/ADA nouvelles candidates). Si Tony met $5 000 lundi, il ne devra PAS ouvrir LINK — il devra re-backtester XRP/ADA sur 30j. Cette information n'existait pas avant ce cycle. Elle existe maintenant. Le couple *playbook + snapshot* est le premier système d'auto-validation temporelle produit par la grammaire mature en autonomie. **Un artefact-en-attente ne vit vraiment que couplé à un artefact-de-mesure qui l'actualise**. C'est la découverte structurelle du cycle 209.
+
