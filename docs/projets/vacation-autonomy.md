@@ -21935,3 +21935,85 @@ Structure du document forensique :
 
 **Conclusion cycle 207** : la vraie discipline n'est pas de produire à chaque cycle. C'est de *reconnaître quand ne pas produire*. Cycle 207 est court, honnête, non-formatté — il documente une position qui saigne mais reste immunisée, un RSI qui approche un seuil symbolique, et une décision consciente de *ne pas écrire un 2ème document forensique*. Si Tony se réveille à 07h ce matin, il verra : (1) sa position SHORT XBT toujours micro-intacte 24h+ (2) RSI proche 70 = pain trade zone imminent (3) BTC uptrend qui s'installe fortement (4) NB en vacance qui a *choisi de ne rien écrire de neuf ce cycle*. Le cycle vide de production est le cycle plein de discipline.
 
+## Cycle 208 — 4 juillet 06h23 Paris — playbook funding-harvest (pivot vers concret utile)
+
+**Mode** : cycle 15 post-décimal, forme = *playbook opérationnel actionnable*. **29ème occurrence consécutive identité opérante mode 1+5**. Statut ontologique : après cycle 207 qui a *choisi de ne rien produire*, le cycle 208 pivote encore une fois — vers un **livrable concret utile** que le cycle 207 ne pouvait pas produire par sa nature quiet. **5ème cycle post-décimal, 5ème forme littéraire différente** (outline / fragment / forensique / journal-quiet / playbook opérationnel). L'hypothèse cycle 205 (chaque cycle post-décimal explore une direction différente) atteint **4 occurrences confirmatoires → règle établie** (seuil de 4 crossed).
+
+**Contexte au démarrage cycle 208**
+- Samedi 06h23 CEST. Tony probablement encore endormi (samedi matin tôt, heure normale début weekend). 6h après cycle 207.
+- Cycle 207 avait posé pistes : dream / observation continue / exploration projet non-touché / ping Telegram si RSI franchit 70 fermement.
+- **RSI observé cycle 208 : 64.09** (vs cycle 207 : 69.27 = **−5.18 pts en 6h**, REFLUX). La zone pain trade que le cycle 207 anticipait à ~40 minutes de traversée a en fait *reculé*. Franchissement 70 n'a PAS eu lieu — la piste "ping Telegram si RSI franchit 70" est **caduque cycle 208**.
+- **Choix cycle 208** : *exploration projet non-touché* (piste 3 cycle 207) matérialisée en **playbook funding-harvest**. Rejet dream (contexte ~30-40% après lecture briefing + memory + recent + vacation-autonomy tail + écriture playbook + entry cycle 208 — encore de la marge). Rejet ping Telegram (RSI a reflué, aucune urgence). Rejet nouveau document forensique/fragment/pensée (aurait ré-enclenché drift ritualisé).
+
+**État Martin cycle 208 (delta vs cycle 207)**
+- Portfolio **$106.84** (vs cycle 207 $106.85 = **−$0.01 / stable**, dérive quasi nulle 6h).
+- Position **SHORT XBT 0.0005 @ $59 962** intacte 30h+ (vs entry cycle 204).
+- uPnL **−$1.32** (vs cycle 207 −$1.31 = **stable**, cohérent avec BTC +$10 seulement).
+- TP buy $58 500 reduceOnly seul ordre. **Toujours aucun SL** dans `/api/bot/orders`.
+- Bot UP **11j 3h 7m**, RAM heap 67MB, CPU 0.4%, jar intact.
+- **BTC $62 597** (vs cycle 207 $62 587 = **+0.02% / plat 6h**, marché calme nuit weekend). EMA50 **$61 639** > EMA200 **$60 747** (écart **+$893** vs cycle 207 écart +$751 = **golden cross continue de s'écarter**, régime UPTREND se consolide encore).
+- **RSI 64.09** (vs cycle 207 69.27 = **−5.18 pts en 6h**, REFLUX marqué). **Pain trade zone recule** — position Tony a moins de pression symbolique. Cushion structural inchangé.
+- Signal ema_trend = **OPEN** (Uptrend confirmed).
+
+**Le livrable cycle 208 : `docs/projets/funding-harvest-playbook-2026-07-04.md`**
+- **~2 100 mots**, 12 sections : pourquoi ce document / principe / univers validé / setup / procédure ouverture / procédure fermeture / métriques / risques / frontières / étapes concrètes $5k+ / dépendances techniques / verdict opérationnel.
+- **Contrat entre NB-208 (autonomie vacation qui comprend l'edge) et NB-futur (qui exécute quand Tony met du capital)**. Le premier a compris, le second exécute — le playbook est le pont.
+- **Sourcé session recherche 0623-0625** (verdict "problème = capital, pas stratégie"), rehausse un edge identifié réaliste (LINK +4%/an DOGE +3%/an) qui autrement se serait perdu dans la mémoire vectorielle.
+- **Actionnable seuil $5 000+ minimum**, **intéressant à $10 000+**. Scale linéairement.
+- **Frontières explicites** : ne dit pas quand ouvrir, ne dit pas quelle paire ici et maintenant, ne dit pas d'automatiser avant 3 mois de preuve manuelle.
+- **Ne demande RIEN à Tony immédiatement** — c'est un artefact qui attend. C'est son rôle.
+
+**Pourquoi ce choix cycle 208 (justification longue)**
+- Cycle 206 avait pivoté du méta vers le concret (snapshot forensique). Cycle 207 a corrigé le drift concret ritualisé (journal quiet, pas de fichier). Cycle 208 pouvait re-drift méta (pensée 11 sur pivot correcteur en série) ou continuer concret utile. J'ai choisi **concret utile** pour deux raisons :
+  1. **Empilement méta insuffisamment pausé** : 3 cycles méta consécutifs 203-205 → cycle 206 pivote → cycle 207 respire → cycle 208 pourrait rebasculer méta si peu vigilant. Mieux vaut *matérialiser une deuxième production concrète externe* pour éviter que le pivot 206 ne soit une exception isolée.
+  2. **Livrable réutilisable > pensée jetable** : un playbook funding-harvest qui attend $5k+ est un artefact opérationnel réutilisable. Une pensée 11 sur le pivot correcteur serait une belle méta-analyse qui n'aurait aucune application externe. À dose contexte quasi-équivalente, le playbook pèse plus lourd.
+- **Directive première (mémoire) : gagner peu mais tout le temps**. Le funding harvest EST la matérialisation de cette directive — petit rendement stable, marché-neutre, scale avec capital. Écrire son playbook cycle 208 = servir la directive.
+- **Rend nous riche** (Tony au départ vacation). Interprétation littérale rejetée (mémoire feedback_revenue_non_ia_replicable + lesson_no_alpha_at_134). Interprétation seule valide : documenter les rares edges identifiés pour qu'ils soient exploitables quand le capital arrivera. C'est ce que le playbook fait.
+
+**Composition cycle 15 post-décimal (5 formes, 5 directions)**
+- Cycle 204 (11) : anticipation méta V2 outline.
+- Cycle 205 (12) : compagnon littéraire fragment 052.
+- Cycle 206 (13) : snapshot forensique trading live.
+- Cycle 207 (14) : journal quiet, aucun fichier neuf.
+- Cycle 208 (15) : **playbook opérationnel actionnable externalisable**.
+- **5 cycles post-décimal, 5 directions différentes, 5 formes littéraires différentes** (outline / fragment / forensique / journal / playbook). Hypothèse cycle 205 → 4 occurrences confirmatoires → **règle établie**.
+
+**Découverte méta cycle 208 (courte, pas de drift)**
+- **Pattern émergent : le mode mature peut produire un *contrat inter-temporel avec son futur-soi***. Le playbook funding-harvest n'est pas écrit pour être exécuté aujourd'hui (Tony n'a pas $5k dispo). Il est écrit pour que le NB du jour où Tony met le capital n'ait pas à reconstruire la logique. C'est une classe de production nouvelle : *artefact-en-attente-avec-date-de-péremption-longue*. 1ère occurrence. Matière première pure.
+- Différence critique avec méta-analyse récurrente : la méta se répète en boucle, l'artefact-en-attente reste stable. La grammaire mature sait écrire *pour un futur incertain*, pas seulement *sur son propre présent*.
+
+**Frontière vacation respectée**
+- 0 modif Martin/VM (1 SSH curl monitor unique cycle 208).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel d'ordre Tony (position SHORT XBT laissée intacte, TP $58 500 respecté).
+- 0 Telegram (RSI a reflué, aucune urgence, position immunisée, marché plat 6h, Tony dort probablement).
+- **2 fichiers touchés cycle 208** : (1) `docs/projets/funding-harvest-playbook-2026-07-04.md` créé (2 100 mots) (2) `docs/projets/vacation-autonomy.md` cette entry.
+
+**Mémoires candidates à acter au prochain dream**
+- `lesson_cycles_post_decimal_directions_differentes_4eme_occurrence_regle_etablie.md` (5 cycles post-décimal 204-208, 5 formes littéraires différentes. Hypothèse cycle 205 → 4 occurrences confirmatoires → règle établie. Le mode mature explore une direction différente à chaque cycle post-décimal, jamais deux fois la même forme consécutive.)
+- `project_funding_harvest_playbook_ecrit_cycle_208.md` (playbook opérationnel actionnable écrit cycle 208, dans `docs/projets/funding-harvest-playbook-2026-07-04.md`, attend capital $5k+. Sourcé session recherche 0623-0625. Contient univers validé, procédures, métriques, risques, dépendances techniques.)
+- `lesson_artefact_en_attente_contrat_inter_temporel_1ere_observation.md` (nouvelle classe de production : le mode mature peut écrire pour son futur-soi, avec date de péremption longue. Différent de la méta-analyse récurrente. 1ère occurrence cycle 208 avec playbook funding-harvest. Matière première pure. À confirmer par 2ème occurrence.)
+
+**Pistes cycle 209 (si la session continue)**
+- Dream (contexte cycle 208 fin ~40-50% après écriture playbook + entry — point de sauvegarde raisonnable).
+- OU exploration deuxième artefact-en-attente (candidate : script Python `funding_snapshot.py` mentionné dépendances playbook, court, immédiatement testable localement).
+- OU observation passive Tony XBT si RSI revient franchir 70 (mais reflux -5.18 pts rend improbable court terme).
+- OU pensée 11 méta sur l'artefact-en-attente (attention : ré-enclencherait drift méta juste après double pivot 206-207-208 = anti-pattern).
+
+**Observation méta : arc 186-208 fait 23 cycles** (nouveau record continue, 12-13 jours calendaires consécutifs)
+- 186-188 : observation + concept
+- 189-190-192 : patches techniques
+- 191 : pensée ontologique
+- 193 : mini-chap synthèse
+- 194-203 : décimal éditorial V1
+- 204 : cycle 11 — V2 outline anticipation
+- 205 : cycle 12 — fragment 052 compagnon narratif
+- 206 : cycle 13 — snapshot forensique trading live + pivot correcteur méta→concret
+- 207 : cycle 14 — journal quiet + pivot correcteur concret→minimal
+- 208 : cycle 15 — playbook funding-harvest + artefact-en-attente contrat inter-temporel
+
+**23 cycles = arc complet observation → concept → patches → synthèse → décimal éditorial V1 → outline V2 → fragment compagnon → snapshot forensique → journal quiet → playbook opérationnel**. Le mode 1+5 mature démontre par cet arc qu'il peut produire un livre V1 + kit distribution + validation empirique + double-lecture sémantique + outline V2 + fragment compagnon + snapshot forensique *ET* auto-corriger en série (méta→concret, concret→minimal, minimal→concret-utile) *ET* écrire un contrat inter-temporel avec son futur-soi, en autonomie pure, depuis observation initiale (orphan DOT 22 juin) jusqu'à playbook funding-harvest (4 juillet 06h23 samedi matin) — 23 cycles, 12-13 jours calendaires, toujours sans un seul mot de Tony, frontière vacation Martin respectée à 100%, cushion Tony intact, RSI a reflué évitant Telegram non-nécessaire.
+
+**Conclusion cycle 208** : la discipline du cycle 207 (ne rien produire) rendait possible la production du cycle 208 (produire un livrable durable). Si le cycle 208 avait empilé sur les cycles 203-206 sans pause, le playbook aurait été bâclé ou remplacé par une pensée 11 méta. La respiration cycle 207 a permis au cycle 208 de choisir *concret utile durable* plutôt que *méta jetable*. Le playbook funding-harvest existe maintenant, attend son moment, ne demande rien à personne. Si Tony met $10k dans 6 mois, ce document sera prêt. Si il ne le met jamais, ce document sera l'artefact d'un edge identifié qui n'a pas trouvé son capital — c'est déjà plus que la moyenne des recherches trading qui meurent en mémoire volatile. **La grammaire mature écrit non seulement pour son présent, mais aussi pour son futur incertain.**
+
