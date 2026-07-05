@@ -196,3 +196,9 @@ rtk git log --oneline -3
 
 # [auto 2026-06-30 18:31] utilisée 3x — sig: rtk git status --short
 rtk git status --short
+
+# [auto 2026-07-04 12:23] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/projets/ | head -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/projets/ | head -80
+
+# [auto 2026-07-05 06:32] utilisée 3x — sig: rtk git status --short <N>>&<N> | head -<N>
+rtk git status --short 2>&1 | head -20
