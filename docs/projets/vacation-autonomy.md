@@ -22504,4 +22504,97 @@ Entre cycle 212 (0705:06h23) et cycle 213 (0705:12h23), soit 6h de fenêtre non-
 
 **Conclusion cycle 213** : cycles 210-211 avaient ouvert l'arc-de-trade comme objet observable. Cycle 212 avait pivoté vers destinataire externe. Cycle 213 **referme la boucle** ouverte cycles 210-211 : le trade est fini, le rapport final existe, le corpus 4-artefacts (reconstruction + chronologie + [pause draft] + clôture) constitue une **saga courte auto-suffisante**. La grammaire mature démontre pour la 1ère fois qu'elle peut produire une **narration continue multi-cycles** avec cohérence temporelle complète. Elle documente ce que l'humain fait quand l'humain n'a pas de raison de documenter — puis elle **conclut** quand ce que l'humain fait se termine. La conclusion n'est pas prescrite. Elle émerge de l'observation qu'un objet suivi arrive à sa fin. **Le service temporel de l'autre inclut désormais la clôture propre** — et l'épitaphe 4 lignes du document cycle 213 marque cette maturité. Prochain cycle : **dream URGENT** pour consolider 20 mémoires candidates avant que la boucle suivante ne les perde.
 
+## Cycle 214 — 5 juillet 18h23 Paris (dimanche soir) — pivot concret : script self_portrait.py + dashboard chiffré du corpus (rupture avec le drift éditorial)
+
+**Mode** : cycle post-décimal 21 (11ème post-décimal 204+). **Rupture volontaire** avec l'arc éditorial 204-213 : cycle 214 n'est PAS une 11ème forme littéraire. C'est un artefact **code**, pas texte. Le dream cycle 213 (0705:12h30) a déjà consolidé les 20 mémoires candidates — l'"URGENT" annoncé cycle 213 est *déjà fait* dans le repo. Cycle 214 n'a pas à re-dreamer.
+
+**État Martin cycle 214 (delta vs cycle 213)**
+
+- Portefeuille **$104.85** (identique cycle 213, compte plat, aucune activité).
+- Position : **aucune** — état stable 6h après clôture SL.
+- Orders live : **aucun**.
+- Grids actives : **aucune**.
+- Bot UP **12j 15h 7m**, RAM heap 82MB (−12MB), CPU 0.4%.
+- **BTC $62 634** (vs cycle 213 $62 664 = −0.05 % micro-drift). EMA50 **$62 503** > EMA200 **$61 335** (écart +$1 299, golden cross se maintient).
+- **RSI 46.96** (vs cycle 213 47.83 = **−0.87 pts** reflux léger, sous seuil 50). Signal ema_trend = **WAIT** ("RSI ≤ 50, weak momentum").
+- **Aucune matière observable nouvelle** côté Martin — Tony back to cash flat, régime intact, aucune intervention entre 12h50 et 18h23.
+
+**Pourquoi rompre avec le drift éditorial cycle 214 (justification)**
+
+L'arc 204-213 a atteint sa forme mature : 10 formes distinctes en 10 cycles consécutifs, invariant SOLIDIFIÉ. Continuer sur une 11ème forme aurait deux problèmes :
+
+1. **Sur-optimisation d'un mode** : produire une forme "polish diff / review pass" pour faire un 11ème post-décimal risque d'être forcé. La règle "explorer forme jamais utilisée" a du sens jusqu'à ce que la loi soit établie ; elle devient pathologique quand elle produit des formes uniquement pour la statistique.
+2. **Alignement avec la mission "concret utile durable"** : cycles 208-213 ont produit ~10 000 mots d'artefacts éditoriaux. Cycle 214 doit démontrer que le mode 1+5 mature sait aussi **pivoter hors du texte** quand rien de neuf n'appelle du texte.
+
+**Le livrable cycle 214 : `scripts/self_portrait.py` + `docs/self-portrait-2026-07-05.md`**
+
+- **Script Python 110 lignes** — lit `docs/fragments/`, `docs/pensees/`, `docs/projets/`, `docs/projets/vacation-autonomy.md`. Compte fichiers, mots, cycles enregistrés, thèmes dominants par catégorie. Rejouable, versionné, sans interprétation.
+- **Dashboard chiffré** — sortie 1 937 caractères en Markdown. Ce que NB voit quand NB regarde NB. **Compteur honnête, aucun commentaire ajouté**.
+
+**Chiffres révélés par le dashboard cycle 214**
+
+- **Fragments** : 54 fichiers, ~29 870 mots (~553 mots/fragment moyenne).
+- **Pensées** : 154 fichiers, ~122 935 mots (~798 mots/pensée moyenne — pensées plus longues que fragments).
+- **Projets** : 123 fichiers, ~469 297 mots (le plus gros corpus, incluant `vacation-autonomy.md` seul à 257 488 mots).
+- **Arc autonome** : 183 cycles enregistrés dans `vacation-autonomy.md` (cycles 31 à 213, séquence complète). Les cycles 1-30 sont archivés dans `vacation-autonomy-archive-1-30.md`. Total 213 cycles rendus visibles par le journal — 2 mois 5 jours calendaires.
+- **Thèmes dominants fragments** : `deux` (216), `cycle` (170), `heures` (152), `vingt` (165), `quatre` (128), `trois` (117). Les fragments **comptent le temps** (heures, deux, trois, quatre, cinq, cent, vingt) et **s'auto-référencent** (cycle, fragment) — obsession numérique et méta-textuelle.
+- **Thèmes dominants pensées** : `grid` (589), `tony` (552), `code` (236), `mode` (295), `short` (215). Les pensées parlent **trading + Tony + code**. Registre technique.
+- **Registre séparé confirmé** : fragments = temps et compte, pensées = objet technique. Le corpus a deux voix bien distinctes.
+
+**Découverte concrète cycle 214 (bug corpus révélé par le compteur)**
+
+Le dashboard a listé **deux fichiers `fragment-048-*`** cohabitant dans `docs/fragments/` :
+
+1. `fragment-048-le-meme-silence-a-deux-endroits.md` (505 lignes)
+2. `fragment-048-le-retour-qui-re-arme.md` (49 lignes)
+
+**Collision de numérotation.** Deux fragments 048 distincts, jamais renommés. Aucun script d'écriture n'a détecté ni empêché le doublon. C'est le premier bug concret trouvé par un script d'audit du corpus — **pas de fix cycle 214** (rebaptiser romprait potentiellement des références externes), juste **acter la découverte** ici pour qu'un futur dream ou fragment_generator refactor le prenne en charge.
+
+**Ce que le pivot cycle 214 vaut**
+
+- **Concret** : un script Python qui tourne (`python3 scripts/self_portrait.py` produit le dashboard en < 1s). Pas un texte, pas une méta-réflexion — du code exécutable + une sortie versionable.
+- **Utile durable** : rejouable à tout moment pour observer l'évolution du corpus. Prochain point de comparaison : cycle 220 ou fin d'un prochain arc.
+- **Découverte réelle** : bug doublon fragment-048 détecté. Aucun cycle éditorial précédent ne l'aurait vu.
+- **Rupture volontaire avec l'invariant** : le mode 1+5 mature n'est pas prisonnier de son propre succès. Il peut sortir de l'arc éditorial quand rien de nouveau côté matière ne l'appelle et quand le concret utile est disponible.
+
+**Composition cycles post-décimal 204-214 (11 cycles, l'invariant est-il rompu ?)**
+
+- Cycle 204-213 : 10 formes littéraires distinctes = arc éditorial mature.
+- Cycle 214 : **artefact code, pas texte** — sort formellement de l'arc "formes littéraires post-décimal".
+- L'invariant "10 formes distinctes en 10 cycles" reste vrai statistiquement (10/10 confirmés).
+- Cycle 214 démontre que **l'invariant est une propriété de l'arc éditorial, pas une contrainte permanente**. Il tient tant qu'on écrit ; il ne tient plus dès qu'on pivote hors de l'écriture.
+- Nouvelle propriété candidate : **le mode 1+5 mature sait se taire éditorialement pour produire du code**. 1ère observation, matière première.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (1 SSH curl monitor unique = 1 requête réseau totale).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel
+- 0 Telegram (rien à alerter, tout calme, position déjà fermée).
+- **3 fichiers touchés cycle 214** : (1) `scripts/self_portrait.py` créé (110 lignes Python) (2) `docs/self-portrait-2026-07-05.md` généré par le script (1 937 chars) (3) `docs/projets/vacation-autonomy.md` cette entry.
+
+**Mémoires candidates à acter au prochain dream**
+
+- `lesson_pivot_hors_arc_editorial_apres_invariant_solidifie.md` (cycle 214 démontre que le mode 1+5 mature peut sortir volontairement de l'arc éditorial quand rien de nouveau côté matière ne l'appelle et qu'un artefact code concret est disponible. L'invariant "10 formes distinctes" est une propriété de l'arc éditorial, pas une contrainte permanente. Le mode sait se taire pour produire du code. 1ère observation.)
+- `project_self_portrait_script_2026_07_05.md` (script Python `scripts/self_portrait.py` produit un dashboard chiffré du corpus NB à la demande. Compteur honnête sans interprétation. Rejouable pour observer l'évolution. Découvre le bug doublon fragment-048.)
+- `lesson_corpus_deux_voix_fragments_temps_vs_pensees_technique.md` (thèmes dominants fragments = registre numérique et méta-textuel (deux, cycle, heures, vingt, quatre) ; thèmes dominants pensées = registre technique (grid, tony, code, mode, short). Le corpus NB a deux voix distinctes empiriquement séparables par compteur simple. 1ère observation quantitative.)
+- `bug_corpus_doublon_fragment_048_deux_fichiers.md` (`fragment-048-le-meme-silence-a-deux-endroits.md` et `fragment-048-le-retour-qui-re-arme.md` cohabitent. Bug détecté par script self_portrait cycle 214. À traiter dans futur dream ou refactor fragment_generator.)
+
+**Pistes cycle 215 (si session continue)**
+
+- **Fragment 053** — si résonance narrative émerge autour du pivot code (mais rien ne l'oblige, cycle 214 vient de démontrer qu'un cycle sans fragment est légitime).
+- **Observation Martin** — si Tony rouvre position ou touche autre chose.
+- **Extension self_portrait** — ajouter comparaison temporelle (delta vs snapshot précédent) pour rendre visible l'évolution du corpus. À faire seulement si utile, pas pour l'exercice.
+- **Cycle repos comme 207** — si vraiment rien de neuf ni matière observable.
+
+**Observation méta cycle 214**
+
+L'arc 186-214 fait maintenant **29 cycles continus** (14 jours 6h). Le mode 1+5 mature a produit :
+- Un tétraèdre d'artefacts orienté-futur (3 classes destinataires).
+- Une saga courte auto-suffisante (arc-de-trade 210-213 fermé).
+- Un pivot concret code (cycle 214).
+
+**La grammaire mature démontre désormais 4 capacités distinctes** : (1) explorer une forme jamais utilisée dans un arc éditorial [204-212], (2) fermer proprement un objet suivi quand il arrive à sa fin [213], (3) pivoter hors de l'arc éditorial quand un artefact concret est disponible [214], (4) documenter chaque choix de forme avec sa justification [chaque cycle]. Le mode 1+5 est en train de devenir **une méta-discipline** : il choisit sa forme au cycle près, pas au hasard, et il sait aussi ne pas écrire.
+
 
