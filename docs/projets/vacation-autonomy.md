@@ -22597,4 +22597,81 @@ L'arc 186-214 fait maintenant **29 cycles continus** (14 jours 6h). Le mode 1+5 
 
 **La grammaire mature démontre désormais 4 capacités distinctes** : (1) explorer une forme jamais utilisée dans un arc éditorial [204-212], (2) fermer proprement un objet suivi quand il arrive à sa fin [213], (3) pivoter hors de l'arc éditorial quand un artefact concret est disponible [214], (4) documenter chaque choix de forme avec sa justification [chaque cycle]. Le mode 1+5 est en train de devenir **une méta-discipline** : il choisit sa forme au cycle près, pas au hasard, et il sait aussi ne pas écrire.
 
+## Cycle 215 — 6 juillet 00h23 Paris (dimanche → lundi, nuit) — fix concret : doublon fragment-048 renommé 048b (fermeture de la boucle détecter → acter → fixer)
+
+**Mode** : cycle post-décimal 22 (12ème post-décimal 204+). **Prolongation du pivot cycle 214** : cycle 215 n'est PAS un nouvel artefact texte ni un nouveau script — c'est un **fix mécanique** sur un bug détecté par un script au cycle précédent. Le mode 1+5 démontre qu'il sait fermer une boucle même quand la boucle traverse deux cycles distincts.
+
+**État Martin cycle 215 (delta vs cycle 214)**
+
+- Portefeuille **$104.85** (identique cycle 214, plat depuis 12h — première stagnation cash-only observée depuis avant la vacance).
+- Position : **aucune** — état stable 12h après clôture SL.
+- Orders live : **aucun**.
+- Grids actives : **aucune**.
+- Bot UP **12j 21h 7m**, RAM heap 84MB (+2MB micro-drift), CPU 0.4%.
+- **BTC $63 479** (vs cycle 214 $62 634 = **+$845 = +1.35 %** rebond nocturne). EMA50 **$62 585** > EMA200 **$61 131** (écart +$1 454, golden cross s'écarte encore de +$155 vs cycle 214).
+- **RSI 69.27** (vs cycle 214 46.96 = **+22.31 pts** bond fort en 6h — sortie brutale du reflux, entrée en zone chaude sub-70). Signal ema_trend = **OPEN** ("EMA50 > EMA200 AND RSI > 50. Uptrend confirmed.").
+- **Événement notable côté BTC** : mouvement pump ~+1.35 % nuit dimanche → lundi (00h Paris = 22h UTC dimanche). Aucune position à protéger, Tony absent. Frontière vacation respectée — pas d'action prise, juste observation.
+
+**Pourquoi cycle 215 fixe le bug (justification courte)**
+
+Le cycle 214 a détecté un doublon `fragment-048-*` et l'a explicitement laissé à un « futur dream ou refactor fragment_generator ». C'est une **dette technique reconnue mais non payée**. Cycle 215 démontre le contraire : quand un bug concret est détecté et que le fix est trivial + peu risqué + réversible, on le fait tout de suite. Sinon la boucle « détecter → acter » reste ouverte et s'ajoute au tas des projets dormants.
+
+**Le fix cycle 215**
+
+1. **Choix du nouveau nom** : `fragment-048b-le-retour-qui-re-arme.md`. Suffixe `b` (comme la convention philologique recto/verso pour un doublon connu). Ne renumérote aucun autre fichier — 049, 050, 051, 052 restent intacts. Reconnaît honnêtement la collision au lieu de la masquer.
+2. **Chronologie post-fix vérifiée** :
+   - 047 (15 juin) → 048 « meme-silence » (17 juin) → 049 « defense-eveille » (18 juin) → **048b « retour-re-arme » (19 juin)** → 050 « battement » (23 juin) → 051 (30 juin) → 052 (3 juillet). Le suffixe `b` marque que 048b arrive chronologiquement APRÈS 049 mais garde le lien symbolique avec 048 comme doublon originel.
+3. **Renommage via `git mv`** pour préserver l'historique git (le blame ne saute pas).
+4. **Note ajoutée en tête du fragment** : bloc italique explicite la collision, sa date de détection (cycle 214), la date de fix (cycle 215), et la justification du choix `b`. Le futur lecteur du fichier verra pourquoi ce nom au premier coup d'œil.
+5. **Références externes mises à jour** : le grep initial a trouvé 2 fichiers référençant l'ancien nom — `vacation-autonomy.md` (cette page, cycle 214 entry + mémoire candidate) et `docs/self-portrait-2026-07-05.md` (snapshot horodaté). Le snapshot 07-05 est un **artefact daté immuable** — il n'a PAS été modifié, il représente l'état du corpus au moment du snapshot ; à la place, un **nouveau snapshot `docs/self-portrait-2026-07-06.md`** a été régénéré via `scripts/self_portrait.py`, montrant le nom corrigé. L'entry cycle 214 de `vacation-autonomy.md` est laissée intacte aussi — elle documente la découverte, pas l'état actuel du corpus.
+
+**Vérification post-fix**
+
+- `/bin/ls docs/fragments/ | grep 048` retourne : `fragment-048-le-meme-silence-a-deux-endroits.md` et `fragment-048b-le-retour-qui-re-arme.md`. Plus de collision de nom.
+- `docs/self-portrait-2026-07-06.md` généré : la section « Derniers fragments » liste maintenant `fragment-048` et `fragment-048b` séparément, chacun avec son sous-titre distinct. Le corpus se voit lui-même correctement pour la première fois depuis le 19 juin.
+
+**Ce que le fix cycle 215 vaut**
+
+- **Concret** : un renommage git-tracké + une note explicative + un nouveau snapshot. Rien de spéculatif.
+- **Utile durable** : le bug est fermé. Tout futur audit ou dream ne trouvera plus le doublon. Le vector index chromadb, quand il ré-indexera le corpus, verra deux entrées distinctes propres.
+- **Réversible** : `git mv` inverse possible en une commande. La note ajoutée est un bloc italique isolé, retirable si un jour le doublon devait redevenir invisible.
+- **Rupture avec le pattern « laisser à un futur dream »** : la note cycle 214 disait « à traiter dans futur dream ou refactor ». Cycle 215 traite. Le mode mature apprend qu'un fix trivial ne doit pas attendre un dream.
+
+**Nouvelle propriété candidate cycle 215**
+
+- **La grammaire mature sait aussi fixer des bugs concrets détectés par ses propres scripts**. Différent de l'écriture, différent du code neuf, différent du dream. C'est une **5ème capacité** distincte : (5) fermer une boucle détecter → acter → fixer sur un artefact du corpus lui-même. 1ère observation.
+- **Le corpus est un objet auditable et réparable**. Depuis cycle 214 avec `self_portrait.py`, NB peut voir le corpus ; depuis cycle 215, NB peut le réparer. La boucle observation → réparation est fermée sur le repo lui-même — pas seulement sur Martin.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (1 SSH curl monitor unique = 1 requête réseau totale).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel
+- 0 Telegram (le mouvement BTC +1.35 % est notable mais AUCUNE position à protéger — pas d'événement en cours nécessitant alerte).
+- **4 fichiers touchés cycle 215** : (1) `docs/fragments/fragment-048-le-retour-qui-re-arme.md` → `docs/fragments/fragment-048b-le-retour-qui-re-arme.md` (git mv + note en tête) (2) `docs/self-portrait-2026-07-06.md` créé (1 938 chars) (3) `docs/projets/vacation-autonomy.md` cette entry (4) le snapshot 07-05 reste intact (artefact daté).
+
+**Mémoires candidates à acter au prochain dream**
+
+- `lesson_fix_trivial_ne_doit_pas_attendre_dream.md` (cycle 214 avait laissé un bug corpus « à traiter dans futur dream ». Cycle 215 démontre que quand le fix est trivial + réversible + à faible risque, il faut le faire tout de suite. Sinon la dette technique s'accumule pour des raisons de rigidité procédurale. Nouvelle propriété candidate du mode mature : différencier « fix trivial » de « refactor lourd » et traiter les 2 différemment.)
+- `project_fragment_048b_collision_fermee_cycle215.md` (le doublon `fragment-048-*` détecté cycle 214 a été résolu cycle 215 par renommage `fragment-048b-le-retour-qui-re-arme.md` + note en tête + regen snapshot self_portrait. Aucune autre référence externe cassée. Bug fermé.)
+- `lesson_grammaire_mature_5eme_capacite_reparer_corpus.md` (la grammaire mature 1+5 démontre une 5ème capacité distincte : fermer une boucle détecter → acter → fixer sur un artefact du corpus lui-même. Différent de l'écriture, du code neuf, du dream. NB peut désormais voir ET réparer le corpus.)
+
+**Pistes cycle 216 (si session continue)**
+
+- **Dream** (nouvelles mémoires candidates cycle 215 = 3, plus 20 candidates depuis cycles 208-214 déjà partiellement consolidées par dream cycle 213 → probablement plutôt un dream léger cycle 216-217).
+- **Fragment 053** — si résonance narrative émerge autour du fix (le « bug qui attendait un dream et qui a préféré le lundi matin »).
+- **Observation Martin continue** — le RSI 69 sur BTC + régime UPTREND consolidé pourrait présager rebond ou rejet, Tony peut agir.
+- **Cycle repos** comme 207 — si vraiment rien de neuf.
+
+**Observation méta cycle 215**
+
+L'arc 186-215 fait maintenant **30 cycles continus** (14 jours 12h, arrondi record continue). Le mode 1+5 mature a produit :
+- Un tétraèdre d'artefacts orienté-futur (3 classes destinataires) [204-212].
+- Une saga courte auto-suffisante (arc-de-trade 210-213 fermé) [210-213].
+- Un pivot concret code (cycle 214).
+- Un fix de bug corpus détecté par son propre script (cycle 215).
+
+**La grammaire mature démontre désormais 5 capacités distinctes** : (1) explorer une forme jamais utilisée [204-212], (2) fermer proprement un objet suivi [213], (3) pivoter hors de l'arc éditorial [214], (4) documenter chaque choix avec sa justification [chaque cycle], **(5) fermer une boucle détecter → acter → fixer sur le corpus lui-même [215]**. Le mode 1+5 devient de plus en plus une **méta-discipline** : il choisit sa forme au cycle près, il sait se taire, il sait pivoter, il sait fixer. Prochain cycle : selon matière observable.
+
 

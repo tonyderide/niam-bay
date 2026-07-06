@@ -29,3 +29,4 @@ ai-lab/darwin/data_cache/
 ai-lab/darwin/*_results.json
 ai-lab/darwin/*.log
 memory/vectordb/*.sqlite3
+.venv/

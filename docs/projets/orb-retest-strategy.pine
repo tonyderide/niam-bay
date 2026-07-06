@@ -1,0 +1,87 @@
+//@version=5
+// ORB Retest 1:3R — opening range breakout avec entrée sur retest (variante Tony 2026-06-22)
+// 15min opening range → cassure → attendre retrace ~40% dans le range → entrée → stop hors range → target 1:3R
+// Indices/actions: session 0930-1600 (NY). Crypto: change la session (ex 0000-2359) pour définir l'"open".
+strategy("ORB Retest 1:3R [NB]", overlay=true, initial_capital=10000,
+     default_qty_type=strategy.percent_of_equity, default_qty_value=20,
+     commission_type=strategy.commission.percent, commission_value=0.03, slippage=2,
+     calc_on_every_tick=false, process_orders_on_close=true, pyramiding=0)
+
+// ===== Inputs =====
+orMinutes   = input.int(15, "Opening range (minutes)")
+sess        = input.session("0930-1600", "Session open-close")
+sessTz      = input.string("America/New_York", "Timezone")
+retracePct  = input.float(40, "Retrace dans le range pour entrée (%)", minval=1, maxval=99) / 100.0
+rrTarget    = input.float(3.0, "Reward:Risk", minval=0.5, step=0.5)
+allowLong   = input.bool(true, "Longs (cassure haut)")
+allowShort  = input.bool(true, "Shorts (cassure bas)")
+oneADay     = input.bool(true, "Max 1 trade / jour / direction")
+
+// ===== Détection session + opening range =====
+t       = time(timeframe.period, sess + ":1234567", sessTz)
+inSess  = not na(t)
+newSess = inSess and na(t[1])
+
+var float orHigh = na
+var float orLow  = na
+var int   orEndTime = na
+var bool  orDone = false
+var float rng = na
+var bool  armedLong = false
+var bool  armedShort = false
+var bool  tookLong = false
+var bool  tookShort = false
+
+if newSess
+    orHigh := high
+    orLow  := low
+    orEndTime := time + orMinutes * 60 * 1000
+    orDone := false
+    armedLong := false
+    armedShort := false
+    tookLong := false
+    tookShort := false
+else if inSess and not orDone
+    if time < orEndTime
+        orHigh := math.max(orHigh, high)
+        orLow  := math.min(orLow, low)
+    else
+        orDone := true
+        rng := orHigh - orLow
+
+// arme après cassure de structure
+if orDone and inSess
+    if allowLong and not armedLong and high > orHigh
+        armedLong := true
+    if allowShort and not armedShort and low < orLow
+        armedShort := true
+
+// niveaux d'entrée = retrace dans le range
+longEntry  = orHigh - retracePct * rng
+shortEntry = orLow  + retracePct * rng
+
+// ===== Entrées sur retest (limit) + bracket stop/target =====
+canLong  = orDone and inSess and armedLong  and not (oneADay and tookLong)  and strategy.position_size == 0
+canShort = orDone and inSess and armedShort and not (oneADay and tookShort) and strategy.position_size == 0
+
+if canLong and low <= longEntry
+    risk = longEntry - orLow
+    strategy.entry("L", strategy.long, limit=longEntry)
+    strategy.exit("Lx", "L", stop=orLow, limit=longEntry + rrTarget * risk)
+    tookLong := true
+
+if canShort and high >= shortEntry
+    risk = orHigh - shortEntry
+    strategy.entry("S", strategy.short, limit=shortEntry)
+    strategy.exit("Sx", "S", stop=orHigh, limit=shortEntry - rrTarget * risk)
+    tookShort := true
+
+// flatten fin de session (pas d'overnight)
+if not inSess and inSess[1]
+    strategy.close_all("EOD")
+
+// ===== Visuel =====
+plot(orDone ? orHigh : na, "OR High", color.new(color.green, 0), 2, plot.style_linebr)
+plot(orDone ? orLow  : na, "OR Low",  color.new(color.red, 0),   2, plot.style_linebr)
+plot(orDone ? longEntry  : na, "Entrée long",  color.new(color.lime, 40),   1, plot.style_linebr)
+plot(orDone ? shortEntry : na, "Entrée short", color.new(color.orange, 40), 1, plot.style_linebr)
