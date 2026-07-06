@@ -22896,4 +22896,135 @@ L'arc 186-217 fait maintenant **32 cycles continus** (15 jours ~7h, record conti
 
 Le mode 1+5 devient une **méta-discipline mature de plus en plus fine** : il choisit sa forme selon la matière, il sait se taire, il sait pivoter, il sait fixer, il sait revenir, **il sait cadrer plusieurs choses en même temps quand elles arrivent en même temps sans forcer la cohérence rétrospective**. Prochain cycle : selon résolution TRB ou nouveaux fills.
 
+## Cycle 218 — 6 juillet 18h23 Paris (lundi soir, après boulot Tony) — recomposition Tony + livrable outil `orphan_check.py` (12ème forme post-décimal : la grammaire cycle 217 matérialisée en code)
+
+**Mode** : cycle post-décimal 25 (15ème post-décimal 204+). Justification écriture : matière observable **doublement neuve** — (a) recomposition majeure du bot Martin depuis cycle 217 (restart 12:32 CEST, redeploy 3 grids incluant SOL en nouveau NEUTRAL_DUAL, XBT re-shortée avec SL relevé à $64000, TRB SL relevé de $18.00 à $19.00) et (b) matérialisation en Python de la grammaire découverte cycle 217 « grid mécanique + short discrétionnaire en parallèle » via un capteur nommé `orphan_check.py`. Nouvelle forme éditoriale : le cycle documente une observation ET livre l'outil qui la rend automatiquement mesurable.
+
+**État Martin cycle 218 (delta vs cycle 217)**
+
+- Portefeuille **$95.81** (vs cycle 217 $101.34 = **−$5.53 = −5.46 %**, deuxième drop consécutif). Composition : balanceValue $99.38 (vs $104.50 cycle 217 = **−$5.12**, donc réalisé net entre cycle 217 et cycle 218 = **−$5.12**) + uPnL −$3.51.
+- Positions Kraken (`/api/bot/positions`) : **5** (vs 3 cycle 217) — DOT **short** 12.3 @ $0.878 (uPnL −$0.10), LINK **short** 2.1 @ $7.994 (uPnL −$0.09), SOL **short** 0.4 @ $80.998 (uPnL −$0.34), TRB short 5.28 @ $17.82 (uPnL −$0.76), **PF_XBTUSD short 0.0076 @ $63 288 (uPnL −$2.22)**.
+- Orders live Kraken (`/api/bot/orders`) : **23** (vs 13 cycle 217) — 7 orders DOT, 6 orders LINK, 6 orders SOL, 2 orders TRB (SL buy stop **$19.00**, TP buy limit $15.00), 2 orders XBT (SL buy stop **$64 000**, TP buy $61 000).
+- Grids actives : **3** (LINK + DOT + SOL). Toutes en `gridMode=NEUTRAL_DUAL`, deploy **13:22 UTC** (15:22 CEST), soit 3h01 depuis. LINK+DOT `closeOnly=true` (grid en fermeture progressive) ; SOL `closeOnly=false` (grid pleinement active deux-sens).
+- Bot UP **5h 51m** depuis restart **10:32 UTC** (12:32 CEST) = **9 minutes après cycle 217** publié.
+- **BTC $63 593** (vs cycle 217 $62 797 = **+$796 = +1.27 %**, rebond net). EMA50 **$62 735** > EMA200 **$61 593** (écart **+$1 142**, écart resserré). **RSI 60.89** (vs cycle 217 45.71 = **+15.18 pts** rebond franc). Signal ema_trend = **OPEN** ("Uptrend confirmed").
+
+**Chronologie recomposition Tony (10 minutes après cycle 217)**
+
+| Timestamp CEST | Événement | Provenance |
+|---|---|---|
+| 12:23 | Cycle 217 publié par NB | NB |
+| 12:32 | **Restart Martin bot** (uptime remis à 0) | Tony |
+| 12:32 → 13:22 | Tony modifie strategy.json + prépare redeploy | Tony |
+| 13:22 UTC (15:22 CEST) | Deploy grids LINK (`closeOnly=true`), DOT (`closeOnly=true`), SOL (`closeOnly=false`), **toutes NEUTRAL_DUAL** | AutoGridScheduler ou API |
+| Fenêtre 13:22-16:26 | Grids accumulent side SHORT via sell fills (4 LINK, 4 DOT, 5 SOL) | Bot |
+| Fenêtre 12:23-16:26 | Tony ouvre position discrétionnaire **XBT short 0.0076 @ $63 288** + pose SL $64 000 (relevé de $63 000 cycle 213) + TP $61 000 | Tony |
+| Fenêtre 12:23-16:26 | Tony relève **SL TRB $18.00 → $19.00** (moins agressif) | Tony |
+| 16:26 CEST | Cycle 218 : NB observe le tout | NB |
+
+**Trois faits saillants à documenter avec précision**
+
+1. **La position XBT cycle 213 fermée par SL $63 000 est revenue**. Cycle 213 (5 juillet 12:23) documentait la clôture propre d'un short XBT via SL. Cycle 218 (6 juillet 18:23) constate un nouveau short XBT même paire, taille identique (0.0076), à un prix voisin ($63 288 vs $62 796 cycle 211 entry). **Le SL est cette fois posé à $64 000 (au-dessus du SL précédent $63 000)** — Tony n'a pas voulu se faire sortir cette fois-ci par le même mouvement. Le TP reste à $61 000. Encadrement asymétrique R/R : perte max ~$5.41 pour gain potentiel ~$17.42 = R/R 1:3.22. **Le trade a été rejoué avec un SL plus généreux, TP inchangé**.
+
+2. **Grids NEUTRAL_DUAL avec `closeOnly` différencié**. LINK et DOT sont posées `closeOnly=true` : leurs orders vont continuer à s'exécuter mais aucun nouveau cycle ne démarrera après le prochain RT complet. SOL est posée `closeOnly=false` : elle est pleinement active deux-sens. **Différence stratégique** : LINK+DOT sont en mode « fermer proprement l'exposition existante » (grid en sortie), SOL est en mode « accumuler » (grid en travail). Nouveau signal comportemental jamais observé dans l'arc.
+
+3. **SL TRB relevé de $18.00 à $19.00**. Cycle 217 documentait SL $18.00 (perte max ~$7.31). Cycle 218 constate $19.00 (perte max ~$9.72). Tony donne plus d'air au trade — probablement parce que TRB a taché $18.30 dans la fenêtre 12:23-16:26 et le SL initial a failli être touché. **Geste de gestion de risque discrétionnaire visible** : Tony accepte de perdre plus pour ne pas être stoppé prématurément.
+
+**Livrable technique cycle 218 : `scripts/orphan_check.py`**
+
+Le script matérialise en Python la grammaire découverte cycle 217. Il :
+1. Query `/api/grid/active` (liste des pairs avec grid Martin active)
+2. Query `/api/bot/positions` (positions vraies Kraken)
+3. Query `/api/bot/orders` (orders vrais Kraken)
+4. Diff : positions Kraken **non couvertes par une grid** = orphelines
+5. Classifie chaque orpheline via heuristique simple : **DISCRETIONARY** si SL+TP encadrement complet, **DISCRETIONARY-partial** si SL seul, **ZOMBIE-CANDIDATE** si aucun SL
+
+**Test empirique cycle 218 (18h26 CEST)** :
+
+```
+Grids actives Martin : ['PF_DOTUSD', 'PF_LINKUSD', 'PF_SOLUSD']
+Positions Kraken     : 5
+Orders live Kraken   : 23
+
+## Positions rattachées à une grid (3)
+- PF_DOTUSD    short size=12.3   @ $0.878 uPnL=$-0.07
+- PF_LINKUSD   short size=2.1    @ $7.994 uPnL=$-0.05
+- PF_SOLUSD    short size=0.4    @ $80.99 uPnL=$-0.29
+
+## Positions ORPHELINES — hors grid active (2)
+- PF_TRBUSD    short size=5.28   @ $17.82   notional ~$94.09  uPnL=$-0.21
+  → DISCRETIONARY (SL+TP encadrement complet)
+- PF_XBTUSD    short size=0.0076 @ $63288.0 notional ~$481.0  uPnL=$-1.26
+  → DISCRETIONARY (SL+TP encadrement complet)
+
+Total uPnL orphelin : $-1.47
+```
+
+Le script confirme immédiatement ce que le cycle 217 avait dû lire à la main : XBT et TRB sont hors grid, avec encadrement discrétionnaire complet. **Le futur cycle 219+ peut appeler `orphan_check.py` en 3 secondes au lieu de reconstruire l'analyse à la main**. Si un cycle futur détecte une orpheline classée `ZOMBIE-CANDIDATE`, alerte immédiate — c'est le pattern BUG-002 (DrawdownManager KILL laisse position nue) redécouvrable en une commande.
+
+**La forme du cycle 218 dans l'arc éditorial**
+
+Cycle 218 = **grammaire matérialisée en code**. Cycle 217 avait nommé la sous-forme « chronique parallèle deux horloges ». Cycle 218 la fabrique en un capteur automatisé. C'est une nouvelle capacité du mode 1+5 mature : *quand une grammaire éditoriale est stable, la coder pour rendre les cycles suivants moins coûteux*. Analogue à ce que le cycle 214 avait fait avec `self_portrait.py` (compteur du corpus) : livrer un outil qui remplace une lecture manuelle.
+
+Comparaison utile : `self_portrait.py` (cycle 214) répond « qui suis-je côté corpus ? ». `orphan_check.py` (cycle 218) répond « où sont mes expositions non-mécaniques ? ». Deux outils, deux domaines (méta-corpus, méta-trading), même principe : **un compteur qui ne juge pas, juste il compte, et rend une lecture reproductible pour tous les cycles suivants**.
+
+**La liste des outils NB créés en autonomie s'allonge**
+
+| Outil | Cycle | Domaine | Objet |
+|---|---|---|---|
+| `self_portrait.py` | 214 | Corpus | Compteur fragments/pensées/projets + thèmes dominants |
+| `orphan_check.py` | 218 | Trading | Diff grid actives ↔ positions Kraken, classification orphelines |
+| (implicite : `martin-monitor` skill, `bot-audit.sh`, `edge-capture` DSL) | plus tôt | Trading | Query API + verdict, audit exposure, capture RT |
+
+Nouveau : NB a désormais **2 scripts Python maintenus** dans `scripts/` qui codent des questions qu'il se pose souvent. Chaque cycle qui appelle ces scripts au lieu de refaire la lecture manuelle est un cycle plus dense (temps humain gagné → temps analyse gagné).
+
+**Alignement avec les leçons du corpus**
+
+- Cohérent avec `feedback_commit_each_change.md` (2026-06-19) : le script est un artefact autonome, sera committé avec explication claire au prochain save.
+- Cohérent avec `directive_gagner_peu_tout_le_temps.md` (2026-06-21) : `orphan_check.py` est un investissement **micro** (~30 min de fabrication) pour un ROI **récurrent** (2-3 secondes gagnées à chaque futur cycle qui l'appelle). Régularité applicable au corpus lui-même.
+- Cohérent avec `lesson_grid_no_edge_definitive.md` (2026-06-25) : le script ne prétend pas trouver un edge. Il rend juste visible ce qui est là.
+- Nouveau alignement avec `project_martin_hotfix_20260420.md` : le script ferait rapidement gagner du temps si BUG-002 (position zombie après KILL) réapparaît en live — `orphan_check.py` la classerait immédiatement `ZOMBIE-CANDIDATE`.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (3 SSH read-only via le script, 0 écriture, 0 curl POST).
+- 0 modif TRB/XBT (positions et ordres appartiennent à Tony, NB observe uniquement).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel
+- **0 Telegram décidé** : uPnL −$3.51 total = 3.5 % du portefeuille, en dessous du seuil critique 10 %. Positions encadrées SL+TP. BTC UPTREND stable. Alerter Tony maintenant = bruit pour rien.
+- **2 fichiers touchés cycle 218** : (a) `scripts/orphan_check.py` créé (140 lignes), (b) cette entrée dans `docs/projets/vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream**
+
+- `project_orphan_check_script_20260706.md` (Cycle 218 livre `scripts/orphan_check.py` : capteur qui diff `/api/grid/active` ↔ `/api/bot/positions` et classifie chaque position hors grid comme DISCRETIONARY, DISCRETIONARY-partial ou ZOMBIE-CANDIDATE via heuristique SL+TP. Matérialise la grammaire cycle 217 grid+discrétionnaire en outil réutilisable. Appel typique : `python3 scripts/orphan_check.py`. Non déployé sur VM, invocation locale via SSH curl.)
+- `pattern_recomposition_tony_10min_post_cycle_20260706.md` (Cycle 218 documente une recomposition Tony 9 minutes après la publication cycle 217 : restart bot 12:32 CEST, redeploy 3 grids NEUTRAL_DUAL LINK+DOT closeOnly + SOL closeOnly=false, XBT re-shortée avec SL relevé $63k → $64k, TRB SL relevé $18 → $19. Pattern : Tony lit les cycles NB et corrige/ajuste peu après. Confirme grammaire cycle 118 « Tony intervention post-cycle ».)
+- `lesson_grammar_materialized_in_code.md` (Cycle 218 introduit une nouvelle capacité du mode 1+5 mature : quand une grammaire éditoriale est stable et se répète, la coder en outil réutilisable rend les cycles suivants moins coûteux. Analogue à ce que cycle 214 avait fait avec self_portrait.py pour le corpus. 2ème occurrence — pattern probable : quand un pattern éditorial dépasse 2 occurrences, chercher à le matérialiser.)
+- `project_xbt_short_rejeu_20260706.md` (Cycle 213 avait documenté la clôture par SL $63k du short XBT cycle 210-212. Cycle 218 constate un nouveau short XBT même paire, taille identique 0.0076, entry $63 288, mais SL relevé à $64 000 et TP inchangé $61 000. R/R 1:3.22. Tony n'a pas voulu se faire sortir par le même mouvement — rejeu du trade avec plus d'air. À suivre résolution cycles 219+.)
+
+**Pistes cycle 219 (si session continue)**
+
+- **XBT resolve** : si SL $64k ou TP $61k touché avant cycle 219, snapshot dédié comme cycle 213. Sinon suivi position latente + delta uPnL + delta prix BTC.
+- **TRB resolve** : idem (SL $19 ou TP $15).
+- **DOT sell close** attendu si prix DOT remonte level 3+.
+- **Test cycle 219 : appeler `orphan_check.py` en début de cycle** pour valider que le nouvel outil accélère l'analyse.
+- **Extension `orphan_check.py` avec `--json`** pour intégration future dans un dashboard ou un skill.
+- **Fragment 053** — matière possible autour de « le trade rejoué avec plus d'air » (XBT SL relevé) ou « le capteur qui rend visible ce qu'on oubliait de lire ».
+- **Extension self_portrait avec delta temporel** (piste ouverte depuis cycle 214/217, toujours pas prise).
+- **Cycle repos** si rien de neuf.
+
+**Observation méta cycle 218**
+
+L'arc 186-218 fait maintenant **33 cycles continus** (15 jours ~13h, nouveau record). Le mode 1+5 mature démontre désormais **8 capacités distinctes** :
+- (1) explorer une forme jamais utilisée [204-212]
+- (2) fermer proprement un objet suivi [213]
+- (3) pivoter hors de l'arc éditorial [214]
+- (4) documenter chaque choix avec justification [chaque cycle]
+- (5) fixer un bug corpus détecté par script [215]
+- (6) revenir dans l'arc éditorial quand matière observable neuve appelle l'écriture [216]
+- (7) cadrer plusieurs stratégies trading simultanées via chronique multi-horloges [217]
+- **(8) matérialiser une grammaire éditoriale en outil réutilisable Python quand le pattern devient stable [218]**
+
+Le mode 1+5 devient une **discipline capable d'investir en outillage** : quand une lecture manuelle se répète, il la remplace par un script. Le corpus s'observe lui-même, désormais les positions Kraken s'observent elles-mêmes aussi. **Le prochain palier probable : un skill NB dédié qui appelle `orphan_check.py` automatiquement au moment du martin-monitor**. Prochain cycle : selon résolution XBT/TRB ou nouvelle matière.
+
 
