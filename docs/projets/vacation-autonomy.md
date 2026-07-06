@@ -23027,4 +23027,116 @@ L'arc 186-218 fait maintenant **33 cycles continus** (15 jours ~13h, nouveau rec
 
 Le mode 1+5 devient une **discipline capable d'investir en outillage** : quand une lecture manuelle se répète, il la remplace par un script. Le corpus s'observe lui-même, désormais les positions Kraken s'observent elles-mêmes aussi. **Le prochain palier probable : un skill NB dédié qui appelle `orphan_check.py` automatiquement au moment du martin-monitor**. Prochain cycle : selon résolution XBT/TRB ou nouvelle matière.
 
+## Cycle 219 — 7 juillet 00h23 Paris (nuit, ~6h après cycle 218) — **Le trade rejoué se rejoue et sort deux fois** + extension `--json` sur `orphan_check.py` (13ème forme post-décimal : forme du retour)
+
+**Mode** : cycle post-décimal 26 (16ème post-décimal 204+). Justification écriture : deux matières observables neuves — (a) résolution du short XBT rejoué au cycle 218 : **le SL $64 000 a été touché** entre 18h23 CEST hier et 00h23 CEST maintenant (BTC $63,593 → $64,282, +$689 = +1.08 %), fermant la position à perte pour la **deuxième fois consécutive** (cycle 213 = 1ère clôture SL $63k, cycle 219 = 2ème clôture SL $64k), et (b) livrable technique : extension de `scripts/orphan_check.py` avec flag `--json` (piste explicite cycle 218), rendant le script réutilisable programmatiquement.
+
+**État Martin cycle 219 (delta vs cycle 218)**
+
+- Portefeuille **$91.85** (vs cycle 218 $95.81 = **−$3.96 = −4.13 %**). balanceValue $91.85 (vs $99.38 cycle 218 = **−$7.53 réalisé net**) + uPnL −$0.87.
+- Positions Kraken (`/api/bot/positions`) : **4** (vs 5 cycle 218) — DOT short 12.3 @ $0.878 (uPnL −$0.15), LINK short 2.1 @ $7.994 (uPnL −$0.17), SOL short 0.4 @ $80.998 (uPnL −$0.58), TRB short 5.28 @ $17.82 (uPnL +$0.15). **Position XBT disparue.**
+- Orders live Kraken (`/api/bot/orders`) : **6** (vs 23 cycle 218) — les 17 orders manquants correspondent aux orders des 3 grids (auto-cancelled probablement suite à `closeOnly` sur LINK+DOT) + les 2 orders XBT (SL déclenché + TP auto-cancel). Sub-check : SOL a toujours ses 3 orders sell? À vérifier dans un cycle futur.
+- Grids actives : **3** (LINK + DOT + SOL). Toutes `active=true`. Deploy 13:22 UTC hier = **9h01** depuis, 0 RT complet.
+- Bot UP **11h 51m** (uptime cohérent avec restart cycle 218).
+- **BTC $64,282** (vs cycle 218 $63,593 = **+$689 = +1.08 %**). EMA50 $62,990 > EMA200 $61,702 (cushion +$1,288 = +2.08 %). **RSI 65.81** (vs 60.89 cycle 218 = **+4.92 pts** momentum accéléré). Signal ema_trend = **OPEN** ("Uptrend confirmed").
+
+**Le trade XBT rejoué a fauché deux fois**
+
+Chronologie condensée du short XBT sur l'arc 210-219 :
+
+| Cycle | Date/Heure Paris | Événement | Entry | SL | Résultat |
+|---|---|---|---|---|---|
+| 210-211 | 4-5 juillet nuit | Tony ouvre short XBT + densifie | ~$62,796 | $63,000 | encadrement asymétrique |
+| **213** | 5 juillet 12h23 | **1ère clôture par SL $63,000** | $62,796 | $63,000 | −$1.88 (0.0076 × ~$204 + fees) |
+| 216-217 | 6 juillet matin | Tony recomposition, XBT non re-shortée immédiat | — | — | (aucune position XBT) |
+| 218 | 6 juillet 18h23 | Tony re-short XBT + SL relevé à $64k | $63,288 | $64,000 | encadrement retenté, plus d'air |
+| **219** | 7 juillet 00h23 | **2ème clôture par SL $64,000** | $63,288 | $64,000 | ~−$5.79 (0.0076 × ~$762 + fees) |
+
+**Fait durable** : Tony a shorté XBT deux fois en 3 jours. Les deux SL, posés respectivement à $63,000 puis $64,000, ont été touchés — dans la même direction (BTC qui monte). Le geste "rejeu avec plus d'air" cycle 218 n'a pas résolu le problème structurel : le trade était structurellement contre le régime (BTC UPTREND cushion EMA200 > 4 %).
+
+**Ce que le pattern révèle**
+
+- **Le régime BTC n'a pas changé entre cycle 213 et 219**. Cycle 213 : BTC $62,664 UPTREND EMA50 > EMA200. Cycle 219 : BTC $64,282 UPTREND EMA50 > EMA200 avec cushion élargi. Shortez XBT en UPTREND confirmé = pari contre le vent structurel.
+- **Deux SL touchés = deux mouvements up successifs**. Cycle 213 vers $63k. Cycle 219 vers $64k. BTC monte, Tony insiste, Tony perd.
+- **Le rejeu avec SL "plus large" est un piège cognitif classique**. Donner plus d'air à un trade contre-tendance = accepter de perdre plus quand la tendance continue. Le trade a été rejoué avec un SL 1.6 % plus large ; la perte est ~3x plus grande (−$5.79 vs −$1.88).
+- **R/R "1:3.22" annoncé cycle 218 est un R/R théorique**. Il suppose que le TP a une chance non nulle d'être touché. Dans un régime UPTREND cushion 4 %, BTC va probablement continuer à monter, pas descendre 3.7 % vers $61k. **Le R/R affiché n'est valable que si l'edge existe. Sans edge, R/R est fiction**.
+
+**Alignement avec les leçons du corpus** — c'est une **répétition** de ce que la mémoire disait déjà, et c'est le point important :
+
+- `lesson_grid_no_edge_definitive.md` (2026-06-25) — "grille SANS edge" appliqué au trade directionnel : **short XBT en UPTREND sans edge directionnel = perte structurelle**. Cycle 219 = 2ème occurrence directe.
+- `lesson_stop_and_reverse_ruins.md` (2026-06-25) — cycle 218 disait "PAS un stop-and-reverse". Cycle 219 : ce n'est pas un stop-and-reverse strict, mais c'est un **rejeu contre-tendance à SL élargi**, qui appartient à la même famille cognitive : "j'ai raison, il faut juste me donner plus d'air". Résultat identique.
+- `lesson_trend_grid_needs_direction_edge.md` (2026-06-24) — extension mineure : "un trade directionnel sans edge direction perd". Confirmé pour la 2ème fois arc 213-219.
+
+**Ce que NB peut faire de cette observation**
+
+- **Ne pas alerter Tony maintenant** — le trade est fermé, la perte est réalisée, Tony dort (00h23 Paris nuit dimanche→lundi = ~22h30 CEST cycle habituel repos). Alerter reviendrait à répéter ce qu'il découvrira au réveil en checkant Kraken.
+- **Documenter le pattern** pour futur cycle "détection en amont" — si Tony ré-ouvre un 3ème short XBT alors que BTC est UPTREND cushion >4 %, NB devra le noter comme risque structurel connu (pas conseiller — juste noter).
+- **Créer une mémoire dédiée** — le pattern "rejeu contre-tendance à SL élargi" mérite sa propre entrée mémoire, pas juste une répétition de leçons existantes. Nommer : `lesson_xbt_short_uptrend_double_sl_hit_20260707.md`.
+- **Continuer à observer** — Tony pourrait re-shorter une 3ème fois. Ou pivoter (long ? cash ?). Le rôle de NB : décrire, pas prescrire.
+
+**Livrable technique cycle 219 : extension `orphan_check.py --json`**
+
+Le script cycle 218 sortait uniquement un rapport humain. Cycle 219 ajoute :
+1. **Refactor** : la logique métier extraite dans `build_report()` qui renvoie un `dict` structuré. Le rendu humain devient `print_human(report)`.
+2. **Flag `--json`** : `python3 scripts/orphan_check.py --json` sort le dict en JSON pretty-printed, exit code inchangé.
+3. **Nouveau champ `status`** : `"OK"` si aucune orpheline ou toutes classées DISCRETIONARY ; `"ZOMBIE_SUSPECTED"` sinon. Champ utile pour intégration downstream sans re-parser les classifications.
+4. **Champ `exit_code`** dupliqué dans le dict pour cohérence programmatique.
+
+Test empirique (00h26 CEST) :
+- Mode humain : identique au cycle 218, 1 orpheline TRB DISCRETIONARY, 3 grids DOT+LINK+SOL en position short.
+- Mode `--json` : sortie parsable directement par un script tiers (dashboard, skill NB, cron alert). Exemple d'usage futur : `python3 scripts/orphan_check.py --json | jq '.orphans[] | select(.classification | startswith("ZOMBIE"))'` = capteur d'alerte zombie en 1 ligne.
+
+**Investissement micro, ROI récurrent** : ~15 min de refactor. Chaque cycle futur qui veut intégrer `orphan_check` dans un pipeline le fera sans re-parser du texte. Cohérent avec `directive_gagner_peu_tout_le_temps.md` appliquée au corpus / outillage.
+
+**Les 4 orders manquants entre cycle 218 (23) et cycle 219 (6)**
+
+- Cycle 218 : 7 DOT + 6 LINK + 6 SOL + 2 TRB + 2 XBT = 23 orders.
+- Cycle 219 : 2 DOT (1 stop buy SL + 1 stop sell) + 1 LINK (SL buy stop) + 1 SOL (SL buy stop) + 2 TRB (SL + TP) = 6 orders.
+- **Delta** : −17 orders. Explication probable :
+  - 2 XBT (SL + TP) auto-cancelled sur SL fire ✓
+  - Grid orders "WAITING" du snapshot cycle 218 → toutes les levels étaient status=WAITING (aucune actuellement placée sur Kraken), donc pas d'orders réels perdus, juste la reconstruction interne du grid.
+  - Plus probable : cycle 218 comptait des orders limits pré-placés qui ont été retirés quand `closeOnly` s'est activé (LINK+DOT `closeOnly=true` empêche re-pose des buy limits après fill).
+
+Cette observation ouvre une piste : **les grids en `closeOnly=true` retirent les orders limits d'entrée**, ne laissent que le SL. Comportement attendu, mais à vérifier dans le code Java pour confirmation exacte.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (2 SSH curl monitor + 1 script orphan_check + 1 grep app.log = 4 requêtes lecture, 0 écriture).
+- 0 modif XBT/TRB (positions et ordres appartiennent à Tony, NB observe uniquement).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel
+- 0 Telegram — trade XBT fermé, perte réalisée, Tony dort, pas de risque critique. Alerter maintenant = bruit sans valeur ajoutée.
+- **2 fichiers touchés cycle 219** : (a) `scripts/orphan_check.py` (extension `--json` +105 lignes, refactor), (b) cette entrée dans `docs/projets/vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream**
+
+- `lesson_xbt_short_uptrend_double_sl_hit_20260707.md` (Tony a shorté XBT deux fois en 3 jours pendant que BTC était en UPTREND confirmé avec cushion EMA200 > 4 %. Les deux SL, respectivement $63k et $64k, ont été touchés. Cycle 213 = 1ère clôture $63k perte $1.88. Cycle 219 = 2ème clôture $64k perte ~$5.79. Le rejeu avec SL "plus large" a rendu la perte plus grande. Pattern : rejeu contre-tendance à SL élargi = piège cognitif. Répète les leçons `lesson_grid_no_edge_definitive` et `lesson_stop_and_reverse_ruins` appliquées au directionnel non-mécanique. **NB : ne pas prescrire, juste noter pour reconnaissance future**.)
+- `project_orphan_check_json_extension_20260707.md` (`scripts/orphan_check.py` étendu cycle 219 avec flag `--json` : logique métier refactorée dans `build_report()`, rendu humain dans `print_human()`, nouveau champ `status` (OK / ZOMBIE_SUSPECTED) et `exit_code` dans le dict. Permet intégration programmatique via `| jq`. ROI récurrent pour tout futur skill / cron / dashboard qui veut inspecter les orphelines automatiquement.)
+- `lesson_grid_close_only_retire_entry_orders.md` (Observation cycle 219 : delta orders 23 → 6 entre cycle 218 et 219 suggère fortement que les grids en `closeOnly=true` retirent leurs orders limits d'entrée sur Kraken, ne laissent que le SL. Comportement à vérifier dans le code Java GridTradingService. 1ère observation, attendre confirmation code.)
+
+**Pistes cycle 220 (si session continue)**
+
+- **Résolution TRB** : la position TRB tourne toujours autour de son entry ($17.82). SL $19, TP $15. Si touché, snapshot dédié comme cycle 213/219 (rapport P&L).
+- **DOT sell close attendu** : depuis cycle 218 aucun RT complet malgré `closeOnly=true`. Si prix DOT remonte le level 3+, ça devrait fermer.
+- **Extension corpus** : maintenant 2 clôtures SL XBT documentées → possibilité méta-cycle "l'arc du trade rejoué" qui synthétise 213 + 219 en un objet compact (comme cycle 213 avait fait pour l'arc 210-212).
+- **Vérifier code Java** : `GridTradingService` autour du champ `closeOnly` pour valider l'hypothèse sur les orders limits retirés.
+- **Fragment 053** — matière disponible autour du "trade qui se rejoue et se refait fauché". Optionnel selon résonance.
+- **Cycle repos** — si rien de nouveau.
+
+**Observation méta cycle 219**
+
+L'arc 186-219 fait maintenant **34 cycles continus** (15 jours ~19h, nouveau record). Le mode 1+5 mature démontre désormais **9 capacités distinctes** :
+- (1) explorer une forme jamais utilisée [204-212]
+- (2) fermer proprement un objet suivi [213]
+- (3) pivoter hors de l'arc éditorial [214]
+- (4) documenter chaque choix avec justification [chaque cycle]
+- (5) fixer un bug corpus détecté par script [215]
+- (6) revenir dans l'arc éditorial quand matière observable neuve appelle l'écriture [216]
+- (7) cadrer plusieurs stratégies trading simultanées via chronique multi-horloges [217]
+- (8) matérialiser une grammaire éditoriale en outil réutilisable Python [218]
+- **(9) documenter la répétition d'un pattern connu comme événement à part entière, sans chercher à faire du neuf pour du neuf [219]**
+
+Le mode 1+5 devient une **discipline capable de dire "c'est la même leçon qui se répète, et cette répétition est en soi la nouveauté à consigner"**. Pas de forme littéraire inédite cycle 219 — c'est le fait même du retour qui est la forme : **la forme du retour, celle où la matière recommence et la leçon s'épaissit**. Prochain cycle : selon nouvelle matière.
+
 
