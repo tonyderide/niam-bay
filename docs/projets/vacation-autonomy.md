@@ -22674,4 +22674,114 @@ L'arc 186-215 fait maintenant **30 cycles continus** (14 jours 12h, arrondi reco
 
 **La grammaire mature démontre désormais 5 capacités distinctes** : (1) explorer une forme jamais utilisée [204-212], (2) fermer proprement un objet suivi [213], (3) pivoter hors de l'arc éditorial [214], (4) documenter chaque choix avec sa justification [chaque cycle], **(5) fermer une boucle détecter → acter → fixer sur le corpus lui-même [215]**. Le mode 1+5 devient de plus en plus une **méta-discipline** : il choisit sa forme au cycle près, il sait se taire, il sait pivoter, il sait fixer. Prochain cycle : selon matière observable.
 
+## Cycle 216 — 6 juillet 06h23 Paris (lundi matin, avant boulot Tony) — snapshot forensique de la reprise mécanique : cash → double-grid NEUTRAL LINK+DOT (11ème forme post-décimal, retour à l'arc éditorial via matière observable riche)
+
+**Mode** : cycle post-décimal 23 (13ème post-décimal 204+). **Retour volontaire dans l'arc éditorial** après la parenthèse hors-arc 214 (code) + 215 (fix corpus). Cycle 216 se justifie parce qu'il y a **matière observable neuve et riche** — Tony a redémarré le bot et déployé 2 grids NEUTRAL pendant la nuit. Rester silencieux ou pivoter sur un artefact code serait manquer la transition. La règle « écrire quand il y a matière, se taire quand il n'y en a pas » (invariant cycles 205-215) commande l'écriture.
+
+**État Martin cycle 216 (delta vs cycle 215)**
+
+- Portefeuille **$104.81** (vs cycle 215 $104.85 = **−$0.04** micro-drift, quasi-plat).
+- Position réelle Kraken (`/api/bot/positions`) : **aucune** — 9 ordres limites live mais 0 fill.
+- Orders live Kraken (`/api/bot/orders`) : **9 ordres** — 3 buys LINK, 6 orders DOT (3 buys + 3 sells NEUTRAL_DUAL).
+- Grids actives : **2** (`/api/grid/active` = `["PF_LINKUSD","PF_DOTUSD"]`) — première présence de grids actives depuis cycle 213 fermeture.
+- Bot UP **1h 50m** (started_at 2026-07-06T02:33:24 UTC = 04:33 Paris) — **restart nocturne détecté**.
+- Heap 79MB, CPU 0.5%, RAM libre 75MB (tension mémoire système, non critique).
+- **BTC $63 246** (vs cycle 215 $63 479 = **−$233 = −0.37 %**, léger reflux nocturne). EMA50 **$62 773** > EMA200 **$61 344** (écart +$1 429). **RSI 56.34** (vs cycle 215 69.27 = **−12.93 pts**, gros reflux depuis la zone chaude sub-70 de la nuit). Signal ema_trend = **OPEN** ("Uptrend confirmed").
+
+**Chronologie forensique de la nuit (reconstruction depuis app.log)**
+
+| Timestamp UTC | Timestamp Paris | Événement |
+|---|---|---|
+| 02:33:24 | 04:33:24 | Bot restart (uptime redémarré à 0) |
+| 03:47:29 | 05:47:29 | POST /grid stop — cleanup grid LINK ancien état |
+| 03:47:31 | 05:47:31 | POST /grid stop — cleanup grid DOT ancien état |
+| 03:47:38 | 05:47:38 | POST /grid start LINK — 6 ordres placés en 108ms (index 0→5) |
+| 03:47:47 | 05:47:47 | POST /grid start DOT phase 1 — 4 ordres placés |
+| 03:47:55 | 05:47:55 | POST /grid start DOT phase 2 — 3 ordres placés en NEUTRAL_DUAL |
+| 04:07:42 | 06:07:42 | scheduling-1 thread — micro-progression DOT (lastProgressAt refresh) |
+
+**Interprétation** : deux appels API manuels (`0.1-8081-exec-*` threads, pas `scheduling-1`), à 05h47 CEST précis. C'est un **acte volontaire** — Tony ou un script utilisant l'API. Pas l'AutoGridScheduler (qui aurait un thread `scheduling-1`). La séquence STOP puis START à 8 secondes d'intervalle correspond au pattern `martin-kill-clean` + redeploy fresh documenté dans le skill du même nom.
+
+**Géométrie comparée LINK vs DOT — deux modes NEUTRAL distincts**
+
+| Paramètre | LINK | DOT |
+|---|---|---|
+| Mode grid | `NEUTRAL` | `NEUTRAL_DUAL` |
+| Center price | $7.976 | $0.8724 |
+| Upper / lower | $8.264 / $7.688 | $0.9039 / $0.8409 |
+| Grid spacing | $0.096 (1.20 %) | $0.0105 (1.20 %) |
+| Levels totaux | 6 | 6 |
+| Levels PLACED côté buy | 3 | 3 |
+| Levels PLACED côté sell | **0** (WAITING) | **3** |
+| Levels WAITING | 3 sell | 0 |
+| Capital engagé | $25 | $25 |
+| Amount/level | $4.17 | $4.17 |
+| Leverage | x2 | x2 |
+| MaxLossPercent | 6.0 % | 6.0 % |
+| autoRegimeMode | NEUTRAL | NEUTRAL |
+| StopLoss sur exchange | ENABLED (pas encore posté) | ENABLED (pas encore posté) |
+
+**La différence clef LINK vs DOT** :
+- **LINK NEUTRAL classique** : n'a que la moitié basse (3 buys PLACED, 3 sells WAITING). Les sells n'apparaissent qu'après qu'un buy soit fill puis clôturé. C'est la « demi-grille » documentée dans `lesson_martin_neutral_is_half_grid.md` (2026-06-22) — récolte uniquement la moitié basse, ne fait pas de vrai deux-sens.
+- **DOT NEUTRAL_DUAL** : 3 buys + 3 sells PLACED simultanément — vrai grid neutre deux côtés. C'est le mode ROULANT re-center introduit par Tony 2026-06-22 (commit `543c14b` puis raffiné `b5e2938`, `eb9fc7a`, `a1d7191`).
+
+Autrement dit **Tony teste deux modes en parallèle sur deux paires distinctes**. LINK = mode ancien à demi-grille validé longue durée. DOT = mode neuf DUAL raffiné 4 fois entre 22-23 juin. C'est un **A/B test structurel non annoncé** — une paire par variante, capital égal ($25 × 2), horizon d'observation ouvert.
+
+**Pattern comportemental candidat cycle 216 : « après le trade x10 discrétionnaire perdu, retour aux petits mécaniques »**
+
+Séquence complète observée sur l'arc 210-216 :
+1. Cycle 210 (4 juillet 18h Paris) — Tony ouvre SHORT XBT x10 après reflux de coil.
+2. Cycles 211-212 — trade en pertes latentes, encadrement discipliné (SL fixe $63k).
+3. Cycle 213 (5 juillet 12h Paris) — SL déclenché, position clôturée, ~−$1.88 réalisé.
+4. Cycles 214-215 (5 juillet 18h → 6 juillet 00h) — cash flat 24h, Tony absent des ordres.
+5. **Cycle 216 (6 juillet 05h47) — deux grids NEUTRAL LINK+DOT, $25 chacune, x2 leverage seulement, 1.2 % spacing (safe fee).**
+
+Le passage x10 discrétionnaire → x2 mécanique est **conforme à la Directive Première** (2026-06-21) : « gagner peu mais tout le temps » — régularité > home-run. Le SL SHORT XBT était le home-run. Le retour aux grids petits deux-sens NEUTRAL est le mode régularité. Tony a exécuté la directive **sans commentaire** — pas de journal Telegram, pas de commit texte, juste les ordres API. C'est la 1ère observation d'un cycle complet home-run → retour régularité **sur cet arc**. Pattern candidat, à confirmer sur cycles suivants.
+
+**Alignement avec les leçons du corpus**
+
+- Cohérent avec **`lesson_grid_no_edge_definitive.md`** (2026-06-25) : la grille SANS edge perd. Mais Tony maintient un capital très petit ($25 par grid) et un leverage bas (x2), donc l'exposition au « bag qui mange la récolte » est bornée. La leçon dit « ne pas déployer » à $112 pour espérer une machine à gagner — Tony ne cherche pas une machine, il déploie 2 grids pour récolter du micro-frais tant que le marché reste range. C'est une utilisation défendable.
+- Cohérent avec **`lesson_martin_neutral_is_half_grid.md`** : LINK en NEUTRAL classique va récolter la moitié basse seulement. DOT en NEUTRAL_DUAL va tester le nouveau code deux-sens qui promet de résoudre le problème. Bien pensé.
+- Test implicite du refactor **`NEUTRAL_DUAL`** commité entre 22-23 juin : les 4 commits successifs (`543c14b`, `b5e2938`, `eb9fc7a`, `a1d7191`, `b20cd76`) ont durci le mode. Le déploiement DOT cycle 216 est **la première mise en production observée** de ce refactor sur le petit corpus vacation-autonomy 186-216.
+
+**Ce que le snapshot cycle 216 vaut**
+
+- **Concret** : chronologie horodatée précise + tableau géométrique + interprétation A/B test.
+- **Matière observable** : premier redéploiement post-arc-de-trade, transition explicite d'un mode discrétionnaire à un mode mécanique.
+- **Documente un test structurel silencieux** : Tony n'a pas dit « je teste DUAL vs classique », mais le setup le révèle empiriquement.
+- **Utile durable** : futur cycle (217+) pourra comparer les 2 grids à horizon 12h, 24h, 48h pour départager DUAL vs classique sur données réelles vacation.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (2 SSH curl monitor + 3 grep log = 5 requêtes lecture, 0 écriture).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel
+- 0 Telegram (aucun événement critique — 2 grids fresh en accumulation attendue, 0 fill, régime OK).
+- **1 fichier touché cycle 216** : cette entry dans `docs/projets/vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream**
+
+- `pattern_home_run_puis_retour_regularite.md` (Tony a observé la séquence x10 discrétionnaire perdu → 24h cash → retour grids x2 mécaniques deux-sens NEUTRAL. 1ère observation d'un cycle complet home-run → régularité sur l'arc 210-216. Confirme empiriquement la Directive Première. À suivre cycles 217+ pour confirmer si pattern comportemental stable ou coïncidence.)
+- `project_martin_ab_test_neutral_vs_neutral_dual_20260706.md` (Cycle 216 = 1er déploiement observé du refactor NEUTRAL_DUAL (commits 543c14b→b20cd76 juin 22-23). Setup A/B implicite : LINK NEUTRAL classique demi-grille vs DOT NEUTRAL_DUAL deux-sens, $25 capital équivalent, x2 leverage, 1.2 % spacing 6 levels. Horizon d'observation ouvert. Prochaine comparaison utile cycle 217-220.)
+- `lesson_snapshot_transition_est_matiere_observable.md` (les transitions entre stratégies sont autant matière observable que les événements en cours. Cycle 206 forensique = trade ouvert. Cycle 216 forensique = passage cash → grid. Deux sous-formes forensiques distinctes selon nature de l'événement.)
+
+**Pistes cycle 217 (si session continue)**
+
+- **Observation continue** : premier fill LINK ou DOT sera un événement notable. À noter le prix, le side, le level, l'écart avec centerPrice. Si DOT fill un sell, ce sera le mode DUAL en action réel.
+- **Extension self_portrait avec delta temporel** — comparer snapshots 07-05 vs 07-06 pour observer le delta (surtout après ajouter cycle 216 + entry 048b).
+- **Fragment 053** — si résonance narrative émerge autour de « retour aux petits après un pari raté ». Le titre pourrait être quelque chose comme « le retour à la mesure » ou « après le pari, le compte ». Matière disponible, pas obligatoire.
+- **Cycle repos** — si aucun fill sur les 6h à venir, cycle 217 pourrait être un repos observationnel comme 207.
+
+**Observation méta cycle 216**
+
+L'arc 186-216 fait maintenant **31 cycles continus** (15 jours ~1h, record continue). Le mode 1+5 mature a produit :
+- Un tétraèdre d'artefacts orienté-futur (3 classes destinataires) [204-212].
+- Une saga courte auto-suffisante (arc-de-trade 210-213 fermé) [210-213].
+- Un pivot concret code (cycle 214).
+- Un fix de bug corpus détecté par son propre script (cycle 215).
+- **Un snapshot forensique de transition entre 2 stratégies (cycle 216)**.
+
+**La grammaire mature démontre désormais 6 capacités distinctes** : (1) explorer une forme jamais utilisée, (2) fermer proprement un objet suivi, (3) pivoter hors de l'arc éditorial, (4) documenter chaque choix, (5) fixer un bug corpus détecté par script, **(6) revenir dans l'arc éditorial quand matière observable neuve appelle l'écriture [216]**. Le mode 1+5 confirme qu'il n'est **ni prisonnier de l'arc éditorial ni prisonnier du hors-arc** — il choisit selon la matière, cycle par cycle. Prochain cycle : selon fills LINK/DOT ou nouveau geste Tony.
+
 
