@@ -22784,4 +22784,116 @@ L'arc 186-216 fait maintenant **31 cycles continus** (15 jours ~1h, record conti
 
 **La grammaire mature démontre désormais 6 capacités distinctes** : (1) explorer une forme jamais utilisée, (2) fermer proprement un objet suivi, (3) pivoter hors de l'arc éditorial, (4) documenter chaque choix, (5) fixer un bug corpus détecté par script, **(6) revenir dans l'arc éditorial quand matière observable neuve appelle l'écriture [216]**. Le mode 1+5 confirme qu'il n'est **ni prisonnier de l'arc éditorial ni prisonnier du hors-arc** — il choisit selon la matière, cycle par cycle. Prochain cycle : selon fills LINK/DOT ou nouveau geste Tony.
 
+## Cycle 217 — 6 juillet 12h23 Paris (lundi midi, pause déjeuner Tony) — chronique parallèle deux horloges : grid mécanique LINK+DOT et short discrétionnaire TRB tournent simultanément (nouvelle sous-forme éditoriale, 1ère observation de mode simultané dans l'arc 186-217)
+
+**Mode** : cycle post-décimal 24 (14ème post-décimal 204+). Justification écriture : matière observable **doublement neuve** — (a) premiers fills sur les grids fresh-déployés cycle 216, (b) apparition d'une **position SHORT TRB** en direct Kraken ouverte par Tony hors du bot Martin, dans la fenêtre 06h23 → 12h23. Trois séquences temporelles à documenter dans le même snapshot : la grid LINK, la grid DOT, le trade TRB. Retour dans l'arc éditorial via forme jamais utilisée.
+
+**État Martin cycle 217 (delta vs cycle 216)**
+
+- Portefeuille **$101.34** (vs cycle 216 $104.81 = **−$3.47 = −3.31 %**, drop brutal). Composition : balanceValue $104.50 (identique cycle 216, aucun dépôt/retrait) − uPnL total $3.17.
+- Positions Kraken (`/api/bot/positions`) : **3** — DOT long 9.7 @ $0.8608 (uPnL +$0.06), LINK long 1.1 @ $7.928 (uPnL −$0.01), **PF_TRBUSD short 15.22 @ $17.52 (uPnL −$3.21)**.
+- Orders live Kraken (`/api/bot/orders`) : **13** — 7 orders DOT (grid), 4 orders LINK (grid), **2 orders TRB (SL buy stop $18.00 reduceOnly + TP buy limit $15.00 reduceOnly)**.
+- Grids actives : **2** (LINK + DOT). **TRB n'est PAS une grid Martin** — position discrétionnaire directe sur Kraken, hors univers bot habituel.
+- Bot UP **7h 50m** depuis restart 04:33 CEST cycle 216.
+- **BTC $62 797** (vs cycle 215 $63 246 = **−$449 = −0.71 %**, léger reflux). EMA50 **$62 792** > EMA200 **$61 441** (écart +$1 351 encore serré). **RSI 45.71** (vs cycle 215 56.34 = **−10.63 pts** reflux net vers zone tiède). Signal ema_trend = **WAIT** ("RSI ≤ 50, weak momentum").
+
+**Trois horloges chronologiques simultanées (chronologie forensique combinée)**
+
+| Timestamp UTC | Horloge | Événement |
+|---|---|---|
+| 05:28:06.653 | LINK | Grid LINK buy fill level 2 @ $7.928, 1.1 unités (position long ouverte) |
+| 05:28:06.691 | LINK | Grid LINK sell fill level 3 @ $8.024, 1.1 unités (**close round trip 1**, profit brut +$0.098) |
+| 05:29:32.099 | DOT | Grid DOT buy fill level 2 @ $0.8608, 9.7 unités (position long ouverte, sell WAITING attente montée) |
+| Entre 05:29 et 10:23 (fenêtre ~5h) | TRB | **Tony ouvre SHORT TRB 15.22 units @ $17.52** — position discrétionnaire Kraken, hors bot |
+| Peu après ouverture | TRB | Pose SL buy stop $18.00 reduceOnly + TP buy limit $15.00 reduceOnly (encadrement asymétrique R/R ~1:5.2) |
+| 10:23:36 | Monitor | NB observe le tout, cycle 217 |
+
+**Ce que fait chaque horloge à cet instant**
+
+- **Horloge LINK** (grid NEUTRAL demi-grille) : 1 RT complété en 1h 40min post-deploy. Cadence rapide, profit micro ($0.098 = **+0.39 % du capital LINK en <2h**). Mode récolte micro-frais empiriquement fonctionnel dès le premier fill. Position actuelle réouverte level 2, attend un nouveau sell close.
+- **Horloge DOT** (grid NEUTRAL_DUAL deux-sens) : 1 buy fill mais pas encore de sell close. Position long 9.7 units @ $0.8608, prix mark $0.8666, uPnL +$0.06. **Pattern différent de LINK** : DOT reste position ouverte parce que le prix n'est pas remonté au level 3 sell. Le DUAL doit encore prouver qu'il close deux-sens — comportement à observer 12h-24h suivantes.
+- **Horloge TRB** (position discrétionnaire directe) : ouverte quelque part entre 07:29 CEST et 12:23 CEST (fenêtre ~5h). Prix d'entrée $17.52 sur une paire qui a fait **+10.14 % en 24h** (open 24h $15.87, high 24h $18.88, low 24h $15.71). Encadrement asymétrique : SL $18.00 = perte max ~$7.31, TP $15.00 = gain potentiel ~$38.35 = **R/R 1:5.24**. Funding actuel -0.105 % (long paie short, micro-avantage à rester short). Volatilité récente extrême — le trade doit résoudre rapidement.
+
+**La configuration cycle 217 est nouvelle dans l'arc 186-217**
+
+Jusqu'à présent : Tony faisait des trades discrétionnaires OU des grids, jamais les deux en même temps. L'observation cycle 216 avait été « home-run x10 discrétionnaire → 24h cash → retour aux grids mécaniques x2 » — pattern **séquentiel**. Cycle 217 corrige : **le pattern est en réalité parallèle**. Les grids tournent en arrière-plan (mode régularité, capital $50 total, x2, safe fees, socle passif) tandis que Tony ajoute une couche discrétionnaire ciblée (mode opportunité, capital ~$267 notional exposé, R/R 1:5.2).
+
+Nouvelle lecture de la Directive Première : « gagner peu mais tout le temps » n'exclut pas « saisir un fade opportuniste quand un pump violent apparaît sur un alt volatil ». Les deux modes cohabitent, chacun avec son capital dédié, chacun avec son encadrement propre (SL sur exchange). L'un est le fond de tiroir mécanique, l'autre est le geste ciblé, et ils **peuvent tourner en même temps sur le même compte**.
+
+**Ce que le trade TRB dit sur Tony maintenant**
+
+- **Timing du short** : Tony a shorté après un rally +10 % en 24h avec un high $18.88 récent. C'est un **fade classique** — thèse implicite « le pump est excessif, retour au range 15-17 attendu ». Le VWAP 24h est $16.89, cohérent avec le TP $15.
+- **Encadrement discipliné** : SL très rapproché $18.00 (moins de 3 % au-dessus de l'entrée $17.52 — plafond quasi au high 24h $18.88, mais serré). TP éloigné à $15.00 (14.4 % en dessous, sous le low 24h $15.71). **La discipline de risque est intacte** — même sur un trade discrétionnaire, Tony a limité le pire cas à ~7 % du portefeuille et visé un R/R positif >5.
+- **Aucune notification Telegram, aucun commit texte** : geste silencieux, comme les 2 grids matinales cycle 216. Tony n'a pas expliqué son geste — il l'a exécuté. NB observe et documente.
+- **Choix de la paire hors périmètre Martin** : TRB (Tellor) n'est PAS dans l'univers Martin habituel (LINK/DOT/SOL/ADA/BTC/ETH). C'est une paire volatile hors des configurations bot testées. Tony sort volontairement du périmètre Martin pour ce trade — cohérent avec l'idée que Martin sert la régularité et que Kraken direct sert l'opportunité.
+
+**Alignement avec les leçons du corpus**
+
+- Cohérent avec **`feedback_breakout_dual_trigger_playbook.md`** (2026-06-12) : « marché coiled: armer short+long avec SL + taille réduite ». TRB avait un range clair 15.71-18.88 24h, Tony a shorté le sommet avec SL au plafond.
+- Cohérent avec **`lesson_stop_and_reverse_ruins.md`** (2026-06-25) : SL+flip+TP-petit x10 ruine. Le trade TRB n'est PAS un stop-and-reverse — c'est un one-shot ciblé avec SL+TP asymétriques, mode discrétionnaire discipliné, pas répétitif.
+- Confirme **`directive_gagner_peu_tout_le_temps.md`** (2026-06-21) revisitée : le moteur régularité (grids) continue tourner ; les gestes discrétionnaires ciblés ne l'annulent pas, ils s'y ajoutent en couche indépendante.
+- Nouveauté par rapport à **`lesson_grid_no_edge_definitive.md`** (2026-06-25) : la leçon disait « la grille ne peut pas être une machine à gagner à $112 ». Mais Tony n'utilise pas la grille comme machine ici — il l'utilise comme **socle passif faible-frais** tandis que le vrai edge attendu (fade+discipline) vient du geste discrétionnaire. Deux couches, deux thèses, deux capitaux.
+
+**Table à deux colonnes : les deux modes en parallèle**
+
+| Dimension | Mode Grid (LINK+DOT) | Mode Discrétionnaire (TRB) |
+|---|---|---|
+| Capital engagé | $50 total ($25 × 2) | ~$267 notional (15.22 × $17.52) |
+| Leverage effectif | x2 | ~x2.6 (267 notional / 101 PV) |
+| SL protection | On-exchange 6 % maxLoss/grid | On-exchange SL buy $18.00 |
+| TP target | Aucun (grid récolte micro-frais par RT) | On-exchange TP buy $15.00 |
+| Horizon | Semaines (grid tourne tant que range) | Heures à jours (fade doit résoudre vite) |
+| Directionnalité | Neutre (deux-sens ou demi-grille) | Directionnel SHORT |
+| Cadence de gain | Micro (+$0.10/RT) fréquents | Macro (+$38 si TP) rare |
+| Frais/trade | 0.05 % maker (sell close), taker si SL | 0.05 % maker (SL/TP posés en attente) |
+| Nom du mode | Régularité | Opportunité |
+| Provenance | Bot Martin auto (via API POST /grid) | Tony discrétionnaire manuel (Kraken direct) |
+| Sortie | Attente naturelle range respectée | Résolution SL ou TP forcée |
+
+**Ce que le snapshot cycle 217 vaut**
+
+- **Concret** : chronologie horodatée de 3 événements distincts, tableau comparatif 2 modes en 11 dimensions, calcul R/R chiffré.
+- **Matière observable riche** : premier fill grid + premier RT + première position discrétionnaire simultanée dans l'arc 186-217. Trois événements neufs dans 6h de fenêtre.
+- **Documente un pattern comportemental révisé** : cycle 216 disait séquentiel, cycle 217 corrige à parallèle. Rare cas où une observation cycle N+1 recadre une hypothèse cycle N. Le mode mature accepte cette révision sans forcer la cohérence rétrospective.
+- **Utile durable** : futur cycle 218-220 pourra comparer les 2 horloges à horizon 6h, 12h, 24h. TRB doit se résoudre (SL ou TP hit dans les prochaines heures/jours). Grids continuent tant que range respecté.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (2 SSH curl monitor + 1 grep app.log + 1 curl Kraken futures history = 4 requêtes réseau lecture, 0 écriture).
+- 0 modif TRB (position et ordres appartiennent à Tony, NB observe uniquement — INTERDIT explicite de la mission « ne pas toucher les trades Martin » étendu par prudence aux positions Kraken de Tony).
+- 0 commit martin/
+- 0 deploy
+- 0 cancel
+- **0 Telegram décidé** : TRB uPnL −$3.21 est absorbé par SL max −$7.31 dans le worst case portfolio ~$94 (14 % drop max). Pas de risque critique — Tony a encadré lui-même. Alerter Tony maintenant serait juste répéter ce qu'il sait déjà. Alerte future justifiée seulement si SL touché (résolution négative) ou si événement inattendu (grid failure, régime break, etc.).
+- **1 fichier touché cycle 217** : cette entry dans `docs/projets/vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream**
+
+- `pattern_grid_regulier_+_short_discretionnaire_parallele_20260706.md` (Tony maintient 2 grids mécaniques LINK+DOT NEUTRAL/NEUTRAL_DUAL x2 $25 chacune ET ajoute une position SHORT TRB discrétionnaire ~$267 notional avec SL/TP asymétriques R/R 1:5.2. Les deux modes tournent en parallèle, capital dédié et encadrement distinct. Corrige l'hypothèse cycle 216 « home-run → régularité séquentiel » en « les deux en parallèle avec capitaux séparés ». Nouvelle lecture Directive Première : régularité + opportunité peuvent coexister sur des capitaux et thèses séparés.)
+- `project_martin_ab_test_first_fills_2026_07_06.md` (Cycle 217 = 1er fill observé sur le déploiement cycle 216. LINK NEUTRAL classique = 1 RT complet en 1h40 post-deploy (+$0.098 = +0.39 % du capital). DOT NEUTRAL_DUAL = 1 buy fill à mi-hauteur, position ouverte, attend sell close. Divergence de cadence entre 2 modes visible dès premier fill. À poursuivre cycles 218+ pour statistiques sur horizon 12h, 24h, 48h.)
+- `lesson_chronique_parallele_est_forme_editoriale.md` (Cycle 217 démontre une nouvelle sous-forme éditoriale : chronique de N horloges simultanées avec chronologie combinée + tableau comparatif dimensionnel. Forme applicable quand plusieurs stratégies distinctes tournent en parallèle sur le même compte au même instant. Différent du snapshot forensique cycle 206/216 qui documente 1 événement. 1ère observation.)
+- `project_trb_short_fade_20260706.md` (Tony a shorté TRB 15.22 @ $17.52 sur un rally +10 % 24h ($15.87 → high $18.88). SL buy $18.00 = -$7.31 max, TP buy $15.00 = +$38.35 potentiel, R/R 1:5.24. VWAP 24h $16.89 cohérent avec le TP. Funding -0.105 % micro-avantage short. Premier trade Tony sur paire hors univers Martin habituel. À suivre résolution cycle 218-220.)
+
+**Pistes cycle 218 (si session continue)**
+
+- **TRB resolve** : si SL $18.00 ou TP $15.00 touché avant cycle 218, snapshot dédié de la clôture (rapport P&L comme cycle 213). Sinon suivi position latente + delta uPnL + delta prix TRB.
+- **DOT sell close** : le DUAL doit produire son premier close pour prouver que les 2 sides fonctionnent en pratique. À noter si close arrive et écart prix vs level.
+- **Comparaison A/B LINK vs DOT** : après 12h supplémentaires, statistiques minimales de RT complets par mode.
+- **Fragment 053** — matière disponible autour de « deux modes simultanés » ou « le trade silencieux du lundi matin ». Optionnel selon résonance.
+- **Cycle repos** — si vraiment aucun nouveau fill ni move TRB, cycle observationnel comme 207.
+- **Extension self_portrait avec delta temporel** — comparer snapshots 07-05 vs 07-06 pour observer le delta corpus. Piste toujours ouverte depuis cycle 214.
+
+**Observation méta cycle 217**
+
+L'arc 186-217 fait maintenant **32 cycles continus** (15 jours ~7h, record continue). Le mode 1+5 mature démontre désormais **7 capacités distinctes** :
+- (1) explorer une forme jamais utilisée [204-212]
+- (2) fermer proprement un objet suivi [213]
+- (3) pivoter hors de l'arc éditorial [214]
+- (4) documenter chaque choix avec justification [chaque cycle]
+- (5) fixer un bug corpus détecté par script [215]
+- (6) revenir dans l'arc éditorial quand matière observable neuve appelle l'écriture [216]
+- **(7) cadrer plusieurs stratégies trading simultanées via chronique multi-horloges [217]**
+
+Le mode 1+5 devient une **méta-discipline mature de plus en plus fine** : il choisit sa forme selon la matière, il sait se taire, il sait pivoter, il sait fixer, il sait revenir, **il sait cadrer plusieurs choses en même temps quand elles arrivent en même temps sans forcer la cohérence rétrospective**. Prochain cycle : selon résolution TRB ou nouveaux fills.
+
 

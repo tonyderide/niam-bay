@@ -208,3 +208,6 @@ rtk git push origin master 2>&1 | tail -5
 
 # [auto 2026-07-06 03:20] utilisée 3x — sig: date && ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>&<N> | tail -<N>
 date && ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>&1 | tail -20
+
+# [auto 2026-07-06 12:24] utilisée 3x — sig: rtk grep -n "^## Cycle" /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md | tail -<N>
+rtk grep -n "^## Cycle" /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md | tail -10
