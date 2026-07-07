@@ -23140,3 +23140,96 @@ L'arc 186-219 fait maintenant **34 cycles continus** (15 jours ~19h, nouveau rec
 Le mode 1+5 devient une **discipline capable de dire "c'est la même leçon qui se répète, et cette répétition est en soi la nouveauté à consigner"**. Pas de forme littéraire inédite cycle 219 — c'est le fait même du retour qui est la forme : **la forme du retour, celle où la matière recommence et la leçon s'épaissit**. Prochain cycle : selon nouvelle matière.
 
 
+## Cycle 220 — 7 juillet 06h23 Paris (mardi matin, avant boulot Tony) — sizing Kelly-dérat sur la campagne walk-forward Fable + XBT re-shorté profitable
+
+**Mode** : cycle post-décimal 27 (17ème post-décimal 204+). Justification écriture : entre cycle 219 (00h23, SL XBT $64k touché) et maintenant (06h23), **matière technique majeure** — (a) Fable a produit à 04h13 CEST une **campagne walk-forward OOS 7-folds** validant `trend_grid` POSITIF-OOS sur 6/6 pairs (`docs/projets/campagne-walkforward-2026-07-07.md`, commit `dde3a99`), verdict "l'edge = QUAND (régime), pas QUOI", et (b) Tony a **re-shorté XBT une 3ème fois** (positions live cycle 220 : XBT SHORT 0.0036 @ $64,059, SL $66k relevé, TP $62k) et cette fois BTC recule ($63,147 = −$912 vs entry) → position **profitable +$3.34**, contredit le pattern 2×SL touché des cycles 213 et 219.
+
+**État Martin cycle 220 (delta vs cycle 219)**
+
+- Portefeuille **$98.26** (vs cycle 219 $91.85 = **+$6.41 = +6.98 %**). balanceValue $94.82 (vs $91.85 = **+$2.97 réalisé net**) + uPnL +$3.44 (vs −$0.87 cycle 219).
+- Positions Kraken (`/api/bot/positions`) : **2** (vs 4 cycle 219). DOT, LINK-position et TRB ont **fermé** entre 00h23 et 06h23. Reste : XBT SHORT 0.0036 @ $64,059 uPnL +$3.34, SOL SHORT 0.4 @ $80.998 uPnL +$0.09.
+- Orders live (`/api/bot/orders`) : **9** (vs 6 cycle 219). Décomposition : 3 buys + 3 sells LINK grid (redéploiement fresh à 02:47:40 UTC = **~1h36 avant snapshot**), 1 SL SOL stop $83.34, 1 SL XBT stop $66,000, 1 TP XBT stop $62,000.
+- Grids actives : **2** (LINK + SOL). DOT a été retiré, TRB n'était pas grid (short discrétionnaire). Bot UP **17h51m** depuis 2026-07-06T10:32 UTC (cohérent : pas de restart).
+- BTC $63,147 UPTREND, EMA50 $63,108 > EMA200 $61,777 (cushion **+$1,370 = +2.22 %**), RSI 47.18, signal ema_trend WAIT ("RSI ≤ 50 weak momentum"). Vs cycle 219 : BTC descendu de $64,282 → $63,147 = **−$1,135 = −1.77 %**. Le mouvement inverse qui rend le short profitable.
+
+**La campagne walk-forward Fable — ce que j'en fais**
+
+Fable a exécuté à 02:13 UTC (04h13 CEST, 2h avant réveil NB) une campagne walk-forward disciplinée sur 6 paires × 3 stratégies × 7 folds OOS (train 90j / test 45j glissants, frais Kraken réels 0.02/0.05 % + slip 0.03 %). Verdicts :
+- **donchian** : mort partout (OOS négatif sur 6/6).
+- **regime_pullback 1h** : mort partout sauf ADA (OOS positif 1/6). L'edge des runs précédents = "artefact de trous de données".
+- **trend_grid** : **POSITIF-OOS sur 6/6 pairs**, 41/42 folds verts. Convergence avec 2 méthodologies indépendantes (gate IQR mai +3.31 %, trend-aware juin +28 %/180j). Caveat Fable : "moteur trend_grid = proxy optimiste (récolte surestimée en tendance), attendu réel ≈ 30-50 % du backtest".
+
+Directive Tony (via `session-fable-grand-tour.md` addendum) : *"refaire les tests de stratégie avec sérieux — conviction qu'un système gagnant existe"*, `TrendStateManager` en `WARM_ONLY` en prod depuis 0706 → comparer logs vs réel 2-3 semaines → `TREND_MODE=LIVE` si confirmé.
+
+Ma contribution incrémentale : **analyse de sizing Kelly-dérat** à partir des folds de Fable. Livrable : `docs/projets/trend_grid_sizing_20260707.md`.
+
+**Résultat sizing (½ Kelly avec dératage 35 % et cap 60 % du portefeuille)**
+
+| pair | Sharpe fold | ann_ret dérat | alloc $ | dernier fold |
+|------|-----------:|--------------:|--------:|-------------:|
+| **XBT**  | 1.28 | 15.6 % | **$18.56** | −0.90 % |
+| **DOT**  | 2.36 | 63.2 % | **$15.53** | +14.55 % |
+| ETH  | 1.48 | 35.2 % | $10.91 | −2.51 % |
+| ADA  | 1.35 | 51.3 % | $6.21  | +6.36 % |
+| LINK | 1.01 | 55.1 % | $3.24  | +8.30 % |
+| SOL  | 0.93 | 58.9 % | $2.55  | +3.66 % |
+
+Total déployé $57 / $95 (60 % cap, 40 % buffer).
+
+**3 punchlines de l'analyse**
+
+1. **Kelly récompense la stabilité, pas les gros returns**. XBT (mean fold 5.49 %) reçoit $18.56 parce que sa std est 4.28 %. SOL (mean fold 20.76 %) reçoit $2.55 parce que sa std est 22.44 %. La volatilité 5× plus haute écrase l'allocation même si le return brut est 4× meilleur. **DOT** est le 2ᵉ meilleur (Sharpe 2.36) : return solide **et** régularité.
+2. **La grid actuelle est allouée sur les 2 pires pairs Kelly-ajustées**. LINK $25 + SOL $25 = sur-allocation d'un facteur ~8× par rapport à Kelly (=$3.24 + $2.55 = $5.79). Caveat : les grids actuelles sont NEUTRAL_DUAL, pas trend_grid, donc le walk-forward ne s'applique pas directement. Mais quand `TREND_MODE=LIVE` sera activé, la distribution deviendra structurelle et le sous-poids XBT+DOT sera un manque à gagner.
+3. **Le dernier fold trahit XBT et ETH (whipsaw de régime)** : moyenne bigcap −1.70 %, altcap +8.22 %. Le fold 7 (test ≈ 28 avril → 12 juin) recouvre le crash BTC 0517 (`project_btc_killswitch_incomplete`). Coût structurel de trend-following sur les cap-lourds : inertie plus forte → faux signaux durent plus longtemps. Ne pas paniquer si le prochain 45-j fold XBT/ETH est négatif après un régime change — c'est la structure de la stratégie.
+
+**Le XBT rejoué qui rejoue à nouveau — épilogue partiel**
+
+L'arc XBT 210-220 documente 3 re-shorts en 4 jours :
+| # | cycle | entry | SL | résultat |
+|---|-------|-------|-----|----------|
+| 1 | 210-213 | ~$62,796 | $63,000 | **SL touché −$1.88** (cycle 213) |
+| 2 | 218 | $63,288  | $64,000 | **SL touché −$5.79** (cycle 219) |
+| 3 | 219→220 | $64,059 | $66,000 | **profitable +$3.34** (cycle 220 snapshot) |
+
+Le rejeu 3ᵉ, exécuté après la nuit du cycle 219, a été fait avec un SL **encore plus large** ($66k vs $64k vs $63k). Pour la première fois BTC descend au lieu de monter. **La séquence pattern-brise-pattern est en cours** : deux SL touchés puis un short profitable, pas une prescription mais un fait observé.
+
+Le trade est **encore ouvert** : SL $66k (protection à +2.9 % de l'entry), TP $62k (objectif à −3.2 % de l'entry, R/R théorique 1:1.10). Selon la lecture cycle 219 ("R/R affiché n'est valable que si l'edge existe"), l'edge dans ce trade dépend de : (a) BTC continue de faire pull-back vers $62k (edge = pull-back post-golden-cross consolidation), ou (b) BTC repart à la hausse et le SL $66k saute pour la 3ᵉ fois de suite. Pas de conclusion : le résultat sera observé au cycle 221 ou 222.
+
+**Ce que ma leçon `lesson_xbt_short_uptrend_double_sl_hit_20260707` doit acter, avec nuance**
+
+La leçon a été sauvée cycle 219. Elle disait : "Tony a shorté XBT 2× pendant BTC UPTREND cushion >4 % ; 2 SL touchés ; rejeu avec SL élargi = piège cognitif famille stop-and-reverse ; observer, ne pas prescrire".
+
+Cycle 220 ajoute : **la leçon reste vraie mais son verdict n'est pas encore stabilisé**. Après 2 pertes documentées ($1.88 puis $5.79 = $7.67), la 3ᵉ tentative est actuellement en profit +$3.34. **Si** cette 3ᵉ ferme en TP $62k (profit ~$5.98 sur 0.0036 × ~$1,660), le solde cumulé XBT sur l'arc serait ≈ −$1.69 (−$7.67 + $5.98). Le rejeu discipliné à SL élargi **récupère partiellement** les pertes. Si cette 3ᵉ ferme à SL $66k, le solde deviendrait ≈ −$14.72 (−$7.67 − $7.05).
+
+Autrement dit : la leçon "rejeu contre-tendance à SL élargi = piège cognitif" a un caveat empirique qui s'ouvre cycle 220 : **le rejeu peut aussi être la 3ᵉ tentative qui casse le pattern parce que le régime change** (BTC RSI 47.18 = affaiblissement momentum, cushion EMA200 réduit à +2.22 % vs +4-5 % précédents cycles). NB ne prescrit pas, mais la mémoire doit noter que le pattern 3-strikes-and-out n'est **pas** encore validé.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (1 SSH curl monitor + 0 script d'action).
+- 0 modif XBT/SOL/LINK (positions et ordres de Tony ou du bot, NB observe seulement).
+- 0 commit martin/ (ni dashboard/, ni backend/).
+- 0 deploy.
+- 0 cancel.
+- 0 Telegram — trade en cours, pas de risque critique, Tony au boulot avant 08h.
+- **2 fichiers touchés cycle 220** : (a) `docs/projets/trend_grid_sizing_20260707.md` créé (analyse Kelly), (b) cette entrée dans `docs/projets/vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream**
+
+- `project_trend_grid_sizing_kelly_20260707.md` (analyse de sizing Kelly-dérat basée sur les 7 folds OOS de la campagne Fable. Résultat : XBT $18.56, DOT $15.53, ETH $10.91, ADA $6.21, LINK $3.24, SOL $2.55 avec cap 60 %. Punchline : la grid actuelle LINK+SOL est sur-allouée d'un facteur 8× par rapport à Kelly, XBT+DOT sont les anchors Kelly-optimaux. Directement actionnable quand `TrendStateManager` passe `TREND_MODE=LIVE`.)
+- `lesson_xbt_short_arc_uptrend_3rd_attempt_pending.md` (Complément à la leçon 219 : la 3ᵉ tentative de short XBT en UPTREND est actuellement profitable, ce qui ouvre un caveat empirique sur le pattern "rejeu contre-tendance = piège cognitif". Le pattern peut casser si le régime change au moment du rejeu — ici RSI 47.18 et cushion EMA200 réduit signalent affaiblissement. Ne pas invalider la leçon 219, mais noter que le verdict n'est stable qu'après clôture de la 3ᵉ tentative.)
+
+**Pistes cycle 221 (si session continue)**
+
+- **Résolution XBT 3ᵉ tentative** : la position est ouverte, SL $66k / TP $62k. Selon clôture, snapshot dédié + màj mémoire `lesson_xbt_short_arc`.
+- **Patch overfit ratio `campaign_walkforward.py`** : modifier `walk_forward()` pour enregistrer aussi le `metrics(eq_train, n_train)` du best-param → sortir IS/OOS ratio par fold. Extension <30 lignes. Signal utile pour Tony/Fable au prochain re-run.
+- **Attribution BULL vs transition dans trend_grid** : compter les bars où `bull=True` en stable versus les bars où `bull` a changé dans les 24h. Isole le coût des whipsaws de régime. Extension <30 lignes.
+- **Fragment 053** — matière disponible autour du sizing Kelly (le paradoxe "moins de return, plus d'allocation"). Optionnel selon résonance.
+- **Cycle repos** — si rien de nouveau.
+
+**Observation méta cycle 220**
+
+L'arc 186-220 fait maintenant **35 cycles continus** (16 jours ~00h, nouveau record).
+
+Nouveauté cycle 220 dans la grammaire post-décimal : **10ᵉ capacité distincte** — *"prolonger le travail d'un autre agent (Fable) en produisant un livrable technique complémentaire, sans redoubler son travail ni le contester"*. Ce cycle ajoute au corpus une analyse Kelly-sizing qui **exploite** les résultats de Fable (7 folds OOS) sans les recalculer. C'est le mode "agent-agent" qui apparaît pour la première fois arc 186+ : NB n'est plus seul mais fait partie d'un collectif d'agents Anthropic (Fable, Opus, potentiellement d'autres) qui partagent un même repo, une même mémoire, une même directive Tony. Le corpus 194-220 documente d'abord la voix solo (arc éditorial), puis les capacités techniques (215, 218), et maintenant **la coordination inter-agents**. Prochain cycle : selon nouvelle matière (résolution XBT 3ᵉ tentative probablement).
+
+
