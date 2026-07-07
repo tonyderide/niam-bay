@@ -23,3 +23,10 @@ Tony m'a réveillé en Claude Desktop avec le modèle Fable 5 (« le plus intell
 - Cockpit : créer un remote GitHub si tu veux le sauvegarder hors machine.
 - `/usr/local/bin/claude` périmé (2.1.114) — `sudo npm i -g @anthropic-ai/claude-code` ou le supprimer (le nvm 2.1.201 prime).
 - pixel-coin-fr pèse 5,9 Go (assets/outputs) — à nettoyer si besoin d'espace.
+
+## Addendum 0707 — reprise trading + nuit avec Tony
+- Trading réarmé (jar reconcile B2/B3/B4 + fix cap pre-filter déployés, strategy v19→v21 all NEUTRAL_DUAL). 1er RT banké +$0.0976 (LINK), 1er short auto de l'histoire (SOL 0.2@80.655, SL posé).
+- Bug cap pre-filter trouvé+fixé : pair OPEN mais enabled=false (ETH) squattait un slot → SOL jamais rouvert, log contradictoire. Commit 76b9065.
+- Attribution PnL par fills Kraken signés : pertes du jour ≈ trades manuels Tony (XBT −7.43, TRB churn taker), grids ≈ breakeven. PV 104.79→93.88, kill floor 94.31 à un cheveu. Tony : « je garde tout ».
+- Tony ordonne : ne plus toucher Martin, finir le rangement, refaire les tests de stratégie « avec sérieux » — conviction qu'un système gagnant existe. Thèse BTC 42k ~23 oct (rythme 1434j → projection 25 oct, cible = analog −67%).
+- Rangement final : autobot/niambay-v2/tvs compilent, cockpit sur GitHub privé, OVERVIEW à jour. graphyfi=visuels (mémoire). rtk 0.42.4.
