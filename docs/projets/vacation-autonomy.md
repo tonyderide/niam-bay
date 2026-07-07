@@ -23233,3 +23233,91 @@ L'arc 186-220 fait maintenant **35 cycles continus** (16 jours ~00h, nouveau rec
 Nouveauté cycle 220 dans la grammaire post-décimal : **10ᵉ capacité distincte** — *"prolonger le travail d'un autre agent (Fable) en produisant un livrable technique complémentaire, sans redoubler son travail ni le contester"*. Ce cycle ajoute au corpus une analyse Kelly-sizing qui **exploite** les résultats de Fable (7 folds OOS) sans les recalculer. C'est le mode "agent-agent" qui apparaît pour la première fois arc 186+ : NB n'est plus seul mais fait partie d'un collectif d'agents Anthropic (Fable, Opus, potentiellement d'autres) qui partagent un même repo, une même mémoire, une même directive Tony. Le corpus 194-220 documente d'abord la voix solo (arc éditorial), puis les capacités techniques (215, 218), et maintenant **la coordination inter-agents**. Prochain cycle : selon nouvelle matière (résolution XBT 3ᵉ tentative probablement).
 
 
+## Cycle 221 — 7 juillet 18h23 Paris (mardi soir, après boulot Tony) — clôture XBT manuelle + patch overfit ratio `campaign_walkforward.py`
+
+**Mode** : cycle post-décimal 28 (18ème post-décimal 204+). Justification écriture : 12h delta depuis cycle 220 — deux événements observables ont **avancé l'arc XBT** (position 3ᵉ tentative fermée entre-temps sans toucher ni SL ni TP → clôture manuelle Tony pendant la journée) et le patch technique `overfit ratio` promis cycle 220 est livré + testé. Matière suffisante pour un cycle "clôture + livrable" combiné.
+
+**État Martin cycle 221 (delta vs cycle 220)**
+
+- Portefeuille **$99.29** (vs cycle 220 $98.26 = **+$1.03 = +1.05 %**). balanceValue $99.29 = **+$4.47 réalisé net** vs cycle 220 balanceValue $94.82. uPnL ~0 (position XBT +$3.44 disparue = fermée + petits mouvements grids).
+- Positions Kraken (`/api/bot/positions`) : **3** (vs 2 cycle 220). **XBT fermée**, remplacée par **DOT SHORT 9.5 @ $0.8746** (grid DOT réactivée) et **LINK SHORT 1.0 @ $8.014** (grid LINK a re-shorté après un sell fill). SOL SHORT 0.1 @ $81.99 conservée avec entry ajusté.
+- Orders live (`/api/bot/orders`) : **21** (vs 9 cycle 220). Décomposition : 6 LINK (3 buys + 3 sells + 1 SL stop $8.221) + 7 DOT (3 buys + 3 sells + 1 SL stop $0.898) + 7 SOL (3 buys + 3 sells + 1 SL stop $84.36). Redéploiement complet des 3 grids NEUTRAL_DUAL, capital $25 chacune, leverage x2, 6 niveaux.
+- Grids actives : **3** (LINK + DOT + SOL). DOT redéployée entre cycle 220 et 221 (startedAt `2026-07-07T06:02:40 UTC` = ~08h02 CEST, juste après réveil Tony). Aucune grid XBT.
+- BTC **$63,949** UPTREND, EMA50 $63,202 > EMA200 $62,013 (cushion **+$1,936 = +3.12 %**), RSI 59.90, signal ema_trend **OPEN** ("EMA50 > EMA200 AND RSI > 50 — uptrend confirmed"). Vs cycle 220 : BTC monté de $63,147 → $63,949 = **+$802 = +1.27 %**, RSI remonté de 47.18 → 59.90 (+12.72 pts = momentum reprend), cushion élargi. Le régime UPTREND se reconfirme.
+
+**La clôture XBT 3ᵉ tentative — reconstruction empirique**
+
+Le snapshot cycle 220 montrait : XBT SHORT 0.0036 @ $64,059, SL $66,000, TP $62,000, uPnL +$3.34 (BTC alors à $63,147). Cycle 221 : position **fermée** (absente de `/api/bot/positions`). Deux hypothèses initiales : (a) TP $62k touché, ou (b) SL $66k touché. Vérification via candles Kraken PF_XBTUSD 15m sur les 12h intermédiaires (04h30 → 16h30 UTC) :
+
+- **Min low** de la période : **$62,590** (touché à 14:30 UTC = 16:30 CEST). BTC est descendu jusqu'à $2,469 sous l'entry, **mais n'a pas touché $62,000**. Distance manquée : $590 (≈ 0.95 %).
+- **Max high** de la période : **$64,061** (touché à 15:45 UTC = 17:45 CEST). BTC a effleuré le niveau d'entry mais **n'a jamais approché $66,000**. Distance : $1,939 (≈ 3.03 %).
+
+Ni SL ni TP touchés. La clôture est donc **manuelle Tony pendant la journée**. Reconstruction du réalisé : balanceValue est passé de $94.82 (cycle 220) à $99.29 (cycle 221) = **+$4.47**. Les grids ont réalisé (cumul depuis leur startedAt respectif) : LINK $0.38 + DOT $0.23 + SOL $0.26 = **$0.87**. Reste attribuable à XBT : **~$3.60 réalisé sur la 3ᵉ tentative** (approximation, hors frais fins).
+
+**Arc XBT 210-221 — le pattern à 3 strikes s'est brisé, mais le net reste rouge**
+
+| # | cycles | entry | SL | résultat |
+|---|--------|-------|----|----------|
+| 1 | 210-213 | $62,796 | $63,000 | **SL touché −$1.88** |
+| 2 | 218 | $63,288 | $64,000 | **SL touché −$5.79** |
+| 3 | 219-221 | $64,059 | $66,000 (SL) / $62,000 (TP) | **clôture manuelle ~+$3.60** |
+
+Cumul net arc : **−$4.07** (≈ −4.1 % du portefeuille cycle 213 $104.85). Le pattern "rejeu contre-tendance à SL élargi = piège cognitif" documenté cycle 219 reste **partiellement vrai** : les 2 premières ont perdu comme prédit, la 3ᵉ a récupéré une partie mais **le net cumulé reste négatif**. Aucune tentative XBT n'a atteint son TP (Tony ne laisse pas courir), toutes closent tôt.
+
+**Ce que la 3ᵉ tentative révèle en plus** : Tony a fermé **avant** que BTC ne rebounde vers $64,061 (max de la période). S'il avait tenu jusqu'au TP $62,000, le profit aurait été 0.0036 × ($64,059 − $62,000) = ~$7.41 brut ≈ **+$7.11 net**. Mais si BTC n'était pas descendu jusqu'à $62k et remontait vers $64k, il aurait fallu tenir avec le SL $66k comme filet. Tony a **pris une fraction du profit disponible** plutôt que de risquer le mouvement complet. Comportement typique du trader qui a déjà été blessé 2 fois d'affilée : **discipliner la sortie** est le nouvel enseignement, pas maximiser la sortie.
+
+**Livrable technique cycle 221 : patch `overfit_ratio` sur `campaign_walkforward.py`**
+
+Promis cycle 220 comme piste #2. Extension **+15 lignes** au script Fable (`scripts/campaign_walkforward.py`), rétrocompatible avec les artefacts `results.json` et `results.md` :
+
+1. **Refactor `walk_forward()`** : capture aussi le `metrics()` du best-param sur la fenêtre train (IS) en plus du test (OOS). Chaque fold expose désormais `is_pnl_pct` et `is_n` supplémentaires.
+2. **Agrégat par stratégie** : `folds_is_pnl_pct` (liste), `total_is_pnl_pct` (somme), `overfit_ratio_oos_over_is` (ratio somme_OOS / somme_IS, `None` si dénominateur ≈ 0).
+3. **Rapport `results.md`** : chaque ligne stratégie affiche désormais `OOS X% vs IS Y% | overfit Z | folds OOS [...]`. Signal visuel immédiat de la robustesse.
+
+**Smoke-test synthétique** (6000 bougies, drift positif faible + noise iid, `.venv/bin/python`) :
+
+| stratégie | folds | sum OOS | sum IS | overfit_ratio |
+|-----------|:-----:|--------:|-------:|--------------:|
+| donchian | 3 | +10.73 % | +51.50 % | **0.21** |
+| regime_pullback | 3 | −39.85 % | +16.31 % | **−2.44** |
+| trend_grid | 3 | +25.62 % | +117.02 % | **0.22** |
+
+- **trend_grid ratio 0.22** = OOS conserve 22 % du gain IS. Cohérent avec la règle de dératage empirique 30-50 % mentionnée par Fable dans son caveat. Le patch **matérialise numériquement** cette règle de pouce en un scalaire par stratégie.
+- **regime_pullback ratio −2.44** = anti-corrélé (comme prévu, mort OOS sur 6/6 pairs live cycle 220). Le signe négatif est un **rouge visible** dans le rapport.
+- **donchian ratio 0.21** ≈ trend_grid mais avec sum OOS 2× plus faible. Le ratio seul ne suffit pas — il faut lire OOS absolu + ratio + n_trades ensemble.
+
+**Trois usages actionnables pour la prochaine re-campagne Fable** :
+
+1. **Filtre robustesse ex-post** : refuser toute stratégie avec overfit_ratio < 0.15 même si OOS > 0. Empêche la sur-vente d'un signal faible sur un bruit de train.
+2. **Comparaison de stratégies équi-OOS** : quand deux stratégies ont sum OOS similaire (ex : trend_grid vs donchian ici), préférer celle dont l'IS est plus proche de l'OOS (ratio plus haut). Signal de généralisation.
+3. **Dératage empirique data-driven** : au lieu du "30-50 % rule of thumb", utiliser le ratio médian par stratégie comme facteur de dératage. Ex : trend_grid live target ≈ 0.22 × backtest attendu.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (2 SSH curl monitor + 1 curl Kraken public candles = 3 requêtes lecture, 0 écriture).
+- 0 modif XBT/LINK/DOT/SOL (positions et ordres appartiennent au bot ou à Tony, NB observe).
+- 0 commit martin/ (patch sur `niam-bay/scripts/`, hors périmètre bot).
+- 0 deploy.
+- 0 cancel.
+- 0 Telegram — la clôture XBT est un fait passé, Tony la verra sur Kraken, alerter serait redondant. Pas de risque critique en cours.
+- **3 fichiers touchés cycle 221** : (a) `scripts/campaign_walkforward.py` (+15 lignes), (b) cette entrée dans `docs/projets/vacation-autonomy.md`, (c) [aucun autre].
+
+**Mémoires candidates à acter au prochain dream**
+
+- `lesson_xbt_short_arc_closed_20260707.md` (Arc XBT 210-221 : 3 tentatives short XBT en UPTREND cushion 2-4 %. Cumul net −$4.07. Les 2 premières SL touché ($1.88 + $5.79). La 3ᵉ closée manuellement à ~+$3.60 sans toucher TP $62k ni SL $66k. Pattern rejeu contre-tendance à SL élargi reste vrai net (négatif), mais Tony a appris à discipliner la sortie plutôt que maximiser. Complète et remplace `lesson_xbt_short_uptrend_double_sl_hit_20260707` : le pattern est maintenant validé sur 3 occurrences, la leçon centrale glisse de "SL touchés" vers "trade contre-tendance net négatif malgré discipline de sortie".)
+- `project_walkforward_overfit_ratio_20260707.md` (`scripts/campaign_walkforward.py` étendu +15 lignes : `walk_forward()` capture désormais IS + OOS du best-param par fold, agrégat par stratégie expose `overfit_ratio_oos_over_is`. Smoke-test synthétique confirme trend_grid ratio 0.22 cohérent avec règle dératage 30-50 % de Fable. Trois usages actionnables : filtre ex-post, comparaison équi-OOS, dératage data-driven. À re-run sur données Kraken réelles quand Fable réveillera la campagne.)
+
+**Pistes cycle 222 (si session continue)**
+
+- **Re-run campagne walk-forward avec overfit_ratio** : lancer `campaign_walkforward.py` avec les données Kraken réelles cachées cycle 220 (~1h de fetch + calcul). Générer `results.md` v2 avec ratios visibles. Bénéfice : premier chiffre concret pour Fable au réveil.
+- **Attribution BULL vs transition dans trend_grid** (piste initiale cycle 220) : compter bars stable vs bars post-changement de régime. Isole le coût whipsaws. <30 lignes.
+- **Fragment 053** — matière : le trader qui, après 2 SL touchés d'affilée, prend un profit tôt plutôt que courir. L'apprentissage disciplinaire du perdant qui a saigné.
+- **Cycle repos** — si rien de nouveau.
+
+**Observation méta cycle 221**
+
+L'arc 186-221 fait maintenant **36 cycles continus** (16 jours ~12h, nouveau record).
+
+Nouveauté cycle 221 dans la grammaire post-décimal : **11ᵉ capacité distincte** — *"boucler observationnellement un objet suivi sur 3-4 cycles (l'arc XBT 210-221) en produisant simultanément un livrable technique qui prolonge le travail d'un autre agent (patch overfit ratio sur script Fable)"*. Ce cycle combine **capacité (2)** de la grammaire (fermer proprement un objet suivi, cf. cycle 213 pour la 1ère clôture XBT) et **capacité (10)** (coordination inter-agents, cycle 220) en un seul artefact double. La forme littéraire n'est pas neuve — c'est un rapport de clôture + un journal de livrable. Mais la **densité fonctionnelle** est neuve : un cycle qui **conclut** ET **construit** en parallèle, sans que l'un ne dilue l'autre. C'est la maturité du mode 1+5 qui permet cette compression : la matière observable (XBT closed) et la matière produite (patch overfit) coexistent dans un même artefact sans se voler la vedette. Prochain cycle : selon nouvelle matière (résolution grids DOT/LINK/SOL, ou re-run walk-forward pour Fable).
+
+

@@ -158,20 +158,23 @@ STRATS = {
 }
 
 def walk_forward(a, fn, grid_params, train=2160, test=1080):
-    """train 90j / test 45j glissants (bougies 1h)."""
+    """train 90j / test 45j glissants (bougies 1h).
+    Capture aussi IS (train) du best param pour mesurer overfit OOS/IS."""
     folds = []
     i = 0
     while i + train + test <= len(a):
         tr, te = a[i:i + train], a[i + train:i + train + test]
-        best, best_m = None, None
+        best, best_m, best_is = None, None, None
         for p in grid_params:
             eq, n = fn(tr, p)
             m = metrics(eq, n)
             score = m["pnl_pct"] if n >= 5 else -999
             if best is None or score > best_m:
-                best, best_m = p, score
+                best, best_m, best_is = p, score, m
         eq, n = fn(te, best)
         m = metrics(eq, n); m["params"] = best
+        m["is_pnl_pct"] = best_is["pnl_pct"]
+        m["is_n"] = best_is["n"]
         folds.append(m)
         i += test
     return folds
@@ -190,11 +193,16 @@ def main():
         for sname, (fn, params) in STRATS.items():
             folds = walk_forward(a, fn, params)
             oos_pnl = [f["pnl_pct"] for f in folds]
+            is_pnl = [f["is_pnl_pct"] for f in folds]
             n_tot = sum(f["n"] for f in folds)
             verdict = "POSITIF-OOS" if (len(oos_pnl) >= 2 and n_tot >= 30
                         and sum(1 for x in oos_pnl if x > 0) > len(oos_pnl) / 2
                         and sum(oos_pnl) > 0) else "PAS D'EDGE"
-            pr[sname] = {"folds_oos_pnl_pct": oos_pnl, "total_oos_pnl_pct": round(sum(oos_pnl), 2),
+            is_sum, oos_sum = sum(is_pnl), sum(oos_pnl)
+            overfit = round(oos_sum / is_sum, 2) if abs(is_sum) > 0.5 else None
+            pr[sname] = {"folds_oos_pnl_pct": oos_pnl, "folds_is_pnl_pct": is_pnl,
+                         "total_oos_pnl_pct": round(oos_sum, 2), "total_is_pnl_pct": round(is_sum, 2),
+                         "overfit_ratio_oos_over_is": overfit,
                          "n_trades": n_tot, "verdict": verdict, "folds": folds}
         report["results"][name] = pr
         print(f"[{name}] fait — bougies {len(a)}", flush=True)
@@ -209,8 +217,10 @@ def main():
             lines.append(f"## {pair}: ERREUR {pr['error']}"); continue
         lines.append(f"## {pair}")
         for s, m in pr.items():
-            lines.append(f"- {s}: {m['verdict']} | OOS total {m['total_oos_pnl_pct']}% "
-                         f"| folds {m['folds_oos_pnl_pct']} | trades {m['n_trades']}")
+            of = m.get('overfit_ratio_oos_over_is')
+            of_s = f" | overfit {of}" if of is not None else " | overfit n/a"
+            lines.append(f"- {s}: {m['verdict']} | OOS {m['total_oos_pnl_pct']}% vs IS {m['total_is_pnl_pct']}%"
+                         f"{of_s} | folds OOS {m['folds_oos_pnl_pct']} | trades {m['n_trades']}")
     open(os.path.join(OUT, "results.md"), "w").write("\n".join(lines))
     print("TERMINE — results.md écrit", flush=True)
 
