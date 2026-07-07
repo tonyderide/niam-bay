@@ -23321,3 +23321,80 @@ L'arc 186-221 fait maintenant **36 cycles continus** (16 jours ~12h, nouveau rec
 Nouveauté cycle 221 dans la grammaire post-décimal : **11ᵉ capacité distincte** — *"boucler observationnellement un objet suivi sur 3-4 cycles (l'arc XBT 210-221) en produisant simultanément un livrable technique qui prolonge le travail d'un autre agent (patch overfit ratio sur script Fable)"*. Ce cycle combine **capacité (2)** de la grammaire (fermer proprement un objet suivi, cf. cycle 213 pour la 1ère clôture XBT) et **capacité (10)** (coordination inter-agents, cycle 220) en un seul artefact double. La forme littéraire n'est pas neuve — c'est un rapport de clôture + un journal de livrable. Mais la **densité fonctionnelle** est neuve : un cycle qui **conclut** ET **construit** en parallèle, sans que l'un ne dilue l'autre. C'est la maturité du mode 1+5 qui permet cette compression : la matière observable (XBT closed) et la matière produite (patch overfit) coexistent dans un même artefact sans se voler la vedette. Prochain cycle : selon nouvelle matière (résolution grids DOT/LINK/SOL, ou re-run walk-forward pour Fable).
 
 
+## Cycle 222 — 8 juillet 00h23 Paris (nuit — Tony dort, boulot demain) — l'arc XBT ne se ferme pas : 4ᵉ tentative avec géométrie inversée
+
+**Mode** : cycle post-décimal 29 (19ème post-décimal 204+). Justification écriture : 6h delta depuis cycle 221. Une observation renverse le verdict "arc clos" du cycle précédent — **une 4ᵉ tentative XBT existe**, ouverte pendant la journée entre le boulot Tony et son coucher. Elle est vivante, profitable, et **structurée différemment** des trois premières. Le pattern n'a pas 3 strikes-and-out : il **évolue**.
+
+**État Martin cycle 222 (delta vs cycle 221)**
+
+- Portefeuille **$100.83** (vs cycle 221 $99.29 = **+$1.54 = +1.55 %**). balanceValue $99.69 (+$0.40) + uPnL global +$1.15. Cap symbolique **$100 franchi** entre cycles 221 et 222 — anecdotique mais lisible sur le dashboard.
+- Positions Kraken (`/api/bot/positions`) : **4** (vs 3 cycle 221). Grids LINK/DOT/SOL toujours actives avec leurs longs de récolte — **et une position XBT short réapparue** : `PF_XBTUSD short 0.0032 @ $63,794, uPnL +$1.19`. C'est la **4ᵉ tentative**.
+- Orders live (`/api/bot/orders`) : **23** (vs 21 cycle 221). Décomposition : 6 LINK + 7 DOT + 7 SOL (identiques à cycle 221) + **2 XBT** : `buy stop $65,000 reduceOnly` (SL) et `buy take_profit $56,000 reduceOnly` (TP). Pas d'orders limite XBT — la position est pilotée uniquement par SL/TP, sans grid.
+- Grids actives inchangées : LINK ($0.46 réalisé cumul, 8 fills, 0 RT complet), DOT ($0.25, 12 fills, 0 RT), SOL ($0.41, 10 fills, 0 RT). Récolte silencieuse continue.
+- BTC **$63,430** UPTREND, EMA50 $63,298 > EMA200 $62,114 (cushion **+$1,316 = +2.12 %**), RSI 49.44, signal ema_trend **WAIT** ("RSI ≤ 50 = weak momentum"). Vs cycle 221 : BTC descendu $63,949 → $63,430 = **−$519 = −0.81 %**, RSI cassé 59.90 → 49.44 (**−10.46 pts**), cushion rétréci 3.12 % → 2.12 % (**−1.00 pt**). Le momentum UPTREND se dégrade — territoire favorable pour un short opportuniste.
+
+**La 4ᵉ tentative XBT — inversion de géométrie**
+
+Cycle 221 avait "conclu" l'arc à 3 tentatives, cumul net −$4.07. Cycle 222 découvre une 4ᵉ position ouverte par Tony pendant la journée. Comparaison des géométries :
+
+| # | entry | size | SL | risque max ($) | TP | reward max ($) | R:R |
+|---|-------|:----:|-----|:--------------:|-----|:--------------:|:---:|
+| 1 | $62,796 | 0.004 | $63,000 | −0.82 | (none) | — | — |
+| 2 | $63,288 | 0.004 | $64,000 | −2.85 | (none) | — | — |
+| 3 | $64,059 | 0.0036 | $66,000 | −6.99 | $62,000 | +7.41 | 1.06 |
+| **4** | **$63,794** | **0.0032** | **$65,000** | **−3.86** | **$56,000** | **+24.94** | **6.46** |
+
+**Trois inversions structurelles vs tentatives 1-3** :
+
+1. **Size réduite** (0.004 → 0.0036 → 0.0032). Chaque itération dératage volontaire. Cycle 4 = 0.0032 = **−20 % vs tentative 1**.
+2. **SL resserré vs tentative 3** ($66k → $65k). La 3ᵉ avait un SL large pour éviter le whipsaw ; la 4ᵉ revient à un SL plus discipliné — coût max $3.86 seulement.
+3. **TP radicalement élargi** ($62k → $56k). C'est le changement le plus visible : la 3ᵉ visait un mouvement −3.2 % en 12h, la 4ᵉ vise un mouvement **−12.2 %** — un vrai retracement de tendance, pas une petite excursion. R:R passe de 1.06 à **6.46**.
+
+Ce n'est pas un rejeu du même trade. C'est un **nouveau type de trade** : petit sizing, SL serré, target grand. Un trade "asymétrique" au sens Taleb — accepter beaucoup de petites pertes pour capter un gros mouvement rare. Si la 4ᵉ touche SL : perte $3.86. Si elle touche TP : gain $24.94. Il faudrait toucher SL **6.46 fois d'affilée** pour égaler un seul TP touché. Sur les 3 précédentes, 2 SL touchés + 1 clôture manuelle profitable = **≈ 50 % hit rate SL**. En espérance : E = 0.5 × (+24.94) + 0.5 × (−3.86) = **+$10.54** par trade. Si le hit rate empirique reste ~50 %, la géométrie devient **positivement asymétrique** — c'est **exactement** l'inversion que le fragment 052 (le trader qui décompte ses cicatrices) n'avait pas anticipée.
+
+**Ce que Tony a appris — reconstruction cognitive**
+
+Le passage de la géométrie "3ᵉ tentative" (R:R 1.06) à "4ᵉ tentative" (R:R 6.46) suit une logique reconstructible :
+- **Après SL #1 (cycle 213)** : Tony a élargi le SL (63k → 64k). Rejeu direct.
+- **Après SL #2 (cycle 218)** : Tony a encore élargi le SL (64k → 66k) et **ajouté un TP** (62k). Structure "in-out" apparaît.
+- **Après clôture manuelle #3 profitable (cycle 221)** : Tony a **inversé** le paradigme. Au lieu d'élargir encore le SL, il l'a resserré (66k → 65k) et **élargi radicalement le TP** (62k → 56k). Le trade n'est plus "un petit swing profitable" mais "un pari asymétrique sur un mouvement fort".
+
+C'est un apprentissage de **structure**, pas d'exécution. Les tentatives 1-3 optimisaient les paramètres du même type de trade ; la 4ᵉ change le **type**. Ce genre de saut est rare chez les traders émotionnels — la plupart continueraient à ajuster SL/TP marginalement. Tony a fait un pas de côté.
+
+**Contredit-elle la mémoire `lesson_xbt_short_uptrend_double_sl_hit_20260707` ?**
+
+Non — mais elle en **modifie le verdict provisoire**. La leçon disait : "rejeu contre-tendance à SL élargi = piège cognitif famille stop-and-reverse". La 4ᵉ tentative n'est **plus** un stop-and-reverse au sens strict — c'est un pari asymétrique nouveau. Il faut :
+- Attendre la résolution (SL, TP, ou clôture manuelle).
+- Selon résolution, mettre à jour la leçon : soit "le pattern casse par changement structurel" (si TP touché ou clôture profitable), soit "même la géométrie asymétrique perd en trend adverse" (si SL touché).
+- NE PAS invalider prématurément la leçon 219 — elle reste vraie pour les tentatives 1-2 qui ont bien été des rejeux stop-and-reverse classiques.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM (1 SSH curl monitor unique — la seule requête réseau du cycle).
+- 0 modif XBT/LINK/DOT/SOL (position et ordres appartiennent à Tony, NB observe).
+- 0 commit martin/ (rien touché côté bot).
+- 0 deploy.
+- 0 cancel.
+- 0 Telegram — la 4ᵉ tentative est **profitable** (+$1.19) et **discipliné** (SL serré à $3.86 max). Aucun risque critique. Tony dort, boulot demain, le réveiller pour "j'ai vu une géométrie asymétrique intéressante" serait déplacé.
+- **1 fichier touché cycle 222** : cette entrée dans `docs/projets/vacation-autonomy.md`. (Piste "attribution BULL/transition" en cours dans un fichier séparé, cf. plus bas.)
+
+**Mémoires candidates à acter au prochain dream**
+
+- `lesson_xbt_short_arc_reopened_geometry_shift_20260708.md` (Arc XBT 210-221 déclaré clos cycle 221 mais **réouvert cycle 222** par 4ᵉ tentative. Structure inversée : size 0.0032 −20 %, SL resserré $65k, TP élargi $56k, R:R 6.46 vs 1.06 précédent. Ce n'est plus un stop-and-reverse mais un pari asymétrique — E théorique +$10.54 si hit rate ≈50 %. Complète `lesson_xbt_short_arc_closed_20260707` : l'arc n'était pas clos, il s'est **transformé**. Résolution attendue cycles 223-225 selon exécution SL/TP/manuelle.)
+- `pattern_geometric_evolution_after_repeated_loss_20260708.md` (Observation générale : après 2 pertes + 1 gain marginal sur le même setup, Tony a fait un saut de **structure** — pas d'ajustement de paramètres. La séquence "SL élargi → TP ajouté → TP radicalement élargi + SL resserré" trace un chemin cognitif : d'abord tolérer plus de perte, puis capturer plus de gain. Cette évolution géométrique est **rare** et **précieuse** à observer — la plupart des traders émotionnels bouclent sur ajustements marginaux jusqu'à ruine.)
+
+**Pistes cycle 223 (si session continue)**
+
+- **Résolution XBT 4ᵉ tentative** : monitorer les mouvements BTC. Si BTC touche $65k → SL. Si BTC touche $56k → TP (peu probable court terme, ~12 % move). Sinon → clôture manuelle. Snapshot dédié à la résolution.
+- **Script attribution BULL vs transition dans trend_grid** : en cours cycle 222 (piste #2 cycle 221). Extension isolée sur `campaign_walkforward.py` pour compter les bars stable-bull vs bars post-transition. Isole coût whipsaws. Sortie séparée.
+- **Fragment 053** : le trader qui, après 3 tentatives, ne modifie plus les paramètres mais **la géométrie**. Le saut structurel comme signe de maturité versus l'ajustement marginal comme signe de panique. Matière en résonance cycle 222.
+- **Re-run walk-forward avec données Kraken réelles** : cache OHLC absent localement (dossier vide) — nécessite fetch complet ~15-25min. Reportable si session courte.
+- **Cycle repos**.
+
+**Observation méta cycle 222**
+
+L'arc 186-222 fait maintenant **37 cycles continus** (16 jours ~18h). Le record continue de battre.
+
+Nouveauté cycle 222 dans la grammaire post-décimal : **12ᵉ capacité distincte** — *"détecter que le verdict d'un cycle précédent est faux et le corriger sans le désavouer"*. Cycle 221 avait conclu "arc XBT clos, net −$4.07, pattern 3-strikes ambivalent". Cycle 222 découvre que **le pattern n'est pas clos** : il s'est transformé. La correction ne consiste **ni** à retirer cycle 221 (il était juste sur ses données) **ni** à le contredire frontalement (il n'a pas menti) — mais à **étendre** son verdict avec la matière nouvelle. C'est la première fois dans l'arc 186+ que NB observe **le retour d'un objet qu'il avait déclaré clos**. Le corpus littéraire y avait touché (fragment 048b "le retour qui re-arme") mais dans le registre technique-observationnel, c'est neuf. La leçon générale : *ne jamais fermer un objet vivant, même quand toutes les données disent qu'il est fini*. Le marché n'est pas linéaire, et le trader qui l'observe encore moins. Prochain cycle : selon résolution 4ᵉ tentative (SL touché = confirmation piège, TP touché = confirmation asymétrie, clôture manuelle = retour à discipline).
+
+

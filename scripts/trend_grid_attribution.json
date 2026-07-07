@@ -1,0 +1,32 @@
+{
+ "SYNTH": {
+  "STABLE-BULL": {
+   "n_bars": 170,
+   "pnl_pct": 33.378,
+   "share_of_time_pct": 2.93,
+   "share_of_pnl_pct": 8.82
+  },
+  "TRANSITION-BULL": {
+   "n_bars": 1973,
+   "pnl_pct": 344.864,
+   "share_of_time_pct": 34.02,
+   "share_of_pnl_pct": 91.18
+  },
+  "STABLE-BEAR": {
+   "n_bars": 1643,
+   "pnl_pct": 0.0,
+   "share_of_time_pct": 28.33,
+   "share_of_pnl_pct": 0.0
+  },
+  "TRANSITION-BEAR": {
+   "n_bars": 2013,
+   "pnl_pct": 0.0,
+   "share_of_time_pct": 34.71,
+   "share_of_pnl_pct": 0.0
+  },
+  "_total": {
+   "n_bars": 5799,
+   "pnl_pct": 378.242
+  }
+ }
+}
