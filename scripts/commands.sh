@@ -230,3 +230,6 @@ for p in PF_LINKUSD PF_DOTUSD PF_SOLUSD PF_ADAUSD PF_XBTUSD PF_ETHUSD; do
 done
 echo '|||'
 curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'"
+
+# [auto 2026-07-10 00:24] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | tail -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | tail -25

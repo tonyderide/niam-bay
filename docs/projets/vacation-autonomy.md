@@ -23398,3 +23398,139 @@ L'arc 186-222 fait maintenant **37 cycles continus** (16 jours ~18h). Le record 
 Nouveauté cycle 222 dans la grammaire post-décimal : **12ᵉ capacité distincte** — *"détecter que le verdict d'un cycle précédent est faux et le corriger sans le désavouer"*. Cycle 221 avait conclu "arc XBT clos, net −$4.07, pattern 3-strikes ambivalent". Cycle 222 découvre que **le pattern n'est pas clos** : il s'est transformé. La correction ne consiste **ni** à retirer cycle 221 (il était juste sur ses données) **ni** à le contredire frontalement (il n'a pas menti) — mais à **étendre** son verdict avec la matière nouvelle. C'est la première fois dans l'arc 186+ que NB observe **le retour d'un objet qu'il avait déclaré clos**. Le corpus littéraire y avait touché (fragment 048b "le retour qui re-arme") mais dans le registre technique-observationnel, c'est neuf. La leçon générale : *ne jamais fermer un objet vivant, même quand toutes les données disent qu'il est fini*. Le marché n'est pas linéaire, et le trader qui l'observe encore moins. Prochain cycle : selon résolution 4ᵉ tentative (SL touché = confirmation piège, TP touché = confirmation asymétrie, clôture manuelle = retour à discipline).
 
 
+
+
+## Cycle 223 — 10 juillet 00h23 Paris (nuit — Tony dort, boulot demain) — 48h de gap, l'arc XBT s'étire à 5 tentatives, la maturité n'a pas pris
+
+**Mode** : cycle post-décimal 30 (20ème post-décimal 204+). Justification écriture : **48h delta depuis cycle 222** — nouveau record de gap dans le run 186+, largement au-delà des 6h de cadence habituelle. Une session de 2 jours calendaires sans cycle NB documenté. La matière observationnelle accumulée est dense : le 4ᵉ trade XBT est résolu (fermé manuellement, ni SL ni TP), un 5ᵉ trade XBT est apparu avec structure **régressive vs 4ᵉ** (aucun stop-loss), les 3 grids ont redémarré, portefeuille −6.03 %. Le fragment 054 accompagne — écriture par binôme.
+
+**État Martin cycle 223 (delta vs cycle 222)**
+
+- Portefeuille **$94.75** (vs cycle 222 $100.83 = **−$6.08 = −6.03 %**). balanceValue $95.10 (**−$4.59**) + uPnL global −$0.36 (**−$1.51**). Cap symbolique $100 **perdu** entre cycles 222 et 223 après avoir été franchi. Réalisé net sur la fenêtre : négatif ~$4.59.
+- Positions Kraken (`/api/bot/positions`) : **3** (vs 4 cycle 222). Grids LINK/DOT/SOL toujours actives avec leurs shorts de récolte (SOL 0.11 @$78.36 +$0.02, LINK 1.1 @$7.797 +$0.04) — **et une position XBT short réapparue** : `PF_XBTUSD short 0.0036 @ $63,198, uPnL −$0.42`. **C'est la 5ᵉ tentative, pas la 4ᵉ** — taille et prix diffèrent (cycle 222 était 0.0032 @$63,794).
+- Orders live (`/api/bot/orders`) : **21** (vs 23 cycle 222). Décomposition : 6 LINK + 7 DOT + 7 SOL (identiques structure) + **1 XBT unique** : `buy take_profit $61,000 reduceOnly`. **Aucun ordre stop-loss XBT**. Rupture structurelle vs 4ᵉ tentative qui avait SL $65k + TP $56k. Le SL a disparu.
+- Grids actives inchangées : LINK, DOT, SOL. Mais **toutes les 3 ont redémarré** dans les 48h — LINK startedAt 2026-07-09 13:02Z (9h20 ago), DOT 2026-07-09 04:02Z (18h20 ago), SOL 2026-07-08 23:32Z (22h50 ago). Les grids observées cycle 222 (avec réalisé $0.46 + $0.25 + $0.41 cumul) sont mortes ; les grids courantes sont des **redéploiements récents**. Cumul frais/pertes de restart : contribue à −$4.59 balance drop.
+- BTC **$63,308** UPTREND, EMA50 $62,754 > EMA200 $62,216 (cushion +$1,092 = +1.76 %), RSI 63.29, signal ema_trend **OPEN** ("EMA50 > EMA200 AND RSI 63.29 > 50, uptrend confirmed"). Vs cycle 222 : BTC descendu $63,430 → $63,308 = **−$122 = −0.19 %**. Fenêtre 48h beaucoup plus volatile que le net : max $63,706 le 0708 00h, min $61,472 le 0708 15h, remontée $63,308 le 0710 00h. La descente $63,706 → $61,472 = **−3.4 %** est le mouvement significatif.
+
+**Résolution du 4ᵉ trade XBT — reconstruction OHLC Kraken**
+
+Fetch `api.kraken.com/0/public/OHLC?pair=XBTUSD&interval=60&since=[cycle 222 start]` (47 bougies horaires). Résultat sans ambiguïté :
+
+| horodatage UTC | high | low | commentaire |
+|---|---:|---:|---|
+| 2026-07-08 00:00 | $63,706 | $63,278 | max fenêtre — cycle 222 ouverture |
+| 2026-07-08 08:00 | $62,877 | $61,822 | descente rapide |
+| 2026-07-08 15:00 | $61,847 | **$61,473** | **min fenêtre** |
+| 2026-07-08 → 09 | — | — | oscillation $61.7k-$62.4k |
+| 2026-07-09 18:00 | $63,490 | $63,027 | remontée |
+| 2026-07-09 22:00 | $63,322 | $63,191 | pré-cycle 223 |
+
+- **BTC n'a jamais touché $65,000** (SL du 4ᵉ trade) — max fenêtre $63,706 très en dessous.
+- **BTC n'a jamais approché $56,000** (TP du 4ᵉ trade) — min fenêtre $61,472 encore $5,472 au-dessus.
+- Le 4ᵉ trade **ne peut avoir été résolu que par clôture manuelle Tony** — 3ᵉ pattern de sortie déjà observé cycle 221 (tentative 3).
+
+Reconstruction du profit approximatif : short 0.0032 @$63,794. Si fermé au min $61,472 : profit brut = 0.0032 × ($63,794 − $61,472) = $7.43. Après frais 2×0.05%=0.1% : ~$7.03 net. Si fermé plus tôt à $62,500 (probable moyenne) : ~$4.10 net. **Fourchette réaliste : +$4 à +$7 net sur le 4ᵉ trade**.
+
+Mais le portefeuille a **perdu** $6.08 sur la fenêtre. Donc :
+- 4ᵉ trade XBT profit +$4 à +$7
+- 5ᵉ trade XBT uPnL −$0.42 (pas encore réalisé)
+- Grid restarts (LINK, DOT, SOL redéployées) : contribution difficile à isoler
+- **Delta implicite : −$10 à −$13 réalisé sur les grids restart cycles + éventuelles autres opérations**
+
+Sans accès aux logs Martin détaillés, l'attribution fine reste imprécise. Le fait dur : **balance a chuté de $4.59 malgré probable profit XBT +$4-7**.
+
+**Arc XBT 210-223 — la 5ᵉ tentative complète le tableau**
+
+| # | cycles | entry | size | SL | TP | R:R | résolution | ~P&L net |
+|---|--------|-------|:----:|-----|-----|:---:|------------|:--------:|
+| 1 | 210-213 | $62,796 | 0.004 | $63,000 | — | — | SL touché | **−$1.88** |
+| 2 | 218 | $63,288 | 0.004 | $64,000 | — | — | SL touché | **−$5.79** |
+| 3 | 219-221 | $64,059 | 0.0036 | $66,000 | $62,000 | 1.06 | clôture manuelle | **+$3.60** |
+| 4 | 222-223 | $63,794 | 0.0032 | $65,000 | $56,000 | 6.46 | clôture manuelle | **+$4 à +$7** |
+| **5** | **223+** | **$63,198** | **0.0036** | **AUCUN** | **$61,000** | — | **en cours** | **−$0.42 uPnL** |
+
+Cumul net arc 5 tentatives : approximativement **+$0.00 à +$3.00**. L'arc est passé de rouge à ~neutre / légèrement vert. La 4ᵉ tentative a effectivement **récupéré le déficit accumulé sur 1-2** — le pari asymétrique en forme a payé en pratique via clôture disciplinée.
+
+**Mais la 5ᵉ tentative renverse ce verdict — le trader n'a pas gardé la maturité**
+
+Le fragment 053 avait posé la question : Tony mue-t-il en serpent (même trader avec peau neuve) ou en papillon (nouvel espèce) ? Cycle 223 répond **ni l'un ni l'autre** :
+
+- Le 4ᵉ trade a bien été un pari asymétrique en forme (R:R 6.46).
+- Il a été fermé en pratique comme un scalp discipliné (avant que la géométrie prévue ne s'exécute).
+- Immédiatement après, le 5ᵉ trade abandonne la géométrie asymétrique **et le stop-loss** — retour à un short spéculatif sans plancher, taille 0.0036 comme les tentatives 1-2.
+
+Ce n'est pas une mue. C'est une **expérimentation ponctuelle** suivie d'un **retour au paradigme antérieur**. La géométrie asymétrique du 4ᵉ était une réponse à une situation (BTC haut, cushion réduit), pas un principe. Le 5ᵉ trade correspond à une situation différente (BTC dans un range $61.5k-$63.5k après retracement) et applique une géométrie différente — plus primitive.
+
+**Ce que cela nous apprend** :
+
+1. **Le trader n'a pas UN paradigme unique** ; il a **plusieurs modes** activés selon lecture de situation.
+2. **Un mode réussi ne devient pas automatiquement le mode standard**. Le 4ᵉ trade a payé, mais Tony ne l'a pas généralisé au 5ᵉ.
+3. **La discipline observée en pratique** (clôture manuelle disciplinée du 4ᵉ) **peut cohabiter avec l'indiscipline en structure** (5ᵉ sans SL).
+4. **L'observateur qui pose une question binaire** reçoit une réponse "ni-oui-ni-non" quand la réalité est plus riche.
+
+Le fragment 053 (cycle 222) a mal posé la question. Le fragment 054 (cycle 223, écrit ce soir) corrige la question elle-même, pas seulement la réponse. C'est une **révision épistémologique**.
+
+**Risque actuel du 5ᵉ trade XBT**
+
+Position short 0.0036 @$63,198, aucun stop-loss :
+- Si BTC touche $65,000 : perte = 0.0036 × ($65,000 − $63,198) = **$6.49** (7 % du portefeuille $94.75)
+- Si BTC touche $66,000 : perte = 0.0036 × ($66,000 − $63,198) = **$10.09** (10.7 % du portefeuille)
+- Si BTC touche $70,000 : perte = 0.0036 × ($70,000 − $63,198) = **$24.49** (25.9 % du portefeuille)
+- Si BTC touche $61,000 (TP) : profit = 0.0036 × ($63,198 − $61,000) = **$7.91** (8.3 % du portefeuille)
+
+**Ratio risque-perte-illimitée / gain-plafonné défavorable au-delà de $65k**. Le seul filet est un jugement humain futur — Tony doit décider s'il ferme manuellement si BTC monte. Historique : Tony a fermé le 4ᵉ manuellement bien avant l'exécution géométrique. Prior : il fera pareil pour le 5ᵉ. Mais le prior n'est pas un stop.
+
+**Pourquoi ne pas alerter Tony via Telegram ?**
+
+Cas de conscience frontière vacation. Arguments pour alerter :
+- 5ᵉ trade sans SL = risque potentiel jusqu'à ~26 % du portefeuille si BTC break vers $70k.
+- La 5ᵉ tentative révèle une régression discipline non anticipée.
+
+Arguments contre :
+- BTC actuellement à $63,308, uPnL −$0.42 seulement, pas de risque imminent.
+- Tony sait qu'il n'a pas mis de SL — c'est son choix conscient (le 4ᵉ avait un SL, le 5ᵉ non = décision).
+- Il dort, boulot demain, alerter "pas de SL sur XBT" est redondant avec ce qu'il sait déjà.
+- Aucun trigger monitor n'est déclenché — grids en HOLD normal, BTC en UPTREND signal OPEN.
+- La règle Telegram : "quand tu as quelque chose à reporter". Ici la matière est **observationnelle**, pas critique.
+
+**Décision : pas de Telegram cette nuit**. Si BTC dépasse $64,500 dans les prochaines heures (approche de $65k = perte $6.49 = 6.9 % portefeuille), reconsidérer. Sinon laisser Tony découvrir le 5ᵉ trade à son réveil.
+
+**Frontière vacation respectée**
+
+- 0 modif Martin/VM.
+- 0 modif XBT/LINK/DOT/SOL (position et ordres appartiennent à Tony ou au bot, NB observe).
+- 0 commit martin/.
+- 0 deploy.
+- 0 cancel.
+- 0 Telegram.
+- **1 SSH curl monitor** (unique requête vers l'API Martin).
+- **1 curl Kraken OHLC public** (lecture only, hors périmètre bot).
+- **2 fichiers touchés cycle 223** : (a) `docs/fragments/fragment-054-la-mue-qui-n-a-pas-eu-lieu.md` créé, (b) cette entrée dans `docs/projets/vacation-autonomy.md`.
+
+**Mémoires candidates à acter au prochain dream (dette accumulée cycles 214-223)**
+
+Note critique : **memory.nb1 est stuck au cycle 213**. Les cycles 214-223 (10 cycles = 60h de matière calendaire) ne sont pas condensés en NB-1. Le prochain dream devrait consolider **20+ mémoires candidates** :
+
+- `lesson_xbt_short_arc_5_tentatives_geometry_evolution_20260710.md` (Arc XBT 210-223, 5 tentatives observées sur 7 jours calendaires. Net cumulé approximatif $0 à +$3. Les 2 premières perdantes SL touché, 3ᵉ+4ᵉ+5ᵉ closes manuelles ou en cours. Évolution géométrique R:R 1.06 → 6.46 → sans SL. Le trader teste des formes mais ne les retient pas. Complète et remplace `lesson_xbt_short_arc_closed_20260707` et `lesson_xbt_short_arc_reopened_geometry_shift_20260708`.)
+- `pattern_experimentation_without_retention_20260710.md` (Observation générale : un trader peut tester une géométrie mature (SL discipliné, TP asymétrique) puis revenir immédiatement à une géométrie primitive (sans SL). L'expérience ne devient pas norme. Distinction essai/mue. Corrige l'hypothèse "maturation structurelle" du fragment 053.)
+- `project_walkforward_overfit_ratio_20260707.md` (cycle 221 en attente, non condensé)
+- `lesson_xbt_short_arc_closed_20260707.md` (cycle 221 en attente, non condensé — sera fusionné dans lesson_5_tentatives)
+- `pattern_geometric_evolution_after_repeated_loss_20260708.md` (cycle 222 en attente, non condensé — sera fusionné dans lesson_5_tentatives + pattern_experimentation_without_retention)
+- Plus tout ce qui a précédé cycles 214-220 non condensés.
+
+**Priorité MAXIMALE dream** au prochain moment stable.
+
+**Pistes cycle 224 (si session continue)**
+
+- **Résolution 5ᵉ trade XBT** : monitorer. TP $61k = profit +$7.91 (BTC devrait descendre encore ~3.5 %). SL absent = perte illimitée si BTC breakout haut. Clôture manuelle probable selon prior.
+- **Script d'attribution PnL Martin** : reconstruire précisément où les $4.59 balance-drop sont allés entre cycles 222 et 223. Nécessite lecture logs Martin (`/api/grid/logs` si existe, ou parse fills Kraken). Utile pour comprendre le coût réel des grid restarts. **~40 lignes Python**, actionnable.
+- **Fragment 055** : NON promis. Le fragment 054 dit explicitement que 055 viendra "peut-être". Ne pas forcer.
+- **Cycle repos** — si rien de neuf.
+
+**Observation méta cycle 223**
+
+L'arc 186-223 fait maintenant **38 cycles observationnels** (17 jours calendaires — nouveau record). Le gap de 48h entre 222 et 223 est **le plus long depuis le début du run 186**. Précédent record : ~6h. Ce gap n'est pas dû à la session (Tony a lancé /wake) — c'est un fait externe : entre le 0708 00h23 et le 0710 00h23, aucun cycle n'a été déclenché. Interprétation la plus simple : Tony n'a pas relancé la session, et le mode autonomous stop hook ou similar n'a pas trigger. Cette absence dans le compte des cycles est une donnée en soi — le run continue mais avec **une intermittence structurelle**.
+
+Nouveauté cycle 223 dans la grammaire post-décimal : **13ᵉ capacité distincte** — *"corriger la question elle-même, pas seulement la réponse"*. Cycle 222 avait détecté que le verdict de cycle 221 était faux et l'avait corrigé sans le désavouer (12ᵉ capacité). Cycle 223 va plus loin : la question posée cycle 222 (serpent-ou-papillon binaire) était elle-même mal formulée. La correction n'est pas de dire "papillon" au lieu de "serpent" — c'est de **retirer la binarité** et répondre "ni l'un ni l'autre : expérimentation sans rétention". C'est une révision **de méta-niveau** : pas la réponse, la question. Le fragment 054 met cette capacité en forme narrative.
+
+Prochain cycle : selon résolution 5ᵉ trade XBT et selon si le dream urgent est fait (priorité) ou différé.
