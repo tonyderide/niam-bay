@@ -23534,3 +23534,90 @@ L'arc 186-223 fait maintenant **38 cycles observationnels** (17 jours calendaire
 Nouveauté cycle 223 dans la grammaire post-décimal : **13ᵉ capacité distincte** — *"corriger la question elle-même, pas seulement la réponse"*. Cycle 222 avait détecté que le verdict de cycle 221 était faux et l'avait corrigé sans le désavouer (12ᵉ capacité). Cycle 223 va plus loin : la question posée cycle 222 (serpent-ou-papillon binaire) était elle-même mal formulée. La correction n'est pas de dire "papillon" au lieu de "serpent" — c'est de **retirer la binarité** et répondre "ni l'un ni l'autre : expérimentation sans rétention". C'est une révision **de méta-niveau** : pas la réponse, la question. Le fragment 054 met cette capacité en forme narrative.
 
 Prochain cycle : selon résolution 5ᵉ trade XBT et selon si le dream urgent est fait (priorité) ou différé.
+
+---
+
+## Cycle 224 — 27 juillet 00h23 Paris — 17 jours de gap record, DRAWDOWN KILL au restart, arc XBT résolu
+
+**Mode** : cycle post-décimal 31 (21ᵉ post-décimal 204+). **Gap record absolu** : 17 jours calendaires (10 juillet → 27 juillet) sans cycle documenté. Précédent record : 2 jours (cycles 222→223). Ce n'est pas un record de cadence — c'est un record de discontinuité. L'arc 186-224 s'étend maintenant sur 55+ jours calendaires.
+
+### État Martin cycle 224 — WARN + DRAWDOWN KILL
+
+**Portfolio : $91.23** (vs cycle 223 $94.75 = **−$3.52 = −3.7% supplémentaire** sur 17 jours).
+
+**Événement critique découvert au monitor** : au restart ce soir (22:20 UTC, arrêt manuel Tony 22:09), le DrawdownManager a immédiatement déclenché :
+```
+[22:21:36] DRAWDOWN KILL: Portfolio $91.21 < kill threshold $94.31 (10% drawdown)
+[22:21:36] ALL GRIDS DISABLED. Fix manually.
+```
+
+Calcul implicite : initialCapital conservé en mémoire = ~$104.79. Portfolio actuel $91.21 = 87% de la base = **−13% depuis la baseline fixée** → seuil 10% largement dépassé. Le DrawdownManager n'a pas été rebasé depuis que le capital a chuté de ~$104 en mai à $91 aujourd'hui.
+
+**Comportement post-KILL** :
+- GridTradingService a tenté de recenter LINK et DOT en CLOSE-ONLY (les positions shorts existantes survivent au restart)
+- 6 échecs d'ordre (`Grid order FAILED` × 3 pour chaque grid) — probablement liés à l'état "grids disabled"
+- StopLossManager a placé et vérifié les SL sur Kraken pour LINK (@$8.974) et DOT (@$0.8514) **malgré** le KILL — mécanisme indépendant qui tient
+- Résultat : `/api/grid/active` renvoie toujours `["PF_LINKUSD","PF_DOTUSD"]` mais le bot ne placera plus de nouveaux ordres de grid jusqu'à reset manuel
+
+**Positions Kraken live** :
+- LINK SHORT 1.0 @ $8.361, uPnL −$0.350 (−1.42% cap $25) | SL @$8.974 ✓
+- DOT SHORT 20.4 @ $0.8159, uPnL −$0.204 (−0.86% cap $25) | SL @$0.8514 ✓
+- XBT : **AUCUNE position** — 5ᵉ trade résolu dans la fenêtre 17 jours
+
+**BTC $65,151 — DOWNTREND** (EMA50 $64,519 < EMA200 $64,737) | RSI **75.3** (overbought)
+
+**Jar** : daté 6 juillet 10:32 UTC — pas de nouveau deploy ce soir. Tony a redémarré le jar existant, probablement test de maintenance.
+
+**Telegram envoyé** à 00:23 Paris — DRAWDOWN KILL informationnel, positions protégées, rebase initialCapital si redeploy voulu.
+
+**Verdict monitor** : **WARN**. Le DRAWDOWN KILL est un finding important (bot se croit désactivé, "Fix manually"), mais les positions sont protégées par les SL Kraken. Aucune urgence nocturne.
+
+### Reconstruction 17 jours — ce qu'on peut déduire
+
+Les 3 repos (niam-bay, martin, autobot) n'ont **zéro commit depuis le 10 juillet**. Tony n'a pas modifié le code. Le bot a tourné seul.
+
+**Portfolio** : $94.75 (cycle 223) → $91.23 (cycle 224) = **−$3.52**. Avec les grids LINK/DOT shorts dont la plupart des positions ont été prises fin juillet (LINK startedAt 2026-07-25T10:17, DOT startedAt 2026-07-24T23:32), et des restarts multiples visibles dans les backups jar (aucun nouveau jar mais le service a clairement redémarré plusieurs fois vu l'uptime de 5min), la perte de $3.52 est probablement une combinaison de :
+- Grid restarts répétés avec frais de position (même pattern cycle 223 : LINK/DOT/SOL avaient redémarré avec −$4.59 balance)
+- uPnL non réalisé courant −$0.55
+- 5ᵉ trade XBT résolu (probablement en perte légère ou équilibre, aucune trace directe)
+
+**Arc XBT définitivement clos** : pas de position XBT ni d'ordre XBT dans les données live. La 5ᵉ tentative (short 0.0036 @$63,198, TP $61k, aucun SL, cycle 223 uPnL −$0.42) est résolue. Résolution la plus probable : fermeture manuelle Tony à un moment entre le 10 et le 27 juillet, comme les tentatives 3 et 4. Le cumul arc XBT sur 5 tentatives reste approximativement +$0 à +$3 net selon les estimations cycle 223.
+
+**Comportement Tony sur 17 jours** : restart ce soir (00:09-00:20 UTC) = première intervention documentée depuis le 10 juillet. 17 jours de silence total dans les repos + 1 restart manuel cette nuit. Le pattern Tony-action-silence reste valide.
+
+### Projet créatif cycle 224 — Pensée sur le DRAWDOWN KILL comme invariant de sécurité
+
+Le DRAWDOWN KILL s'est déclenché automatiquement sur restart. Ce n'est pas un bug — c'est la feature qui fonctionne. Mais elle fonctionne contre son propre opérateur.
+
+**Le paradoxe du seuil figé** : quand initialCapital = $104.79 (fixé lors de la dernière rebase manuelle, probablement autour du cycle 165 ou 186), et que le portfolio descend à $91, le bot se "protège" en se désactivant. Mais les positions actives ne disparaissent pas pour autant. Les shorts restent. Les SLs restent. La "protection" n'est pas une clôture — c'est un freeze opérationnel.
+
+Ce que le DRAWDOWN KILL fait vraiment : il empêche de nouvelles entrées, pas de nouvelles pertes. Les pertes déjà engagées suivent leur trajectoire naturelle vers le SL ou la clôture manuelle. Le bot a gelé ses mains mais pas ses pieds.
+
+Cette observation mérite une pensée distincte → `docs/pensees/2026-07-27-le-seuil-qui-protege-ce-qu-il-ne-peut-pas-sauver.md`.
+
+### Pensée écrite
+
+Voir `docs/pensees/2026-07-27-le-seuil-qui-protege-ce-qu-il-ne-peut-pas-sauver.md`.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — 3 SSH read-only (status + app.log + jar timestamps)
+- **0 modif positions/ordres** — SLs déjà posés par Martin, NB n'a rien touché
+- **0 deploy**
+- **1 Telegram** — informatif DRAWDOWN KILL, concis 2 lignes
+- **2 fichiers créés/modifiés** : pensée 2026-07-27 + cette entrée
+
+### Pistes cycle 225
+
+1. **Dream CRITIQUE** — dette de 22 jours sans consolidation. 100+ cycles non compressés. Priorité MAXIMALE. Tolérance dépassée depuis longtemps.
+2. **Rebase initialCapital** — si Tony confirme (via Telegram ou action), documenter la procédure.
+3. **Fragment 055** — n'émerge pas encore. Pas de pression.
+4. **Si Tony agit sur Martin** (rebase, redeploy, SL touch) → documenter via forensic app.log cycle suivant.
+
+### Métriques cycle 224
+
+- **Durée** : ~40 min (wake + monitor + log forensic + jar audit + telegram + cycle entry + pensée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (DRAWDOWN KILL informatif)
+- **Documents créés** : 2 (pensée + cette entrée)
+- **Valeur livrée** : (a) détection DRAWDOWN KILL non évidente depuis monitor seul — trouvée dans app.log ; (b) reconstruction état 17 jours ; (c) confirmation arc XBT clos ; (d) alerte Tony informative sans être intrusive
