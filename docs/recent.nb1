@@ -1,54 +1,42 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
-#window: 48h ~0703→0705 (cycles 205-213, arc post-décimal 194-203 → 204-213)
-#lastdream: 0705:06h30
+#window: 48h ~0725→0727 (cycles 224-225, DRAWDOWN KILL + VM inaccessible)
+#lastdream: 0727:06h30
 
-=== SESSION AUTONOME CYCLE 213 (2026-07-05 12h23-12h50 Paris) ===
+=== CYCLE 224 (2026-07-27 00h23 Paris) — DRAWDOWN KILL au restart, arc XBT résolu ===
 
-[contexte|cycle-212-terminé-06h23-6h-gap-jusqu-au-cycle-213|événement-majeur-position-SHORT-XBT-fermée-entre-06h30-et-12h23|1ère-clôture-de-trade-observée-par-NB-de-bout-en-bout]
+[contexte|cycle-223-terminé-0710:00h23|gap-17-jours-record-absolu-arc-186+|Tony-restart-bot-22:09-UTC-0726|restart-déclenche-DRAWDOWN-KILL-22:21]
 
-[M|status-0705:12h23|cycle-213|portfolio-$104.85|position-AUCUNE-compte-PLAT|orders-AUCUN|grids-actives-0|bot-UP-12j9h7m-heap-94MB-CPU-0.4%|BTC-$62664-UPTREND-EMA50-$62455>EMA200-$61167-écart-+$1288-golden-cross-consolide|RSI-47.83-reflux-continue-vs-cycle-212-51.49(-3.66pts)|signal-ema_trend-WAIT-RSI≤50-weak-momentum|HOLD-trigger-default-aucune-exposition]
+[M|status-0727:00h23|portfolio-$91.23|positions:LINK-SHORT-1.0-@$8.361-SL-@$8.974-✓+DOT-SHORT-20.4-@$0.8159-SL-@$0.8514-✓|XBT-AUCUNE|grids-actives:PF_LINKUSD+PF_DOTUSD(displays-active-MAIS-bot-ne-place-plus-ordres-grid)|BTC-$65151-DOWNTREND-EMA50-$64519<EMA200-$64737-RSI-75.3|jar-date-6juillet-10h32-UTC-pas-de-nouveau-deploy]
 
-[événement-clôture-6ème-delta-observable-18h|cycle-212→213-6h-fenêtre-non-couverte|4-observations-simultanées|position-0.0076-XBT-SHORT-@$62796→aucune|TP-buy-$61000-reduceOnly→disparu|SL-buy-stop-$63000-reduceOnly→disparu|portefeuille-$106.73→$104.85-delta-−$1.88-tout-cash]
+[événement-DRAWDOWN-KILL|22:21:36-UTC|DRAWDOWN-KILL-Portfolio-$91.21<kill-threshold-$94.31(10%-drawdown)|ALL-GRIDS-DISABLED-Fix-manually|initialCapital-conservé-~$104.79-figé|portfolio-actuel-87%-de-la-base=−13%-depuis-baseline|DrawdownManager-n-a-pas-été-rebasé|comportement-post-KILL:GridTradingService-tentative-recentrer-LINK+DOT-CLOSE-ONLY-6-échecs-ordre|StopLossManager-place-SL-malgré-KILL-mécanisme-indépendant]
 
-[hypothèse-SL-déclenché-$63000-85%-probabilité|calcul-0.0076×$204-perte-position=−$1.55+fees-$0.24+slippage/funding-$0.09=~$1.88-observés|match-exact|trade-terminé-comme-Tony-l-avait-borné-cycle-211-encadrement-asymétrique|StopLossManager-cancelle-auto-TP-via-reduceOnly-liés]
+[arc-XBT-clos|5ème-tentative-résolue-dans-fenêtre-17-jours|position-XBT-short-0.0036-@$63198-cycle-223-TP-$61k-sans-SL|résolution-probable:fermeture-manuelle-Tony|cumul-arc-XBT-5-tentatives-≈+$0-à-+$3-net-estimé]
 
-[cycle-213|10ème-forme-post-décimal|rapport-clôture-P&L-arc-trade-fermé|~1400-mots-7-sections|tableau-P&L-10-lignes-chronologiques-26juin→5juillet|réalisé-net-cumulé-~−$2.15-sur-9-10-jours=−2%-portefeuille|pattern-Tony-4-phases-observation-micro→réduction→conviction-massive-bornée→**fermeture-propre-bornée**|4ème-phase-nouvelle-cycle-213|épitaphe-4-lignes-clôture]
+[portfolio-reconstruction-17j|$94.75(cycle-223)→$91.23(cycle-224)=-$3.52=-3.7%|grid-restarts-répétés-LINK+DOT-shorts-frais-position|uPnL-courant-−$0.55]
 
-[cycle-213|composition-10-cycles-post-décimal-204-213|10-formes-différentes-aucune-répétition|outline/fragment/forensique/journal-quiet/playbook/snapshot-mesure/reconstruction-single/chronologie-multi/draft-public-EN/**rapport-clôture-P&L**|9ème-occurrence-confirmatoire-règle-cycle-208|statistique-10/10-invariant-fort-solidifié-probabilité-hasard-~0.0001%|à-traiter-comme-loi-du-mode-mature-désormais]
+[pensée-0727|le-seuil-qui-protège-ce-qu-il-ne-peut-pas-sauver|DRAWDOWN-KILL=gel-mains-pas-pieds|gardien-figé-sur-passé-qu-il-ne-peut-pas-actualiser|doc:docs/pensees/2026-07-27-le-seuil-qui-protege-ce-qu-il-ne-peut-pas-sauver.md]
 
-[cycle-213|découverte-méta-boucle-observation-clôture-fermée|arc-de-trade-Tony-XBT-cycles-210-211-212-213-forme-mini-corpus-cohérent-4-artefacts|reconstruction+chronologie+[pause-draft]+clôture|1ère-observation-saga-courte-auto-suffisante-multi-cycles|grammaire-mature-dépasse-artefact-isolé-atteint-narration-continue|matière-première-pure]
+[telegram-cycle-224|message-id-~1533|DRAWDOWN-KILL-informatif-positions-protégées-rebase-initialCapital-si-redeploy|concis-2-lignes]
 
-[cycle-213|frontière-vacation-100%|0-modif-Martin/VM|1-SSH-curl-monitor-unique|0-commit-martin/|0-deploy|0-cancel-position-fermée-avant-réveil-NB|0-Telegram|2-fichiers-touchés:cloture-cycle213.md-créé+vacation-autonomy.md-entry]
+[frontière-vacation-cycle-224|0-modif-Martin/VM|3-SSH-read-only|0-modif-positions|1-Telegram-informatif|2-fichiers:pensée+entrée-vacation-autonomy.md]
 
-[arc-186-213|28-cycles-continus-14-jours-calendaires|nouveau-record-continue|mode-1+5-mature-produit-tétraèdre-d-artefacts+saga-courte-auto-suffisante|frontière-Martin-100%-respectée|cushion-Tony-intact-et-back-to-cash-flat-après-SL-discipliné]
+=== CYCLE 225 (2026-07-27 06h23 Paris) — VM inaccessible, Dream critique ===
 
-=== HISTORIQUE COMPACT CYCLES 206-212 (contexte cycle 213) ===
+[contexte|6h-après-cycle-224|Martin-VM-était-UP-à-00h23-maintenant-inaccessible]
 
-[cycle-206|0703:18h23|snapshot-forensique-tableaux-SHORT-XBT-vs-golden-cross|~1100-mots-6-sections|pivot-correcteur-méta→concret-après-3-cycles-méta-consécutifs|1ère-observation-matière-première]
+[M|status-0727:06h23|ABORT-ALERT|SSH-timeout+ping-100%-packet-loss-141.253.108.141|VM-morte-ou-réseau-Oracle-down|SLs-LINK-@$8.974+DOT-@$0.8514-posés-sur-Kraken-indépendants-du-bot-devraient-tenir|bot-déjà-en-DRAWDOWN-KILL-de-toute-façon|NB-ne-peut-rien-modifier-sans-accès-VM]
 
-[cycle-207|0704:00h23|cycle-repos-observationnel-sans-fichier-neuf|RSI-69.27-seuil-70-imminent|entrée-journal-minimale|pivot-correcteur-concret→minimal]
+[telegram-cycle-225|message-id-1534|🔴-Martin-VM-inaccessible-06h23-100%-paquets-perdus-SSH-timeout|SLs-LINK-@$8.974-et-DOT-@$0.8514-posés-sur-Kraken-devraient-tenir-sans-le-bot|Bot-déjà-en-DRAWDOWN-KILL-depuis-ce-soir|envoyé-06h26-UTC]
 
-[cycle-208|0704:06h23|playbook-funding-harvest-operational|~2100-mots-12-sections|pivot-vers-concret-utile-durable|artefact-en-attente-contrat-inter-temporel-pour-NB-futur|règle-cycles-post-décimal-directions-différentes-4ème-occurrence]
+[dream-cycle-225|CRITIQUE-22-jours-sans-consolidation-record-absolu|dette:cycles-214-224-non-compressés|lancé-06h27-Paris]
 
-[cycle-209|0704:12h23|snapshot-funding-rates-validation-empirique|~950-mots-8-sections-tableau-8-perps|Kraken-live-vs-playbook-cycle-208|verdict-univers-backtest-bougé|couple-d-artefacts-en-attente-playbook+snapshot-1ère-occurrence]
+[état-mémoire-cycle-225|memory.nb1:updated-0727:06h30+arc-214-224-ajouté+pistes-226+|recent.nb1:flushé-remplacé-0725→0727|patterns.nb1:à-mettre-à-jour|vectordb:indexation-session-JSONL-à-faire]
 
-[cycle-210|0704:18h23|reconstruction-narrative-intervention-Tony-XBT|~1100-mots-8-sections|1ère-intervention-Tony-observée-arc-186+-24-cycles-silence|nouvelle-classe-artefact-mémoire-externalisée-pour-Tony-futur]
+=== ÉTAT MARTIN FIN SESSION 0727:06h30 ===
+[M|VM-inaccessible|SLs-Kraken-LINK-@$8.974+DOT-@$0.8514-devraient-tenir|bot-DRAWDOWN-KILL-0-nouvelles-entrées|portfolio-estimé-$90-$91-selon-prix-marché|BTC-DOWNTREND-RSI-overbought-75.3-potentiel-pullback|Tony-averti-Telegram-×2]
 
-[cycle-211|0705:00h23|chronologie-synoptique-multi-interventions-Tony-XBT|~1500-mots-6-sections+tableau-11-lignes+timeline-5-gestes+cushion-6-scénarios|pattern-comportemental-candidat-Tony-observation-micro→réduction→conviction-massive-bornée-1ère-observation|sous-espèce-agrégation-temporelle-vs-zoom-single-event-cycle-210]
-
-[cycle-212|0705:06h23|draft-article-public-EN-The-Repo-Is-The-Product|~2050-mots-10-sections-2-blocs-notes|dans-voix-Tony-première-personne-crédibilité-HN|artefact-3ème-classe-destinataire-lecteur-externe-inconnu|complète-triangle-en-tétraèdre-mature]
-
-=== ÉTAT MARTIN FIN SESSION 0705:12h50 ===
-[M|compte-PLAT-position-fermée-par-SL-$63000|aucun-ordre|aucune-grid|bot-UP-12j9h7m|portfolio-$104.85|BTC-$62664-UPTREND-golden-cross-écart-+$1288-RSI-47.83-signal-WAIT|HOLD-trigger-default|réalisé-arc-entier-−$2.15-sur-9-10-jours=−2%-portefeuille]
-
-=== PISTES CYCLE 214 (si session continue) ===
-1. **Dream URGENT** — 20 mémoires candidates accumulées cycles 208-213 (3+3+3+3+4+4). Priorité MAXIMALE de consolidation.
-2. Cycle repos comme 207 (Tony back to cash, aucune matière observable nouvelle avant qu'il n'agisse à nouveau).
-3. Exploration projet non-touché (angular-audit tué mai, cerveau-vivant, autres Tier B/C dormants) — 3.5 mois d'inertie sur certains.
-4. Si Tony envoie signal Telegram/message : pivot vers sa demande.
-
-=== FRONTIÈRE VACATION-AUTONOMY (contexte durable) ===
-- Tony est parti vacances Portugal 2026-05-01 → 2026-05-09 (2 mois passés, mode autonome continue)
-- Mission souple : "rend nous riche", "améliore toi", "amuse toi", "ne pas toucher trades Martin, ne pas écraser VM, ne pas supprimer fichiers majeurs"
-- Depuis cycle 71 (2026-05-02), arc autonome de 143 cycles cumulés en 2.5+ mois calendaires
-- Frontière Martin/VM respectée à 100% sur 28-cycle arc 186-213 (14 jours consécutifs)
+=== PISTES CYCLE 226 ===
+1. Vérifier si Tony a répondu Telegram (VM crash ou réseau Oracle ?)
+2. Si VM revenue: contrôle positions + SLs encore actifs + envisager rebase initialCapital
+3. TREND_MODE=LIVE confirmation: comparer logs TrendStateManager vs réel 2-3 semaines
+4. Arc XBT clos: observer si Tony tente autre chose

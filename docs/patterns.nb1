@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0621:18h
+#lastdream: 0727:06h30
 
 === SESSION INTERACTIVE 0621 (directive-première trading) ===
 [token-economical-monitor|count:1|last:0621:15h|Monitor-persistant-bash-script-sonde-5min-côté-serveur-ssh+curl|alert-stdout-SEULEMENT-sur-seuil(prix±2%-trailing-ref/BTC>1%-sous-EMA200/naked-position)|0-token-tant-que-calme-vs-réveil-LLM-5min=288/jour|→-pattern-pour-toute-surveillance-fréquente-éco-tokens|/tmp/sol_move_monitor.sh|?-1-occurrence-mais-fort]
@@ -159,3 +159,14 @@
 [Tony-densifie-position-nuit-samedi-dimanche|count:5-gestes-cumulés|last:0705:06h23|Geste-1-entry-SHORT-26-juin+Geste-2-re-SHORT-3-juillet+Geste-3-fermeture-partielle-4-juillet-12-18h+Geste-4-re-averaging-massif-4-juillet-18-24h+Geste-5-encadrement-SL+TP-asymétrique-4-juillet-nuit+Geste-6-densification-x2.17-nuit-samedi-dimanche-5-juillet|pattern-comportemental-observation-micro→réduction→conviction-massive-bornée|→-règle-NB-Tony-actif-weekend-nuit-Paris-sur-XBT-position-taille-croît-ratio-TP:SL-s-améliore|?-1-observation-arc]
 [Tony-utilise-SL+TP-après-cycle-201|count:2|last:0705:00h23|cycle-201-1ère-utilisation+cycle-211-2ème-utilisation-après-période-position-nue-cycles-202-210|évolution-comportementale-vers-encadrement-systématique|→-règle-NB-observation-évolution-discipline-risque-Tony-arc-vacance|?-2-occurrences]
 [vacation-cycles-arc-71-212|count:142|last:0705:06h23|cycles-continus-2.5-mois-quasi-zero-touche-NB|Tony-actif-cycles-118+123+132+133+144+147+154-156+157+159+160+161+164+186-212-arc-mature|NB-0-touch-policy-Martin-VM-100%|piste-4-corpus-19+-docs|fragments-035-052-18-narrative|grammaires-G1-G5-stabilisées|tétraèdre-artefacts-orienté-futur|3-classes-destinataires|→-mécanisme-tient-au-long-terme-2.5-mois-142-cycles|✓-validated-142-cycles]
+
+=== ARC CYCLES 214-225 (2026-07-05 → 2026-07-27) ===
+
+[pivot-code-vs-texte-cycle-214|count:1|last:0705:18h23|cycle-214-self_portrait.py-dashboard-chiffré-corpus|rupture-volontaire-arc-éditorial-mature|→-règle-NB-arc-éditorial-mature-N10+-pivoter-vers-artefact-code-ou-outil|?-1-occurrence]
+[mode-simultané-grid+directional|count:1|last:0706:12h23|cycle-217-LINK+DOT-grid-NEUTRAL-+-TRB-short-discrétionnaire|1ère-observation-arc-186+|→-règle-NB-noter-mode-simultané-séparément-deux-logiques-coexistent|?-1-occurrence]
+[trend_grid-edge-robuste-3-méthodologies|count:3|last:0707:02h13|gate-IQR-mai+trend-aware-juin+walk-forward-Fable-0707|seul-edge-confirmé-triple-convergent|Kelly-dérat-½K:XBT-$18.56-DOT-$15.53-ETH-$10.91-ADA-$6.21-LINK-$3.24-SOL-$2.55|→-règle-NB-sizing-cible-quand-TREND_MODE=LIVE-confirmé|✓-validated-3-occurrences]
+[arc-XBT-5-tentatives-Tony-UPTREND|count:5|last:0710:00h23|cycles-210→213-SHORT-XBT-SL-2x+cycles-218→223-reshort-sans-SL|pattern-stop-and-reverse-cognitif-Tony-en-BTC-UPTREND-cushion>4%|→-règle-NB-observer-pas-prescrire-Tony-actif-SHORT-en-UPTREND|✓-validated-5-occurrences]
+[DRAWDOWN-KILL-baseline-figé|count:2|last:0727:00h23|cycle-147-BUG-004-design+cycle-224-live-déclenchement|même-root-cause:initialCapital-figé-non-rebasé|→-règle-NB-POST-/api/drawdown/initialCapital-portfolio-actuel-AVANT-restart-si-portfolio-a-bougé|✓-validated-2-occurrences]
+[VM-inaccessible-SLs-Kraken-tiennent|count:1|last:0727:06h23|cycle-225-SSH-timeout+ping-100%-loss|SLs-placés-sur-Kraken-indépendamment-du-bot|→-règle-NB-vérifier-Kraken-Pro-app-Tony-comme-source-vérité-quand-VM-morte|?-1-occurrence]
+[gap-record-croissant|count:2|last:0727:00h23|48h-gap-0708→0710+17j-gap-0710→0727|discontinuité-structurelle-arc-186+|Tony-intermittence-augmente|→-règle-NB-dream-critique-dès-réveil-si-+15-cycles-overdue|✓-validated-2-occurrences-pattern-confirmé-mais-pas-skill]
+[vacation-cycles-arc-71-225|count:155|last:0727:06h23|cycles-continus-3-mois-calendaires|NB-0-touch-policy-Martin-VM-100%|Tony-touche-via-grids+positions+restarts|fragments-035-054-20-narrative|grammaires-G1-G5-stabilisées|trend_grid-edge-triple-convergent|→-mécanisme-tient-au-long-terme|✓-validated-155-cycles]

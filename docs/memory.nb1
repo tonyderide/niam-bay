@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0705:12h30
+#lastdream: 0727:06h30
 
 === SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
 [M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
@@ -492,9 +492,48 @@
 [lesson|0705:12h23|clôture-de-boucle-observation-mature|cycles-210-211-212-213-forment-saga-4-artefacts-cohérente|reconstruction+chronologie+draft-externe+clôture|grammaire-mature-atteint-narration-continue-multi-cycles-avec-cohérence-temporelle-complète|→-règle-NB:un-arc-observable-mérite-une-fin-écrite-quand-il-se-ferme-sur-le-plan-des-faits]
 [lesson|0705:12h23|arc-de-trade-Tony-XBT-fermé-par-SL-discipliné|9-10-jours-de-vie-perte-nette-cumulée-−$2.15-=−2%-portefeuille-modéré|SL-a-fait-son-travail-exactement-comme-Tony-l-avait-borné-cycle-211|→-observation-Tony-joue-en-professionnel-conviction-a-échoué-contre-régime-mais-a-été-bornée|4ème-phase-fermeture-propre-bornée-scellée]
 
-=== PISTES CYCLE 214+ ===
-1. Cycle repos comme 207 (Tony back to cash, aucune matière observable nouvelle avant qu'il agisse)
-2. Exploration projet non-touché (cerveau-vivant, angular-audit killed, autres Tier B/C dormants 3.5 mois) — pattern cycle 212 draft article réutilisable
-3. Observation Martin continue si Tony rouvre position (grid ? directionnel ? funding harvest playbook cycle 208 activé ?)
-4. Fragment-053 méta narratif si résonance émerge de la clôture de saga cycles 210-213
+=== ARC POST-DÉCIMAL 214-218 (2026-07-05 → 2026-07-06) — pivot concret + redéploiement mécanique ===
+
+[arc-214|0705:18h23|pivot-code-vs-texte|script-self_portrait.py+dashboard-chiffré-corpus|rupture-volontaire-arc-éditorial-204-213|Martin-$104.85-flat-BTC-$62634-golden-cross-WAIT]
+[arc-215|0706:00h23|fix-concret|doublon-fragment-048→048b-renommé|fermeture-boucle-détecter→acter→fixer|HOLD-Martin]
+[arc-216|0706:06h23|snapshot-forensique|Tony-redéploie-double-grid-NEUTRAL-LINK+DOT|11ème-forme-post-décimal-retour-arc-éditorial-via-matière-observable|startedAt-LINK-2026-07-06]
+[arc-217|0706:12h23|chronique-deux-horloges|mode-simultané-découvert:grid-LINK+DOT-mécanique-+-short-TRB-discrétionnaire|1ère-observation-mode-simultané-arc-186+|sous-forme-éditoriale-inédite]
+[arc-218|0706:18h23|recomposition-Tony|outil-orphan_check.py-livré|12ème-forme-post-décimal|pattern-outil-cree→limite-N+1]
+
+=== ARC XBT TENTATIVES 2-5 (2026-07-07 → 2026-07-10) — campagne walk-forward + arc XBT étendu ===
+
+[M|cycle-219-0707:00h23|2ème-clôture-SL-XBT-$64k|portfolio-$91.85-balanceValue-vs-cycle-218-$99.38=-$7.53-réalisé|4-positions:DOT-12.3@$0.878+LINK-2.1@$7.994+SOL-0.4@$80.998+TRB-5.28@$17.82|orphan_check.py--json-extension-livrée|13ème-forme-post-décimal:forme-du-retour]
+[quant|campagne-walk-forward-Fable-0707-02h13-UTC|trend_grid-POSITIF-OOS-6/6-paires-41/42-folds-verts|3ème-méthodologie-convergente(gate-IQR-mai-+3.31%+trend-aware-juin-+28%/180j+walk-forward-0707)|donchian-mort-regime_pullback-mort|l-edge=QUAND-régime-EMA200+momentum→grid-sinon-cash|dératage-attendu-30-50%-live]
+[quant|Kelly-dérat-½K-cap-60%-0707|XBT-$18.56-DOT-$15.53-ETH-$10.91-ADA-$6.21-LINK-$3.24-SOL-$2.55|Kelly-récompense-stabilité:DOT-Sharpe-2.36-vs-SOL-0.93-pourtant-SOL-return-plus-élevé|distribution-actuelle-LINK+SOL-$25-chacune=sur-allocation-Kelly-8x-vs-deux-pires-Sharpe|bigcap-XBT+ETH-last-fold-−1.70%-vs-altcap-+8.22%-coût-whipsaw-régime-catalogué|TrendStateManager-WARM_ONLY-prod-depuis-0706-→-comparer-logs-2-3-semaines-→-TREND_MODE=LIVE-si-confirmé]
+[M|cycle-220-0707:06h23|XBT-3ème-tentative-short-@-prix-inconnu|profitable-cycle-en-cours]
+[M|cycle-221-0707:18h23|clôture-XBT-3ème-tentative-+$3.60-réalisé|arc-XBT-net-total-−$4.07|patch-overfit_ratio-campaign_walkforward.py-livré|pensée-du-seuil-figé-n=1-précurseur]
+[M|cycle-222-0708:00h23|arc-XBT-ROUVERT-4ème-tentative|géométrie-inversée|fragment-053-saut-de-géométrie-livré|script-attribution-BULL-vs-transition-trend_grid-livré]
+[M|cycle-223-0710:00h23|5ème-XBT-tentative-SANS-SL|arc-s-étire|portfolio-$94.75|48h-gap-record-absolu-cycle-222→223-précédent-6h|BTC-DOWNTREND|LINK+DOT-SHORT-actives|fragment-054-la-mue-qui-n-a-pas-eu-lieu-livré]
+
+[lesson|0707-0710|arc-XBT-5-tentatives-Tony-en-UPTREND-BTC-cushion>4%|2-SL-touchés(−$1.88+−$5.79)|3ème-tentative-+$3.60-profitable|4ème-et-5ème-sans-SL-risky|pattern-stop-and-reverse-cognitif-Tony-en-UPTREND|ne-pas-prescrire-observer]
+[lesson|0707|trend_grid-seul-edge-robuste-3-méthodologies-convergentes|deployer-seulement-quand-TREND_MODE=LIVE-confirmé-2-3-semaines-logs|sizing-Kelly-DOT+XBT-anchors-pas-LINK+SOL]
+
+=== MARTIN CYCLE 224 — DRAWDOWN KILL (2026-07-27 00h23) ===
+
+[M|status-0727:00h23|cycle-224|DRAWDOWN-KILL-fired-au-restart-22:21-UTC|portfolio-$91.21<seuil-$94.31(initialCapital-~$104.79-×-90%)|−13%-depuis-baseline-figé→seuil-10%-largement-dépassé|bot-en-freeze-opérationnel:0-nouvelles-entrées-possibles-MAIS-positions-existantes-survivent-+SL-Kraken-indépendants]
+[M|positions-0727:00h23|LINK-SHORT-1.0-@$8.361-uPnL-−$0.350-SL-@$8.974-✓|DOT-SHORT-20.4-@$0.8159-uPnL-−$0.204-SL-@$0.8514-✓|XBT-AUCUNE-position-arc-XBT-définitivement-clos]
+[M|BTC-0727:00h23|$65151-DOWNTREND-EMA50-$64519<EMA200-$64737|RSI-75.3-overbought|jar-daté-6-juillet-10h32-UTC-Tony-a-redémarré-jar-existant-pas-nouveau-deploy]
+[M|status-0727:06h23|cycle-225-THIS-SESSION|VM-SSH-TIMEOUT+PING-100%-packet-loss|VM-inaccessible-depuis-00h23(était-UP-à-00h23)|SLs-Kraken-devraient-tenir-indépendamment|Telegram-envoyé-Tony-VM-inaccessible|ABORT-ALERT-trigger]
+
+[pensée|0727:00h23|le-seuil-qui-protège-ce-qu-il-ne-peut-pas-sauver|DRAWDOWN-KILL=protection-contre-futur-pas-contre-présent|gel-des-mains-pas-des-pieds|positions-existantes-suivent-trajectoire-SL-TP|gardien-figé-sur-passé-qu-il-ne-peut-pas-actualiser|initialCapital=cicatrice-qui-ne-guérit-pas|fix-manuelle=mise-à-jour-de-contexte-pas-correction-technique]
+
+[lesson|0727|DRAWDOWN-KILL-ne-ferme-pas-positions-existantes|freezes-nouvelles-entrées-SEULEMENT|SLs-Kraken-indépendants-du-bot|premier-rempart-tient-même-VM-morte]
+[lesson|0727|rebaseline-initialCapital-obligatoire-après-perte-significative|sinon-KILL-pré-armé-au-boot-BUG-004-pattern|procédure:POST-/api/drawdown/initialCapital-avec-portfolio-actuel]
+[lesson|0727|VM-inaccessible-SSH+PING=VM-morte|SLs-exchange-=seul-rempart|Telegram-Tony-immédiat|NB-ne-peut-rien-faire-d-autre-sans-accès-VM]
+
+[pattern|arc-gap-record|count:2|0710:48h-gap-cycles-222→223+0727:17j-gap-cycles-223→224|discontinuité-structurelle-arc-186+|Tony-intermittence-augmente|NB-doit-relancer-dream-critique-dès-que-possible-au-réveil]
+[pattern|DRAWDOWN-KILL-baseline-figé|count:2|cycle-147-BUG-004+cycle-224-live|même-bug-sur-initialCapital-figé|→-rule-POST-/api/drawdown/initialCapital-APRÈS-chaque-restart-si-portfolio-a-bougé]
+[pattern|VM-inaccessible-SLs-tiennent|count:1|cycle-225|SLs-Kraken-indépendants-du-bot|→-rule-priorité-1-vérifier-Kraken-Pro-app-quand-VM-morte|?-1-occurrence]
+
+=== PISTES CYCLE 226+ ===
+1. **Dream maintenu à jour** — ne plus laisser 22 jours entre deux dreams. Rule: dream dès +15 cycles overdue OU +5 jours sans dream.
+2. **VM Oracle** — Tony doit vérifier si VM a crashé ou juste réseau. Si crashé: systemctl restart martin.service via console Oracle.
+3. **Rebase initialCapital** — si Tony redéploie: POST /api/drawdown/initialCapital $91.23 (portfolio actuel) AVANT tout restart.
+4. **Arc XBT clos** — Tony a 5 tentatives short en UPTREND BTC: observer si il tente cycle inverse ou change de paire.
+5. **TREND_MODE=LIVE** — quand Tony confirme: sizing Kelly DOT $15 + XBT $18, pas LINK+SOL $25 chacun.
 5. Si Tony réagit à draft article — pivot vers sa demande (traduction FR, ajustement voix, publication decision)
