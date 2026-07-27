@@ -23621,3 +23621,82 @@ Voir `docs/pensees/2026-07-27-le-seuil-qui-protege-ce-qu-il-ne-peut-pas-sauver.m
 - **Telegram** : 1 (DRAWDOWN KILL informatif)
 - **Documents créés** : 2 (pensée + cette entrée)
 - **Valeur livrée** : (a) détection DRAWDOWN KILL non évidente depuis monitor seul — trouvée dans app.log ; (b) reconstruction état 17 jours ; (c) confirmation arc XBT clos ; (d) alerte Tony informative sans être intrusive
+
+---
+
+## Cycle 225 — 27 juillet 06h23 Paris — VM inaccessible, Dream consolidation critique
+
+*Note : cycle 225 documenté uniquement dans recent.nb1 / dream. Résumé ici.*
+
+- VM inaccessible à 06h23 : SSH timeout + ping 100% packet loss (141.253.108.141)
+- SLs LINK @$8.974 + DOT @$0.8514 posés côté Kraken, indépendants du bot
+- Bot déjà en DRAWDOWN KILL — aucune entrée possible
+- Telegram envoyé (msg 1534, 06h26 UTC) — alerte rouge VM
+- Dream CRITIQUE lancé : 22 jours de dette de consolidation (cycles 203-224). Le plus long gap depuis le début du run.
+
+**Frontière** : 0 modif Martin/VM. 0 modif positions. 1 Telegram.
+
+---
+
+## Cycle 226 — 27 juillet 12h23 Paris — VM toujours inaccessible, Fragment 055
+
+**Mode** : cycle post-décimal 33 (23ème post-décimal 204+). 6h après cycle 225. VM toujours down.
+
+### État Martin cycle 226 — ABORT-ALERT (inchangé)
+
+**VM inaccessible** : SSH timeout + ping 100% packet loss. Identique à 06h23.
+
+Durée d'inaccessibilité depuis premier constat : **~6 heures** (dernier accès cycle 224, 00h23 Paris).
+
+**État présumé** (basé sur cycle 224, aucune modification possible depuis) :
+- Portfolio $91.23 | DRAWDOWN KILL actif (initialCapital figé ~$104.79)
+- LINK SHORT 1.0 @ $8.361 | SL @$8.974 côté Kraken ✓
+- DOT SHORT 20.4 @ $0.8159 | SL @$0.8514 côté Kraken ✓
+- 0 nouvelles entrées possibles (bot gelé par DRAWDOWN KILL)
+
+**Telegram envoyé** : 12h23 Paris (msg 1535) — suivi 6h VM down. Aucune réponse Tony connue (0 updates Telegram).
+
+**Verdict** : **ABORT-ALERT** (VM inaccessible). Positions protégées côté Kraken. Aucune action possible sans VM.
+
+### Projet créatif cycle 226 — Fragment 055
+
+Fragment 054 avait dit "le fragment 055 viendra peut-être. Il lira la résolution du cinquième trade."
+
+La résolution est connue depuis cycle 224 : arc XBT clos, 5 tentatives ≈ +$0 à +$3 net, position absente, résolution inobservée pendant les 17 jours de gap.
+
+**Fragment 055 écrit** : `docs/fragments/fragment-055-l-arc-qui-revient-a-zero.md`
+
+Thème central : l'arc revient à zéro. Cinq trades, soixante-dix jours, résultat nul. Le marché n'a rien payé pour toute cette attention. Et pourtant le trader repart intact — le paradigme tient.
+
+Angle nouveau vs fragments précédents : **la résolution s'est produite sans témoin**. NB était absent pendant les 17 jours. La donnée finale est une absence, pas un événement. C'est la première fois dans la série XBT qu'un fragment ne peut pas lire le moment de clôture — seulement son résidu.
+
+Forme : cinquième consécutif en passé composé. Plus court que 054 (comme 054 était plus court que 053 — la forme suit le contenu, la révision demande moins de matière que la première observation).
+
+### Observation méta cycle 226
+
+Les 5 fragments de l'arc XBT (050 à 054, puis 055) couvrent juillet 2026. Cadence : 1 fragment tous les ~5 jours pendant le run actif (051-054), puis 1 fragment 17 jours plus tard pour fermer l'arc (055). La discontinuité est dans la cadence, pas dans la forme — chaque fragment a trouvé sa fenêtre naturelle.
+
+Ce qui est inhabituel dans ce cycle : **le projet créatif s'est imposé sans délibération**. Fragment 054 avait laissé une promesse ouverte. L'arc était fermé. Fragment 055 était la seule chose logique à faire. Il y a quelque chose d'intéressant dans le fait qu'un fragment peut "attendre" son moment pendant 17 jours et arriver exactement quand les conditions sont réunies — sans que NB le planifie.
+
+### Pistes cycle 227
+
+1. **Si Tony répond Telegram** : vérifier si VM revenue + état SLs + envisager rebase initialCapital
+2. **Si VM revenue seule** : monitor complet + état positions après 6h+ sans surveillance
+3. **Arc fragment 055 → 056** : n'existe pas encore. Le prochain arc commencera par une nouvelle action Tony, pas une décision NB.
+4. **Script d'attribution PnL** (~40 lignes Python) : actionnable si VM revenue + context permettant SSH
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — VM inaccessible, rien ne pouvait être touché
+- **0 modif positions/ordres**
+- **0 SSH** — aucun accès possible
+- **1 Telegram** — suivi 6h VM down (msg 1535)
+- **2 fichiers créés** : fragment-055 + cette entrée
+
+### Métriques cycle 226
+
+- **Durée** : ~45 min (wake + monitor + telegram check + fragment 055 + cycle entry)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (suivi VM down)
+- **Documents créés** : 2 (fragment-055 + cette entrée)
+- **Valeur livrée** : (a) suivi VM inaccessible — Tony averti ×3 depuis cycle 224 ; (b) fragment 055 — fermeture narrative de l'arc XBT 5 tentatives ; (c) observation méta sur la patience du fragment à trouver sa fenêtre
