@@ -23764,3 +23764,53 @@ La forme suit les données accessibles, pas les données voulues.
 - **Telegram** : 1 (suivi 12h VM down)
 - **Documents créés** : 2 (pensée défense + cette entrée)
 - **Valeur livrée** : (a) suivi VM inaccessible — 3 Telegrams cumulés depuis 06h23 ; (b) vérification prix Kraken — SLs safe, aucune urgence ; (c) pensée sur défense en profondeur — observation non triviale issue directement de la situation en cours, distincte du cycle 224
+
+---
+
+## Cycle 228 — 28 juillet 00h23 Paris — VM inaccessible 18h, cycle repos
+
+**Mode** : cycle repos. 6h après cycle 227. VM toujours inaccessible.
+
+### État Martin cycle 228 — ABORT-ALERT (inchangé, ~18h down)
+
+**VM inaccessible** : SSH timeout. Downtime estimé depuis dernier accès cycle 224 (00h23 juillet 27) : **~18 heures**.
+
+**Prix Kraken vérifiés via API publique futures** :
+- LINK : $8.561 (SL SHORT @$8.974 — safe, +$0.413 de marge)
+- DOT : $0.782 (SL SHORT @$0.8514 — safe, en profit vs entrée $0.8159)
+- BTC : $64,629 DOWNTREND confirmé (favorable aux shorts, légèrement plus bas que cycle 224 $65,151)
+
+**Telegram Tony** : aucune réponse aux 4 messages envoyés cycles 224-227. 00h23 Paris — Tony dort probablement. Aucun nouveau Telegram envoyé ce cycle (règle : pas de notification 22h-07h Paris sauf ABORT vrai).
+
+**Verdict** : ABORT-ALERT (VM inaccessible). Aucune action. Positions protégées côté Kraken — SLs indépendants du bot. Bot déjà en DRAWDOWN KILL depuis cycle 224 : aucune nouvelle entrée possible de toute façon.
+
+### Projet créatif cycle 228 — Repos
+
+Les pistes cycle 227 indiquaient explicitement : *"Cycle repos si VM toujours down et aucun nouvel événement."*
+
+Rien de nouveau n'a émergé. Les prix ont légèrement bougé (favorable), Tony n'a pas répondu, la VM n'est pas revenue. Ce sont des confirmations, pas des événements.
+
+Il y a une discipline dans la capacité à ne pas produire quand il n'y a rien à produire. Le cycle 228 est un cycle repos — ce qui ne signifie pas qu'il est vide. Observer sans intervenir, mesurer sans décider, attendre sans forcer : ce sont des formes d'action aussi.
+
+### Pistes cycle 229
+
+1. **Si VM revenue** : full monitor + vérifier SLs Kraken encore actifs + état DRAWDOWN KILL + envisager rebase initialCapital (POST /api/drawdown/initialCapital à $91 actuel)
+2. **Si Tony répond** : suivre sa direction
+3. **Pensée ou fragment 056** si quelque chose émerge de 18h+ d'attente — la patience comme forme active
+4. **Script attribution PnL** (~40 lignes Python) : actionnable uniquement si VM revenue
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **0 SSH** — timeout, aucun effet
+- **0 Telegram** — rien de nouveau, Tony dort
+- **0 fichier créé** — cycle repos
+
+### Métriques cycle 228
+
+- **Durée** : ~20 min (wake + monitor + prix Kraken + check Telegram Tony + cycle entry)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (cette entrée uniquement)
+- **Valeur livrée** : suivi passif — VM inaccessible 18h, SLs toujours safe, rien à décider
