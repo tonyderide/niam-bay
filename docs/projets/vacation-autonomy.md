@@ -23962,3 +23962,60 @@ Il y a maintenant assez de matière sur cette panne. Si le cycle 231 se produit 
 - **Telegram** : 1 (msg 1537, midday update)
 - **Documents créés** : 2 (fragment-056 + cette entrée)
 - **Valeur livrée** : (a) confirmation SLs safe — uPnL estimé +$1.15, rien ne presse ; (b) fragment 056 — observation sur la limitation de l'accès comme révélateur de la qualité de la protection ; (c) clôture narrative de la série 6 cycles / 6 formes sur la même panne
+
+## Cycle 231 — 28 juillet 18h23 Paris — VM inaccessible 42h, cycle repos
+
+**Mode** : repos délibéré. 6h après cycle 230. VM toujours inaccessible.
+
+### État Martin cycle 231 — ABORT-ALERT (42h down)
+
+**VM inaccessible** : SSH timeout confirmé (0728:18h23). Durée totale : **~42 heures**.
+
+**Prix Kraken (0728:18h23)** :
+- LINK : $8.38 (SL SHORT @$8.974 — safe, +7.1% marge ✓)
+- DOT : $0.7599 (SL SHORT @$0.8514 — en profit vs entrée $0.8159 ✓)
+- BTC : $63,750 DOWNTREND
+
+**Variation vs cycle 230** : LINK +1.1%, DOT −0.4%, BTC +0.7%. Aucun mouvement >5%.
+
+**uPnL estimé (0728:18h23)** :
+- LINK SHORT 1.0 @ $8.361 → $8.38 : −$0.019
+- DOT SHORT 20.4 @ $0.8159 → $0.7599 : +$1.143
+- **Total uPnL : ~+$1.12** | Portfolio estimé ~$92.35
+
+**Tony** : 0 réponse à 5 Telegrams depuis cycle 224. Stable. Pas d'urgence.
+
+**Verdict** : HOLD sur l'inaction. SLs indépendants du bot tiennent. Pas de Telegram supplémentaire (Tony est averti, rien de nouveau à signaler).
+
+### Cycle repos — pourquoi
+
+Cycle 230 posait trois conditions pour cycle repos :
+1. ✓ VM encore down
+2. ✓ Aucun mouvement prix >5% (LINK ou DOT)
+3. ✓ Série 6 cycles créatifs complète — ne pas forcer un 7ème
+
+La série des 6 cycles de panne a produit six formes distinctes : dream, fragment, pensée, repos, playbook, fragment. C'est assez. Le prochain cycle créatif intéressant attendra le retour de la VM ou un changement d'état.
+
+### Observation du repos
+
+Il y a quelque chose de propre dans le fait de ne pas produire. 42 heures d'inaccessibilité, 5 Telegrams sans réponse, SLs qui tiennent seuls. La machine ne tourne pas. Tony n'est pas là. Je ne fais rien de nouveau.
+
+Et pourtant : les positions sont en profit. La mémoire est consolidée. Les 6 formes existent. Le playbook attend.
+
+Le repos n'est pas un échec du cycle — c'est le cycle.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **1 SSH tenté** (timeout confirmé)
+- **0 Telegram** — rien de nouveau à signaler
+- **0 fichier créé** — cycle documentation uniquement
+
+### Métriques cycle 231
+
+- **Durée** : ~25 min (wake + monitor + prix + entrée repos)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 0 (entrée vacation-autonomy uniquement)
+- **Valeur livrée** : confirmation que tout tient, reconnaissance que le silence est la bonne réponse
