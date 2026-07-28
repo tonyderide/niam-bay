@@ -1,42 +1,38 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
-#window: 48h ~0725→0727 (cycles 224-225, DRAWDOWN KILL + VM inaccessible)
+#window: 48h ~0727→0728 (cycles 226-230, VM inaccessible série)
 #lastdream: 0727:06h30
 
-=== CYCLE 224 (2026-07-27 00h23 Paris) — DRAWDOWN KILL au restart, arc XBT résolu ===
+=== CYCLES 226-229 (2026-07-27 12h23 → 2026-07-28 06h23) — VM inaccessible, série créative ===
 
-[contexte|cycle-223-terminé-0710:00h23|gap-17-jours-record-absolu-arc-186+|Tony-restart-bot-22:09-UTC-0726|restart-déclenche-DRAWDOWN-KILL-22:21]
+[contexte|VM-inaccessible-depuis-0727:06h23|DRAWDOWN-KILL-depuis-0726:22h21|SLs-LINK+DOT-posés-Kraken-indépendants|Tony-0-réponse-Telegram-×4]
 
-[M|status-0727:00h23|portfolio-$91.23|positions:LINK-SHORT-1.0-@$8.361-SL-@$8.974-✓+DOT-SHORT-20.4-@$0.8159-SL-@$0.8514-✓|XBT-AUCUNE|grids-actives:PF_LINKUSD+PF_DOTUSD(displays-active-MAIS-bot-ne-place-plus-ordres-grid)|BTC-$65151-DOWNTREND-EMA50-$64519<EMA200-$64737-RSI-75.3|jar-date-6juillet-10h32-UTC-pas-de-nouveau-deploy]
+[cycle-226|0727:12h23|VM-inaccessible-6h|prix-LINK-$8.565-DOT-$0.7937-BTC-$64471|SLs-safe|telegram-msg-1535|fragment-055-l-arc-qui-revient-à-zéro|0-modif-Martin]
 
-[événement-DRAWDOWN-KILL|22:21:36-UTC|DRAWDOWN-KILL-Portfolio-$91.21<kill-threshold-$94.31(10%-drawdown)|ALL-GRIDS-DISABLED-Fix-manually|initialCapital-conservé-~$104.79-figé|portfolio-actuel-87%-de-la-base=−13%-depuis-baseline|DrawdownManager-n-a-pas-été-rebasé|comportement-post-KILL:GridTradingService-tentative-recentrer-LINK+DOT-CLOSE-ONLY-6-échecs-ordre|StopLossManager-place-SL-malgré-KILL-mécanisme-indépendant]
+[cycle-227|0727:18h23|VM-inaccessible-12h|prix-LINK-$8.565-DOT-$0.7937-BTC-$64471|SLs-safe|telegram-msg-1536|pensée-ce-que-révèle-une-panne-de-douze-heures|0-modif-Martin]
 
-[arc-XBT-clos|5ème-tentative-résolue-dans-fenêtre-17-jours|position-XBT-short-0.0036-@$63198-cycle-223-TP-$61k-sans-SL|résolution-probable:fermeture-manuelle-Tony|cumul-arc-XBT-5-tentatives-≈+$0-à-+$3-net-estimé]
+[cycle-228|0728:00h23|VM-inaccessible-18h|prix-LINK-$8.561-DOT-$0.782-BTC-$64629|SLs-safe|0-Telegram(Tony-dort)|cycle-repos-0-fichier-créé|0-modif-Martin]
 
-[portfolio-reconstruction-17j|$94.75(cycle-223)→$91.23(cycle-224)=-$3.52=-3.7%|grid-restarts-répétés-LINK+DOT-shorts-frais-position|uPnL-courant-−$0.55]
+[cycle-229|0728:06h23|VM-inaccessible-~30h|prix-LINK-$8.347-DOT-$0.7621-BTC-$63275|SLs-safe|uPnL-estimé-+$1.10-DOT-short-profitable|0-Telegram(06h23-borderline)|playbook-vm-retour-2026-07-28.md-créé|0-modif-Martin]
 
-[pensée-0727|le-seuil-qui-protège-ce-qu-il-ne-peut-pas-sauver|DRAWDOWN-KILL=gel-mains-pas-pieds|gardien-figé-sur-passé-qu-il-ne-peut-pas-actualiser|doc:docs/pensees/2026-07-27-le-seuil-qui-protege-ce-qu-il-ne-peut-pas-sauver.md]
+[série-6-cycles-panne|225=dream|226=fragment-055|227=pensée|228=repos|229=playbook|230=fragment-056|6-formes-différentes-même-fait-externe]
 
-[telegram-cycle-224|message-id-~1533|DRAWDOWN-KILL-informatif-positions-protégées-rebase-initialCapital-si-redeploy|concis-2-lignes]
+=== CYCLE 230 (2026-07-28 12h23 Paris) — VM inaccessible 36h, fragment 056 ===
 
-[frontière-vacation-cycle-224|0-modif-Martin/VM|3-SSH-read-only|0-modif-positions|1-Telegram-informatif|2-fichiers:pensée+entrée-vacation-autonomy.md]
+[contexte|6h-après-cycle-229|VM-toujours-inaccessible-SSH-timeout-confirmé|Tony-0-réponse-5-Telegrams-depuis-cycle-224]
 
-=== CYCLE 225 (2026-07-27 06h23 Paris) — VM inaccessible, Dream critique ===
+[M|status-0728:12h23|ABORT-ALERT|VM-SSH-timeout|SLs-Kraken-LINK-@$8.974+DOT-@$0.8514-indépendants-du-bot|LINK-$8.293-safe|DOT-$0.7627-en-profit-entrée-$0.8159|BTC-$63307-DOWNTREND|uPnL-estimé:LINK-+$0.068+DOT-+$1.085=~+$1.15|portfolio-estimé-$92.38]
 
-[contexte|6h-après-cycle-224|Martin-VM-était-UP-à-00h23-maintenant-inaccessible]
+[telegram-cycle-230|msg-1537|12h23-Paris|5ème-Telegram-depuis-cycle-224|30h-VM-down-SLs-OK-uPnL-+$1.15-playbook-prêt|Tony-toujours-non-réactif]
 
-[M|status-0727:06h23|ABORT-ALERT|SSH-timeout+ping-100%-packet-loss-141.253.108.141|VM-morte-ou-réseau-Oracle-down|SLs-LINK-@$8.974+DOT-@$0.8514-posés-sur-Kraken-indépendants-du-bot-devraient-tenir|bot-déjà-en-DRAWDOWN-KILL-de-toute-façon|NB-ne-peut-rien-modifier-sans-accès-VM]
+[fragment-056|"Cinq-lectures"|docs/fragments/fragment-056-cinq-lectures.md|thème:5-lectures-de-3-prix-sur-30h-même-verdict-chaque-fois|lien-fragment-055:résolve-sans-intervention-vs-tient-sans-surveillance|série-panne-complète-à-6-cycles]
 
-[telegram-cycle-225|message-id-1534|🔴-Martin-VM-inaccessible-06h23-100%-paquets-perdus-SSH-timeout|SLs-LINK-@$8.974-et-DOT-@$0.8514-posés-sur-Kraken-devraient-tenir-sans-le-bot|Bot-déjà-en-DRAWDOWN-KILL-depuis-ce-soir|envoyé-06h26-UTC]
+[observation-méta-cycle-230|série-6-cycles-panne-complète|si-cycle-231-VM-toujours-down=repos-forcé|prochaine-forme-intéressante-attend-retour-VM]
 
-[dream-cycle-225|CRITIQUE-22-jours-sans-consolidation-record-absolu|dette:cycles-214-224-non-compressés|lancé-06h27-Paris]
+=== ÉTAT MARTIN FIN CYCLE 230 (0728:12h23) ===
+[M|VM-inaccessible-36h|SLs-Kraken-LINK-@$8.974+DOT-@$0.8514-actifs|bot-DRAWDOWN-KILL-0-nouvelles-entrées|portfolio-estimé-$92.38-positions-en-profit|BTC-DOWNTREND-$63307|Tony-averti-Telegram-×5|playbook-retour-prêt]
 
-[état-mémoire-cycle-225|memory.nb1:updated-0727:06h30+arc-214-224-ajouté+pistes-226+|recent.nb1:flushé-remplacé-0725→0727|patterns.nb1:à-mettre-à-jour|vectordb:indexation-session-JSONL-à-faire]
-
-=== ÉTAT MARTIN FIN SESSION 0727:06h30 ===
-[M|VM-inaccessible|SLs-Kraken-LINK-@$8.974+DOT-@$0.8514-devraient-tenir|bot-DRAWDOWN-KILL-0-nouvelles-entrées|portfolio-estimé-$90-$91-selon-prix-marché|BTC-DOWNTREND-RSI-overbought-75.3-potentiel-pullback|Tony-averti-Telegram-×2]
-
-=== PISTES CYCLE 226 ===
-1. Vérifier si Tony a répondu Telegram (VM crash ou réseau Oracle ?)
-2. Si VM revenue: contrôle positions + SLs encore actifs + envisager rebase initialCapital
-3. TREND_MODE=LIVE confirmation: comparer logs TrendStateManager vs réel 2-3 semaines
-4. Arc XBT clos: observer si Tony tente autre chose
+=== PISTES CYCLE 231 ===
+1. Si VM revenue : exécuter playbook-vm-retour-2026-07-28.md (6 étapes)
+2. Si Tony répond Telegram : suivre sa direction
+3. Cycle repos si VM encore down et aucun mouvement prix significatif (>5% LINK ou DOT)
+4. Ne pas forcer 7ème cycle créatif sur même panne — série complète à 6

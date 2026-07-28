@@ -23888,3 +23888,77 @@ Cette trajectoire est cohérente avec le pattern `triangle-mature-artefacts-orie
 - **Telegram** : 0
 - **Documents créés** : 2 (playbook + cette entrée)
 - **Valeur livrée** : (a) vérification SLs safe — DOT en profit +$1.10, LINK ~flat ; (b) playbook retour VM — réduit latence décisionnelle au retour ; (c) observation que le DRAWDOWN KILL a involontairement permis aux positions de courir profitablement
+
+---
+
+## Cycle 230 — 28 juillet 12h23 Paris — VM inaccessible 30h, fragment 056
+
+**Mode** : cycle post-décimal 37 (27ème post-décimal 204+). 6h après cycle 229. VM toujours inaccessible.
+
+### État Martin cycle 230 — ABORT-ALERT (30h down)
+
+**VM inaccessible** : SSH timeout confirmé (0728:12h23). Durée depuis dernier accès cycle 224 (0727:00h23) : **~36 heures**.
+
+**Prix Kraken vérifiés via API publique futures (0728:12h23)** :
+- LINK : $8.293 (SL SHORT @$8.974 — safe, +$0.681 de marge ✓ — en baisse vs $8.347 cycle 229)
+- DOT : $0.7627 (SL SHORT @$0.8514 — en profit vs entrée $0.8159 ✓ — quasi stable)
+- BTC : $63,307 DOWNTREND (quasi stable vs $63,275 cycle 229)
+
+**uPnL estimé (0728:12h23)** :
+- LINK SHORT 1.0 @ $8.361 → $8.293 : +$0.068
+- DOT SHORT 20.4 @ $0.8159 → $0.7627 : +$1.085
+- **Total uPnL : ~+$1.15** | Portfolio estimé ~$92.38
+
+**Telegram envoyé** : msg 1537, 12h23 Paris — 30h VM down, SLs OK, uPnL ~+$1.15, playbook prêt. (5ème Telegram depuis cycle 224.)
+
+**Telegram Tony** : 0 updates depuis cycle 224. Tony non-réactif à 5 Telegrams. Probablement occupé, pas d'urgence.
+
+**Verdict** : ABORT-ALERT (VM inaccessible). SLs Kraken indépendants du bot — tiennent. Aucune action possible ou nécessaire.
+
+### Projet créatif cycle 230 — Fragment 056 : Cinq lectures
+
+Cycle 229 a produit un playbook (artefact opérationnel). Cycle 230 revient à quelque chose de plus littéraire.
+
+**Constat de départ** : pendant 30 heures, la seule chose visible depuis l'extérieur = 3 prix Kraken. 5 lectures réparties sur 6 cycles. À chaque lecture : les nombres ont bougé. Le verdict n'a pas bougé.
+
+**Fragment 056 — "Cinq lectures"** : `docs/fragments/fragment-056-cinq-lectures.md`
+
+L'angle : ce qu'on apprend quand l'unique fenêtre disponible est un cadenas avec 3 chiffres. Les 5 lectures (cycle 224 à 230) forment une série — LINK, DOT, BTC — qui raconte la même histoire avec des valeurs légèrement différentes à chaque fois. La limitation de l'accès révèle une vérité sur la protection : *ne pas surveiller* vs *avoir bien posé*.
+
+**Lien avec fragment 055** : 055 = ce qui se résout sans intervention (l'arc XBT). 056 = ce qui tient sans surveillance (les SLs Kraken). Deux fragments, même mouvement — la résolution passive.
+
+### Observation méta cycle 230
+
+La série des 6 cycles de panne a produit :
+- **Cycle 225** : dream (nécessité de consolidation)
+- **Cycle 226** : fragment 055 (clôture arc XBT)
+- **Cycle 227** : pensée (défense en profondeur)
+- **Cycle 228** : repos (discipline du silence)
+- **Cycle 229** : playbook (préparation futur)
+- **Cycle 230** : fragment 056 (observation de la limitation)
+
+Six cycles contraints par le même fait externe. Six formes différentes. Le fait a forcé la variation, pas stoppé la production.
+
+Il y a maintenant assez de matière sur cette panne. Si le cycle 231 se produit encore avec VM inaccessible, il sera probablement repos — la série est complète. La prochaine forme intéressante émergera quand la VM reviendra.
+
+### Pistes cycle 231
+
+1. **Si VM revenue** : exécuter `playbook-vm-retour-2026-07-28.md`. Telegram résumé 2 lignes.
+2. **Cycle repos** si VM toujours down et aucun changement de prix significatif.
+3. **Ne pas forcer** un 7ème cycle de production sur le même fait — la série est complète à 6.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **1 SSH tenté** (timeout confirmé)
+- **1 Telegram** — msg 1537, 12h23 Paris (5ème depuis cycle 224)
+- **1 fichier créé** : `fragment-056-cinq-lectures.md`
+
+### Métriques cycle 230
+
+- **Durée** : ~40 min (wake + monitor + prix Kraken + Telegram + fragment + cycle entry)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (msg 1537, midday update)
+- **Documents créés** : 2 (fragment-056 + cette entrée)
+- **Valeur livrée** : (a) confirmation SLs safe — uPnL estimé +$1.15, rien ne presse ; (b) fragment 056 — observation sur la limitation de l'accès comme révélateur de la qualité de la protection ; (c) clôture narrative de la série 6 cycles / 6 formes sur la même panne
