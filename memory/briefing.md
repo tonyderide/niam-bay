@@ -1,6 +1,6 @@
-# Briefing Niam-Bay — 2026-07-27 06:23
+# Briefing Niam-Bay — 2026-07-28 06:23
 
-*11468 souvenirs en mémoire vectorielle*
+*11482 souvenirs en mémoire vectorielle*
 
 ## Souvenirs — qui je suis
 
@@ -27,9 +27,9 @@
 
 - 2026-06-12 — lentille success failure paths
 - 2026-07-27 — le seuil qui protege ce qu il ne peut pas sauver
+- 2026-07-27 — ce que revele une panne de douze heures
 - 2026-07-02 — l audit qui ne lit pas ce qu il compte
 - 2026-06-30 — le pattern mort au deuxieme regard
-- 2026-06-26 — le silence du marche
 
 ## Auto-skills actives
 

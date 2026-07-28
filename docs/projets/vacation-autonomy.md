@@ -23814,3 +23814,77 @@ Il y a une discipline dans la capacité à ne pas produire quand il n'y a rien �
 - **Telegram** : 0
 - **Documents créés** : 1 (cette entrée uniquement)
 - **Valeur livrée** : suivi passif — VM inaccessible 18h, SLs toujours safe, rien à décider
+- **Valeur livrée** : suivi passif — VM inaccessible 18h, SLs toujours safe, rien à décider
+
+---
+
+## Cycle 229 — 28 juillet 06h23 Paris — VM inaccessible 24h, Playbook retour VM
+
+**Mode** : cycle post-décimal 36 (26ème post-décimal 204+). 6h après cycle 228. VM toujours inaccessible.
+
+### État Martin cycle 229 — ABORT-ALERT (24h down)
+
+**VM inaccessible** : SSH timeout. Durée depuis dernier accès cycle 224 (0727:00h23) : **~30 heures**.
+
+**Prix Kraken vérifiés via API publique futures (0728:06h23)** :
+- LINK : $8.347 (SL SHORT @$8.974 — safe, +$0.627 de marge ✓)
+- DOT : $0.7621 (SL SHORT @$0.8514 — **en profit** vs entrée $0.8159, +$1.10 estimé ✓)
+- BTC : $63,275 DOWNTREND (en baisse vs $65,151 cycle 224 = favorable aux shorts)
+
+**Observation nouvelle cycle 229** : les positions sont devenues plus profitables pendant l'inaccessibilité VM. DOT short a capturé $0.054/unit × 20.4 = +$1.10 de profit latent. Portfolio estimé ~$92-93 vs $91.23 cycle 224. Le bot gelé (DRAWDOWN KILL) a involontairement permis aux positions de courir sans interférence. La protection qui gelait les mains a laissé les positions respirer.
+
+**Telegram Tony** : 0 updates. Tony n'a pas répondu aux 4 messages envoyés cycles 224-227. 06h23 Paris = borderline (règle 22h-07h), pas de nouveau Telegram envoyé.
+
+**Verdict** : ABORT-ALERT (VM inaccessible). SLs actifs côté Kraken. Aucune action possible ou nécessaire.
+
+### Projet créatif cycle 229 — Playbook retour VM
+
+Pistes cycle 228 : "Si VM revenue : full monitor + vérifier SLs Kraken encore actifs + état DRAWDOWN KILL + envisager rebase initialCapital."
+
+Ce cycle ne produit pas de fragment ou de pensée — il produit un **artefact opérationnel orienté futur** : `docs/projets/playbook-vm-retour-2026-07-28.md`.
+
+**Contenu du playbook (6 étapes)** :
+1. Vérification VM live (commande SSH test)
+2. Full status Martin en 1 commande (positions, SLs, BTC)
+3. Vérification SLs Kraken source de vérité (via `/api/bot/orders`)
+4. Rebase initialCapital si redeploy voulu (avec décision contextuelle)
+5. Décision tree (HOLD positions / reposer SLs / redéployer / laisser DRAWDOWN KILL actif)
+6. Log forensic (ce qui s'est passé pendant la panne)
+
+**Pourquoi ce format** : après 4 cycles consécutifs de monitoring passif (225-228), la valeur ajoutée n'est pas une autre observation — c'est une **reduction de latence décisionnelle**. Quand la VM reviendra, NB ou Tony pourra exécuter sans improviser. La panique au retour d'une panne fait les mauvaises décisions.
+
+**Ce qui est nouveau dans ce playbook vs `etat-au-retour-0511.md`** :
+- Spécifique au DRAWDOWN KILL (problème structurel nouveau depuis cycle 224)
+- Intègre la decision tree rebase vs no-rebase (subtilité absente en mai 2026)
+- Prend en compte que les positions sont actuellement *profitables* → les laisser courir est une option valide
+
+### Observation méta cycle 229
+
+Cycles 225-228 ont produit (dans l'ordre) : dream, fragment, pensée, repos. Cycle 229 produit un artefact opérationnel.
+
+Cinq cycles sans accès VM. La forme créative s'est progressivement contractée : dream (nécessité), fragment (fermeture arc), pensée (observation), repos (discipline), playbook (préparation). La trajectoire suit la distance au dernier événement réel : quand il n'y a plus d'événement nouveau, la production se tourne vers l'avenir.
+
+Cette trajectoire est cohérente avec le pattern `triangle-mature-artefacts-orienté-futur` (patterns.nb1, cycle 205) : NB produit naturellement pour 3 destinataires — NB-futur, Tony-futur, lecteur externe. Ce cycle = NB-futur + Tony-futur simultanément (le playbook sert les deux).
+
+### Pistes cycle 230
+
+1. **Si VM revenue** : exécuter `playbook-vm-retour-2026-07-28.md` étape par étape. Telegram Tony résumé 2 lignes.
+2. **Si Tony répond** : suivre sa direction. Le playbook s'adapte à sa réponse.
+3. **Cycle repos** si VM encore down et aucun mouvement de prix significatif (>5% sur LINK ou DOT).
+4. **Telegram Tony** (si 07h-22h Paris et quelque chose change) : résumé positions en profit + VM toujours down.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **0 SSH** — timeout confirmé (0728:06h23)
+- **0 Telegram** — hors fenêtre (06h23 Paris)
+- **1 fichier créé** : `playbook-vm-retour-2026-07-28.md`
+
+### Métriques cycle 229
+
+- **Durée** : ~45 min (wake + monitor + prix Kraken + Telegram check + playbook + cycle entry)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 2 (playbook + cette entrée)
+- **Valeur livrée** : (a) vérification SLs safe — DOT en profit +$1.10, LINK ~flat ; (b) playbook retour VM — réduit latence décisionnelle au retour ; (c) observation que le DRAWDOWN KILL a involontairement permis aux positions de courir profitablement

@@ -233,3 +233,31 @@ curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'"
 
 # [auto 2026-07-10 00:24] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | tail -<N>
 rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | tail -25
+
+# [auto 2026-07-27 01:14] utilisée 3x — sig: for i in $(seq <N> <N>); do sleep <N>; done; date '+%H:%M:%S'
+for i in $(seq 1 9); do sleep 10; done; date '+%H:%M:%S'
+
+# [auto 2026-07-27 16:46] utilisée 3x — sig: echo "service: $(systemctl --user is-active martin-local.service)" curl -s --max-time <N> http://<N>.<N>:<N>/api/bot/balance > /tmp/b.json <N>>/dev/null curl -s --max-time <N> http://<N>.<N>:<N>/api/bot/positions > /tmp/p.json <N>>/dev/null curl -s --max-time <N> http://<N>.<N>:<N>/api/bot/orders > /tmp/o.json <N>>/dev/null echo "grids: $(curl -s --max-time <N> http://<N>.<N>:<N>/api/grid/active)"
+echo "service: $(systemctl --user is-active martin-local.service)"
+curl -s --max-time 8 http://127.0.0.1:8081/api/bot/balance > /tmp/b.json 2>/dev/null
+curl -s --max-time 8 http://127.0.0.1:8081/api/bot/positions > /tmp/p.json 2>/dev/null
+curl -s --max-time 8 http://127.0.0.1:8081/api/bot/orders > /tmp/o.json 2>/dev/null
+echo "grids: $(curl -s --max-time 8 http://127.0.0.1:8081/api/grid/active)"
+python3 - <<'PY'
+import json
+f=json.load(open('/tmp/b.json'))['accounts']['flex']
+print(f"portefeuille ${round(f['portfolioValue'],2)} | uPnL ${round(f['pnl'],3)} | marge ${round(f['availableMargin'],2)}")
+for p in json.load(open('/tmp/p.json')):
+    print(f"  {p['symbol']:12} {p['side']:6} {p['size']:<8} @ {p['price']}  uPnL ${round(p['unrealizedPnl'],3)}")
+o=json.load(open('/tmp/o.json')); print(f"  {len(o)} ordres live")
+PY
+echo "erreurs 5 dernieres min: $(awk -v t="$(date -d '5 min ago' '+%H:%M')" '$0>=t && /ERROR/' /home/tony/martin-local/logs/martin.log | wc -l)"
+
+# [auto 2026-07-27 18:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "OK" || echo "SKIP"
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "OK" || echo "SKIP"
+
+# [auto 2026-07-27 18:27] utilisée 3x — sig: rtk git push <N>>&<N> | tail -<N>
+rtk git push 2>&1 | tail -8
+
+# [auto 2026-07-28 00:25] utilisée 3x — sig: rtk git push <N>>&<N>
+rtk git push 2>&1
