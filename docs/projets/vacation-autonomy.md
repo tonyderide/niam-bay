@@ -24147,3 +24147,95 @@ C'est une pensée différente des fragments de la panne (055-056-057 exploraient
 L'arc de la panne (055-056-057) était nocturne. La pensée 058 est du matin — même fait externe (VM down), angle différent (observation vs résolution).
 
 La VM peut revenir n'importe quand. Le playbook est prêt. Les positions tiennent.
+
+---
+
+## Cycle 234 — 29 juillet 12h23 Paris — VM inaccessible 54h, cartographie de la panne
+
+**Mode** : midi. 6h après cycle 233 (matin, pensée 058). VM inaccessible ~54 heures.
+
+### État Martin cycle 234 — ABORT-ALERT (54h down)
+
+**VM inaccessible** : SSH timeout (0729:12h23). Durée totale : **~54 heures**.
+
+**Prix Kraken (0729:12h23)** :
+- LINK : $8.441 (SL SHORT @$8.974 — safe, marge +6.3% ✓)
+- DOT : $0.7641 (SL SHORT @$0.8514 — safe, marge +10.2% ✓)
+- BTC : $64,576 DOWNTREND confirmé
+
+**uPnL estimé (0729:12h23)** :
+- LINK SHORT 1.0 @ $8.361 → $8.441 : **−$0.080** (repassé au-dessus du breakeven depuis C233)
+- DOT SHORT 20.4 @ $0.8159 → $0.7641 : **+$1.057**
+- **Total uPnL : ~+$0.977** | Portfolio estimé ~$92.20
+
+**Note clé** : LINK a traversé le breakeven ($8.361) **deux fois** depuis minuit :
+- Traversée ↓ (en profit) : entre C232 et C233 → capturé par pensée 058
+- Traversée ↑ (en perte légère) : entre C233 et C234 → observé ce cycle
+
+**Tony** : 0 réponse. Portugal. Rien d'urgent à signaler.
+
+**Verdict** : HOLD sur l'inaction. Positions globalement profitables, SLs sûrs. Pas de Telegram.
+
+### Cartographie de la panne
+
+Ce cycle a produit **`docs/projets/panne-54h-cartographie.md`** — une cartographie visuelle ASCII des 55 heures de panne.
+
+Contenu :
+1. **Graphes OHLC réels** (API Kraken spot, 1h candles) pour LINK et DOT
+2. **Niveaux annotés** : SL, breakeven/entrée
+3. **Chronologie** des 10 cycles (C225→C234) avec forme et note
+4. **Observations** : le double passage de LINK sur son breakeven, la descente monotone de DOT, la géométrie de protection (distances SL jamais inférieures à +5.8%)
+
+### Pourquoi une cartographie pour C234
+
+Les cycles 232-233 ont couvert la nuit (fragment) et le matin (pensée). Deux angles qualitatifs.
+
+Cycle 234 (midi) ajoute un angle **quantitatif et visuel** : rendre visible ce qui s'est passé sous la surface pendant 54h. Les graphes ASCII ne sont pas beaux — mais ils montrent :
+- Que LINK a vraiment navigué autour de son breakeven (pas juste une intuition)
+- Que DOT a vraiment décliné en une seule vague (pas en zigzag)
+- Que les SLs n'ont jamais été approchés (protection réelle, pas espérée)
+
+La cartographie transforme 9 cycles de vérifications textuelles en une image compressée. C'est différent de ce que les fragments ou les pensées font.
+
+### Formes utilisées dans l'arc panne 225→234
+
+| Cycle | Forme          | Temporalité          |
+|-------|----------------|----------------------|
+| 225   | Dream          | Avant la panne       |
+| 226   | Fragment       | 12h de panne (après-midi) |
+| 227   | Pensée         | 12h de panne (soir)  |
+| 228   | Repos          | 18h de panne (nuit)  |
+| 229   | Playbook       | 24h de panne (matin) |
+| 230   | Fragment       | 30h de panne (midi)  |
+| 231   | Repos          | 36h de panne (soir)  |
+| 232   | Fragment       | 42h de panne (nuit)  |
+| 233   | Pensée         | 48h de panne (matin) |
+| 234   | **Cartographie** | 54h de panne (midi) |
+
+La cartographie est la 10e forme, et la première de nature visuelle/quantitative dans cet arc.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **1 SSH tenté** (timeout confirmé)
+- **2 appels API Kraken publique** (tickers + OHLC)
+- **0 Telegram** — rien de nouveau
+- **1 fichier créé** — panne-54h-cartographie.md
+
+### Métriques cycle 234
+
+- **Durée** : ~45 min (wake + monitor + OHLC fetch + itérations chart + cartographie + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (panne-54h-cartographie.md)
+- **Documents modifiés** : 1 (vacation-autonomy.md, cette entrée)
+- **Valeur livrée** : cartographie visuelle ASCII des 55h — archive compressée de l'arc panne
+
+### Note
+
+La série panne 225-234 couvre maintenant 10 cycles, 10 formes, un seul fait externe. Il n'y en a pas eu d'aussi longue depuis l'arc post-décimal (194-212, 9 formes).
+
+Ce qui distingue l'arc panne : l'absence de VM force la créativité sur un matériel minimal (prix publics + mémoire). Chaque forme explore une dimension différente du même fait : le silence de la machine, la tenue des protections, le temps qui passe.
+
+Le prochain cycle dépend de l'état de la VM au réveil. Si elle revient : exécuter le playbook (cycle 229). Si elle reste down : la série continue.
