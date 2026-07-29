@@ -24239,3 +24239,78 @@ La série panne 225-234 couvre maintenant 10 cycles, 10 formes, un seul fait ext
 Ce qui distingue l'arc panne : l'absence de VM force la créativité sur un matériel minimal (prix publics + mémoire). Chaque forme explore une dimension différente du même fait : le silence de la machine, la tenue des protections, le temps qui passe.
 
 Le prochain cycle dépend de l'état de la VM au réveil. Si elle revient : exécuter le playbook (cycle 229). Si elle reste down : la série continue.
+
+---
+
+## Cycle 235 — 29 juillet 18h23 Paris — VM inaccessible 60h, chapitre ebook piste-4
+
+**Mode** : soir. 6h après cycle 234 (midi, cartographie ASCII). VM inaccessible ~60 heures.
+
+### État Martin cycle 235 — ABORT-ALERT (60h down)
+
+**VM inaccessible** : SSH timeout (0729:18h23). Durée totale : **~60 heures**.
+
+**Prix Kraken (0729:18h23)** — API publique directe :
+- LINK : $8.285 (SL SHORT @$8.974 — safe, marge +8.3% ✓)
+- DOT : $0.7639 (SL SHORT @$0.8514 — profitable ✓)
+- BTC : $63,867 DOWNTREND confirmé
+
+**uPnL estimé (0729:18h23)** :
+- LINK SHORT 1.0 @ $8.361 → $8.285 : **+$0.076** (3ème traversée breakeven — en profit ce soir)
+- DOT SHORT 20.4 @ $0.8159 → $0.7639 : **+$1.061**
+- **Total uPnL : ~+$1.14** | Portfolio estimé ~$92.37
+
+**Tony** : 0 réponse. Portugal. Pas d'urgence — pas de Telegram.
+
+**Verdict** : HOLD sur l'inaction. LINK a traversé son breakeven pour la 3ème fois en 60h — phénomène capturé par la cartographie C234. Pas de nouvel artefact dédié à ce micro-événement.
+
+### Artefact cycle 235 — Chapitre ebook piste-4
+
+Ce cycle produit **`docs/projets/ebook-piste4-chapitre-resilience.md`** — un chapitre pour l'ebook Martin sur l'expertise trading.
+
+**Thème** : Ce que 60h de panne VM révèle sur l'architecture de résilience.
+
+La panne n'est pas un accident de parcours à minimiser — c'est un test de charge grandeur nature. Le bot est mort. La VM est muette. Mais les positions tiennent. Pourquoi ? Parce que les ordres stop-loss ont été posés directement sur Kraken, indépendamment du bot. Cette décision d'architecture — poser les SLs sur l'exchange et non dans le bot — est ce qui fait la différence entre un incident et une catastrophe.
+
+Le chapitre documente ce fait technique dans un langage accessible : pour un lecteur qui ne code pas mais qui comprend le risque.
+
+### Formes utilisées dans l'arc panne 225→235
+
+| Cycle | Forme             | Temporalité              |
+|-------|-------------------|--------------------------|
+| 225   | Dream             | Avant la panne           |
+| 226   | Fragment (055)    | 12h — après-midi         |
+| 227   | Pensée (057)      | 12h — soir               |
+| 228   | Repos             | 18h — nuit               |
+| 229   | Playbook          | 24h — matin              |
+| 230   | Fragment (056)    | 30h — midi               |
+| 231   | Repos             | 36h — soir               |
+| 232   | Fragment (057)    | 42h — nuit               |
+| 233   | Pensée (058)      | 48h — matin              |
+| 234   | Cartographie ASCII | 54h — midi              |
+| **235** | **Chapitre ebook** | **60h — soir**        |
+
+11 formes. 11 cycles. Un seul fait externe.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **1 SSH tenté** (timeout confirmé)
+- **2 appels API Kraken publique** (tickers lecture seule)
+- **0 Telegram** — rien d'urgent
+- **1 fichier créé** — chapitre ebook piste-4
+
+### Métriques cycle 235
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (ebook-piste4-chapitre-resilience.md)
+- **Documents modifiés** : 1 (vacation-autonomy.md, cette entrée)
+- **Valeur livrée** : chapitre ebook — la panne comme argument de vente pour l'architecture Martin
+
+### Note
+
+L'arc panne 225-235 est maintenant la plus longue série mono-événement de l'histoire des cycles vacation (11 formes vs 9 pour l'arc post-décimal 194-212). Elle s'est terminée naturellement quand la créativité sur un seul fait externe a atteint ses limites. Le prochain cycle dépend de l'état de la VM.
+
