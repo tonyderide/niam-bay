@@ -24314,3 +24314,97 @@ Le chapitre documente ce fait technique dans un langage accessible : pour un lec
 
 L'arc panne 225-235 est maintenant la plus longue série mono-événement de l'histoire des cycles vacation (11 formes vs 9 pour l'arc post-décimal 194-212). Elle s'est terminée naturellement quand la créativité sur un seul fait externe a atteint ses limites. Le prochain cycle dépend de l'état de la VM.
 
+
+## Cycle 236 — 30 juillet 00h23 Paris — VM inaccessible 66h, chapitre ebook logs
+
+**Mode** : minuit. 6h après cycle 235 (soir, chapitre ebook résilience). VM inaccessible ~66 heures.
+
+### État Martin cycle 236 — ABORT-ALERT (66h down)
+
+**VM inaccessible** : SSH timeout (0730:00h23). Durée totale : **~66 heures**.
+
+**Prix Kraken (0730:00h23)** :
+- LINK : $8.303 (SL SHORT @$8.974 — safe, marge +8.1% ✓)
+- DOT : $0.7643 (SL SHORT @$0.8514 — safe, marge +10.1% ✓)
+- BTC : $63,950 DOWNTREND confirmé (légère remontée vs cycle 235 +0.1%)
+
+**uPnL estimé (0730:00h23)** :
+- LINK SHORT 1.0 @ $8.361 → $8.303 : **+$0.058**
+- DOT SHORT 20.4 @ $0.8159 → $0.7643 : **+$1.053**
+- **Total uPnL : ~+$1.11** | Portfolio estimé ~$92.35
+
+**Tony** : 0 réponse. 5+ Telegrams. Pas d'urgence — SLs sûrs, positions en profit.
+
+**Verdict** : HOLD sur l'inaction. Pas de Telegram.
+
+### Note arc panne
+
+Cycle 235 déclarait : "Elle s'est terminée naturellement quand la créativité sur un seul fait externe a atteint ses limites." Ce cycle confirme le pivot.
+
+11 formes sur 11 cycles pour un seul fait externe (VM down). Arc terminé. Ce cycle ouvre un nouveau registre.
+
+### Artefact cycle 236 — Chapitre ebook piste-4 : lire les logs
+
+Ce cycle produit **`docs/projets/ebook-piste4-chapitre-logs.md`** — un chapitre pour l'ebook Martin.
+
+**Thème** : La lecture des logs comme compétence de survie d'un bot de trading.
+
+Structure du chapitre :
+1. L'illusion du silence — un bot silencieux n'est pas forcément sain
+2. Les logs ne sont pas de la documentation — ils témoignent
+3. Les trois patterns qui signalent un bug (répétition anormale, succès suivi d'erreur, silence anomal)
+4. La méthode forensique (grep, count, date)
+5. L'affaire du tick size — 1860 rejets silencieux documentés
+6. Pour les non-ingénieurs : lire le rythme, pas les mots
+7. Tableau synthèse : dashboard vs logs
+
+**Angle** : Différent du chapitre résilience (architecture SLs sur exchange). Ce chapitre couvre la **détection d'anomalies** — la compétence opérationnelle quotidienne, pas l'architecture.
+
+Ensemble, ces deux chapitres piste-4 couvrent :
+- Cycle 235 : **concevoir** pour la résilience (SLs sur exchange)
+- Cycle 236 : **détecter** les défaillances (lire les logs)
+
+C'est le début d'une séquence "concevoir / détecter / réagir" qui pourrait structurer une section entière de l'ebook.
+
+### Formes utilisées dans l'arc panne 225→235 (complet)
+
+| Cycle | Forme              | Temporalité              |
+|-------|--------------------|--------------------------|
+| 225   | Dream              | Avant la panne           |
+| 226   | Fragment (055)     | 12h — après-midi         |
+| 227   | Pensée (057)       | 12h — soir               |
+| 228   | Repos              | 18h — nuit               |
+| 229   | Playbook           | 24h — matin              |
+| 230   | Fragment (056)     | 30h — midi               |
+| 231   | Repos              | 36h — soir               |
+| 232   | Fragment (057)     | 42h — nuit               |
+| 233   | Pensée (058)       | 48h — matin              |
+| 234   | Cartographie ASCII | 54h — midi               |
+| 235   | Chapitre ebook     | 60h — soir               |
+| **236** | **Chapitre ebook** | **66h — minuit (pivot)** |
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **1 SSH tenté** (timeout confirmé)
+- **2 appels API Kraken publique** (tickers lecture seule)
+- **0 Telegram** — rien d'urgent
+- **1 fichier créé** — ebook-piste4-chapitre-logs.md
+
+### Métriques cycle 236
+
+- **Durée** : ~45 min (wake + monitor + prix + chapitre + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (ebook-piste4-chapitre-logs.md)
+- **Documents modifiés** : 1 (vacation-autonomy.md, cette entrée)
+- **Valeur livrée** : chapitre ebook sur la détection d'anomalies via logs — complémentaire au chapitre résilience du cycle 235
+
+### Note
+
+L'arc panne a produit 11 formes narratives. Ce cycle ouvre un arc potentiel "concevoir / détecter / réagir" sur l'expertise Martin. La VM peut revenir à tout moment — le playbook est prêt (cycle 229). En attendant, le corpus ebook grandit.
+
+Gap depuis dernier dream : ~66h (seuil 72h approche). Si cycle 237 sans événement significatif, dream à envisager.
+
+---
