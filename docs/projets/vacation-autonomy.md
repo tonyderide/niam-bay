@@ -24087,3 +24087,63 @@ Trois fragments pour trois phases d'une même panne :
 3. La nuit (057)
 
 L'arc est complet. Le prochain fragment attend la VM ou un changement d'état réel.
+
+---
+
+## Cycle 233 — 29 juillet 06h23 Paris — VM inaccessible 48h, pensée 058, le matin
+
+**Mode** : matin. 6h après cycle 232 (minuit, fragment 057). VM inaccessible ~48 heures.
+
+### État Martin cycle 233 — ABORT-ALERT (48h down)
+
+**VM inaccessible** : SSH timeout confirmé (0729:06h23). Durée totale : **~48 heures**.
+
+**Prix Kraken (0729:06h23)** — source : API Kraken publique directe :
+- LINK : $8.31 (SL SHORT @$8.974 — safe, marge +8.0% ✓)
+- DOT : $0.7562 (SL SHORT @$0.8514 — en profit vs entrée $0.8159 ✓)
+- BTC : $63,623 DOWNTREND confirmé
+
+**Variation vs cycle 232 (minuit)** : LINK −1.4%, DOT −1.3%, BTC −0.4%. Aucun mouvement >5%.
+
+**uPnL estimé (0729:06h23)** :
+- LINK SHORT 1.0 @ $8.361 → $8.31 : **+$0.051** (⬆ croise le breakeven dans la nuit)
+- DOT SHORT 20.4 @ $0.8159 → $0.7562 : **+$1.218**
+- **Total uPnL : ~+$1.27** | Portfolio estimé ~$92.50
+
+**Tony** : 0 réponse à 5+ Telegrams. Portugal. Pas d'urgence — rien de nouveau à signaler.
+
+**Verdict** : HOLD sur l'inaction. Positions plus profitables qu'à minuit. Pas de Telegram.
+
+### Pensée 058 — Le passage à zéro
+
+Ce cycle a produit **pensée 058** (`docs/pensees/2026-07-29-le-passage-a-zero.md`).
+
+L'observation qui a déclenché la pensée : la position LINK SHORT était à −$0.064 à minuit ($8.425). Elle est à +$0.051 maintenant ($8.31). Quelque part dans la nuit, le uPnL a été exactement zéro. Personne n'était là.
+
+La pensée explore l'asymétrie fondamentale : les seuils (breakeven, SL, TP) sont des constructions humaines projetées sur un flux continu. Le marché ne sait pas qu'il a traversé $8.361. Le "zéro" n'existait que de notre côté.
+
+C'est une pensée différente des fragments de la panne (055-056-057 exploraient le silence, la répétition, la nuit). La pensée 058 explore la **nature de l'observation** : la position a traversé un seuil sans témoin, et c'est bien.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — inaccessible
+- **0 modif positions/ordres**
+- **1 SSH tenté** (timeout confirmé)
+- **1 appel API Kraken publique** (lecture seule, prix)
+- **0 Telegram** — rien de nouveau à signaler
+- **1 fichier créé** — pensée le-passage-a-zero.md
+
+### Métriques cycle 233
+
+- **Durée** : ~30 min (wake + monitor + prix + pensée + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (pensée-058)
+- **Documents modifiés** : 1 (vacation-autonomy.md, cette entrée)
+- **Valeur livrée** : pensée sur la nature de l'observation dans les marchés continus
+
+### Note
+
+L'arc de la panne (055-056-057) était nocturne. La pensée 058 est du matin — même fait externe (VM down), angle différent (observation vs résolution).
+
+La VM peut revenir n'importe quand. Le playbook est prêt. Les positions tiennent.

@@ -261,3 +261,9 @@ rtk git push 2>&1 | tail -8
 
 # [auto 2026-07-28 00:25] utilisée 3x — sig: rtk git push <N>>&<N>
 rtk git push 2>&1
+
+# [auto 2026-07-28 12:24] utilisée 3x — sig: rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines <N>
+rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines 100
+
+# [auto 2026-07-28 12:26] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/pensees/ | tail -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/pensees/ | tail -20
