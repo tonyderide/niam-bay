@@ -24680,3 +24680,32 @@ Décisions restantes pour Tony :
 - **Arc actuel** : ebook structuré et complet — Tony peut lire l'intégralité dans `ebook-piste4-COMPLET.md` au retour
 
 ---
+
+## Cycle 240 — 2026-07-31 00h23 Paris — Renderer HTML ebook + Martin HOLD
+
+Réveil ~6h après cycle 239 (18h23→00h23). Tony en vacances au Portugal.
+
+### Martin — HOLD (0 action)
+
+- Bot UP **23h17m** depuis restart 0729:23h05 UTC
+- Portfolio **$94.38** (balance $94.35, uPnL +$0.033, +0.03%)
+- **3 grids actives** : LINK, DOT, SOL
+  - LINK: uPnL +$0.046 (+0.18% cap) | RT 0 | Long 1.6 @8.459 | SL @8.229 ✓
+  - DOT: uPnL −$0.025 (−0.10% cap) | RT 0 | Short 10.8 @0.7701 | SL @0.7962 ✓ | closeOnly
+  - SOL: uPnL +$0.018 (+0.07% cap) | RT 0 | Short 0.11 @74.85 | SL @76.64 ✓
+- BTC $64,852 DOWNTREND | BTC > EMA200 +0.67% → pas d'abort. HOLD total.
+
+### Artefact cycle : Renderer HTML ebook
+
+Arc éditorial 14 cycles terminé → pivot code. `scripts/render_ebook.py` produit `docs/projets/ebook-piste4.html`.
+
+- **48 KB HTML auto-contenu** (0 dépendance)
+- Design sombre, typographie lisible, blocs code formatés, table des matières navigable
+- Stats cover : 5898 mots / 3 parties / 8 mois / 4 bugs
+- Réexécutable : `python3 scripts/render_ebook.py` après toute modif du COMPLET.md
+- Compatible Gumroad (HTML téléchargeable) ou conversion PDF via wkhtmltopdf
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 2 fichiers créés (script + HTML)
+

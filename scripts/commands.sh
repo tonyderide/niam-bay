@@ -267,3 +267,29 @@ rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.
 
 # [auto 2026-07-28 12:26] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/pensees/ | tail -<N>
 rtk ls /home/tony/projets/tonyderide/niam-bay/docs/pensees/ | tail -20
+
+# [auto 2026-07-30 00:28] utilisée 3x — sig: rtk git push origin master <N>>&<N>
+rtk git push origin master 2>&1
+
+# [auto 2026-07-30 06:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/system/status echo '|||' curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders echo '|||' curl -s http://localhost:<N>/api/grid/active echo '|||' for p in <SYM> <SY
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=15 ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/system/status
+echo '|||'
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders
+echo '|||'
+curl -s http://localhost:8081/api/grid/active
+echo '|||'
+for p in PF_LINKUSD PF_DOTUSD PF_SOLUSD PF_ADAUSD PF_XBTUSD PF_ETHUSD; do
+  curl -s http://localhost:8081/api/grid/status/\$p 2>/dev/null
+  echo '==='
+done
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'
+" 2>&1 | head -200
+
+# [auto 2026-07-30 12:31] utilisée 3x — sig: rtk git push origin master
+rtk git push origin master
