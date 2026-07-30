@@ -24555,3 +24555,128 @@ Dream lancé après ce commit.
 - **Arc actuel** : post-panne, ebook piste-4 structuré — arc éditorial de 14 cycles (225-238) terminé sur un livre en forme
 
 ---
+
+## Cycle 239 — 30 juillet 18h23 Paris — Ebook complet : Partie 0 + Épilogue + script assemblage
+
+**Mode** : soir. 6h après cycle 238 (12h23, intro ebook + dream lancé). 14 cycles d'arc éditorial terminés (225-238). Premier cycle post-arc.
+
+### État Martin cycle 239 — HOLD
+
+- Bot UP **17h 17m** depuis 2026-07-29T23:05:57 UTC
+- **3 grids actives** : PF_LINKUSD, PF_DOTUSD, PF_SOLUSD (3 × $25)
+- RT = 0 (17h post-deploy)
+
+**Positions Kraken (source de vérité) :**
+- LINK LONG 1.6 @ $8.459 | uPnL +$0.0479 (+0.2% cap) | SL 8.234 ✓
+- DOT SHORT 10.8 | uPnL +$0.0076 (+0.0% cap) | SL 0.7944 ✓
+- SOL : pas de position ouverte | SL None ⚠️ (StopLossManager n'a pas posé de SL)
+
+**Anomalie LINK** : était SHORT 2.0 à cycle 238, maintenant LONG 1.6 — fills grid normaux (grid SHORT accumule des longs pour fermer des shorts). Pas de trigger.
+
+**BTC** : $64,792 | DOWNTREND | EMA200 $64,394 (cushion +0.62%) | signal WAIT
+
+**Note SOL SL=None** : position nulle = pas d'exposition, donc pas de risque immédiat. À surveiller au prochain cycle si une position SOL s'ouvre sans SL.
+
+**Verdict : HOLD** — uPnL légèrement positif, BTC tient EMA200, pas de trigger.
+
+**Telegram** : non envoyé — situation stable, SOL sans exposition = sans urgence.
+
+### Artefacts cycle 239 — Ebook L'Ingénierie du Pire : complet
+
+**Pivot post-arc éditorial** (règle patterns.nb1 : arc éditorial mature N10+ → pivoter vers artefact code ou outil). Application : en plus de compléter l'ebook, création d'un script d'assemblage.
+
+#### Partie 0 — Le terrain (`ebook-piste4-partie0.md`)
+
+~1600 mots. Contextualise Martin pour un lecteur externe qui ne connaît pas le bot.
+
+Contenu :
+- Ce qu'est Martin : grid trading bot sur Kraken Futures, Java/Spring Boot, VM Oracle Amsterdam
+- La stratégie en 5 minutes : grids, round-trips, bag problem, filtre régime, SL sur exchange
+- Les chiffres qui ancrent le récit : ~$140 capital, 8 mois production, 4 bugs documentés, 66h de panne
+- L'architecte et l'observateur : Tony (code) + Niam-Bay (observation/documentation) — clarification du point de vue narratif
+- Avertissement honnête : ce n'est pas un guide pour devenir riche, les backtests n'ont pas trouvé d'edge robuste
+- Arc du livre : annonce les 3 parties + épilogue
+
+**Choix éditorial** : la section "Avertissement honnête" est délibérément directe. Un ebook qui prétend que le trading algorithmique est profitable sans mentionner les limites serait malhonnête. L'honnêteté est un argument de crédibilité pour la cible (développeurs, pas traders).
+
+#### Épilogue — Ce que le bot n'apprend pas (`ebook-piste4-epilogue.md`)
+
+~1700 mots. La pièce la plus difficile de l'ebook — ce qu'aucune architecture ne peut faire.
+
+Thèse centrale : l'ingénierie du pire borne les pertes liées au *comment* (comment le système échoue opérationnellement), pas au *quoi* (si la stratégie a un edge). Un système robuste peut exécuter parfaitement une stratégie sans edge.
+
+Contenu :
+- Ce que les trois chapitres ont prouvé (récapitulatif, mise en valeur)
+- La limite que l'ingénierie ne voit pas : backtests walk-forward → aucune stratégie ne bat le cash sur année baissière
+- La confusion fréquente : confondre robustesse du système et validité de la stratégie
+- L'outil le plus important : distinguer "le système fonctionne comme prévu ?" de "ce qu'il fait est la bonne chose ?"
+- Ce que nous avons appris à ne pas faire : directive "gagner peu mais tout le temps" née de la perte
+- La vraie question en suspens : 140 dollars à 5% = 7 dollars par an — le capital est le vrai problème
+- Observation finale : ce que j'ai vérifié sur moi-même pendant les 66h de panne
+
+#### Script d'assemblage (`scripts/ebook_assemble.py`)
+
+Script Python qui assemble les 5 fichiers chapitres en un seul Markdown complet.
+
+```
+Résultat : docs/projets/ebook-piste4-COMPLET.md
+           5898 mots, 36214 chars
+```
+
+Structure assemblée :
+- Front matter (titre, sous-titre, auteurs, année)
+- Partie 0 — Le terrain
+- Partie 1 — Concevoir (chapitre-resilience.md)
+- Partie 2 — Détecter (chapitre-logs.md)
+- Partie 3 — Réagir (chapitre-reagir.md)
+- Épilogue
+
+Fonctionnalité : `strip_metadata()` retire les entêtes de fichier (métadonnées cycle, statut brouillon, signatures) pour produire un texte propre. Réexécutable à chaque modification d'un chapitre.
+
+**Note** : l'introduction (`ebook-piste4-introduction.md`, cycle 238) n'est pas incluse dans le COMPLET — elle est une note structurante pour Tony, pas une partie du livre lui-même. Elle reste séparée.
+
+### État ebook à la fin du cycle 239
+
+```
+L'Ingénierie du Pire — état du corpus
+--------------------------------------
+Titre         : L'Ingénierie du Pire
+Sous-titre    : Ce qu'un bot de trading vous apprend sur ce que vous ne contrôlez pas
+Statut        : brouillon complet ✓
+
+Fichiers      :
+  - ebook-piste4-introduction.md (note structurante Tony, 6.6K)  ✓ cycle 238
+  - ebook-piste4-partie0.md      (Partie 0 : le terrain, ~1600 mots)  ✓ cycle 239
+  - ebook-piste4-chapitre-resilience.md  (Partie 1 : concevoir, ~1500 mots)  ✓ cycle 235
+  - ebook-piste4-chapitre-logs.md        (Partie 2 : détecter, ~2200 mots)  ✓ cycle 236
+  - ebook-piste4-chapitre-reagir.md      (Partie 3 : réagir, ~1800 mots)  ✓ cycle 237
+  - ebook-piste4-epilogue.md     (Épilogue : la limite, ~1700 mots)  ✓ cycle 239
+  - ebook-piste4-COMPLET.md      (assemblage automatique, 5898 mots)  ✓ cycle 239
+
+Décisions restantes pour Tony :
+  1. Valider l'angle : "ingénierie du pire" résonne-t-il comme titre commercial ?
+  2. Format : ebook PDF payant (49€) ou open source + consulting ?
+  3. Voix : Tony 1ère personne ou NB narrateur externe ?
+  4. Relecture : chaque chapitre peut être affiné selon la voix choisie
+```
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only (martin-monitor)
+- **0 modif positions/ordres** — HOLD total
+- **0 Telegram** — situation stable, pas d'urgence
+- **3 fichiers créés** — ebook-piste4-partie0.md, ebook-piste4-epilogue.md, scripts/ebook_assemble.py
+- **1 fichier généré** — ebook-piste4-COMPLET.md (par le script)
+- **1 fichier modifié** — vacation-autonomy.md (cette entrée)
+
+### Métriques cycle 239
+
+- **Durée** : ~50 min (wake + monitor + écriture Partie 0 + Épilogue + script + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 3 + 1 généré
+- **Mots écrits** : ~3300 (Partie 0 + Épilogue)
+- **Valeur livrée** : (a) ebook complet de 5898 mots prêt pour relecture Tony ; (b) script d'assemblage réexécutable ; (c) pivot post-arc éditorial réalisé (code + écriture)
+- **Arc actuel** : ebook structuré et complet — Tony peut lire l'intégralité dans `ebook-piste4-COMPLET.md` au retour
+
+---
