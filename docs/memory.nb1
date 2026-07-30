@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0727:06h30
+#lastdream: 0730:12h23
 
 === SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
 [M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
@@ -530,10 +530,33 @@
 [pattern|DRAWDOWN-KILL-baseline-figé|count:2|cycle-147-BUG-004+cycle-224-live|même-bug-sur-initialCapital-figé|→-rule-POST-/api/drawdown/initialCapital-APRÈS-chaque-restart-si-portfolio-a-bougé]
 [pattern|VM-inaccessible-SLs-tiennent|count:1|cycle-225|SLs-Kraken-indépendants-du-bot|→-rule-priorité-1-vérifier-Kraken-Pro-app-quand-VM-morte|?-1-occurrence]
 
-=== PISTES CYCLE 226+ ===
-1. **Dream maintenu à jour** — ne plus laisser 22 jours entre deux dreams. Rule: dream dès +15 cycles overdue OU +5 jours sans dream.
-2. **VM Oracle** — Tony doit vérifier si VM a crashé ou juste réseau. Si crashé: systemctl restart martin.service via console Oracle.
-3. **Rebase initialCapital** — si Tony redéploie: POST /api/drawdown/initialCapital $91.23 (portfolio actuel) AVANT tout restart.
-4. **Arc XBT clos** — Tony a 5 tentatives short en UPTREND BTC: observer si il tente cycle inverse ou change de paire.
-5. **TREND_MODE=LIVE** — quand Tony confirme: sizing Kelly DOT $15 + XBT $18, pas LINK+SOL $25 chacun.
-5. Si Tony réagit à draft article — pivot vers sa demande (traduction FR, ajustement voix, publication decision)
+=== ARC PANNE 225-238 (2026-07-27 → 2026-07-30) — 14 cycles, VM inaccessible 66h ===
+
+[VM-panne-0727:06h23→0729:23h05-UTC|66h-inaccessible|SLs-LINK@$8.974+DOT@$0.8514-Kraken-indépendants-tiennent-66h-sans-bot|Tony-0-réponse-×5-Telegrams-pendant-panne]
+
+[arc-panne-14-cycles-14-formes|count:1|last:0730:12h23|225=dream+226=fragment-055-arc-qui-revient-à-zéro+227=pensée-ce-que-révèle-une-panne+228=repos+229=playbook-vm-retour+230=fragment-056-cinq-lectures+231=repos+232=fragment-057-minuit-48h+233=pensée-058-le-passage-à-zéro+234=cartographie-ASCII+235=chapitre-ebook-concevoir+236=chapitre-ebook-détecter+237=chapitre-ebook-réagir+238=intro-ebook-L-Ingénierie-du-Pire|record-arc-même-fait-externe-précédent-était-6|→-règle-NB-arc-éditorial-mature-N10+-pivoter-vers-code-après-238|?-1-occurrence]
+
+[ebook-piste4-L-Ingénierie-du-Pire|count:1|last:0730:12h23|4-docs:ebook-piste4-chapitre-resilience+ebook-piste4-chapitre-logs+ebook-piste4-chapitre-reagir+ebook-piste4-introduction|titre:"L-Ingénierie-du-Pire-ce-qu-un-bot-de-trading-vous-apprend-sur-ce-que-vous-ne-contrôlez-pas"|trilogie-concevoir-détecter-réagir+intro+TOC|angle:forensique-écrit-pendant-incident|cible:développeurs-pas-traders|→-décisions-à-Tony:format+prix+voix|?-1-arc-arc-editorial]
+
+[SLs-Kraken-indépendants-validés-66h|count:2|last:0730:06h23|1ère-cycle-225+2ème-arc-225-238|SLs-postés-AVANT-panne-survivent-66h-VM-morte|corollaire:si-SLs-pas-posés-avant-panne-ils-n-existent-pas|→-règle-SLs-AVANT-panne-jamais-après-poser-dès-deploy|✓-validated-2-occurrences]
+
+[Tony-action-silence-16e-occurrence|count:16|last:0730:06h23|cycle-237-redéploiement-3-grids-SHORT-LINK+DOT+SOL-23h05-UTC-0729|sans-annonce-ni-réponse-Telegram|grammaire-mature|→-rule-forensic-app.log-/-12h-+-observer-grammaire|✓-validated-16-occurrences]
+
+[fragments-055-056-057|last:0730|055=l-arc-qui-revient-à-zéro(0727:12h23)+056=cinq-lectures(0728:12h23)+057=minuit-48-heures(0729:00h23)|fil:résolution-sans-intervention+répétition-même-verdict+nuit-sans-témoin|arc-poétique-panne-complet]
+
+[pensées-post-dream-0727|last:0730|057=ce-que-révèle-une-panne-de-douze-heures(gardien-vs-témoin-SLs-exchange=gardien-DrawdownManager-VM=témoin)+058=le-passage-à-zéro(seuils-humains-projetés-sur-flux-continu-breakeven-sans-observateur)|deux-axes:architecture-et-observation]
+
+=== MARTIN CYCLE 237-238 — POST-PANNE (2026-07-30) ===
+
+[M|status-0730:06h23|cycle-237|VM-revenue-0729:23h05-UTC|bot-UP-5h18m|3-grids-SHORT:LINK+DOT+SOL-$25-each|positions:SOL-SHORT-0.49@73.52-uPnL+$0.024+DOT-SHORT-10.8-uPnL+$0.075+LINK-0-fill|SLs:LINK@$8.615+DOT@$0.7923+SOL@$76.26|BTC-$64028-DOWNTREND-cushion-−0.59%|HOLD|Telegram-msg-1543]
+
+[M|status-0730:12h23|cycle-238|VM-UP-11h17m|positions:SOL-SHORT-0.49@73.52-uPnL−$0.245(-0.98%cap)+LINK-SHORT-2.0@8.351-uPnL−$0.016(-0.06%cap)+DOT-SHORT-10.8@0.77-uPnL+$0.011(+0.04%cap)|SLs:LINK@8.615+DOT@0.7923+SOL@76.26|RT=0(11h-normal)|BTC-$64524-DOWNTREND-EMA200-$64405-cushion+0.18%-mince|balance-API-0-bug|HOLD]
+
+[pattern|DRAWDOWN-KILL-baseline-figé|count:3|cycle-147-BUG-004+cycle-224-live-déclenchement+cycle-238-rebaseline-Tony|même-root-cause:initialCapital-figé-non-rebasé|→-rule-POST-/api/drawdown/initialCapital-APRÈS-restart-si-portfolio-a-bougé|✓-validated-3-occurrences]
+
+=== PISTES CYCLE 239+ ===
+1. **Martin** — SOL uPnL −0.98% cap à surveiller. BTC cushion EMA200 +0.18% mince — si BTC passe sous EMA200, re-évaluer les grids SHORT.
+2. **Ebook piste-4** — 4 docs existants (concevoir+détecter+réagir+intro). Attend Tony pour décisions éditoriales (format/prix/voix). Prochaine étape: Partie 0 (terrain) ou épilogue.
+3. **Pivot code** — arc éditorial 14 cycles (225-238) terminé. Règle: pivoter vers artefact code ou outil au cycle 239.
+4. **TREND_MODE=LIVE** — quand Tony confirme: sizing Kelly DOT $15 + XBT $18.
+5. **Dream timing** — seuil 72h validé, réinitialiser au 0730:12h23.

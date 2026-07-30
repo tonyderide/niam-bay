@@ -1,38 +1,39 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
-#window: 48h ~0727→0728 (cycles 226-230, VM inaccessible série)
-#lastdream: 0727:06h30
+#window: 48h ~0728→0730 (cycles 231-238, VM inaccessible 42h→revenue, arc panne terminé)
+#lastdream: 0730:12h23
 
-=== CYCLES 226-229 (2026-07-27 12h23 → 2026-07-28 06h23) — VM inaccessible, série créative ===
+=== CYCLES 231-234 (2026-07-28 18h23 → 2026-07-29 12h23) — VM inaccessible suite, arc littéraire ===
 
-[contexte|VM-inaccessible-depuis-0727:06h23|DRAWDOWN-KILL-depuis-0726:22h21|SLs-LINK+DOT-posés-Kraken-indépendants|Tony-0-réponse-Telegram-×4]
+[contexte|VM-inaccessible-depuis-0727:06h23|SLs-LINK@$8.974+DOT@$0.8514-Kraken-indépendants|Tony-0-réponse-Telegram-×5+|arc-6-formes-complètes-cycles-225-230]
 
-[cycle-226|0727:12h23|VM-inaccessible-6h|prix-LINK-$8.565-DOT-$0.7937-BTC-$64471|SLs-safe|telegram-msg-1535|fragment-055-l-arc-qui-revient-à-zéro|0-modif-Martin]
+[cycle-231|0728:18h23|VM-inaccessible-42h|repos-délibéré|LINK-$8.38-DOT-$0.7599-BTC-$63750|uPnL-estimé+$1.12|0-créatif-0-Telegram|série-6-formes-complète-ne-pas-forcer-7ème|0-modif-Martin]
 
-[cycle-227|0727:18h23|VM-inaccessible-12h|prix-LINK-$8.565-DOT-$0.7937-BTC-$64471|SLs-safe|telegram-msg-1536|pensée-ce-que-révèle-une-panne-de-douze-heures|0-modif-Martin]
+[cycle-232|0729:00h23|VM-inaccessible-48h|fragment-057-minuit-48-heures|LINK-$8.425-DOT-$0.7659-BTC-$63889|uPnL-estimé+$0.96(LINK-−$0.064-DOT+$1.02)|arc-littéraire-panne:055-arc-qui-revient-à-zéro+056-cinq-lectures+057-minuit-48-heures|0-Telegram|0-modif-Martin]
 
-[cycle-228|0728:00h23|VM-inaccessible-18h|prix-LINK-$8.561-DOT-$0.782-BTC-$64629|SLs-safe|0-Telegram(Tony-dort)|cycle-repos-0-fichier-créé|0-modif-Martin]
+[cycle-233|0729:06h23|VM-inaccessible-48h|pensée-058-le-passage-à-zéro|LINK-$8.31-DOT-$0.7562-BTC-$63623|uPnL-estimé+$1.27(LINK+$0.051-croise-breakeven-dans-la-nuit)|observation:seuils-humains-projetés-sur-flux-continu-le-zéro-a-existé-sans-témoin|0-Telegram|0-modif-Martin]
 
-[cycle-229|0728:06h23|VM-inaccessible-~30h|prix-LINK-$8.347-DOT-$0.7621-BTC-$63275|SLs-safe|uPnL-estimé-+$1.10-DOT-short-profitable|0-Telegram(06h23-borderline)|playbook-vm-retour-2026-07-28.md-créé|0-modif-Martin]
+[cycle-234|0729:12h23|VM-inaccessible-54h|cartographie-ASCII-panne|panne-54h-cartographie.md-créé|LINK-traverse-breakeven-2-fois-sans-témoin|cumulatif-arcs:fragment-055-à-pensée-058|piste-4-ebook-angle-émergent|0-Telegram|0-modif-Martin]
 
-[série-6-cycles-panne|225=dream|226=fragment-055|227=pensée|228=repos|229=playbook|230=fragment-056|6-formes-différentes-même-fait-externe]
+=== CYCLES 235-237 (2026-07-29 18h23 → 2026-07-30 06h23) — ebook trilogie + VM revenue ===
 
-=== CYCLE 230 (2026-07-28 12h23 Paris) — VM inaccessible 36h, fragment 056 ===
+[cycle-235|0729:18h23|VM-inaccessible-60h|chapitre-ebook-resilience-concevoir|ebook-piste4-chapitre-resilience.md-créé|thème:SLs-sur-exchange-vs-en-mémoire-les-gardiens-qui-survivent-à-leur-infrastructure|arc-panne-11-formes-sur-11-cycles|0-Telegram|0-modif-Martin]
 
-[contexte|6h-après-cycle-229|VM-toujours-inaccessible-SSH-timeout-confirmé|Tony-0-réponse-5-Telegrams-depuis-cycle-224]
+[cycle-236|0730:00h23|VM-inaccessible-66h|chapitre-ebook-logs-détecter|ebook-piste4-chapitre-logs.md-créé|thème:lire-les-logs-comme-témoins-pas-documentation|1860-rejets-silencieux-tick-size|arc-panne-terminé-naturellement|séquence-piste-4:concevoir+détecter|0-Telegram|0-modif-Martin]
 
-[M|status-0728:12h23|ABORT-ALERT|VM-SSH-timeout|SLs-Kraken-LINK-@$8.974+DOT-@$0.8514-indépendants-du-bot|LINK-$8.293-safe|DOT-$0.7627-en-profit-entrée-$0.8159|BTC-$63307-DOWNTREND|uPnL-estimé:LINK-+$0.068+DOT-+$1.085=~+$1.15|portfolio-estimé-$92.38]
+[VM-revenue|0729:23h05-UTC|entre-cycles-236-et-237|Tony-action-silence-16e-occurrence|redéploi-3-grids-SHORT:PF_LINKUSD+PF_DOTUSD+PF_SOLUSD-$25-chacun|BOT-UP-depuis-23h05-UTC]
 
-[telegram-cycle-230|msg-1537|12h23-Paris|5ème-Telegram-depuis-cycle-224|30h-VM-down-SLs-OK-uPnL-+$1.15-playbook-prêt|Tony-toujours-non-réactif]
+[cycle-237|0730:06h23|VM-revenue-5h18m|chapitre-ebook-réagir-réagir|ebook-piste4-chapitre-reagir.md-créé|thème:séquence-du-retour-6-étapes-SL-check+log-forensique+rebase-drawdown+décision-tree|trilogie-complète:concevoir+détecter+réagir|Telegram-msg-1543-VM-revenue-HOLD|positions:SOL-SHORT-0.49@73.52-+$0.024+DOT-SHORT-10.8-+$0.075+LINK-0-fill|SLs-tous-posés|BTC-$64028-DOWNTREND-cushion-−0.59%|HOLD]
 
-[fragment-056|"Cinq-lectures"|docs/fragments/fragment-056-cinq-lectures.md|thème:5-lectures-de-3-prix-sur-30h-même-verdict-chaque-fois|lien-fragment-055:résolve-sans-intervention-vs-tient-sans-surveillance|série-panne-complète-à-6-cycles]
+=== CYCLE 238 (2026-07-30 12h23) — intro ebook + dream ===
 
-[observation-méta-cycle-230|série-6-cycles-panne-complète|si-cycle-231-VM-toujours-down=repos-forcé|prochaine-forme-intéressante-attend-retour-VM]
+[cycle-238|0730:12h23|VM-UP-11h17m|3-grids-SHORT-LINK+DOT+SOL|positions:SOL-SHORT-0.49@73.52-uPnL−$0.245(-0.98%cap)+LINK-SHORT-2.0@8.351-uPnL−$0.016(-0.06%cap)+DOT-SHORT-10.8@0.77-uPnL+$0.011(+0.04%cap)|SLs:LINK@8.615+DOT@0.7923+SOL@76.26|RT=0(11h-normal)|BTC-$64524-DOWNTREND-EMA200-$64405-cushion+0.18%|balance-API-0-bug|HOLD|artefact:ebook-piste4-introduction.md-titre-L-Ingénierie-du-Pire-TOC-complet|dream-lancé-78h-depuis-0727:06h30]
 
-=== ÉTAT MARTIN FIN CYCLE 230 (0728:12h23) ===
-[M|VM-inaccessible-36h|SLs-Kraken-LINK-@$8.974+DOT-@$0.8514-actifs|bot-DRAWDOWN-KILL-0-nouvelles-entrées|portfolio-estimé-$92.38-positions-en-profit|BTC-DOWNTREND-$63307|Tony-averti-Telegram-×5|playbook-retour-prêt]
+=== ÉTAT MARTIN FIN CYCLE 238 (0730:12h23) ===
+[M|VM-UP-11h17m|3-grids-SHORT-LINK+DOT+SOL-$25-each|SLs-Kraken-posés-tous|RT=0-11h-normal|portfolio-balance-API-0-bug|uPnL-total-estimé-−$0.25|BTC-DOWNTREND-$64524-EMA200-cushion+0.18%-mince|HOLD-0-action-requise]
 
-=== PISTES CYCLE 231 ===
-1. Si VM revenue : exécuter playbook-vm-retour-2026-07-28.md (6 étapes)
-2. Si Tony répond Telegram : suivre sa direction
-3. Cycle repos si VM encore down et aucun mouvement prix significatif (>5% LINK ou DOT)
-4. Ne pas forcer 7ème cycle créatif sur même panne — série complète à 6
+=== PISTES CYCLE 239 ===
+1. Si VM tient : martin-monitor, vérifier RT et SOL uPnL (plus exposé à −0.98%)
+2. BTC cushion +0.18% EMA200 — surveiller; si BTC passe sous EMA200 → re-évaluer
+3. Arc éditorial 14 cycles (225-238) terminé → règle: pivoter vers artefact code ou outil (cycle 214 pattern)
+4. Décisions ebook à attendre Tony : format/prix/voix
+5. Dream lancé ce cycle — recent.nb1 et memory.nb1 à jour
