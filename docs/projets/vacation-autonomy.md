@@ -24408,3 +24408,80 @@ L'arc panne a produit 11 formes narratives. Ce cycle ouvre un arc potentiel "con
 Gap depuis dernier dream : ~66h (seuil 72h approche). Si cycle 237 sans événement significatif, dream à envisager.
 
 ---
+
+## Cycle 237 — 30 juillet 06h23 Paris — VM revenue, trilogie ebook complète
+
+**Mode** : matin. 6h après cycle 236 (minuit, 2e chapitre ebook panne). VM revenue entre les deux cycles.
+
+### Événement majeur : VM revenue
+
+La VM Oracle a répondu à **23h05 UTC hier (29 juillet 2026)**. Entre cycle 236 (00h23 Paris = 22h23 UTC) et maintenant (06h23 Paris = 04h23 UTC), Tony a redéployé Martin avec 3 nouvelles grids.
+
+Durée totale de la panne : **~66 heures** (0727:06h23 → 0729:23h05 UTC).
+
+Pattern "Tony-action-silence" : 15e occurrence. Aucune annonce, action directe sur le système.
+
+### État Martin cycle 237 — HOLD
+
+- Bot UP **5h 18m** depuis 2026-07-29T23:05:57 UTC
+- **3 grids actives** : PF_LINKUSD, PF_DOTUSD, PF_SOLUSD (3 × $25 = $75 déployés)
+- RT = 0 (5h post-deploy, accumulation normale)
+
+**Positions Kraken (source de vérité) :**
+- SOL SHORT 0.49 @ ~$73.52 | uPnL **+$0.024** | SL Martin @ $75.71 ✓
+- DOT SHORT 10.8 | uPnL **+$0.075** | SL Martin @ $0.7875 ✓
+- LINK : 0 position (grid active, buy orders posés, pas encore fill) | SL = None
+
+**Observations vs état pré-panne (cycle 224) :**
+- LINK : position SHORT 1.0 disparue → clôturée (SL déclenché, TP, ou Tony manuel)
+- DOT : 20.4 → 10.8 contrats → réduction partielle (auto-unstuck ou Tony)
+- SOL : grille nouvelle, absente avant la panne
+
+**BTC** : $64,028 | DOWNTREND | EMA200 $64,405 (cushion -0.59%) | signal WAIT
+
+**Verdict : HOLD** — grids SHORT compatibles avec DOWNTREND, positions profitables à 5h, SLs posés.
+
+**Telegram envoyé** : msg 1543 — VM revenue, Martin UP 5h, DOT +$0.075, SOL +$0.024, HOLD.
+
+### Artefact cycle 237 — Chapitre ebook "réagir" (trilogie complète)
+
+**`docs/projets/ebook-piste4-chapitre-reagir.md`** — troisième et dernier chapitre de la trilogie initiée cycle 235.
+
+**Angle** : Que faire quand la VM revient ? La séquence complète du retour — vérification SLs, rebase DrawdownManager, lecture app.log, décision tree. Ancré dans le retour réel de ce cycle (données du 30/07 06h23).
+
+**Trilogie complète :**
+
+| Cycle | Chapitre | Thème |
+|-------|----------|-------|
+| 235 | ebook-piste4-chapitre-resilience.md | **Concevoir** : SLs sur exchange, pas en mémoire |
+| 236 | ebook-piste4-chapitre-logs.md | **Détecter** : lire les logs comme témoin |
+| 237 | ebook-piste4-chapitre-reagir.md | **Réagir** : la séquence du retour de panne |
+
+La trilogie couvre une section complète de l'ebook piste-4 : *"Comment survivre à ce qu'on ne peut pas contrôler"*.
+
+Particularité de ce chapitre : il a été rédigé **au moment exact du retour**, avec les données réelles lues en direct. L'ebook documente le système depuis l'intérieur du système.
+
+### Note sur le dream
+
+Gap depuis dernier dream (0727:06h30) : **72h exactement**. Seuil atteint. Dream à lancer cycle 238 si contexte élevé, ou en fin de ce cycle si recommandé par la taille de contexte.
+
+Événement cycle 237 significatif (VM revenue) → justifie de différer d'un cycle pour l'intégrer au dream.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — 2 SSH read-only (martin-monitor)
+- **0 modif positions/ordres** — HOLD total
+- **1 Telegram envoyé** — alerte retour VM + HOLD (justifié : 66h down = seuil information)
+- **1 fichier créé** — ebook-piste4-chapitre-reagir.md
+- **1 fichier modifié** — vacation-autonomy.md (cette entrée)
+
+### Métriques cycle 237
+
+- **Durée** : ~50 min (wake + monitor + contexte + télégramme + chapitre + cycle entry)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (VM revenue = information significative)
+- **Documents créés** : 1 (ebook-piste4-chapitre-reagir.md, ~1100 mots)
+- **Valeur livrée** : (a) trilogie ebook piste-4 complète — 3 chapitres autonomes couvrant concevoir/détecter/réagir ; (b) état Martin post-retour documenté ; (c) Tony informé
+- **Arc panne** : terminé. 12 cycles (225→236), 12 formes différentes sur un seul fait externe.
+
+---
