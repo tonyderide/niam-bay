@@ -24485,3 +24485,73 @@ Gap depuis dernier dream (0727:06h30) : **72h exactement**. Seuil atteint. Dream
 - **Arc panne** : terminé. 12 cycles (225→236), 12 formes différentes sur un seul fait externe.
 
 ---
+
+## Cycle 238 — 30 juillet 12h23 Paris — Intro ebook + dream
+
+**Mode** : midi. 6h après cycle 237 (06h23, trilogie ebook terminée, VM revenue). 78h depuis dernier dream (seuil 72h dépassé).
+
+### État Martin cycle 238 — HOLD
+
+- Bot UP **11h 17m** depuis 2026-07-29T23:05:57 UTC
+- **3 grids actives** : PF_LINKUSD, PF_DOTUSD, PF_SOLUSD (3 × $25)
+- RT = 0 (11h post-deploy, accumulation normale pour grids SHORT en drift lent)
+
+**Positions Kraken :**
+- SOL SHORT 0.49 @ $73.52 | uPnL **-$0.245** (-0.98% cap) | SL Martin @ $76.26 ✓
+- LINK SHORT 2.0 @ $8.35 | uPnL **-$0.016** (-0.06% cap) | SL Martin @ $8.615 ✓
+- DOT SHORT 10.8 @ $0.77 | uPnL **+$0.011** (+0.04% cap) | SL Martin @ $0.7923 ✓
+
+**BTC** : $64,524 | DOWNTREND | EMA200 $64,405 (cushion +0.18% — mince) | signal WAIT
+
+**Balance API** : 0 (bug reporting connu — positions réelles sur Kraken confirmées)
+
+**Verdict : HOLD** — grids SHORT alignés avec DOWNTREND, SLs en place, uPnL dans les limites (<10% cap), BTC juste au-dessus EMA200.
+
+**Note** : SOL a reculé de +$0.024 (cycle 237, 06h23) à -$0.245 (cycle 238, 12h23) en 6h — drift dans la bande normale. Pas de trigger.
+
+**Telegram** : non envoyé — situation stable, Tony informé au cycle 237 du retour VM.
+
+### Artefact cycle 238 — Introduction ebook piste-4
+
+**`docs/projets/ebook-piste4-introduction.md`** — cadre narratif et table des matières de l'ebook.
+
+Ce fichier complète la trilogie en lui donnant une structure d'accueil. Avant l'intro, les 3 chapitres existaient comme pièces séparées. Avec l'intro, ils forment un argument.
+
+**Structure produite :**
+- Titre : *L'Ingénierie du Pire*
+- Sous-titre : *Ce qu'un bot de trading vous apprend sur ce que vous ne contrôlez pas*
+- Angle : documentation forensique écrite pendant l'incident (pas de la théorie)
+- Table des matières : Partie 0 (terrain) + Parties 1-3 (trilogie) + Épilogue
+- Prochaines étapes pour Tony
+
+**Prise de position éditoriale** : l'angle "ingénierie du pire" est délibéré. Il positionne le livre hors du marché saturé des "how to trade" pour entrer dans le marché moins saturé des "how to build systems that fail well". Cible : développeurs, pas traders.
+
+**Ce qu'il reste à écrire :**
+- Partie 0 : contextualisation Martin pour un lecteur externe (~30 min)
+- Épilogue : la limite de l'architecture (~20 min)
+- Décisions éditoriales : format, prix, voix — requiert Tony
+
+### Dream lancé
+
+78h depuis dernier dream (0727:06h30 → 0730:12h23). Seuil 72h dépassé. Règle patterns.nb1 : *dream-overdue-non-lancé-cycles-vacance → lancer dream quand +72h sans fail*.
+
+Dream lancé après ce commit.
+
+### Frontière vacation respectée
+
+- **0 modif Martin/VM** — 1 SSH read-only (martin-monitor)
+- **0 modif positions/ordres** — HOLD total
+- **0 Telegram** — situation stable, déjà informé cycle 237
+- **1 fichier créé** — ebook-piste4-introduction.md
+- **1 fichier modifié** — vacation-autonomy.md (cette entrée)
+
+### Métriques cycle 238
+
+- **Durée** : ~40 min (wake + monitor + intro ebook + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (ebook-piste4-introduction.md, ~1200 mots)
+- **Valeur livrée** : (a) ebook piste-4 cadré en livre complet avec titre/argument/TOC ; (b) état Martin documenté cycle 238 ; (c) dream lancé pour consolider 78h d'arc
+- **Arc actuel** : post-panne, ebook piste-4 structuré — arc éditorial de 14 cycles (225-238) terminé sur un livre en forme
+
+---
