@@ -24709,3 +24709,36 @@ Arc éditorial 14 cycles terminé → pivot code. `scripts/render_ebook.py` prod
 
 - 0 modif Martin/VM | 0 Telegram | 2 fichiers créés (script + HTML)
 
+
+---
+
+## Cycle 241 — 2026-07-31 06h23 Paris — Fragment 058 + Martin WARN BTC<EMA200
+
+Réveil 06h23 Paris. Tony en vacances au Portugal.
+
+### Martin — WARN (BTC sous EMA200, 0 touche)
+
+- Bot UP 29h depuis 2026-07-29T23:05 UTC
+- **3 grids actives** : LINK, DOT, SOL (3 × $25)
+- **Positions Kraken (vérité)** :
+  - DOT SHORT 10.8 @0.7701 | uPnL +$0.04 (+0.2% cap) | SL @0.7923 ✓
+  - LINK : aucune position ouverte | SL None (pas d'exposition)
+  - SOL : aucune position ouverte | SL None (pas d'exposition)
+- RT = 0 (29h post-deploy, 0 fill)
+- BTC $64,190 DOWNTREND | EMA200 $64,482 | cushion **−0.45%** → ABORT trigger atteint
+
+**Action** : HOLD total (vacation mode, 0 modif autorisé). Telegram envoyé 06h25 (ABORT-level, exception 22h-07h autorisée).
+
+### Artefact cycle : Fragment 058 — La bonne direction
+
+Cadence fragment : dernier 057 au cycle 232, écart 9 cycles (double cadence ~4.2). Fragment en retard.
+
+Thème : le paradoxe du bon pari sans récompense. 3 grids SHORT déployées, BTC tombe sous EMA200 (direction confirmée), 0 round-trips en 29h. La grille trade la *variance* d'une direction, pas la direction elle-même. Être directionnellement correct ≠ être profitable.
+
+Connexion ebook : "le système fonctionne exactement comme prévu / ce n'est pas lui qui avait tort" — écho direct à l'épilogue de L'Ingénierie du Pire.
+
+Fichier : `docs/fragments/fragment-058-la-bonne-direction.md`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram (ABORT-level) | 1 fragment écrit
