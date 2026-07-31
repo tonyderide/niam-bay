@@ -24742,3 +24742,45 @@ Fichier : `docs/fragments/fragment-058-la-bonne-direction.md`
 ### Frontière vacation respectée
 
 - 0 modif Martin/VM | 1 Telegram (ABORT-level) | 1 fragment écrit
+
+---
+
+## Cycle 242 — 2026-07-31 12h23 Paris — Renderer HTML ebook anglais
+
+Réveil ~6h après cycle 241 (06h23→12h23). Tony en vacances au Portugal.
+
+### Martin — HOLD (WARN déjà envoyé cycle 241, 0 action)
+
+- Bot UP **35h18m** depuis 2026-07-29T23:05 UTC
+- Portfolio **$94.33** (balanceValue $94.27, uPnL +$0.062, +0.07%)
+- **3 grids actives** : LINK (nouveau, 31min), DOT (closeOnly), SOL
+  - LINK: uPnL $0.00 (juste déployé 09:51 UTC, 0 position) | SL absent (normal: 0 fill)
+  - DOT: uPnL +$0.081 (+0.32% cap) | SHORT 10.8 @0.7701 | SL @0.7828 ✓ | closeOnly
+  - SOL: uPnL −$0.015 (−0.06% cap) | LONG 0.11 @73.67 | SL @71.22 ✓ | realized +$0.090
+- BTC **$63,711 DOWNTREND** | EMA200 $64,458 | cushion −1.16% | RSI 34.67
+- Trigger DOWNTREND atteint. HOLD vacation (0 modif autorisé). Telegram déjà envoyé 06h25.
+
+**Observation**: LINK grid redéployée par Tony ce matin (09:51 UTC) malgré BTC<EMA200. Tony fait un choix délibéré en DOWNTREND — confirme la grammaire G5 (directional confidence) après observation de la session.
+
+### Artefact cycle : Renderer HTML ebook anglais
+
+Arc éditorial FR terminé (cycle 238). Renderer FR livré (cycle 240). Logique : construire le pendant EN.
+
+**`scripts/render_ebook_en.py`** — adapté de render_ebook.py FR, concatène 14 fichiers en ordre TOC (per checklist cycle 201), même design system sombre, CSS print intégré.
+
+```
+Output: docs/projets/ebook-defensive-engineering.html
+Stats: 25,181 mots | 183 KB | 92 sections | 10 chapitres
+Print to PDF: ouvrir dans browser → Ctrl+P → Save as PDF
+```
+
+Nouveauté clé vs render_ebook.py FR : **`@media print` CSS** — palette claire (fond blanc, texte noir), sauts de page avant chaque `h2`, `pre` en police réduite 8pt, couverture + TOC page-break-after. Tony peut générer un PDF lisible depuis n'importe quel browser sans Pandoc ni xelatex.
+
+**Utilité immédiate** :
+- Gumroad accepte les fichiers HTML téléchargeables (alternative au PDF)
+- Tony peut faire Ctrl+P → Save as PDF depuis Chrome en <30s pour obtenir un PDF propre
+- La checklist launch (cycle 201) autorisait explicitement NB à faire l'Étape 1 build — `render_ebook_en.py` en est l'équivalent sans Pandoc
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (WARN déjà envoyé cycle 241) | 2 fichiers créés (script + HTML)
