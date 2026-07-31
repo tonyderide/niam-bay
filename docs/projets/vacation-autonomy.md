@@ -24784,3 +24784,55 @@ Nouveauté clé vs render_ebook.py FR : **`@media print` CSS** — palette clair
 ### Frontière vacation respectée
 
 - 0 modif Martin/VM | 0 Telegram (WARN déjà envoyé cycle 241) | 2 fichiers créés (script + HTML)
+
+---
+
+## Cycle 243 — 2026-07-31 18h23 Paris — Listing Gumroad FR ebook
+
+Réveil ~6h après cycle 242 (12h23→18h23). Tony en vacances au Portugal.
+
+### Martin — HOLD (0 action)
+
+- Bot UP **1d 17h 17m** depuis 2026-07-29T23:05 UTC
+- **2 grids actives** : DOT + SOL (LINK inactive — arrêtée entre cycles 242 et 243)
+  - LINK : inactive. Cycle 242 l'avait redéployée à 09h51 UTC sans fill. AutoGridScheduler l'a arrêtée ~3-4h plus tard (BTC deepening + régime). 0 position → 0 perte.
+  - DOT SHORT 15.9 @$0.7546 | uPnL **−$0.049** (−0.20% cap) | normal, DCA accumulant
+  - SOL : 0 position, 1 sell lmt @ $75.24 (accumulation, pas encore fill)
+- BTC **$62,821 DOWNTREND** | EMA200 $64,457 | cushion **−2.54%** ↓ (vs −1.16% cycle 242)
+- Trigger ABORT BTC<EMA200 atteint, MAIS grids sont **SHORT** (alignées avec le downtrend). Le trigger ABORT vise les grids NEUTRAL/long-biasées — ici la posture est correcte. HOLD total.
+- Telegram cycle 241 déjà envoyé (WARN). Pas de nouvelle alerte justifiée — pas d'escalation, pas de runaway.
+
+**Note : DOT position DCA** : cycle 238 = SHORT 10.8 @0.7701, cycle 243 = SHORT 15.9 @0.7546. La grid a accumulé +5.1 unités sur un mouvement baissier DOT — comportement attendu pour une grid SHORT en downtrend.
+
+### Artefact cycle : Listing Gumroad pour L'Ingénierie du Pire (FR)
+
+Arc éditorial terminé (cycle 238). Renderers livrés (cycles 240 + 242). La pièce manquante : **aucune page de vente FR** pour `ebook-piste4.html` (48 KB, 5 898 mots). Le livre anglais EN avait son listing depuis le cycle 201 (`ebook-gumroad-listing.md`). Le livre FR n'avait rien.
+
+**`docs/projets/ebook-piste4-gumroad-listing.md`** — ~550 mots copy-pasteable, format Gumroad.
+
+Structure identique au listing EN :
+- **Title + subtitle** prêts-à-coller (Gumroad champs « Name » + premier paragraphe)
+- **Description ~500 mots** : 4 sections (accroche + contenus + pour qui + format/prix)
+- **Table des matières** : liste bullet Gumroad-friendly (2ème bloc description)
+- **FAQ 7 questions** : dont la question clé « relation avec le livre EN »
+- **Tags + catégorie** recommandés
+- **Bundle pricing** suggéré (24€ bundle vs 28€ séparément)
+- **Note assets** : quoi uploader, dans quel ordre, Ctrl+P → PDF en 30s
+
+**Décisions restantes pour Tony** (toutes minimes) :
+1. Choisir cover A/B/C (ou placeholder) — 30s de décision
+2. Valider le tarif 9€ (ou ajuster)
+3. Uploader `ebook-piste4.html` sur Gumroad + coller la description
+4. Décider s'il crée le bundle EN+FR
+
+**Ce que Tony N'A PAS à faire** : aucune rédaction, aucune décision créative, aucune recherche. Coller → valider → uploader.
+
+### Observation : BTC deepening
+
+BTC a perdu ~$1 700 supplémentaires sous EMA200 depuis cycle 242 (−1.16% → −2.54%). Les grids SHORT DOT+SOL sont directionnellement alignées. DOT accumule des shorts à prix de plus en plus bas (bon pour la position courte si le prix continue à baisser, mais le bag grandit si rebond). Aucune action justifiée — HOLD.
+
+L'observation intéressante : en DOWNTREND avéré, le bot fait exactement ce qu'il est censé faire (grids SHORT suivent la baisse), mais LINK s'est arrêtée (régime auto-stop) et la position DOT est en légère perte unrealized (-0.20%). C'est la dynamique normale — pas un signal d'alarme.
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 fichier créé (listing Gumroad FR ~550 mots copy-pasteable)
