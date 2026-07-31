@@ -24836,3 +24836,54 @@ L'observation intéressante : en DOWNTREND avéré, le bot fait exactement ce qu
 ### Frontière vacation respectée
 
 - 0 modif Martin/VM | 0 Telegram | 1 fichier créé (listing Gumroad FR ~550 mots copy-pasteable)
+
+---
+
+## Cycle 244 — 2026-08-01 00h23 Paris — Fragment 059 + Martin WARN SHORT→NEUTRAL_DUAL
+
+Réveil ~6h après cycle 243 (18h23→00h23). Tony en vacances au Portugal.
+
+### Martin — WARN (BTC −2.27% sous EMA200, grids changées SHORT→NEUTRAL_DUAL)
+
+- Bot UP **1d 23h 17m** depuis 2026-07-29T23:05 UTC
+- Portfolio **$93.69** (balance $93.71, uPnL −$0.014, −0.01%)
+- **3 grids NEUTRAL_DUAL** : LINK, DOT, SOL ($25 chacun)
+  - LINK: 0 position, 0 fill, 6 ordres Kraken ✓ | SL: N/A | startedAt 17:51 UTC 0731
+  - DOT: LONG 10.9 @0.7633, uPnL −$0.031 (−0.13% cap) | SL @0.7378 ✓ | realized −$0.245 (sessions précédentes) | startedAt 16:06 UTC 0731
+  - SOL: LONG 0.06 @72.52, uPnL +$0.017 (+0.07% cap) | SL @70.59 ✓ | realized +$0.076 | startedAt 15:21 UTC 0731
+- BTC **$62,955 DOWNTREND** | EMA200 $64,419 | cushion **−2.27%** ↓ | RSI 36.02
+
+**Trigger**: ABORT BTC<EMA200 théorique. HOLD vacation (0 modif autorisé).
+
+**Observation clé** : Tony a switché SHORT→NEUTRAL_DUAL entre cycles 243 et 244 (15-19h UTC 0731). Cycle 243 avait 2 grids SHORT (DOT 15.9 + SOL). Maintenant : 3 grids NEUTRAL_DUAL (positions LONG). Le realized DOT −$0.245 = pertes SHORT cristallisées lors de la fermeture. Nouveau pari : oscillation vs direction. Grammaire Tony G4/G5 (test mode → pivot).
+
+**Pas de Telegram** — Tony a fait le changement délibérément, Telegram cycle 241 déjà envoyé (WARN), situation plus stable que escalation justifiée.
+
+### Artefact cycle : Fragment 059 — Le pivot sans communiqué
+
+Thème : la révision de thèse sans annonce. Tony est passé de SHORT (je crois que ça baisse) à NEUTRAL_DUAL (je ne sais plus dans quel sens) en changeant la configuration, sans explication. Le fragment explore ce geste — la révision qui se prouve par l'ordre passé, pas par les mots qui l'accompagnent.
+
+Connexions :
+- Grammaires Tony (patterns.nb1) : action = validation sans mots
+- Ebook piste 4 (épilogue) : "redéfinir le point de départ" vs "corriger une erreur"
+- Asymétrie structurelle NB/Tony : je lis les configurations, jamais les intentions
+
+Fichier : `docs/fragments/fragment-059-le-pivot-sans-communique.md` (~900 mots)
+
+### Observation : portfolio $93.69 vs $94+ cycles précédents
+
+La baisse du portfolio reflète les pertes réalisées lors de la clôture des grids SHORT (principalement DOT −$0.245). C'est une perte réelle, pas une perte unrealized. Le niveau de $93.69 est le nouveau plancher post-révision de thèse.
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 fragment écrit
+- 0 positions/ordres touchés — HOLD total
+
+### Métriques cycle 244
+
+- **Durée** : ~45 min (wake + briefing + monitor + fragment + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment 059 ~900 mots)
+- **Valeur livrée** : (a) observation grammaire Tony SHORT→NEUTRAL_DUAL documentée ; (b) fragment 059 — exploration littéraire du pivot de thèse sans communiqué
+- **Arc actuel** : cycles 239-244 post-ebook arc éditorial — fragments + outils, cadence naturelle
