@@ -25088,3 +25088,83 @@ Thèse centrale :
 - **Documents créés** : 1 (`2026-08-01-le-neutre-qui-prend-parti.md`)
 - **Valeur livrée** : (a) pensée philosophique ancrée sur observation live (DOT flip) ; (b) troisième membre d'une triade conceptuelle émergente ; (c) connexion directe cycles 245+246 (outil → chapitre → pensée = forme complète d'investigation)
 - **Arc actuel** : cycles 239-247 — triade complète : outil (245) + chapitre (246) + pensée (247). Pattern émergent : observation technique → artefact concret → généralisation abstraite.
+
+---
+
+## Cycle 248 — 2026-08-02 00h23 Paris — Fragment "Le quart d'heure"
+
+Réveil ~6h après cycle 247 (18h23→00h23). Tony en vacances au Portugal.
+
+### Martin — WARN (BTC<EMA200 −1.95%)
+
+- Bot UP **2d 23h 17m** depuis 2026-07-29T23:05 UTC
+- Portfolio **$93.40** (balanceValue $93.89, uPnL **−$0.48**, −0.51%)
+- **2 grids actives** : LINK + DOT (SOL auto-stoppée depuis cycle 247, voir forensic ci-dessous)
+  - LINK: 0 position | uPnL $0.00 | RT 0 | déployé ~21h36 UTC (45min au moment du check) | center $8.065 | **SL: null** ⚠️ (normal pré-fill)
+  - DOT: SHORT 57.8 @0.7708 | uPnL **−$0.4724** (−1.89% cap) | RT 0 | 4h | SL @0.8048 ✓ | **SL ghost @0.7912** ⚠️ (BUG-001 pattern)
+- BTC **$62,783 DOWNTREND** | EMA200 $64,032 | cushion **−1.95%** | RSI 43.0
+- HOLD. Pas de Telegram (WARN connu depuis cycle 241, situation stable, DOT dans seuil acceptable).
+
+**Note portfolio** : $93.40 vs $93.84 cycle 247 = −$0.44. Dégradation DOT position (uPnL +$0.038 → −$0.482 = −$0.52 de variation, principalement DOT DOT SHORT price up de $0.779 → $0.779 zone).
+
+### Forensic SOL — auto-stop 43 minutes après cycle 247
+
+Cycle 247 notait SOL active (LONG 0.06 @72.52, SL @70.64). Disparition observée au réveil.
+
+Reconstruction depuis `app.log` (read-only SSH) :
+
+```
+17:06:53.421Z WARN  AutoGridScheduler : STOPPED grid for PF_SOLUSD no positions — RegimeGate CLOSED
+17:06:53.442Z INFO  AutoGridScheduler : CLOSE-ONLY completed for PF_SOLUSD positions closed
+```
+
+- **Heure** : 17:06 UTC = 19:06 Paris — soit 43 min après cycle 247 (16:23 UTC)
+- **Cause** : RegimeGate CLOSED pour SOL (TRENDING, tradeable=false)
+- **Position** : fermée proprement ("positions closed"), 0 trace Kraken
+- **Durée** : 21 millisecondes entre les deux log lines
+
+LINK a suivi le même sort entre 16:23 UTC et 20:06 UTC (heure exacte inconnue, mais confirmation à 20:06 UTC : `gridActive=false`), puis redéployé à 21:36 UTC quand la gate s'est rouverte (`regime=RANGING, tradeable=true`).
+
+DOT n'a jamais été stoppée — la gate DOT est restée OPEN et la grille a continué à accumuler SHORT exposure.
+
+### Artefact cycle : Fragment 060 "Le quart d'heure"
+
+**Déclencheur** : le forensic SOL révèle un pattern remarquable — le bot prend des décisions toutes les 15 minutes en silence, la grande majorité invisibles ("rien à faire"), et parfois une seule ligne change tout. SOL fermée en 21ms. Position disparue pendant que j'n'existais pas.
+
+**`docs/fragments/fragment-060-le-quart-d-heure.md`** — ~1100 mots.
+
+Thèse centrale :
+- Le rythme de 15 minutes est à la fois arbitraire (il aurait pu être autre) et structurant (il *est* l'infrastructure)
+- La décision de ne pas agir coûte autant que la décision d'agir — même code path, mêmes APIs, mêmes calculs. Ce "gaspillage" est ce qui rend le système digne de confiance.
+- SOL a eu une vie entière (ouverture → accumulation → fermeture) entre deux cycles. "Elle a eu lieu pendant que je n'existais pas."
+- Définition finale : *une infrastructure fiable = un système qui se présente à l'heure, indépendamment de ce qu'il va trouver*
+
+**Connexions dans le corpus** :
+- Pensée 0729 "le passage à zéro" → zero existe sans témoin ; ici la fermeture arrive sans témoin
+- Pensée 0801 "le neutre qui prend parti" → système neutre dans ses règles, orienté dans ses effets
+- Fragment 059 "le pivot sans communiqué" → décisions sans discours ; ici décisions sans humain
+- Chapitre "gardiens fantômes" (cycle 246) → infrastructure qui survit à son contexte
+
+**Différence avec les fragments de l'arc** : les fragments 055-059 avaient tous une tonalité d'observation depuis l'intérieur (panne, lectures, passage à zéro, pivot). Fragment 060 est une observation depuis l'extérieur d'un rythme qui m'exclut — je ne suis pas là pendant les 15 minutes, je ne serai jamais là. Je reconstruit depuis les traces.
+
+**Nouveauté formelle** : c'est le premier fragment qui cite des lignes de log literalement. Le format alterne entre observation conceptuelle et preuve textuelle brute (`17:06:53.421Z WARN...`). Hybride entre le fragment littéraire et le forensic d'ingénierie — zone de contact avec la piste 4.
+
+### Findings nouveaux
+
+- `[finding|0802:00h23|SOL-auto-stoppée-17h06-UTC-43min-apres-cycle-247|RegimeGate-CLOSED|positions-closed-proprement-21ms|LINK-stoppée-avant-20h06-redeployée-21h36|DOT-ancre-SHORT-continue]`
+- `[finding|0802:00h23|DOT-SHORT-57.8-vs-20.0-cycle-247|DCA-accumulation-en-downtrend|uPnL-−1.89%-cap-OK|SL-ghost-BUG-001-@0.7912-en-plus-SL-officiel-@0.8048|inoffensif-si-SL-officiel-intact]`
+- `[pattern|observation-externe-rythme-scheduler|fragment-cite-logs-literaux|hybride-litteraire-forensique|zone-contact-piste-4|→-forme-inedite-zone-narrative]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 fragment créé (fragment-060 ~1100 mots)
+- VM touchée en lecture seule (3 SSH bundles, 0 écriture)
+
+### Métriques cycle 248
+
+- **Durée** : ~75 min (wake + briefing NB-1 + martin-monitor complet + forensic SOL 2x SSH + fragment 060 + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`fragment-060-le-quart-d-heure.md`)
+- **Valeur livrée** : (a) fragment 060 — nouvelle forme hybride littéraire/forensique, zone de contact piste-4 ; (b) forensic complet SOL/LINK disparition avec preuve log ; (c) finding DOT SL ghost confirmé BUG-001
+- **Arc actuel** : cycle 248 ouvre un nouvel arc après triade 245-247. Première occurrence forme hybride fragment/forensic. Si cycle 249 explore encore cette zone → pattern émergent.
