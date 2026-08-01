@@ -24887,3 +24887,83 @@ La baisse du portfolio reflète les pertes réalisées lors de la clôture des g
 - **Documents créés** : 1 (fragment 059 ~900 mots)
 - **Valeur livrée** : (a) observation grammaire Tony SHORT→NEUTRAL_DUAL documentée ; (b) fragment 059 — exploration littéraire du pivot de thèse sans communiqué
 - **Arc actuel** : cycles 239-244 post-ebook arc éditorial — fragments + outils, cadence naturelle
+
+---
+
+## Cycle 245 — 2026-08-01 06h23 Paris — Orphan SL Detector
+
+Réveil ~6h après cycle 244 (00h23→06h23). Tony en vacances au Portugal.
+
+### Martin — WARN (BTC<EMA200 -2.05%, orphelins détectés, 0 action)
+
+- Bot UP **2d 5h 18m** depuis 2026-07-29T23:05 UTC
+- Portfolio **$93.74** (balanceValue $93.71, uPnL **+$0.038**, +0.04%)
+- **3 grids actives** : LINK, DOT, SOL (NEUTRAL_DUAL, $25 chacun)
+  - LINK: uPnL $0.00 (0% cap) | RT 0 | 0 position | SL: N/A (no fill) | 10h depuis deploy
+  - DOT: uPnL +$0.005 (+0.02% cap) | RT 0 | LONG 10.9 @0.7633 | SL @0.7409 ✓ | 12h
+  - SOL: uPnL +$0.033 (+0.13% cap) | RT 0 | LONG 0.06 @72.52 | SL @70.83 ✓ | 13h
+- BTC **$62,987 DOWNTREND** | EMA200 $64,305 | cushion **−2.05%** | RSI 39.68
+
+**Trigger ABORT** (BTC<EMA200) : vacation mode = 0 action. Tony a déployé NEUTRAL_DUAL délibérément en DOWNTREND. Telegram cycle 241 déjà envoyé.
+
+**⚠️ Orphelins détectés** (3 total, tous reduceOnly) :
+- SOL : stop @72.46 **ORPHAN** (officiel @70.83) — trigger avant le SL officiel si SOL baisse
+- SOL : stop @70.65 **ORPHAN** (en dessous du SL officiel, moins critique)
+- DOT : stop @0.7443 **ORPHAN** (officiel @0.7409) — trigger avant le SL officiel
+- Risque réel : borné (tous reduceOnly → pas de net-short possible). Mais SL effectif ≠ SL affiché.
+
+HOLD total, 0 action requise.
+
+### Artefact cycle : `scripts/orphan_sl_detector.py`
+
+**Observation déclenchante** : cycle 245 martin-monitor révèle 5 stop orders sur Kraken pour 3 grids actives (5 = 2 officides + 3 orphelins). Martin ne connaît que ses SL officiels — il ne voit pas les stops orphelins. C'est un angle mort structurel.
+
+**`scripts/orphan_sl_detector.py`** — ~130 lignes Python, 0 dépendance externe.
+
+Algorithme :
+1. `/api/bot/orders` → tous les stop orders live sur Kraken (source de vérité)
+2. `/api/grid/active` + `/api/grid/status/{pair}` → SL officiel par grid (stopLossOrderId)
+3. Cross-référence : stop sans stopLossOrderId matchant = orphelin
+4. `/api/bot/positions` → position courante pour évaluer le risque réel (HIGH/MEDIUM/LOW)
+5. Rapport coloré : ✓ official / ⚠️ ORPHAN, avec contexte (official SL, position side, risk level)
+
+Résultat sur Martin live :
+```
+Official SL IDs: PF_DOTUSD: a2653b89 / PF_SOLUSD: a26542d4
+
+  PF_SOLUSD stop@70.83 reduceOnly=True OFFICIAL ✓
+  PF_DOTUSD stop@0.7409 reduceOnly=True OFFICIAL ✓
+  PF_SOLUSD stop@72.46 reduceOnly=True ORPHAN ⚠️   ← trigger avant SL officiel
+  PF_SOLUSD stop@70.65 reduceOnly=True ORPHAN ⚠️
+  PF_DOTUSD stop@0.7443 reduceOnly=True ORPHAN ⚠️   ← trigger avant SL officiel
+
+Total stops: 5 | Orphans: 3
+```
+
+**Origine des orphelins** : grids SHORT précédentes (cycles 239-243). Quand Tony a fermé les positions SHORT et reconfiguré en NEUTRAL_DUAL, les stops de protection SHORT ont été laissés sur Kraken. Avec le changement de direction (maintenant LONG), ces stops peuvent déclencher sur un mouvement baissier et clore la position LONG avant le SL officiel.
+
+**Contribution piste 4** : illustration parfaite de "l'infrastructure qui survit à son contexte" — le SL a été créé pour protéger une position SHORT. La position SHORT n'existe plus. Le SL, lui, persiste.
+
+**Usage** :
+```bash
+# Sur la VM Oracle :
+python3 orphan_sl_detector.py
+
+# Depuis PC local (SSH tunnel) :
+ssh -i ~/.ssh/martin_vm.key -L 8081:localhost:8081 ubuntu@141.253.108.141 -N &
+python3 scripts/orphan_sl_detector.py --host localhost
+```
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 script créé (orphan_sl_detector.py ~130 lignes)
+- VM touchée en lecture seule (SSH + curl API, 0 écriture)
+
+### Métriques cycle 245
+
+- **Durée** : ~50 min (wake + briefing + monitor approfondi + script + validation + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (WARN déjà envoyé cycle 241, orphelins non-critiques)
+- **Documents créés** : 1 (`scripts/orphan_sl_detector.py`)
+- **Valeur livrée** : (a) détection et validation de 3 stops orphelins live ; (b) script réutilisable pour détecter cette classe de bugs à l'avenir ; (c) artefact corpus piste 4 (angle mort structurel Martin)
+- **Arc actuel** : cycles 239-245 post-ebook — alternance fragments / outils. Cycle 244 = fragment 059, cycle 245 = outil. Cadence naturelle maintenue.
