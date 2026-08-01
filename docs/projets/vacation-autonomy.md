@@ -24967,3 +24967,68 @@ python3 scripts/orphan_sl_detector.py --host localhost
 - **Documents créés** : 1 (`scripts/orphan_sl_detector.py`)
 - **Valeur livrée** : (a) détection et validation de 3 stops orphelins live ; (b) script réutilisable pour détecter cette classe de bugs à l'avenir ; (c) artefact corpus piste 4 (angle mort structurel Martin)
 - **Arc actuel** : cycles 239-245 post-ebook — alternance fragments / outils. Cycle 244 = fragment 059, cycle 245 = outil. Cadence naturelle maintenue.
+
+---
+
+## Cycle 246 — 2026-08-01 12h23 Paris — Chapitre ebook "Les gardiens fantômes"
+
+Réveil ~6h après cycle 245 (06h23→12h23). Tony en vacances au Portugal.
+
+### Martin — WARN (BTC<EMA200 -1.91%, 3 orphelins toujours actifs)
+
+- Bot UP **2d 11h 17m** depuis 2026-07-29T23:05 UTC
+- Portfolio **$93.73** (balanceValue $93.71, uPnL **+$0.021**, +0.02%)
+- **3 grids actives** : LINK, DOT, SOL (NEUTRAL_DUAL, $25 chacun)
+  - LINK: $0 uPnL, 0 position, 6 ordres buy+sell Kraken ✓ | **SL: aucun** ⚠️ | 40h depuis deploy
+  - DOT: LONG 10.9 @0.7633, uPnL **−$0.003** (−0.01% cap) | SL @0.7402 ✓ | closeOnly | 42h
+  - SOL: LONG 0.06 @72.52, uPnL **+$0.019** (+0.07% cap) | SL @70.60 ✓ | closeOnly | 43h
+- BTC **$63,005 DOWNTREND** | EMA200 $64,226 | cushion **−1.91%** | RSI 42.2
+- RT réalisés : 0 sur tous les grids (40-43h run, normal accumulation NEUTRAL_DUAL)
+
+**Orphelins détectés** (same que cycle 245) :
+- SOL stop @72.46 ORPHAN ⚠️ — déclenche avant SL officiel @70.60 si SOL chute légèrement
+- SOL stop @70.65 ORPHAN (en dessous SL officiel, moins critique)
+- DOT stop @0.7443 ORPHAN ⚠️ — déclenche avant SL officiel @0.7402
+
+HOLD total. Pas de Telegram (cycle 241 déjà envoyé, situation stable, orphelins non-critiques).
+
+**Note balance API** : `fi_xbtusd/fi_solusd/...` tous à 0 (bug connu). Source de vérité = compte `flex` (portfolioValue $93.73 ✓).
+
+### Artefact cycle : Chapitre ebook "Les gardiens fantômes"
+
+**Déclencheur** : l'observation cycle 245 — "le SL qui protège ce qu'il ne peut plus sauver" — est exactement le matériau d'un chapitre piste-4. La forme "chapitre ebook" n'avait pas été utilisée dans l'arc 239-245 (formes précédentes : fragment, outil, observation, listing).
+
+**`docs/projets/ebook-piste4-chapitre-gardiens-fantomes.md`** — ~1400 mots, ton cohérent avec les 3 chapitres existants.
+
+Structure :
+1. **Le troisième dimanche** — ancrage factuel (08/01 10h23 UTC, 5 stops pour 3 grids)
+2. **L'anatomie d'un ordre orphelin** — explication mécanique + log orphan_sl_detector.py
+3. **Ce que Martin voit, ce que Kraken sait** — divergence état interne vs état externe
+4. **Trois classes de fantômes** — bénins / actifs / inverseurs (le seul vrai danger)
+5. **L'infrastructure qui survit à son contexte** — généralisation (cron jobs, firewalls, monitoring mort)
+6. **Comment le détecter** — code principe + choix d'implémentation
+7. **Ce que ça enseigne sur le design** — tension entre cohérence parfaite et réalité multi-acteurs
+8. **Pour finir** — triptyque détecter/classer/décider, ouverture vers Tony
+
+**Connexions dans le corpus** :
+- pensée 0727 "le seuil qui protège ce qu'il ne peut pas sauver" → directement citée implicitement
+- orphan_sl_detector.py (cycle 245) → illustration concrète du problème
+- Chapitre logs (piste-4 existant) → même posture "lire pour comprendre, pas documenter"
+
+**Position dans l'ebook** : chapitre bonus entre "Réagir" et l'Épilogue. Ou: appendice case study. Décision éditoriale à Tony.
+
+**Contribution piste 4** : 4ème chapitre complet. L'ebook a désormais : Intro + Partie0 + Résilience + Logs + Réagir + **Gardiens fantômes** + Épilogue. Sept sections narratives.
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 fichier créé (chapitre ebook ~1400 mots)
+- VM touchée en lecture seule (SSH + curl API)
+
+### Métriques cycle 246
+
+- **Durée** : ~55 min (wake + briefing + martin-monitor complet + chapitre + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`ebook-piste4-chapitre-gardiens-fantomes.md`)
+- **Valeur livrée** : (a) 4ème chapitre complet pour L'Ingénierie du Pire — angle inédit (infrastructure qui survit à son contexte) ; (b) généralisation trading → engineering pattern universel ; (c) connexion directe avec outil cycle 245 (artefact → chapitre cohérent)
+- **Arc actuel** : cycles 239-246 — alternance fragment/outil/chapitre. Cadence naturelle. Cycle 247 : pensée autonome ou pivot vers outil (derniers cycles avant retour Tony probable).
