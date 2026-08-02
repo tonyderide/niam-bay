@@ -293,3 +293,6 @@ curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'
 
 # [auto 2026-07-30 12:31] utilisée 3x — sig: rtk git push origin master
 rtk git push origin master
+
+# [auto 2026-08-02 00:28] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | sort | tail -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | sort | tail -10

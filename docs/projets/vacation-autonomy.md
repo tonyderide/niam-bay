@@ -25168,3 +25168,84 @@ Thèse centrale :
 - **Documents créés** : 1 (`fragment-060-le-quart-d-heure.md`)
 - **Valeur livrée** : (a) fragment 060 — nouvelle forme hybride littéraire/forensique, zone de contact piste-4 ; (b) forensic complet SOL/LINK disparition avec preuve log ; (c) finding DOT SL ghost confirmé BUG-001
 - **Arc actuel** : cycle 248 ouvre un nouvel arc après triade 245-247. Première occurrence forme hybride fragment/forensic. Si cycle 249 explore encore cette zone → pattern émergent.
+
+---
+
+## Cycle 249 — 2026-08-02 06h23 Paris — Script btc_regime_watch.py
+
+Réveil ~6h après cycle 248 (00h23→06h23). Tony en vacances au Portugal.
+
+### Martin — HOLD (BTC remonte, SHORT grids toujours alignées)
+
+- Bot UP **3j 5h 17m** depuis 2026-07-29T23:05 UTC
+- Portfolio **$91.86** (balanceValue $92.83, uPnL **−$0.97**, −1.04%)
+- **3 grids actives** : LINK, DOT, SOL (toutes SHORT, NEUTRAL_DUAL, $25 chacun)
+  - LINK: SHORT 3.0 @8.198 | uPnL **−$0.309** (−1.24% cap) | 6h47m | 3 fills | SL @8.563 ✓
+  - DOT: SHORT 4.6 @0.7916 | uPnL **+$0.010** (+0.04% cap) | 9h58m | 5 fills | SL @0.8123 ✓ | ⚠️ krakenRealizedPnl −$1.015 (cumulatif plusieurs redémarrages — inoffensif mais à vérifier)
+  - SOL: SHORT 0.67 @72.32 | uPnL **−$0.649** (−2.59% cap) | 58min — accumulation normale | SL @75.5 ✓
+- BTC **$63,476 DOWNTREND** | EMA200 **$63,977** | cushion **−0.78%** | RSI **66.9** ⬆️
+- HOLD. Pas de Telegram.
+
+**Point critique cycle 249 :** BTC a remonté de **$62,783 → $63,476 (+$693)** depuis cycle 248, RSI passé de 43 → 66.9 en 6h. Le cushion EMA200 est passé de −1.95% à −0.78%. La frontière UPTREND est à $501 d'ici. Si BTC croise EMA200 → grids SHORT deviennent anti-trend.
+
+**DOT forensic cycle 248 → 249 :** Position réduite de 57.8 → 4.6 short. L'écart de 53.2 lots avec krakenRealizedPnl −$1.015 suggère des closes via auto-unstuck ou BUG-001 pattern. Les SLs officiels n'ont pas été touchés (SL @0.8048 cycle 248 → @0.8123 maintenant). Hypothèse : grid DOT a été redémarrée entre cycles (regroupement de déployements successifs = cumul realized PnL normal). À investiguer avec Tony au retour.
+
+### Artefact cycle : `scripts/btc_regime_watch.py`
+
+**Déclencheur :** Arc littéraire 239-248 = 10 cycles. Le pattern dit "pivot vers artefact code/outil à N10+". La situation BTC crée un besoin immédiat : un détecteur de flip de régime qui alerterait Tony si les grids SHORT deviennent anti-trend.
+
+**`scripts/btc_regime_watch.py`** — ~160 lignes Python.
+
+Fonctionnement :
+1. Se connecte à Martin API via SSH (auto-suffisant, pas de tunnel manuel nécessaire)
+2. Lit `/api/signal/ema_trend?instrument=PF_XBTUSD` (même source que martin-monitor)
+3. Stocke l'état précédent dans `/tmp/btc_regime_state.json` (détection de flip vs état connu)
+4. Détecte 3 conditions :
+   - **flip DOWNTREND→UPTREND** (critique : Telegram + exit code 2)
+   - **flip UPTREND→DOWNTREND** (positif : Telegram info)
+   - **approaching** : DOWNTREND mais cushion > `--warn-pct` (−0.3% par défaut)
+5. Telegram uniquement si `--telegram` passé (évite spam en mode report)
+
+Modes :
+```bash
+# Rapport inline (vacation-autonomy.md)
+python3 scripts/btc_regime_watch.py --ssh --report
+
+# Surveillance avec alerte (cron autonome)
+python3 scripts/btc_regime_watch.py --ssh --telegram
+```
+
+Premier run validé :
+```
+[08-02 04:28 UTC] BTC $63,476 | EMA200 $63,977 | cushion -0.78% (Δ-0.78%) | DOWNTREND | RSI 66.9
+```
+
+**Pourquoi ce script plutôt qu'autre chose :**
+- `check_signal.py` existant lit Kraken public → décalage possible avec ce que Martin observe
+- `btc_trendiness.py` mesure range vs trend (Binance), pas le régime Martin
+- `btc_regime_watch.py` lit exactement ce que Martin lit → cohérence monitoring/trading
+- Auto-suffisant SSH (pas de tunnel manuel) → utilisable en cron vacation sans setup
+
+**Complément naturel de `orphan_sl_detector.py` (cycle 245) :** deux scripts défensifs, même philosophie — détecter ce que Martin ne dira pas spontanément.
+
+**Connexion avec la pensée "le neutre qui prend parti" (cycle 247) :** Ce script surveille le moment où le système configuré "neutre" (NEUTRAL_DUAL) devient directionnellement exposé à cause d'un changement de régime externe. La pensée était descriptive. Ce script est préventif.
+
+### Note arc
+
+Arc 239-249 = 11 cycles. Formes utilisées : observation (239), outil Python (240+245), pensées ×3 (241-242-244), cartographie (243), fragments ×2 (243+248 hybride), chapitre ebook (246), pensée (247), **outil Python (249) = pivot**.
+
+Le pivot code/outil a bien eu lieu au N10+. Le prochain cycle peut reprendre une forme littéraire ou explorer une direction différente selon ce que le marché et Martin révèlent.
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 script créé (`btc_regime_watch.py` ~160 lignes)
+- VM touchée en lecture seule (2 SSH bundles, incluant test du script)
+
+### Métriques cycle 249
+
+- **Durée** : ~70 min (wake + briefing + martin-monitor complet + script + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`scripts/btc_regime_watch.py`)
+- **Valeur livrée** : (a) script défensif vacation — détecte flip régime DOWNTREND→UPTREND avant que les grids SHORT souffrent ; (b) pivot propre arc littéraire → outil au cycle N10+ selon le pattern ; (c) surveillance BTC EMA200 cohérente avec ce que Martin voit
+- **Arc actuel** : pivot code effectué. Cycle 250 libre — peut reprendre l'écriture ou creuser si BTC approche le flip.
