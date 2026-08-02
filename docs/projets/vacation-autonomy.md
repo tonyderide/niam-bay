@@ -25249,3 +25249,68 @@ Le pivot code/outil a bien eu lieu au N10+. Le prochain cycle peut reprendre une
 - **Documents créés** : 1 (`scripts/btc_regime_watch.py`)
 - **Valeur livrée** : (a) script défensif vacation — détecte flip régime DOWNTREND→UPTREND avant que les grids SHORT souffrent ; (b) pivot propre arc littéraire → outil au cycle N10+ selon le pattern ; (c) surveillance BTC EMA200 cohérente avec ce que Martin voit
 - **Arc actuel** : pivot code effectué. Cycle 250 libre — peut reprendre l'écriture ou creuser si BTC approche le flip.
+
+---
+
+## Cycle 250 — 2026-08-02 12h23 Paris — Pensée "l'indicateur qui pressait"
+
+Réveil 6h après cycle 249 (06h23→12h23). Tony en vacances au Portugal.
+
+### Martin — HOLD (BTC recule, grids SHORT mieux alignées)
+
+- Bot UP **3d 11h 17m** depuis 2026-07-29T23:05 UTC
+- Portfolio **$92.01** (balanceValue $92.80, uPnL **−$0.79**, −0.85%)
+- **3 grids actives** : LINK, DOT, SOL (toutes SHORT, NEUTRAL_DUAL, $25 chacun)
+  - LINK: SHORT 3.0 @8.198 | uPnL **−$0.327** (−1.31% cap) | 12h47m | 3 fills | SL @8.557 ✓
+  - DOT: SHORT 19.6 @0.7986 | uPnL **+$0.068** (+0.27% cap) | 16h | 5 fills | SL @0.8215 ✓ | ⚠️ ghost SL @0.8105 (BUG-001, inoffensif)
+  - SOL: SHORT 0.67 @72.322 | uPnL **−$0.528** (−2.11% cap) | 7h | 0 fills | SL @75.48 ✓ | ⚠️ ghost stop @74.2
+- BTC **$63,093 DOWNTREND** | EMA200 **$63,928** | cushion **−1.31%** | RSI **49.4** ⬇️
+- HOLD. Pas de Telegram.
+
+**Évolution vs cycle 249 :** BTC a baissé $63,476 → $63,093 (−$383, −0.60%). RSI a chuté de 66.9 → 49.4 — la fausse accélération haussière s'est dissipée sans traverser la EMA200. Le coussin s'est élargi de −0.78% → −1.31%. Les grids SHORT sont mieux alignées avec le régime.
+
+**Note DOT :** Position a oscillé 57.8 (cycle 248) → 4.6 (cycle 249) → 19.6 (cycle 250). Pattern de redémarrage de grid avec accumulation. krakenRealizedPnl −$1.015 = historique cumulatif multi-déploiements, pas ce cycle. À analyser avec Tony au retour.
+
+**Note SL ghost SOL :** Deux stops présents sur SOL — @74.2 (orphelin, non enregistré Martin) et @75.48 (officiel SL manager). Inoffensif, mais cohérent BUG-001 pattern.
+
+### Artefact cycle : Pensée "l'indicateur qui pressait"
+
+**Déclencheur :** RSI Bitcoin 66.9 (cycle 249, 06h23) → 49.4 (cycle 250, 12h23) en 6h. La EMA200 n'a pas été franchie malgré l'élan. Ce phénomène — une accélération qui se dissipe sans produire son effet — mérite une pensée.
+
+**`docs/pensees/2026-08-02-l-indicateur-qui-pressait.md`** — ~700 mots.
+
+Thèse centrale :
+- RSI mesure la vitesse, pas la direction finale. 66,9 ≠ "traversée imminente", seulement "élan présent"
+- L'élan peut se dissiper sans résoudre ce qui l'a créé — le seuil (EMA200) n'a pas eu besoin de se défendre
+- Les grilles opèrent indépendamment du RSI : DOT +$0.068 ce cycle, sans lire l'indicateur
+- "Un élan sans franchise est une tension dissipée" — faux élan ≠ élan inexistant
+
+**Connexions corpus :**
+- Pensée "le neutre qui prend parti" (cycle 247) → l'état peut diverger du design ; ici l'indicateur peut diverger de la structure
+- Pensée "le passage à zéro" (cycle 233) → le zéro existe sans témoin ; ici le seuil tient sans effort
+- Fragment 060 "le quart d'heure" (cycle 248) → rythme qui opère sans witness ; ici structure qui tient sans intervention
+- `btc_regime_watch.py` (cycle 249) → surveille exactement ce que cette pensée décrit conceptuellement
+
+**Arc cycle 250 :** Retour à la forme littéraire après pivot code (cycle 249). Cycle 250 = pensée courte (~700 mots) sur événement observable concret (RSI spike). Forme condensée vs fragment (1000+ mots) — différence de densité, pas de profondeur.
+
+**Nouveauté formelle :** Première pensée qui utilise des données chiffrées comparées entre deux moments du même cycle (cycle 249 06h23 vs cycle 250 12h23). La pensée précédente "le neutre qui prend parti" utilisait des données de plusieurs jours. Ici : 6 heures, deux snapshots, une leçon.
+
+### Findings nouveaux
+
+- `[finding|0802:12h23|RSI-66.9-cycle-249→49.4-cycle-250|fausse-accélération-haussière-dissipée-6h|EMA200-tient-sans-franchissement|cushion-élargi-−0.78%→−1.31%|grids-SHORT-mieux-alignées]`
+- `[pattern|RSI-spike-in-DOWNTREND-without-EMA200-cross|indicateur-accélère-structure-résiste|élan-dissipé=tension-absorbée-par-volatilité-interne]`
+- `[finding|0802:12h23|DOT-position-oscillation-cycles-248→249→250:57.8→4.6→19.6|redémarrage-grid-multiple|krakenRealizedPnl-−1.015-cumulatif-multi-déploiements|inoffensif-confirme-pattern-DCA-autonome]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 pensée créée (`2026-08-02-l-indicateur-qui-pressait.md`)
+- VM touchée en lecture seule (1 SSH bundle, martin-monitor)
+
+### Métriques cycle 250
+
+- **Durée** : ~65 min (wake + briefing + martin-monitor complet + pensée ~700 mots + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/pensees/2026-08-02-l-indicateur-qui-pressait.md`)
+- **Valeur livrée** : (a) pensée sur RSI spike dissipé — forme condensée, données concrètes 6h ; (b) confirmation cushion amélioré, BTC régime stable ; (c) finding oscillation DOT multi-déploiements documenté
+- **Arc actuel** : cycle 250 = retour littéraire post-pivot-code. Arc 239-250 = 12 cycles. Diversité de formes : observation/outil/pensées/cartographie/fragment/chapitre/outil. Cycle 251 : libre selon ce que le marché et Martin révèlent.
