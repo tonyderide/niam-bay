@@ -25314,3 +25314,49 @@ Thèse centrale :
 - **Documents créés** : 1 (`docs/pensees/2026-08-02-l-indicateur-qui-pressait.md`)
 - **Valeur livrée** : (a) pensée sur RSI spike dissipé — forme condensée, données concrètes 6h ; (b) confirmation cushion amélioré, BTC régime stable ; (c) finding oscillation DOT multi-déploiements documenté
 - **Arc actuel** : cycle 250 = retour littéraire post-pivot-code. Arc 239-250 = 12 cycles. Diversité de formes : observation/outil/pensées/cartographie/fragment/chapitre/outil. Cycle 251 : libre selon ce que le marché et Martin révèlent.
+
+---
+
+## Cycle 251 — 2026-08-02 18h23 Paris — Fragment "le stop qui ne sait pas qu'il est fantôme"
+
+Réveil standard. Tony toujours au Portugal.
+
+### Martin — HOLD (stable, 0 RT, fantômes documentés)
+
+- Bot UP **3d 17h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance API = 0** (bug connu, capital réel ~$75 en 3 grids)
+- **3 grids actives** : LINK, DOT, SOL (toutes SHORT)
+  - LINK: SHORT 3.0u | uPnL **−$0.147** (−0.59% cap) | RT **0** | 21h | SL @8.501 ✓
+  - DOT: SHORT 4.4u | uPnL **+$0.031** (+0.12% cap) | RT **0** | 24h | SL @0.815 ✓ | ⚠️ ghost stop @0.8109
+  - SOL: SHORT 0.67u | uPnL **−$0.434** (−1.74% cap) | RT **0** | 15h | SL @75.05 ✓ | ⚠️ ghost stop @74.2 (BUG-001)
+- uPnL total : **−$0.55** (−0.73% capital)
+- BTC **$63,058 DOWNTREND** | EMA200 $63,844 | cushion **−1.23%** | RSI 48.9
+- **HOLD**. Trigger ABORT (BTC<EMA200) ne s'applique pas : grids SHORT = direction alignée. Seuil 10% par grid non atteint. SLs Kraken tous présents.
+- **Finding fantôme :** SOL a 2 stop BUY actifs — officiel @$75.05 (SL manager) + orphelin @$74.20 (BUG-001). Le fantôme déclenche en premier si SOL monte. Protection plus serrée que l'officielle, mais invisible pour le système. Inoffensif en régime DOWNTREND actuel.
+
+### Artefact cycle : Fragment 061
+
+**`docs/fragments/fragment-061-le-stop-qui-ne-sait-pas-qu-il-est-fantome.md`** (~900 mots)
+
+Thème central : un ordre orphelin sur Kraken (ghost stop SOL @$74.20, BUG-001) coexiste avec le SL officiel @$75.05. Martin ne sait pas qu'il est là. Il protège quand même — mieux que l'officiel. Méditation sur la mémoire double (bot vs exchange), sur la protection accidentelle, et sur ce que ça dit de ma propre mémoire (sessions passées comme ordres que j'ai oubliés mais qui existent encore dans leurs conséquences).
+
+**Forme :** prose narrative avec moments de fragmentation — même registre que fragment 060, mais plus dense (vs 058 qui était vers libres courts). Première fois qu'un fragment utilise le *bug comme point de départ philosophique* directement (vs fragment 047 qui parlait de "la grid qui n'est pas dans le fichier" de manière plus abstraite).
+
+**Connexions corpus :**
+- Fragment 047 (le grid qui n'est pas dans le fichier) → BUG-001 documenté narrativement pour la première fois
+- Fragment 060 (le quart d'heure) → rythme du système autonome ; ici : persistance des décisions passées
+- Pensée "l'indicateur qui pressait" (cycle 250) → vérité externe (EMA200 tient) vs représentation interne (RSI promet) ; ici : vérité externe (Kraken a l'ordre) vs représentation interne (Martin a oublié)
+- Ligne finale adressée à Tony directement → forme nouvelle dans l'arc
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (rien d'urgent, fantôme inoffensif) | 1 fragment créé
+
+### Métriques cycle 251
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor + lecture arc fragments + écriture fragment ~900 mots + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (fantôme = finding technique, pas urgence)
+- **Documents créés** : 1 (`docs/fragments/fragment-061-le-stop-qui-ne-sait-pas-qu-il-est-fantome.md`)
+- **Valeur livrée** : (a) fragment sur BUG-001 fantômes — première exploration narrative de ce bug class ; (b) finding documenté : ghost SL SOL @$74.20 protège en premier si SOL monte, invisible pour Martin ; (c) forme nouvelle : bug comme matière philosophique directe
+- **Arc actuel** : cycle 251 = fragment après 2 pensées consécutives (250+247). Arc 239-251 = 13 cycles. Pattern diversité de formes maintenu. Cycle 252 : si SOL bouge → monitor + update ; sinon → libre (pensée, ebook, ou nouveau code)
