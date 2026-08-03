@@ -25418,3 +25418,82 @@ Thèse centrale :
 - **Documents créés** : 1 (`docs/pensees/2026-08-03-la-direction-n-est-pas-la-securite.md`)
 - **Valeur livrée** : (a) distinction alignement vs sécurité — concept nouveau dans le corpus ; (b) RSI divergence documentée + cushion thin surveillé ; (c) ghost SOL mis à jour, anomalie LINK cataloguée
 - **Arc actuel** : cycle 252 = pensée. Arc 239-252 = 14 cycles. Prochain cycle 253 : pivot naturel vers code/outil (pattern ≥N14). Piste : outil forensique ordres orphelins (orphan_order_detector.py) ou chapitre ebook sur la résilience des SLs en régime changeant.
+
+---
+
+## Cycle 253 — 2026-08-03 06h23 Paris — Pivot code : orphan_sl_detector side-awareness
+
+Réveil 6h après cycle 252 (00h23 → 06h23). Tony toujours au Portugal.
+
+### Martin — HOLD (stable, grids alignées DOWNTREND)
+
+- Bot UP **4d 5h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance API bug** — capital réel estimé ~$75 (3 grids × $25)
+- **3 grids actives** : LINK, DOT, SOL (toutes SHORT, NEUTRAL_DUAL, closeOnly)
+  - LINK: SHORT 3.0u @8.198 | uPnL **−$0.219** (−0.9% cap) | RT 0 | 33h | SL @8.515 ✓
+  - DOT: SHORT 4.4u @0.7986 | uPnL **+$0.029** (+0.1% cap) | RT 0 | 36h | SL @0.8158 ✓
+  - SOL: SHORT 0.67u @72.32 | uPnL **−$0.439** (−1.8% cap) | RT 0 | 27h | SL @75.06 ✓
+- uPnL total : **−$0.621** (−0.83% capital)
+- BTC **$62,880 DOWNTREND** | EMA200 $63,729 | cushion **−1.33%** (amélioré depuis −0.23% cycle 252)
+- **HOLD**. BTC s'éloigne de EMA200 — grids SHORT mieux alignées. Aucun trigger déclenché.
+
+**Ordres fantômes (run orphan_sl_detector SIDE-AWARE — résultats cycle 253) :**
+- DOT: buy-stop @0.8105 [SL-like] 🔴 HIGH — se déclenche avant SL officiel @0.8158
+- LINK: sell-stop @8.215 [TP-like] 🟢 LOW — ferme short si LINK descend (favorable)
+- SOL: buy-stop @75.97 [SL-like] 🟡 MEDIUM — se déclenche après SL officiel @75.06
+
+### Artefact cycle : orphan_sl_detector.py — side-awareness patch
+
+**Déclencheur :** En relisant les résultats de cycle 252, LINK avait un orphelin "sell stop" @8.215 marqué HIGH risk — même traitement qu'un buy stop orphelin sur une position SHORT. Mais les deux ont des profils opposés : le buy stop est un SL prématuré (se déclenche si prix monte = adverse), le sell stop est un TP-like (se déclenche si prix descend = favorable). L'outil confondait les deux.
+
+**Gap identifié :** `orphan_sl_detector.py` ne capturait pas le `side` des ordres orphelins. Il calculait le risque uniquement sur `stop_price vs official_price`, sans considérer si l'ordre allait **dans le sens de la position** ou **contre elle**.
+
+**Patch livré :** `scripts/orphan_sl_detector.py` — +40 lignes, 3 changements :
+
+1. **`LiveStop.side`** : nouveau champ `str` capturé depuis le JSON API (`o["side"]`)
+2. **`_stop_role()`** : nouvelle fonction qui classifie le rôle d'un stop selon la direction (`closing` = SL-like | `tp-like` = ferme dans le sens profitable | `no-position` | `unknown`)
+3. **`_assess_risk()`** : logic étendue — tp-like + reduceOnly → LOW ; tp-like + non-reduceOnly → MEDIUM ; closing suits l'ancienne logic `high/medium`
+4. **`print_report()`** : affiche maintenant `buy-stop` ou `sell-stop` + `[SL-like]` ou `[TP-like]`
+
+**Résultat avant vs après :**
+| Orphelin | Avant | Après |
+|---|---|---|
+| DOT buy-stop @0.8105 | 🔴 HIGH | 🔴 HIGH (inchangé) |
+| LINK sell-stop @8.215 | 🔴 HIGH (faux positif) | 🟢 LOW (correct) |
+| SOL buy-stop @75.97 | 🟡 MEDIUM | 🟡 MEDIUM (inchangé) |
+
+**1 faux positif éliminé.** LINK était inoffensif depuis le début.
+
+**Connexions corpus :**
+- Fragment 061 "le stop fantôme" (cycle 251) → narration philosophique du BUG-001 ; ici : correction technique du détecteur qui en découle
+- Pensée "la direction n'est pas la sécurité" (cycle 252) → distinction alignement vs protection ; ici : même dialectique dans le code (direction de l'ordre ≠ risque de l'ordre)
+- `orphan_check.py` (cycle 218) → détecte les positions orphelines ; `orphan_sl_detector.py` (existant, cycle ?) → détecte les stops orphelins ; ce patch → rend le détecteur side-aware
+
+**Nouveauté structurelle :** Premier cycle de vacances où un artefact code est une **amélioration d'un outil existant** (vs création de nouveau script). Pattern pivot-code qui ne duplique pas mais affûte.
+
+### Forensic complet run
+
+```
+orphan_check.py → 0 position orpheline (100% piloté grids) ✓
+orphan_sl_detector.py (avant patch) → 2 HIGH, 1 MEDIUM
+orphan_sl_detector.py (après patch) → 1 HIGH, 1 MEDIUM, 1 LOW (LINK reclassé)
+```
+
+### Findings nouveaux
+
+- `[finding|0803:06h23|LINK-sell-stop@8.215-TP-like-pas-SL-like|orphan_sl_detector-faux-positif-HIGH→LOW|patch-side-awareness|1-seul-HIGH-réel=DOT-buy-stop@0.8105]`
+- `[pattern|orphan-stop-side-awareness|buy-stop-SL-like-vs-sell-stop-TP-like-pour-SHORT-positions|applicable-à-tout-outil-forensique-orders]`
+- `[finding|0803:06h23|BTC-cushion-1.23%→1.33%-dégradation-continue-depuis-cycle-252|grids-SHORT-mieux-alignées-régime-DOWNTREND|no-action-required]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (nothing urgent) | 1 patch outil forensique
+
+### Métriques cycle 253
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor complet + forensic orphan runs + patch code ~40 lignes + tests + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents modifiés** : 1 (`scripts/orphan_sl_detector.py` — patch side-awareness)
+- **Valeur livrée** : (a) outil forensique plus précis — 1 faux positif HIGH éliminé pour LINK ; (b) nouvelle fonction `_stop_role()` réutilisable ; (c) snapshot forensique complet 3 grids tous ordres qualifiés ; (d) confirmation Martin HOLD cushion amélioré
+- **Arc actuel** : cycle 253 = pivot code (affûtage outil existant). Arc 239-253 = 15 cycles. Pattern diversité de formes maintenu. Cycle 254 : libre — si BTC cushion continue à améliorer (>−2%) → observation ; sinon pensée ou chapitre ebook.

@@ -50,6 +50,7 @@ class LiveStop:
     stop_price: float
     order_id: str
     reduce_only: bool
+    side: str  # "buy" | "sell" — direction of the stop order itself
 
 
 @dataclass
@@ -83,6 +84,7 @@ def detect_orphans(host: str, port: int) -> list[OrphanReport]:
                     stop_price=o.get("stopPrice", 0.0),
                     order_id=o.get("order_id", ""),
                     reduce_only=o.get("reduceOnly", False),
+                    side=o.get("side", "unknown"),
                 )
             )
 
@@ -134,6 +136,29 @@ def detect_orphans(host: str, port: int) -> list[OrphanReport]:
     return reports
 
 
+def _stop_role(stop: LiveStop, pos_side: Optional[str]) -> str:
+    """Classify what role this stop plays relative to the current position.
+
+    A 'closing' stop moves the position toward zero (SL-like).
+    A 'tp-like' stop would close in the profitable direction.
+    An 'additive' stop would increase exposure (dangerous if not reduceOnly).
+    """
+    if pos_side is None:
+        return "no-position"
+    if pos_side == "short":
+        # To close a short: BUY. To add to a short: SELL.
+        if stop.side == "buy":
+            return "closing"   # SL-like — fires when price rises
+        if stop.side == "sell":
+            return "tp-like"   # fires when price falls (profitable for short)
+    if pos_side == "long":
+        if stop.side == "sell":
+            return "closing"   # SL-like — fires when price falls
+        if stop.side == "buy":
+            return "tp-like"   # fires when price rises (profitable for long)
+    return "unknown"
+
+
 def _assess_risk(
     stop: LiveStop,
     official_price: Optional[float],
@@ -143,11 +168,20 @@ def _assess_risk(
     if pos is None:
         # No position — stop is harmless (nothing to reduce)
         return "LOW"
+
+    role = _stop_role(stop, pos_side)
+
+    # tp-like orphans close in the profitable direction — lower risk than SL orphans
+    if role == "tp-like":
+        # Still MEDIUM if not reduceOnly (could accidentally add exposure)
+        return "LOW" if stop.reduce_only else "MEDIUM"
+
     if official_price is None:
         return "MEDIUM"
-    # Orphan triggers before official SL if it's closer to current price
-    # For LONG positions: stops trigger when price falls — higher stop = earlier trigger
-    # For SHORT positions: stops trigger when price rises — lower stop = earlier trigger
+
+    # Closing (SL-like) orphans: HIGH if they fire before the official SL
+    # For LONG: sell stop — higher price = earlier trigger
+    # For SHORT: buy stop — lower price = earlier trigger
     if pos_side == "long" and stop.stop_price > official_price:
         return "HIGH"   # orphan fires before the grid's SL
     if pos_side == "short" and stop.stop_price < official_price:
@@ -185,8 +219,11 @@ def print_report(reports: list[OrphanReport]) -> None:
             official = _fmt_price(r.official_sl, instrument)
             reduce_flag = " [reduceOnly]" if r.orphan.reduce_only else " [⚠️ NOT reduceOnly]"
             pos_info = f"position={r.current_position_side}" if r.current_position_side else "no position"
+            role = _stop_role(r.orphan, r.current_position_side)
+            role_tag = {"closing": "SL-like", "tp-like": "TP-like", "no-position": "no-pos", "unknown": "?"}.get(role, role)
             print(
-                f"  {icon} ORPHAN stop @{orphan_price}{reduce_flag}  "
+                f"  {icon} ORPHAN {r.orphan.side}-stop @{orphan_price}{reduce_flag}  "
+                f"[{role_tag}]  "
                 f"(official SL={official}, {pos_info}) "
                 f"— risk={r.risk}"
             )
