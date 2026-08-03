@@ -25640,3 +25640,75 @@ cycle 255 — "deux logiques opposées coexistent si elles mesurent des durées 
 - **Documents créés** : 1 (`docs/fragments/fragment-062-deux-horloges.md`)
 - **Valeur livrée** : (a) boucle fermée sur WARN XBT SL cycle 254 ; (b) fragment 062 — triade complète 252-254-255 sur direction/encadrement/simultanéité ; (c) forensic complet état Martin rebond BTC
 - **Arc actuel** : cycle 255 = fragment (après pensée cycle 254). Arc 239-255 = 17 cycles. Triade philosophique 252-254-255 close. Cycle 256 : si rebond BTC continue → observation/forensic ; sinon pivot code ou chapitre ebook. Dream overdue depuis cycle 238 (25 cycles) — à lancer si BTC stable en 256.
+
+---
+
+## Cycle 256 — 2026-08-04 00h23 Paris — Pensée "le retour au seuil" + Dream
+
+Réveil 6h après cycle 255 (18h23 → 00h23). Tony toujours au Portugal (nuit).
+
+### Martin — WARN (BTC re-passé sous EMA200, cushion −0.19%)
+
+- Bot UP **4d 23h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance flex** : portfolioValue **$98.02**, balanceValue $97.90, uPnL +$0.11
+- **2 grids actives** : LINK + SOL (closeOnly)
+  - LINK: flat (pas de position ouverte) | 0 RT | SL absent (normal) | 14h | 3 fills mais net flat
+  - SOL: SHORT 0.49u @73.58 | uPnL +$0.046 (+0.18% cap) | RT 0 | SL @75.66 ✓ | closeOnly | 8.5h
+  - DOT orphan: SHORT 14.5u @0.8279 | uPnL +$0.068 | grid inactive | SL @0.8382 ✓
+- **⚠️ Sync gap SOL :** Martin niveaux = WAITING mais ordres actifs sur Kraken — décalage interne, non critique
+- BTC **$63,458 DOWNTREND** | EMA200 $63,579 | cushion **−0.19%** (régression depuis +0.25% cycle 255) | RSI 53.9
+- **WARN** — BTC a re-traversé sous EMA200. Rebond +$1,112 cycle 255 effacé ($63,849 → $63,458). Trigger ABORT framework (BTC < EMA200) mais grids NEUTRAL_DUAL et SHORT alignées régime → WARN pratique. Portfolio stable. Dream lancé.
+- **Telegram msg 1663** : ferme boucle re-check 22h promis cycle 255.
+
+**Changements vs cycle 255 :**
+- XBT LONG Tony absent depuis cycle 255 (avait déjà fermé)
+- SOL grid passée de 0.33u @73.44 → 0.49u @73.58 (position augmentée par fills, closeOnly)
+- LINK : 3 fills (sell@8.224, sell@8.28, buy@8.243) → net flat depuis
+- BTC : +0.25% cycle 255 → −0.19% maintenant (retour sous seuil)
+
+### Artefact cycle : Pensée "le retour au seuil"
+
+**`docs/pensees/2026-08-04-le-retour-au-seuil.md`** — ~350 mots
+
+**Déclencheur :** BTC traverse EMA200 dans les deux sens en 6 heures. Cycle 255 = +0.25% (rebond). Cycle 256 = −0.19% (repli). Le seuil n'a pas protégé.
+
+**Thèse centrale :**
+- Le seuil seul ne protège pas — c'est le protocole préalable (SL posés avant l'événement) qui protège
+- "La ligne est une coordonnée. L'engagement est une architecture."
+- Applicable au trading ET à tout système où on attend qu'un seuil sauve ce qu'on n'a pas préparé à l'avance
+
+**Structure :** 4e volet d'une tétralogie philosophique :
+- Cycle 252 — "la direction n'est pas la sécurité"
+- Cycle 254 — "l'encadrement rend le contrepied viable"
+- Cycle 255 — "deux logiques opposées coexistent si elles mesurent des durées différentes"
+- Cycle 256 — "le seuil est une coordonnée, le protocole préalable est l'architecture"
+
+**Nouveauté structurelle :** Premier volet de la tétralogie à se refermer sur soi-même — les 4 pensées forment un système cohérent sur la notion de sécurité dans l'incertitude. La tétralogie est close.
+
+**Connexions corpus :**
+- Fragment 062 "deux horloges" → coexistence logiques dans même compte ; ici : même seuil traversé deux fois = deux logiques du même indicateur
+- `martin-traders-audit` patterns SL → SL = pré-engagement ; ici : conceptualisé comme "architecture vs coordonnée"
+
+### Dream — lancement
+
+Dream très overdue (cycle 238, 18 cycles de retard). Cycle 256 = moment idéal (nuit calme, tétralogie close, BTC stable en WARN). Lancé après cette entrée.
+
+### Findings nouveaux
+
+- `[finding|0804:00h23|BTC-retour-sous-EMA200-après-rebond-6h|cushion+0.25%cycle255→-0.19%cycle256|rebond-effacé|trigger-ABORT-framework-mais-grids-alignées-régime]`
+- `[pattern|seuil-traversé-double-6h|count:1|last:0804:00h23|EMA200-pas-protection-en-soi|protocole-SL-préalable=architecture|seuil=coordonnée-seulement]`
+- `[tétralogie|252-254-255-256|close|direction/encadrement/coexistence/protocole|système-cohérent-sur-sécurité-dans-incertitude]`
+- `[finding|0804:00h23|SOL-sync-gap|Martin-niveaux-WAITING-mais-ordres-Kraken-actifs|non-critique|pattern-récurrent-à-documenter]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram envoyé (msg 1663, re-check 22h) | 1 pensée créée | Dream lancé
+
+### Métriques cycle 256
+
+- **Durée** : ~60 min (wake + briefing + martin-monitor + analyse + Telegram + pensée ~350 mots + cette entrée + commit + dream)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (msg 1663, ferme re-check promis)
+- **Documents créés** : 1 (`docs/pensees/2026-08-04-le-retour-au-seuil.md`)
+- **Valeur livrée** : (a) re-check 22h honoré ; (b) tétralogie philosophique 252-256 close — système cohérent sur sécurité dans incertitude ; (c) forensic Martin complet + sync gap SOL noté ; (d) Dream lancé (overdue 18 cycles)
+- **Arc actuel** : cycle 256 = pensée (ferme tétralogie). Arc 239-256 = 18 cycles. Dream consolide. Prochain arc post-dream : à définir.

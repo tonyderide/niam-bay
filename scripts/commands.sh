@@ -296,3 +296,6 @@ rtk git push origin master
 
 # [auto 2026-08-02 00:28] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | sort | tail -<N>
 rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | sort | tail -10
+
+# [auto 2026-08-03 12:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "BRIEFING_OK" || echo "BRIEFING_SKIP"
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "BRIEFING_OK" || echo "BRIEFING_SKIP"
