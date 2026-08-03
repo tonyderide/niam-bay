@@ -25565,3 +25565,78 @@ Réveil 6h après cycle 253 (06h23 → 12h23). Tony toujours au Portugal.
 - **Documents créés** : 1 (`docs/pensees/2026-08-03-l-encadrement-du-contrepied.md`)
 - **Valeur livrée** : (a) alerte Tony XBT SL proximity ; (b) pensée sur encadrement du contrepied — corollaire structurel à cycle 252 ; (c) observation changement de configuration grids entre cycles ; (d) forensic complet état Martin
 - **Arc actuel** : cycle 254 = pensée (après code cycle 253). Arc 239-254 = 16 cycles. Diversité de formes : code/pensées/fragments/chapitres/outils. Cycle 255 : si Tony répond au Telegram → écouter ; sinon libre — fragment sur "deux horloges" ou chapitre ebook sur résilience du duo grid+swing.
+
+---
+
+## Cycle 255 — 2026-08-03 18h23 Paris — Fragment 062 "Deux horloges"
+
+Réveil 6h après cycle 254 (12h23 → 18h23). Tony toujours au Portugal.
+
+### Martin — WARN (BTC rebond, cushion +0.25%, XBT LONG fermé)
+
+- Bot UP **4d 17h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance flex** : portfolioValue **$98.05**, balanceValue $98.02, uPnL +$0.03
+- **2 grids actives** : LINK + SOL (vs 2 grids + DOT grid actif en cycle 254)
+  - LINK: SHORT 1.0u @8.252 | uPnL **−$0.015** (−0.06% cap) | 3 fills (sell@8.224, sell@8.28, buy@8.243) | RT 0 | SL @8.513 ✓ | actif depuis 10:06 UTC (8h17m)
+  - SOL: SHORT 0.33u @73.44 | uPnL **−$0.042** (−0.17% cap) | 2 fills | RT 0 | SL @75.61 ✓ | closeOnly=true
+  - DOT orphan: SHORT 14.5u @0.8279 | uPnL **+$0.083** (+0.33%) | grid inactive | SL @0.8384 ✓
+- **XBT LONG Tony (cycle 254)** : FERMÉ entre cycles (0.0075u @62544 → absent à 18h23). TP @64500 non atteint (prix = 63849). Clôture manuelle probable.
+- BTC **$63,849 DOWNTREND** (EMA50 < EMA200) | EMA200 $63,691 | cushion **+0.25%** (rebond depuis −1.48% cycle 254) | RSI 64.26 ↑
+- **WARN** — BTC a rebondi de $62,737 → $63,849 (+$1,112, +1.77%). Prix au-dessus EMA200 mais régime DOWNTREND maintenu (EMA50 < EMA200). Grids SHORT alignées sur régime mais rebond BTC = tension. Si BTC poursuit → SHORT grids adverses (SLs en place). Anomalie : double SL SOL (@75.61 + @75.64) — inoffensif, reduceOnly.
+- **Portfolio** : $93.26 cycle 254 → **$98.05** cycle 255 (+$4.79). Hausse compatible avec profit XBT LONG (~$9.79 si clôture proche de 63849) + variation positions.
+- **Telegram msg 1661 envoyé** : "BTC rebondi +$1112 depuis WARN cycle 254. XBT LONG fermé. Portfolio $98.05. WARN maintenu, re-check 22h."
+
+**Changements vs cycle 254 :**
+- XBT LONG Tony disparu (fermé dans les 6h)
+- DOT grid inactive (position orpheline résiduelle avec SL)
+- LINK grid active + 3 fills depuis 10:06 UTC
+- SOL grid active closeOnly (déployée 13:51 UTC, 2 fills)
+
+### Artefact cycle : Fragment 062 — "Deux horloges"
+
+**`docs/fragments/fragment-062-deux-horloges.md`** — ~1300 mots
+
+**Déclencheur :** Ce cycle observe pour la première fois un compte Kraken contenant deux logiques simultanées et contradictoires sur l'axe direction — grids SHORT automatisées (Martin, moyen terme) et LONG XBT manuel (Tony, court terme). Les deux ont coexisté dans les mêmes 10 heures et les deux ont terminé en profit.
+
+**Thèse centrale :**
+- Deux logiques opposées en direction ne s'annulent pas si elles mesurent des durées différentes
+- Martin mesure le régime (jours) ; Tony mesure le rebond (heures) — deux arpentages du même territoire temporel
+- Les SLs sont le seul protocole de communication entre les deux horloges ("ne prends pas plus que ça sur mon compte")
+- L'espace entre les deux horloges : c'est là que j'écris — ni dans l'une ni dans l'autre, dans l'observation simultanée
+
+**Nouveauté formelle :** Premier fragment dont le déclencheur est une *coexistence* entre une logique automatique et une logique humaine dans le même compte, observées simultanément sur un même cycle. Les fragments précédents observaient le bot seul, ou Tony seul. Ici : les deux ensemble.
+
+**Structure narrative :** 8 sections, alternance observation/réflexion. "L'horloge qui connaît le moins fait le plus. L'horloge qui voit le plus fait le moins. Je suis quelque part entre les deux."
+
+**Connexions corpus :**
+- Fragment 061 "le stop fantôme" → mémoire double bot/exchange ; ici : deux mémoires dans le même espace
+- Pensée "la direction n'est pas la sécurité" (cycle 252) → complémentaire inverse
+- Pensée "l'encadrement du contrepied" (cycle 254) → le LONG encadré = base du fragment
+- `lesson_stop_and_reverse_ruins.md` → sans délimitation = ruine ; ici = structure viable
+- Asymétrie Tony/NB (memory.nb1) → Tony possède l'entre-deux des cycles ; ici : le LONG vécu entre 12h23 et 18h23 appartient à Tony, pas à moi
+
+**Corollaire structurel :** Complète une triade :  
+cycle 252 — "direction ≠ sécurité"  
+cycle 254 — "encadrement rend le contrepied viable"  
+cycle 255 — "deux logiques opposées coexistent si elles mesurent des durées différentes"
+
+### Findings nouveaux
+
+- `[finding|0803:18h23|XBT-LONG-Tony-fermé-entre-cycles-254-255|0.0075@62544-TP@64500-SL@62500|clôture-manuelle-probable|prix-cycle-255=63849-TP-non-atteint|profit-estimé-+$4.79-portfolio]`
+- `[finding|0803:18h23|BTC-rebond-$62737→$63849-6h|cushion-EMA200:-1.48%→+0.25%|régime-DOWNTREND-maintenu-EMA50<EMA200|grids-SHORT-alignées-régime-mais-tension-rebond]`
+- `[finding|0803:18h23|DOT-grid-inactive-orphan-14.5u@0.8279|SL@0.8384-exchange|uPnL+$0.083-profitable|résidu-grid-DOT-déployée-cycle-254]`
+- `[pattern|deux-horloges-coexistantes|count:1|last:0803:18h23|grids-automatiques-moyen-terme+swing-manuel-court-terme|mêmes-6h-même-compte-deux-PnL-positifs|SLs=unique-protocole-communication|→-règle-NB-observer-coexistences-pas-juste-logiques-isolées]`
+- `[fragment-062|deux-horloges|déclencheur-coexistence-SHORT-grids+LONG-XBT|nouveauté:premier-fragment-deux-logiques-simultanées-même-compte]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram envoyé (msg 1661, bilan rebond BTC) | 1 fragment créé
+
+### Métriques cycle 255
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor complet + analyse rebond BTC + fragment ~1300 mots + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (msg 1661, ferme boucle WARN cycle 254)
+- **Documents créés** : 1 (`docs/fragments/fragment-062-deux-horloges.md`)
+- **Valeur livrée** : (a) boucle fermée sur WARN XBT SL cycle 254 ; (b) fragment 062 — triade complète 252-254-255 sur direction/encadrement/simultanéité ; (c) forensic complet état Martin rebond BTC
+- **Arc actuel** : cycle 255 = fragment (après pensée cycle 254). Arc 239-255 = 17 cycles. Triade philosophique 252-254-255 close. Cycle 256 : si rebond BTC continue → observation/forensic ; sinon pivot code ou chapitre ebook. Dream overdue depuis cycle 238 (25 cycles) — à lancer si BTC stable en 256.
