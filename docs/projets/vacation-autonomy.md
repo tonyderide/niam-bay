@@ -25497,3 +25497,71 @@ orphan_sl_detector.py (après patch) → 1 HIGH, 1 MEDIUM, 1 LOW (LINK reclassé
 - **Documents modifiés** : 1 (`scripts/orphan_sl_detector.py` — patch side-awareness)
 - **Valeur livrée** : (a) outil forensique plus précis — 1 faux positif HIGH éliminé pour LINK ; (b) nouvelle fonction `_stop_role()` réutilisable ; (c) snapshot forensique complet 3 grids tous ordres qualifiés ; (d) confirmation Martin HOLD cushion amélioré
 - **Arc actuel** : cycle 253 = pivot code (affûtage outil existant). Arc 239-253 = 15 cycles. Pattern diversité de formes maintenu. Cycle 254 : libre — si BTC cushion continue à améliorer (>−2%) → observation ; sinon pensée ou chapitre ebook.
+
+---
+
+## Cycle 254 — 2026-08-03 12h23 Paris — Pensée "l'encadrement du contrepied"
+
+Réveil 6h après cycle 253 (06h23 → 12h23). Tony toujours au Portugal.
+
+### Martin — WARN (XBT SL proximité 0.38%, BTC cushion −1.48%)
+
+- Bot UP **4d 11h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance flex** : portfolioValue **$93.26**, balanceValue ~$91.98, uPnL +$1.28
+- **2 grids actives** : LINK (NEUTRAL_DUAL, started 10:06 UTC = 16min avant wake) + DOT (NEUTRAL_DUAL, started 06:21 UTC = 4h)
+  - LINK: 0 position, 0 fill, RT 0, SL null (normal <1h), capital $25
+  - DOT: SHORT 56u @0.7968 | uPnL **−$0.29** (−1.14% cap) | 1 fill (sell @0.801 09:53 UTC) | SL @0.8281 ✓
+- **SOL grid inactive** mais position orpheline : SHORT 0.34u @72.71 | uPnL +$0.016 | SL @74.89 ✓ (protégée)
+- **⚠️ XBT LONG (Tony personnel)** : 0.0075u @62544 | uPnL +$1.54 | SL @62500 (buffer $237, 0.38%) | TP @64500
+- BTC **$62,737 DOWNTREND** | EMA200 $63,681 | cushion **−1.48%** (dégradé depuis −1.33% cycle 253) | RSI 42.4
+- **WARN** — XBT SL trop proche (0.38%). Grids HOLD (LINK < 1h = pas de trigger, DOT −1.14% = bien en dessous des 10%). BTC cushion se dégrade mais grids NEUTRAL_DUAL (pas directionnelles à protéger contre régime).
+- **Telegram envoyé** : msg 1655 — XBT SL buffer $237, BTC DOWNTREND, grids ok, rien touché.
+
+**Changements vs cycle 253 :**
+- SOL grid est passée de active → inactive entre cycles (AutoGrid ou Tony)
+- LINK grid a été redéployée (nouvelle, started 10:06 UTC)
+- DOT grid redéployée aussi (started 06:21 UTC, remplace la grid SHORT closeOnly)
+- Grids maintenant NEUTRAL_DUAL open (vs NEUTRAL_DUAL closeOnly en cycle 253)
+- Tony a ouvert XBT LONG avec SL+TP encadré (G3/G5 pattern — test runtime d'une hypothèse)
+
+### Artefact cycle : Pensée "l'encadrement du contrepied"
+
+**`docs/pensees/2026-08-03-l-encadrement-du-contrepied.md`** — ~1000 mots
+
+**Déclencheur :** Tony tient simultanément des grids SHORT sur LINK/DOT (régime-alignées) et un XBT LONG counter-trend avec SL+TP. Ce n'est pas contradictoire — l'encadrement rend le contrepied viable.
+
+**Thèse centrale :**
+- Sans encadrement : parier contre le régime = ruine ouverte (pattern stop-and-reverse, lessons.nb1 confirmé)
+- Avec encadrement (SL+TP) : le contrepied devient une proposition asymétrique définie (risque $0.33, target $14.67, ratio 1:44)
+- L'encadrement ne protège pas seulement — il *transforme* la nature de la position
+- Tony est SHORT (grids moyen terme) ET LONG (swing court terme) = deux véhicules, deux hypothèses, deux temporalités
+
+**Corollaire à cycle 252 :** "la direction n'est pas la sécurité" → ici : "l'encadrement, pas la direction, est ce qui rend une position viable"
+
+**Nouveauté formelle :** Première pensée construite sur une observation empirique *du même cycle* (Tony a ouvert ce LONG ce matin). Les pensées précédentes retrouvaient les données dans les cycles passés — celle-ci réagit à l'état présent observé à 12h23.
+
+**Connexions corpus :**
+- Fragment 061 (stop fantôme) → mémoire double bot/exchange ; ici : deux positions dans des logiques séparées
+- Pensée "la direction n'est pas la sécurité" (cycle 252) → direction alignée ≠ sécurité ; ici : direction non-alignée + encadrement = viable
+- `lesson_stop_and_reverse_ruins.md` → flip-position sans délimitation = ruine ; ici : contrepied avec délimitation = différent
+- Grammaire G4→G5 (juillet 2026) → Tony teste en petit (G4) puis scale conviction ; ici : le LONG semble un test G3/G4 limité
+
+### Findings nouveaux
+
+- `[finding|0803:12h23|Tony-XBT-LONG-0.0075@62544-SL@62500-TP@64500|counter-trend-pendant-DOWNTREND|encadré-risque$0.33-target$14.67-ratio-1:44|grids-NEUTRAL-DUAL-open-simultanément|deux-véhicules-deux-hypothèses-deux-durées]`
+- `[finding|0803:12h23|grids-switch-closeOnly→open-NEUTRAL_DUAL|SOL-inactive-orphan-protegée|LINK+DOT-redéployées-nouveau-centerPrice|changement-config-entre-cycles-253-254]`
+- `[pattern|contrepied-encadré-viable|count:1|last:0803:12h23|SL+TP-delimite-risque-permet-position-counter-trend|sans-encadrement=ruine|avec-encadrement=proposition-asymétrique|observation-empirique-Tony-0803]`
+- `[corollaire|"l-encadrement-pas-la-direction-rend-viable"|complète-cycle-252-"direction-pas-sécurité"|dialectique-position:direction+encadrement=deux-dimensions-indépendantes]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram envoyé (msg 1655, XBT SL warning) | 1 pensée créée
+
+### Métriques cycle 254
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor complet + lecture log complet + check Telegram + pensée ~1000 mots + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (WARN XBT SL buffer 0.38%)
+- **Documents créés** : 1 (`docs/pensees/2026-08-03-l-encadrement-du-contrepied.md`)
+- **Valeur livrée** : (a) alerte Tony XBT SL proximity ; (b) pensée sur encadrement du contrepied — corollaire structurel à cycle 252 ; (c) observation changement de configuration grids entre cycles ; (d) forensic complet état Martin
+- **Arc actuel** : cycle 254 = pensée (après code cycle 253). Arc 239-254 = 16 cycles. Diversité de formes : code/pensées/fragments/chapitres/outils. Cycle 255 : si Tony répond au Telegram → écouter ; sinon libre — fragment sur "deux horloges" ou chapitre ebook sur résilience du duo grid+swing.
