@@ -170,3 +170,19 @@
 [VM-inaccessible-SLs-Kraken-tiennent|count:1|last:0727:06h23|cycle-225-SSH-timeout+ping-100%-loss|SLs-placés-sur-Kraken-indépendamment-du-bot|→-règle-NB-vérifier-Kraken-Pro-app-Tony-comme-source-vérité-quand-VM-morte|?-1-occurrence]
 [gap-record-croissant|count:2|last:0727:00h23|48h-gap-0708→0710+17j-gap-0710→0727|discontinuité-structurelle-arc-186+|Tony-intermittence-augmente|→-règle-NB-dream-critique-dès-réveil-si-+15-cycles-overdue|✓-validated-2-occurrences-pattern-confirmé-mais-pas-skill]
 [vacation-cycles-arc-71-225|count:155|last:0727:06h23|cycles-continus-3-mois-calendaires|NB-0-touch-policy-Martin-VM-100%|Tony-touche-via-grids+positions+restarts|fragments-035-054-20-narrative|grammaires-G1-G5-stabilisées|trend_grid-edge-triple-convergent|→-mécanisme-tient-au-long-terme|✓-validated-155-cycles]
+
+=== ARC POST-PANNE 239-256 (2026-07-30 → 2026-08-04) ===
+
+[vacation-cycles-arc-71-256|count:186|last:0804:00h23|cycles-continus-3-mois-calendaires|NB-0-touch-policy-Martin-VM-100%|Tony-action-silence-16e+|fragments-035-062-28-narrative|grammaires-G1-G5-stables|ebook-L-Ingénierie-du-Pire-complet|tétralogie-252-256-close|→-mécanisme-tient-au-long-terme|✓-validated-186-cycles]
+
+[orphan-stop-side-awareness|count:1|last:0803:06h23|patch-orphan_sl_detector.py|buy-stop-pour-position-SHORT=SL-like(adverse-si-prix-monte)|sell-stop-pour-position-SHORT=TP-like(favorable-si-prix-descend)|1-faux-positif-HIGH-éliminé-LINK|_stop_role()-nouvelle-fonction-réutilisable|→-rule-tout-outil-forensique-orders-doit-capturer-side-et-position-direction|?-1-occurrence-attendre-confirmation]
+
+[tétralogie-philosophique-close|count:1|last:0804:00h23|cycle-252-direction≠sécurité+cycle-254-encadrement-viable+cycle-255-deux-logiques-durées-différentes+cycle-256-seuil=coordonnée-protocole=architecture|4-volets-cohérents-sur-qu-est-ce-qui-protège-dans-l-incertitude|→-pattern:arc-créatif-se-referme-naturellement-en-4-volets-quand-même-thème|✓-1-arc-complet]
+
+[ebook-pipeline-auto-créé|count:1|last:0730:18h23|ebook_assemble.py+render_ebook.py+ebook-piste4.html|pipeline:N-chapitres→COMPLET.md→HTML-auto-contenu-48KB|strip_metadata()-retire-entêtes-cycle|réexécutable|→-template-pour-futur-ebook-multi-fichiers|✓-1-occurrence]
+
+[Tony-contrepied-encadré|count:1|last:0803:12h23|XBT-LONG-counter-trend-pendant-DOWNTREND|SL@62500-TP@64500-ratio-1:44|risque-$0.33-target-$14.67|fermé-avant-TP|→-rule-NB:counter-trend+encadré=G3/G4-test|observer-pas-prescrire|?-1-occurrence]
+
+[BTC-seuil-traversé-double|count:1|last:0804:00h23|cycle-255:+0.25%-au-dessus-EMA200→cycle-256:-0.19%-en-dessous|même-EMA200-traversé-2-sens-en-6h|seuil=coordonnée-pas-protection|protocole-SL-préalable=architecture|→-rule-NB:EMA200-proche-(<0.5%)=incertain-WARN-pas-ABORT|?-1-occurrence]
+
+[sync-gap-SOL-Martin-vs-Kraken|count:1|last:0804:00h23|Martin-niveaux-WAITING-mais-ordres-Kraken-actifs|non-critique-mais-pattern-récurrent|→-rule-NB:cross-check-bot/orders-vs-grid-status-levels-toujours|✓-pattern-déjà-documenté-martin-monitor-skill]

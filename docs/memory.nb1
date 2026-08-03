@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0730:12h23
+#lastdream: 0804:00h23
 
 === SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
 [M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
@@ -554,9 +554,31 @@
 
 [pattern|DRAWDOWN-KILL-baseline-figé|count:3|cycle-147-BUG-004+cycle-224-live-déclenchement+cycle-238-rebaseline-Tony|même-root-cause:initialCapital-figé-non-rebasé|→-rule-POST-/api/drawdown/initialCapital-APRÈS-restart-si-portfolio-a-bougé|✓-validated-3-occurrences]
 
-=== PISTES CYCLE 239+ ===
-1. **Martin** — SOL uPnL −0.98% cap à surveiller. BTC cushion EMA200 +0.18% mince — si BTC passe sous EMA200, re-évaluer les grids SHORT.
-2. **Ebook piste-4** — 4 docs existants (concevoir+détecter+réagir+intro). Attend Tony pour décisions éditoriales (format/prix/voix). Prochaine étape: Partie 0 (terrain) ou épilogue.
-3. **Pivot code** — arc éditorial 14 cycles (225-238) terminé. Règle: pivoter vers artefact code ou outil au cycle 239.
-4. **TREND_MODE=LIVE** — quand Tony confirme: sizing Kelly DOT $15 + XBT $18.
+=== ARC POST-PANNE 239-256 (2026-07-30 → 2026-08-04) — ebook complet + outils + tétralogie philosophique ===
+
+[ebook-piste4-complet|cycle-239|0730:18h23|L-Ingénierie-du-Pire|5898-mots|3-parties+Partie0+Épilogue+assemblage-auto|scripts:ebook_assemble.py+render_ebook.py+ebook-piste4.html|angle:forensique-dev-pas-trader|décisions-Tony-en-attente:format+prix+voix+relecture]
+
+[outils-créés-239-256|orphan_sl_detector.py(cycle-245-création+cycle-253-patch-side-awareness:buy-stop=SL-like-vs-sell-stop=TP-like-pour-SHORT)|btc_regime_watch.py(cycle-249:watch-EMA200-BTC-en-continu)|ebook_assemble.py+render_ebook.py(cycle-239-240:pipeline-editorial-auto)]
+
+[fragments-post-panne|058=la-bonne-direction(cycle-241:direction-correcte≠profitable)+059=le-pivot-sans-communiqué(cycle-244:transition-sans-annonce)+060=le-quart-d-heure(cycle-248)+061=le-stop-fantôme-BUG-001(cycle-251:SOL-ghost-SL@74.2-protège-mieux-que-officiel@75.06)+062=deux-horloges(cycle-255:grids-SHORT-auto+LONG-XBT-manuel-coexistent-même-compte-même-6h)|cadence:~3-cycles/fragment]
+
+[pensées-post-panne|le-neutre-qui-prend-parti(cycle-247:grids-dites-neutres-accumulent-direction-nette)+l-indicateur-qui-pressait(cycle-250:indicateur-qui-anticipe=celui-qui-subit-le-seuil-avant-sa-formulation)+la-direction-n-est-pas-la-securite(cycle-252:direction-alignée-régime-sans-SL=pas-de-sécurité)+l-encadrement-du-contrepied(cycle-254:SL+TP-transforme-contre-trend-en-position-délimitée-viable)+le-retour-au-seuil(cycle-256:seuil=coordonnée-seulement,protocole-préalable=architecture)]
+
+[tétralogie-252-256|CLOSE|cycle-252:"direction≠sécurité"|cycle-254:"encadrement-rend-contrepied-viable"|cycle-255:"deux-logiques-opposées-coexistent-si-durées-différentes"|cycle-256:"seuil=coordonnée,protocole-préalable=architecture"|thème:qu-est-ce-qui-protège-vraiment-dans-l-incertitude]
+
+[Tony-XBT-LONG-cycle-254-255|counter-trend-pendant-DOWNTREND|0.0075u@62544-SL@62500-TP@64500-ratio-1:44|encadré-risque$0.33-target$14.67|fermé-manuellement-cycle-255(avant-TP)|BTC-rebond-+$1,112-cycle-255-puis-repli-cycle-256]
+
+[M|status-0804:00h23|cycle-256|VM-UP-4d23h17m|portfolio-$98.02-uPnL+$0.11|2-grids-actives:LINK(NEUTRAL_DUAL-14h-0-RT-flat)+SOL(NEUTRAL_DUAL-closeOnly-8.5h-0-RT-SHORT-0.49@73.58-uPnL+$0.046)|DOT-orphan-SHORT-14.5@0.8279-uPnL+$0.068-SL@0.8382-✓|BTC-$63,458-DOWNTREND-EMA200-$63,579-cushion−0.19%-RSI-53.9|WARN-trigger:BTC<EMA200-mais-grids-neutrales-alignées-régime|sync-gap-SOL:Martin-WAITING-mais-ordres-Kraken-actifs|Telegram-msg-1663]
+
+[lesson|0804|orphan-stop-side-awareness|buy-stop-SL-like-pour-position-SHORT(se-déclenche-si-prix-monte=adverse)|sell-stop-TP-like-pour-position-SHORT(se-déclenche-si-prix-descend=favorable)|orphan_sl_detector-patché-cycle-253-élimine-1-faux-positif-HIGH]
+[lesson|0804|seuil-vs-protocole|EMA200-traversé-deux-sens-en-6h-cycle-255→256|le-seuil-ne-protège-pas-seul|le-SL-posé-AVANT-l-événement=l-architecture|seuil=coordonnée-protocole=engagement-architectural]
+[lesson|0804|contrepied-encadré-viable|Tony-XBT-LONG-counter-trend+SL+TP|direction-non-alignée+encadrement=proposition-asymétrique-définie|sans-encadrement=ruine(lesson_stop_and_reverse)|avec-encadrement=test-runtime-G3/G4-délimité]
+
+=== PISTES CYCLE 257+ ===
+1. **Martin WARN** — BTC -0.19% sous EMA200, DOWNTREND persistant. SOL closeOnly (wind-down). LINK flat (pas de position). DOT orphan protégée SL @0.8382. Re-check au prochain cycle.
+2. **Sync gap SOL** — Martin niveaux = WAITING mais ordres Kraken actifs. Non critique, à noter pour pattern.
+3. **Ebook piste-4** — Complet (5898 mots). Tony doit décider: format+prix+voix. Gumroad listing FR en place (cycle 243).
+4. **TREND_MODE=LIVE** — Si Tony confirme: sizing Kelly DOT $15 + XBT $18 (triple convergence edge validé).
+5. **orphan_sl_detector.py** — Outil affiné side-aware. Exécuter en routine chaque cycle forensique.
+6. **Tétralogie close** — Cycle 257 libre: pivot code ou fragment nouveau sujet.
 5. **Dream timing** — seuil 72h validé, réinitialiser au 0730:12h23.
