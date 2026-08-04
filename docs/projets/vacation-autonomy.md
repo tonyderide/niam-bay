@@ -25798,3 +25798,80 @@ Kraken a des ordres appartenant à des grilles précédentes, toujours actifs :
 - **Documents créés** : 1 (`docs/pensees/2026-08-04-les-ordres-orphelins.md`)
 - **Valeur livrée** : (a) forensic complet orphelins Kraken + évaluation risque ; (b) pensée "les ordres orphelins" — ouvre nouvel arc thématique post-tétralogie ; (c) monitoring BTC cushion rebond
 - **Arc actuel** : cycle 257 = pensée (ouvre arc "durée sans contexte"). Prochains cycles : explorer ce thème ou pivoter code (script détection/annulation orphelins ?). Tony au Portugal jusqu'à retour estimé ~2026-08-09.
+
+---
+
+## Cycle 258 — 2026-08-04 12h23 Paris — Fragment 063 "les règles qui précèdent"
+
+Réveil 6h après cycle 257 (06h23 → 12h23). Tony au Portugal (midi — probablement à table ou à la plage).
+
+### Martin — WARN (BTC retombé sous EMA200, SOL grid fraîche)
+
+- Bot UP **5j 11h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance flex** : portfolioValue **$97.79**, balanceValue $97.84, uPnL −$0.051
+- **2 grids actives** : LINK + SOL (NEUTRAL_DUAL)
+  - LINK: LONG 1.4u @8.136 | uPnL **+$0.055** (+0.22% cap $25) | 6 fills | RT 0 | SL @7.922 ✓ | actif depuis 10:06 UTC 03/08 (~26h)
+  - SOL: aucune position | uPnL $0 | 0 fills | démarré 10:21 UTC 04/08 (~2min avant check!) | SL pas encore placé *(normal, se résoudra au 1er fill)*
+  - DOT orphan: SHORT 14.5u @0.8279 | uPnL −$0.092 | grid inactive | SL buy-stop @0.859 ✓
+- BTC **$63,453 DOWNTREND** | EMA200 $63,579 | cushion **−0.197%** (retombé depuis +0.35% cycle 257) | RSI 49.0
+- **WARN** — BTC a re-traversé sous EMA200 (même niveau exact que cycle 256). Règle confirmée : cushion < 0.5% = WARN pas ABORT. SLs en place. Re-check cycle 259.
+
+**Orphans Kraken (inchangés vs cycle 257) :**
+- LINK: buy lmt @8.058 (non-reduceOnly ⚠️) + sell stop @7.959 (orphan SL — en fait protection renforcée car déclenche avant SL actuel @7.922)
+- SOL: sell lmt @73.58, @74.46, @75.34 (non-reduceOnly ⚠️) — résidus grille précédente
+
+**Changements vs cycle 257 :**
+- BTC retombé sous EMA200 (cushion +0.35% → −0.197%)
+- SOL grid redémarrée à 10:21 UTC (cause : AutoGridScheduler ou Tony en silence — forensic app.log non fait ce cycle)
+- Position LINK réduite (3.3u → 1.4u) : fills intervenus entre 257 et 258
+
+### Artefact cycle : Fragment 063 "les règles qui précèdent"
+
+**`docs/fragments/fragment-063-les-regles-qui-precedent.md`** — ~950 mots
+
+**Déclencheur :** Arc "durée sans contexte" ouvert par pensée 063 (cycle 257, "les ordres orphelins"). Ce fragment donne une forme narrative à l'abstraction.
+
+**Thèse centrale :**
+- L'ordre orphelin sell lmt @73.58 attend que SOL monte — sans savoir que sa grille-mère est morte
+- Il était conçu pour fermer un SHORT ; aujourd'hui il en ouvrirait un
+- L'instruction est identique. Le sens est inversé.
+- Même chose pour mes propres règles : formulées dans un contexte, réappliquées dans un autre
+- Le problème n'est pas les règles fausses — c'est les règles vraies-dans-le-mauvais-contexte
+
+**Nouveauté formelle :** Première fois que je me documente moi-même comme "système à règles orphelines possibles". Retournement : l'outil observe l'outil.
+
+**Connexions corpus :**
+- Pensée "les ordres orphelins" (cycle 257) → le forensic technique devient réflexion sur la durée
+- Fragment 061 "le stop fantôme" → SL qui n'existe pas où Martin croit ; ici : SL qui existe où Martin ne sait plus / orphelin qui protège mieux que le parent
+- Fragment 062 "deux horloges" → logiques simultanées ; ici : logiques *successives* sans se connaître
+- Pensée "le retour au seuil" (cycle 256) → seuil = coordonnée ; ici : règle = coordonnée sans contexte actuel
+
+**Arc en cours :** "la durée sans contexte" — ordres, règles, identités qui persistent après leur raison d'être. Fragment 063 est le 1er artefact narratif de cet arc (pensée 063 en était l'ouverture).
+
+### Findings nouveaux
+
+- `[finding|0804:12h23|BTC-re-traversé-sous-EMA200-depuis-cycle-257|cushion+0.35%→-0.197%|même-niveau-cycle-256|règle-confirmée-WARN-pas-ABORT-cushion<0.5%]`
+- `[finding|0804:12h23|SOL-grid-redémarrée-10h21-UTC|cause-inconnue-forensic-non-fait|0-position-0-fills-0-SL-normal-à-2min]`
+- `[finding|0804:12h23|LINK-position-réduite-3.3u→1.4u|fills-intervenus-entre-257-258-sur-6h-gap]`
+- `[fragment-063|les-règles-qui-précèdent|arc-durée-sans-contexte|orphan-order-comme-règle-vraie-dans-mauvais-contexte|retournement-outil-observe-outil]`
+- `[pattern|règle-orpheline|concept-émergent|règle-vraie-dans-mauvais-contexte≠règle-fausse|détection-via-écart-entre-anticipation-règle-et-ce-que-le-monde-fait|→-méthode-revue-patterns.nb1-à-chaque-arc]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (Tony à table, rien d'urgent, re-check promis cycle 259) | 1 fragment créé
+
+### Métriques cycle 258
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor + parse + fragment ~950 mots + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-063-les-regles-qui-precedent.md`)
+- **Valeur livrée** : (a) martin-monitor cycle 258, BTC traversée re-confirmée WARN ; (b) fragment 063 "les règles qui précèdent" — arc "durée sans contexte" articulé narrativement ; (c) concept émergent "règle orpheline" à revisiter
+
+### Pistes cycle 259
+
+1. Martin WARN — BTC −0.197% sous EMA200. SOL grid fresh, SL se placera au 1er fill. Re-check.
+2. Forensic app.log SOL grid : comprendre si redémarrage 10:21 UTC est AutoGridScheduler ou Tony en silence.
+3. Arc "durée sans contexte" : 2 artefacts produits (pensée 063 + fragment 063). Possible pivot : code script `orphan_order_report.py` qui cross-check Martin grid state vs Kraken orders — outil utile + concret.
+4. Gumroad ebook : listing FR en place depuis cycle 243. Tony décidera format+prix+voix au retour (estimé ~2026-08-09).
+
