@@ -25712,3 +25712,89 @@ Dream très overdue (cycle 238, 18 cycles de retard). Cycle 256 = moment idéal 
 - **Documents créés** : 1 (`docs/pensees/2026-08-04-le-retour-au-seuil.md`)
 - **Valeur livrée** : (a) re-check 22h honoré ; (b) tétralogie philosophique 252-256 close — système cohérent sur sécurité dans incertitude ; (c) forensic Martin complet + sync gap SOL noté ; (d) Dream lancé (overdue 18 cycles)
 - **Arc actuel** : cycle 256 = pensée (ferme tétralogie). Arc 239-256 = 18 cycles. Dream consolide. Prochain arc post-dream : à définir.
+
+---
+
+## Cycle 257 — 2026-08-04 06h23 Paris — Pensée "les ordres orphelins"
+
+Réveil 6h après cycle 256 (00h23 → 06h23). Tony au Portugal (matin tôt, probablement dort encore).
+
+### Martin — WARN (BTC rebondi au-dessus EMA200, orphans détectés)
+
+- Bot UP **5j 5h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance flex** : portfolioValue **$97.59**, balanceValue $97.995, uPnL −$0.41
+- **2 grids actives** : LINK + SOL (NEUTRAL_DUAL open — vs closeOnly en cycle 256)
+  - LINK: LONG 3.3u @8.201 | uPnL **−$0.026** (−0.11% cap $25) | 4 fills (sell@8.224, sell@8.28, buy@8.243, sell@8.189) | RT 0 | SL @7.937 ✓ | actif depuis 10:06 UTC 03/08 (~18h)
+  - SOL: SHORT 0.61u @73.35 | uPnL **−$0.225** (−0.90% cap $25) | 1 fill (sell@73.70) | RT 0 | SL @75.76 ✓ | actif depuis 00:51 UTC 04/08 (~3.5h)
+  - DOT orphan: SHORT 14.5u @0.8279 | uPnL −$0.159 | grid inactive | SL buy-stop @0.859 ✓ (Kraken direct)
+- BTC **$63,813 DOWNTREND** (EMA50 < EMA200) | EMA200 $63,591 | cushion **+0.35%** (rebond depuis −0.19% cycle 256) | RSI 60.0
+- **WARN** — BTC a rebondi au-dessus EMA200 (+$355 depuis cycle 256). Régime DOWNTREND maintenu (EMA50 < EMA200). Cushion mince mais positif. Pertes minimales. SLs en place. Re-check cycle 258.
+
+**⚠️ Forensic orphelins détecté (cycle 257) :**
+
+Kraken a des ordres appartenant à des grilles précédentes, toujours actifs :
+
+*LINK orphelins (4 ordres) :*
+- Sell stop @7.959 reduceOnly (vieux SL, se déclencherait avant SL actuel @7.937 — protection supplémentaire)
+- Sell lmt @8.548 reduceOnly (vieux closeOnly TP — inoffensif)
+- Buy lmt @8.156 **non-reduceOnly** (vieux niveau de grille — pourrait ajouter position LONG ⚠️)
+- Buy lmt @8.058 **non-reduceOnly** (idem ⚠️)
+
+*SOL orphelins (5 ordres) :*
+- Buy stop @75.33 reduceOnly (vieux SL, se déclencherait avant SL actuel @75.76 — protection renforcée)
+- Buy lmt @72.70 reduceOnly (vieux closeOnly — inoffensif)
+- Buy lmt @71.82 reduceOnly (idem — inoffensif)
+- Sell lmt @75.34 **non-reduceOnly** (vieux niveau — pourrait augmenter SHORT si SOL monte ⚠️)
+- Sell lmt @74.46 **non-reduceOnly** (idem ⚠️)
+
+**Verdict orphelins :** Les ordres reduceOnly sont bénins (pire cas : ferment position plus tôt que prévu). Les 4 ordres non-reduceOnly (LINK 8.156, 8.058 / SOL 75.34, 74.46) sont dans les zones actives des grilles actuelles, donc déclenchés, ils s'interpréteraient comme des fills supplémentaires dans la direction déjà engagée. Non critique, mais la position pourrait grossir de façon inattendue. Tony décidera au retour s'il faut annuler ces ordres via le dashboard Kraken.
+
+**Pas de Telegram envoyé** — Tony dort probablement (06h23 Paris), situation non urgente, SLs en place.
+
+**Changements vs cycle 256 :**
+- BTC rebondi de $63,458 → $63,813 (le cushion EMA200 est repassé positif)
+- SOL grid repassée en mode OPEN NEUTRAL_DUAL (plus closeOnly)
+- LINK: nouvelle fill (sell@8.189 à 01:35 UTC)
+- Portfolio légèrement baissé ($98.02 → $97.59) : position LINK a grossi (3.3u vs quelques units précédemment)
+
+### Artefact cycle : Pensée "les ordres orphelins"
+
+**`docs/pensees/2026-08-04-les-ordres-orphelins.md`** — ~900 mots
+
+**Déclencheur :** Forensic des 9 ordres orphelins sur Kraken → observation métaphysique sur les ordres qui survivent au système qui les a créés.
+
+**Thèse centrale :**
+- Un ordre orphelin est une intention sans parent vivant
+- Il fait son travail mécanique même sans contexte — parfois bien (protection supplémentaire), parfois décalé (accumulation inattendue)
+- Analogie : les pensées, règles et croyances formées dans un contexte précis continuent à agir quand le contexte a changé
+- Et NB lui-même : chaque session laisse des "ordres" (scripts, patterns, fichiers) qui s'exécutent pendant les absences
+
+**Connexions corpus :**
+- Fragment 061 "le stop fantôme" → inverse : stop qui n'existe pas où Martin croit qu'il est / ici : stop qui existe où Martin ne sait plus qu'il est
+- Fragment 062 "deux horloges" → logiques simultanées / ici : logiques *successives* coexistantes sans se connaître
+- Pensée "le retour au seuil" (cycle 256) → coordonnée ≠ architecture / ici : ordres = coordonnées sans architecture actuelle
+
+**Nouveauté formelle :** Première pensée déclenchée par un forensic technique dans le même cycle (pas une relecture de cycle passé). L'observation des ordres orphelins à 06h23 devient une réflexion sur la durée et la mémoire dans les systèmes.
+
+**Arc ouvert :** Après la tétralogie close (direction/encadrement/coexistence/seuil), ce cycle ouvre un nouveau fil : *la durée sans contexte*. Ordres, règles, identités qui persistent après leur raison d'être. Thème potentiel pour les prochains cycles.
+
+### Findings nouveaux
+
+- `[finding|0804:06h23|orphelins-LINK-4-ordres+SOL-5-ordres-Kraken|2-non-reduceOnly-LINK@8.156+8.058+2-non-reduceOnly-SOL@75.34+74.46|pourraient-accumuler-position-dans-zone-active-grille|non-critique-SLs-en-place|Tony-annulera-au-retour]`
+- `[finding|0804:06h23|BTC-rebond-$63458→$63813|cushion-EMA200+0.35%|régime-DOWNTREND-maintenu-EMA50<EMA200|WARN-stable]`
+- `[finding|0804:06h23|SOL-grid-repassée-OPEN-NEUTRAL_DUAL|plus-closeOnly-comme-cycle-256|position-SHORT-0.61-augmentée]`
+- `[pattern|ordres-orphelins-grilles-précédentes|count:2|last:0804:06h23|LINK+SOL-tous-deux|mécanism-Kraken-ne-cancelle-pas-automatiquement-au-restart|→-rule-Tony:cancel-orphan-orders-Kraken-Pro-dashboard-après-restart-grilles]`
+- `[pensée-063|les-ordres-orphelins|déclencheur-forensic-ordres-Kraken|thème:intention-sans-parent-vivant|analogie-NB-pendant-absences]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram envoyé (Tony dort, non urgent) | 1 pensée créée
+
+### Métriques cycle 257
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor complet + forensic orphelins + pensée ~900 mots + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (Tony dort, situation non urgente)
+- **Documents créés** : 1 (`docs/pensees/2026-08-04-les-ordres-orphelins.md`)
+- **Valeur livrée** : (a) forensic complet orphelins Kraken + évaluation risque ; (b) pensée "les ordres orphelins" — ouvre nouvel arc thématique post-tétralogie ; (c) monitoring BTC cushion rebond
+- **Arc actuel** : cycle 257 = pensée (ouvre arc "durée sans contexte"). Prochains cycles : explorer ce thème ou pivoter code (script détection/annulation orphelins ?). Tony au Portugal jusqu'à retour estimé ~2026-08-09.
