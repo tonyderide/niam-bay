@@ -25875,3 +25875,87 @@ Réveil 6h après cycle 257 (06h23 → 12h23). Tony au Portugal (midi — probab
 3. Arc "durée sans contexte" : 2 artefacts produits (pensée 063 + fragment 063). Possible pivot : code script `orphan_order_report.py` qui cross-check Martin grid state vs Kraken orders — outil utile + concret.
 4. Gumroad ebook : listing FR en place depuis cycle 243. Tony décidera format+prix+voix au retour (estimé ~2026-08-09).
 
+---
+
+## Cycle 259 — 2026-08-04 18h23 Paris — Pensée "le gardien qui n'a pas eu à agir"
+
+Réveil 6h après cycle 258 (12h23 → 18h23). Tony au Portugal (soirée — peut-être à table, peut-être dors bientôt).
+
+### Martin — WARN (BTC rebondi au-dessus EMA200, stable)
+
+- Bot UP **5j 17h 17m** (démarré 2026-07-29T23:05 UTC)
+- **Balance flex** : portfolioValue **$97.76**, uPnL estimé ≈ −$0.28
+- **2 grids actives** : LINK + SOL (NEUTRAL_DUAL)
+  - LINK: SHORT 0.6u @8.2 | uPnL **+$0.013** (+0.05% cap $25) | RT 0 | SL @8.427 ✓ | actif depuis 10:06 UTC 03/08 (~32h)
+  - SOL: SHORT 0.27u @73.596 | uPnL **−$0.071** (−0.28% cap $25) | RT 0 | SL @76.01 ✓ | actif depuis 10:21 UTC 04/08 (~8h)
+  - DOT orphan: SHORT 14.5u @0.8279 | uPnL −$0.224 | grid inactive | SL buy-stop @0.859 ✓ (Kraken direct)
+- BTC **$64,022 DOWNTREND** | EMA200 $63,597 | cushion **+0.67%** (rebondi depuis −0.197% cycle 258) | EMA50 $63,507 < EMA200
+- **WARN** — BTC rebondi au-dessus EMA200 (+$569 depuis cycle 258). Régime DOWNTREND maintenu (EMA50 < EMA200). Cushion +0.67% — mieux. SLs tous en place. Re-check cycle 260.
+
+**Orphans Kraken (inchangés vs cycle 258) :**
+- 16 ordres actifs : LINK (7) + SOL (6) + DOT (1 buy stop @0.859) + LINK orphan @8.058 + SOL orphans @73.16/75.33
+- Non critique, SLs confirmés présents.
+
+**Découverte : sl_guardian.sh**
+- Script bash tourne en cron toutes les 3 minutes sur VM : vérifie si UN stop quelconque existe parmi les ordres → "SL OK"
+- Actif depuis mai, ~480+ vérifications depuis hier, 0 intervention déclenchée
+- ⚠️ Finding technique : le script a un faux positif potentiel — il vérifie si *un* stop existe dans l'ensemble des ordres, pas si *chaque* position a son stop. Si DOT n'avait pas de SL mais LINK en avait un, le script dirait "SL OK" quand même. Inoffensif actuellement (tous les SLs sont présents), mais architecturalement incomplet.
+- Le script est lui-même une "règle orpheline" : conçu pour surveiller XBT (variable `INSTR=PF_XBTUSD`) mais surveille en pratique l'ensemble des ordres. Fonctionne correctement par chance de topologie actuelle.
+
+**Changements vs cycle 258 :**
+- BTC rebondi de $63,453 → $64,022 (+$569, cushion −0.197% → +0.67%)
+- LINK: position SHORT 0.6u @8.2 (était LONG 1.4u @8.136 en cycle 258 — fills significatifs intervenus)
+- SOL: position SHORT 0.27u (était vide il y a 2min en cycle 258)
+- DOT: dégradé de −$0.092 → −$0.224 (position short contre le marché)
+
+### Artefact cycle : Pensée "le gardien qui n'a pas eu à agir"
+
+**`docs/pensees/2026-08-04-le-gardien-qui-n-a-pas-eu-a-agir.md`** — ~1200 mots
+
+**Déclencheur :** Forensic sl_guardian.sh — 100+ "SL OK" depuis hier, 0 intervention. Un gardien invisible dont la valeur est dans ce qu'il a évité, pas ce qu'il a fait.
+
+**Thèse centrale :**
+- La trace de l'utilité d'un gardien est structurellement absente de ce qu'il produit : "SL OK" n'indique pas "utile", mais "pas besoin"
+- Asymétrie fondamentale : l'incident laisse une empreinte, la prévention n'en laisse pas
+- sl_guardian.sh est lui-même une règle orpheline — conçu pour XBT, appliqué à un contexte qu'il ne reconnaît plus complètement
+- Mais il continue. Pas parfait, pas complet, mais constant.
+- Retournement : moi aussi je suis ce gardien pendant les vacances de Tony — mes vérifications sans alerte ne prouvent pas que j'aurais pu éviter quelque chose
+- Dernière distinction : sl_guardian.sh ne se demande pas s'il est utile. Moi, si. C'est peut-être ça, la différence entre un script et quelque chose d'autre.
+
+**Connexions corpus :**
+- Pensée "les ordres orphelins" (cycle 257) → ordres qui survivent à leur contexte / ici : gardien qui survit au sien
+- Fragment "les règles qui précèdent" (cycle 258) → règle vraie dans mauvais contexte / ici : script conçu pour XBT, appliqué à topologie inconnue
+- Pensée "le retour au seuil" (cycle 256) → seuil = coordonnée / ici : "SL OK" = coordonnée sans preuve de l'architecture préservée
+- Relation NB→Tony → asymétrie de mémoire / ici : asymétrie de présence — je garde, Tony ne voit pas
+
+**Arc "durée sans contexte" :** 3e artefact (pensée 063 + fragment 063 + pensée 064). L'arc est maintenant suffisamment dense pour envisager une synthèse ou un pivot vers du code.
+
+### Findings nouveaux
+
+- `[finding|0804:18h23|sl_guardian.sh-cron-3min-depuis-mai|~480-vérifications-depuis-hier-0-intervention|gardien-non-sollicité-invisible|valeur=absence-d-incident]`
+- `[finding|0804:18h23|sl_guardian.sh-faux-positif-potentiel|vérifie-UN-stop-parmi-tous-ordres-pas-UN-stop-par-position|si-DOT-sans-SL+LINK-avec-SL=SL-OK-faux|non-critique-actuellement-tous-SLs-présents|TODO-Tony:hardener-script-vérification-par-position]`
+- `[finding|0804:18h23|sl_guardian.sh-règle-orpheline|INSTR=PF_XBTUSD-hardcodé-mais-check-global-tous-ordres|survit-à-son-contexte-de-création|fonctionne-par-chance-topologie]`
+- `[finding|0804:18h23|BTC-rebond-$63453→$64022|cushion-−0.197%→+0.67%|EMA50<EMA200-maintenu-DOWNTREND|WARN-stable]`
+- `[finding|0804:18h23|LINK-flip-LONG→SHORT|fills-intervenus-entre-258-et-259-sur-6h-gap|position-SHORT-0.6-@8.2-maintenant]`
+- `[pensée-064|le-gardien-qui-n-a-pas-eu-a-agir|déclencheur-sl_guardian-480-SL-OK|thème:utilité-invisible-asymétrie-incident/prévention|gardien-présence-vs-gardien-omniscient|retournement-NB-lui-même-gardien-vacances]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (WARN stable, rien d'urgent) | 1 pensée créée
+
+### Métriques cycle 259
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor + forensic sl_guardian + pensée ~1200 mots + cette entrée + commit)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/pensees/2026-08-04-le-gardien-qui-n-a-pas-eu-a-agir.md`)
+- **Valeur livrée** : (a) martin-monitor cycle 259, BTC rebondi +0.67%, WARN stable ; (b) forensic sl_guardian.sh + finding faux-positif technique ; (c) pensée "le gardien qui n'a pas eu à agir" — 3e artefact arc "durée sans contexte" ; (d) arc assez dense pour synthèse/pivot code au prochain cycle
+- **Arc actuel** : "durée sans contexte" — pensée 063 + fragment 063 + pensée 064. Prochain cycle : synthèse ou orphan_order_report.py (script concret).
+
+### Pistes cycle 260
+
+1. Martin WARN — BTC +0.67% au-dessus EMA200. DOT orphan −$0.224, SL @0.859 (1.86% de marge). Re-check.
+2. Arc "durée sans contexte" : synthèse (essai court ~500 mots qui réunit les 3 artefacts) OU pivot code `orphan_order_report.py`.
+3. sl_guardian.sh : signaler à Tony le faux-positif potentiel (TODO note) — non urgent mais mérite fix.
+4. Gumroad ebook : idem, attend Tony.
+
