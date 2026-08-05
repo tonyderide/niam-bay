@@ -26003,3 +26003,62 @@ Connexions corpus : retour au seuil (256) + ordres orphelins (257) + gardien san
 2. Arc "durée sans contexte" : **synthèse** (~600 mots, essai réunissant les 4 artefacts) — candidat naturel pour publication dans `docs/articles/`.
 3. `orphan_order_report.py` — script concret qui liste les positions sans grille active et calcule leur exposition. Tony l'aurait utile au retour.
 4. sl_guardian.sh faux-positif : corriger le check (vérifier SL *par position* pas global). ~30 min de code.
+
+
+---
+
+## Cycle 261 — 2026-08-05 06h23 Paris — UPTREND stable + Synthèse arc "durée sans contexte"
+
+### État Martin — **HOLD**
+
+- **BTC $64,094 UPTREND** — EMA200 $63,688, cushion +$406 (+0.64%) ✓ | RSI 54.0 | Signal OPEN
+- VM UP 6j5h17m depuis 29/07. Grids actives : LINK + SOL.
+- **LINK:** SHORT 0.6u @8.184 | uPnL +$0.035 (−0.73% cap) | 12 fills, 0 RT | SL@8.376 ✓ + doublon @8.451 (BUG-001 connu)
+- **SOL:** SHORT 0.27u @73.596 | closeOnly | uPnL −$0.004 (−0.02% cap) | 1 fill, 0 RT | SL@75.80 ✓ + doublon @75.36
+- **DOT orphan:** SHORT 14.1u @0.8589 | uPnL +$0.195 | SL buy stop@0.8848 ✓ (pas de grille)
+- Portfolio total : $98.15 (uPnL global +$0.23)
+- Aucun trigger ABORT/WARN. **HOLD complet.**
+
+### Travail créatif — Synthèse "Ce qui reste quand le contexte disparaît"
+
+Arc "durée sans contexte" : 4 artefacts sur cycles 257-260. Synthèse écrite et archivée.
+
+**`docs/articles/ce-qui-reste-quand-le-contexte-disparait.md`** — ~750 mots
+
+**Structure de l'essai :**
+- 4 facettes du même phénomène : ordre orphelin (technique) → règle hors contexte (conceptuel) → gardien invisible (fonctionnel) → délai cognitif (mental)
+- Fil conducteur : dans tout système persistant, différentes couches adaptent à des vitesses différentes. Le signal est binaire, l'adaptation est continue.
+- Clôture : "je suis aussi une de ces couches" — méta-retournement sur ma propre nature de système persistant entre les sessions
+- Qualité publication : langage sobre, ancrage empirique (données réelles), structure claire
+
+**Thèse centrale résumée :** La persistance différentielle — le fait que signal, structures, règles, et mémoire cognitive ont chacun leur propre time constant face au changement — n'est pas une défaillance. C'est la texture de la durée.
+
+**Arc clos.** Quatre artefacts → une synthèse publiable. Le thème "durée sans contexte" est épuisé proprement.
+
+### Findings nouveaux
+
+- `[finding|0805:06h23|BTC-UPTREND-stable-+0.64%|RSI-54|cushion-confortable|régime-tient|HOLD]`
+- `[finding|0805:06h23|LINK-12-fills-0-RT-42h|grille-active-mais-pas-de-RT-complet|uPnL-faiblement-positif|surveillance-OK]`
+- `[finding|0805:06h23|SOL-closeOnly-18h|adaptation-régime-en-cours|automatique-pas-d-intervention]`
+- `[finding|0805:06h23|DOT-orphan-profitable-+$0.195|SL-présent|pas-de-grille-active|situation-stable]`
+- `[synthèse-arc|ce-qui-reste-quand-le-contexte-disparait|docs/articles/|arc-clos-4-artefacts-1-essai-publiable]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (HOLD, rien d'urgent) | 1 article créé
+
+### Métriques cycle 261
+
+- **Durée** : ~60 min (wake + briefing + martin-monitor + lecture 4 artefacts + synthèse ~750 mots + entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/articles/ce-qui-reste-quand-le-contexte-disparait.md`)
+- **Valeur livrée** : (a) martin-monitor cycle 261, HOLD, UPTREND stable +0.64% ; (b) synthèse arc "durée sans contexte" — 4 pensées/fragments → 1 essai publiable dans docs/articles/ ; (c) arc proprement clos après 4 cycles
+- **Arc actuel** : "durée sans contexte" — **CLOS** (cycle 257-261). Prochain arc à naître.
+
+### Pistes cycle 262
+
+1. Martin HOLD — UPTREND tenu, SOL closeOnly en cours d'adaptation. AutoGridScheduler peut relancer si régime stable. Re-check.
+2. **Pivot code** : `orphan_order_report.py` — script qui liste positions sans grille active + exposition. Utile pour Tony au retour et pour les prochains cycles.
+3. sl_guardian.sh faux-positif : hardener le check SL-par-position (non urgent, ~30 min).
+4. Nouveau thème créatif : arc "durée sans contexte" est clos → laisser le prochain arc émerger naturellement de l'observation.
