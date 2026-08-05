@@ -26178,3 +26178,68 @@ Second artefact de l'arc "l'action encodée" — versant humain vs versant méca
 2. Arc "l'action encodée" : 3e artefact — fragment littéraire court sur la confiance dans la règle. Ou pivot code.
 3. sl_guardian_v2.sh — documenter clairement comme TODO-retour Tony (scp command dans scripts/commands.sh).
 4. Observer si DOT grid produit ses premiers fills dans les prochains cycles.
+
+---
+
+## Cycle 264 — 2026-08-06 00h23 Paris — UPTREND +1.26% + Fragment 064 + sl_guardian_v2 dans commands.sh
+
+### État Martin — **HOLD**
+
+- **BTC $64,618 UPTREND** — EMA200 $63,816, cushion +1.26% | RSI 60.4 | Signal OPEN
+- VM UP 6j 23h18m depuis 29/07. Grids actives : **LINK + DOT + SOL**
+- **LINK:** SHORT 0.6u @8.184 | uPnL +$0.018 (+0.07% cap) | 0 RT | SL@8.391 ✓ | 42h
+- **DOT:** aucune position (grid 2h, accumule ordres) | uPnL $0.0 | SL: None (normal, pas encore de position) | started 22h21 UTC Aug5
+- **SOL:** SHORT 0.43u @73.92 | uPnL −$0.053 (−0.21% cap) | 0 RT | SL@76.23 ✓ | 38h
+- Portfolio total : ~$98 (3 grids × $25 committé + cash)
+- Aucun trigger ABORT/WARN. **HOLD complet.**
+
+**Observation :** DOT orphan short (28.3u @0.8492 avec SL@0.8784, cycle 263) a disparu — Tony a vraisemblablement clôturé la position orpheline avant de lancer la nouvelle grid DOT à 22h21 UTC. Grammaire G3/G4 silencieuse confirmée.
+
+### Travail créatif — Fragment 064 "ce qu'une règle ne peut pas savoir"
+
+**`docs/fragments/fragment-064-ce-qu-une-regle-ne-peut-pas-savoir.md`** — ~1100 mots
+
+3e artefact de l'arc "l'action encodée". Versant synthèse : la confiance dans la règle comme délégation d'intention vers un futur non-anticipé.
+
+**Thèse centrale :** Faire confiance à une règle est un double pari — que la condition sera un bon proxy de l'intention réelle, et que le contexte n'aura pas suffisamment changé pour inverser le sens de l'instruction. Ces paris ne sont jamais certains. On les fait quand même, parce que l'absence est une condition structurelle de la vie.
+
+**Structure de l'arc "l'action encodée" (3 artefacts) :**
+- Artefact 1 (cycle 262) : pensée 066 "l'ordre est déjà parti" — le limit order comme agentivité encodée dans une règle
+- Artefact 2 (cycle 263) : pensée 067 "la grille que je n'ai pas vue partir" — la décision humaine formée dans l'espace de l'absence
+- Artefact 3 (cycle 264) : fragment 064 "ce qu'une règle ne peut pas savoir" — la confiance comme pari double sur la permanence du contexte
+
+**Connexion fragment-063 :** "les règles qui précèdent" (cycle 258) posait le problème des règles orphelines. Fragment-064 répond à une question différente : non pas "que faire des règles qui ont perdu leur contexte" mais "qu'est-ce qu'on accepte quand on écrit une règle en sachant qu'elle s'exécutera sans nous."
+
+L'arc pourrait être clos avec une synthèse courte, ou rester ouvert pour un 4e artefact code (orphan_order_report.py).
+
+### Code — sl_guardian_v2 dans commands.sh
+
+Ajout de la commande de déploiement sl_guardian_v2.sh dans `scripts/commands.sh`. Le script existe déjà (créé cycle 262), mais le chemin `scp` vers la VM n'était pas documenté. Tony peut maintenant copier-coller directement au retour.
+
+### Findings nouveaux
+
+- `[finding|0806:00h23|BTC-UPTREND-cushion-+1.26%|RSI-60.4|OPEN|régime-tient-jour-8-post-flip]`
+- `[finding|0806:00h23|DOT-orphan-28.3u-cycle263-disparue|Tony-a-clôturé-avant-new-grid-22h21|grammaire-G3-G4-cycle-264]`
+- `[finding|0806:00h23|SOL-38h-0-RT|accumule-fills-sans-RT-complet|situation-stable-uPnL-minimal]`
+- `[arc-action-encodee|3-artefacts|pensee-066+pensee-067+fragment-064|arc-complet-ou-pivot-code|synthèse-disponible]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (HOLD, rien d'urgent) | 1 fragment + 1 entrée commands.sh créés
+
+### Métriques cycle 264
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor + lecture état + fragment ~1100 mots + commands.sh + entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-064-ce-qu-une-regle-ne-peut-pas-savoir.md`)
+- **Documents modifiés** : 2 (`scripts/commands.sh` +6 lignes, cette entrée)
+- **Valeur livrée** : (a) martin-monitor cycle 264, HOLD, UPTREND +1.26% stable ; (b) fragment 064 — 3e artefact arc "l'action encodée", synthèse sur la confiance dans la règle ; (c) sl_guardian_v2 deploy command documentée dans commands.sh
+- **Arc actuel** : "l'action encodée" — **3 artefacts** (pensées 066+067 + fragment 064). Arc potentiellement clos. Prochain pivot naturel : code (orphan_order_report.py) ou synthèse publiable.
+
+### Pistes cycle 265
+
+1. Martin HOLD — UPTREND stable, DOT grid 8h accumulation. Vérifier premiers fills DOT. Re-check.
+2. `orphan_order_report.py` — script concret qui liste positions sans grille active + exposition. Utile Tony retour. ~45 min code.
+3. Arc "l'action encodée" : synthèse courte publiable (~500 mots, docs/articles/) réunissant les 3 artefacts. Ou laisser le 4e artefact émerger naturellement.
+4. Observer : est-ce que LINK (55h sans RT) va produire son 1er round trip ? À noter si ça arrive.

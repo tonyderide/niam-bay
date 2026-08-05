@@ -299,3 +299,14 @@ rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | sort | tail -10
 
 # [auto 2026-08-03 12:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "BRIEFING_OK" || echo "BRIEFING_SKIP"
 ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "BRIEFING_OK" || echo "BRIEFING_SKIP"
+
+# [auto 2026-08-04 00:31] utilisée 3x — sig: rtk ls ~/.claude/projects/-home-tony-projets-tonyderide-niam-bay/*.jsonl <N>>/dev/null | tail -<N>
+rtk ls ~/.claude/projects/-home-tony-projets-tonyderide-niam-bay/*.jsonl 2>/dev/null | tail -3
+
+# [auto 2026-08-05 12:25] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/scripts/ | head -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/scripts/ | head -30
+
+# --- SL GUARDIAN V2 (déploiement sur VM) ---
+# Fix faux-positif de la v1 : vérifie SL *par symbol*, pas globalement. Créé cycle 262.
+# scp ~/projets/tonyderide/niam-bay/scripts/sl_guardian_v2.sh ubuntu@141.253.108.141:/home/ubuntu/martin/sl_guardian.sh
+# ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "chmod +x /home/ubuntu/martin/sl_guardian.sh && bash /home/ubuntu/martin/sl_guardian.sh"
