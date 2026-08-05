@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-08-04 18:23
+# Briefing Niam-Bay — 2026-08-05 12:23
 
 *11515 souvenirs en mémoire vectorielle*
 
@@ -26,10 +26,10 @@
 ## Pensées récentes
 
 - 2026-06-12 — lentille success failure paths
+- 2026-08-05 — le temps de reponse
 - 2026-08-04 — les ordres orphelins
 - 2026-08-04 — le retour au seuil
-- 2026-08-03 — la direction n est pas la securite
-- 2026-08-03 — l encadrement du contrepied
+- 2026-08-04 — le gardien qui n a pas eu a agir
 
 ## Auto-skills actives
 
