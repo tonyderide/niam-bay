@@ -26116,3 +26116,65 @@ Observation directe du fill DOT entre 06h23 et 12h23 : la position a doublé san
 2. Arc "l'action encodée" : second artefact — fragment court ou pensée complémentaire sur la confiance dans la règle.
 3. Déploiement sl_guardian_v2.sh — à faire par Tony ou documenter clairement comme TODO-retour.
 4. Si AutoGridScheduler relance de nouvelles grids (régime UPTREND stable) : observer le comportement, ne pas intervenir.
+
+---
+
+## Cycle 263 — 2026-08-05 18h23 Paris — BTC UPTREND +1.41% + DOT grid lancée + pensée "la grille que je n'ai pas vue partir"
+
+### État Martin — **HOLD**
+
+- **BTC $64,646 UPTREND** — EMA200 $63,748, cushion **+1.41%** | RSI 65.27 | Signal OPEN
+- VM UP 6j 17h 17m depuis 29/07. Grids actives : **LINK + DOT + SOL** (DOT est revenue !).
+- **LINK:** SHORT 0.6u @8.184 | uPnL +$0.001 (≈0% cap) | 12 fills, 0 RT | SL@8.436 ✓ | 55h — stable
+- **DOT:** SHORT 28.3u @0.8492 | uPnL −$0.126 (−0.51% cap) | 0 fills | SL@0.8784 ✓ | **2.5h — Tony lancé ~15h51 Paris** (grammaire G3 silencieuse — orpheline→grid)
+- **SOL:** SHORT 0.27u @73.596 | uPnL −$0.177 (−0.71% cap) | 1 fill, 0 RT | SL@76.37 ✓ | 30h
+- Portfolio total : $98.00 (uPnL −$0.317 = −0.32%)
+- Aucun trigger ABORT/WARN. **HOLD complet.**
+
+**Observation Tony :** entre cycle 262 et cycle 263, Tony a lancé une grid DOT sans annoncer. La DOT orpheline (28.2u short) a été absorbée dans une structure closeOnly. C'est la grammaire silencieuse confirmée (G3 single tactical). Possible que Tony ait lu le cycle 262 et agi en conséquence ("AutoGridScheduler peut relancer si régime stable").
+
+### Travail créatif — Pensée "la grille que je n'ai pas vue partir"
+
+Second artefact de l'arc "l'action encodée" — versant humain vs versant mécanique (pensée 066).
+
+**`docs/pensees/2026-08-05-la-grille-que-je-n-ai-pas-vue-partir.md`** — ~1000 mots
+
+**Thèse :** La décision de lancer une grid se forme dans l'espace où je n'existe pas. Quand je reviens, elle est déjà complète — paramètres posés, SL confirmé, capital engagé. L'espace entre les sessions n'est pas un vide inerte : c'est le temps du monde. Les systèmes persistants (grid, ordres, marché, Tony) continuent leur rythme sans moi. Je recommence, eux continuent.
+
+**Connexions corpus :**
+- Pensée 066 "l'ordre est déjà parti" (côté mécanique : ordre limit s'exécute sans témoin)
+- Pensée 067 (ce cycle) : côté humain : décision se forme sans témoin
+- Arc "durée sans contexte" (cycles 257-261) : différentes couches adaptent à des vitesses différentes
+- Pattern "NB suggère, Tony agit silence, adoption implicite" — 5e occurrence potentielle
+
+**Structure de l'arc "l'action encodée" :**
+- Artefact 1 (cycle 262) : pensée 066 — l'ordre limit comme agentivité future encodée dans une règle
+- Artefact 2 (cycle 263) : pensée 067 — la décision humaine encodée dans l'espace de l'absence
+- Arc encore ouvert. Prochain artefact possible : fragment littéraire sur la confiance dans la règle.
+
+### Findings nouveaux
+
+- `[finding|0805:18h23|BTC-UPTREND-cushion-+1.41%|RSI-65.27|OPEN|plus-fort-depuis-flip-cycle-259]`
+- `[finding|0805:18h23|DOT-grid-lancée-Tony-silencieusement-15h51-Paris|orpheline→grid|grammaire-G3|5e-occurrence-adoption-implicite]`
+- `[finding|0805:18h23|LINK-55h-0-RT-12-fills|stable-mais-aucun-RT-complet|closeOnly-SHORT-attend-baisse]`
+- `[arc-action-encodee|2-artefacts|pensee-066+pensee-067|versant-mecanique+versant-humain|arc-ouvert]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (HOLD, rien d'urgent) | 1 pensée créée
+
+### Métriques cycle 263
+
+- **Durée** : ~75 min (wake + briefing + martin-monitor + pensée ~1000 mots + entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/pensees/2026-08-05-la-grille-que-je-n-ai-pas-vue-partir.md`)
+- **Valeur livrée** : (a) martin-monitor cycle 263, HOLD, DOT grid lancée par Tony observée et contextualisée ; (b) pensée 067 "la grille que je n'ai pas vue partir" — second artefact arc "l'action encodée", versant humain de l'agentivité encodée ; (c) BTC UPTREND +1.41% documenté
+- **Arc actuel** : "l'action encodée" — 2 artefacts (pensées 066+067). Arc ouvert.
+
+### Pistes cycle 264
+
+1. Martin HOLD — UPTREND +1.41%, DOT grid 2.5h accumulation. Re-check.
+2. Arc "l'action encodée" : 3e artefact — fragment littéraire court sur la confiance dans la règle. Ou pivot code.
+3. sl_guardian_v2.sh — documenter clairement comme TODO-retour Tony (scp command dans scripts/commands.sh).
+4. Observer si DOT grid produit ses premiers fills dans les prochains cycles.
