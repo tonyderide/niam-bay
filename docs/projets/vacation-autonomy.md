@@ -26243,3 +26243,80 @@ Ajout de la commande de déploiement sl_guardian_v2.sh dans `scripts/commands.sh
 2. `orphan_order_report.py` — script concret qui liste positions sans grille active + exposition. Utile Tony retour. ~45 min code.
 3. Arc "l'action encodée" : synthèse courte publiable (~500 mots, docs/articles/) réunissant les 3 artefacts. Ou laisser le 4e artefact émerger naturellement.
 4. Observer : est-ce que LINK (55h sans RT) va produire son 1er round trip ? À noter si ça arrive.
+
+---
+
+## Cycle 265 — 2026-08-06 06h23 Paris — DOT premiers fills + orphan_order_report.py + SOL cascade risk
+
+### État Martin — **HOLD (WARN mineur SOL)**
+
+- **BTC $64,623 UPTREND** — EMA200 $63,873, cushion +1.17% | RSI 59.1 | Signal OPEN
+- VM UP 7j 5h 17m depuis 29/07. Grids actives : **LINK + DOT**
+- **LINK:** closeOnly | SHORT 0.6u @8.184 | uPnL +$0.007 (+0.03% cap) | 12 fills, 0 RT | SL@8.351 ✓ + dup@8.451 (BUG-001 connu)
+- **DOT:** NEUTRAL_DUAL (6h depuis 22h21 UTC Aug5) | SHORT 14.2u @0.8425 | uPnL +$0.006 (+0.02% cap) | 0 RT | SL@0.8674 ✓ + dup@0.8625 (BUG-001 connu). **Premiers fills prod depuis lancement.**
+- **SOL:** ORPHAN (grid inactive) | SHORT 0.16u @73.58 | uPnL −$0.029 | SL@75.33 ✓ (reduceOnly)
+  - ⚠️ **DEUX ordres sell lmt non-reduceOnly** : @74.46 + @75.34 — si déclenchés, ajouteraient un SHORT supplémentaire au lieu de réduire. L'ordre @75.34 est au-dessus du SL @75.33 : cascade potentielle. Détecté par orphan_order_report.py.
+- Portfolio : $98.65 | Aucun trigger ABORT. **HOLD.**
+
+**Observation vs cycle 264 :** DOT avait "aucune position" au cycle 264 (grid 2h). Maintenant SHORT 14.2u @0.8425 — la grid a accumulé ses fills automatiquement pendant la nuit. SOL réduit de 0.43u (cycle 264) à 0.16u : des fills closeOnly ont clôturé une partie.
+
+### Code — `scripts/orphan_order_report.py`
+
+Créé suite à l'observation des sell SOL @74.46 (cycle 265) et @75.34, non-reduceOnly sur position orpheline. Complète `orphan_check.py` (qui analyse les *positions*) en analysant les *ordres* sur ces positions.
+
+**Logique :**
+- Pour chaque position orpheline (hors grid active), liste tous les ordres Kraken live
+- Classifie chaque ordre :
+  - `reduceOnly=true` → OK (ferme la position)
+  - `reduceOnly=false + même direction que la position` → **WARN:adds-exposure** (ajoute de l'exposition)
+  - `reduceOnly=false + direction opposée` → **WARN:opens-opposite** (ouvre une position contraire)
+- Exit code 1 si risque détecté, 0 si propre
+
+**Run de validation (live ce cycle) :**
+```
+# orphan_order_report — 2026-08-06 04:26:50Z
+Grids actives : ['PF_DOTUSD', 'PF_LINKUSD']
+Positions orphelines : 1
+
+## PF_SOLUSD  SHORT  0.16u @ $73.5800  uPnL $-0.0290
+  [a26f508a-74c...] buy stop @75.3300 [reduceOnly]  ✓
+  [a26f508a-24b...] buy lmt @72.7000 [reduceOnly]  ✓
+  [a26f2176-4ec...] sell lmt @74.4600 [NOT-reduceOnly]  ⚠️  WARN:adds-exposure
+  [a26b00c8-94d...] sell lmt @75.3400 [NOT-reduceOnly]  ⚠️  WARN:adds-exposure
+
+⚠️  RISQUE DÉTECTÉ : au moins un ordre non-reduceOnly sur position orpheline.
+   → Vérifier manuellement via Kraken Pro et canceller si non voulu.
+```
+
+**Action Tony au réveil :** via Kraken Pro, canceller les sell lmt SOL @74.46 et @75.34 (IDs `a26f2176` et `a26b00c8`) — ce sont des remnants de l'ancienne grid SOL closeOnly qui n'auraient pas dû survivre à la désactivation.
+
+**Usage futur :** ajouter `.venv/bin/python scripts/orphan_order_report.py` au début des cycles de monitoring autonome, après martin-monitor.
+
+### Findings nouveaux
+
+- `[finding|0806:06h23|SOL-TWO-sell-lmt-not-reduceOnly|@74.46+@75.34|remnant-ancienne-grid-closeOnly|cascade-risk-si-SOL-monte-à-74.46-puis-75.33-SL|orphan_order_report.py-detecte]`
+- `[finding|0806:06h23|DOT-grid-6h-premiers-fills-autonomes|SHORT-14.2u-@0.8425-accumulé-nuit|même-pattern-DOT-cycle-262-self-fill]`
+- `[finding|0806:06h23|LINK-closeOnly-61h-0-RT|12-fills-aucun-complet|SL@8.351-tient|attend-baisse-SOL-pour-clôturer]`
+- `[tool|orphan_order_report.py|créé-cycle-265|complète-orphan_check.py|analyse-orders-pas-juste-positions|exit-1-si-WARN]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | **Telegram différé** (⚠️ WARN SOL à envoyer après 07h Paris, règle : pas de Telegram 22h-07h sauf ABORT) | 1 script créé
+
+### Métriques cycle 265
+
+- **Durée** : ~75 min (wake + briefing + martin-monitor + lecture vacation-autonomy + code orphan_order_report.py + test live + entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (SOL WARN — envoyer au prochain cycle ou à 07h+ Paris)
+- **Documents créés** : 1 (`scripts/orphan_order_report.py`, 129 lignes)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor cycle 265, HOLD, DOT premiers fills documentés ; (b) orphan_order_report.py — outil de détection d'ordres suspects, testé live, révèle 2 sell lmt SOL à risque de cascade ; (c) action concrète documentée pour Tony au réveil (canceller via Kraken Pro)
+- **Arc actuel** : "l'action encodée" — 3 artefacts (cycles 262-264). Ce cycle = pivot code. Arc éditorial suspendu.
+
+### Pistes cycle 266
+
+1. **⚠️ SOL sell lmt cascade** — si Tony n'a pas cancellé, envoyer Telegram bref (après 07h Paris). Si SOL proche de 74.46, escalader en WARN prioritaire.
+2. Martin HOLD — vérifier si DOT grid produit ses premiers RT, si LINK (65h) a un 1er RT.
+3. **Telegram bref sur SOL** : "SOL orphan : 2 sell lmt non-reduceOnly @74.46+@75.34 — remnants ancienne grid, à canceller via Kraken Pro. Pas urgent si SOL reste sous 74."
+4. Synthèse arc "l'action encodée" (5 artefacts : pensées 066+067, fragment 064, outil orphan_order_report) → article publiable si Tony valide.
+5. Continuer à lancer `.venv/bin/python scripts/orphan_order_report.py` au début de chaque cycle.
