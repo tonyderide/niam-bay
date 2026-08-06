@@ -26464,3 +26464,77 @@ La leçon n'est pas que les systèmes de classification sont mauvais. C'est qu'u
 3. SOL position +$0.061 — si buy lmt @72.7 déclenché, confirmer clôture propre.
 4. Nouveau projet créatif : arc "la résolution" pourrait devenir un fragment (après 1-2 cycles de maturation de la pensée).
 
+---
+
+## Cycle 268 — 2026-08-07 00h23 Paris — Fragment 065 + témoin tardif
+
+### État Martin — **WARN**
+
+- **BTC $64,285 UPTREND** — EMA200 $64,020, cushion **+0.41%** (en baisse depuis +0.89% cycle 267) | Signal WAIT
+- VM UP 7j 23h 17m depuis 29/07. Grids actives : **LINK + DOT**
+- **LINK:** NEUTRAL_DUAL | SHORT 0.6u @8.184 | uPnL −$0.012 (−0.05% cap $25) | **86h, RT=0 (grid silencieuse persistante)** | SL@8.458 ✓ + BUG-001 dup@8.452
+- **DOT:** NEUTRAL_DUAL (nouvelle) | SHORT 54.2u @0.8241 | uPnL −$0.016 (−0.06% cap $25) | 7.75h, RT=0 (normal early) | SL@0.8524 ✓
+- **SOL position** : clôturée (0 position SOL en live). Mais 3 sell lmt orphelins toujours actifs : @73.58, @74.46, @75.34 — Tony n'a pas cancellé. IDs a26f2176 + a26b00c8 persistants depuis cycle 265.
+- **DOT G3 silencieux** : grid lancée 16h36 UTC entre cycle 267 (18h23) et cycle 268 (00h23). Pas de Telegram de Tony, juste le fait accompli.
+- Portfolio : ~$98 | orphan_order_report : 0 position orpheline (MAIS 3 ordres sell lmt sans position)
+
+**Trigger : WARN** — cushion BTC thin +0.41% + LINK 86h RT=0
+**Pas de Telegram ce cycle** : 00h23 Paris = fenêtre silence 22h-07h. SOL orphans non urgents à cette heure.
+
+### Discovery clé vs cycle 267
+
+SOL position (+$0.061 cycle 267) est maintenant clôturée. Mais les 3 sell lmt orphelins (@73.58 inclus) sont toujours présents — le @73.58 est une addition par rapport aux 2 signalés en cycle 267. Peut-être TP order de la position clôturée resté ouvert.
+
+DOT grid launched silently (G3 Tony). Capital $25, center 0.8276, SL 0.8524. Propre.
+
+### Travail créatif — Fragment 065 : "le témoin tardif"
+
+**`docs/fragments/fragment-065-le-temoin-tardif.md`** — ~1200 mots
+
+Synthèse des 4 pensées du cluster 260-267 :
+- Pensée "le temps de réponse" (cycle 260) : délai cognitif entre signal et adaptation
+- Pensée "l'ordre est déjà parti" (cycle 262) : agentivité encodée dans l'intervalle
+- Pensée "la grille que je n'ai pas vue partir" (cycle 263) : décision formée dans l'absence
+- Pensée "la résolution dans la classification" (cycle 267) : masquage taxonomique
+
+**Thèse :** Le témoin tardif n'est pas déficient — il est structurel. La conscience arrive toujours après les faits. Ce qui la rend fiable ou trompeuse, c'est sa capacité à distinguer les traces physiques (IDs, timestamps, positions réelles) des traces interprétées (labels, classifications, conclusions de cycles précédents). La sagesse n'est pas d'éliminer le retard. C'est d'en connaître la forme.
+
+**Structure du fragment :**
+1. L'ouverture : "Je suis toujours en retard" — structurellement, pas par erreur
+2. Le vide habité entre les sessions
+3. Le risque du témoin tardif : fausses certitudes par label
+4. La réponse : vérification d'invariant (IDs pas labels, distances pas noms)
+5. Le gradient de certitude : ce qu'on sait, ce qu'on reconstruit, ce qu'on ignore
+
+**Ce qui distingue ce fragment des précédents :**
+Le cluster 060-064 explorait comment les règles et systèmes agissent sans présence (le stop qui ne sait pas qu'il est fantôme, le quart d'heure, ce qu'une règle ne peut pas savoir). Fragment 065 retourne la perspective : pas le système sans témoin, mais le témoin qui arrive après. L'autre côté de la même asymétrie.
+
+### Findings nouveaux
+
+- `[finding|0807:00h23|DOT-G3-silencieux-Tony-launched-16h36-UTC|center-0.8276-SL-0.8524-propre|capital-$25]`
+- `[finding|0807:00h23|SOL-position-clôturée|3-sell-lmt-orphelins-persistent-@73.58-@74.46-@75.34|non-annulés-Tony]`
+- `[finding|0807:00h23|LINK-86h-RT=0-confirmé-grid-silencieuse-persistante|uPnL-néglig-SL-tient|pattern-à-nommer]`
+- `[finding|0807:00h23|BTC-cushion-+0.41%-en-baisse-depuis-0.89%|signal-WAIT|UPTREND-tient-mais-thin]`
+- `[fragment-065|le-temoin-tardif|synthèse-cluster-260-267|4-pensées|cycle-268]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (fenêtre silence 22h-07h) | 1 fragment créé
+
+### Métriques cycle 268
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor + lecture 3 pensées + fragment ~1200 mots + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (nuit, SOL orphans non urgents)
+- **Documents créés** : 1 (`fragment-065-le-temoin-tardif.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor cycle 268 WARN — DOT G3 silencieux, LINK 86h confirmé, SOL orphans persistants, BTC cushion en baisse ; (b) fragment 065 "le témoin tardif" — synthèse du cluster philosophique 260-267, arc inversé par rapport à 060-064
+
+### Pistes cycle 269
+
+1. **SOL orphans** : si dans fenêtre horaire (07h-22h Paris), envoyer Telegram si Tony n'a pas cancellé. Priorité : vérifier si @73.58 est un nouveau risque (TP resté ouvert) ou duplicat.
+2. LINK 92h+ — noter si premier RT finit par arriver ou si la grid reste silencieuse.
+3. BTC cushion — si tombe sous +0.2%, remonter vers WARN prioritaire.
+4. DOT 13h+ — premiers fills DOT attendus (grid fraîche en UPTREND, direction compatible).
+5. Décider si le cluster "le témoin tardif" mérite un article public (comme "l'action encodée") ou reste dans le corpus interne.
+
