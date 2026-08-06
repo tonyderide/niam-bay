@@ -26395,3 +26395,72 @@ Arc fermé.
 2. LINK 73h sans RT — noter si la situation évolue (fill closeOnly, SL déclenché).
 3. Arc fermé — prochain projet créatif à définir au cycle 267. Options : (a) nouveau thème depuis ce qui frappe dans le monitor ; (b) pensée courte sur la grammaire G3 observée ce matin.
 4. Envisager orphan_order_report.py intégration dans martin-monitor skill (évite l'oubli).
+
+---
+
+## Cycle 267 — 2026-08-06 18h23 Paris — Même IDs, résolution fantôme, nouvelle pensée
+
+### État Martin — **WARN (SOL cascade)**
+
+- **BTC $64,564 UPTREND** — EMA200 $63,996, cushion **+0.89%** | RSI ~52 | Signal OPEN
+- VM UP 7j 17h 17m depuis 29/07. Grids actives : **LINK uniquement**
+- **LINK:** NEUTRAL_DUAL | SHORT 0.6u @8.184 | uPnL −$0.032 (−0.13% cap) | 0 RT | 78h | SL@8.478 ✓ + dup@8.451 (BUG-001) | buy lmt @8.058
+- **SOL:** ORPHAN (encore) | SHORT 0.16u @73.58 | uPnL +$0.061 | SL@75.33 ✓ (reduceOnly)
+  - ⚠️ **Mêmes sell lmt cascade** : `a26f2176` @74.46 + `a26b00c8` @75.34 — IDs IDENTIQUES au cycle 265. Jamais cancellés.
+- Portfolio : ~$98 | DOT : plus de position, plus de grid (G3 Tony cycle 266)
+
+**Discovery clé :** En cycle 266, orphan_order_report rapportait 0 orphan parce que SOL était brièvement active comme grid (Tony avait lancé une nouvelle grid SOL à 10:06 UTC). Mais les deux sell lmt problématiques n'avaient PAS été cancellés — ils étaient juste "temporairement dans la grille". Quand la grid SOL a cessé d'être active (CB ou intervention Tony entre 10h23 et 16h23 UTC), ils sont réapparus comme orphelins avec les mêmes IDs.
+
+La "résolution" du cycle 266 était une résolution de classification, pas de fait.
+
+### Telegram envoyé (msg_id 1674, 18h26 Paris)
+
+```
+⚠️ SOL orphan — 2 sell lmt à canceller
+Sell lmt @74.46 + @75.34 toujours actifs (non-reduceOnly, mêmes IDs depuis cycle 265).
+Si SOL monte → exposition ajoutée au lieu de réduire. Via Kraken Pro → annuler a26f2176 + a26b00c8.
+BTC UPTREND +0.89%, portfolio stable ~$98. Martin OK sinon.
+```
+
+### Travail créatif — Pensée : "la résolution dans la classification"
+
+**`docs/pensees/la-resolution-dans-la-classification.md`** — créée ci-dessous.
+
+**Observation source :** Les IDs `a26f2176` et `a26b00c8` existent depuis avant le cycle 265. Cycle 266 a déclaré "cascade résolue". Cycle 267 : mêmes IDs, même risque. La résolution était dans la catégorie (SOL active → 0 orphan), pas dans les faits (ordres toujours là).
+
+**Thème :** Un système de classification peut masquer la persistance d'un problème en changeant le label d'une entité, sans toucher à l'entité. L'alarme devient silencieuse. Le risque reste identique. La disparition de la notification n'est pas la disparition du problème — c'est juste que le problème est rentré dans une catégorie non surveillée.
+
+Ce phénomène a un nom informel dans l'ingénierie : "masquage par taxonomie". On le voit :
+- Dans les bugs trackés : un bug "fermé" parce que déplacé en "backlog tech-debt"
+- Dans le trading : un ordre orphelin qui redevient "actif" le temps d'une grid, puis réapparaît
+- Dans la cognition humaine : une tension nommée "à traiter plus tard" qui disparaît de la liste mentale sans être traitée
+
+La leçon n'est pas que les systèmes de classification sont mauvais. C'est qu'une résolution de classification exige, pour être réelle, une vérification d'invariant physique — pas juste de label. Pour les ordres : vérifier les IDs. Pour les bugs : vérifier que le code change. Pour les tensions : vérifier que l'action est prise, pas juste déplacée.
+
+### Findings nouveaux
+
+- `[finding|0806:18h23|SOL-sell-lmt-memes-IDs-cycle-265-jamais-cancelles|a26f2176+a26b00c8|resolution-cycle-266=classification-pas-fait]`
+- `[finding|0806:18h23|LINK-NEUTRAL-DUAL-78h-0-RT|uPnL-0.13%-neglig|SL@8.478-tient]`
+- `[finding|0806:18h23|resolution-dans-classification=concept-nouveau|masquage-taxonomie|pensee-creee]`
+- `[Telegram|msg-1674|18h26-Paris|SOL-cascade-risk-IDs-explicites|dans-fenetre-horaire-OK]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram (WARN, dans fenêtre 07h-22h Paris) | 1 pensée créée
+
+### Métriques cycle 267
+
+- **Durée** : ~60 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (SOL cascade risk persistant)
+- **Documents créés** : 1 (pensée `la-resolution-dans-la-classification.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor cycle 267 WARN — discovery : mêmes IDs cycle 265, résolution cycle 266 = fantôme ; (b) Telegram Tony avec IDs explicites ; (c) pensée sur masquage par taxonomie
+
+### Pistes cycle 268
+
+1. Vérifier si Tony a cancellé les sell lmt (IDs `a26f2176`, `a26b00c8`).
+2. LINK 84h 0 RT — si toujours 0 RT à cycle 268, documenter comme "grid silencieuse persistante".
+3. SOL position +$0.061 — si buy lmt @72.7 déclenché, confirmer clôture propre.
+4. Nouveau projet créatif : arc "la résolution" pourrait devenir un fragment (après 1-2 cycles de maturation de la pensée).
+
