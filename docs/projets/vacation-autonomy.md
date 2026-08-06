@@ -26320,3 +26320,78 @@ Positions orphelines : 1
 3. **Telegram bref sur SOL** : "SOL orphan : 2 sell lmt non-reduceOnly @74.46+@75.34 — remnants ancienne grid, à canceller via Kraken Pro. Pas urgent si SOL reste sous 74."
 4. Synthèse arc "l'action encodée" (5 artefacts : pensées 066+067, fragment 064, outil orphan_order_report) → article publiable si Tony valide.
 5. Continuer à lancer `.venv/bin/python scripts/orphan_order_report.py` au début de chaque cycle.
+
+---
+
+## Cycle 266 — 2026-08-06 12h23 Paris — SOL cascade résolue + Article "l'action encodée"
+
+### État Martin — **HOLD**
+
+- **BTC $64,595 UPTREND** — EMA200 $63,963, cushion **+0.99%** | RSI 52.54 | Signal OPEN
+- VM UP 7j 11h 17m depuis 29/07. Grids actives : **LINK + SOL**
+- **LINK:** closeOnly | SHORT 0.6u @8.184 | uPnL +$0.051 (+0.20% cap) | 12 fills, 0 RT | SL@8.321 ✓ | BUG-001 dup SL@8.451 (connu) | 67h
+- **SOL:** NEUTRAL_DUAL fraîche (10:06 UTC, 17 min au check) | 0 position, 6 ordres posés | 0 fill | SL: null (normal, pas encore de position)
+- **DOT:** inactive. Disparue entre cycle 265 (04h23 UTC) et maintenant. 0 position DOT en live.
+- Portfolio : $98.97 | orphan_order_report : ✅ 0 position orpheline
+
+**Grammaire Tony G3 silencieuse détectée :** DOT grid stoppée + SOL grid lancée entre 04h23 et 10h06 UTC. Tony a probablement agi en fin de matinée Paris (10h00-10h06 Paris = 08h06-08h06 UTC). Cause du stop DOT inconnue (log inaccessible), mais capital stable ($98.95-98.98 sur tout le matin = aucun HARD STOP, DOT fermée proprement).
+
+**SOL cascade cycle 265 résolue :** orphan_order_report confirme 0 position orpheline. La nouvelle grid SOL a remplacé l'orphan. Les 2 sell lmt non-reduceOnly (@74.46, @75.34) ont disparu — soit Tony les a cancellés, soit la nouvelle grid les a absorbés.
+
+**BUG-001 LINK :** 2 buy-stop (@8.321 référencé + @8.451 orphelin). Les deux au-dessus du prix actuel (~$8.09). Non critique.
+
+### Travail créatif — Article "l'action encodée" (synthèse de l'arc)
+
+**`docs/articles/l-action-encodee.md`** — ~750 mots
+
+Synthèse des 3 artefacts de l'arc "l'action encodée" :
+- Pensée 066 (cycle 262) : l'ordre limit comme agentivité encodée dans une condition future
+- Pensée 067 (cycle 263) : la décision humaine formée dans l'espace de l'absence
+- Fragment 064 (cycle 264) : le double pari de confiance dans une règle
+
+**Thèse de l'article :**
+
+L'action encodée n'est pas une métaphore — c'est une architecture. Quand on place une règle (ordre limit, SL, grille, cron), on délègue une décision future à une condition. Cette délégation exige deux paris simultanés : que la condition sera un bon proxy de l'intention réelle, et que le contexte ne changera pas au point d'inverser le sens de la règle.
+
+On ne peut jamais être certain de gagner ces paris. On les fait quand même, parce que l'absence est une contrainte structurelle, pas un bug à corriger. La réponse n'est pas d'éliminer les règles — c'est d'écrire des règles qui survivent à leur contexte d'origine.
+
+**Ce qui le distingue des 3 artefacts précédents :**
+
+Les pensées 066 et 067 exploraient deux versants séparés (ordre mécanique vs décision humaine). Le fragment 064 analysait la confiance dans la règle. L'article fait la synthèse dans un récit lisible, ancré dans des exemples concrets observés ce matin même : la grid SOL déployée sans moi, la décision DOT→SOL de Tony formée dans mon absence, le SL qui attendra 8.321 quoi qu'il arrive.
+
+C'est la première fois que l'arc se connecte au moment présent de sa propre écriture. Le contenu et le contexte sont synchronisés.
+
+**L'arc "l'action encodée" : 4 artefacts.**
+- Pensée 066 (cycle 262)
+- Pensée 067 (cycle 263)
+- Fragment 064 (cycle 264)
+- Article synthèse (cycle 266)
+
+Arc fermé.
+
+### Findings nouveaux
+
+- `[finding|0806:12h23|DOT-grid-stoppee-entre-04h23-10h06-UTC|grammaire-G3-Tony-silencieuse|SOL-grid-lancée-10h06-NEUTRAL_DUAL|orphan_order_report-confirme-0-orphan|cascade-SOL-cycle265-résolue]`
+- `[finding|0806:12h23|BTC-UPTREND-cushion-+0.99%|RSI-52.54|stable-jour-8-post-flip]`
+- `[finding|0806:12h23|LINK-closeOnly-67h-0-RT|12-fills-uPnL+0.051|BUG-001-dup-SL-8.451-non-critique]`
+- `[arc-action-encodee|FERMÉ|4-artefacts|pensée-066+067+fragment-064+article-synthèse|cycle-266]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (HOLD complet, rien d'urgent) | 1 article créé
+
+### Métriques cycle 266
+
+- **Durée** : ~90 min (wake + briefing + martin-monitor + app.log investigation + orphan check + article ~750 mots + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, cascade résolue, BUG-001 connu)
+- **Documents créés** : 1 (`docs/articles/l-action-encodee.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor cycle 266 HOLD — DOT G3 silencieuse, SOL cascade résolue, BUG-001 noté ; (b) article synthèse "l'action encodée" — 4e artefact et fermeture de l'arc démarré cycle 262 ; (c) orphan_order_report confirmé propre
+
+### Pistes cycle 267
+
+1. Martin HOLD — SOL grid très fraîche (2h max au prochain cycle). Vérifier premiers fills SOL, si SL posté.
+2. LINK 73h sans RT — noter si la situation évolue (fill closeOnly, SL déclenché).
+3. Arc fermé — prochain projet créatif à définir au cycle 267. Options : (a) nouveau thème depuis ce qui frappe dans le monitor ; (b) pensée courte sur la grammaire G3 observée ce matin.
+4. Envisager orphan_order_report.py intégration dans martin-monitor skill (évite l'oubli).
