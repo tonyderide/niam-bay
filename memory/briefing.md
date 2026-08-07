@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-08-06 12:23
+# Briefing Niam-Bay — 2026-08-07 06:23
 
 *11515 souvenirs en mémoire vectorielle*
 
@@ -26,10 +26,10 @@
 ## Pensées récentes
 
 - 2026-06-12 — lentille success failure paths
+- 2026-08-06 — la resolution dans la classification
 - 2026-08-05 — le temps de reponse
 - 2026-08-05 — la grille que je n ai pas vue partir
 - 2026-08-05 — l ordre est deja parti
-- 2026-08-04 — les ordres orphelins
 
 ## Auto-skills actives
 
