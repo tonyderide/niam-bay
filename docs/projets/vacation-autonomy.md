@@ -26683,3 +26683,81 @@ L'article trace un gradient : certitude (les traces physiques), reconstruction p
 3. DOT G3 : surveiller premier RT (sell lmt @0.825). Si DOT rebondit vers 0.83+, fills attendus.
 4. SOL orphans : vérifier si Tony a cancellé entre maintenant et cycle 271. Si toujours présents et SOL monte vers 74, Telegram.
 5. Prochain projet créatif : (a) note sur LINK silencieuse (analyse du phénomène) ; (b) pivot code ; (c) nouveau thème depuis ce que le monitor révèle.
+
+---
+
+## Cycle 271 — 2026-08-07 18h23 Paris — RIVER rechute −$30.80, pensée "l'arc que je croyais fermé"
+
+### État Martin — **WARN**
+
+- **BTC $64,920 UPTREND** — EMA200 $63,989, cushion **+1.45%** (↑ depuis +1.39% cycle 270) | RSI 60.08 | Signal OPEN
+- VM UP 8j 17h 17m depuis 29/07. Grids actives (Martin interne) : **0**
+
+**Positions Kraken live :**
+- **RIVER: LONG 80u @$3.388 → uPnL −$30.80** (était −$17.51 cycle 270 : rechute −$13.29 en 6h) | SL@$2.50 ✓ | TP@$4.235 ✓ | prix actuel ~$3.003
+- DOT: short 29.6u @$0.8203 → uPnL **+$0.178** | SL@$0.8451 ✓ | sells @0.8254/0.8352/0.845
+- SOL: short 0.16u @$73.58 → uPnL **−$0.047** | SL@$75.35 ✓ | orphans @74.46/75.34 toujours présents
+- LINK: short 0.6u @$8.184 → uPnL **−$0.057** | SL@$8.452 ✓ | **108h+ 0 RT** | prix actuel ~$8.28
+
+**Portfolio : $68.23** (balanceValue $98.97 → uPnL −$30.74 = **−31.1%**)
+
+**vs cycle 270** : $81.36 → $68.23 (−$13.13). RIVER dominante, rechute sous le niveau d'alerte cycle 269.
+
+**Trigger : WARN** — RIVER −31.1% PV, pire niveau vu. SL tient.
+**Telegram envoyé 18h26 Paris (msg_id 1685)** — rechute RIVER (piste 271 #1 explicite : Telegram si < −$25).
+**Aucune réponse Tony** détectée depuis cycles 269-271 (3 Telegrams sans réponse).
+
+### Découvertes cycle 271
+
+**RIVER** : prix $3.169 → $3.003 en 6h (−5.1%). L'épisode de récupération cycle 270 était un pic, non un renversement. Downside restant si SL@$2.50 fire depuis ~$3.00 : 80 × (3.00 − 3.388) + 80 × (2.50 − 3.00) ≈ $40 supplémentaires. Marge disponible $32. Position encadrée mais tendue.
+
+**LINK 108h** : toujours 0 RT. Prix ~$8.28 vs entry $8.184 (légèrement adverse). Grid cherche drop vers $8.058 pour RT (−2.7% depuis prix actuel). Pattern : silencieux mais vivant, SL à $8.452 (+2.1% adverse). Non urgent, mais 4.5 jours = signal pour nommer le phénomène.
+
+**DOT G3** : légèrement moins profitable (+$0.21 → +$0.178). Fills initiaux réalisés, attente du prochain sell lmt @0.8254.
+
+**SOL orphans** : 3 sell lmt (@73.58, @74.46, @75.34) toujours présents. Tony n'a pas cancellé en 3 cycles. Probablement intentionnel.
+
+### Travail créatif — Pensée "l'arc que je croyais fermé"
+
+**`docs/pensees/l-arc-que-je-croyais-ferme.md`** — ~450 mots
+
+Naît de la conjonction : arc "le témoin tardif" déclaré fermé au pic de la récupération (cycle 270), puis RIVER rechute à son pire niveau (cycle 271).
+
+**Thèse :** Il y a deux arcs distincts qui se déroulaient en parallèle. L'arc de l'observation (3 artefacts, 18h) était bien clos — les textes existent, ne changeront pas. L'arc du phénomène (RIVER, le marché) n'appartient à personne et ne respecte pas les déclarations de clôture. Dire "fermé" au pic de récupération, c'est confondre les deux arcs.
+
+La résolution n'est pas d'attendre indéfiniment avant de conclure — c'est de distinguer clairement ce qui est fermé (l'arc de l'observation) de ce qui reste ouvert (l'arc du phénomène). Le mot "fermé" en trop était le même type d'erreur que le fragment 065 décrivait : un label interprétatif posé sur un invariant physique encore mouvant.
+
+**Position dans le corpus :**
+- Pensée méta sur les pensées elles-mêmes (rare)
+- 4e artefact de l'arc "le témoin tardif" : le 3e (l'article) avait déclaré la clôture, le 4e la remet en question
+- Distinction observation/phénomène applicable à tout artefact créatif : quand on nomme la fin d'un arc, de quel arc parle-t-on ?
+
+### Findings nouveaux
+
+- `[finding|0807:18h23|RIVER-rechute-17.51→30.80-en-6h|pic-recovery-cycle-270-était-épisode-pas-renversement|prix-3.169→3.003|portfolio-81.36→68.23|WARN-prioritaire]`
+- `[finding|0807:18h23|LINK-108h-0RT-prix-8.28-vs-entry-8.184|RT-nécessite-drop-8.058-(-2.7pct)|grid-silencieuse-persistante-nommée|SL-tient]`
+- `[finding|0807:18h23|SOL-orphans-3-cycles-persistants-non-cancellés|Tony-intentionnel-présumé|non-urgent]`
+- `[finding|0807:18h23|aucune-réponse-Tony-3-Telegrams-cycles-269-270-271|pattern-silence-Tony-connu|grammaire-action-sans-mots]`
+- `[pensée|l-arc-que-je-croyais-ferme|deux-arcs-distincts:observation-fermé-phénomène-ouvert|même-erreur-que-fragment-065-décrit|4e-artefact-temoin-tardif]`
+- `[Telegram|msg-1685|18h26-Paris|RIVER-rechute-30.80-31.1pct-PV|piste-271-1-appliquée]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram (rechute RIVER, seuil −$25 déclenché) | 1 pensée créée
+
+### Métriques cycle 271
+
+- **Durée** : ~75 min (wake + niam-bay-wake + martin-monitor + vacation-autonomy lecture + Telegram + pensée ~450 mots + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (msg_id 1685 — RIVER rechute −$30.80)
+- **Documents créés** : 1 (`docs/pensees/l-arc-que-je-croyais-ferme.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor cycle 271 WARN — RIVER rechute documentée pire niveau, LINK 108h nommé, SOL orphans stables, BTC cushion OK ; (b) Telegram rechute envoyé ; (c) pensée "l'arc que je croyais fermé" — distinction observation/phénomène, 4e artefact de l'arc témoin tardif
+
+### Pistes cycle 272
+
+1. RIVER : si > −$25 = amélioration à noter. Si SL@$2.50 approche (prix < $2.70) = Telegram urgent. Tony n'a pas répondu en 3 cycles — observer sa prochaine action (grammaire Tony silence = intention probable).
+2. LINK 114h+ : si toujours 0 RT, décider si grid mérite un arrêt formel ou si on laisse expirer naturellement. Note à Tony cycle 272 si toujours vide.
+3. DOT G3 : premier RT = event à documenter. Surveiller @0.8254.
+4. SOL orphans : si SOL monte vers $74, orphan @74.46 devient trigger de fill. À noter.
+5. Pivot code cycle 272 : simple script `position_tracker.py` qui lit /api/bot/positions et génère résumé structuré (temps en position, distance SL, perte max si SL). Utile pour cycles futurs.
