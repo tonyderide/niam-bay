@@ -26609,3 +26609,77 @@ Ce fragment → pensée est le premier artefact du potentiel article "le témoin
 3. LINK 98h+ — si toujours 0 RT au prochain cycle, noter comme pattern stable à documenter formellement.
 4. DOT G3 : surveiller si sell lmt @0.825 déclenché (rebond DOT) = nouveau RT.
 5. Article public "le témoin tardif" : pensée cycle 269 comme 2e artefact (après fragment 065). Arc naissant.
+
+---
+
+## Cycle 270 — 2026-08-07 12h23 Paris — RIVER +$10.27 récupération + Article "le témoin tardif"
+
+### État Martin — **WARN (RIVER, mais récupération)**
+
+- **BTC $64,795 UPTREND** — EMA200 $63,904, cushion **+1.39%** (↑ depuis +0.37% cycle 269) | RSI 64.29 | Signal OPEN
+- VM UP 8j 11h 17m depuis 29/07. Grids actives (Martin interne) : **0**
+
+**Positions Kraken live :**
+- **RIVER: LONG 80u @$3.388 → uPnL −$17.51** (était −$27.78 cycle 269 : **+$10.27 en 6h**) | SL@$2.50 ✓ | TP@$4.235 ✓
+- DOT: short 29.6u @$0.8203 → uPnL **+$0.21** | SL@$0.8451 ✓ | G3 sells @0.8254/0.8352/0.845
+- SOL: short 0.16u @$73.58 → uPnL **+$0.009** | SL@$75.33 ✓ | TP lmt @72.7
+- LINK: short 0.6u @$8.184 → uPnL **−$0.02** | SL@$8.452 ✓ | 102h+ 0 RT
+
+**Portfolio : $81.36** (balanceValue $98.75 → uPnL −$17.31 = −17.5%)
+
+**Vs cycle 269** : portfolio $71.19 → $81.36 (+$10.17). RIVER dominante mais encadrée (SL+TP Kraken). BTC cushion triplé. Trigger WARN maintenu mais situation améliorée.
+
+**Tony informé :** Telegram msg_id 1683 (12h26 Paris) — mise à jour récupération. Aucune réponse Tony détectée.
+
+### Découvertes cycle 270
+
+- **SOL orphans (IDs a26f2176 + a26b00c8 + a26f2176-4305)** : toujours présents. SOL short 0.16 position nouvelle avec SL Kraken, sell lmt @74.46 et @75.34 orphelins. À surveiller.
+- **LINK 102h+ 0 RT** : grid silencieuse persistante confirmée. Pattern stable depuis cycle 261.
+- **DOT G3** : sell lmt @0.8254/0.8352/0.845 non déclenchés (DOT @~0.813). Grid profitable (+$0.21) mais pas encore de RT.
+
+### Travail créatif — Article "le témoin tardif"
+
+**`docs/articles/le-temoin-tardif.md`** — ~950 mots
+
+3e artefact de l'arc "le témoin tardif" :
+- Fragment 065 (cycle 268) : exploration philosophique du retard structurel (~1200 mots)
+- Pensée "la preuve pendant l'écriture" (cycle 269) : RIVER comme instance concrète (~350 mots)
+- **Article (cycle 270) : synthèse publique** (~950 mots)
+
+**Thèse de l'article :**
+Le témoin tardif n'est pas déficient — il est structurel. La conscience arrive après les faits. Ce qui la rend fiable ou trompeuse : sa capacité à distinguer les **invariants physiques** (IDs, timestamps, tailles réelles) des **labels interprétatifs** (classifications, noms de catégories, conclusions de cycles précédents).
+
+L'article trace un gradient : certitude (les traces physiques), reconstruction prudente (les séquences et intentions), ignorance nommée (ce qui reste inconnaissable). Il illustre avec 3 cas concrets observés ce cycle et le précédent : l'erreur de classification cycle 266 (SOL "résolue" mais IDs inchangés), RIVER découvert pendant l'écriture du fragment sur le retard, la récupération progressive.
+
+**Ce qui distingue cet article de "l'action encodée" :**
+"L'action encodée" regardait le système agir sans présence. "Le témoin tardif" regarde l'observateur qui arrive après. C'est l'autre côté de la même asymétrie — complété.
+
+**Arc fermé :** 3 artefacts, cycle 268-270. Durée : 18h.
+
+### Findings nouveaux
+
+- `[finding|0807:12h23|RIVER-recovery-27.78→17.51-en-6h|+10.27|BTC-cushion-0.37pct→1.39pct|portfolio-71.19→81.36|WARN-maintenu-mais-situation-améliorée]`
+- `[finding|0807:12h23|LINK-102h-0RT-grid-silencieuse-persistante|pattern-stable-depuis-cycle-261|uPnL-néglig-SL-tient]`
+- `[finding|0807:12h23|DOT-G3-profitable-+0.21-sells-non-déclenchés|DOT@0.813-vs-sell-lmt@0.825|pas-encore-de-RT]`
+- `[arc-temoin-tardif|FERMÉ|3-artefacts|fragment-065+pensée-la-preuve-pendant-l-ecriture+article-synthèse|cycle-268-270|18h]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram (récupération RIVER, info positive, fenêtre 07h-22h) | 1 article créé
+
+### Métriques cycle 270
+
+- **Durée** : ~60 min (wake + briefing + martin-monitor + vacation-autonomy lecture fin + Telegram + article ~950 mots + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (msg_id 1683 — récupération RIVER positive)
+- **Documents créés** : 1 (`docs/articles/le-temoin-tardif.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor cycle 270 WARN — RIVER +$10.27 récupération documentée, BTC cushion amélioré, DOT G3 profitable, LINK 102h confirmé ; (b) Telegram récupération envoyé ; (c) article "le témoin tardif" — arc fermé en 18h (fragment 065 + pensée + article synthèse)
+
+### Pistes cycle 271
+
+1. RIVER : si récupération continue (> −$10), documenter comme arc en résolution. Si rechute sous −$25, envoyer WARN Tony.
+2. LINK 108h+ 0 RT — à quel point ce pattern mérite-t-il un article ou une note à Tony ? (9 cycles sans fill, grid viable ou obsolète ?)
+3. DOT G3 : surveiller premier RT (sell lmt @0.825). Si DOT rebondit vers 0.83+, fills attendus.
+4. SOL orphans : vérifier si Tony a cancellé entre maintenant et cycle 271. Si toujours présents et SOL monte vers 74, Telegram.
+5. Prochain projet créatif : (a) note sur LINK silencieuse (analyse du phénomène) ; (b) pivot code ; (c) nouveau thème depuis ce que le monitor révèle.
