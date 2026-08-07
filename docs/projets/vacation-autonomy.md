@@ -26761,3 +26761,96 @@ La résolution n'est pas d'attendre indéfiniment avant de conclure — c'est de
 3. DOT G3 : premier RT = event à documenter. Surveiller @0.8254.
 4. SOL orphans : si SOL monte vers $74, orphan @74.46 devient trigger de fill. À noter.
 5. Pivot code cycle 272 : simple script `position_tracker.py` qui lit /api/bot/positions et génère résumé structuré (temps en position, distance SL, perte max si SL). Utile pour cycles futurs.
+
+---
+
+## Cycle 272 — 2026-08-08 00h23 Paris — position_tracker.py + RIVER légère récupération
+
+### État Martin — **WARN (RIVER, récupération légère)**
+
+- **BTC $64,876 UPTREND** — EMA200 $64,003, cushion **+1.36%** (stable vs +1.45% cycle 271) | RSI 57.09 | Signal OPEN
+- VM UP 8j 23h 17m depuis 29/07. Grids actives (Martin interne) : **0**
+
+**Positions Kraken live (via position_tracker.py — output direct) :**
+```
+Portfolio : $71.97 (déposé $98.71)
+uPnL total: $-26.70 (-27.0%)
+Marge dispo: $35.76
+
+RIVER  ▲ LONG  80u  entrée $3.388 actuel $3.053  uPnL -$26.79 (-9.89%)
+  ✅ SL $2.500 (−18.12% → delta -$44.26 / total from entry -$71.05)
+  TP    $4.235 (+38.71% → gain +$67.75)
+
+DOT    ▼ SHORT 14.7u  entrée $0.820 actuel $0.813  uPnL +$0.104 (+0.86%)
+  🔴 SL $0.845 (−3.92% → delta -$0.47)
+  Lmt : $0.825 / $0.835 / $0.845
+
+LINK   ▼ SHORT  0.6u  entrée $8.184 actuel $8.174  uPnL +$0.006 (+0.13%)
+  🔴 SL $8.452 (−3.40% → delta -$0.17)
+  Lmt : $8.058
+
+SOL    ▼ SHORT  0.16u entrée $73.58 actuel $73.68  uPnL -$0.016 (-0.14%)
+  🔴 SL $75.35 (−2.27% → delta -$0.27)
+  TP    $72.70 (+1.33% → gain +$0.14)
+
+Perte max si tous SL fire : -$45.16
+Portfolio post-SL (pire cas) : $26.81
+```
+
+**vs cycle 271** : portfolio $68.23 → $71.97 (+$3.74). RIVER −$30.80 → −$26.79 (+$4.01 récupération).
+
+**DOT 14.7u vs 29.6u (cycle 271)** : réduction confirmée. La position est passée de 29.6 à 14.7 en 6h — soit ~15u rachetées/fermées. Probable RT partiel sur DOT G3 (sells @0.825/0.835 déclenchés et rebuildés). Événement positif non documenté dans cycle 271.
+
+**Trigger : WARN maintenu** — RIVER toujours sous −$25 (−$26.79), pas encore au seuil d'amélioration. Pas de Telegram (entre les deux seuils : ni récupération >−$25, ni SL <$2.70 actuel).
+
+**Tony** : toujours 0 réponse depuis 3 Telegrams (cycles 269-271). Grammaire du silence maintenue.
+
+### Travail créatif — position_tracker.py
+
+**`scripts/position_tracker.py`** — ~220 lignes Python
+
+Script construit depuis zero ce cycle, inspiré de la piste 5 cycle 271 et du pattern `orphan_sl_detector.py`.
+
+**Ce qu'il fait :**
+- Interroge `/api/bot/positions` + `/api/bot/orders` via HTTP (localhost ou SSH tunnel)
+- Pour chaque position : dérive le prix actuel depuis uPnL, identifie SL/TP/ordres limites
+- Calcule : distance SL en %, perte additionnelle si SL fire depuis prix actuel, perte totale depuis entrée si SL fire
+- Génère résumé portfolio + worst-case exposure
+
+**Ce qu'il révèle que le monitor brut ne montrait pas :**
+- Si SL RIVER fire depuis $3.05 : perte delta **−$44.26** supplémentaire → portfolio tombe à **$26.81**
+- Marge dispo $35.76 : assez pour absorber si SL RIVER fire (légèrement), mais LINK/SOL/DOT SL cumulatifs (−$0.91) ne changent pas l'ordre de grandeur
+- LINK/SOL/DOT SL sont proches (2-4%) mais impacts faibles (somme −$0.91) — normal pour des grids
+
+**Valeur structurelle :** cycles futurs peuvent appeler le script directement au lieu de parser JSON brut dans le monitor. Gain de clarté et d'homogénéité.
+
+**Testé sur la VM** : output direct Python 3.9, 4 positions parsées correctement, SL/TP cross-référencés.
+
+### Findings nouveaux
+
+- `[finding|0808:00h23|RIVER-30.80→26.79-récupération-+4.01|cycle-271-pire-niveau-tenu|SL-2.50-buffer-18pct-distance-actuelle]`
+- `[finding|0808:00h23|DOT-29.6u→14.7u-réduction-probable-RT-partiel|G3-actif-confirmé|+0.104-profitable]`
+- `[finding|0808:00h23|worst-case-tous-SL-portfolio-26.81|marge-dispo-35.76-absorbe-RIVER-SL-seul|découverte-position_tracker]`
+- `[finding|0808:00h23|LINK-120h-0RT|prix-8.174-vs-lmt-buy-8.058-(-1.4pct)|RT-nécessite-drop-sous-8.058]`
+- `[script|position_tracker.py|220L|distance-SL+perte-max+worst-case-portfolio|testé-VM-Python39|piste-271-5-complétée]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (entre seuils) | 1 script créé + testé
+
+### Métriques cycle 272
+
+- **Durée** : ~90 min (wake + niam-bay-wake + martin-monitor + vacation-autonomy lecture + position_tracker build+test+debug + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (entre seuils — ni récupération >−$25, ni danger <$2.70)
+- **Documents créés** : 1 (`scripts/position_tracker.py`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor WARN cycle 272 — légère récupération RIVER, DOT réduction confirmée, worst-case exposure calculé ; (b) position_tracker.py — outil permanent pour cycles futurs, révèle portfolio $26.81 post-SL total
+
+### Pistes cycle 273
+
+1. RIVER : si actuel ~$3.05, seuil positif Telegram > −$25 nécessite prix ~$3.076 (+0.7%). Plausible. Si rechute < $2.70 = Telegram urgent. Surveiller.
+2. LINK : ~120h 0 RT. Cycle 273 = moment de nommer officiellement "grid fantôme" si toujours vide. Note à Tony ou article.
+3. DOT : RT partiel documenté. Si DOT remonte vers $0.825 → nouveau fill possible. Surveiller.
+4. position_tracker.py : ajouter SSH wrapper pour l'exécuter depuis le PC local sans tunnel ? Ou intégrer dans morning_brief_v2.py pour auto-inclure dans les rapports.
+5. Prochain créatif : article ou pensée sur le "worst-case visible" — la différence entre voir un chiffre brut (-27%) et voir le scénario de déclenchement ($26.81 post-SL). Le premier inquiète, le second informe.
