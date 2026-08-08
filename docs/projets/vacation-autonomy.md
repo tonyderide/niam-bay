@@ -26943,3 +26943,81 @@ Naît du run position_tracker.py cycle 273. La distinction : `-30.8%` (chiffre f
 3. **DOT G3 re-accumulation** : surveiller si sells lmt @0.8352/0.845 re-triggèrent. Chaque re-accumulation = position plus grande sous SL 0.8451.
 4. **SOL cascade** : surveiller si monte vers SL $77.20 (actuel $74.61, gap 3.5%). Si Monte, Telegram Tony (cascade SOL = +$1.66 loss additionnel).
 5. **Créatif** : article "la grille fantôme" — LINK 126h+ 0 RT, qu'est-ce qu'une grille active qui ne fait rien ? Phénoménologie de l'inactivité active.
+
+---
+
+## Cycle 274 — 2026-08-08 12h23
+
+**Martin — WARN**
+
+**Position_tracker.py — output cycle 274 :**
+```
+Portfolio : $51.14 (déposé $98.36)
+uPnL total: $-47.19 (-48.0%)
+Marge dispo: $10.07
+
+RIVER  ▲ LONG  80u  entrée $3.388  actuel $2.801  uPnL -$46.995
+  🟡 SL $2.500 (-10.74% → delta -$24.06 / total from entry -$71.05)
+  TP    $4.235 (+51.21% → gain $+67.75)
+
+DOT    ▼ SHORT 29.2u  entrée $0.8228  actuel $0.8174  uPnL +$0.160
+  🔴 SL $0.8451 (-3.39% → delta -$0.81)
+
+SOL    ▼ SHORT  0.64u  entrée $74.48  actuel $74.91  uPnL -$0.273
+  🔴 SL $77.20 (-3.06% → delta -$1.47)
+
+LINK   ▼ SHORT  0.6u  entrée $8.184  actuel $8.315  uPnL -$0.078
+  🔴 SL $8.452 (-1.65% → delta -$0.08) ← SL PROCHE
+
+Perte max si tous SL fire : -$26.42
+Portfolio post-SL (pire cas) : $24.72
+```
+
+**vs cycle 273 :** RIVER $3.010 → $2.801 (-7% en 6h, -$16.77). Portfolio $68.19 → $51.14 (↓ $17.05). Pire-cas $24.93 → $24.72 (stable, -$0.21). LINK SL buffer 2.45% → 1.65% (proche).
+
+**Trigger : WARN maintenu.** RIVER actuel $2.801 > seuil Telegram $2.70. LINK SL à 1.65% = surveiller. BTC UPTREND +0.80% au-dessus EMA200 ($64,957 vs $64,151). **0 Telegram** (RIVER au-dessus du seuil).
+
+**Nouvelle observation : LINK grid morte.** `/api/grid/active` → `active:false` pour LINK. La grid qui avait 126h 0 RT au cycle 273 n'existe plus. Position SHORT 0.6u et ordres (SL + buy lmt $8.058 `reduceOnly:false`) persistent orphelins. La stratégie est partie, la position reste.
+
+**Dream overdue.** Dernier dream : cycle 256 (2026-08-04 00h23). Cycle actuel : 274. 18 cycles sans consolidation (règle : dream si +15 cycles). Dream à lancer en fin de session.
+
+### Travail créatif — Pensée "la grille fantôme"
+
+**`docs/pensees/2026-08-08-la-grille-fantome.md`** — ~900 mots
+
+Naît de la découverte au cycle 274 : la LINK grid (126h 0 RT au cycle 273) est maintenant `active:false`. Elle a disparu entre les deux sessions.
+
+**Thèse :** Distinction entre deux types d'inactivité — la grille qui attend (pas encore l'occasion), et la grille fantôme (la condition de son action a cessé d'exister). Puis une troisième forme : l'empreinte. La grille morte laisse ses ordres dans le carnet — un buy lmt $8.058 `reduceOnly:false` sans contexte de stratégie. Action encodée qui a perdu son cadre. 
+
+**Position dans le corpus :**
+- Symétrie avec "la grille que je n'ai pas vue partir" (cycle 263, pensée 2026-08-05) : là-bas, une grille DOT apparaissait dans l'espace entre sessions. Ici, une grille LINK disparaît dans le même espace. Même structure d'aveuglement, direction inversée.
+- Continue l'arc "actions encodées dans l'absence" : ordres placés, stratégie partie, le marché exécute sans témoin.
+- Distinction centrale : la **position** (fait neutre, survive à la stratégie) vs la **stratégie** (l'intention qui l'organisait, disparaît). Souvent dans cet ordre.
+
+### Findings nouveaux
+
+- `[finding|0808:12h23|LINK-grid-morte-active:false|position+ordres-orphelins-persistent|buy-lmt-8.058-reduceOnly:false-sans-contexte]`
+- `[finding|0808:12h23|RIVER-3.010→2.801-6h|-7%|pire-cas-24.93→24.72-stable|seuil-Telegram-2.70-non-atteint]`
+- `[finding|0808:12h23|LINK-SL-buffer-1.65%-proche|DOT-SL-3.39%-SOL-SL-3.06%-stables]`
+- `[pensée|la-grille-fantome|900mots|grid-inactive-vs-empreinte|position-survive-strategie|symétrie-avec-pensée-0805]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (RIVER au-dessus seuil $2.70) | 1 pensée créée
+
+### Métriques cycle 274
+
+- **Durée** : ~60 min (wake + niam-bay-wake + martin-monitor + position_tracker.py + pensée ~900 mots + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (RIVER $2.801 > seuil $2.70)
+- **Documents créés** : 1 (`docs/pensees/2026-08-08-la-grille-fantome.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor WARN cycle 274 — RIVER -$46.99 new low, LINK grid morte orpheline, pire-cas $24.72 stable, dream overdue ; (b) pensée "la grille fantôme" — symétrie avec cycle 263, distinction position/stratégie, empreinte d'ordre sans contexte
+
+### Pistes cycle 275
+
+1. **RIVER** : seuil urgent < $2.70 (actuel $2.801, -3.6% buffer — SERRÉ). Telegram immédiat si atteint. SL $2.50 tient.
+2. **LINK SL** : buffer 1.65% = surveiller de près. Si LINK monte vers $8.40+, Telegram (delta -$0.08 supplémentaire).
+3. **Dream** : 18 cycles overdue → lancer dream en priorité si contexte >80% ou au prochain cycle 275.
+4. **Ebook** : vérifier état pipeline ebook si contexte le permet.
+5. **Créatif** : arc "la grille que je n'ai pas vue partir" ↔ "la grille fantôme" complète un diptyque. Troisième volet possible : "la grille qui est revenue" (si AutoGridScheduler relance LINK ou DOT).
