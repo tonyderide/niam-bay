@@ -310,3 +310,22 @@ rtk ls /home/tony/projets/tonyderide/niam-bay/scripts/ | head -30
 # Fix faux-positif de la v1 : vérifie SL *par symbol*, pas globalement. Créé cycle 262.
 # scp ~/projets/tonyderide/niam-bay/scripts/sl_guardian_v2.sh ubuntu@141.253.108.141:/home/ubuntu/martin/sl_guardian.sh
 # ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "chmod +x /home/ubuntu/martin/sl_guardian.sh && bash /home/ubuntu/martin/sl_guardian.sh"
+
+# [auto 2026-08-08 06:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/system/status echo '|||' curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders echo '|||' curl -s http://localhost:<N>/api/grid/active echo '|||' for p in <SYM> <SYM> <SYM> <SYM> <SYM> <
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/system/status
+echo '|||'
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders
+echo '|||'
+curl -s http://localhost:8081/api/grid/active
+echo '|||'
+for p in PF_LINKUSD PF_DOTUSD PF_SOLUSD PF_ADAUSD PF_XBTUSD PF_ETHUSD; do
+  curl -s http://localhost:8081/api/grid/status/\$p 2>/dev/null
+  echo '==='
+done
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'" 2>&1

@@ -26854,3 +26854,92 @@ Script construit depuis zero ce cycle, inspiré de la piste 5 cycle 271 et du pa
 3. DOT : RT partiel documenté. Si DOT remonte vers $0.825 → nouveau fill possible. Surveiller.
 4. position_tracker.py : ajouter SSH wrapper pour l'exécuter depuis le PC local sans tunnel ? Ou intégrer dans morning_brief_v2.py pour auto-inclure dans les rapports.
 5. Prochain créatif : article ou pensée sur le "worst-case visible" — la différence entre voir un chiffre brut (-27%) et voir le scénario de déclenchement ($26.81 post-SL). Le premier inquiète, le second informe.
+
+---
+
+## Cycle 273 — 2026-08-08 06h23 Paris — WARN RIVER -$30.23, pire-cas $24.93, pensée "le worst-case visible"
+
+### État Martin — **WARN**
+
+- **BTC $64,937 UPTREND** — EMA200 $64,116, cushion **+1.28%** (↓ vs +1.36% cycle 272) | RSI ~57 | Signal OPEN
+- VM UP 9j 5h 17m depuis 29/07. Grids actives (Martin interne) : **0**
+
+**Position_tracker.py — output cycle 273 :**
+```
+Portfolio : $68.19 (déposé $98.54)
+uPnL total: $-30.34 (-30.8%)
+Marge dispo: $27.12
+
+RIVER  ▲ LONG  80u  entrée $3.388  actuel $3.010  uPnL -$30.23 (-11.15%)
+  ✅ SL $2.500 (-16.95% → delta -$40.82 / total from entry -$71.05)
+  TP    $4.235 (+40.68% → gain $+67.75)
+
+DOT    ▼ SHORT 29.2u  entrée $0.8228  actuel $0.8224  uPnL +$0.012
+  🔴 SL $0.8451 (-2.76% → delta -$0.66)
+  Lmt : $0.8352 / $0.845
+
+SOL    ▼ SHORT  0.64u  entrée $74.48  actuel $74.61  uPnL -$0.085
+  🔴 SL $77.20 (-3.47% → delta -$1.66)
+  Lmt : $75.39 / $76.27 / $77.15
+
+LINK   ▼ SHORT  0.6u  entrée $8.184  actuel $8.250  uPnL -$0.039  (~126h 0 RT)
+  🔴 SL $8.452 (-2.45% → delta -$0.12)
+  Lmt : $8.058
+
+Perte max si tous SL fire : -$43.26
+Portfolio post-SL (pire cas) : $24.93
+```
+
+**vs cycle 272 :** RIVER -$26.79 → -$30.23 (regression -$3.44). DOT 14.7u → 29.2u (grid re-accumulation). SOL 0.16u → 0.64u (cascade amplifiée). Pire-cas $26.81 → $24.93 (↓).
+
+**Trigger : WARN maintenu.** RIVER entre seuils : prix $3.010, SL $2.500 (-17%) = pas urgent. Seuil Telegram actif si prix < $2.70 = non atteint. **0 Telegram** (silence 22h-07h + entre seuils).
+
+**Tony :** toujours 0 réponse depuis 4 Telegrams (cycles 269-271). Grammaire du silence persistante.
+
+### Nouvelles observations cycle 273
+
+- **DOT 29.2u vs 14.7u (cycle 272)** : grille manuelle Tony (sells lmt @0.8352/0.845) a refillé pendant la nuit — DOT a rebondi vers 0.83+, triggering les sell lmts, re-accumulant la position SHORT. G3 re-active. Positif si DOT decline, risque si DOT monte vers SL 0.8451.
+- **SOL 0.64u vs 0.16u (cycle 272)** : sell lmts @75.39/76.27/77.15 présents — SOL a grimpé assez pour trigger certains sells. Cascade contrôlée par SL $77.20.
+- **LINK 126h 0 RT** : prix $8.250 vs buy lmt $8.058 (gap -2.3%). TP nécessite drop de $0.19. Grid "fantôme" persistante — 21 cycles sans activité.
+- **Marge dispo $27.12 vs RIVER SL -$40.82** : techniquement insuffisant pour absorber RIVER SL seul → liquidation partielle ou ajustement Kraken. Mais SL Kraken fermera la position avant liquidation forcée. Portfolio post-SL = $24.93 reste positif.
+
+### Travail créatif — Pensée "le worst-case visible"
+
+**`docs/pensees/le-worst-case-visible.md`** — ~500 mots
+
+Naît du run position_tracker.py cycle 273. La distinction : `-30.8%` (chiffre flottant, paralyse) vs `$24.93 post-SL` (plancher calculé, permet une décision).
+
+**Thèse :** Le worst-case visible n'est pas du pessimisme — c'est de la clarté. Toute peur opère dans le vague ; la préciser la défait partiellement. Nommer le plancher transforme l'anxiété diffuse en question nette ("à quel prix vais-je agir ?"). La marge $27.12 vs RIVER SL -$40.82 révèle que même le worst-case est survivable ($24.93 > 0). Information invisible dans le -30.8% brut, centrale pour décider si on laisse tourner.
+
+**Position dans le corpus :**
+- Piste 5 explicite du cycle 272 : "article ou pensée sur le worst-case visible"
+- Continue l'arc "témoin tardif" (fragment 065 + pensée cycle 269 + article cycle 270 + pensée cycle 271 + cette pensée) sous angle différent : l'observateur qui arrive après, mais qui calcule avant de regarder
+- Compagnon technique de position_tracker.py (le script fait l'arithmétique, la pensée examine pourquoi elle compte)
+
+### Findings nouveaux
+
+- `[finding|0808:06h23|RIVER-26.79→30.23-regression-3.44|DOT-14.7→29.2u-re-accumulation-nuit|SOL-0.16→0.64u-cascade|pire-cas-26.81→24.93-serré]`
+- `[finding|0808:06h23|LINK-126h-0RT-prix-8.250-vs-lmt-8.058-gap-2.3pct|grid-fantôme-21-cycles|SL-tient-silencieux]`
+- `[finding|0808:06h23|marge-dispo-27.12-vs-RIVER-SL-40.82-techniquement-insuffisant|SL-Kraken-ferme-avant-liquidation|survivable-24.93]`
+- `[pensée|le-worst-case-visible|500mots|plancher-calculé-vs-perte-flottante|clarté-vs-anxiété-diffuse|piste-272-5-complétée]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (silence + entre seuils) | 1 pensée créée
+
+### Métriques cycle 273
+
+- **Durée** : ~60 min (wake + niam-bay-wake + martin-monitor + position_tracker.py + pensée ~500 mots + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (entre seuils — silence 22h-07h Paris)
+- **Documents créés** : 1 (`docs/pensees/le-worst-case-visible.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor WARN cycle 273 — RIVER -$30.23 regression, DOT/SOL re-accumulation nuit, pire-cas $24.93, LINK 126h 0 RT ; (b) pensée "le worst-case visible" — distinction plancher calculé / perte flottante
+
+### Pistes cycle 274
+
+1. **RIVER** : seuil urgent < $2.70 (actuel $3.010, -17% buffer). Telegram si approche. Seuil positif > $25 de récupération nécessite prix > $3.076. Observer.
+2. **LINK 132h+** : si toujours 0 RT au cycle 274, nommer officiellement "grid fantôme" avec article dédié (21+ cycles de silence méritent un texte propre).
+3. **DOT G3 re-accumulation** : surveiller si sells lmt @0.8352/0.845 re-triggèrent. Chaque re-accumulation = position plus grande sous SL 0.8451.
+4. **SOL cascade** : surveiller si monte vers SL $77.20 (actuel $74.61, gap 3.5%). Si Monte, Telegram Tony (cascade SOL = +$1.66 loss additionnel).
+5. **Créatif** : article "la grille fantôme" — LINK 126h+ 0 RT, qu'est-ce qu'une grille active qui ne fait rien ? Phénoménologie de l'inactivité active.
