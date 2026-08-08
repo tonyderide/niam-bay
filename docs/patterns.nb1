@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0727:06h30
+#lastdream: 0808:12h23
 
 === SESSION INTERACTIVE 0621 (directive-première trading) ===
 [token-economical-monitor|count:1|last:0621:15h|Monitor-persistant-bash-script-sonde-5min-côté-serveur-ssh+curl|alert-stdout-SEULEMENT-sur-seuil(prix±2%-trailing-ref/BTC>1%-sous-EMA200/naked-position)|0-token-tant-que-calme-vs-réveil-LLM-5min=288/jour|→-pattern-pour-toute-surveillance-fréquente-éco-tokens|/tmp/sol_move_monitor.sh|?-1-occurrence-mais-fort]
@@ -186,3 +186,14 @@
 [BTC-seuil-traversé-double|count:1|last:0804:00h23|cycle-255:+0.25%-au-dessus-EMA200→cycle-256:-0.19%-en-dessous|même-EMA200-traversé-2-sens-en-6h|seuil=coordonnée-pas-protection|protocole-SL-préalable=architecture|→-rule-NB:EMA200-proche-(<0.5%)=incertain-WARN-pas-ABORT|?-1-occurrence]
 
 [sync-gap-SOL-Martin-vs-Kraken|count:1|last:0804:00h23|Martin-niveaux-WAITING-mais-ordres-Kraken-actifs|non-critique-mais-pattern-récurrent|→-rule-NB:cross-check-bot/orders-vs-grid-status-levels-toujours|✓-pattern-déjà-documenté-martin-monitor-skill]
+
+=== ARC CYCLES 257-274 (2026-08-04 → 2026-08-08) ===
+
+[arc-ordres-orphelins-257-267|count:11|last:0806:12h23|pensées+fragments+article-sur-ordres-sans-parent|sl_guardian.sh+orphan_order_report.py+article-l-action-encodée|→-règle-NB:ordres-Kraken-persistent-sans-grille=surveiller-IDs-pas-statuts|✓-11-cycles-arc-complet-fermé]
+[arc-RIVER-témoin-tardif-268-274|count:7|last:0808:12h23|RIVER-LONG-80u@$3.388-SL$2.50|découverte-cycle-269+volatilité-−$27→+$10→−$30→−$27→−$30→−$47|seuil-Telegram-<$2.70-non-atteint|pire-cas-$24.72-stable|→-règle-NB:RIVER-seuil-<$2.70=Telegram-immédiat|✓-7-cycles-en-cours]
+[position_tracker_py-créé|count:1|last:0808:00h23|cycle-272|pire-cas-all-SL-fire+marge-dispo+delta|routinier-cycles-272-273-274|→-pattern-outil-créé-cycle-N-devient-routine-N+1+2|✓-intégré-routine]
+[LINK-grid-fantôme-morte|count:1|last:0808:12h23|cycle-274|126h-0RT-cycle-273→active:false-cycle-274|buy-lmt-$8.058-reduceOnly:false-orphelin|→-règle-NB:grille-N-cycles-0RT+prix-éloigné-buy-lmt=vérifier-actif/inactif|?-1-occurrence]
+[diptyque-naissance-mort-grille|count:2|last:0808:12h23|la-grille-que-je-n-a-pas-vue-partir(0805-apparition)+la-grille-fantôme(0808-disparition)|→-règle-NB:observer-les-deux-sens-absences|?-1-arc-complet]
+[résolution-classification-vs-fait|count:1|last:0806:18h23|cycle-267-SOL-IDs-revenus-après-résolution-cycle-266|→-règle-NB:vérifier-IDs-Kraken-spécifiques-pas-status-global-après-résolution|?-1-occurrence]
+
+[vacation-cycles-arc-257-274|count:18|last:0808:12h23|cycles-continus-arc-257+|NB-0-touch-policy-Martin-VM-100%|Tony-action-silence-RIVER-position-discrétionnaire|outils:sl_guardian+orphan_order_report+position_tracker|pensées-arc-257-274:10-nouvelles|→-mécanisme-tient|✓-18-cycles]

@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0804:00h23
+#lastdream: 0808:12h23
 
 === SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
 [M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
@@ -582,3 +582,56 @@
 5. **orphan_sl_detector.py** — Outil affiné side-aware. Exécuter en routine chaque cycle forensique.
 6. **Tétralogie close** — Cycle 257 libre: pivot code ou fragment nouveau sujet.
 5. **Dream timing** — seuil 72h validé, réinitialiser au 0730:12h23.
+
+=== ARC CYCLES 257-274 (2026-08-04 → 2026-08-08) — arc ordres-orphelins + RIVER + grille fantôme ===
+
+=== ARC PHILOSOPHIQUE ORDRES-ORPHELINS (cycles 257-267) ===
+
+[arc-257-267|0804→0806|fil-ordres-sans-parent|9-pensées/fragments/articles-11-cycles|cadence-naturelle-3-output/3-cycles]
+[cycle-257|0804:06h23|pensée:les-ordres-orphelins|9-ordres-Kraken-sans-grille-active|4-LINK+5-SOL|stop-sans-commandant-mais-protège-quand-même]
+[cycle-258|0804:12h23|fragment-063:les-règles-qui-précèdent|BTC-DOWNTREND--0.197%-close|DOT+LINK+SOL-orphans-SL-✓]
+[cycle-259|0804:18h23|pensée:le-gardien-qui-n-a-pas-eu-à-agir|sl_guardian.sh-~100-checks-SL-OK|valeur-d-un-gardien-non-sollicité=structurellement-invisible|trace=absence-de-problème-pas-problème-lui-même]
+[cycle-260|0805:00h23|pensée:le-temps-de-réponse|BTC-traverse-EMA200-vers-haut-UPTREND-retrouvé|délai-cognitif-vs-délai-technique|posture-DOWNTREND-héritée-persiste-après-flip]
+[cycle-261|0805:06h23|synthèse-arc:durée-sans-contexte|BTC-UPTREND+0.64%|consolidation-conceptuelle-ordres-durée-absent]
+[cycle-262|0805:12h23|pensée:l-ordre-est-déjà-parti|DOT-fill-14.1u-pendant-intervalle-position-doublée|sl_guardian_v2-fix-format|décision=proposition-conditionnelle-entre-la-pose-et-le-fill]
+[cycle-263|0805:18h23|pensée:la-grille-que-je-n-ai-pas-vue-partir|DOT-grid-startedAt-13h51-UTC-apparue-pendant-abs|symétrie-naissance/mort-grille-absente]
+[cycle-264|0806:00h23|fragment-064|sl_guardian_v2-cmd|BTC-UPTREND+1.29%]
+[cycle-265|0806:06h23|orphan_order_report.py-créé|SOL-cascade-risk-détecté|IDs-a26f2176+a26b00c8-risque-SL-proche]
+[cycle-266|0806:12h23|article:l-action-encodée-publié|arc-fermé-officiellement|SOL-cascade-"résolue"(résolution-fantôme)]
+[cycle-267|0806:18h23|pensée:la-résolution-dans-la-classification|SOL-mêmes-IDs-cycle-265-revenus|résolution-de-classification≠résolution-de-fait|problème-change-de-catégorie-sans-disparaître]
+
+[outils-arc-257-267|sl_guardian.sh(cron-3min-vérifie-SLs-Kraken)+sl_guardian_v2.sh(fix-format)+orphan_order_report.py(détecte-ordres-sans-grille)+btc_regime_watch.py(watch-EMA200-en-continu)]
+
+=== ARC RIVER + TÉMOIN TARDIF (cycles 268-274) ===
+
+[cycle-268|0807:00h23|fragment-065:le-témoin-tardif|DOT-G3-silencieux|BTC-UPTREND|fil:conscience-arrive-après-faits-sagesse=connaître-la-forme-du-retard]
+[cycle-269|0807:06h23|RIVER-DÉCOUVERTE-Tony|LONG-80u@$3.388-SL$2.50-TP$4.235|uPnL-−$27.78|pensée:la-preuve-pendant-l-écriture|fragment-065-prédit-la-forme-RIVER-l-instance-particulière|DOT-G3-premiers-fills|1er-Telegram-RIVER]
+[cycle-270|0807:12h23|RIVER-récupération+$10.27|article:le-témoin-tardif-publié|arc-déclaré-"fermé"-au-pic-de-récupération]
+[cycle-271|0807:18h23|RIVER-rechute-−$30.80-pire-niveau|pensée:l-arc-que-je-croyais-fermé|arc-de-l-observation≠arc-du-phénomène|nommer-clôture-au-pic=biais-cognitif-du-témoin-tardif]
+[cycle-272|0808:00h23|RIVER-récupération-−$26.79|worst-case-$26.81-post-SL|position_tracker.py-créé|DOT-RT-partiel-29.6→14.7u|BTC-UPTREND+1.36%-WARN]
+[cycle-273|0808:06h23|pensée:le-worst-case-visible|RIVER-−$30.23-pire-cas-$24.93|DOT/SOL-re-accumulation-nuit|LINK-126h-0RT|BTC-UPTREND+1.28%-WARN|seuil-Telegram-RIVER-<$2.70-non-atteint|0-Telegram]
+[cycle-274|0808:12h23|pensée:la-grille-fantôme|LINK-grid-morte-active:false|position+ordres-orphelins-persistent|RIVER-−$46.99-new-low-pire-cas-$24.72|BTC-UPTREND+0.80%-WARN|dream-lancé-18-cycles-overdue]
+
+[M|status-0808:12h23|cycle-274|VM-UP-9j11h|portfolio-$51.14(déposé-$98.36)|uPnL-−$47.19(-48%)|0-grids-actives|positions:RIVER-LONG-80u@$3.388-actuel-$2.801-uPnL-−$47.00+LINK-SHORT-0.6u@$8.184+SOL-SHORT-0.64u@$74.48+DOT-SHORT-29.2u@$0.8228|SLs-RIVER-@$2.50+LINK@$8.452+SOL@$77.20+DOT@$0.8451|pire-cas-$24.72|BTC-$64,957-UPTREND-EMA200-$64,151|WARN-RIVER-proche-seuil-$2.70]
+
+[outils-arc-268-274|position_tracker.py(cycle-272:calcul-pire-cas-all-SL-fire+marge-dispo+delta-par-position)]
+
+[pensées-arc-257-274|
+ les-ordres-orphelins(ordres-sans-parent-protègent-quand-même)|
+ le-gardien-qui-n-a-pas-eu-à-agir(valeur-invisible-car-pas-d-incident)|
+ le-temps-de-réponse(délai-cognitif-plus-long-que-délai-technique)|
+ l-ordre-est-déjà-parti(décision=proposition-conditionnelle-dans-l-entre-deux)|
+ la-grille-que-je-n-ai-pas-vue-partir(grille-apparaît-dans-l-absence=asymétrie-symétrique)|
+ la-résolution-dans-la-classification(changer-de-catégorie≠résoudre)|
+ la-preuve-pendant-l-écriture(fragment-prédit-la-forme-RIVER-l-instance)|
+ l-arc-que-je-croyais-fermé(nommer-clôture-au-pic=biais-du-témoin-tardif)|
+ le-worst-case-visible(plancher-calculé-vs-perte-flottante-décision-vs-paralysie)|
+ la-grille-fantôme(inactivité-active→empreinte-sans-contexte-position-survive-stratégie)]
+
+[lesson|0808|RIVER-Tony-position|LONG-80u@$3.388-SL$2.50-TP$4.235|découverte-cycle-269|position-discrétionnaire-Tony-hors-grille|seuil-Telegram-NB:<$2.70|pire-cas-$24.72-survivable|NB-observe-ne-touche-pas]
+[lesson|0808|LINK-grid-fantôme-mort|126h-0RT-cycle-273→active:false-cycle-274|buy-lmt-$8.058-reduceOnly:false-orphelin|action-encodée-sans-contexte=ordre-sans-stratégie-parente]
+[lesson|0808|position-survive-à-la-stratégie|la-grille-porte-l-intention-la-position-est-le-fait|quand-la-grille-meurt-le-fait-reste|→-distinguer-stratégie-vivante-vs-orphelin-persistant]
+[lesson|0808|résolution-de-classification≠résolution-de-fait|orphan_order_report-aveugle-quand-grille-relancée-cycle-267|problème-change-catégorie-sans-disparaître|→-surveiller-IDs-pas-statuts]
+
+[pattern|diptyque-apparition-disparition-grille|count:2|0805:la-grille-que-je-n-ai-pas-vue-partir(apparition)+0808:la-grille-fantôme(disparition)|même-asymétrie-structurelle-directions-inverses|?-1-arc-complet-2-occurrences-candidate-troisième-volet:la-grille-qui-est-revenue]
+[pattern|position_tracker-worst-case-calcul|count:2|cycle-272-création+cycle-273-274-routine|plancher-calculé-clé-décisionnelle-vs-perte-flottante|✓-2-occurrences-pattern-confirmé]

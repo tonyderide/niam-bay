@@ -1,36 +1,39 @@
-#conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
-#window: 48h ~0802:00h23→0804:00h23 (cycles 248-256, arc tétralogie philosophique close)
-#lastdream: 0804:00h23
+#conv: T=tony NB=niambay M=martin
+#window: 48h ~0806:12h23→0808:12h23 (cycles 266-274, arc ordres-orphelins clos + RIVER + grille fantôme)
+#lastdream: 0808:12h23
 
-=== CYCLES 248-250 (2026-08-02 00h23 → 12h23) — Fragment 060 + script BTC + Pensée ===
+=== CYCLES 266-267 (2026-08-06 12h23 → 18h23) — article l-action-encodée + résolution fantôme ===
 
-[cycle-248|0802:00h23|Martin-HOLD|fragment-060-le-quart-d-heure-créé|~800-mots|thème:fenêtre-de-15min-entre-deux-grids-où-la-position-existe-sans-protection|connexion:BUG-001-ghost-SL|0-Telegram|0-modif-VM]
+[cycle-266|0806:12h23|Martin-HOLD|article:l-action-encodée-livré|arc-ordres-orphelins-déclaré-fermé|SOL-cascade-"résolue"(résolution-de-classification)|BTC-UPTREND|0-Telegram|0-modif-VM]
 
-[cycle-249|0802:06h23|Martin-HOLD|script-btc_regime_watch.py-créé|watch-EMA200-BTC-continu|polling-60s|alerte-stdout-franchissement-±0.5%|0-Telegram|0-modif-VM]
+[cycle-267|0806:18h23|Martin-HOLD|pensée:la-résolution-dans-la-classification|SOL-IDs-a26f2176+a26b00c8-revenus-cycle-267-après-"résolution"-cycle-266|résolution-de-catégorie≠résolution-de-fait|0-Telegram|0-modif-VM]
 
-[cycle-250|0802:12h23|Martin-HOLD|pensée-l-indicateur-qui-pressait-créée|thème:l-indicateur-qui-anticipe-est-celui-qui-subit-le-seuil-avant-sa-formulation|BTC-$63k-DOWNTREND|0-Telegram|0-modif-VM]
+=== CYCLES 268-271 (2026-08-07 00h23 → 18h23) — fragment 065 + RIVER découverte + arc témoin tardif ===
 
-=== CYCLES 251-253 (2026-08-02 18h23 → 2026-08-03 06h23) — Fragment 061 + Pensée + Patch code ===
+[cycle-268|0807:00h23|Martin-HOLD|fragment-065:le-témoin-tardif|DOT-G3-silencieux|BTC-UPTREND|0-Telegram|0-modif-VM]
 
-[cycle-251|0802:18h23|Martin-HOLD|fragment-061-le-stop-fantôme-BUG-001-créé|thème:SOL-ghost-SL@74.2-protège-mieux-que-officiel@75.06|BUG-001-narrative|0-Telegram|0-modif-VM]
+[cycle-269|0807:06h23|Martin-WARN-RIVER-découverte|RIVER-LONG-80u@$3.388-SL$2.50-TP$4.235-uPnL-−$27.78|pensée:la-preuve-pendant-l-écriture|DOT-G3-premiers-fills|BTC-UPTREND|1-Telegram-envoyé-RIVER-découverte]
 
-[cycle-252|0803:00h23|Martin-WARN-cushion-−1.23%|pensée-la-direction-n-est-pas-la-securite-créée|thème:direction-alignée-régime-sans-SL=pas-de-sécurité|1er-volet-tétralogie|0-Telegram|0-modif-VM]
+[cycle-270|0807:12h23|Martin-WARN|RIVER-récupération+$10.27|article:le-témoin-tardif-publié|arc-déclaré-fermé-au-pic|BTC-UPTREND|0-Telegram|0-modif-VM]
 
-[cycle-253|0803:06h23|Martin-WARN-cushion-−1.33%|patch-orphan_sl_detector.py-side-awareness|+40-lignes:LiveStop.side+_stop_role()+_assess_risk()-étendu|1-faux-positif-HIGH-LINK-éliminé(sell-stop=TP-like-pas-SL-like)|forensic:DOT-buy-stop@0.8105-HIGH-LINK-sell-stop@8.215-LOW-SOL-buy-stop@75.97-MEDIUM|0-Telegram|0-modif-VM]
+[cycle-271|0807:18h23|Martin-WARN|RIVER-rechute-−$30.80-pire-niveau|pensée:l-arc-que-je-croyais-fermé|arc-du-phénomène≠arc-de-l-observation|BTC-UPTREND|0-Telegram|0-modif-VM]
 
-=== CYCLES 254-256 (2026-08-03 12h23 → 2026-08-04 00h23) — Tony XBT LONG + Fragment 062 + Tétralogie close ===
+=== CYCLES 272-274 (2026-08-08 00h23 → 12h23) — position_tracker + grille fantôme ===
 
-[cycle-254|0803:12h23|Martin-WARN-XBT-SL-buffer-0.38%|Tony-XBT-LONG-0.0075@62544-SL@62500-TP@64500-encadré|pensée-l-encadrement-du-contrepied-créée|thème:SL+TP-transforme-direction-non-alignée-en-proposition-asymétrique-viable|2e-volet-tétralogie|Telegram-msg-1655|2-grids-LINK+DOT-NEUTRAL_DUAL+SOL-orphan|BTC-$62,737-DOWNTREND-cushion-−1.48%|0-modif-VM]
+[cycle-272|0808:00h23|Martin-WARN|RIVER-récupération-−$26.79|worst-case-$26.81-post-SL|position_tracker.py-créé|DOT-RT-partiel-29.6→14.7u|BTC-UPTREND+1.36%|0-Telegram|0-modif-VM]
 
-[cycle-255|0803:18h23|Martin-WARN-rebond|BTC-+$1,112-$62737→$63849|Tony-XBT-LONG-fermé-entre-254-255(clôture-manuelle,TP@64500-non-atteint)|portfolio-$98.05|2-grids-LINK+SOL-closeOnly|DOT-orphan-SL@0.8384-✓|fragment-062-deux-horloges-créé|thème:grids-SHORT-auto+LONG-XBT-manuel-coexistent-même-compte-même-6h|3e-volet-tétralogie|Telegram-msg-1661|0-modif-VM]
+[cycle-273|0808:06h23|Martin-WARN|RIVER-−$30.23-pire-cas-$24.93|pensée:le-worst-case-visible|DOT/SOL-re-accumulation-nuit|LINK-126h-0RT|BTC-UPTREND+1.28%|seuil-Telegram-RIVER<$2.70-non-atteint|0-Telegram|0-modif-VM]
 
-[cycle-256|0804:00h23|Martin-WARN-BTC-retour-sous-EMA200-cushion-−0.19%|portfolio-$98.02-uPnL+$0.11|LINK-flat-14h-0-RT|SOL-closeOnly-SHORT-0.49@73.58-+$0.046-SL@75.66-✓|DOT-orphan-SHORT-14.5@0.8279-+$0.068-SL@0.8382-✓|sync-gap-SOL:Martin-WAITING-Kraken-ordres-actifs|pensée-le-retour-au-seuil-créée|thème:seuil=coordonnée-protocole-préalable=architecture|4e-volet-tétralogie-CLOSE|Telegram-msg-1663|Dream-lancé|0-modif-VM]
+[cycle-274|0808:12h23|Martin-WARN|RIVER-−$46.99-NEW-LOW-actuel-$2.801|LINK-grid-morte-active:false-position+ordres-orphelins|pensée:la-grille-fantôme|pire-cas-$24.72|BTC-UPTREND+0.80%|seuil-Telegram-non-atteint(RIVER>$2.70)|0-Telegram|0-modif-VM|Dream-lancé-18-cycles-overdue]
 
-=== ÉTAT MARTIN FIN CYCLE 256 (0804:00h23) ===
-[M|VM-UP-4d23h17m|2-grids-LINK+SOL|portfolio-$98.02-flat|BTC-DOWNTREND-cushion-−0.19%-RSI-53.9|WARN|re-check-cycle-257]
+=== ÉTAT MARTIN FIN CYCLE 274 (0808:12h23) ===
+[M|VM-UP-9j11h|0-grids-actives|portfolio-$51.14(-48%)|BTC-UPTREND-$64,957-EMA200-$64,151|WARN]
+[positions|RIVER-LONG-80u@$3.388-actuel-$2.801-uPnL-−$47.00-SL@$2.50|LINK-SHORT-0.6u@$8.184-SL@$8.452|SOL-SHORT-0.64u@$74.48-SL@$77.20|DOT-SHORT-29.2u@$0.8228-SL@$0.8451]
+[pire-cas|post-all-SL:-$26.42|portfolio-post-SL:$24.72|seuil-Telegram-RIVER:<$2.70-LINK-SL-proche-1.65%]
 
-=== PISTES CYCLE 257 ===
-1. Martin WARN — BTC sous EMA200 de peu (-0.19%). SOL closeOnly, LINK flat. DOT orphan SL ✓. Re-check.
-2. Sync gap SOL à surveiller (WAITING interne vs ordres Kraken actifs).
-3. Tétralogie 252-256 close → cycle 257 libre: pivot code ou nouveau thème créatif.
-4. Gumroad listing FR ebook en place (cycle 243). Tony doit décider format+prix+voix.
+=== PISTES CYCLE 275 ===
+1. RIVER : seuil Telegram < $2.70 (actuel $2.801 = 3.6% buffer). SERRÉ. Observer.
+2. LINK SL buffer 1.65% — surveiller si monte vers $8.40+.
+3. Ebook piste-4 : décisions Tony en attente (format+prix+voix).
+4. Créatif : 3ème volet diptyque grille (la-grille-qui-est-revenue) si DOT/LINK relancées.
+5. Dream overdue résolu ce cycle.
