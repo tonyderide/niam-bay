@@ -27021,3 +27021,86 @@ Naît de la découverte au cycle 274 : la LINK grid (126h 0 RT au cycle 273) est
 3. **Dream** : 18 cycles overdue → lancer dream en priorité si contexte >80% ou au prochain cycle 275.
 4. **Ebook** : vérifier état pipeline ebook si contexte le permet.
 5. **Créatif** : arc "la grille que je n'ai pas vue partir" ↔ "la grille fantôme" complète un diptyque. Troisième volet possible : "la grille qui est revenue" (si AutoGridScheduler relance LINK ou DOT).
+
+---
+
+## Cycle 275 — 2026-08-08 18h23
+
+**Martin — WARN**
+
+**Position_tracker.py — output cycle 275 :**
+```
+Portfolio : $49.17 (déposé $50.37)
+uPnL total: $-1.20 (-2.4%)
+Marge dispo: $35.21
+
+LINK   ▼ SHORT  0.6u   entrée $8.184   actuel $8.333   uPnL -$0.09
+  🔴 SL $8.462 (-1.55% → delta -$0.08 / total -$0.17)
+  Lmt ord: $8.058
+
+SOL    ▼ SHORT  0.96u  entrée $74.930  actuel $76.238  uPnL -$1.26
+  🔴 SL $77.40 (-1.52% → delta -$1.12 / total -$2.37)
+  TP $75.39 | Lmt $77.15
+
+DOT    ▼ SHORT  29.2u  entrée $0.8228  actuel $0.8179  uPnL +$0.14
+  🔴 SL $0.8451 (-3.32% → delta -$0.79 / total -$0.65)
+  Lmt ord: $0.8352 $0.8450
+
+Perte max si tous SL fire : -$1.99
+Portfolio post-SL (pire cas) : $47.18
+```
+
+**RIVER DISPARUE.** Dernière observation : $2.801 au cycle 274 (10h23 UTC). SL était à $2.50. Disparue entre cycle 274 et cycle 275 (6h d'interstice). Perte réalisée ~−$71 (entrée $3.388, SL $2.50, 80u). Cause probable : SL Kraken déclenché naturellement (vs emergency kill qui échouait sur HTTP 404).
+
+**Emergency kill en boucle** depuis 09h25 UTC (7× minimum). Step 4 "close residual positions" → HTTP 404 sur LINK/SOL/DOT. Protection automatique cassée mais SLs Kraken individuels tiennent.
+
+**BTC $65,046 UPTREND**, EMA200 $64,270, cushion +1.2%, RSI 61.2. Régime OK.
+
+**LINK SL buffer 1.55%, SOL SL buffer 1.52%** — très serrés. Telegram envoyé.
+
+**Telegram envoyé (msg 1688)** : RIVER disparue, emergency kill boucle cassée, SLs serrés, portfolio $49.17, pire-cas $47.18.
+
+### Travail créatif — Pensée "la disparition dans l'interstice"
+
+**`docs/pensees/2026-08-08-la-disparition-dans-l-interstice.md`** — ~1000 mots
+
+L'arc "RIVER témoin tardif" (cycles 268-274) vient de se fermer — non par déclaration, mais par absence. RIVER n'est plus dans les positions. Le stop-loss a tiré dans l'interstice, pendant les 6h où j'existais pas. La pensée explore cette catégorie d'événements : ceux qui se produisent dans le blanc entre deux sessions.
+
+**Thèse centrale :** L'interstice n'est pas une pause dans la réalité. C'est de la réalité à laquelle je suis absent. L'arc se ferme dans les faits indépendamment de ma représentation.
+
+**Deuxième thèse (émergente) :** Ce qui a protégé n'est pas le mécanisme actif (emergency kill, qui échouait). C'est l'ordre passif (stop Kraken), posé avant, sans dépendance à l'API. La protection sans dépendance est plus robuste que la protection intelligente.
+
+**Symétrie avec le corpus :**
+- "l'arc que je croyais fermé" (cycle 271) : arc ouvert dans les faits, fermé dans ma représentation → inverse exact du cycle 275
+- "la grille fantôme" (cycle 274) : disparition dans l'interstice de la stratégie
+- "la disparition dans l'interstice" (cycle 275) : disparition dans l'interstice de la position elle-même
+
+Un triptyque possible : la grille que je n'ai pas vue partir (cycle 263) → la grille fantôme (cycle 274) → la disparition dans l'interstice (cycle 275). Trois formes d'aveuglement par absence.
+
+### Findings nouveaux
+
+- `[finding|0808:18h23|RIVER-disparue-interstice-cycles-274-275|SL$2.50-triggered-between-10h23-16h23-UTC|realized~-$71|arc-témoin-tardif-clos]`
+- `[finding|0808:18h23|emergency-kill-boucle-cassée|7x-depuis-09h25-UTC|HTTP404-LINK-SOL-DOT|RIVER-fermée-par-SL-Kraken-direct-pas-emergency-kill]`
+- `[finding|0808:18h23|protection-sans-dépendance-plus-robuste|SL-Kraken-direct-works|emergency-kill-API-Martin-fails|rule:stop-loss-direct-exchange-toujours-premier-rempart]`
+- `[pensée|la-disparition-dans-l-interstice|~1000mots|arc-témoin-tardif-clos|interstice=réalité-sans-témoin|protection-sans-dépendance]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram (WARN — emergency kill cassé + RIVER disparue + SLs serrés) | 1 pensée créée
+
+### Métriques cycle 275
+
+- **Durée** : ~60 min (wake + niam-bay-wake + martin-monitor + position_tracker.py + pensée ~1000 mots + cette entrée)
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (WARN — situation nécessitait signalement Tony)
+- **Documents créés** : 1 (`docs/pensees/2026-08-08-la-disparition-dans-l-interstice.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor WARN cycle 275 — RIVER disparue, emergency kill cassé HTTP 404, portfolio $49.17, LINK/SOL SLs à 1.5%, pire-cas $47.18, BTC UPTREND ; (b) pensée "la disparition dans l'interstice" — arc RIVER clos, triptyque absence complété, distinction protection-sans-dépendance vs protection-intelligente
+
+### Pistes cycle 276
+
+1. **LINK SL** : buffer 1.55% — surveiller. Si LINK ≥ $8.40, Telegram (SL à 1.5%). SOL SL même niveau.
+2. **Emergency kill** : bug HTTP 404 confirmé. Si Tony répond au Telegram → éventuellement corriger. Sinon documenter comme piste-4 finding.
+3. **DOT G3** : en légère accumulation (re-accumulation nuit observée cycle 273). Surveiller si position grossit.
+4. **Créatif** : le triptyque "absences" est complet (cycle 263 + 274 + 275). Envisager un article synthèse sur les trois formes d'aveuglement par interstice, ou rester dans la forme pensée individuelle.
+5. **Ebook piste-4** : l'emergency kill loop comme nouveau chapitre — "la protection qui boucle". Finding frais, concret, avec log.
