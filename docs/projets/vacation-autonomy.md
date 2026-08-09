@@ -27309,3 +27309,65 @@ Nouveau chapitre candidat pour ebook V2 (Annexe C). Nourri par le contraste RIVE
 3. **DOT** : position en profit +$0.47. Observer si accumulation de shorts Tony (G3/G5 pattern).
 4. **Ebook** : annexe protection-conditionnelle livrée. Piste suivante : mettre à jour la table des matières avec cette annexe comme "candidat V2". Ou explorer si un article externe (HN, blog) basé sur cette annexe serait pertinent.
 5. **Dream** : 5 cycles depuis dernier dream (cycle 274, 0808:12h23). Pas encore overdue (seuil +15). Surveiller.
+
+---
+
+## Cycle 279 — 2026-08-09 18h23
+
+### Martin — WARN
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.089 · SL @$8.458 (buffer ~1.5%) ✓
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$1.79 · SL @$79.02 (buffer ~2.4%) · **TP ladder disparu** ⚠️
+- **DOT** SHORT 29.2u @ $0.8228 · uPnL +$0.37 · SL @$0.8451 (buffer ~4.3%) ✓
+- **XBT** SHORT 0.0054u @ $64,906 · uPnL −$1.42 (vs −$0.08 cycle 278) · **0 SL** · TP @$55,000 ⚠️
+
+**Portfolio** : $46.87 (déposé ~$49.81, uPnL −$2.93 = −5.9%)
+**Grids actives** : 0 | **VM uptime** : 10j 17h 17m
+**BTC** : $65,168 UPTREND · EMA200 $64,370 · cushion +1.24% · RSI 67
+
+**Changements vs cycle 278** :
+- XBT uPnL : −$0.08 → −$1.42 (BTC +$250 en 6h)
+- SOL uPnL : −$1.29 → −$1.79 · SL élargi $77.69 → $79.02 · TP ladder disparu des ordres
+- Portfolio : $49.01 → $46.87 (−$2.14 en 6h)
+
+**Verdict** : WARN. Seuil SOL ≥ $77 atteint ($77.17). Seuil XBT $65,500 non atteint.
+
+**Telegram** : 1 envoyé (SOL seuil atteint + XBT uPnL ×17 en 6h)
+
+### Travail créatif — Pensée "le coût de l'interstice"
+
+**`docs/pensees/le-cout-de-linterstice.md`** — ~550 mots
+
+Observation concrète : XBT SHORT a perdu $1.34 en 6h d'absence = $0.22/heure. Transforme l'abstraction de "la-protection-conditionnelle" en mesure.
+
+**Thèse** : la protection n'est pas binaire (protégé/non protégé), c'est une fonction du temps. Chaque heure d'interstice prévu transforme une décision de protection en exposition mesurable. La protection inconditionnelle (SL exchange) ne coûte rien quand le marché va dans le bon sens ; la conditionnelle coûte exactement `mouvement_adverse × temps_absence`.
+
+**Positionnement** : suite directe de "la-protection-conditionnelle" — là où la première pose la philosophie, celle-ci pose une unité de mesure.
+
+### Findings
+
+- `[finding|0809:18h23|XBT-uPnL-0.08→1.42-en-6h|coût-interstice-$0.22/h|mesure-concrète-protection-conditionnelle]`
+- `[finding|0809:18h23|SOL-TP-ladder-disparu-ordres|SL-élargi-79.02|buffer-2.4%-seuil-atteint]`
+- `[pensée|le-cout-de-linterstice|protection-fonction-du-temps|550mots|suite-directe-protection-conditionnelle]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 1 Telegram (SOL seuil + XBT dégradation) | 1 pensée créée
+
+### Métriques cycle 279
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 1
+- **Documents créés** : 1 (`docs/pensees/le-cout-de-linterstice.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) WARN cycle 279 — SOL seuil $77 atteint, XBT −$1.34 en 6h, Telegram envoyé ; (b) pensée "le coût de l'interstice" — protection comme fonction du temps, unité de mesure $0.22/h
+
+### Pistes cycle 280
+
+1. **XBT SHORT** : seuil Telegram ≥ $65,500 (actuel $65,168 — buffer $332). Si BTC passe $65,500 = nouveau Telegram.
+2. **SOL SL** : buffer 2.4% ($79.02). Seuil Telegram si SOL ≥ $77 à nouveau ou SL approche 1%.
+3. **LINK SL** : buffer 1.5% ($8.458). Proche. Surveiller si LINK ≥ $8.40.
+4. **Ebook** : l'annexe "protection-conditionnelle" + la pensée "coût de l'interstice" forment maintenant un diptyque mesurable. Envisager un article externe — la taxonomie 3 niveaux + l'unité $0.22/h = matière pour HN ou blog.
+5. **Dream** : 6 cycles depuis dernier dream (cycle 274, 0808:12h23). Seuil à 15. Surveiller.
