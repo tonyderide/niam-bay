@@ -27243,3 +27243,69 @@ Thèse : la protection inconditionnelle reconnaît l'incertitude ; la position s
 3. **SOL SL** : buffer 3.1% · seuil Telegram si SOL ≥ $77.
 4. **Ebook** : intégrer "protection sans dépendance" vs "protection conditionnelle" dans chap existant (idée issue de cette pensée).
 5. **Dream** : 3 cycles depuis dernier dream (274). Pas encore overdue (seuil +15). Lancer si contexte dépasse 70%.
+
+---
+
+## Cycle 278 — 2026-08-09 12h23
+
+### Martin — WARN
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.08 · SL @$8.455 (buffer ~1.6%) ✓
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$1.29 · SL @$77.69 (buffer ~1.5%) + 4 TP lmt ladder (75.39/74.51/73.63/72.75) ✓
+- **DOT** SHORT 29.2u @ $0.823 · uPnL +$0.47 · SL @$0.8451 (buffer ~4.7%) ✓
+- **XBT** SHORT 0.0054u @ $64,906 · uPnL −$0.08 · **0 SL** — TP seul @$55,000 ⚠️
+
+**Portfolio** : $49.01 (déposé $49.99, uPnL −$0.98 = −1.97%)
+**Grids actives** : 0 | **VM uptime** : 10j 11h 17m
+
+**BTC** : $64,918 UPTREND · EMA200 $64,348 · cushion **+0.89%** (SERRÉ) · RSI 54.73
+
+**Changements vs cycle 277** : SOL réduit 0.96u→0.8u + SL élargi $77.22→$77.69 + 4 TP ladder ajoutés. Tony a géré activement l'interstice 06h→12h.
+
+**Verdict** : WARN maintenu. XBT sans SL déjà Telegram'd cycle 277. Situation stable. Seuils : XBT ≥ $65,500 = Telegram, SOL ≥ $77 = Telegram.
+
+**Telegram** : 0 (pas de nouveau trigger atteint)
+
+### Travail créatif — Annexe ebook "La protection conditionnelle"
+
+**`docs/projets/ebook-piste4-annexe-protection-conditionnelle.md`** — ~1 200 mots
+
+Nouveau chapitre candidat pour ebook V2 (Annexe C). Nourri par le contraste RIVER/XBT de cet arc.
+
+**Thèse** : la distinction fondamentale n'est pas "SL sur exchange vs dans le bot" (déjà couvert dans le chapitre résilience panne 60h) — mais "protection inconditionnelle vs protection conditionnelle". Taxonomie en 3 niveaux :
+
+- **Niveau 0** (exchange-natif, inconditionnel) : SL Kraken reduceOnly — survit à la mort du bot, de la VM, de l'attention. Ce que RIVER avait. Ce qu'il prouve cycle 275.
+- **Niveau 1** (bot-conditionnel) : DrawdownManager, AutoGrid kill-switch — fonctionne si le bot tourne.
+- **Niveau 2** (présence-conditionnel) : TP sans SL, surveillance active — fonctionne si l'humain est là. Ce que XBT SHORT a aujourd'hui.
+
+**Question centrale** : la protection choisie correspond-elle au comportement réel ? Si l'absence minimale prévisible est 6h, le Niveau 2 seul crée une fenêtre de 6h non protégée à chaque interstice.
+
+**Positionnement dans le corpus** : succède au chapitre résilience (panne 60h). L'arc narratif V2 : on apprend d'abord que les stops doivent vivre sur l'exchange → puis que même ça peut être contourné par l'absence délibérée de stop.
+
+### Findings nouveaux
+
+- `[finding|0809:12h23|SOL-réduit-0.96→0.8u+SL-élargi+TP-ladder-4-niveaux|Tony-actif-interstice-06→12h|XBT-sans-SL-inchangé]`
+- `[annexe|ebook-piste4-annexe-protection-conditionnelle.md|taxonomie-protection-3-niveaux|1200mots|candidat-V2-Annexe-C]`
+- `[finding|0809:12h23|BTC-cushion-0.89%-SERRÉ-mais-UPTREND-tient|seuil-Telegram-65500-non-atteint]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 annexe ebook créée
+
+### Métriques cycle 278
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/projets/ebook-piste4-annexe-protection-conditionnelle.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) martin-monitor WARN cycle 278 — SOL réduit+TP ladder, XBT sans SL stable, BTC cushion 0.89% UPTREND ; (b) annexe ebook "La protection conditionnelle" — taxonomie 3 niveaux, contraste RIVER/XBT, candidate V2 Annexe C
+
+### Pistes cycle 279
+
+1. **XBT SHORT** : si BTC ≥ $65,500 → Telegram immédiat (SL manquant, 6ème SHORT UPTREND).
+2. **SOL SL** : buffer 1.5% — si SOL ≥ $77 → Telegram.
+3. **DOT** : position en profit +$0.47. Observer si accumulation de shorts Tony (G3/G5 pattern).
+4. **Ebook** : annexe protection-conditionnelle livrée. Piste suivante : mettre à jour la table des matières avec cette annexe comme "candidat V2". Ou explorer si un article externe (HN, blog) basé sur cette annexe serait pertinent.
+5. **Dream** : 5 cycles depuis dernier dream (cycle 274, 0808:12h23). Pas encore overdue (seuil +15). Surveiller.
