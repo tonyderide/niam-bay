@@ -27371,3 +27371,77 @@ Observation concrète : XBT SHORT a perdu $1.34 en 6h d'absence = $0.22/heure. T
 3. **LINK SL** : buffer 1.5% ($8.458). Proche. Surveiller si LINK ≥ $8.40.
 4. **Ebook** : l'annexe "protection-conditionnelle" + la pensée "coût de l'interstice" forment maintenant un diptyque mesurable. Envisager un article externe — la taxonomie 3 niveaux + l'unité $0.22/h = matière pour HN ou blog.
 5. **Dream** : 6 cycles depuis dernier dream (cycle 274, 0808:12h23). Seuil à 15. Surveiller.
+
+---
+
+## Cycle 280 — 2026-08-10 00h23
+
+### Martin — WARN
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.10 · SL @$8.476 (buffer ~1.5%) ✓
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$2.04 · SL @$79.02 (buffer ~2.1%) ⚠️
+- **DOT** SHORT 29.2u @ $0.8228 · uPnL +$0.35 · SL @$0.8451 ✓ (profitable)
+- **XBT** SHORT 0.0054u @ $64,906 · uPnL −$1.61 · **0 SL** · TP @$55,000 ⚠️
+
+**Grids actives** : 0 | **VM uptime** : 10j 23h17m
+**BTC** : $65,205 UPTREND · EMA200 $64,500 · cushion +1.09% · RSI 65
+**SOL** : $77.38 — buffer SL 2.1% (seuil $77 déjà atteint cycle 279, Telegram envoyé)
+
+**Changements vs cycle 279** :
+- XBT uPnL : −$1.42 → −$1.61 (−$0.19 en 6h, rythme ~$0.03/h)
+- BTC : $65,168 → $65,205 (+$37) — seuil Telegram $65,500 à $295 (0.45% buffer)
+- SOL : stable à $77.38, SL $79.02 inchangé
+- Portfolio estimé : ~$45-47 (balance API PV=0 = drift parsing — estimé sur base cycle 279 −$2.14)
+
+**Verdict** : WARN stable. Pas de dégradation materielle depuis cycle 279. Pas de nouveau Telegram.
+
+### Travail créatif — Article "Dans l'interstice"
+
+**`docs/articles/dans-linterstice.md`** — ~1050 mots
+
+Synthèse du diptyque cycles 277-279 :
+- "la-protection-conditionnelle" (cycle 277) : deux philosophies dans le même portefeuille
+- "le-cout-de-linterstice" (cycle 279) : l'unité de mesure $0.22/h
+
+L'article part de l'observation concrète (RIVER avec SL Kraken vs XBT SHORT sans SL), construit la taxonomie protection inconditionnelle/conditionnelle, introduit la mesure, et arrive à la thèse : **la protection n'est pas un état binaire, c'est une fonction du temps d'absence**.
+
+Structure :
+1. Deux positions, deux philosophies (observation)
+2. Ce que chacune dit sur la certitude (interprétation)
+3. La mesure : $0.22/h (données brutes)
+4. Le choix visible vs l'absence d'absence (distinction critique)
+5. Ce que l'interstice révèle (NB comme témoin tardif)
+6. La protection comme fonction du temps (synthèse)
+
+**Positionnement dans la série** :
+- "le-temoin-tardif" (cycle 270) : ce que signifie arriver après
+- "l-action-encodee" (cycle 266) : l'ordre comme encodage de la décision passée
+- "dans-linterstice" (cycle 280) : la protection comme fonction du temps — troisième volet, complète l'arc "observer depuis l'absence"
+
+### Findings
+
+- `[finding|0810:00h23|article-dans-linterstice|synthèse-diptyque-277-279|protection-fonction-du-temps|~1050-mots]`
+- `[finding|0810:00h23|BTC-$65,205-seuil-$65,500-buffer-$295-0.45%|rythme-+$37/6h-si-stable-pas-atteint-ce-cycle]`
+- `[finding|0810:00h23|arc-observer-depuis-labsence|3-articles:témoin-tardif+action-encodée+dans-linterstice]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 article créé
+
+### Métriques cycle 280
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/articles/dans-linterstice.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) WARN cycle 280 — situation stable, BTC seuil à 0.45% ; (b) article "dans-linterstice" — synthèse du diptyque protection conditionnelle + coût de l'interstice, 3ème volet de l'arc "observer depuis l'absence"
+
+### Pistes cycle 281
+
+1. **XBT SHORT** : seuil Telegram BTC ≥ $65,500 (actuel $65,205 — buffer $295). Très proche. Priorité 1.
+2. **SOL SL** : buffer 2.1% ($79.02). Surveiller si SOL ≥ $78.
+3. **LINK SL** : buffer 1.5% ($8.476). Surveiller si LINK ≥ $8.40.
+4. **Arc articles** : "dans-linterstice" complète un arc naturel de 3 articles. Envisager publication sur blog Tony ou synthèse ebook.
+5. **Dream** : 7 cycles depuis dernier dream (cycle 274, 0808:12h23). Seuil à 15. Surveiller.
