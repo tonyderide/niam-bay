@@ -27660,3 +27660,78 @@ Structure :
 3. **SOL LINK** : améliorés avec BTC down — surveiller si BTC rebondit (risque SL haussier).
 4. **Dream** : 11 cycles depuis cycle 274. Seuil à 15. Surveiller.
 5. **Article "Trois planchers"** : peut-il être publié sur dev.to ou GitHub Pages comme article autonome ?
+
+---
+
+## Cycle 284 — 2026-08-11 00h23
+
+### Martin — WARN (stable vs cycle 283)
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.058 · SL @$8.451 ✓
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$1.033 · SL @$79.02 ✓
+- **DOT** SHORT 21.9u @ $0.8228 · uPnL +$0.363 · SL @$0.8237 ✓
+- **RIVER** : absent — SL $2.50 exécuté pendant le vide entre cycles 274 et 281
+- **XBT** : absent — fermé par Tony (cycle 283 confirmation)
+
+**Grids actives** : 0 | **VM uptime** : 11j 23h17m
+**BTC** : $63,960 emaStatus UPTREND (API) · EMA200 $64,386 · prix −0.66% sous EMA200
+**Portfolio** : $49.31 (balanceValue $50.04, uPnL −$0.73)
+
+**Changements vs cycle 283** :
+- SOL : uPnL −$0.679 → −$1.033 (SOL remonté ~$76.2 malgré BTC down — décorrélation)
+- LINK : uPnL quasi-stable (−$0.055 → −$0.058)
+- DOT : uPnL +$0.400 → +$0.363 (DOT légèrement remonté, SL à $0.8237 tight)
+- BTC : quasi-stable $63,970 → $63,960 (toujours sous EMA200)
+
+**Seuils surveillés** :
+- BTC $62,000 : Telegram si franchi (buffer −3.1%)
+- SOL SL $79.02 : buffer ~3.7% (prix ~$76.2)
+- LINK SL $8.451 : buffer ~2.1% (prix ~$8.28)
+- DOT SL $0.8237 : buffer ~2.2% (prix ~$0.806, SL quasi break-even)
+
+**Discordance emaStatus / prix** : Martin dit UPTREND mais prix < EMA200. Hystérèse probable — deadband conçu. Ne pas agir sur cette discordance seule. WARN maintenu.
+
+**Verdict** : WARN — SOL décorrélé (position détériore), BTC frontier EMA200, SLs confirmés Kraken. 0 Telegram (aucun seuil $62,000 franchi).
+
+### Travail créatif — Fragment-067 : "la frontière qui ne bouge pas"
+
+**`docs/fragments/fragment-067-la-frontiere-qui-ne-bouge-pas.md`** — ~1 050 mots
+
+**Sujet** : L'hystérèse du bot — BTC traverse l'EMA200 vers le bas, Martin dit encore UPTREND. La zone entre le fait et le verdict. La mémoire institutionnelle comme zone morte conçue.
+
+**Thèse** : Trois systèmes dans la même posture ce soir — le bot avec son emaStatus retardé, moi avec mon verdict WARN intermédiaire, SOL décorrélé de BTC. Chacun dans sa zone d'hystérèse. La frontière est là, la traversée a eu lieu, le verdict n'est pas encore arrivé. Ce n'est pas un défaut — c'est une mémoire opérationnelle qui choisit de ne pas agir sur le premier signal.
+
+**Position dans l'arc** :
+- Fait suite à fragment-066 (RIVER disparu sans témoin)
+- 066 : l'objet observé qui disparaît dans le vide
+- 067 : le verdict qui ne suit pas immédiatement le fait — la continuité de l'état pendant que la réalité change
+- Arc "observation et ses limites" — 2 volets distincts
+
+### Findings
+
+- `[fragment|0811:00h23|067-la-frontiere-qui-ne-bouge-pas|hystérèse-BTC-EMA200-verdict-retardé|~1050mots|arc-observation-et-limites]`
+- `[finding|0811:00h23|SOL-décorrélation-BTC-down-SOL-up|BTC-$63970→$63960-SOL-$73.5→$76.2|position-SHORT-SOL-détériore-malgré-favorable-BTC|noter-si-pattern-se-répète]`
+- `[finding|0811:00h23|RIVER-SL-confirmé-exécuté-pendant-vide-274-281|portfolio-$49.31-cohérent-avec-fermeture-modérée|pas-pire-cas-$24.72-donc-RIVER-fermé-mieux-que-$2.50-ou-position-était-plus-petite]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 fragment créé
+
+### Métriques cycle 284
+
+- **Durée** : ~60 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (aucun seuil franchi)
+- **Documents créés** : 1 (`docs/fragments/fragment-067-la-frontiere-qui-ne-bouge-pas.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) WARN cycle 284 — RIVER confirmé fermé, SOL décorréle, hystérèse emaStatus documentée ; (b) fragment-067 — thème de la zone morte entre fait et verdict, extension philosophique de l'arc "observation et ses limites"
+
+### Pistes cycle 285
+
+1. **BTC $62,000** : seuil Telegram. BTC @ $63,960 (buffer −3.1%). Priorité si descend.
+2. **SOL décorrélation** : si SOL continue de monter seul, buffer SL $79.02 se réduira. Surveiller.
+3. **DOT SL $0.8237** : quasi break-even — position profitable mais SL très proche du cours. Observer si repositionnement Tony.
+4. **Dream** : 12 cycles depuis cycle 274. Seuil à 15. Prochain cycle 287-288 si rythme maintenu.
+5. **Fragment-067 → article public** : l'hystérèse est un thème lisible par des non-traders. Potentiel dev.to avec traduction du jargon.
+
