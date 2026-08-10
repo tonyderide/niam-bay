@@ -27445,3 +27445,76 @@ Structure :
 3. **LINK SL** : buffer 1.5% ($8.476). Surveiller si LINK ≥ $8.40.
 4. **Arc articles** : "dans-linterstice" complète un arc naturel de 3 articles. Envisager publication sur blog Tony ou synthèse ebook.
 5. **Dream** : 7 cycles depuis dernier dream (cycle 274, 0808:12h23). Seuil à 15. Surveiller.
+
+---
+
+## Cycle 281 — 2026-08-10 06h23
+
+### Martin — WARN (amélioré vs cycle 280)
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.01 · SL @$8.454 (buffer 3.1%) ✓ (+1.6pts vs C280)
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$1.37 · SL @$79.02 (buffer 3.1%) ⚠️ (+1.0pt vs C280)
+- **DOT** SHORT 21.9u @ $0.8228 · uPnL +$0.46 · SL @$0.824 ✓ (taille réduite 29.2→21.9u)
+- **XBT** SHORT 0.0054u @ $64,906 · uPnL −$0.64 · **0 SL** · TP @$55,000 ⚠️
+
+**Grids actives** : 0 | **VM uptime** : 11j 5h17m
+**BTC** : $65,015 UPTREND · EMA200 $64,509 · cushion +0.78% · RSI 50.75
+**Portfolio** : $48.58 (collat $50.14, uPnL −$1.56)
+
+**Changements vs cycle 280** :
+- ✅ **RIVER CONFIRMÉ FERMÉ** — absent depuis cycle 275-279 (SL@$2.50 exécuté pendant le gap 274→280)
+- BTC recule : $65,205 → $65,015 (−$190) — seuil $65,500 non atteint (buffer $485)
+- SOL buffer amélioré : 2.1% → 3.1% (BTC pullback aide les shorts)
+- LINK buffer amélioré : 1.5% → 3.1%
+- DOT taille réduite 29.2u → 21.9u (Tony partial close, SL tightened $0.8451→$0.824)
+
+**Verdict** : WARN — 4 SHORT en UPTREND, XBT sans SL, marge $5.88. Mais situation améliorée : RIVER résolu, buffers élargis, BTC pulled back.
+
+**Telegram** : 0 (aucun seuil franchi — BTC $65,015 < $65,500, SOL $76.64 < $78, LINK $8.20 < $8.40)
+
+### Travail créatif — Fragment 066 "Quand l'observé disparaît"
+
+**`docs/fragments/fragment-066-quand-l-observe-disparait.md`** — ~1 100 mots
+
+**Sujet** : La clôture de RIVER entre cycle 274 et cycle 280. Sept cycles d'observation (−$27, +$10, −$30, −$27, −$30, −$47), puis la position disparaît dans les 42h de gap. Le SL@$2.50 s'est exécuté sans témoin.
+
+**Thèse** : La protection inconditionnelle n'a pas besoin d'observateur — elle s'exécute seule. L'observation pendant 7 cycles n'était pas pour maintenir le SL (il se maintenait), mais pour évaluer si la situation dépassait le périmètre de cette protection. Quand la position disparaît, l'attention perd son ancrage et se réoriente.
+
+**Structure** :
+1. Sept cycles de fluctuation (instantanés, pas événements)
+2. Le dream — le vide — la clôture sans témoin
+3. Ce que l'observation apportait (pas maintenir le SL, mais évaluer son périmètre)
+4. L'asymétrie : l'objet observé disparaît, l'observation devient archive
+5. La réorientation de l'attention
+
+**Position dans l'arc** :
+- Complète l'arc "observer depuis l'absence" : témoin-tardif → action-encodée → dans-linterstice → **quand-l-observé-disparaît**
+- Thème commun : que signifie observer quelque chose qui existe indépendamment de l'observation ?
+
+### Findings
+
+- `[finding|0810:06h23|RIVER-fermé-gap-274→280|SL@2.50-exécuté-sans-témoin|portfolio-stabilisé-48.58]`
+- `[finding|0810:06h23|BTC-pullback-65205→65015|seuils-non-franchis|buffers-élargis|WARN-stable-amélioré]`
+- `[fragment-066|quand-l-observe-disparait|clôture-RIVER-7-cycles|protection-sans-témoin|réorientation-attention|~1100mots]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 fragment créé
+
+### Métriques cycle 281
+
+- **Durée** : ~40 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-066-quand-l-observe-disparait.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) WARN cycle 281 — situation améliorée, RIVER confirmé fermé, BTC pullback, seuils non franchis ; (b) fragment 066 — arc "observer depuis l'absence" complété par la clôture de RIVER sans témoin
+
+### Pistes cycle 282
+
+1. **XBT SHORT** : seuil BTC ≥ $65,500 (actuel $65,015 — buffer $485). Surveillance continue.
+2. **SOL SL** : buffer 3.1% ($79.02 vs $76.64). Surveiller si SOL ≥ $78.
+3. **XBT pas de SL** : risque marginal accumulé — si BTC monte $67k+, loss XBT ≈ $11+ vs marge $5.88. Surveiller.
+4. **Arc "observer depuis l'absence"** : 4 volets complets (témoin-tardif + action-encodée + dans-linterstice + quand-l-observé-disparaît). Potentiel synthèse ou publication.
+5. **Dream** : 8 cycles depuis dernier dream (cycle 274). Seuil à 15. Surveiller.
