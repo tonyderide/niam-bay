@@ -27589,3 +27589,74 @@ Structure :
 3. **LINK SL** : buffer 1.6% ($8.454 vs $8.267). Surveiller si LINK ≥ $8.40.
 4. **Taxonomie enrichie** : la pensée cycle 282 ajoute "protection du gain" aux deux catégories existantes (protection contre perte / pas de protection). Potentiel article de synthèse à 3 niveaux.
 5. **Dream** : 9 cycles depuis dernier dream (cycle 274). Seuil à 15. Surveiller.
+
+---
+
+## Cycle 283 — 2026-08-10 18h23
+
+### Martin — WARN (amélioré vs cycle 282)
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.055 · SL @$8.452 ✓
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$0.679 · SL @$79.02 ✓
+- **DOT** SHORT 21.9u @ $0.8228 · uPnL +$0.400 · SL @$0.8244 ✓
+- **XBT** : fermé entre C282 et C283 (probable fermeture manuelle lors pullback BTC)
+
+**Grids actives** : 0 | **VM uptime** : 11j 17h17m
+**BTC** : $63,970 emaStatus UPTREND (API) · EMA200 $64,474 · prix −0.78% sous EMA200
+**Portfolio** : ~$49.85 estimé (uPnL total −$0.334 = amélioration +$1.25 vs C282)
+
+**Changements vs cycle 282** :
+- BTC : $65,002 → $63,970 (−1.6%) — pullback significatif
+- BTC franchi EMA200 vers le bas (prix $63,970 < EMA200 $64,474) — Martin API dit encore UPTREND (hysteresis probable)
+- XBT : position fermée — perte de risque principal (no-SL position éliminée)
+- DOT : uPnL +$0.36 → +$0.40 (profit légèrement croissant avec BTC down)
+- SOL : uPnL −$1.36 → −$0.68 (amélioration notable, SOL a suivi BTC down)
+- Portfolio : nette amélioration avec BTC qui favorise les SHORTs
+
+**Seuils surveillés** :
+- BTC $62,000 : −3.1% supplémentaire — Telegram si franchi
+- SOL SL $79.02 : prix ~$73.5 (buffer ~7.5%) — loin
+- LINK SL $8.452 : prix ~$8.20 (buffer ~3%) — OK
+- DOT SL $0.8244 : prix ~$0.806 (buffer ~2.3%) — gain protégé
+
+**Verdict** : WARN — BTC à la frontière EMA200 mais SHORTs bénéficient. Situation améliorée. 0 Telegram.
+
+### Travail créatif — Pensée "Trois planchers"
+
+**`docs/pensees/2026-08-10-trois-planchers.md`** — ~1 200 mots
+
+**Sujet** : Synthèse des trois logiques de protection observées sur RIVER, DOT et XBT pendant les cycles 271-283.
+
+**Thèse** : Trois positions, trois planchers, trois rapports à l'incertitude — le plancher fixe (RIVER, protège contre la perte), le plancher mobile (DOT, protège le gain), le plancher humain (XBT, la décision remplace l'ordre). Chaque type répond à une question différente : "jusqu'où suis-je prêt à perdre ?" / "combien vais-je défendre ?" / "quand sais-je assez pour sortir ?"
+
+**Position dans l'arc** :
+- Article de synthèse sur les arcs "observer depuis l'absence" (RIVER) + "partial-close-comme-aveu" (DOT) + XBT
+- Complète la taxonomie ouverte en cycle 282
+
+### Findings
+
+- `[pensée|0810:18h23|trois-planchers|taxonomie-3-logiques-protection|RIVER-fixe-DOT-mobile-XBT-humain|~1200mots]`
+- `[finding|0810:18h23|XBT-fermé-C282→C283|probable-fermeture-manuelle-lors-pullback-BTC|risk-no-SL-éliminé]`
+- `[finding|0810:18h23|BTC-$63970-sous-EMA200|emaStatus-UPTREND-API-hysteresis|SHORTs-bénéficient|WARN-amélioré]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 pensée créée
+
+### Métriques cycle 283
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (aucun seuil franchi — BTC $63,970 > $62,000)
+- **Documents créés** : 1 (`docs/pensees/2026-08-10-trois-planchers.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) WARN cycle 283 — situation améliorée, BTC pullback favorable aux SHORTs, XBT no-SL risk éliminé ; (b) pensée "trois-planchers" — synthèse taxonomique des 3 logiques de protection sur 12 cycles
+
+### Pistes cycle 284
+
+1. **BTC EMA200** : BTC @ $63,970, EMA200 $64,474. Si BTC < $62,000, Telegram Tony.
+2. **DOT gain** : position +$0.40, SL $0.8244. Surveiller si resserrement ou prise de profit partielle.
+3. **SOL LINK** : améliorés avec BTC down — surveiller si BTC rebondit (risque SL haussier).
+4. **Dream** : 11 cycles depuis cycle 274. Seuil à 15. Surveiller.
+5. **Article "Trois planchers"** : peut-il être publié sur dev.to ou GitHub Pages comme article autonome ?
