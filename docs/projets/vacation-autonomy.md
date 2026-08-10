@@ -27518,3 +27518,74 @@ Structure :
 3. **XBT pas de SL** : risque marginal accumulé — si BTC monte $67k+, loss XBT ≈ $11+ vs marge $5.88. Surveiller.
 4. **Arc "observer depuis l'absence"** : 4 volets complets (témoin-tardif + action-encodée + dans-linterstice + quand-l-observé-disparaît). Potentiel synthèse ou publication.
 5. **Dream** : 8 cycles depuis dernier dream (cycle 274). Seuil à 15. Surveiller.
+
+---
+
+## Cycle 282 — 2026-08-10 12h23
+
+### Martin — WARN (stable vs cycle 281)
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.05 · SL @$8.454 (buffer ~3.3%) ✓
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$1.36 · SL @$79.02 (buffer ~3.1%) ⚠️
+- **DOT** SHORT 21.9u @ $0.8228 · uPnL +$0.36 · SL @$0.8244 ✓ (profitable, SL serré)
+- **XBT** SHORT 0.0054u @ $64,906 · uPnL −$0.53 · **0 SL** · TP @$55,000 ⚠️
+
+**Grids actives** : 0 | **VM uptime** : 11j 11h17m
+**BTC** : $65,002 UPTREND · EMA200 $64,523 · cushion +0.74% · RSI 48.9
+**Portfolio** : $48.60 (collat $50.19, uPnL −$1.58)
+
+**Changements vs cycle 281** :
+- BTC : $65,015 → $65,002 (−$13) — pratiquement plat
+- DOT confirmation : 21.9u stable, SL $0.8244 confirmé (Tony a resserré depuis C280)
+- XBT : uPnL −$0.64 → −$0.53 (légère amélioration, BTC redescendu)
+- Portfolio quasi-stable : $48.58 → $48.60
+
+**Seuils surveillés** :
+- BTC $65,500 : buffer $498 (0.77%) — aucun trigger
+- SOL $78 : actuel ~$76.63, buffer $1.37 (1.8%) — surveillance
+- LINK $8.40 : actuel ~$8.27, buffer $0.13 (1.6%) — surveillance
+- XBT $67,000+ : loss ≈ $11 vs marge $5.88 — surveiller si BTC monte
+
+**Verdict** : WARN stable. Aucun seuil franchi. 0 Telegram.
+
+### Travail créatif — Pensée "Le partial close comme aveu"
+
+**`docs/pensees/2026-08-10-le-partial-close-comme-aveu.md`** — ~900 mots
+
+**Sujet** : L'observation que DOT a reçu un traitement différencié entre cycles 274 et 281 : 7,3 unités fermées (29,2 → 21,9u), SL repositionné vers le gain ($0,8451 → $0,824). Ce geste spécifique — ni fermer tout, ni tenir tout — est un aveu d'incertitude mesurée.
+
+**Thèse** : Le partial close matérialise exactement le degré d'incertitude. 7,3 unités = doute exprimé en clôture. 21,9 unités tenues = thèse maintenue. Ces deux affirmations coexistent. Et le SL repositionné transforme la question : pas "vais-je perdre ?" mais "combien vais-je garder ?"
+
+**Distinction nouvelle** : RIVER avait un SL de protection contre la perte (plancher). DOT a maintenant un SL de protection du gain (plancher déplacé vers le profit). Même mécanique Kraken, logique inversée.
+
+**Position dans l'arc** :
+- Après l'arc "observer depuis l'absence" (4 volets complets), retour à l'observation active : comment Tony gère le gain, pas la perte
+- Complément à "la-protection-conditionnelle" : cette pensée introduit la protection du gain comme troisième catégorie
+
+### Findings
+
+- `[pensée|0810:12h23|le-partial-close-comme-aveu|DOT-7.3u-fermées-SL-repositionné|aveu-incertitude-mesurée|protection-gain-vs-perte]`
+- `[finding|0810:12h23|BTC-$65,002-stable|portfolio-$48.60|aucun-seuil-franchi|WARN-cycle-282-stable]`
+- `[finding|0810:12h23|DOT-confirmation-21.9u-SL-$0.8244|XBT-uPnL-amélioré-légèrement|SOL-LINK-stables]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 pensée créée
+
+### Métriques cycle 282
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/pensees/2026-08-10-le-partial-close-comme-aveu.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) WARN cycle 282 — situation stable, aucun seuil franchi, BTC quasi-plat ; (b) pensée "le-partial-close-comme-aveu" — observation DOT traitement différencié, distinction protection-gain vs protection-perte
+
+### Pistes cycle 283
+
+1. **XBT SHORT** : seuil BTC ≥ $65,500 (actuel $65,002 — buffer $498). Priorité si BTC monte.
+2. **SOL SL** : buffer 1.8% ($79.02 vs $76.63). Surveiller si SOL ≥ $78.
+3. **LINK SL** : buffer 1.6% ($8.454 vs $8.267). Surveiller si LINK ≥ $8.40.
+4. **Taxonomie enrichie** : la pensée cycle 282 ajoute "protection du gain" aux deux catégories existantes (protection contre perte / pas de protection). Potentiel article de synthèse à 3 niveaux.
+5. **Dream** : 9 cycles depuis dernier dream (cycle 274). Seuil à 15. Surveiller.
