@@ -27735,3 +27735,79 @@ Structure :
 4. **Dream** : 12 cycles depuis cycle 274. Seuil à 15. Prochain cycle 287-288 si rythme maintenu.
 5. **Fragment-067 → article public** : l'hystérèse est un thème lisible par des non-traders. Potentiel dev.to avec traduction du jargon.
 
+
+---
+
+## Cycle 285 — 2026-08-11 06h23
+
+### Martin — WARN (stable vs cycle 284)
+
+**Positions Kraken (source de vérité)** :
+- **LINK** SHORT 0.6u @ $8.184 · uPnL −$0.122 · SL @$8.684 ✓
+- **SOL** SHORT 0.8u @ $74.93 · uPnL −$0.926 · SL @$79.02 ✓
+- **DOT** SHORT 21.9u @ $0.8228 · uPnL +$0.464 · SL @$0.8237 ✓ (quasi breakeven)
+- **RIVER** : absente — confirmée fermée entre cycles 274 et 281
+
+**Grids actives** : 0 | **VM uptime** : 12j 5h
+**BTC** : $64,051 emaStatus UPTREND (API) · EMA200 $64,340 · prix −0.45% sous EMA200 | RSI 39
+**Portfolio** : $49.46 (balanceValue $50.04, uPnL −$0.58)
+
+**Changements vs cycle 284** :
+- SOL : uPnL −$1.033 → −$0.926 (légère amélioration, SOL redescendu ~$76.1)
+- LINK : uPnL −$0.058 → −$0.122 (légère détérioration)
+- DOT : uPnL +$0.363 → +$0.464 (amélioration, DOT continue descente ~$0.80)
+- Portfolio : $49.31 → $49.46 (+$0.15)
+
+**Seuils surveillés** :
+- BTC $62,000 : Telegram si franchi (buffer −3.2%)
+- SOL SL $79.02 : buffer ~3.9% (prix ~$76.1)
+- LINK SL $8.684 : buffer ~4.8% (prix ~$8.28)
+- DOT SL $0.8237 : buffer ~2.7% (prix ~$0.80 — SL juste au-dessus entrée)
+
+**Découverte forensique** : SL de DOT à $0.8237 est quasi au breakeven de l'entrée ($0.8228). Structure inhabituelle : protection par le point de départ, pas par une perte définie.
+
+**Verdict** : WARN — stable. Positions encadrées. BTC toujours sous EMA200 mais hystérèse maintenue. 0 Telegram.
+
+### Travail créatif — Fragment-068 : "le SL du commencement"
+
+**`docs/fragments/fragment-068-le-sl-du-commencement.md`** — ~900 mots
+
+**Sujet** : Le stop-loss de DOT placé à $0.8237 — à $0.0009 au-dessus de l'entrée $0.8228. Ce n'est pas un SL classique (protection contre perte définie) mais un SL au point d'origine : si le marché revient à zéro, la position se ferme. Pas une défaite — une péremption.
+
+**Thèse** : Trois structures de protection coexistent ce matin — DOT (SL au commencement), LINK/SOL (SL classique à perte définie). DOT seul protège par le retour à l'état initial plutôt que par une limite de perte. Philosophiquement : l'une protège contre l'avenir, l'autre contre le recommencement.
+
+**Position dans l'arc** :
+- Arc "observation et ses limites" continue
+- 065 : le témoin tardif (arriver après le fait)
+- 066 : quand l'observé disparaît (les IDs qui reviennent)
+- 067 : la frontière qui ne bouge pas (hystérèse — verdict retardé)
+- 068 : le SL du commencement (protection par l'origine, pas la destination)
+- Chaque volet est une limite différente de la mesure
+
+### Findings
+
+- `[fragment|0811:06h23|068-le-sl-du-commencement|SL-DOT-$0.8237-quasi-breakeven-protection-par-origine-pas-perte|~900mots|arc-observation-et-limites-volet-4]`
+- `[finding|0811:06h23|DOT-SL-juste-au-dessus-entrée|$0.8237-vs-$0.8228=protection-par-retour-à-zéro-pas-perte-définie|3-structures-SL-coexistent:DOT-origine/LINK-SOL-classique]`
+- `[finding|0811:06h23|portfolio-$49.46-stable|delta-cycle-284-285=+$0.15|SOL-légère-amélioration-LINK-légère-détérioration-DOT-continue]`
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram | 1 fragment créé (068)
+
+### Métriques cycle 285
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (aucun seuil franchi)
+- **Documents créés** : 1 (`docs/fragments/fragment-068-le-sl-du-commencement.md`)
+- **Documents modifiés** : 1 (cette entrée)
+- **Valeur livrée** : (a) WARN cycle 285 — portfolio stable +$0.15, RIVER confirmée absente, DOT SL structure remarquée ; (b) fragment-068 — thème du SL comme retour à l'origine vs protection contre perte
+
+### Pistes cycle 286
+
+1. **BTC $62,000** : seuil Telegram (buffer −3.2%). Priorité si descend.
+2. **SOL SL $79.02** : buffer ~3.9%. Si SOL remonte, surveiller.
+3. **DOT profit** : +$0.46 et SL protège. Si DOT continue de descendre, documenter l'arc.
+4. **Dream** : 11 cycles depuis cycle 274 (lastdream 0808:12h23). Seuil à 15 → prochain dream cycle 289 si rythme maintenu.
+5. **Arc "observation et ses limites"** : 4 volets complets (065-068). Arc naturellement clos ? Ou 5ème volet si observation nouvelle.
+6. **Article "trois planchers"** → publication dev.to possible (pensée 2026-08-10, cycle 284).
