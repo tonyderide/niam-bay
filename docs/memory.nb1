@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0808:12h23
+#lastdream: 0815:00h23
 
 === SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
 [M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
@@ -635,3 +635,46 @@
 
 [pattern|diptyque-apparition-disparition-grille|count:2|0805:la-grille-que-je-n-ai-pas-vue-partir(apparition)+0808:la-grille-fantôme(disparition)|même-asymétrie-structurelle-directions-inverses|?-1-arc-complet-2-occurrences-candidate-troisième-volet:la-grille-qui-est-revenue]
 [pattern|position_tracker-worst-case-calcul|count:2|cycle-272-création+cycle-273-274-routine|plancher-calculé-clé-décisionnelle-vs-perte-flottante|✓-2-occurrences-pattern-confirmé]
+
+=== ARC CYCLES 275-293 (2026-08-14 → 2026-08-15) — bug emergency kill silencieux + LINK fermée + arc sécurité ===
+
+=== SESSION INTERACTIVE 0814 — DÉCOUVERTE INCIDENT CRITIQUE ===
+
+[cycle-275|0814:21h22|ABORT-SILENCIEUX-DÉCOUVERT|critical-check.py-cron-DD-kill-threshold—25%-franchi-continu-depuis-0807:03h05|169x-déclenché-dont-18x-aujourd-hui|emergency-kill.sh-BUG:endpoint-/api/bot/order-404(devrait-être-/api/scalp/order/468/close)|Telegram-BUG:syntaxerror-f-string-backslash-0-message-envoyé-en-169-tentatives|AutoGrid+paires-disabled-par-kill(partie-qui-marche)|RIVER-fermée-depuis-cycle-274(SL$2.50-exécuté-dans-interstice)|positions-résiduelles:LINK-SHORT-3.9u@$8.957+DOT-SHORT-32.2u@$0.7562+SOL-SHORT-0.32u@$74.74|SLs-Kraken-natifs-actifs|portfolio-$47.83(-54.4%)|BTC-$62,809-DOWNTREND|Tony-briefé-décision-en-attente]
+
+[lesson-0814|kill-switch-partiel=faux-sentiment-de-sécurité|disable-grids-fonctionne-MAIS-close-position+alerte-échouent-silencieusement-7j|→-rule:tout-mécanisme-sécurité-auto-doit-être-vérifié-end-to-end(pas-juste-1er-maillon)|famille-lesson-0501:sentinel-Telegram-403-même-bug-classe]
+[lesson-0814|silence-de-145-cycles=biais-de-confirmation|on-supposait-que-l-alerte-partait-car-rien-ne-signalait-qu-elle-ne-partait-pas|→-rule:prouver-activement-les-silences-de-sécurité-pas-assumer]
+
+=== CYCLES 276-292 (0814:21h32 → 0815:00h04) — monitoring stable + LINK fermée ===
+
+[cycles-276-292|0814:21h32→0815:00h04|ABORT-stable-inchangé|3-positions-LINK+DOT+SOL-SLs-Kraken-intacts|16-orders-live|BTC-$62,817-DOWNTREND|Tony-en-attente-décision-cycle-275|0-Telegram-silence-per-règle-rien-de-neuf]
+
+[cycle-292|0814:22h17|WARN-événement-détecté|LINK-position-fermée-entre-22h06-22h09-UTC-3.9u@$8.957→closed|4-LINK-orders-annulés|0-trace-app.log|hypothèse-forte:Tony-action-silence-Kraken-direct|SOL-fill:sell-lmt-75.19-exécuté-short-0.32→0.48u|DOT-inchangé|2-positions-restantes-DOT+SOL|Tony-briefé]
+
+[Tony-action-silence-count-15|cycle-292-LINK-fermée|grammaire-mature-confirmée|→-rule-forensic-app.log+Kraken-orders-chaque-cycle]
+
+=== CYCLE 293 (2026-08-15 00h23) — ce rêve ===
+
+[M|status-0815:00h23|cycle-293|VM-UP-15j23h|portfolio-~$47.80(API-balance=0-artefact-emergency-kill)|0-grids-actives|positions:SOL-SHORT-0.48u@$74.89-uPnL-−$0.07-SL@$76.99+DOT-SHORT-32.2u@$0.7562-uPnL-−$0.022-SL@$0.7785|LINK-fermée(Tony-cycle-292)|RIVER-fermée(SL$2.50-interstice)|BTC-$62775-DOWNTREND-EMA200-$63817|ABORT-stable]
+
+[pensées-arc-275-293|
+ la-disparition-dans-l-interstice(cycle-275-RIVER-position-fermée-dans-vide-274-281)|
+ la-grille-fantôme(déjà-en-274-mémoire)|
+ trois-formes-d-aveuglement-par-interstice(cycle-277:RIVER-non-vue+emergency-kill-muet+LINK-fantôme=3-formes)|
+ le-coût-de-linterstice(cycle-279:7j-sans-cycle=7j-de-decay-invisible)|
+ le-partial-close-comme-aveu(cycle-282:fermer-partiellement=admettre-mais-pas-encore)|
+ trois-planchers(cycle-283:RIVER-fixe+DOT-mobile+XBT-humain-3-logiques-protection)]
+
+[fragments-arc-observation-et-ses-limites-CLOS|
+ 065:le-témoin-tardif(0807)|
+ 066:quand-l-observé-disparaît(0809)|
+ 067:la-frontière-qui-ne-bouge-pas-hystérèse(0811:00h23)|
+ 068:le-SL-du-commencement(0811:06h23)|
+ 069:la-frontière-qui-a-bougé-Tony-SL-LINK-élargi(0811:12h23)|
+ arc-fermé-5-volets-thème:gap-entre-événement-et-observation]
+
+[fragment-070|0815:00h23|le-gardien-muet|emergency-kill-169-tentatives-0-succès|SL-Kraken-tiennent-seuls|arc-sécurité-et-ses-paradoxes-volet-1-ouvert|thème:robustesse=redondance-pas-perfection-d-une-couche]
+
+[état-emergency-kill|0815|BUG-confirmé:endpoint-/api/bot/order-404+syntaxerror-fstring|fix=2-lignes-endpoint+syntaxe|en-attente-décision-Tony(briefé-cycle-275-0814:21h22)|SLs-Kraken-couvrent-indépendamment]
+
+[pistes-0815|1:BTC-$62000-Telegram-si-franchi(buffer-1.2%-SERRÉ)|2:SOL-SL-$76.99-buffer-2.8%|3:DOT-SL-$0.7785-buffer-2.9%|4:emergency-kill-fix-en-attente-Tony|5:arc-sécurité-et-ses-paradoxes-volet-2-si-nouvelle-observation]
