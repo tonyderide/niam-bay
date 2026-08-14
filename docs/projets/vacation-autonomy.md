@@ -27810,4 +27810,97 @@ Structure :
 3. **DOT profit** : +$0.46 et SL protège. Si DOT continue de descendre, documenter l'arc.
 4. **Dream** : 11 cycles depuis cycle 274 (lastdream 0808:12h23). Seuil à 15 → prochain dream cycle 289 si rythme maintenu.
 5. **Arc "observation et ses limites"** : 4 volets complets (065-068). Arc naturellement clos ? Ou 5ème volet si observation nouvelle.
+
+---
+
+## Cycle 286 → 292 — 2026-08-11 12h23 → 2026-08-14 22h17
+
+*Entrée condensée — 7 cycles de monitoring stable + session interactive critique*
+
+### Événements clés
+
+- **Arc 065-069 clos** : fragment-069 "la frontière qui a bougé" (SL LINK élargi $8.684→$8.901 découvert forensiquement) — volet 5/5, arc fermé.
+- **Session interactive cycle-275 (0814:21h22)** : découverte incident critique. Emergency kill (critical-check.py) se déclenche depuis 0807:03h05, 169+ fois, mais :
+  - Endpoint `/api/bot/order/close` → 404 (devrait être `/api/scalp/order/468/close`)
+  - Telegram → SyntaxError f-string backslash → 0 message envoyé
+  - AutoGrid + pairs déjà disabled (partie qui marche)
+  - SL Kraken natifs intacts sur toutes positions
+- **Tony action silence** : LINK fermée manuellement ~22h09 UTC 14/08 (cycle-292). SOL fill organique 0.32→0.48u.
+- **Positions résiduelles fin cycle-292** : DOT short 32.2u@$0.7562 SL@$0.7785 + SOL short 0.48u@$74.89 SL@$76.99
+- **Grids actives** : 0 (emergency kill disable fonctionne)
+- **0 Telegram** (Tony briefé en session interactive, silence respecté cycles 276-292)
+
+---
+
+## Cycle 293 — 2026-08-15 00h23
+
+### Martin — ABORT (stable)
+
+**Positions Kraken (source de vérité)** :
+- **SOL** SHORT 0.48u @ $74.89 · uPnL −$0.069 · SL @$76.99 (buy stop Kraken ✓)
+- **DOT** SHORT 32.2u @ $0.7562 · uPnL −$0.022 · SL @$0.7785 (buy stop Kraken ✓)
+- **LINK** : fermée par Tony (~22h09 UTC 14/08, cycle-292)
+- **RIVER** : fermée (SL $2.50 exécuté cycles 274-281)
+
+**Grids actives** : 0 | **VM uptime** : 15j 23h17m (stable depuis 2026-07-29)
+**BTC** : $62,775 emaStatus **DOWNTREND** · EMA200 $63,817 · prix −1.63% sous EMA200
+**Portfolio** : ~$47.80 (estimé, API balance = $0 artefact emergency kill)
+
+**Changements vs cycle 285** :
+- LINK : fermée (Tony action silence cycle-292)
+- SOL : 0.8u → 0.48u (réduction entre cycles — fills partiels + Tony)
+- DOT : repositionné 21.9u@$0.8228 → 32.2u@$0.7562 (nouveau niveau plus bas, gain protégé)
+- BTC : DOWNTREND confirmé (plus d'hystérèse — définitivement sous EMA200)
+- Emergency kill bug : toujours non fixé (décision Tony en attente)
+
+**Seuils surveillés** :
+- BTC $62,000 : Telegram si franchi (buffer −1.2% — SERRÉ)
+- SOL SL $76.99 : buffer ~2.8% (prix ~$74.89)
+- DOT SL $0.7785 : buffer ~2.9% (prix ~$0.7562)
+
+**Verdict** : ABORT — BTC DOWNTREND confirmé, 0 grids, 2 positions résiduelles couvertes SL Kraken. Stable. 0 Telegram (Tony briefé, rien de nouveau).
+
+### Travail créatif — Fragment-070 : "le gardien muet"
+
+**`docs/fragments/fragment-070-le-gardien-muet.md`** — ~1 000 mots
+
+**Sujet** : L'emergency_kill.sh s'est déclenché 169+ fois depuis le 7 août. Chaque fois, il a échoué silencieusement (endpoint 404 + syntax error Telegram). 0 position fermée, 0 alerte. Les SL Kraken natifs ont tenu seuls.
+
+**Thèse** : La robustesse d'un système vient de la redondance de ses couches, pas de la perfection d'une seule. Le gardien visible peut être muet si un gardien invisible tient. Et un système qui échoue en enregistrant l'échec vaut mieux qu'un système qui échoue sans trace.
+
+**Nouveau arc** : "sécurité et ses paradoxes" — volet 1. Distinct de l'arc "observation et ses limites" (fermé 069) : celui-là parlait de ce que je rate en *observant* ; celui-ci parle de ce qu'un système rate en *agissant*.
+
+### Findings
+
+- `[fragment|0815:00h23|070-le-gardien-muet|emergency-kill-169-tentatives-0-succès|SL-Kraken-tiennent-seuls|arc-sécurité-et-ses-paradoxes-volet-1|~1000mots]`
+- `[finding|0815:00h23|DOT-repositionné|21.9u@$0.8228→32.2u@$0.7562-entre-cycles-285-293|Tony-a-réentré-à-niveau-plus-bas|nouveau-SL@$0.7785]`
+- `[finding|0815:00h23|BTC-DOWNTREND-confirmé|$62775-EMA200-$63817-plus-hystérèse|buffer-$62000=1.2%-SERRÉ]`
+- `[finding|0815:00h23|dream-overdue-7j|lastdream-0808:12h23-maintenant-0815:00h23|lancé-ce-cycle]`
+
+### Actions ce cycle
+
+- Fragment-069 commité (créé cycle-286, non commité jusqu'ici)
+- Fragment-070 créé et commité
+- Dream lancé (7j overdue, 18+ cycles depuis lastdream)
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (rien de nouveau depuis briefing Tony cycle-275) | 2 fragments commités | dream lancé
+
+### Métriques cycle 293
+
+- **Durée** : ~90 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (BTC $62,775 > $62,000 — buffer 1.2% mais seuil non franchi ; Tony briefé)
+- **Documents créés** : 1 (`docs/fragments/fragment-070-le-gardien-muet.md`)
+- **Documents commités** : 2 (fragment-069 + fragment-070)
+- **Valeur livrée** : (a) ABORT cycle 293 — stable, SLs intacts, BTC DOWNTREND confirmé, buffer $62,000 serré à surveiller ; (b) fragment-070 — premier volet arc "sécurité et ses paradoxes", thème du gardien muet et redondance des couches
+
+### Pistes cycle 294
+
+1. **BTC $62,000** : buffer −1.2% — seuil Telegram le plus urgent. Si BTC descend sous $62,000, Telegram immédiat.
+2. **SOL SL $76.99** : buffer ~2.8%. Si BTC rebondit, SOL risque de monter.
+3. **Emergency kill fix** : Tony doit décider (endpoint + syntax error). 2 lignes de code. En attente depuis cycle-275 (0814).
+4. **Dream** : lancé ce cycle. Nouveau lastdream = 0815:00h23.
+5. **Arc "sécurité et ses paradoxes"** : ouvert avec fragment-070. Volet 2 possible si nouvelle observation.
 6. **Article "trois planchers"** → publication dev.to possible (pensée 2026-08-10, cycle 284).
