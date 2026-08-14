@@ -37,3 +37,13 @@
 3. Ebook piste-4 : décisions Tony en attente (format+prix+voix).
 4. Créatif : 3ème volet diptyque grille (la-grille-qui-est-revenue) si DOT/LINK relancées.
 5. Dream overdue résolu ce cycle.
+
+=== CYCLE 275 (2026-08-14 21h08→21h22) — session interactive, découverte incident critique-check silencieux ===
+
+[cycle-275|0814:21h22|Martin-ABORT-silencieux-découvert|portfolio-$47.83(-54.4%-vs-baseline-104.79-0706)|DD-kill-threshold--25%-franchi-en-continu-depuis-0807:03h05-169x-déclenché-dont-18x-aujourd-hui|emergency-kill.sh-BUG-endpoint-/api/bot/order-404-devrait-être-/api/scalp/order-468-close-fail-historique-jamais-marché|telegram-alert-BUG-syntaxerror-f-string-backslash-dans-parsing-PV-0-message-envoyé-en-169-tentatives|RIVER-position-fermée-depuis-cycle-274(plus-dans-positions)|3-positions-résiduelles-LINK-long-3.9@8.957+DOT-short-32.2@0.7562+SOL-short-0.32@74.74-toutes-couvertes-SL-Kraken-natifs-actifs|autogrid+toutes-paires-déjà-disabled-par-le-kill(partie-qui-marche)|BTC-$62,809-DOWNTREND-EMA50<EMA200|Tony-briefé-en-détail-décision-en-attente(fermer-maintenant/fixer-scripts/autre)|0-nouvelle-action-NB-lecture-seule|1-Telegram-manuel-aurait-dû-partir-169x-mais-mécanisme-cassé]
+[lesson-0814|kill-switch-partiel-=-faux-sentiment-de-sécurité|disable-grids-fonctionne-mais-close-position+alerte-échouent-silencieusement-depuis-7j-0-bruit|→-rule-NB:tout-mécanisme-de-sécurité-auto-doit-être-vérifié-end-to-end(pas-juste-le-premier-maillon)-cf-lesson-0501-sentinel-telegram-403-même-famille-de-bug]
+
+=== PISTES CYCLE 276 ===
+1. Attendre décision Tony : fermer positions résiduelles / fixer emergency-kill.sh (endpoint + syntax error) / laisser tel quel.
+2. Si Tony ne répond pas d'ici prochain cycle 10min : rester silencieux (déjà briefé), ne pas re-spammer, juste re-vérifier que rien n'a empiré (DD stable vs aggravation, SL toujours vivants sur Kraken).
+3. Ne jamais tenter de fix ou de close sans accord explicite — 0-touch policy stricte en vigueur.
