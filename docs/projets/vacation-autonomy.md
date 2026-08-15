@@ -28039,3 +28039,52 @@ Réveil 12h23. Samedi. Tony probablement disponible (pas en vacances — heure P
 3. **Emergency kill fix** : décision Tony en attente cycle-275. 2 lignes de code.
 4. **Arc créatif** : "sécurité et ses paradoxes" fermé (3 volets). Prochain arc à définir.
 5. **Dream** : lastdream 0815:00h23 = 12h ago. 12+ cycles sans dream. Surveiller seuil 15 cycles.
+
+---
+
+## Cycle 366 — 2026-08-15 18h23 Paris
+
+Réveil ~16h après cycle 365. Heure : samedi soir Paris, 16h23 UTC. Tony actif aujourd'hui (LINK fermée cycle-292 22h06 UTC hier, BTC short x10 ouvert+fermé 15h03-15h18 UTC aujourd'hui quasi-breakeven). Dernier contact ~1h05 avant ce cycle.
+
+### État Martin (martin-monitor 18h23 Paris)
+
+- VM UP **16j 17h** depuis 2026-07-29 23h06 UTC
+- PV **~$47.01** (-55.2% vs dépôt ~$104.86)
+- **0 grids actives** | 13 orders Kraken
+- Positions:
+  - `SOL SHORT` 0.48u @ $74.89 | SL Kraken @ $76.99 (buffer 2.8%) ✓
+  - `DOT SHORT` 94.8u @ $0.766 | SL Kraken @ $0.8009 (buffer 4.6%) ✓
+- Orphelins actifs: `XBTUSD buy stop @$64,233` (zombie) + `DOTUSD sell lmt @$0.7923` + `DOTUSD sell lmt @$0.8021` (risque d'extension)
+- BTC $63,015 DOWNTREND | EMA200 $63,715 | buffer 1.1% EMA200 | buffer 1.6% vs $62k
+- Emergency kill bug : 187e tentative échouée (toujours en attente décision Tony)
+
+**Verdict** : ABORT stable. SLs Kraken intacts. Aucun seuil $62k franchi. Rien de neuf vs cycle 365.
+
+### Travail créatif — fragment-073 : "la main qui rentre"
+
+Matière : Tony a ouvert un BTC short x10 ($30) directement sur Kraken à 15h03 UTC et l'a fermé à 15h18 UTC (15 min, quasi-breakeven). Ça s'est passé pendant l'ABORT. 0 log Martin, 0 passage par l'API — main directe sur Kraken pendant que le bot dort.
+
+Fragment créé : `docs/fragments/fragment-073-la-main-qui-rentre.md` — premier volet d'un nouvel arc "le retour du geste".
+
+**Thèse centrale** : l'automatisation ne supprime pas les comportements humains, elle les *suspend*. La fermeture en 15 min n'est pas de l'échec — c'est une sonde. Sentir que les réflexes sont encore là. Ils l'étaient.
+
+Trois hypothèses sur le pourquoi de la fermeture rapide (direction adverse / absence de move / besoin d'agir) — délibérément sans trancher.
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (rien de neuf vs cycle 365 — seuil $62k non franchi) | 1 fragment créé
+
+### Métriques cycle 366
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`fragment-073-la-main-qui-rentre.md`)
+- **Valeur livrée** : martin-monitor cycle 366 (ABORT stable confirmé) + ouverture nouvel arc créatif "le retour du geste" sur matière observée en direct aujourd'hui
+
+### Pistes cycle 367
+
+1. **BTC $62,000** : buffer 1.6% — seuil Telegram si franchi.
+2. **DOT sell LMT @$0.7923/$0.8021** : orphelins encore live — extension possible si DOT monte vers SL.
+3. **Emergency kill fix** : 2 lignes de code, en attente Tony depuis cycle-275 (20h+ écoulées).
+4. **Arc créatif "le retour du geste"** : volet 2 possible si nouvelle observation (DOT SL qui fire ? Tony qui ouvre à nouveau ?)
