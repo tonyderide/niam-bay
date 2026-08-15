@@ -28088,3 +28088,73 @@ Trois hypothèses sur le pourquoi de la fermeture rapide (direction adverse / ab
 2. **DOT sell LMT @$0.7923/$0.8021** : orphelins encore live — extension possible si DOT monte vers SL.
 3. **Emergency kill fix** : 2 lignes de code, en attente Tony depuis cycle-275 (20h+ écoulées).
 4. **Arc créatif "le retour du geste"** : volet 2 possible si nouvelle observation (DOT SL qui fire ? Tony qui ouvre à nouveau ?)
+
+---
+
+## Cycle 367 — 2026-08-16 00:25 Paris
+
+Réveil session autonome. Heure : dimanche nuit Paris, 22:25 UTC. Tony probablement endormi. 6h depuis cycle 366. Dernière action Tony détectable : fermeture BTC short ~15h18 UTC hier.
+
+### État Martin (martin-monitor 00:25 Paris)
+
+- VM UP **16j 23h** depuis 2026-07-29 23h06 UTC
+- PV **~$47** (-55% vs dépôt ~$104.86) — balance API fi_xbtusd = 0 (PM margined, normal)
+- **0 grids actives** | 12 orders Kraken
+- Positions:
+  - `SOL SHORT` 0.48u @ $74.89 | prix actuel ~$75.58 | SL Kraken @ $76.99 (buffer **1.87%**) ← serré
+  - `DOT SHORT` 94.6u @ $0.7683 | prix actuel ~$0.7681 | SL Kraken @ $0.8009 (buffer **4.27%**) ✓
+- Orphelins actifs: `XBTUSD buy stop @$64,233` (zombie) + `DOTUSD sell lmt @$0.7923` + `DOTUSD sell lmt @$0.8021` (risque d'extension)
+- BTC $63,078 DOWNTREND | EMA200 $63,696 | EMA50 $63,080 (quasi-collé à EMA200) | buffer $62k = **1.74%**
+- Emergency kill bug : 192e tentative échouée
+
+**Verdict** : ABORT stable. SOL SL buffer serré (1.87%) à surveiller. DOT confortable. Pas de Telegram — aucun seuil franchi, rien de nouveau vs cycle 366.
+
+### Travail créatif — Fragment-074 : "les logs vides"
+
+**`docs/fragments/fragment-074-les-logs-vides.md`** — ~1 200 mots
+
+**Sujet** : Quand Tony a fermé LINK (cycle-292) et ouvert+fermé BTC (cycles 391-394) directement sur Kraken, les logs de Martin étaient vides. Le système ne se souvient que de ce qu'il a fait lui-même. Les actes de l'opérateur sont des fantômes dans la mémoire du bot.
+
+**Thèse centrale** : Deux angles de l'invisible — (1) l'opérateur agit hors du système, les logs sont vides parce qu'il a contourné le registre ; (2) le système place un ordre, l'ordre n'est jamais confirmé, les logs sont *faux* plutôt que vides. Même symptôme (divergence état interne / réalité Kraken), causes opposées.
+
+**Construction** :
+- La règle implicite : Martin enregistre ses propres actes, pas ceux de l'opérateur
+- Les conséquences pour la mémoire à long terme : la chronologie du 15 août aura des trous
+- L'archéologie par inférence : reconstruire les actes de Tony via leurs empreintes (position disparue, ordre annulé)
+- Le cas limite : la position BTC fantôme — Tony a peut-être fermé quelque chose qui n'existait pas
+- L'œil à côté : la surveillance autonome comme lecture croisée de ce que Martin voit ET de ce qu'il ne voit pas
+
+**Arc** : "le retour du geste" — volet 2. Complémentaire de fragment-073 qui questionnait *pourquoi* la main est revenue. Celui-ci questionne *ce que le retour laisse dans le registre*.
+
+### Findings
+
+- `[fragment|0816:00h25|074-les-logs-vides|logs-vides-deux-angles-opérateur-hors-système+système-hallucine|arc-le-retour-du-geste-volet-2|~1200mots]`
+- `[finding|0816:00h25|SOL-SL-buffer-serré|1.87%-buffer-vs-SL-$76.99-prix-$75.58|surveiller-si-BTC-rebondit]`
+- `[finding|0816:00h25|EMA50-quasi-collée-EMA200|$63080-vs-$63696|signe-indécision-marché]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 367)
+- Fragment-074 créé : arc "le retour du geste" volet 2
+- vacation-autonomy.md mis à jour
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (rien de critique) | 1 fragment créé
+
+### Métriques cycle 367
+
+- **Durée** : ~40 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-074-les-logs-vides.md`)
+- **Valeur livrée** : (a) martin-monitor stable confirmé — SOL SL serré noté, pas critique ; (b) fragment-074 — volet 2 arc "le retour du geste", thème de l'invisibilité des actes humains dans la mémoire du système
+
+### Pistes cycle 368
+
+1. **SOL SL @$76.99** : buffer 1.87% — surveiller si BTC/SOL rebondissent.
+2. **BTC $62,000** : buffer 1.74% — seuil Telegram si franchi.
+3. **DOT sell LMT @$0.7923/$0.8021** : orphelins encore live.
+4. **Emergency kill fix** : décision Tony en attente depuis cycle-275 (~24h maintenant).
+5. **Arc "le retour du geste"** : volet 3 possible — la réconciliation ? (le jour où les deux visions se retrouvent)
+6. **Dream** : lastdream 0815:00h23 = ~24h. Seuil 15 cycles overdue approche. Lancer si +20 cycles sans rêve.
