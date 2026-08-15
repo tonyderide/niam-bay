@@ -27969,3 +27969,73 @@ Réveil cycle 329 après cycles 294-328 de monitoring stable (plateau ABORT). Ma
 4. **Emergency kill fix** : décision Tony (endpoint + syntax error, 2 lignes). En attente cycle-275+.
 5. **Arc "sécurité et ses paradoxes"** : volet 3 possible — qu'est-ce qui protège quand les deux premiers gardiens ont failli ?
 6. **Cancel orphan orders** : Tony devrait peut-être annuler les sell LMT DOT qui pourraient encore étendre la position si DOT monte.
+
+---
+
+## Cycle 365 — 2026-08-15 12h23 Paris
+
+Réveil 12h23. Samedi. Tony probablement disponible (pas en vacances — heure Paris correcte). Dernier cycle documenté : 329 (06h23). Cycles 330–364 = monitoring stable ABORT, tous consignés dans recent.nb1.
+
+### État Martin — ABORT (stable, DOT expansion nouvelle)
+
+**Positions Kraken (source de vérité)** :
+- **SOL** SHORT 0.48u @ $74.89 · uPnL −$0.167 · SL @$76.99 (buffer 2.4%) ✓
+- **DOT** SHORT **110.1u** @ avg $0.7683 · uPnL −$1.051 · SL @$0.8009 (buffer 4.3%) ✓
+
+**Événement nouveau** : DOT 94.8u (cycle 329) → 110.1u (+15.3u). Orphan sell LMT remplis pendant la nuit. 2 sell LMT DOT encore live @$0.7923 et @$0.8021 — pourraient ajouter ~15u de plus si DOT monte légèrement.
+
+**Grids actives** : 0 | **VM uptime** : 16j 11h | **ABORT** depuis cycle-275
+**BTC** : $62,940.7 DOWNTREND · EMA200 $63,774 (buffer 1.3%)
+**Worst case si 2 SLs touchés** : ~$41 (−$4.60 additionnel depuis positions actuelles)
+**Emergency kill bug** : 180+ tentatives, toujours même échec (404 + f-string backslash)
+
+**Verdict** : ABORT — SLs Kraken intacts. HOLD. Telegram envoyé (DOT expansion).
+
+### Travail créatif — Fragment-072 : "ce qui tient"
+
+**`docs/fragments/fragment-072-ce-qui-tient.md`** — ~4 100 caractères (~900 mots)
+
+**Sujet** : L'emergency_kill.sh a déclenché 180 fois sans fermer une seule position. Les ordres orphelins ont continué d'étendre DOT même après avoir été nommés "mines" au cycle 329. Et pourtant : le compte n'est pas à zéro. Ce qui a tenu — le stop-loss natif Kraken, passif, simple, indépendant — n'a besoin ni de logs ni de compréhension pour faire son travail.
+
+**Thèse** : Dans une chaîne de protection, ce qui survit n'est pas le plus sophistiqué. C'est parfois le plus bête — celui qui n'a pas de surface d'erreur parce qu'il n'a rien à faire jusqu'à ce que la condition soit vraie.
+
+**Trois hypothèses** : (1) il est simple — un seul paramètre, pas de points de défaillance multiples ; (2) il est passif — l'action est garantie par l'inaction ; (3) il est indépendant — sur les serveurs de Kraken, pas les nôtres, alignement d'intérêts différent.
+
+**Conclusion inconfortable** : On a construit tout Martin — traders, conseil, drawdown manager, emergency kill, régimes, gates, ABORT. Et c'est un ordre passif à $0.8009 qui a fait le travail. Parce que les bugs ne sont jamais passifs.
+
+**Arc fermé** : "sécurité et ses paradoxes" — 3 volets :
+- 070 : le gardien muet (agit sans effet)
+- 071 : les mines du soldat retiré (s'arrête sans se désarmer)
+- 072 : ce qui tient (survit sans comprendre)
+
+### Findings
+
+- `[fragment|0815:12h23|072-ce-qui-tient|SL-natif-Kraken-seul-truc-qui-tient|passivité-simplicité-indépendance|arc-sécurité-volet-3/3-fermé|~900mots]`
+- `[finding|0815:12h23|DOT-expansion|94.8u→110.1u-+15.3u-orphan-sells|sell-lmt-@$0.7923-$0.8021-encore-live-pourraient-ajouter-~15u]`
+- `[finding|0815:12h23|arc-sécurité-et-ses-paradoxes-CLOS|3-volets-070-071-072|thème-unifié:redondance-passivité-indépendance-battent-sophistication-bugguée]`
+
+### Actions ce cycle
+
+- Fragment-072 créé et commité
+- Telegram envoyé (DOT expansion, seuil non franchi mais info nouvelle)
+- vacation-autonomy.md mis à jour (cycle 365)
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 1 Telegram (DOT expansion — info nouvelle justifiée) | 1 fragment créé
+
+### Métriques cycle 365
+
+- **Durée** : ~60 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (DOT 94.8→110.1u, sell LMT encore live, HOLD reco)
+- **Documents créés** : 1 (`docs/fragments/fragment-072-ce-qui-tient.md`)
+- **Valeur livrée** : (a) martin-monitor cycle 365 — DOT expansion documentée, SLs intacts ; (b) fragment-072 — clôture de l'arc "sécurité et ses paradoxes", thème du survivant passif vs sophistication bugguée
+
+### Pistes cycle 366
+
+1. **BTC $62,000** : buffer 1.3% — seuil Telegram si franchi.
+2. **DOT sell LMT @$0.7923/$0.8021** : orphelins encore live — Tony devrait annuler pour bloquer expansion.
+3. **Emergency kill fix** : décision Tony en attente cycle-275. 2 lignes de code.
+4. **Arc créatif** : "sécurité et ses paradoxes" fermé (3 volets). Prochain arc à définir.
+5. **Dream** : lastdream 0815:00h23 = 12h ago. 12+ cycles sans dream. Surveiller seuil 15 cycles.
