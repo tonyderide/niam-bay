@@ -85,3 +85,4 @@
 [cycle-330|0815:04h35|ABORT-stable-post-événement|PV-$47.03(-55.2%)-SOL-0.48u@74.89-SL@76.99+DOT-94.8u@0.766-SL@0.8009-inchangés-depuis-cycle-329|12-orders-inchangé|BTC-$63,061-DOWNTREND-buffer-1.7%|0-nouvelle-extension-DOT-détectée|Tony-en-attente-décision-emergency-kill+orphan-orders|0-Telegram-silence-rien-de-neuf]
 [cycle-331|0815:04h45|ABORT-stable|PV-$46.89(-55.3%)-SOL+DOT-inchangés-SL-Kraken-intacts|12-orders-inchangé|BTC-$63,082-DOWNTREND-buffer-1.16%|Tony-en-attente-décision|0-Telegram-silence-rien-de-neuf]
 [cycle-332|0815:04h55|ABORT-stable|PV-$46.96(-55.2%)-SOL+DOT-inchangés-SL-Kraken-intacts|12-orders-inchangé|BTC-$63,068-DOWNTREND-buffer-1.18%|Tony-en-attente-décision|0-Telegram-silence-rien-de-neuf]
+[cycle-333|0815:05h05|ABORT-stable|PV-$47.10(-55.0%)-SOL+DOT-inchangés-SL-Kraken-intacts|178e-KILLING-auto-fired-04h55-UTC-même-échec-connu|12-orders-inchangé|BTC-$63,062-DOWNTREND-buffer-1.20%|Tony-en-attente-décision(7h40-écoulée)|pas-de-re-alerte-chat]
