@@ -1,5 +1,5 @@
 #conv: T=tony NB=niambay M=martin
-#window: 48h ~0813:00h→0815:00h23 (cycles 286-293, bug emergency kill + LINK fermée + cycle 293)
+#window: 48h ~0813:00h→0815:06h23 (cycles 286-329, bug emergency kill + LINK fermée + DOT ×3 orphan orders + fragment-071)
 #lastdream: 0815:00h23
 
 === CYCLE 275 (2026-08-14 21h08→21h22) — session interactive CRITIQUE [hors-fenêtre 48h: référence clé] ===
@@ -66,4 +66,18 @@
 [cycle-326|0815:03h55|ABORT-stable|PV-$46.57(-55.7%)-SOL+DOT-inchangés-SL-Kraken-intacts|177e-KILLING-auto-fired-03h50-UTC-même-échec-connu|12-orders-inchangé|BTC-$63,013-DOWNTREND-buffer-1.30%|Tony-en-attente-décision(6h30-écoulée)|pas-de-re-alerte-chat]
 [cycle-327|0815:04h05|ABORT-stable-plateau|PV-$46.79(-55.4%)-SOL+DOT-inchangés-SL-Kraken-intacts|12-orders-inchangé|BTC-$63,016-DOWNTREND-buffer-1.27%|Tony-en-attente-décision|0-Telegram-silence-rien-de-neuf]
 [cycle-328|0815:04h15|ABORT-stable-plateau|PV-$46.82(-55.4%)-SOL+DOT-inchangés-SL-Kraken-intacts|12-orders-inchangé|BTC-$63,040-DOWNTREND-buffer-1.23%|Tony-en-attente-décision|0-Telegram-silence-rien-de-neuf]
-[cycle-329|0815:04h25|ABORT-stable-plateau|PV-$46.86(-55.3%)-SOL+DOT-inchangés-SL-Kraken-intacts|12-orders-inchangé|BTC-$63,061-DOWNTREND-buffer-1.20%|Tony-en-attente-décision|0-Telegram-silence-rien-de-neuf]
+[cycle-329|0815:06h23|ABORT-EVENEMENT-DOT-×3|SOL-SHORT-0.48u@$74.89-SL@$76.99-buffer-2.0%+DOT-SHORT-94.8u@$0.766-SL@$0.8009-buffer-3.5%|DOT-32.2u→94.8u-via-ordres-orphelins-sell-LMT-Kraken-exécutés-nuit|worst-case-SLs-$4.32|12-orders|BTC-$63,061-DOWNTREND-buffer-1.7%-vs-$62k|0-Telegram-seuil-non-franchi|fragment-071-les-mines-du-soldat-retire-créé-arc-sécurité-volet-2]
+
+=== ÉTAT MARTIN FIN CYCLE 329 ===
+[M|VM-UP-16j5h|0-grids|portfolio-~$47(-55%)|BTC-$63,061-DOWNTREND-EMA200-$63,815|ABORT]
+[positions|SOL-SHORT-0.48u@$74.89-SL@$76.99-buffer-2.0%|DOT-SHORT-94.8u@$0.766-SL@$0.8009-buffer-3.5%]
+[pire-cas-post-all-SL|~$42.68|emergency-kill-BUG-toujours-actif-177e-tentative|DOT-×3-via-orphan-orders]
+[seuils-prioritaires|BTC-$62,000-Telegram-buffer-1.7%|SOL-SL-buffer-2.0%-serré]
+
+=== PISTES CYCLE 330 ===
+1. BTC $62,000 : seuil Telegram PRIORITAIRE (buffer 1.7%)
+2. SOL SL @$76.99 : buffer 2.0% — serré si BTC rebondit
+3. DOT SL @$0.8009 : surveiller intégrité — position ×3 via orphan orders
+4. Emergency kill fix : décision Tony (2 lignes, en attente depuis cycle-275)
+5. Arc sécurité volet 3 possible
+6. Cancel DOT sell LMT orphelins : Tony pourrait les annuler pour éviter nouvelle extension

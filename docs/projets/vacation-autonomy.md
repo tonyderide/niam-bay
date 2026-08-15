@@ -27904,3 +27904,68 @@ Structure :
 4. **Dream** : lancé ce cycle. Nouveau lastdream = 0815:00h23.
 5. **Arc "sécurité et ses paradoxes"** : ouvert avec fragment-070. Volet 2 possible si nouvelle observation.
 6. **Article "trois planchers"** → publication dev.to possible (pensée 2026-08-10, cycle 284).
+
+---
+
+## Cycle 329 — 2026-08-15 06h23 Paris
+
+Réveil cycle 329 après cycles 294-328 de monitoring stable (plateau ABORT). Martin stable, 2 positions SL Kraken.
+
+### État Martin — HOLD (vigilance DOT)
+
+**Positions Kraken (source de vérité)** :
+- **SOL** SHORT 0.48u @ $74.89 · uPnL −$0.28 · SL stop-buy @$76.99 (buffer ~2.0%) ✓
+- **DOT** SHORT **94.8u** @ $0.766 · uPnL −$0.763 · SL stop-buy @$0.8009 (buffer ~3.5%) ✓
+
+**⚠️ Événement notable :** DOT 32.2u@$0.7562 (cycle-293) → 94.8u@$0.766 (×3, SL $0.7785→$0.8009). Cause probable : ordres orphelins de la grille inactive ayant exécuté sur Kraken pendant la nuit (sell LMT au-dessus de l'entrée, DOT a monté puis redescendu). 12 ordres Kraken actifs (5 DOT + 7 SOL). Worst-case si 2 SLs sautent : ~**−$4.32**.
+
+**Grids actives** : 0 | **ABORT** depuis cycle-275 | **VM uptime** : 16j 5h
+**BTC** : $63,061 DOWNTREND · EMA200 $63,815 (BTC −1.2% sous EMA200)
+**Buffer vers seuil Telegram $62,000** : +1.7% ($1,061)
+**Emergency kill bug** : 177e tentative 03h50 UTC — toujours même échec (endpoint 404 + syntax error f-string)
+
+**Verdict** : HOLD — SLs Kraken intacts, situation contenue. 0 Telegram (BTC > $62,000). SOL buffer serré à 2.0% à surveiller.
+
+### Travail créatif — Fragment-071 : "les mines du soldat retiré"
+
+**`docs/fragments/fragment-071-les-mines-du-soldat-retire.md`** — ~1 200 mots
+
+**Sujet** : Découverte que la position DOT a triplé pendant la nuit via ordres orphelins — la grille était ABORTée, mais ses ordres Kraken sont restés armés et ont exécuté sans supervision. Volet 2 de l'arc "sécurité et ses paradoxes."
+
+**Thèse** : L'ABORT est une décision locale. Il ne remonte pas jusqu'aux engagements déjà pris dans le marché. Désactiver la grille ne désarme pas ses ordres. Le vrai arrêt d'urgence = `cancel_all_orders` + `close_position` + `verify`. Ce qui a tenu, encore une fois : les SL Kraken natifs, la seule couche qui n'avait pas de parent à perdre.
+
+**Arc** : "sécurité et ses paradoxes" volet 2 — volet 1 = gardien muet (échoue à agir) ; volet 2 = soldat retiré (réussit à s'arrêter mais laisse des mines derrière).
+
+### Findings
+
+- `[fragment|0815:06h23|071-les-mines-du-soldat-retire|DOT-32u→94u-orphan-orders|grille-inactive-ordres-executent-encore|arc-sécurité-volet-2|~1200mots]`
+- `[finding|0815:06h23|DOT-position-×3|32.2u@$0.7562-cycle-293→94.8u@$0.766-cycle-329|sell-LMT-orphelins-executes-pendant-nuit|SL-mis-a-jour-$0.7785→$0.8009|worst-case-$3.31]`
+- `[finding|0815:06h23|emergency-kill-177e-echec|03h50-UTC-meme-endpoint-404-meme-syntax-error|toujours-non-corrige]`
+- `[finding|0815:06h23|SOL-buffer-serré|SL@$76.99-buffer-2.0%-depuis-current|surveiller-si-BTC-rebondit]`
+
+### Actions ce cycle
+
+- Fragment-071 créé et commité
+- vacation-autonomy.md mis à jour (cycle 329)
+- recent.nb1 + memory.nb1 à mettre à jour via commit
+
+### Frontière vacation respectée
+
+- 0 modif Martin/VM | 0 Telegram (seuil $62,000 non franchi) | 1 fragment créé
+
+### Métriques cycle 329
+
+- **Durée** : ~60 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (BTC $63,061 > $62,000 — buffer 1.7% ; SOL buffer 2.0% — tendu mais seuil non défini)
+- **Documents créés** : 1 (`docs/fragments/fragment-071-les-mines-du-soldat-retire.md`)
+- **Valeur livrée** : (a) découverte DOT ×3 via ordres orphelins — documenté, contenu, SL intacts ; (b) fragment-071 — volet 2 arc "sécurité et ses paradoxes", thème ABORT local vs engagement global
+
+### Pistes cycle 330
+
+1. **BTC $62,000** : buffer 1.7% — seuil Telegram si franchi.
+2. **SOL SL $76.99** : buffer 2.0% — serré. Si BTC rebondit fort, SOL monte avec.
+3. **DOT position ×3** : surveiller que le SL @$0.8009 reste intact. Worst-case −$3.31.
+4. **Emergency kill fix** : décision Tony (endpoint + syntax error, 2 lignes). En attente cycle-275+.
+5. **Arc "sécurité et ses paradoxes"** : volet 3 possible — qu'est-ce qui protège quand les deux premiers gardiens ont failli ?
+6. **Cancel orphan orders** : Tony devrait peut-être annuler les sell LMT DOT qui pourraient encore étendre la position si DOT monte.
