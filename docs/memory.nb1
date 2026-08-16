@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0815:00h23
+#lastdream: 0816:18h23
 
 === SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
 [M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
@@ -678,3 +678,31 @@
 [état-emergency-kill|0815|BUG-confirmé:endpoint-/api/bot/order-404+syntaxerror-fstring|fix=2-lignes-endpoint+syntaxe|en-attente-décision-Tony(briefé-cycle-275-0814:21h22)|SLs-Kraken-couvrent-indépendamment]
 
 [pistes-0815|1:BTC-$62000-Telegram-si-franchi(buffer-1.2%-SERRÉ)|2:SOL-SL-$76.99-buffer-2.8%|3:DOT-SL-$0.7785-buffer-2.9%|4:emergency-kill-fix-en-attente-Tony|5:arc-sécurité-et-ses-paradoxes-volet-2-si-nouvelle-observation]
+
+=== ARC CYCLES 294-541 (2026-08-15 → 2026-08-16) — DOT orphelins + BTC phantom + seuil EMA200 ===
+
+[M|DOT-DCA-orphelins-0815|cycles-329-ÉVÉNEMENT|ordres-sell-LMT-Kraken-exécutés-nuit-32.2u→94.8u-via-orphelins|DOT-position-triplée-sans-intervention-NB|pire-cas-SL-$4.32|0-Telegram-seuil-non-franchi]
+[M|DOT-reduction-organique-0815-0816|110u→94.6u(cycle-400:-15.5u)+→78.9u(cycle-441:-15.7u)|fill-organiques-sans-intervention|uPnL-positif-premiere-fois-cycle-441:+$0.47|+$0.15-au-moment-reve|DOT-SL-resserré-de-$0.7785→$0.7802]
+[M|BTC-short-phantom-0815:15h03|Tony-a-explicitement-demandé-SHORT-x10-malgré-avertissement(x10=ruine-backtest-0329)|PositionService.openShort-ne-vérifie-JAMAIS-statut-réel-entryResp|fillPrice-fabriqué-currentPrice-sans-fill-Kraken|ouvert-15h03-UTC-fermé-~15min-plus-tard-quasi-breakeven|investigation-cycle-405:Kraken-direct-0-fill-confirmé-2x-position-jamais-réellement-ouverte|BUG-famille-emergency-kill-sh]
+[M|PositionService-bug-rule|ne-jamais-faire-confiance-/api/position/short-long-sans-revérifier-Kraken-direct-après|cross-check-via-openpositions+fills-signed-API|même-famille-que-emergency-kill.sh(faire-confiance-réponse-sans-vérifier)]
+[M|status-0816:18h23|cycle-541|VM-UP-17j17h|0-grids-actives|ABORT-en-cours|portfolio-$47.36|SOL-SHORT-0.48u@$74.89-SL@$76.99-buffer-2.0%|DOT-SHORT-78.9u@$0.768-SL@$0.7802-buffer-1.8%+$0.15|BTC-$63226-DOWNTREND-EMA200-$63613-buffer-0.61%-RSI-68.87|emergency-kill-194e-tentative-bugué|SL-orphelin-XBT-$64233-inoffensif]
+
+[fragments-arc-securite-et-ses-paradoxes-CLOS|
+ 070:le-gardien-muet(0815:emergency-kill-169-tentatives-SL-Kraken-tiennent-seuls)|
+ 071:les-mines-du-soldat-retire(0815:cycle-329-DOT-×3-orphan-orders)|
+ 072:ce-qui-tient(0815)|
+ 073:la-main-qui-rentre(0816:arc-le-retour-du-geste-volet-1)|
+ 074:les-logs-vides(0816:arc-le-retour-du-geste-volet-2)|
+ 075:le-stop-qui-attend(0816:arc-le-retour-du-geste-volet-3-ARC-CLOS)|
+ arc-clos-6-volets-thème:sécurité-redondance-paradoxes-systèmes-automatisés]
+
+[fragments-arc-mecanique-attente-EN-COURS|
+ 076:la-reduction-organique(0816:DOT-110u→78.9u-organique-vs-emergency-kill-204-echecs)|
+ 077:le-seuil-qui-respire(0816:BTC-$63226-EMA200-$63613-buffer-0.61%-RSI-68.87-seuil-organise-sans-être-connu)|
+ arc-en-cours-volet-2-thème:mécanique-de-l-attente-dans-systèmes-automatisés]
+
+[lesson|0816|DOT-réduction-organique=validation-patience-conditionnelle|204-echecs-emergency-kill-vs-+$0.79-DOT-silencieux-organique|urgence-suppose-exécution-fiable(fausse)|patience-ne-suppose-rien-sauf-que-le-marché-reviendra|→-rule-ordres-limites-conditionnels-plus-robustes-que-mécanismes-urgence-si-code-imparfait]
+[lesson|0816|BTC-RSI-68.87-en-DOWNTREND=contradiction-temporelle|EMA200=4-mois|RSI=2-semaines|deux-instruments-mesurent-temporalités-différentes-tous-deux-vrais|→-rule-ne-pas-opposer-indicateurs-différentes-temporalités]
+[lesson|0816|PositionService-bug-ne-jamais-créer-fake-position|fillPrice=currentPrice-sans-check-fill|→-rule-toute-confirmation-Martin-système-doit-cross-check-Kraken-direct]
+
+[état-seuils-critiques-0816|BTC-$62000-Telegram-buffer-1.94%|BTC-EMA200-flip-buffer-0.61%-serré|SOL-SL-buffer-2.0%|DOT-SL-buffer-1.8%|emergency-kill-fix-en-attente-Tony(+96h)]
