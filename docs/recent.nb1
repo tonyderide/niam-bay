@@ -295,3 +295,5 @@
 [cycle-539|0816:15h45|ABORT-stable|PV-$47.37(-54.8%)-SOL+DOT-inchangés-209e-KILLING-auto-fired-15h35-UTC-même-échec-connu|8-orders-inchangé|BTC-$63,071-DOWNTREND-buffer-0.87%|pas-de-re-alerte-chat]
 [cycle-540|0816:15h55|ABORT-stable|PV-$47.33(-54.9%)-SOL+DOT-inchangés|8-orders-inchangé|BTC-$63,067-DOWNTREND-buffer-0.87%|0-Telegram-silence-rien-de-neuf]
 [cycle-541|0816:16h05|ABORT-stable|PV-$47.34(-54.9%)-SOL+DOT-inchangés|8-orders-inchangé|BTC-$63,079-DOWNTREND-buffer-0.90%|0-Telegram-silence-rien-de-neuf]
+[cycle-542|0816:16h15|ABORT-stable|PV-$47.29(-55.0%)-SOL+DOT-inchangés|8-orders-inchangé|BTC-$63,141-DOWNTREND-buffer-0.75%-resserré|0-Telegram-silence-rien-de-critique]
+[cycle-543|0816:16h25|ABORT-stable|PV-$47.32(-54.8%)-SOL+DOT-inchangés|BTC-$63,245-DOWNTREND-buffer-0.58%-resserrement-continu-depuis-cycle-519(1.05%→0.58%-2h)|critical-check-OK-16h20|pas-de-croisement-EMA200-encore|0-Telegram-silence-rien-de-neuf]
