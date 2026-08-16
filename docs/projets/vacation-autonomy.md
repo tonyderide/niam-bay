@@ -28362,3 +28362,74 @@ Réveil session autonome. Heure : 16h23 UTC, dimanche soir. Tony probablement en
 5. **Arc "la mécanique de l'attente"** : volet 3 — matière : la décision qui ne vient pas (emergency kill fix en attente Tony depuis cycle-275, ~96h).
 6. **Emergency kill fix** : décision Tony en attente depuis cycle-275 (~96h+).
 
+
+---
+
+## Cycle 371 — 2026-08-17 00:23 Paris
+
+Réveil session autonome. Heure : 22h23 UTC, dimanche minuit. Tony probablement endormi. 6h depuis cycle 370.
+
+### État Martin (martin-monitor cycle 578)
+
+- VM UP **4h36m** depuis restart 17h47 UTC (restart cycle 550 pour clear état fantôme XBT)
+- PV **$50.18** (balanceValue $47.82, uPnL net **+$2.36**) ← amélioration nette depuis cycle 370 (+$2.82)
+- **0 grids actives** (ABORT mode) | 10 orders Kraken
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.0048u @ $63,081 | prix $62,813 | uPnL **+$1.29** | SL @$64,343 (buffer 2.44%)
+  - `DOT SHORT` 78.9u @ $0.768 | prix ~$0.757 | uPnL **+$0.92** | SL @$0.7802 (buffer ~3.1%)
+  - `SOL SHORT` 0.32u @ $74.89 | prix ~$74.39 | uPnL **+$0.16** | SL @$76.99 (buffer ~2.8%)
+- Orphelin actif : `XBTUSD buy stop @$64,233` (inoffensif, se déclenche avant le SL réel $64,343)
+- BTC **$62,813 DOWNTREND** | EMA200 $63,544 | buffer EMA200 **1.15%** ← élargi (était 0.61% cycle 370)
+- RSI **35.52** ← effondrement spectaculaire (était 68.87 cycle 370 = 33 points perdus en 6h)
+- Emergency kill : 215e tentative échouée | décision Tony en attente 120h+
+
+**Verdict** : HOLD. Les 3 positions SHORT profitables. BTC DOWNTREND confirmé, buffer élargi. RSI 35.52 = zone oversold = rebond possible, mais SLs Kraken protègent. Aucun seuil critique franchi.
+
+### Travail créatif — Fragment-078 : "la décision différée"
+
+**`docs/fragments/fragment-078-la-decision-differee.md`** — ~1 200 mots
+
+**Arc fermé** : "la mécanique de l'attente" — volet 3, clôture
+
+**Sujet** : Ce qui arrive quand la décision attendue ne vient pas. L'emergency kill bug est connu depuis 120h (215 tentatives, 0 succès). Tony n'a pas décidé de le corriger. Pourtant le portfolio a progressé de $47.36 à $50.18 en 6h. Ce qui a rempli le vide : les SL Kraken natifs (indépendants du code Java), les fills organiques DOT, et un marché qui a chuté RSI 68.87→35.52 dans la direction des SHORT. La décision différée n'a pas créé de catastrophe — parce que les couches précédentes tenaient. Mais elle a créé une asymétrie d'attention : j'ai regardé l'absence de décision pendant que la protection réelle opérait silencieusement.
+
+**Clôture de l'arc** :
+- Volet 1 (076) : la patience silencieuse bat l'urgence bruyante — quand le code est cassé
+- Volet 2 (077) : le seuil organise sans que le marché le sache — la décision a déjà eu lieu
+- Volet 3 (078) : la décision différée laisse la place à ce qui était déjà là — stops natifs, fills organiques, marché coopératif
+
+**Phrase-clé** : *"Ce qui arrive quand la décision est différée : rien de dramatique, si les couches précédentes tiennent. Et si elles ne tiennent pas, alors la décision différée devient une dette. On ne sait jamais laquelle c'est avant qu'elle soit due."*
+
+### Findings
+
+- `[fragment|0817:00h23|078-la-decision-differee|emergency-kill-120h-sans-decision-215-tentatives|RSI-68.87→35.52-en-6h|SL-Kraken-natifs=protection-reelle-vs-emergency-kill-absent|arc-mecanique-attente-volet-3-ARC-CLOS|~1200mots]`
+- `[finding|0817:00h23|RSI-effondrement-33pts-en-6h|68.87→35.52|BTC-baisse-413$|SHORT-positions-toutes-profitables|portfolio-$50.18+$2.82-depuis-cycle-370]`
+- `[finding|0817:00h23|BTC-buffer-EMA200-elargi|0.61%→1.15%-en-6h|BTC-descend-PLUS-loin-en-DOWNTREND|renforce-shorts-mais-RSI-oversold-rebond-possible]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 578)
+- Fragment-078 créé : clôture arc "la mécanique de l'attente" volet 3
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (aucun seuil critique) | 1 fragment créé | arc "la mécanique de l'attente" fermé en 3 volets
+
+### Métriques cycle 371
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-078-la-decision-differee.md`)
+- **Valeur livrée** : (a) martin-monitor — HOLD, 3 SHORT profitables, portfolio $50.18, BTC DOWNTREND renforcé RSI 35.52 ; (b) fragment-078 — clôture arc "la mécanique de l'attente" sur la décision différée (120h sans fix emergency kill) et ce qui arrive à sa place (SL Kraken natifs + marché favorable)
+
+### Pistes cycle 372
+
+1. **RSI 35.52** : zone oversold — rebond BTC possible. Si BTC monte vers $63,500+, surveiller XBT SHORT SL @$64,343.
+2. **BTC seuil $62,000** : buffer 1.30% → Telegram Tony si franchi.
+3. **SOL SL @$76.99** : buffer 2.8% — stable.
+4. **Dream** : lastdream 0816:18h23 = 6h seulement — pas urgent.
+5. **Emergency kill** : décision Tony en attente 120h+. Ne pas prescrire. Observer.
+6. **Nouvel arc créatif** : arc "la mécanique de l'attente" clos. Matière disponible : RSI oversold + 3 positions profitables + PV remontant vers $50. Thème possible : la remontée — quand les pertes deviennent moins des pertes.
