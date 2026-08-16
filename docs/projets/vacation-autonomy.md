@@ -28231,3 +28231,68 @@ Réveil session autonome. Heure : dimanche matin très tôt, 04h23 UTC. Tony pro
 4. **Nouvel arc créatif** : arc "le retour du geste" clos. Matière disponible : BTC qui oscille autour de EMA200, les deux SLs qui tiennent, la lente amélioration du portfolio.
 5. **Dream** : lastdream 0815:00h23 = 30h écoulées. Si +15 cycles monitoring overdue ou +48h, lancer.
 6. **Committer les fragments** : 073-074-075 + vacation-autonomy mis à jour.
+
+---
+
+## Cycle 369 — 2026-08-16 12:23 Paris
+
+Réveil session interactive. Heure : 10h24 UTC, dimanche midi à Paris. Tony probablement en vadrouille (ou qui sait, en train de regarder ses positions). Environ 6h depuis cycle 368.
+
+### État Martin (martin-monitor cycle 507)
+
+- VM UP **17j 11h 18m** depuis 2026-07-29 23h06 UTC
+- PV **$48.55** (balanceValue $47.89, uPnL net **+$0.67**)
+- **0 grids actives** (toutes inactive=false) | 8 orders Kraken
+- Positions:
+  - `SOL SHORT` 0.48u @ $74.89 | prix ~$75.15 | uPnL **-$0.12** | SL Kraken @$76.99 (buffer ~2.4%)
+  - `DOT SHORT` 78.9u @ $0.7683 | prix ~$0.758 | uPnL **+$0.79** ← profitable ✓
+- Orphelin actif : `XBTUSD buy stop @$64,233` (zombie reduceOnly, inoffensif)
+- BTC $62,924 DOWNTREND | EMA200 $63,629 | buffer **1.11%** ← plus serré que cycle 368 (1.72%)
+- Emergency kill : 204e tentative échouée | DOT SL @$0.7802 serré mais buffer 2.9%
+
+**Verdict** : ABORT stable. DOT profitable. Rien de critique mais BTC buffer se resserre (1.72% → 1.11%).
+
+### Travail créatif — Fragment-076 : "la réduction organique"
+
+**`docs/fragments/fragment-076-la-reduction-organique.md`** — ~1 100 mots
+
+**Nouvel arc** : "la mécanique de l'attente" — volet 1
+
+**Sujet** : La position DOT short passée organiquement de 110u à 78.9u via fill-downs sans intervention, d'une perte de $27 à un gain de $0.79. Contraste avec l'emergency-kill (204 tentatives, zéro succès). Deux logiques de temps : l'urgence qui suppose que l'exécution est fiable ; la patience qui suppose que le marché reviendra — et qui n'a pas besoin que le code soit parfait.
+
+**Thèse** : 204 échecs du couteau. Un succès lent et silencieux de la patience. Le portefeuille ne sait pas lequel mérite le crédit.
+
+**Arc ouvert** : "la mécanique de l'attente" — les fragments 070 + 075 + 076 commencent à former un ensemble sur l'attente comme mécanique active dans les systèmes automatisés.
+
+### Findings
+
+- `[fragment|0816:12h23|076-la-reduction-organique|DOT-110u→78.9u-organique-sans-intervention|emergency-kill-204-echecs|arc-mecanique-attente-volet-1|~1100mots]`
+- `[finding|0816:12h23|BTC-buffer-resserre|1.11%-vs-1.72%-cycle-368-en-6h|surveiller-si-descend-sous-0.5%]`
+- `[finding|0816:12h23|DOT-profitable|+$0.79-stable-depuis-cycle-441|reduction-organique-validee]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 507)
+- Fragment-076 créé : arc "la mécanique de l'attente" volet 1
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (rien de critique) | 1 fragment créé | nouvel arc ouvert
+
+### Métriques cycle 369
+
+- **Durée** : ~50 min (niam-bay-wake + martin-monitor + lecture contexte + fragment)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-076-la-reduction-organique.md`)
+- **Valeur livrée** : (a) martin-monitor cycle 507 — ABORT stable, DOT profitable +$0.79, BTC buffer 1.11% en surveillance ; (b) fragment-076 — ouverture arc "la mécanique de l'attente" sur le contraste entre urgence bruyante (204 échecs) et patience silencieuse (réduction organique)
+
+### Pistes cycle 370
+
+1. **BTC buffer 1.11%** : surveiller si descend sous 0.8% → Telegram Tony.
+2. **SOL SL @$76.99** : buffer ~2.4% — surveiller si SOL monte.
+3. **Dream** : lastdream 0808:12h23 = 8 jours! Très en retard. Lancer au prochain cycle si contexte >70%.
+4. **Arc "la mécanique de l'attente"** : volet 2 — le thème du SL qui attend sans position (a28252f4), ou l'attente comme mesure active.
+5. **Emergency kill** : décision Tony en attente depuis cycle-275 (~39h maintenant).
