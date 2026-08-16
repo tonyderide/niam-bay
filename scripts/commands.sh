@@ -329,3 +329,125 @@ for p in PF_LINKUSD PF_DOTUSD PF_SOLUSD PF_ADAUSD PF_XBTUSD PF_ETHUSD; do
 done
 echo '|||'
 curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'" 2>&1
+
+# [auto 2026-08-09 06:27] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines <N>
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines 5
+
+# [auto 2026-08-09 12:23] utilisée 3x — sig: rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines <N>
+rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines 300
+
+# [auto 2026-08-09 18:27] utilisée 3x — sig: rtk git push origin master <N>>&<N> | tail -<N>
+rtk git push origin master 2>&1 | tail -3
+
+# [auto 2026-08-10 00:27] utilisée 3x — sig: rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md
+rtk wc -l /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md
+
+# [auto 2026-08-10 06:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "OK" || echo "SKIP"
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "OK" || echo "SKIP"
+
+# [auto 2026-08-10 18:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/system/status echo '|||' curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders echo '|||' curl -s http://localhost:<N>/api/grid/active echo '|||' for p in <SYM> <SY
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=15 ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/system/status
+echo '|||'
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders
+echo '|||'
+curl -s http://localhost:8081/api/grid/active
+echo '|||'
+for p in PF_LINKUSD PF_DOTUSD PF_SOLUSD PF_ADAUSD PF_XBTUSD PF_ETHUSD; do
+  curl -s http://localhost:8081/api/grid/status/\$p 2>/dev/null
+  echo '==='
+done
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'
+" 2>&1
+
+# [auto 2026-08-11 06:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "BRIEFING_OK" || echo "BRIEFING_SKIP"
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "BRIEFING_OK" || echo "BRIEFING_SKIP"
+
+# [auto 2026-08-14 21:08] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>&<N> | tail -<N>
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>&1 | tail -5
+
+# [auto 2026-08-14 21:54] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/bot/balance | python3 -c 'import json,sys;d=json.load(sys.stdin)[\"accounts\"][\"flex\"];print(json.dumps({\"portfolioValue\":d[\"portfolioValue\"],\"balanceValue\":d[\"balanceValue\"],\"pnl\":d[\"pnl\"]}))' echo '|||' curl -s http://localhost:<N>/api/bot/positions ec
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=8 ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/bot/balance | python3 -c 'import json,sys;d=json.load(sys.stdin)[\"accounts\"][\"flex\"];print(json.dumps({\"portfolioValue\":d[\"portfolioValue\"],\"balanceValue\":d[\"balanceValue\"],\"pnl\":d[\"pnl\"]}))'
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders | python3 -c 'import json,sys;print(len(json.load(sys.stdin)))'
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD' | python3 -c 'import json,sys;d=json.load(sys.stdin);print(d[\"price\"],d[\"emaStatus\"])'
+echo '|||'
+tail -6 ~/martin/scripts/critical-check.log
+"
+
+# [auto 2026-08-14 21:54] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-<N>: check stable, rien de neuf" -q && rtk git push -q && echo pushed
+cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-276: check stable, rien de neuf" -q && rtk git push -q && echo pushed
+
+# [auto 2026-08-15 02:34] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-<N>: check stable plateau, rien de neuf" -q && rtk git push -q && echo pushed
+cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-304: check stable plateau, rien de neuf" -q && rtk git push -q && echo pushed
+
+# [auto 2026-08-15 04:24] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-<N>: check stable, drift lent, rien de critique" -q && rtk git push -q && echo pushed
+cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-302: check stable, drift lent, rien de critique" -q && rtk git push -q && echo pushed
+
+# [auto 2026-08-15 06:26] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | tail -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | tail -20
+
+# [auto 2026-08-15 11:54] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-<N>: check stable, rien de critique" -q && rtk git push -q && echo pushed
+cd ~/projets/tonyderide/niam-bay && rtk git add docs/recent.nb1 && rtk git commit -m "cycle-319: check stable, rien de critique" -q && rtk git push -q && echo pushed
+
+# [auto 2026-08-15 18:28] utilisée 3x — sig: rtk git push <N>>&<N> | tail -<N>
+rtk git push 2>&1 | tail -3
+
+# [auto 2026-08-15 19:33] utilisée 3x — sig: ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> 'bash -s' <<'REMOTE_EOF' set -a source ~/martin/.env set +a python3 <<'PYEOF' import os, time, hashlib, hmac, base6<N>, urllib.request, json api_key = os.environ["KRAKEN_API_KEY"] api_secret = os.environ["KRAKEN_API_SECRET"] def sign(sign_path, nonce, post_data): message = post_data + nonce + sign_path sha
+ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=8 ubuntu@141.253.108.141 'bash -s' <<'REMOTE_EOF'
+set -a
+source ~/martin/.env
+set +a
+python3 <<'PYEOF'
+import os, time, hashlib, hmac, base64, urllib.request, json
+
+api_key = os.environ["KRAKEN_API_KEY"]
+api_secret = os.environ["KRAKEN_API_SECRET"]
+
+def sign(sign_path, nonce, post_data):
+    message = post_data + nonce + sign_path
+    sha256_hash = hashlib.sha256(message.encode()).digest()
+    secret_decoded = base64.b64decode(api_secret)
+    hmac_digest = hmac.new(secret_decoded, sha256_hash, hashlib.sha512).digest()
+    return base64.b64encode(hmac_digest).decode()
+
+nonce = str(int(time.time()*1000)*5_000_000 + 1)
+sign_path = "/api/v3/fills"
+url = "https://futures.kraken.com/derivatives" + sign_path
+post_data = ""
+
+headers = {
+    "APIKey": api_key,
+    "Nonce": nonce,
+    "Authent": sign(sign_path, nonce, post_data),
+}
+req = urllib.request.Request(url, headers=headers, method="GET")
+try:
+    with urllib.request.urlopen(req, timeout=10) as r:
+        body = json.loads(r.read().decode())
+        fills = body.get("fills", [])
+        btc_fills = [f for f in fills if "XBT" in f.get("symbol","")]
+        for f in sorted(btc_fills, key=lambda x: x.get("fillTime",""))[-10:]:
+            print(f.get("fillTime"), f.get("symbol"), f.get("side"), f.get("size"), f.get("price"), f.get("fillType"), f.get("orderId"))
+        if not btc_fills:
+            print("no XBT fills found, total fills:", len(fills))
+except Exception as e:
+    print("ERROR:", e)
+    try:
+        print(e.read().decode())
+    except Exception:
+        pass
+PYEOF
+REMOTE_EOF
+
+# [auto 2026-08-16 06:24] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md <N>>/dev/null && echo "EXISTS" || echo "MISSING"
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md 2>/dev/null && echo "EXISTS" || echo "MISSING"

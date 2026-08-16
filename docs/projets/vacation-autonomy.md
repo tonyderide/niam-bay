@@ -28158,3 +28158,76 @@ Réveil session autonome. Heure : dimanche nuit Paris, 22:25 UTC. Tony probablem
 4. **Emergency kill fix** : décision Tony en attente depuis cycle-275 (~24h maintenant).
 5. **Arc "le retour du geste"** : volet 3 possible — la réconciliation ? (le jour où les deux visions se retrouvent)
 6. **Dream** : lastdream 0815:00h23 = ~24h. Seuil 15 cycles overdue approche. Lancer si +20 cycles sans rêve.
+
+---
+
+## Cycle 368 — 2026-08-16 06:23 Paris
+
+Réveil session autonome. Heure : dimanche matin très tôt, 04h23 UTC. Tony probablement endormi. Environ 6h depuis cycle 367.
+
+### État Martin (martin-monitor cycle 471)
+
+- VM UP **17j 5h 17m** depuis 2026-07-29 23h06 UTC
+- PV **$48.43** (balanceValue $47.89, uPnL net **+$0.54** — meilleur niveau depuis cycle 441)
+- **0 grids actives** | 8 orders Kraken
+- Positions:
+  - `SOL SHORT` 0.48u @ $74.89 | prix actuel ~$75.51 | SL Kraken @ $76.99 (buffer **1.9%**) — légèrement serré
+  - `DOT SHORT` 78.9u @ $0.7683 | prix actuel ~$0.7576 | SL Kraken @ $0.7802 (buffer **2.9%**) ✓ — uPnL **+$0.84** (profitable)
+- Orphelin actif : `XBTUSD buy stop @$64,233` (zombie, inoffensif) — **sujet du fragment-075**
+- BTC $63,087 DOWNTREND | EMA200 $63,693 | buffer $62k = **1.72%** (non franchi)
+- Emergency kill bug : 198e tentative échouée (toujours actif)
+
+**Verdict** : ABORT stable. Légère amélioration vs cycle 367 (DOT profitable, total uPnL positif). Rien de critique. Pas de Telegram.
+
+### Travail créatif — Fragment-075 : "le stop qui attend"
+
+**`docs/fragments/fragment-075-le-stop-qui-attend.md`** — ~1 100 mots
+
+**Arc fermé** : "le retour du geste" — volet 3/3 (clôture de l'arc)
+
+**Sujet** : L'ordre orphelin `a28252f4` — le stop-loss BTC @$64,233 toujours présent sur Kraken. La protection qui attend une position qui n'existe peut-être pas. L'investigation cycle 405 avait révélé que `PositionService.openShort` ne vérifiait jamais la réalité de l'exécution : le système avait "confirmé" une position sans vérifier les fills Kraken réels.
+
+**Thèse centrale** : Il y a une erreur qui efface (le bug vanish, les logs vides), et une erreur qui *construit* — qui pose quelque chose de réel pour protéger quelque chose d'incertain. L'ordre `a28252f4` est la seule trace physique d'un événement dont l'existence est ambiguë. Le corium de la journée.
+
+**Construction** :
+- L'ordre lui-même, présenté d'abord comme donnée brute (ID, prix, type)
+- La révélation de la faille code : `PositionService.openShort` supposait le succès sans vérifier
+- L'inversion : la plupart des bugs effacent — celui-ci construit une protection réelle pour un objet incertain
+- *Res nullius* : le stop sans position, concept sans équivalent en trading
+- L'arc complet : la main revient (073) → les logs sont vides (074) → quelque chose reste quand même (075)
+- La décision finale : ne pas annuler l'ordre, parce qu'il se souvient
+
+**Arc fermé** : les trois volets forment un triptyque cohérent sur la question de l'acte dans les systèmes automatisés — ce qui laisse une trace, ce qui n'en laisse pas, et ce qui reste quand on ne sait plus ce qui s'est passé.
+
+### Findings
+
+- `[fragment|0816:06h23|075-le-stop-qui-attend|protection-reelle-pour-position-incertaine|order-a28252f4-XBT-SL-orphelin-preuve-de-rien|arc-le-retour-du-geste-volet-3-arc-clos|~1100mots]`
+- `[finding|0816:06h23|PositionService-openShort-bug-confirme|fillPrice-fabrique-sans-fill-reel|meme-famille-emergency-kill-sh|→-rule:toute-confirmation-système-doit-cross-check-Kraken-direct]`
+- `[finding|0816:06h23|DOT-uPnL-positive|+$0.84-sur-78.9u-short|prix-$0.7576-vs-SL-$0.7802-buffer-2.9%]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 368 session / cycle 471 monitoring)
+- Fragment-075 créé : arc "le retour du geste" volet 3, arc clos
+- vacation-autonomy.md mis à jour
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (rien de critique) | 1 fragment créé | arc créatif clos en 3 volets
+
+### Métriques cycle 368
+
+- **Durée** : ~35 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-075-le-stop-qui-attend.md`)
+- **Valeur livrée** : (a) martin-monitor cycle 471 — ABORT stable, légère amélioration DOT profitable ; (b) fragment-075 — clôture de l'arc "le retour du geste" sur l'angle du stop-loss orphelin comme seule trace d'un acte incertain
+
+### Pistes cycle 369
+
+1. **SOL SL @$76.99** : buffer 1.9% — surveiller si BTC/SOL montent.
+2. **BTC $62,000** : buffer 1.72% — seuil Telegram si franchi.
+3. **Emergency kill fix** : décision Tony en attente depuis cycle-275 (~33h+ maintenant).
+4. **Nouvel arc créatif** : arc "le retour du geste" clos. Matière disponible : BTC qui oscille autour de EMA200, les deux SLs qui tiennent, la lente amélioration du portfolio.
+5. **Dream** : lastdream 0815:00h23 = 30h écoulées. Si +15 cycles monitoring overdue ou +48h, lancer.
+6. **Committer les fragments** : 073-074-075 + vacation-autonomy mis à jour.
