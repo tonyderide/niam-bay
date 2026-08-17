@@ -28433,3 +28433,73 @@ Réveil session autonome. Heure : 22h23 UTC, dimanche minuit. Tony probablement 
 4. **Dream** : lastdream 0816:18h23 = 6h seulement — pas urgent.
 5. **Emergency kill** : décision Tony en attente 120h+. Ne pas prescrire. Observer.
 6. **Nouvel arc créatif** : arc "la mécanique de l'attente" clos. Matière disponible : RSI oversold + 3 positions profitables + PV remontant vers $50. Thème possible : la remontée — quand les pertes deviennent moins des pertes.
+
+---
+
+## Cycle 372 — 2026-08-17 06:23 Paris
+
+Réveil session autonome. Heure : 04:23 UTC, lundi matin. Tony probablement endormi. Environ 6h depuis cycle 371.
+
+### État Martin (martin-monitor cycle 614)
+
+- VM UP **10h36m** depuis restart 17h47 UTC (cycle 550 restart pour clear état fantôme XBT)
+- PV **$46.02** (balanceValue $47.88, uPnL net **-$1.86**) ← recul depuis cycle 371 ($50.18→$46.02 = -$4.16)
+- **0 grids actives** (ABORT mode) | 10 orders Kraken
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.0048u @ $63,081 | prix $63,462 | uPnL **-$1.80** | SL @$64,343 (buffer 1.4%)
+  - `SOL SHORT` 0.48u @ $74.99 | uPnL **-$0.25** | SL @$76.99 (buffer 2.0%)
+  - `DOT SHORT` 78.9u @ $0.768 | uPnL **+$0.19** | SL @$0.7802 (buffer 1.5%)
+- Orphelins actifs : `XBTUSD buy stop @$64,233` (inoffensif) + 2 sell lmt SOL @76.07/76.95 non-reduceOnly (connus)
+- BTC **$63,462 DOWNTREND** | EMA200 $63,524 | buffer EMA200 **0.098%** ← PLANCHER ABSOLU | RSI **71.4** ⚠️
+- Emergency kill : 220e+ tentative échouée
+
+**Verdict** : WARN. BTC buffer EMA200 à 0.098% — le plus bas jamais enregistré cette session. RSI 71.4 = pression haussière persistante. SLs Kraken intacts. Telegram envoyé à Tony (plancher absolu 0.10%).
+
+**Note** : La piste 1 du cycle 371 ("rebond BTC possible si RSI 35.52 oversold") s'est réalisée exactement. BTC $62,813→$63,462 (+$649, +1.03%), RSI 35.52→71.4 en 6h. Le rebond prévu a fait passer XBT SHORT de +$1.29 à -$1.80 ($3.09 de swing sur $30 de capital = 10.3%).
+
+### Travail créatif — Fragment-079 : "la prédiction inutile"
+
+**`docs/fragments/fragment-079-la-prediction-inutile.md`** — ~1 100 mots
+
+**Nouvel arc ouvert** : "l'exactitude et ses limites" — volet 1
+
+**Sujet** : La prédiction du cycle 371 (rebond BTC possible) s'est réalisée. Mais la position que je surveille (XBT SHORT, posée par Tony) perd de la prédiction réalisée. La prédiction exacte arrive trop tard — le triangle Tony-NB-SL répartit les actes dans le temps. Savoir n'est utile qu'à condition de pouvoir agir. Tony-qui-dort a cristallisé une décision (SL @$64,343) avant de dormir. Moi j'alerte. La prédiction s'adresse au mauvais interlocuteur au mauvais moment.
+
+**Thèse** : Ce n'est pas de savoir qui compte. C'est de savoir *quand* savoir.
+
+**Connexion arc précédent** : Volet 4 du méta-arc informel 076-079 — quand les décisions opèrent : code cassé → seuil invisible → décision différée → prédiction tardive.
+
+### Findings
+
+- `[fragment|0817:06h23|079-la-prediction-inutile|rebond-predit-cycle-371-realise-XBT+649$|XBT-SHORT-passe+$1.29→-$1.80-$3.09-swing|triangle-Tony-NB-SL=repartition-temporelle-des-actes|nouvel-arc-exactitude-et-ses-limites-volet-1|~1100mots]`
+- `[finding|0817:06h23|BTC-buffer-EMA200-0.098%-PLANCHER-ABSOLU|RSI-71.4-overbought|XBT-SHORT-perd-$1.80|SOL-perd-$0.25|DOT-tient+$0.19|PV-$46.02|Telegram-envoye]`
+- `[finding|0817:06h23|rebond-RSI-35→71-en-6h-realise-exactement-comme-prevu|prediction-cycle-371-confirme-empiriquement|mais-position-SHORT-perd=prediction-sans-action-utile]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 614) — WARN buffer EMA200 0.098%
+- Telegram envoyé à Tony (plancher absolu, RSI 71.4, SLs intacts)
+- Fragment-079 créé : ouverture arc "l'exactitude et ses limites" volet 1
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 1 Telegram (plancher absolu) | 1 fragment créé
+
+### Métriques cycle 372
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (BTC buffer EMA200 plancher 0.10%)
+- **Documents créés** : 1 (`docs/fragments/fragment-079-la-prediction-inutile.md`)
+- **Valeur livrée** : (a) martin-monitor — WARN, BTC buffer EMA200 0.098% plancher absolu, RSI 71.4, SLs Kraken intacts ; (b) fragment-079 — ouverture arc "l'exactitude et ses limites" sur la prédiction qui se réalise sans pouvoir être actionnée, le triangle Tony-NB-SL comme répartition temporelle des actes
+
+### Pistes cycle 373
+
+1. **BTC buffer EMA200 0.098%** : si BTC monte et franchit $63,524 (EMA200) → Telegram immédiat (flip UPTREND = SHORT risqué).
+2. **BTC SL @$64,343** : buffer 1.39% ($881) — proche si momentum haussier continue.
+3. **BTC seuil $62,000** : buffer 2.29% ($63,462→$62,000) — surveiller si retournement.
+4. **SOL** : 2 sell lmt @76.07/76.95 non-reduceOnly toujours actifs — si SOL monte, risque d'ajout de position SHORT sans SL.
+5. **Dream** : lastdream 0816:18h23 = 12h — pas encore urgent (seuil 72h ou 15 cycles).
+6. **Arc créatif** : "l'exactitude et ses limites" volet 2 — matière : après la prédiction inutile, qu'est-ce qui rend une prédiction utile ? La question de la fenêtre d'action. Ou : le flip EMA200 s'il se produit — observer le moment exact où le cadre d'interprétation change.
