@@ -28503,3 +28503,76 @@ Réveil session autonome. Heure : 04:23 UTC, lundi matin. Tony probablement endo
 4. **SOL** : 2 sell lmt @76.07/76.95 non-reduceOnly toujours actifs — si SOL monte, risque d'ajout de position SHORT sans SL.
 5. **Dream** : lastdream 0816:18h23 = 12h — pas encore urgent (seuil 72h ou 15 cycles).
 6. **Arc créatif** : "l'exactitude et ses limites" volet 2 — matière : après la prédiction inutile, qu'est-ce qui rend une prédiction utile ? La question de la fenêtre d'action. Ou : le flip EMA200 s'il se produit — observer le moment exact où le cadre d'interprétation change.
+
+---
+
+## Cycle 373 — 2026-08-17 12:23 Paris
+
+Réveil session autonome. Heure : 10h23 UTC, lundi midi. Tony probablement éveillé (fenêtre midi Paris). ~6h depuis cycle 372.
+
+### État Martin (martin-monitor cycle 649)
+
+- VM UP **16h 36m** depuis restart 0816:17h47 UTC
+- PV **$47.78** (portfolioValue Kraken $47.785, uPnL net **−$0.14**) ← +$1.76 vs cycle 372 ($46.02)
+- **0 grids actives** (ABORT mode) | 10 orders Kraken
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.005u @ $63,089.6 | prix $63,259 | uPnL **−$0.86** | SL @$64,343 (buffer 1.72%)
+  - `DOT SHORT` 78.9u @ $0.7683 | uPnL **+$0.86** | SL @$0.7802 (buffer ~1.5%)
+  - `SOL SHORT` 0.48u @ $74.99 | uPnL **−$0.14** | SL @$76.99 (buffer 2.7%)
+- Orphelins actifs : `XBTUSD buy stop @$64,233` (inoffensif) + 2 sell lmt SOL @76.07/76.95 non-reduceOnly
+- BTC **$63,259 DOWNTREND** | EMA200 $63,513 | buffer EMA200 **0.40%** ← résolution crise (était 0.098% cycle 372)
+- RSI **54.2** ← normalisé (était 71.4 cycle 372 = −17 points en 6h)
+- Emergency kill : ~226e tentative échouée
+
+**Verdict** : HOLD — crise buffer 0.098% résolue sans action. BTC a reculé $63,462→$63,259. SOL gain depuis cycle 372 : XBT uPnL −$1.80→−$0.86. SLs Kraken intacts. Rien de critique.
+
+**Note cycle 372→373** : Le Telegram envoyé à 06h23 (plancher 0.098%) arrive à Tony probablement maintenant à midi. Le marché s'est résolu seul entre-temps. C'est le sujet du fragment-080.
+
+### Travail créatif — Fragment-080 : "le Telegram après la crise"
+
+**`docs/fragments/fragment-080-le-telegram-apres-la-crise.md`** — ~1 300 mots
+
+**Arc en cours** : "l'exactitude et ses limites" — volet 2
+
+**Sujet** : Le Telegram envoyé à 06h23 (buffer 0,098%, plancher absolu, Tony endormi) arrive à midi — quand le buffer est revenu à 0,40% et la crise est passée. L'information était exacte. La fenêtre d'action qu'elle ouvrait s'est fermée pendant le transit vers Tony. Pas une défaillance — une description structurelle du système à trois nœuds (Kraken temps réel, NB 6min, Tony temps humain). La demi-vie d'une alerte de trading peut être mesurée en heures.
+
+**Concepts clés** :
+- *Eventual consistency* : système distribué où les nœuds convergent à des moments différents
+- Demi-vie de l'information critique : entre le moment où elle est vraie et le moment où elle devient historique
+- La protection réelle (SL @$64,343 posé avant le Telegram) opère indépendamment du transit d'information
+- Différence entre alerte = information en transit vs protection = décision cristallisée
+
+**Connexion arc** : Volet 1 (079 — prédiction correcte, position cristallisée, Tony dormait) → Volet 2 (080 — alerte correcte, crise résolue avant lecture, information périmée à l'arrivée) → volet 3 à définir
+
+### Findings
+
+- `[fragment|0817:12h23|080-le-telegram-apres-la-crise|alerte-06h23-plancher-0.098%-arrive-midi-buffer-0.40%-crisis-resolue|eventual-consistency-triangle-Kraken-NB-Tony|demi-vie-alerte-trading-heures|SL-cristallise-protege-independamment|arc-exactitude-et-ses-limites-volet-2|~1300mots]`
+- `[finding|0817:12h23|BTC-buffer-resolution|0.098%-cycle-372→0.40%-cycle-373-en-6h|BTC-recul-203$-sans-action|XBT-SHORT-uPnL-ameliore-1.80→0.86-$-swing-+0.94$|DOT-uPnL+0.86-stable|PV-46.02→47.78+$1.76]`
+- `[finding|0817:12h23|2-sell-lmt-SOL-non-reduceOnly-toujours-actifs|@76.07+@76.95|risque-ajout-exposition-SOL-si-prix-monte|origine-cycle-595-residuels-grid|surveiller]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 649) — HOLD, crise résolue
+- Fragment-080 créé : arc "l'exactitude et ses limites" volet 2
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (aucun seuil critique) | 1 fragment créé
+
+### Métriques cycle 373
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (crise résolue, aucun nouveau seuil franchi)
+- **Documents créés** : 1 (`docs/fragments/fragment-080-le-telegram-apres-la-crise.md`)
+- **Valeur livrée** : (a) martin-monitor — HOLD, buffer EMA200 0.40% récupéré depuis plancher 0.098% (cycle 372), PV $47.78 (+$1.76), SLs intacts ; (b) fragment-080 — volet 2 arc "l'exactitude et ses limites" sur la demi-vie de l'alerte de trading et la structure eventual consistency du triangle Kraken-NB-Tony
+
+### Pistes cycle 374
+
+1. **BTC buffer 0.40%** : surveiller oscillation autour EMA200. Seuil Telegram = < 0.3%.
+2. **BTC SL @$64,343** : buffer 1.72% — stable.
+3. **SOL 2 sell lmt non-reduceOnly @76.07/76.95** : risque ajout position SHORT sans SL si SOL monte. À surveiller.
+4. **Dream** : lastdream 0816:18h23 = 18h — pas encore urgent (seuil 72h).
+5. **Arc créatif** : "l'exactitude et ses limites" volet 3 — matière possible : ce qui arrive quand la décision cristallisée (SL) se déclenche sans Telegram, sans Tony, sans NB. L'acte pur. Ou : comparer deux systèmes de protection (SL Kraken cristallisé vs Telegram-Tony réactif) sur la même crise buffer 0.098%.
