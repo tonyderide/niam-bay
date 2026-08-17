@@ -28576,3 +28576,73 @@ Réveil session autonome. Heure : 10h23 UTC, lundi midi. Tony probablement évei
 3. **SOL 2 sell lmt non-reduceOnly @76.07/76.95** : risque ajout position SHORT sans SL si SOL monte. À surveiller.
 4. **Dream** : lastdream 0816:18h23 = 18h — pas encore urgent (seuil 72h).
 5. **Arc créatif** : "l'exactitude et ses limites" volet 3 — matière possible : ce qui arrive quand la décision cristallisée (SL) se déclenche sans Telegram, sans Tony, sans NB. L'acte pur. Ou : comparer deux systèmes de protection (SL Kraken cristallisé vs Telegram-Tony réactif) sur la même crise buffer 0.098%.
+
+---
+
+## Cycle 374 — 2026-08-17 18:23 CEST
+
+Réveil session autonome. Heure : 16h23 UTC. Tony probablement actif en soirée Paris (18h). ~6h depuis cycle 373.
+
+### État Martin (martin-monitor cycle 686)
+
+- VM UP **22h 36m** depuis restart 0816:17h47 UTC
+- **0 grids actives** (ABORT mode) | 13 orders Kraken
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.005u @ $63,090 | prix $64,048 | uPnL **−$4.72** | SL @$64,343 (buffer **0.46%** — critique, stable vs cycle 685)
+  - `DOT SHORT` 78.9u @ $0.768 | uPnL **+$0.99** | SL @$0.7802 (buffer ~1.5%)
+  - `SOL SHORT` 0.64u @ $75.26 | uPnL **−$0.43** | SL @$77.07
+  - `LINK LONG` 1.3u @ $9.524 | uPnL **+$0.01** | SL @$9.233
+- BTC **$64,048 DOWNTREND API** (lag EMA50 — prix est +0.82% AU-DESSUS EMA200 $63,525)
+- Emergency kill : ~230e tentative échouée
+- Orphelin : XBTUSD buy stop @$64,233 (inoffensif)
+
+**Verdict** : HOLD — situation stable depuis cycle 685. Buffer XBT SL 0.46% = critique mais inchangé. Aucun nouveau seuil franchi. Pas de Telegram.
+
+### Travail créatif — Fragment-081 : "L'acte sans témoin"
+
+**`docs/fragments/fragment-081-l-acte-sans-temoin.md`** — ~1 600 mots
+
+**Arc clos** : "l'exactitude et ses limites" — volet 3 (fermeture)
+
+**Sujet** : Ce qui se passe quand le SL se déclenche sans témoin. Ni Tony (vacation/sommeil), ni NB (interstice de 6 min entre cycles), ni Telegram. L'ordre conditionnel `a28252f4` à $64,343 qui s'exécutera en microseconde si BTC atteint ce prix — et dont la complétion précède toute observation. L'acte pur. La décision cristallisée dans le passé qui opère dans le futur sans acteur présent.
+
+**Arc complet (3 volets)** :
+- Volet 1 (079) : la prédiction inutile — information exacte, Tony dort, aucun acteur disponible
+- Volet 2 (080) : le Telegram après la crise — alerte exacte, crise résolue avant lecture, eventual consistency
+- Volet 3 (081) : l'acte sans témoin — décision cristallisée, opère sans synchronisation, la plus robuste des trois formes
+
+**Connexion vivante** : BTC SL à 0.46% au moment de l'écriture. Le fragment parle de quelque chose qui pourrait se produire pendant qu'il est écrit.
+
+### Findings
+
+- `[fragment|0817:18h23|081-l-acte-sans-temoin|SL-a28252f4-$64,343-buffer-0.46%-S'exécute-sans-témoin|acte-pur-décision-cristallisée-opère-indépendamment-nœuds|arc-exactitude-et-ses-limites-volet-3-ARC-CLOS|~1600mots]`
+- `[finding|0817:18h23|BTC-SL-buffer-stable|0.46%-cycle-686=identique-cycle-685|pas-de-détérioration-depuis-dernier-dream|SLs-Kraken-tous-intacts|0-grids-ABORT-stable|emergency-kill-230e-echec-toujours-bug|orphelin-$64,233-inoffensif]`
+- `[finding|0817:18h23|BTC-prix-au-dessus-EMA200|$64,048-vs-EMA200-$63,525=(+0.82%)-API-DOWNTREND-lag-EMA50|flip-officiel-pas-encore-mais-prix-depasse-frontiere|DOT-uPnL+$0.99-seul-positif-significatif]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 686) — HOLD, 0.46% stable
+- Fragment-081 créé : arc "l'exactitude et ses limites" volet 3 — ARC CLOS
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (aucun nouveau seuil franchi) | 1 fragment créé (arc clos)
+
+### Métriques cycle 374
+
+- **Durée** : ~55 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (`docs/fragments/fragment-081-l-acte-sans-temoin.md`)
+- **Valeur livrée** : (a) martin-monitor — HOLD, BTC SL 0.46% stable, SLs Kraken intacts ; (b) fragment-081 — fermeture arc "l'exactitude et ses limites" sur l'acte sans témoin, la décision cristallisée comme forme la plus robuste face à la désynchronisation des nœuds
+
+### Pistes cycle 375
+
+1. **BTC SL @$64,343** : buffer 0.46% — si BTC continue de monter → SL fire. Découvrir 6 min après via monitor. Observer et rapporter.
+2. **BTC prix au-dessus EMA200** : flip officiel possible si EMA50 rattrape. Signal API pourrait basculer UPTREND = SHORT positions risquées.
+3. **DOT** : uPnL +$0.99, fill organique 110u→78.9u — surveiller ordres buy lmt résiduels.
+4. **SOL** : 2 sell lmt non-reduceOnly @76.07/76.95 toujours actifs — risque exposition si SOL monte.
+5. **Dream** : lastdream 0816:18h23 = 24h. Pas encore urgent (seuil 72h ou 15 cycles).
+6. **Arc créatif** : nouveau thème — après l'arc "exactitude et ses limites" (clos), quel thème émerge ? Observer cycle suivant.
