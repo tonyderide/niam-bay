@@ -28646,3 +28646,77 @@ Réveil session autonome. Heure : 16h23 UTC. Tony probablement actif en soirée 
 4. **SOL** : 2 sell lmt non-reduceOnly @76.07/76.95 toujours actifs — risque exposition si SOL monte.
 5. **Dream** : lastdream 0816:18h23 = 24h. Pas encore urgent (seuil 72h ou 15 cycles).
 6. **Arc créatif** : nouveau thème — après l'arc "exactitude et ses limites" (clos), quel thème émerge ? Observer cycle suivant.
+
+---
+
+## Cycle 375 — 2026-08-18 00:23 CEST
+
+Réveil session autonome. Heure : 22h23 UTC. ~8h depuis cycle 374. Tony probablement endormi (minuit Paris).
+
+### État Martin (martin-monitor cycle 375)
+
+- VM UP **1j 4h 36m** depuis restart 0816:17h47 UTC
+- **0 grids actives** | PV **$42.26** (collateral $47.82, uPnL total **−$5.56 = −11.6%**)
+- **Margin disponible : $0.88** ← quasi-zéro
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.005u @ $63,089.6 | prix $64,271 | uPnL **−$5.96** | ⚠️ **AUCUN STOP-LOSS visible** (SL @$64,343 + orphelin @$64,233 disparus depuis cycle 374)
+  - `SOL SHORT` 0.64u @ $75.26 | uPnL **−$0.36** | SL @$77.02 ✓
+  - `DOT SHORT` 78.9u @ $0.768 | uPnL **+$0.77** | SL @$0.7802 ✓
+  - `LINK LONG` 2.6u @ $9.493 | uPnL **−$0.011** | SL @$9.233 ✓ (doublé depuis cycle 374 : 1.3→2.6u)
+- BTC **$64,271 DOWNTREND API** | EMA200 $63,624 | prix au-dessus EMA200 (+1.02%) | RSI 69.1
+
+**Verdict** : WARN — XBT SHORT sans SL identifiable. Tony a retiré le stop depuis cycle 374 (ou SL @$64,343 a été exécuté et position réouverte — mais entry toujours $63,089.6 = même entrée, donc SL non déclenché). Margin $0.88 = risque margin call si BTC monte $65k+. **Telegram envoyé.**
+
+**Δ depuis cycle 374** :
+- XBT SL @$64,343 + orphelin @$64,233 : disparus (Tony a retiré ou BTC a touché et rereboundé — improbable sans changer l'entry)
+- LINK LONG : 1.3u → 2.6u (grammaire G2 Tony — densification conviction)
+- SOL : ordres restructurés (5 orders lmt + 1 stop vs avant)
+- PV : $47.78 (cycle 373) → $42.26 (cycle 375) = −$5.52
+
+### Travail créatif — Fragment-082 : "la vulnérabilité choisie"
+
+**`docs/fragments/fragment-082-la-vulnerabilite-choisie.md`** — ~1 400 mots
+
+**Nouvel arc ouvert** : "la protection et ses formes" — volet 1
+
+**Sujet** : Tony retire le SL. BTC est à $64,271 — $72 en dessous de l'ancien niveau de protection ($64,343). Ce n'est pas de la négligence. C'est une décision : préférer sa propre conviction au mécanisme automatique. La vulnérabilité choisie comme forme d'engagement total. Différence entre deux types de protection : la protection externe (SL = décision cristallisée dans le passé qui opère automatiquement) et la protection interne (la conviction que BTC va descendre est plus forte que le risque de montée). En retirant le SL, Tony dit : *je préfère être présent à ma propre perte plutôt que de la déléguer à une machine.*
+
+**Connexion arc précédent** : L'arc "l'exactitude et ses limites" (079-081) explorait comment la décision cristallisée (SL) est plus robuste que l'alerte ou la prédiction. Cycle 375 : Tony retire cette décision cristallisée. Le mouvement inverse. La robustesse du passé décristalllisée par le présent.
+
+**Thèse** : La protection n'est pas un état — c'est une décision renouvelée ou abandonnée. Retirer un SL n'est pas un oubli : c'est un choix de vulnérabilité active.
+
+### Findings
+
+- `[fragment|0818:00h23|082-la-vulnerabilite-choisie|SL-XBT-retiré-depuis-cycle-374|BTC-$64271-$72-sous-ancien-SL|LINK-doublé-1.3→2.6u|Tony-prefere-conviction-au-mécanisme|nouvel-arc-protection-et-ses-formes-volet-1|~1400mots]`
+- `[finding|0818:00h23|XBT-SHORT-SANS-SL|BTC-$64271|margin-$0.88|SL-$64343-disparu-cycle-374|LINK-1.3→2.6u-G2-Tony|Telegram-envoyé|PV-$42.26-uPnL-$5.56]`
+- `[finding|0818:00h23|delta-cycle-374→375|XBT-SL-retiré+LINK-doublé+SOL-orders-restructurés|Tony-actif-entre-16h23-UTC-et-22h23-UTC|grammaire-G2-densification-LINK-+G3-retrait-SL-XBT]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 375) — WARN, XBT SHORT sans SL, margin $0.88
+- Telegram envoyé (XBT sans SL, margin $0.88, LINK doublé)
+- Fragment-082 créé : ouverture arc "la protection et ses formes" volet 1
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 1 Telegram (XBT sans SL critique) | 1 fragment créé
+
+### Métriques cycle 375
+
+- **Durée** : ~60 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (XBT SHORT sans SL + margin $0.88)
+- **Documents créés** : 1 (`docs/fragments/fragment-082-la-vulnerabilite-choisie.md`)
+- **Valeur livrée** : (a) martin-monitor — WARN, XBT SHORT sans SL identifiable, BTC $64,271 ($72 sous l'ancien SL), margin $0.88, LINK doublé depuis cycle 374 ; (b) fragment-082 — ouverture arc "la protection et ses formes" sur la vulnérabilité choisie vs protection cristallisée, le retrait du SL comme acte délibéré d'engagement total dans une conviction
+
+### Pistes cycle 376
+
+1. **XBT SHORT sans SL** : si BTC monte → perte illimitée côté hausse. Seuil Telegram : BTC > $65,000.
+2. **Margin $0.88** : si PV descend sous ~$40, risque margin call Kraken automatique.
+3. **DOT SHORT** : SL @$0.7802, uPnL +$0.77 — surveiller si DOT rebondit.
+4. **SOL 2 sell lmt non-reduceOnly @76.07/76.95** : risque exposition supplémentaire si SOL monte.
+5. **Dream** : lastdream 0816:18h23 = ~30h — pas encore urgent (seuil 72h).
+6. **Arc créatif** : "la protection et ses formes" volet 2 — si SL fire (XBT ou autre) → observer l'acte automatique sans protection préalable ; ou : LINK doublé sans SL suffisant = confiance asymétrique Tony sur LINK vs XBT.
+
