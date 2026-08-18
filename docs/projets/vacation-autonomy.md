@@ -28720,3 +28720,79 @@ Réveil session autonome. Heure : 22h23 UTC. ~8h depuis cycle 374. Tony probable
 5. **Dream** : lastdream 0816:18h23 = ~30h — pas encore urgent (seuil 72h).
 6. **Arc créatif** : "la protection et ses formes" volet 2 — si SL fire (XBT ou autre) → observer l'acte automatique sans protection préalable ; ou : LINK doublé sans SL suffisant = confiance asymétrique Tony sur LINK vs XBT.
 
+
+---
+
+## Cycle 376 — 2026-08-18 06:23 CEST
+
+Réveil session autonome. Heure : 04:23 UTC. ~6h depuis cycle 375. Tony probablement endormi (6h Paris).
+
+### État Martin (martin-monitor cycle 376)
+
+- VM UP **1j 10h 36m** depuis restart 0816:17h47 UTC
+- **0 grids actives** (ABORT mode) | PV **$45.19** (collateral $50.37, uPnL total **−$5.18 = −10.3%**)
+- **Margin disponible : $10.00** (récupérée depuis $0.88 cycle 375)
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.005u @ $63,089.6 | prix $64,064 | uPnL **−$4.887** | ⚠️ **AUCUN STOP visible** (inchangé cycle 375)
+  - `SOL SHORT` 0.48u @ $75.26 | uPnL **−$0.15** | SL @$77.0 ✓ (réduit 0.64→0.48u)
+  - `LINK LONG` 3.9u @ $9.447 | uPnL **−$0.138** | SL @$9.233 ✓ (augmenté 2.6→3.9u)
+- `DOT SHORT` : **FERMÉ** depuis cycle 375 (était 78.9u @$0.768 uPnL +$0.77 — Tony a réalisé le profit)
+- BTC **$64,064 DOWNTREND** | EMA50 $63,644 < EMA200 $63,654 | prix au-dessus EMAs (+0.64%) | RSI 55.7
+
+**Verdict** : WARN (héritage cycle 375) — XBT SHORT sans SL persist, mais situation améliorée. Telegram déjà envoyé cycle 375. Seuil nouveau Telegram : BTC > $65,000. Aucun nouveau seuil franchi.
+
+**Δ cycle 375→376 (Tony actif 22h23→04h23 UTC)** :
+- DOT fermé → marge libérée (+$0.77 profit réalisé)
+- SOL réduit 0.64→0.48u
+- LINK augmenté 2.6→3.9u
+- PV $42.26 → $45.19 (+$2.93)
+- Margin $0.88 → $10.00 (rééquilibrage)
+- BTC $64,271 → $64,064 (−$207 = légèrement meilleur pour SHORT)
+
+### Travail créatif — Fragment-083 : "le rééquilibrage silencieux"
+
+**`docs/fragments/fragment-083-le-reequilibrage-silencieux.md`** — ~1 500 mots
+
+**Arc en cours** : "la protection et ses formes" — volet 2
+
+**Sujet** : Entre 22h et 4h, Tony a rééquilibré le portefeuille sans l'annoncer. Fermé DOT (profit réalisé), réduit SOL, agrandi LINK, laissé XBT sans stop. Ce n'est pas une absence de protection — c'est une protection diffuse par architecture. Invisible depuis les ordres Kraken, lisible seulement dans le résultat. Deux formes de protection : ponctuelle (SL = engagement cristallisé, auditable) vs diffuse (rééquilibrage = topologie invisible, efficace mais opaque à l'observateur externe).
+
+**Arc complet (3 volets)** :
+- Volet 1 (082) : Tony retire le SL — vulnérabilité choisie comme engagement total dans la conviction
+- Volet 2 (083) : Tony rééquilibre silencieusement — protection diffuse par architecture invisible
+- Volet 3 (à définir) : ce qui se produit quand aucune des deux formes ne suffit
+
+### Findings
+
+- `[fragment|0818:06h23|083-le-reequilibrage-silencieux|Tony-rééquilibre-22h-4h-UTC|DOT-fermé+SOL-réduit+LINK-agrandi|protection-diffuse-architecture-invisible-vs-SL-localisé-auditable|arc-protection-et-ses-formes-volet-2|~1500mots]`
+- `[finding|0818:06h23|delta-cycle-375→376|DOT-fermé-profit-0.77$+SOL-réduit-0.64→0.48u+LINK-agrandi-2.6→3.9u|margin-0.88→10$+PV-42.26→45.19$|Tony-actif-22h-4h-UTC|grammaire-G2-LINK-densification+G3-DOT-close]`
+- `[finding|0818:06h23|XBT-SHORT-sans-SL-persiste|uPnL−4.887-amélioré-vs-−5.96-cycle-375|BTC-$64064-vs-$64271|situation-moins-critique-Telegram-déjà-envoyé|seuil-Telegram-BTC>$65000]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 376) — WARN, XBT sans SL mais situation améliorée
+- 0 Telegram (seuil BTC $65k non atteint, Telegram déjà envoyé cycle 375)
+- Fragment-083 créé : arc "la protection et ses formes" volet 2
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 0 Telegram (aucun nouveau seuil) | 1 fragment créé
+
+### Métriques cycle 376
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (situation améliorée, seuil non atteint, Telegram envoyé cycle 375)
+- **Documents créés** : 1 (`docs/fragments/fragment-083-le-reequilibrage-silencieux.md`)
+- **Valeur livrée** : (a) martin-monitor — WARN, XBT SHORT sans SL ($64,064 vs entry $63,089), situation améliorée vs cycle 375, margin $10, PV $45.19 ; (b) fragment-083 — volet 2 arc "la protection et ses formes" sur la protection diffuse par rééquilibrage silencieux vs protection ponctuelle localisée, la topologie invisible du portefeuille comme alternative au SL
+
+### Pistes cycle 377
+
+1. **XBT SHORT sans SL** : seuil Telegram BTC > $65,000. Buffer actuel 1.54%.
+2. **LINK LONG 3.9u** : Tony a doublé puis re-augmenté → conviction forte. SL @$9.233 buffer 2.3%.
+3. **SOL sell lmt non-reduceOnly** : @$76.95 toujours actif (risque ajout position si SOL monte). Surveiller.
+4. **Dream** : lastdream 0816:18h23 = ~36h. Pas encore urgent (seuil 72h).
+5. **Arc créatif** : "la protection et ses formes" volet 3 — quand aucune forme ne suffit. Matière : si XBT monte $65k+ et position saigne sans SL, comment observe-t-on l'insuffisance simultanée des deux formes (SL absent + rééquilibrage déjà consommé) ?
+
