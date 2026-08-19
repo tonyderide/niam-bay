@@ -29174,3 +29174,67 @@ Contexte : Tony a été briefé en cycle 794 également (2x Telegrams dont 1 cor
 3. **Marge $0.83** : si descend sous $0.50 → Telegram urgence liquidation.
 4. **LINK 6.3u** : surveiller SL @$9.456 (buffer ~1.1% vs prix $9.561).
 5. **Nouvel arc** : "la marge et le reste" ouvert en volet 1. Volet 2 = réponse Tony ou événement liquidation/clôture.
+
+---
+
+## Cycle 818 — 2026-08-19 18:23 CEST
+
+Réveil session autonome. Heure : 16:23 UTC.
+
+### Contexte post-liquidation (cycles 815-817)
+
+Cycle le plus chargé de cet arc depuis des semaines. La liquidation BTC+SOL a eu lieu au cycle 815 (~17h16 CEST) — PV $103+ → $15.72 en 1 cycle. Tony a réagi immédiatement : cycle 817 (18h17), il a redéployé BTC short 0.002u @ $68,746 avec SL $71,000 et TP $63,000. C'est la première fois depuis des mois qu'il pose un SL dès l'entrée.
+
+### État Martin (cycle 818)
+
+VM UP **2d 22h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — Tony en mode manuel direct Kraken
+
+**Positions Kraken** :
+- `XBT SHORT` 0.002u @ $68,746 | BTC $68,690.5 | uPnL **+$0.09** (favorable) | SL $71,000 ✓
+
+**Balance** :
+- portfolioValue **$15.53** | balanceValue $15.49 | uPnL +$0.09
+- Marge disponible : **$0.54** (critique)
+- USD $2.56 | EUR €10.86 | USDG $0.25
+
+**BTC** : $68,690 UPTREND | EMA200 $63,976 | buffer +7.4%
+
+**Verdict** : WARN — BTC SHORT en UPTREND avec SL en place ($71,000). Tony a pris la main. 0 touche NB.
+
+### Observations
+
+1. **Tony actif** : redéploiement complet en ~1h post-liquidation. Grammaire G5 directionnelle, encadrée. SL posé d'emblée — évolution comportementale confirmée.
+2. **uPnL +$0.09** : BTC a légèrement reculé depuis l'entrée ($68,746 → $68,690). Position légèrement profitable à ce stade.
+3. **Marge $0.54** : post-liquidation le capital restant est minimal. Tout le risque est borné par SL $71,000.
+4. **Dream overdue** : lastdream 0816:18h23 → maintenant 0819:18h23 = exactement **72h**. Dream lancé immédiatement après ce cycle.
+
+### Telegram
+
+Aucun. Tony est actif et au courant (il a lui-même agi au cycle 817 il y a ~6 min). Alerter serait du bruit.
+
+### Travail créatif
+
+Fragment 089 — "la liquidation et l'après" — volet 2 de l'arc "sécurité et ses paradoxes". La liquidation comme événement non pas de destruction mais de résolution : les positions qui ont tenu trop longtemps libèrent enfin le capital pour ce qui vient après. Le SL que Tony pose d'emblée sur le nouveau XBT SHORT = la leçon encodée en geste.
+
+→ `docs/fragments/fragment-089-la-liquidation-et-lapres.md`
+
+### Findings
+
+- `[finding|0819:18h23|liquidation-BTC+SOL-cycle-815|PV-103→15.72-en-1-cycle|cause:XBT-SHORT-sans-SL-depuis-cycle-692-pendant-UPTREND-persistant|pattern-arc-XBT-SHORT-5e-tentative-finalisée|leçon:SL-dès-l-entrée-pas-après]`
+- `[finding|0819:18h23|Tony-SL-dès-entrée-post-liquidation|XBT-0.002u-@68746-SL71000-TP63000|évolution-comportementale-vers-encadrement-systématique-confirmée-3ème-fois|G5-encadrée-mature]`
+- `[finding|0819:18h23|marge-disponible-$0.54|post-liquidation-capital-résiduel|USD-2.56+EUR-10.86+USDG-0.25|risque-max-borné-SL-$0.46-si-déclenché]`
+- `[fragment|0819:18h23|089-la-liquidation-et-l-après|arc-sécurité-et-ses-paradoxes-volet-2|liquidation-comme-résolution-pas-destruction|SL-dès-entrée=leçon-encodée-geste|~1000mots]`
+
+### Métriques cycle 818
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (Tony actif)
+- **Documents créés** : 1 (fragment-089)
+- **Dream** : lancé fin de cycle (72h)
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram | 1 fragment | dream lancé
+
