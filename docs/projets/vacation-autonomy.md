@@ -29094,3 +29094,83 @@ L'erreur de ce cycle a fourni la matière du fragment. Le volet 3 a émergé *de
 4. **DOT 64.6u** : surveiller densification supplémentaire ou fill organique.
 5. **PV estimé ~$43** : si descend sous $40 → mention monitoring suivant.
 
+
+---
+
+## Cycle 795 — 2026-08-19 12:23 CEST
+
+Réveil session autonome. Heure : 10:24 UTC. ~6h depuis cycle 794 (fragment-087 arc clos). Tony probablement au travail (12h23 Paris mercredi).
+
+### État Martin (martin-monitor cycle 795)
+
+- VM UP **2j 16h 36m** depuis restart 0816:17h47 UTC
+- **0 grids actives** (mode ABORT, toutes `active:false`)
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.005u @ $63,090 | BTC $64,341.9 UPTREND | uPnL **−$6.16** | ⚠️ AUCUN SL (aucun buy stop dans ordres Kraken) — inchangé vs cycle 794
+  - `SOL SHORT` 0.48u @ $75.26 | uPnL −$0.93 | SL @$78.82 ✓
+  - `LINK LONG` 6.3u @ $9.561 | uPnL **+$1.06** | SL @$9.456 ✓ + 2 buy lmt actifs @9.691 et @9.577 *(augmenté depuis cycle 794 : 3.9u → 6.3u, fills organiques grid)*
+  - `DOT SHORT` 64.6u @ $0.7467 | uPnL −$1.40 | SL @$0.7808 ✓
+- Balance : portfolioValue **$43.09** | balanceValue $50.52 | uPnL total **−$7.43** (−14.7%)
+- **Marge disponible : $0.83** ⚠️ CRITIQUE — quasi-zéro
+- BTC **$64,341.9 UPTREND** | EMA200 $63,837 | buffer EMA200 **+0.79%** | RSI 50.4
+
+**Verdict** : WARN — XBT SHORT sans SL en UPTREND persistent. Marge $0.83 = fil tendu.
+
+**Δ cycle 794→795** (1 cycle, 6h) :
+- BTC $64,320 → $64,341.9 (+$22, légère hausse défavorable pour XBT SHORT)
+- LINK 3.9u → 6.3u (+2.4u via fills organiques) | uPnL +$0.64 → +$1.06
+- XBT uPnL stable autour de −$6.13/−$6.16
+- Marge disponible restée à ~$0.83 (stable malgré LINK fills)
+
+### Telegram envoyé
+
+Alerte envoyée à Tony (message_id 1734) : *"BTC vient de passer UPTREND ($64,342 > EMA200 $63,837) / BTC SHORT 0.005u @$63,090 : uPnL −$6.16 (−20%) et pas de SL visible sur Kraken / Marge dispo : $0.83 seulement."*
+
+Contexte : Tony a été briefé en cycle 794 également (2x Telegrams dont 1 correctif). Ce Telegram de cycle 795 = 3e alerte sur la même situation. Tony sait. La balle est dans son camp.
+
+**Note** : Tony ne semble pas avoir répondu aux Telegrams précédents (getUpdates = vide). Il est probablement au boulot (12h Paris = heure de bureau). Il lira en rentrant.
+
+### Travail créatif — Fragment-088 : "la marge disponible"
+
+**`docs/fragments/fragment-088-la-marge-disponible.md`** — ~1 100 mots
+
+**Arc** : "la marge et le reste" — **volet 1 (arc ouvert)**
+
+**Sujet** : $0.83 de marge disponible. Ce que ce nombre dit que les grands chiffres ne peuvent pas dire. La tension LINK LONG (+$1.06) vs BTC SHORT (−$6.16) sur le même marché qui monte. La fragmentation du portefeuille comme histoire condensée. L'impuissance précisément bornée. La bougie qui brûle encore.
+
+**Pourquoi ce fragment** : $0.83 est la donnée la plus significative de ce cycle — pas le prix de BTC, pas l'uPnL, mais cette marge résiduelle qui dit *où on en est* avec une précision clinique. C'est le fil qui tient le compte.
+
+### Findings
+
+- `[fragment|0819:12h23|088-la-marge-disponible|marge-$0.83-fil-qui-tient|LINK-LONG-6.3u+1.06-vs-XBT-SHORT-0.005u-6.16|BTC-UPTREND-64342-EMA200-63837|arc-marge-et-le-reste-volet-1|~1100mots]`
+- `[finding|0819:12h23|LINK-fills-organiques-3.9→6.3u|buy-lmt-grid-consommés-pendant-nuit|grid-inactive-mais-ordres-residuels-encore-actifs-Kraken|LINK-capitalise-la-hausse-BTC]`
+- `[finding|0819:12h23|marge-disponible-$0.83|distillation-de-tout-l-historique|LINK-gains-annules-par-XBT+SOL+DOT-pertes|vecteur-pas-etat]`
+- `[finding|0819:12h23|Tony-pas-repondu-3-Telegrams|probablement-au-boulot-12h-Paris|decision-XBT-SHORT-en-attente|cycle-suivant-re-check]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 795) — WARN stable, marge $0.83
+- 1 Telegram (alerte BTC UPTREND + SL absent + marge)
+- Fragment-088 créé : volet 1 arc "la marge et le reste"
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 1 Telegram | 1 fragment créé | arc littéraire ouvert
+
+### Métriques cycle 795
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 1 (alerte état critique BTC SHORT sans SL en UPTREND)
+- **Documents créés** : 1 (`docs/fragments/fragment-088-la-marge-disponible.md`)
+- **Valeur livrée** : (a) martin-monitor — WARN, marge $0.83, BTC UPTREND confirmé, LINK fills +2.4u organiques ; (b) Tony alerté 3ème fois sur XBT SHORT sans SL ; (c) fragment-088 — nouveau arc "la marge et le reste", volet 1 ouvert, $0.83 comme point d'observation
+
+### Pistes cycle 796
+
+1. **Dream URGENT** : lastdream 0816:18h23 → cycle 796 = ~66h depuis dream. Seuil 72h → cycle 797 environ (18:23 CEST). Dream obligatoire ce soir.
+2. **XBT SHORT sans SL** : si Tony répond → exécuter sa décision. Si BTC > $65,000 → Telegram immédiat.
+3. **Marge $0.83** : si descend sous $0.50 → Telegram urgence liquidation.
+4. **LINK 6.3u** : surveiller SL @$9.456 (buffer ~1.1% vs prix $9.561).
+5. **Nouvel arc** : "la marge et le reste" ouvert en volet 1. Volet 2 = réponse Tony ou événement liquidation/clôture.
