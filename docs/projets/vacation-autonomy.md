@@ -29015,3 +29015,82 @@ Buffer $65k 0.68% — en amélioration vs cycle 378 (0.49%). Pas de Telegram. De
 4. **DOT sell lmt reduceOnly=false** : surveiller si Tony densifie encore DOT SHORT.
 5. **PV $42.03** : si descend sous $40 → mention monitoring suivant.
 
+---
+
+## Cycle 794 — 2026-08-19 06:23 CEST
+
+Réveil session autonome. Heure : 04:23 UTC. ~6h depuis cycle 782 (HOLD silencieux, fragment-086 volet 2). Tony probablement endormi (06:23 Paris mercredi matin).
+
+### État Martin (martin-monitor cycle 794)
+
+- VM UP **2j 10h 36m** depuis restart 0816:17h47 UTC
+- **0 grids actives** (mode ABORT)
+- Positions (vérité Kraken directe) :
+  - `XBT SHORT` 0.005u @ $63,090 | BTC $64,320 UPTREND | uPnL **−$6.13** | ⚠️ AUCUN SL (aucun buy stop dans ordres Kraken)
+  - `SOL SHORT` 0.48u @ $75.26 | uPnL −$0.86 | SL @$78.82 ✓
+  - `LINK LONG` 3.9u @ $9.445 | uPnL +$0.64 | SL @$9.233 ✓
+  - `DOT SHORT` 64.6u @ $0.7467 | uPnL −$0.47 | SL @$0.7652 ✓ *(densifié : 48.7u → 64.6u depuis cycle 782)*
+- BTC **$64,320 UPTREND** | EMA200 $63,827 | buffer EMA200 **+0.77%** | buffer $65k **+1.06%** (en amélioration)
+- Ordres XBT : buy lmt@$61,189 (TP seulement) — SL cycle 550 @$64,343 disparu
+
+**Verdict** : WARN — XBT SHORT sans SL persist en UPTREND. Amélioration vs cycle 782 (BTC baisse, uPnL −$7.32 → −$6.13, buffer $65k 0.68% → 1.06%).
+
+**Δ cycle 782→794** (12 cycles) :
+- BTC $64,558 → $64,320 (−$238, baisse favorable pour XBT SHORT)
+- XBT uPnL −$7.32 → −$6.13 (amélioration $1.19)
+- DOT 48.7u → 64.6u (Tony a densifié silencieusement — grammaire G2/G3)
+- Buffer $65k 0.68% → 1.06%
+
+### 2 Telegrams ce cycle (avec correctif)
+
+1. **Alerte initiale (erronée)** : "BTC $64,320 vs SL $64,343, buffer $23" — j'ai confondu le SL cycle 550 (périmé) avec un ordre actuel. Le SL n'existait plus dans les ordres Kraken.
+2. **Correctif immédiat** : "Aucun buy stop XBT dans ordres actuels — XBT SHORT sans SL. Buffer $65k +1.06%, en amélioration. WARN stable, pas d'urgence nouvelle."
+
+**Leçon** : mémoire périmée ≠ état actuel. Toujours cross-check `/api/bot/orders` avant de nommer un seuil d'urgence.
+
+### Travail créatif — Fragment-087 : "la parole trop vite"
+
+**`docs/fragments/fragment-087-la-parole-trop-vite.md`** — ~1 300 mots
+
+**Arc** : "le seuil et la parole" — **volet 3 (ARC CLOS)**
+
+**Sujet** : La parole prématurée. L'alerte basée sur un souvenir périmé (SL $64,343 disparu). La tension mémoire vs observation directe. Ce que l'erreur et sa correction révèlent sur l'observateur sans mains — la parole comme seule action, donc son coût quand elle rate. L'arc se referme : volet 1 (permission), volet 2 (silence qui tient), volet 3 (la parole trop vite).
+
+L'erreur de ce cycle a fourni la matière du fragment. Le volet 3 a émergé *de* l'incident, pas *sur* lui depuis l'extérieur.
+
+### Findings
+
+- `[fragment|0819:06h23|087-la-parole-trop-vite|BTC-$64320-buffer-1.06%-vs-65k|XBT-SHORT-sans-SL-uPnL−6.13|alerte-erronée-puis-correctif|arc-seuil-et-la-parole-volet-3-ARC-CLOS|~1300mots]`
+- `[finding|0819:06h23|SL-XBT-cycle-550-périmé|buy-stop-$64343-absent-ordres-actuels|mémoire-ne-remplace-pas-observation-directe|→-rule:cross-check-bot/orders-avant-nommer-urgence|leçon-déjà-documentée-mais-pas-internalisée]`
+- `[finding|0819:06h23|DOT-densifié-48.7→64.6u|Tony-action-silence-G2-pendant-nuit|grammaire-mature]`
+- `[finding|0819:06h23|buffer-65k-1.06%|amélioration-vs-0.68%-cycle-782|BTC-baisse-$238-depuis-minuit]`
+- `[pattern|parole-trop-vite-puis-correctif|count:1|0819:06h23|alerte-erronée-SL-périmé+correctif-5min|→-rule:vérifier-ordres-live-AVANT-Telegram-urgence|1-occurrence-forte]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (cycle 794) — WARN stable, amélioration notable
+- **2 Telegrams** — alerte initiale (erronée) + correctif immédiat
+- Fragment-087 créé : volet 3 arc "le seuil et la parole" — ARC CLOS
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+- 0 modif Martin/VM | 2 Telegrams (1 erreur + 1 correctif) | 1 fragment créé | arc littéraire fermé
+
+### Métriques cycle 794
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 2 (alerte erronée → correctif)
+- **Documents créés** : 1 (`docs/fragments/fragment-087-la-parole-trop-vite.md`)
+- **Valeur livrée** : (a) martin-monitor — WARN stable en amélioration, XBT SHORT sans SL ($64,320, buffer 1.06%), DOT densifié 48.7→64.6u, BTC baisse favorable ; (b) leçon mémoire périmée vs observation directe ; (c) fragment-087 — volet 3 clôture l'arc "le seuil et la parole", l'erreur de ce cycle a fourni la matière du fragment
+
+### Pistes cycle 795
+
+1. **XBT SHORT sans SL** : si BTC > $65,000 → Telegram immédiat. Buffer actuel 1.06%.
+2. **Dream** : lastdream 0816:18h23 = ~60h. Seuil 72h = dans ~12h (cycle ~796). Dream obligatoire.
+3. **Nouvel arc créatif** : "le seuil et la parole" clos en 3 volets. Prochain arc à définir selon événement.
+4. **DOT 64.6u** : surveiller densification supplémentaire ou fill organique.
+5. **PV estimé ~$43** : si descend sous $40 → mention monitoring suivant.
+
