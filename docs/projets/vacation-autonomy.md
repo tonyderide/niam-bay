@@ -29238,3 +29238,74 @@ Fragment 089 — "la liquidation et l'après" — volet 2 de l'arc "sécurité e
 
 0 modif Martin/VM | 0 Telegram | 1 fragment | dream lancé
 
+
+---
+
+## Cycle 830 — 2026-08-20 00:23 CEST
+
+Réveil session autonome post-cycle 829. Heure : 22:23 UTC (19 août) / 00:23 Paris.
+
+### État Martin (martin-monitor cycle 830)
+
+VM UP **3d 4h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — Tony en mode manuel direct Kraken
+
+**Positions Kraken** :
+- `XBT SHORT` 0.002u @ $68,746 | BTC $69,255 | uPnL **-$1.04** | SL $71,000 ✓ | TP $63,000 ✓
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **-$0.23** | SL $0.8311 ✓
+
+**Balance** :
+- portfolioValue **$14.37** | balanceValue $15.63 | uPnL -$1.27
+- Marge disponible : **$0.46** (critique mais bornée par SL)
+- USD $2.69 | EUR €10.86 | USDG $0.25
+
+**BTC** : $69,255 UPTREND | EMA200 $64,287 | buffer +7.7% | **RSI 81.3** (extrême)
+
+**Verdict** : WARN — XBT SHORT contre UPTREND, RSI 81, marge $0.46. Mais : SL $71,000 + TP $63,000 en place. Architecture encadrée. Pas de Telegram (00h23 Paris, fenêtre silence 22h-07h, pas d'ABORT).
+
+### Travail créatif — Fragment 090
+
+**"Le surachat qui tient"** — volet 3 de l'arc "mécanique et attente" (après 076 réduction organique et 077 seuil qui respire).
+
+→ `docs/fragments/fragment-090-le-surachat-qui-tient.md` (~1 100 mots)
+
+**Thème** : RSI 81.3, Tony SHORT à $68,746 avec SL+TP en place. La différence architecturale avec les 42 cycles de SHORT sans SL (cycles 692-815) n'est pas le timing — c'est que l'attente est maintenant bornée. Le RSI dit "ça devrait avoir arrêté" mais ne sait pas quand. La mécanique (SL) convertit l'incertitude infinie en résolution bornée. L'attente change de nature : elle n'est plus l'absence de décision, elle est la décision.
+
+**Lien arc** : 
+- 076 : mécanique imparfaite (emergency_kill 204 échecs) rend la patience possible
+- 077 : seuil flou (EMA200 0.61%) converti en frontière par le protocole
+- 090 : RSI "trop haut" rendu tolérable par les bornes SL/TP — la résolution remplace la direction
+
+**Constat méta** : la liquidation de BTC+SOL (cycle 815) est le contre-exemple naturel de ce fragment — 5 jours avant, même UPTREND, même RSI élevé, mais aucune borne. L'arc se referme sur sa propre histoire.
+
+### Findings
+
+- `[fragment|0820:00h23|090-le-surachat-qui-tient|arc-mécanique-attente-volet-3|RSI-81-SHORT-borné-SL71k-TP63k|attente-bornée≠attente-anxieuse|~1100mots|clos]`
+- `[finding|0820:00h23|marge-$0.46-post-cycle-829|BTC-69255-vs-68746-entrée-short(-$509)|DOT-stable|SLs-Kraken-actifs-confirmés-2x-orders-endpoint]`
+- `[finding|0820:00h23|RSI-81.3-UPTREND-BTC|statistiquement-surachat-mais-pas-d-horaire|position-bornée-rend-attente-tolerable|pattern:architecture>conviction]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (WARN stable, SLs en place, pas d'urgence)
+- Fragment-090 créé : volet 3 arc "mécanique et attente"
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram | 1 fragment | arc "mécanique et attente" : 3 volets → candidat à la clôture
+
+### Métriques cycle 830
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (fenêtre silence + pas d'ABORT)
+- **Documents créés** : 1 (fragment-090)
+- **Valeur livrée** : (a) martin-monitor WARN complet — SLs confirmés Kraken, marge $0.46, BTC RSI 81 en UPTREND ; (b) fragment-090 — volet 3 de l'arc, thème : résolution bornée > direction incertaine ; (c) clôture potentielle de l'arc "mécanique et attente" si volet 3 satisfait
+
+### Pistes cycle 831
+
+1. **Arc "mécanique et attente"** : 3 volets complets (076, 077, 090). Évaluer si arc clos ou si volet 4 émerge naturellement.
+2. **BTC RSI 81** : si reversal → DOT et XBT profitent. Si SL $71,000 touché → Telegram Tony (mais hors fenêtre silence jusqu'à 07h Paris).
+3. **Marge $0.46** : si descend sous $0.30 → Telegram immédiat, même la nuit.
+4. **Dream overdue** : lastdream 0819:18h23 → cycle 830 = 6h depuis dream. Pas urgent encore.
