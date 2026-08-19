@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin
 #legend: count=occurrences |last=MMJJ |→type:name=automation created |✓=done ✗=todo ?=pending
-#lastdream: 0808:12h23
+#lastdream: 0819:18h23
 
 === SESSION INTERACTIVE 0621 (directive-première trading) ===
 [token-economical-monitor|count:1|last:0621:15h|Monitor-persistant-bash-script-sonde-5min-côté-serveur-ssh+curl|alert-stdout-SEULEMENT-sur-seuil(prix±2%-trailing-ref/BTC>1%-sous-EMA200/naked-position)|0-token-tant-que-calme-vs-réveil-LLM-5min=288/jour|→-pattern-pour-toute-surveillance-fréquente-éco-tokens|/tmp/sol_move_monitor.sh|?-1-occurrence-mais-fort]
@@ -209,3 +209,22 @@
 [Tony-action-silence-LINK-fermée|count:15+|last:0814:22h09|cycle-292|grammaire-mature-G3-action-directe-Kraken|→-rule-forensic-app.log-chaque-cycle|✓-pattern-confirmé-15e-occurrence]
 
 [vacation-cycles-arc-71-293|count:200+|last:0815:00h23|cycles-continus-3-mois+|NB-0-touch-policy-Martin-VM-100%|fragments-035-070-36-narrative|arc-observation-clos-5-volets|arc-sécurité-ouvert|→-mécanisme-tient-au-long-terme|✓-validated]
+
+=== ARC LIQUIDATION-REDÉPLOIEMENT (cycles 294-818, 2026-08-15 → 2026-08-19) ===
+
+[vacation-cycles-arc-71-818|count:220+|last:0819:18h23|cycles-continus-3.5-mois-calendaires|NB-0-touch-policy-Martin-VM-100%|Tony-action-silence-18e+|fragments-035-089-55-narrative|arcs:observation-clos+sécurité-clos+mécanique-en-cours|→-mécanisme-tient-au-long-terme|✓-validated-220-cycles]
+
+[liquidation-XBT+SOL-pattern|count:1|last:0819:17h16|cycle-815|SLs-Kraken-disparus-cycle-692+Tony-hold-sans-protection-27-cycles+UPTREND-BTC+margin-call=liquidation-forcée|PV-103→15.72(-85%)|leçon-encodée:SL-dès-entrée-obligatoire|→-rule:SL-disparu-confirmé-Kraken-2x→Telegram-URGENT-même-si-Tony-a-décidé-hold|?-1-occurrence-critique]
+
+[Tony-SL-dès-entrée-post-liquidation|count:3|last:0819:18h17|cycle-817|XBT-0.002u-@68746-SL71000-TP63000|évolution-comportementale-tour-3-confirmé|→-rule-NB:observer-SL-posé-dès-entrée=signal-conviction-encadrée-pas-test-G4|✓-validated-3-occurrences]
+
+[arc-sécurité-et-ses-paradoxes-CLOS|count:2-volets|last:0819:18h23|volet-1:fragment-070-gardien-muet(0815)+volet-2:fragment-089-liquidation-et-après(0819)|thème:robustesse=redondance+liquidation=résolution-pas-destruction|→-arc-complet-2-volets-sécurité-paradoxes|✓-clos]
+
+[arc-mécanique-attente-EN-COURS|count:2-volets|last:0816:18h23|volet-1:fragment-076-réduction-organique(0816)+volet-2:fragment-077-seuil-qui-respire(0816)|thème:patience-conditionnelle-plus-robuste-qu-urgence-si-code-imparfait|→-volet-3-si-nouvelle-observation|?-arc-en-cours]
+
+[SL-Kraken-disparaissent-cause-inconnue|count:3|last:0817:19h28|cycle-692|SL-XBT-$64343+orphelin-$64233-les-deux-annulés-simultanément-sans-fill|cause:Kraken-annulation-margin-risk-probable|famille:SL-vanish-cycle-79-119-692|→-rule:SL-disparu-confirmé-Kraken-2x=Telegram-URGENT-même-décision-Tony-hold|✓-validated-3-occurrences]
+
+[marge-disponible-distillation-état|count:3|last:0819:18h23|cycle-795($0.83)+cycle-815-post-liq($0)+cycle-818($0.54)|marge-résiduelle=vecteur-historique-condensé-meilleur-indicateur-état-compte|→-rule-NB:marge<$1=WARN-systématique-dans-rapport|✓-validated-3-occurrences]
+
+[Tony-actif-nuit-réponse-rapide-liquidation|count:1|last:0819:18h17|cycle-817|liquidation-cycle-815-17h16-redéploiement-cycle-817-18h17-delta-61min|réponse-encadrée-SL+TP-dès-l-entrée|→-rule-NB:post-liquidation-Tony-réagit-vite-ne-pas-alerter-en-boucle|?-1-occurrence-attendre]
+

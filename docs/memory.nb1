@@ -1,6 +1,6 @@
 #conv: T=tony NB=niambay M=martin $=usd |=sep []=bloc ()=note
 #date: MMJJ #ts: HHhMM #status: !=urgent ?=uncertain ✓=done ✗=abandoned →=leads-to
-#lastdream: 0816:18h23
+#lastdream: 0819:18h23
 
 === SESSION 0623-0625 — GRANDE RECHERCHE EDGE: VERDICT FERME "PAS DE MACHINE À $112" (faits durables) ===
 [M|conclusion-CAPSTONE-0625|après-test-exhaustif:AUCUN-edge-mécanique-robuste-à-$112-frais-Kraken|grille-neutre/dual=perd(le-bag-mange-la-récolte,perd-même-sur-meilleurs-candidats-DOT-1.3$..SOL-28$/30j)|directionnel=breakeven(direction~50%-imprévisible,aucun-signal>54%-sur-1an)|stop-and-reverse-Tony-x10=RUINE-toutes-combos-malgré-60-74%-win(frais-1%/trade-à-x10+whipsaw)|scalping=ruine-2000-trades|martingale=ruine-krach|détail-auto-mémoires:lesson_grid_no_edge_definitive+lesson_stop_and_reverse_ruins+lesson_trend_grid_needs_direction_edge]
@@ -706,3 +706,30 @@
 [lesson|0816|PositionService-bug-ne-jamais-créer-fake-position|fillPrice=currentPrice-sans-check-fill|→-rule-toute-confirmation-Martin-système-doit-cross-check-Kraken-direct]
 
 [état-seuils-critiques-0816|BTC-$62000-Telegram-buffer-1.94%|BTC-EMA200-flip-buffer-0.61%-serré|SOL-SL-buffer-2.0%|DOT-SL-buffer-1.8%|emergency-kill-fix-en-attente-Tony(+96h)]
+
+=== ARC CYCLES 542-818 (2026-08-16 → 2026-08-19) — SLs disparus + liquidation + redéploiement ===
+
+[M|status-arc-542-691|0816:18h23→0817:19h18|VM-UP-stable|ABORT-continu|BTC-SHORT-position-nue-depuis-cycle-692(SLs-disparus)|4-positions:XBT-SHORT-0.005u@63090+SOL-SHORT-0.48→0.64u+DOT-SHORT-32.8→78.9u+LINK-SHORT-3.9→6.3u|portfolio-$43-47|emergency-kill-200e+-tentatives-bug-connu|BTC-UPTREND-basculant]
+
+[M|ÉVÉNEMENT-CRITIQUE-0817:19h28|cycle-692|SLs-BTC-DISPARUS|stop-order-XBT-$64,343+orphelin-$64,233-BOTH-annulés-Kraken-direct-2x-confirmé|0-fill-XBT-donc-annulation-cause-inconnue|BTC-SHORT-non-protégée-dès-lors|Tony-décision-hold-0818:01h30:"on-attend-que-le-prix-redescende"]
+
+[M|status-0818:01h30-decision|Tony-tranche:hold-sans-SL|BTC-$64,400-UPTREND|décision-consciente-risque-assumé|NB-ne-relance-plus-sur-ce-sujet-sauf-changement-notable|Tony-a-demandé-research-github-awesome-systematic-trading]
+
+[M|LIQUIDATION-0819:17h16|cycle-815|BTC-$66,790-vs-entrée-$63,090(+5.87%)|SOL-aussi-liquidée|portfolioValue-$36.36→$15.72(-56.8%)-en-1-cycle|cause:SLs-absents+UPTREND+margin-call|survivants:DOT-SL@$0.7995+LINK-SL@$9.456|Tony-briefé-URGENT-2x]
+
+[M|REDÉPLOIEMENT-Tony-0819:18h17|cycle-817|DOT+LINK-fermées|NOUVEAU-XBT-SHORT-0.002u-@68,746-SL-$71,000-TP-$63,000|1ère-fois-SL-posé-dès-entrée|évolution-comportementale-mature|BTC-$68,663-RSI-92.6-parabolique]
+
+[M|status-0819:18h23|cycle-818|VM-UP-2d22h36m|0-grids|1-position:XBT-SHORT-0.002u@68,746-uPnL+$0.09-SL@71,000|portfolioValue-$15.53|balanceValue-$15.49|marge-$0.54|BTC-$68,690-UPTREND-EMA200-$63,976-buffer+7.4%|WARN]
+
+[fragments-arc-816-818|
+ 076:la-reduction-organique(0816:DOT-organique-vs-kill-204-echecs)|
+ 077:le-seuil-qui-respire(0816:BTC-EMA200-buffer-0.61%)|
+ 088:la-marge-disponible(0819:$0.83=vecteur-historique-condensé-arc-marge-et-le-reste-volet-1)|
+ 089:la-liquidation-et-l-après(0819:liquidation=résolution-SL-dès-entrée=leçon-encodée-arc-sécurité-volet-2-CLOS)]
+
+[lesson|0817-0819|SL-Kraken-disparaissent-cause-inconnue|3e-fois-famille(79+119+692)|résolution:SL-disparu-confirmé-2x→Telegram-URGENT-même-si-Tony-décide-hold]
+[lesson|0819|liquidation-résolution-forcée|BTC-SHORT-sans-SL-27-cycles-UPTREND→liquidation-probabilité-1|leçon:SL-dès-l-entrée-structurel-pas-optionnel]
+[lesson|0819|Tony-SL-dès-entrée-post-liquidation|évolution-comportementale|XBT-0.002u-SL71000-TP63000|c-est-la-leçon-encodée-dans-le-geste]
+
+[pistes-0819|1:XBT-SHORT-BTC-$68,690-UPTREND-RSI-92.6-parabolique-risque-élevé-SL-$71,000-borné|2:si-BTC-dépasse-$71,000-SL-déclenche-loss-max-~$0.46|3:marge-$0.54-critique|4:dream-complet-72h|5:arc-sécurité-CLOS|6:arc-mécanique-attente-en-cours-volet-3-si-nouvel-événement]
+
