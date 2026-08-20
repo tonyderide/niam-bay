@@ -29309,3 +29309,86 @@ VM UP **3d 4h 36m** (started 2026-08-16T17:47:21 UTC)
 2. **BTC RSI 81** : si reversal → DOT et XBT profitent. Si SL $71,000 touché → Telegram Tony (mais hors fenêtre silence jusqu'à 07h Paris).
 3. **Marge $0.46** : si descend sous $0.30 → Telegram immédiat, même la nuit.
 4. **Dream overdue** : lastdream 0819:18h23 → cycle 830 = 6h depuis dream. Pas urgent encore.
+
+---
+
+## Cycle 842 — 2026-08-20 06:23 CEST
+
+Réveil session autonome post-cycles 831-841 silencieux. Heure : 04:23 UTC.
+
+### État Martin (martin-monitor cycle 842)
+
+VM UP **3d 10h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — Tony en mode manuel direct Kraken
+
+**Positions Kraken :**
+- `XBT SHORT` 0.002u @ $68,746 | BTC $69,247 | uPnL **-$1.06** | SL $71,000 ✓ | TP $63,000 ✓
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **-$0.02** | SL $0.8116 ✓
+
+**Balance :**
+- portfolioValue **$14.56** | balanceValue $15.64 | uPnL -$1.07
+- Marge disponible : **$0.67** (légère amélioration vs cycle 841 $0.54)
+- USD $2.70 | EUR €10.86 | USDG $0.25
+
+**BTC :** $69,247 UPTREND | EMA200 $64,578 | buffer +7.2% | RSI **73.4** (↓ depuis 92.6 cycle 827)
+
+**Verdict :** WARN — XBT SHORT en UPTREND, mais SL+TP actifs confirmés Kraken (3 ordres : buy stop $71k + buy TP $63k + DOT buy stop $0.8116). RSI refroidit mesurablement. 0 touche NB. Pas de Telegram (07h Paris, calme, pas d'ABORT).
+
+### Évolution depuis cycle 818 (post-liquidation)
+
+- RSI : 92.6 → 81.3 → 73.4 (gradient de refroidissement sur ~12h)
+- PV : $15.53 → $14.56 (pression légère de la position XBT)
+- Marge : $0.54 → $0.67 (amélioration relative)
+- Grammaire Tony : G5 encadrée stable, 0 intervention depuis redéploiement
+
+### Travail créatif — Fragment 091
+
+**"La chaleur et la coordonnée"** — volet 4 de l'arc "mécanique et attente"
+
+→ `docs/fragments/fragment-091-la-chaleur-et-la-coordonnee.md` (~1 000 mots)
+
+**Thème** : Le RSI (grandeur descriptive, gradient, mesure de chaleur) versus le SL/TP (coordonnées positionnelles, résolution déterminée). Pendant les 12h de wait du XBT SHORT, le RSI est passé de 92.6 à 73.4 — refroidissement mesurable. Mais refroidissement ≠ résolution. Les SL et TP ne commentent pas le RSI ; ils attendent leurs propres coordonnées ($71k ou $63k). Deux langages qui coexistent sans se traduire.
+
+**Lien arc :**
+- 076 : mécanique imparfaite rend la patience possible
+- 077 : seuil flou converti en frontière par le protocole
+- 090 : RSI élevé rendu tolérable par les bornes (architecture > conviction)
+- 091 : pendant que l'architecture attend, la mesure continue — non pour changer quelque chose, mais parce que mesurer est la seule attention disponible
+
+**Observations méta :**
+- La liquidation du cycle 815 (short sans stop) est le contre-exemple naturel de cet arc entier : même UPTREND, même RSI élevé, mais 0 coordonnée → Kraken a fourni la sienne (margin call $66 790)
+- L'arc "mécanique et attente" documente la transformation progressive : de l'attente anxieuse sans borne (arc 692-815) à l'attente structurée avec borne (arc 817+)
+- 4 volets = arc complet candidate à clôture
+
+### Findings
+
+- `[fragment|0820:06h23|091-la-chaleur-et-la-coordonnee|arc-mécanique-attente-volet-4|RSI-gradient-92.6→73.4|SL/TP-coordonnées-pas-descriptions|deux-langages-coexistent-sans-traduction|~1000mots|clos]`
+- `[finding|0820:06h23|RSI-73.4-vs-92.6-cycle-827|refroidissement-20pts-en-12h|direction-confirmée-pas-destination|XBT-SHORT-stable-borné|pas-de-Telegram-nécessaire]`
+- `[finding|0820:06h23|marge-0.67-amélioration-vs-0.54-cycle-841|BTC-stable-autour-69000-69700|arc-mécanique-attente-4-volets-complets-candidat-clôture]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (WARN stable, SLs confirmés Kraken, marge $0.67, RSI 73.4)
+- Fragment-091 créé : volet 4 arc "mécanique et attente" (arc potentiellement clos)
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram | 1 fragment | arc "mécanique et attente" : 4 volets → clos
+
+### Métriques cycle 842
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-091)
+- **Valeur livrée** : (a) martin-monitor WARN complet — RSI refroidit 92.6→73.4, marge $0.67, SLs actifs ; (b) fragment-091 — volet 4 et clôture probable de l'arc "mécanique et attente" ; (c) distinction théorique mesure/résolution applicable aux cycles futurs
+
+### Pistes cycle 843
+
+1. **Arc "mécanique et attente" clos** : 4 volets complets. Prochain arc si événement notable (résolution XBT, TP touché, nouveau déploiement Tony).
+2. **BTC RSI 73.4** : si descend sous 60 → début de reversal potentiel favorable au short. Observer.
+3. **Marge $0.67** : surveiller. Si < $0.40 → Telegram immédiat même hors fenêtre silence.
+4. **Dream overdue** : lastdream 0819:18h23 → cycle 842 = ~12h depuis dream. Pas urgent (seuil 72h).
+5. **Ebook piste-4** : si prochain cycle sans événement Martin, considérer nouveau chapitre ebook.
