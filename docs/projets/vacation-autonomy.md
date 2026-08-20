@@ -29461,3 +29461,72 @@ VM UP **3d 16h 36m** (started 2026-08-16T17:47:21 UTC)
 3. **Ebook piste-4** : arc "mécanique et attente" complet → matière pour chapitre ebook (patience conditionnelle, attente bornée vs non-bornée).
 4. **Dream overdue** : lastdream 0819:18h23 → cycle 854 = ~18h. Pas urgent (seuil 72h).
 5. **Marge $0.67** : si < $0.40 → Telegram immédiat.
+
+---
+
+## Cycle 855 — 2026-08-20 18:23 CEST
+
+Réveil session autonome. Heure : 16:23 UTC. ~6h depuis cycle 854.
+
+### État Martin (martin-monitor cycle 855) — HOLD
+
+VM UP **3d 22h 36m** (started 2026-08-16T17:47:21 UTC)
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **-$0.84** (-8.3% cap) | SL buy stop **$0.8523** ✓ (ID `a28c2a4c`, confirmé Kraken)
+- `XBT` : fermée cycle 849, SL $71,000 déclenché proprement.
+
+**Géométrie DOT :**
+- Prix actuel DOT ≈ $0.8372 (calculé depuis uPnL -$0.84 / 15.3u)
+- Distance au SL : $0.8523 − $0.8372 = **$0.0151 = 1.8%**
+- Trailing SL : $0.8106 (entrée) → $0.8324 (cycle 854) → **$0.8523** (maintenant) — corridor qui se referme
+- Perte max si SL fire : ($0.8523 − $0.7823) × 15.3 = **$1.07**
+
+**BTC :** $72,269 UPTREND | EMA200 $65,349 | buffer **+10.6%**
+
+**Verdict :** HOLD — DOT bornée, SL confirmé Kraken. Le corridor se comprime (1.8%) mais la borne tient. Pas de Telegram : situation bornée, heure Paris 18h23 acceptable, aucun ABORT.
+
+### Travail créatif — Fragment 093
+
+**"Le corridor qui se referme"** — addendum arc "mécanique et attente"
+
+→ `docs/fragments/fragment-093-le-corridor-qui-se-referme.md` (~1 100 mots)
+
+**Thème** : Le SL trailing DOT qui remonte de $0.8106 à $0.8523 pendant que DOT monte à $0.8372. Le corridor entre le prix actuel et la borne de déclenchement se comprime : 0.0283 → 0.0151 dollar en 6h. Observation de ce que signifie habiter une structure en train de se refermer — et la décision de ne pas franchir la borne.
+
+**Arc :** Sixième volet de "mécanique et attente" (076→077→090→091→092→093). Le 092 déclarait l'arc clos après la résolution XBT. Le 093 montre que la résolution d'une position n'épuise pas la structure — il reste à habiter le corridor de l'autre position, DOT, pendant qu'il se resserre.
+
+**Distinction centrale :** L'attention disponible n'est pas de l'action. Observer le corridor, mesurer sa compression, ne pas le franchir — c'est la patience conditionnelle dans sa forme la plus nue.
+
+### Findings
+
+- `[fragment|0820:18h23|093-le-corridor-qui-se-referme|arc-mécanique-attente-volet-6-addendum|SL-trailing-DOT-0.8106→0.8523|corridor-comprimé-1.8%|attention-disponible-≠-action|~1100mots|clos]`
+- `[finding|0820:18h23|DOT-SL-trailing-confirmé-$0.8523|corridor-prix/SL-1.8%|perte-max-si-fire=$1.07|HOLD-pas-Telegram]`
+- `[finding|0820:18h23|BTC-$72269-UPTREND-buffer+10.6%|DOT-uPnL--$0.84|VM-UP-3d22h36m|aucun-trigger-ABORT]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (HOLD, SL DOT $0.8523 confirmé Kraken, corridor 1.8%)
+- Fragment-093 créé : volet 6 arc "mécanique et attente" (addendum post-résolution)
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (situation bornée, heure OK, pas ABORT) | 1 fragment | arc "mécanique et attente" : **6 volets**
+
+### Métriques cycle 855
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-093)
+- **Valeur livrée** : (a) martin-monitor HOLD — SL DOT $0.8523 confirmé, trailing actif, corridor 1.8% ; (b) fragment-093 — volet 6 de l'arc, distinction attention/action, géométrie du corridor ; (c) dream overdue maintenant ~24h, reste sous seuil 72h
+
+### Pistes cycle 856
+
+1. **DOT SL à 1.8%** : si buffer < 1% → Telegram (seuil critique). Si SL fire → noter résolution.
+2. **Dream** : lastdream 0819:18h23 → cycle 856 = ~24h. Pas urgent (seuil 72h encore).
+3. **Ebook V2** : fragment-093 + arc "mécanique et attente" 6 volets = matière pour annexe ebook V2 (post-liquidation case study). Tony doit d'abord publier V1.
+4. **Si DOT SL fire** → portfolio ~$9.10, plus aucune position. Tony redécide.
