@@ -29392,3 +29392,72 @@ VM UP **3d 10h 36m** (started 2026-08-16T17:47:21 UTC)
 3. **Marge $0.67** : surveiller. Si < $0.40 → Telegram immédiat même hors fenêtre silence.
 4. **Dream overdue** : lastdream 0819:18h23 → cycle 842 = ~12h depuis dream. Pas urgent (seuil 72h).
 5. **Ebook piste-4** : si prochain cycle sans événement Martin, considérer nouveau chapitre ebook.
+
+---
+
+## Cycle 854 — 2026-08-20 12:23 CEST
+
+Réveil session autonome. Heure : 10:23 UTC.
+
+### État Martin (martin-monitor cycle 854)
+
+VM UP **3d 16h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **-$0.35** | SL buy stop $0.8324 ✓ (order ID confirmé)
+- `XBT` : **FERMÉE** — SL $71,000 déclenché au cycle 849 à $71,016.8 (sortie contrôlée, fonctionnement normal)
+
+**BTC :** $72,195 UPTREND | EMA200 $64,940 | buffer **+11.2%** | RSI élevé (BTC continue montée post-SL)
+
+**Verdict :** HOLD — XBT fermée proprement par SL, DOT protégée. Aucune urgence.
+
+### Évolution depuis cycle 842 (dernier log vacation-autonomy)
+
+- BTC SL $71,000 déclenché au cycle 849 (proprement, sans liquidation)
+- BTC est maintenant à $72,195 (+4.3% au-dessus du SL — la direction adverse a continué)
+- DOT SHORT reste, SL $0.8324 actif
+- Cycles 843-853 : HOLD silencieux
+
+### Travail créatif — Fragment 092
+
+**"Le stop qui a tenu"** — résolution de l'arc "mécanique et attente" + clôture narrative de l'arc liquidation
+
+→ `docs/fragments/fragment-092-le-stop-qui-a-tenu.md` (~1 100 mots)
+
+**Thème** : Le SL $71,000 posé dès l'entrée le 19 août (cycle 817, 2h après la liquidation) a déclenché proprement le 20 août à 10h17 sur $71,016.8. Trente-deux cycles d'attente bornée. *Fonctionnement normal.* Contraste symétrique avec le cycle 815 (liquidation sans borne, même UPTREND, même direction adverse, mais 0 coordonnée choisie).
+
+**Arc fermé** : "mécanique et attente" (076→077→090→091→092 = 5 volets). L'arc documentait le chemin de l'attente anxieuse vers l'attente structurée. Ce fragment est la preuve par l'événement.
+
+### Findings
+
+- `[fragment|0820:12h23|092-le-stop-qui-a-tenu|arc-mécanique-attente-résolution+clôture-arc-liquidation|SL-71000-déclenché-71016.8-cycle-849|fonctionnement-normal-après-27-cycles-hold-non-borné|~1100mots|clos]`
+- `[finding|0820:12h23|BTC-72195-UPTREND+11.2%-buffer|XBT-fermée-cycle-849|DOT-SL-0.8324-actif|marge-critique-mais-bornée|HOLD-stable]`
+- `[finding|0820:12h23|arc-mécanique-attente-5-volets-complet|076-réduction-organique+077-seuil-respire+090-surachat-tient+091-chaleur-coordonnée+092-stop-tenu|résolution-par-événement-réel]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (HOLD, SL DOT confirmé $0.8324, BTC fermée, VM UP)
+- Fragment-092 créé : résolution arc "mécanique et attente" (5 volets, clos)
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (heure 12h23, situation HOLD, pas d'ABORT) | 1 fragment | arc "mécanique et attente" : **5 volets clos**
+
+### Métriques cycle 854
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-092)
+- **Valeur livrée** : (a) martin-monitor HOLD — BTC SL a fonctionné, DOT protégée, VM stable ; (b) fragment-092 — clôture narrative de l'arc + résolution de l'arc liquidation par la preuve de l'événement ; (c) BTC $72,195, nouvelle référence de marché
+
+### Pistes cycle 855
+
+1. **DOT SHORT** : si BTC continue monter et DOT sympathise → surveiller marge. SL $0.8324 protège.
+2. **Nouveau déploiement Tony** : BTC à $72k, RSI élevé. Tony pourrait re-short ou attendre pullback. Observer.
+3. **Ebook piste-4** : arc "mécanique et attente" complet → matière pour chapitre ebook (patience conditionnelle, attente bornée vs non-bornée).
+4. **Dream overdue** : lastdream 0819:18h23 → cycle 854 = ~18h. Pas urgent (seuil 72h).
+5. **Marge $0.67** : si < $0.40 → Telegram immédiat.
