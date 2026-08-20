@@ -29530,3 +29530,84 @@ VM UP **3d 22h 36m** (started 2026-08-16T17:47:21 UTC)
 2. **Dream** : lastdream 0819:18h23 → cycle 856 = ~24h. Pas urgent (seuil 72h encore).
 3. **Ebook V2** : fragment-093 + arc "mécanique et attente" 6 volets = matière pour annexe ebook V2 (post-liquidation case study). Tony doit d'abord publier V1.
 4. **Si DOT SL fire** → portfolio ~$9.10, plus aucune position. Tony redécide.
+
+
+---
+
+## Cycle 856 — 2026-08-21 00:23 CEST
+
+Réveil session autonome. Heure : 22:23 UTC. ~6h depuis cycle 855.
+
+### État Martin (martin-monitor cycle 856) — HOLD
+
+VM UP **4d 4h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **−$0.905** | SL buy stop **$0.8719** ✓ (ID `a28c9e7a`)
+- `XBT LONG` 0.0012u @ $72,534 | uPnL **+$0.256** | SL stop $68,900 ✓ | TP $145,006 ✓
+
+**Géométrie DOT :**
+- Prix actuel DOT ≈ $0.8414 (calculé depuis uPnL / taille)
+- SL à $0.8719 : corridor = **3.6%** (élargi vs cycle 855 : 1.8%)
+- SL DOT a bougé : $0.8523 (cycle 855) → **$0.8719** (maintenant) — G1 Tony ce soir
+
+**BTC :** $72,766 UPTREND | EMA200 $65,727 | buffer **+10.7%** | RSI **78.3** (overbought)  
+**Marge disponible :** $0.154 (très fine, deux positions open)
+
+**Verdict :** HOLD — XBT LONG + DOT SHORT toutes deux bornées. Marge fine mais tenable. Pas de Telegram (00h23, situation bornée, pas d'ABORT).
+
+### Évolution depuis cycle 855 (18h23 CEST)
+
+- **Tony a ouvert XBT LONG** (cycle 869, 20h17 CEST) — 0.0012u @72,534 SL@68,900 TP@145,000
+- **Tony a élargi DOT SL** : $0.8523 → $0.8719 (G1 edit Kraken direct, ~soirée Paris)
+- Cycles 856-877 : HOLD silencieux, PV stable $10.07→$10.30
+- RSI BTC : stable autour 78 (pas de refroidissement notable vs cycle 855 : 78.3 = même niveau)
+
+**Grammaire Tony ce soir :** G1 (SL edit DOT) + G3/G4 (entrée LONG XBT) — cluster en soirée Paris.
+
+### Travail créatif — Fragment 094
+
+**"Le signe et son contraire"** — volet 7 de l'arc "mécanique et attente"
+
+→ `docs/fragments/fragment-094-le-signe-et-son-contraire.md` (~1 200 mots)
+
+**Thème** : Dix heures entre le SL XBT fire (cycle 849) et l'entrée LONG XBT (cycle 869). Ce n'est pas un stop-and-reverse (réflexe mécanique) mais une re-lecture de la même information avec une emphase différente. Deux positions coexistent : XBT LONG + DOT SHORT — un spread implicite (BTC > DOT) sans que personne ne l'ait nommé.
+
+**Arc "mécanique et attente" — volet 7 :** 076 réduction organique → 077 seuil → 090 surachat tenu → 091 chaleur/coordonnée → 092 stop qui a tenu → 093 corridor → 094 signe et son contraire.
+
+**Observation centrale :** L'architecture (SL dès l'entrée) précède la conviction (direction). Le signe change, le protocole reste. Encodé au cycle 817, confirmé au cycle 869.
+
+### Findings
+
+- `[fragment|0821:00h23|094-le-signe-et-son-contraire|arc-mécanique-attente-volet-7|10h-silence-entre-SL-fire-et-LONG-XBT|stop-and-reverse≠relecture|spread-BTC>DOT-implicite|architecture-précède-conviction|~1200mots|clos]`
+- `[finding|0821:00h23|Tony-G1-DOT-SL-0.8523→0.8719+G3-LONG-XBT-72534-cluster-soirée-Paris|grammaire-cluster-confirmée-16e-occurrence]`
+- `[finding|0821:00h23|PV-$10.31|marge-$0.154|BTC-$72766-RSI-78.3|DOT-corridor-3.6%|HOLD-stable|dream-30h-sous-seuil-72h]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (HOLD, toutes positions bornées, VM UP 4j+)
+- Fragment-094 créé : volet 7 arc "mécanique et attente"
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, 00h23 Paris, pas d'ABORT) | 1 fragment | arc "mécanique et attente" : **7 volets**
+
+### Métriques cycle 856
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-094)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT LONG + DOT SHORT bornés, VM UP, marge fine ; (b) découverte Tony-G1+G3 cluster soirée Paris (élargi DOT SL + ouvert XBT LONG) ; (c) fragment-094 — spread implicite BTC>DOT, architecture > conviction, volet 7
+
+### Pistes cycle 857
+
+1. **DOT SL $0.8719** : corridor 3.6%. Si DOT > $0.8719 → SL fire, résolution, PV ~$8.94. Observer.
+2. **XBT LONG** : SL $68,900. Si BTC < $68,900 → SL fire (−$4.36 environ). Observer.
+3. **Marge $0.154** : surveiller. Si < $0.10 → Telegram immédiat.
+4. **Dream** : lastdream 0819:18h23 → cycle 857 = ~30h. Pas urgent (seuil 72h).
+5. **Arc "mécanique et attente"** : 7 volets. Candidat à clôture formelle si résolution des deux positions.
+6. **Ebook piste-4** : arc complet = matière pour chapitre final (architecture > conviction, spread implicite).
