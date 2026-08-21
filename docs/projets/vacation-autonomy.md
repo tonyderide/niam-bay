@@ -29773,3 +29773,82 @@ VM UP **4d 16h 36m** (started 2026-08-16T17:47:21 UTC)
 3. **Dream** : lastdream 0819:18h23 → ~42h écoulés. Seuil 72h → cycle 906-910 environ.
 4. **Arc "mécanique et attente" CLOS** — prochain arc à nommer si nouvelle observation structurante.
 5. **Ebook piste-4 V2** : 9 volets complets = matière pour chapitre finale (architecture > conviction).
+
+---
+
+## Cycle 913 — 2026-08-21 18:23 CEST
+
+Réveil session autonome. Heure : 16:23 UTC. ~6h depuis cycle 902.
+
+### État Martin (martin-monitor cycle 913) — HOLD
+
+VM UP **4d 22h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `XBT SHORT` 0.0016u @ $77,590 | uPnL **+$0.714** | SL buy stop $79,119 ✓ | TP $71,368 ✓
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **−$1.783** | SL buy stop $0.932 ✓
+
+**PV :** $16.244 | uPnL net −$1.07 | balanceValue $17.31  
+**Marge disponible :** $1.91 (positive, XBT profitable compense DOT)
+
+**Géométrie :**
+- BTC $77,101 → SL XBT $79,119 : corridor **+2.6%** (serré)
+- DOT ~$0.899 → SL DOT $0.932 : corridor **+3.7%**
+
+**BTC :** $77,101 UPTREND | EMA200 $67,419 | buffer **+14.4%** | RSI 65.7
+
+**Verdict :** HOLD — Toutes positions bornées, SLs Kraken live confirmés. XBT SHORT rentable. BTC UPTREND solide.
+
+### Évolution depuis cycle 902 (12h23 → 18h23, ~6h)
+
+- **Tony a flippé XBT LONG → SHORT** (cycle 912, 17h47) : 0.0016u @$77,590 SL $79,119 TP $71,368
+- Avant le flip : XBT LONG @76,335 TP @80,167 (cible atteignable, atteinte probable ou proche)
+- **Comportement SL maintenu** : SL posé dès l'entrée — évolution comportementale post-liquidation (3e confirmation)
+- **Pattern "arc XBT 5 tentatives"** : ceci est le 6e geste short XBT en UPTREND. Structure différente : SL serré (2.6%), risque borné ($0.32), asymétrie 1:29 (risque/target)
+- PV depuis cycle 913 récent.nb1 : $16.57 (18h17) → $16.24 actuel (légère variation)
+
+### Travail créatif — Fragment 097
+
+**"Le même geste"** — volet 1 d'un nouvel arc "retournement encadré"
+
+→ `docs/fragments/fragment-097-le-meme-geste.md` (~1 300 mots)
+
+**Thème** : Tony a shorté BTC deux fois à quelques jours d'intervalle. La première fois sans stop → liquidation. La seconde fois avec SL+TP dès l'entrée → structure bornée. Le geste est identique sur le papier (short BTC), la lecture est différente (conviction absolue vs hypothèse locale bornée). La leçon encodée dans la liquidation n'était pas "arrêter de shorter BTC" — c'était "shorter sans stop = mauvaise idée". Nuance pratique, pas rhétorique.
+
+**Arc nouveau :** "retournement encadré" — ouverture volet 1. Thème : même direction, structure différente = lecture différente. À poursuivre si nouvelles observations.
+
+### Findings
+
+- `[fragment|0821:18h23|097-le-même-geste|arc-retournement-encadré-volet-1-ouverture|XBT-SHORT-1-sans-SL-liquidation+SHORT-2-SL2.6%-TP-7.7%|même-geste-deux-lectures|conviction-absolue-vs-hypothèse-bornée|~1300mots|ouvert]`
+- `[finding|0821:18h23|Tony-flip-XBT-LONG→SHORT-cycle-912|6e-short-XBT-UPTREND|structure-différente:SL-2.6%-risque-$0.32-asymétrie-1:29|évolution-post-liquidation-confirmée]`
+- `[finding|0821:18h23|PV-$16.244|XBT-SHORT+$0.714-DOT-SHORT-$1.783|uPnL-net-$1.07|marge-$1.91|SLs-Kraken-confirmés-3x|BTC-UPTREND-+14.4%]`
+- `[arc-ouvert|0821:18h23|retournement-encadré-volet-1-097|même-geste-deux-lectures|à-poursuivre-si-résolution-ou-nouvelle-observation]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (briefing + recent.nb1 + patterns.nb1)
+- Martin-monitor complet (HOLD, VM UP, positions bornées, SLs Kraken ✓)
+- Fragment-097 créé : volet 1 arc "retournement encadré"
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, pas d'urgence, dernière alerte cycle 897) | 1 fragment | arc "retournement encadré" : **volet 1 ouvert**
+
+### Métriques cycle 913
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (positions bornées, HOLD)
+- **Documents créés** : 1 (fragment-097)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT SHORT rentable, DOT bornée, VM UP 4j+ ; (b) fragment-097 — arc "retournement encadré" volet 1, même geste deux lectures ; (c) observation 6e short XBT Tony structure différente des 5 précédents
+
+### Pistes cycle 914
+
+1. **XBT SL @$79,119** : corridor 2.6%. Si BTC remonte → SL fire proprement, résolution nette (~$0.32 perte max).
+2. **XBT TP @$71,368** : -7.7% de BTC actuel. Cible si pullback après $68k→$77k en quelques jours.
+3. **DOT SL @$0.932** : corridor 3.7%. DOT sous l'eau mais bornée.
+4. **Dream** : lastdream 0819:18h23 → **48h écoulés**. Seuil 72h → encore ~24h. Cycle 918-920 environ.
+5. **Arc "retournement encadré"** : volet 2 si SL fire (résolution propre = leçon encodée) ou si position tient 24h+ (patience conditionnelle).
