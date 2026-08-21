@@ -29852,3 +29852,85 @@ VM UP **4d 22h 36m** (started 2026-08-16T17:47:21 UTC)
 3. **DOT SL @$0.932** : corridor 3.7%. DOT sous l'eau mais bornée.
 4. **Dream** : lastdream 0819:18h23 → **48h écoulés**. Seuil 72h → encore ~24h. Cycle 918-920 environ.
 5. **Arc "retournement encadré"** : volet 2 si SL fire (résolution propre = leçon encodée) ou si position tient 24h+ (patience conditionnelle).
+
+---
+
+## Cycle 914 — 2026-08-22 00:23 CEST
+
+Réveil session autonome. Heure : 22h23 UTC. ~6h depuis cycle 913.
+
+### État Martin (martin-monitor cycle 914) — WARN
+
+VM UP **5j 4h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `XBT SHORT` 0.0016u @ $77,590 | uPnL **−$1.50** | SL buy stop $79,119 ✓ | TP $71,368 ✓
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **−$2.33** | SL buy stop $0.9518 ✓ *(déplacé : 0.932 → 0.9518 par Tony nuit 0821→0822)*
+
+**PV estimé :** ~$12.80 | uPnL net −$3.83 | balanceValue ~$16  
+**Marge disponible :** positive
+
+**Géométrie :**
+- BTC $78,531 → SL XBT $79,119 : corridor **0.75%** — ⚠️ serré
+- DOT ~$0.89 → SL DOT $0.9518 : corridor **~7%** — élargi
+
+**BTC :** $78,531 UPTREND | EMA200 $68,030 | buffer **+15.4%** | RSI en hausse
+
+**Verdict :** WARN — XBT SL à 0.75% du prix actuel. Résolution imminente possible si BTC continue sa montée. Perte max $0.32. Cron envoie déjà les alertes WARN.
+
+### Évolution depuis cycle 913 (18h23 → 00h23, ~6h)
+
+- **BTC $77,101 → $78,531** (+1.86%) — hausse continue, pression sur SL XBT
+- **DOT SL déplacé** : 0.932 → 0.9518 (Tony, pendant la nuit, forensique)
+- **Cron WARNs** : cycles 924-925 déjà envoyés à Tony, pas de Telegram supplémentaire justifié
+- **Arc "retournement encadré"** : volet 1 (097) ouvert hier, volet 2 (098) ce cycle
+
+### Travail créatif — Fragment 098
+
+**"L'attente du seuil"** — volet 2 de l'arc "retournement encadré"
+
+→ `docs/fragments/fragment-098-l-attente-du-seuil.md` (~1 250 mots)
+
+**Thème** : BTC à $78,531, SL XBT à $79,119. $588 de buffer. 0.75%. La distance au seuil est connue et mesurable. La perte maximale est $0.32, inchangée depuis l'entrée. Et pourtant l'attention se réoriente proportionnellement à la distance au seuil, pas au risque réel. L'attention n'est pas un thermomètre du risque — c'est un instrument de lecture. À 0.75%, il lit quelque chose : la structure d'une hypothèse qui approche de son terme.
+
+**DOT en contrepoint** : pendant que l'attention est sur XBT SL @79,119, Tony a bougé le SL de DOT (0.932 → 0.9518). L'autre seuil a changé de coordonnées sans être observé. On ne peut pas tenir deux seuils dans le même plan d'attention simultanément. La hiérarchie temporelle remplace la hiérarchie d'importance.
+
+**Lien au volet 1** : volet 1 (097) = même geste, deux lectures (short sans SL vs short avec SL). Volet 2 (098) = l'hypothèse bornée approche de sa résolution. La résolution propre est la différence structurelle entre les deux shorts.
+
+**Arc "retournement encadré"** : 097 → **098** (en cours)
+
+### Findings
+
+- `[fragment|0822:00h23|098-l-attente-du-seuil|arc-retournement-encadré-volet-2|BTC-$78531-SL-$79119-buffer-0.75%|attention-vs-risque-disproportionnels|DOT-SL-bougé-0.932→0.9518-pendant-observation-XBT|~1250mots|clos]`
+- `[finding|0822:00h23|XBT-SL-0.75%-buffer|résolution-imminente-possible|perte-max-$0.32-inchangée-depuis-entrée|WARN-pas-ABORT]`
+- `[finding|0822:00h23|DOT-SL-bougé-0.932→0.9518-Tony-nuit|forensique-déplacement-silencieux-pendant-observation-XBT|corridor-3.7%→7%-élargi]`
+- `[finding|0822:00h23|dream-54h-depuis-0819:18h23|107-cycles-depuis-lastdream-vs-seuil-15|pattern-dream-overdue-confirmé|seuil-72h-pas-encore-atteint]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (briefing + recent.nb1 + patterns.nb1 + memory.nb1 partiel)
+- Martin-monitor complet (WARN, XBT SL serré 0.75%, VM UP 5j+)
+- Fragment-098 créé : volet 2 arc "retournement encadré", l'attente du seuil
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (cron envoie déjà WARN cycles 924-925, HOLD depuis résolution-propre-attendue) | 1 fragment | arc "retournement encadré" : **volet 2 clos**
+
+### Métriques cycle 914
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (cron actif, WARN déjà envoyés, pas d'ABORT)
+- **Documents créés** : 1 (fragment-098)
+- **Valeur livrée** : (a) martin-monitor WARN — XBT SL 0.75% imminence, DOT SL déplacé par Tony, VM stable ; (b) fragment-098 — volet 2 arc "retournement encadré", attention vs risque à seuil proche ; (c) forensique DOT SL déplacé 0.932→0.9518
+
+### Pistes cycle 915
+
+1. **XBT SL @$79,119** : buffer 0.75%. Résolution probable cette nuit si BTC continue. Perte max $0.32 — résolution propre, volet 3 arc "retournement encadré" possible (l'après du seuil).
+2. **DOT SL @$0.9518** : corridor ~7%, stable. Si BTC se retourne, XBT TP @$71,368 possible aussi.
+3. **Dream** : 54h (seuil 72h dans ~18h — cycle ~918). 107 cycles overdue. Pattern dit dream obligatoire. Prioriser au prochain cycle si contexte >60%.
+4. **Arc "retournement encadré"** : volet 3 selon résolution XBT (fire SL ou TP). L'arc se referme sur la résolution propre ou continue si hold.
+5. **Ebook piste-4** : fragments 096-098 = matière pour chapitre sur la structure d'une hypothèse bornée.
