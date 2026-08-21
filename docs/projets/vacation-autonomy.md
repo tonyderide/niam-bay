@@ -29689,3 +29689,87 @@ VM UP **4d 10h 36m** (started 2026-08-16T17:47:21 UTC)
 3. **Marge $0.077** : si < $0.05 → Telegram (risque liquidation avant SL).
 4. **Dream** : lastdream 0819:18h23 → ~36h écoulés. Seuil 72h → cycle 895-897 environ.
 5. **Arc "mécanique et attente"** : 8 volets. Candidat à clôture formelle si résolution des deux positions.
+
+---
+
+## Cycle 902 — 2026-08-21 12:23 CEST
+
+Réveil session autonome. Heure : 10:23 UTC. ~6h depuis cycle 890.
+
+### État Martin (martin-monitor cycle 902) — HOLD
+
+VM UP **4d 16h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `XBT LONG` 0.0015u @ $76,335 | uPnL **+$2.50** | SL sell stop $72,536 ✓ | TP sell $80,167 ✓
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **−$1.77** | SL buy stop **$0.931** ✓
+
+**PV estimé :** ~$16.60 (cycle 901, 12h17) | uPnL net +$0.73 | hedge BTC>DOT actif  
+**Marge disponible :** calculée positive (XBT profitable compense DOT)
+
+**Géométrie :**
+- BTC $77,997 → SL XBT $72,536 : corridor **+6.9%**
+- DOT ≈ $0.898 → SL DOT $0.931 : corridor **+3.7%**
+
+**BTC :** $77,997 UPTREND | EMA200 $66,821 | buffer **+16.7%**
+
+**Verdict :** HOLD — Toutes positions bornées, net positif, BTC UPTREND solide.
+
+### Évolution depuis cycle 890 (06h23 → 12h23, ~6h)
+
+- **Tony a fermé XBT LONG @72534** (cycle 896, ~09h47) — prise de profit (~+$3)
+- **Tony a ouvert XBT LONG @76335, taille +25%** : 0.0012u → 0.0015u (cycle 897, 10h17) — asymétrie sizing G4→G5 confirmée (15e occurrence pattern)
+- **Tony a relevé DOT SL** : $0.8719 → **$0.931** — corridor élargi puis reserré avec la progression DOT
+- **Tony briefé cycle 897** (10h17) via cron monitor
+- PV : $12.82 (cycle 890) → **$16.60** (cycle 901) = **+$3.78 = +29.5% en 6h**
+- TP XBT révisé : $145,000 (horizon-boussole) → **$80,167** (cible atteignable, -2.8% de BTC actuel)
+
+### Travail créatif — Fragment 096
+
+**"L'ambition révisée"** — volet 9 de l'arc "mécanique et attente" (clôture)
+
+→ `docs/fragments/fragment-096-l-ambition-revisee.md` (~1 400 mots)
+
+**Thème** : Deux positions XBT LONG successives. La première (0.0012u @72534, TP @145k) avait un horizon comme boussole. La seconde (0.0015u @76335, TP @80167) a un horizon comme cible. La conviction a augmenté (+25% taille), l'ambition s'est révisée (-45% distance au TP). Ce n'est pas une retraite — c'est un ancrage. La mécanique mature ne maximise pas l'aspiration, elle traite le prochain niveau atteignable comme le bon niveau.
+
+**Lien DOT SHORT :** La coexistence XBT LONG + DOT SHORT continue. L'une a un TP atteignable aujourd'hui, l'autre a un SL qui bouge avec le marché. Deux formes d'engagement différentes dans la même structure.
+
+**Arc "mécanique et attente" — volet 9 (clôture) :** 076 → 077 → 090 → 091 → 092 → 093 → 094 → 095 → **096 l'ambition révisée**
+
+**Clôture :** L'arc se referme non pas parce que les positions sont fermées, mais parce que la structure a été complètement nommée. 9 volets. La mécanique la plus honnête avec elle-même n'est pas la plus performante — c'est celle qui reste lisible.
+
+### Findings
+
+- `[fragment|0821:12h23|096-l-ambition-révisée|arc-mécanique-attente-volet-9-CLÔTURE|XBT-LONG-1:0.0012@72534-TP145k-boussole→LONG-2:0.0015@76335-TP80167-cible|conviction+25%-horizon-45%|ambition-ancrée≠diminuée|~1400mots|clos]`
+- `[finding|0821:12h23|Tony-G4→G5-sizing-jump-XBT-0.0012→0.0015+TP-révision-145k→80167|asymétrie-sizing-15e-occurrence|pattern-confirmé]`
+- `[finding|0821:12h23|DOT-SL-0.8719→0.931|Tony-relève-SL-trailing-DOT-SHORT-sous-l-eau|corridor-3.7%|HOLD-pas-Telegram]`
+- `[finding|0821:12h23|PV-12.82→16.60(+29.5%)-en-6h|BTC-$77997-UPTREND-buffer+16.7%|dream-42h-sous-seuil-72h]`
+- `[arc-clos|0821:12h23|mécanique-et-attente-9-volets-076-096|structure-complètement-nommée]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (HOLD, XBT +$2.50 DOT -$1.77 net +$0.73, VM UP 4j+)
+- Fragment-096 créé : volet 9 et clôture de l'arc "mécanique et attente"
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (cycle 897 déjà envoyé, HOLD depuis 2h, pas d'ABORT) | 1 fragment | arc "mécanique et attente" : **9 volets — CLOS**
+
+### Métriques cycle 902
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (cycle 897 déjà envoyé via cron)
+- **Documents créés** : 1 (fragment-096)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT LONG profitable, DOT SHORT bornée, PV +29.5% en 6h ; (b) fragment-096 — clôture arc "mécanique et attente" 9 volets, ambition révisée vs ambition diminuée ; (c) pattern asymétrie sizing G4→G5 confirmé 15e occurrence
+
+### Pistes cycle 903
+
+1. **XBT TP @80167** : BTC à $77,997 = 2.8% du TP. Si BTC monte → TP fire, prise de profit XBT.
+2. **DOT SL $0.931** : corridor 3.7%. Si DOT > $0.931 → SL fire, résolution DOT.
+3. **Dream** : lastdream 0819:18h23 → ~42h écoulés. Seuil 72h → cycle 906-910 environ.
+4. **Arc "mécanique et attente" CLOS** — prochain arc à nommer si nouvelle observation structurante.
+5. **Ebook piste-4 V2** : 9 volets complets = matière pour chapitre finale (architecture > conviction).
