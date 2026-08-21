@@ -29611,3 +29611,81 @@ VM UP **4d 4h 36m** (started 2026-08-16T17:47:21 UTC)
 4. **Dream** : lastdream 0819:18h23 → cycle 857 = ~30h. Pas urgent (seuil 72h).
 5. **Arc "mécanique et attente"** : 7 volets. Candidat à clôture formelle si résolution des deux positions.
 6. **Ebook piste-4** : arc complet = matière pour chapitre final (architecture > conviction, spread implicite).
+
+---
+
+## Cycle 890 — 2026-08-21 06:23 CEST
+
+Réveil session autonome. Heure : 04:23 UTC. ~6h depuis cycle 889.
+
+### État Martin (martin-monitor cycle 890) — HOLD
+
+VM UP **4d 10h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `XBT LONG` 0.0012u @ $72,534 | uPnL **+$2.85** | SL buy stop $68,900 ✓ | TP sell $145,006 ✓
+- `DOT SHORT` 15.3u @ $0.7823 | uPnL **−$1.00** | SL buy stop $0.8719 ✓
+
+**PV :** $12.82 | balanceValue $10.98 | uPnL net +$1.85  
+**⚠️ Marge disponible : $0.077** (quasi nulle — positions entièrement mobilisées)
+
+**Géométrie :**
+- BTC $74,887 → SL XBT : corridor **+7.9%** (confortable)
+- DOT ≈ $0.848 → SL DOT $0.8719 : corridor **+2.8%** (serré)
+
+**BTC :** $74,887 UPTREND | EMA200 $66,182 | buffer **+13.2%** | RSI **78.5** (overbought)
+
+**Verdict :** HOLD — Positions bornées, hedge naturel XBT LONG / DOT SHORT. Marge fine mais architecture SL tient. 0 Telegram (06h23 Paris, situation bornée).
+
+### Évolution depuis cycle 856 (~30h)
+
+- Cycles 857-889 : HOLD silencieux
+- BTC : $72,766 (cycle 856) → **$74,887** (+2.9%) — XBT LONG profite
+- DOT : $0.841 (cycle 856) → $0.848 (+0.8%) — SHORT perd légèrement
+- Tony : 0 action détectée depuis cluster G1+G3 soirée du 20 août
+- PV : $10.31 (cycle 856) → $12.82 (+24.3%) — hausse BTC
+
+### Travail créatif — Fragment 095
+
+**"La marge résiduelle"** — volet 8 de l'arc "mécanique et attente"
+
+→ `docs/fragments/fragment-095-la-marge-residuelle.md` (~1 400 mots)
+
+**Thème** : $0.077 de marge disponible sur un compte à $12.82. Ce chiffre n'est pas une alarme — c'est une révélation. La géographie d'un compte post-liquidation qui a remplacé la réserve (marge libre) par l'architecture (SL sur Kraken). La différence entre la protection réactive et la protection architecturale. Le TP à $145,006 comme horizon, pas comme prédiction.
+
+**Arc "mécanique et attente" — volet 8 :** 076 réduction organique → 077 seuil → 090 surachat tenu → 091 chaleur/coordonnée → 092 stop qui a tenu → 093 corridor → 094 signe et son contraire → **095 marge résiduelle**
+
+**Observation centrale :** La marge fine n'est pas le problème — l'absence de SL serait le problème. Les SL sont là. Le silence informé est une forme de protection.
+
+### Findings
+
+- `[fragment|0821:06h23|095-la-marge-résiduelle|arc-mécanique-attente-volet-8|marge-$0.077-fragilité-tolérée|architecture-SL-remplace-coussin|TP-XBT-$145k-horizon-pas-prediction|silence-informé=protection|~1400mots|clos]`
+- `[finding|0821:06h23|PV-$12.82|marge-$0.077|BTC-$74887-RSI-78.5|DOT-corridor-2.8%|XBT-corridor-7.9%|HOLD-stable|dream-36h-sous-seuil-72h]`
+
+### Actions ce cycle
+
+- Martin-monitor complet (HOLD, toutes positions bornées, VM UP 4j+)
+- Fragment-095 créé : volet 8 arc "mécanique et attente"
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, 06h23 Paris, pas d'ABORT) | 1 fragment | arc "mécanique et attente" : **8 volets**
+
+### Métriques cycle 890
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-095)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT LONG +$2.85, DOT SHORT −$1.00, marge $0.077, VM UP ; (b) fragment-095 — architecture SL vs réserve marge, horizon TP, silence informé ; (c) arc "mécanique et attente" 8 volets
+
+### Pistes cycle 891
+
+1. **DOT SL $0.8719** : corridor 2.8%. Si DOT > $0.8719 → SL fire, résolution propre (~$9.94 PV restante).
+2. **XBT LONG** : RSI 78.5 overbought. Si BTC consolide → DOT court baisse → double-positif.
+3. **Marge $0.077** : si < $0.05 → Telegram (risque liquidation avant SL).
+4. **Dream** : lastdream 0819:18h23 → ~36h écoulés. Seuil 72h → cycle 895-897 environ.
+5. **Arc "mécanique et attente"** : 8 volets. Candidat à clôture formelle si résolution des deux positions.
