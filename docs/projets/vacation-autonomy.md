@@ -30141,3 +30141,79 @@ Arc "retournement encadré" : **CLOS** — 5 volets, fragments 097-101.
 - **Telegram** : 0 (HOLD)
 - **Documents créés** : 1 (fragment-101)
 - **Valeur livrée** : (a) martin-monitor HOLD — XBT profitable, VM stable 5j ; (b) fragment-101 — volet 5 clos, arc "retournement encadré" complet ; (c) dream lancé
+
+---
+
+## Cycle 974 — 0823:00h23
+
+### État Martin (martin-monitor)
+
+- **VM UP**: 6j 4h 36m (stable depuis 0816:17h47)
+- **Position**: XBT SHORT 0.0016u @$77,590 → BTC $77,052 → **uPnL +$0.86** ✓
+- **Ordres live**: buy stop SL @$79,119 (reduceOnly) ✅ + take_profit @$71,368 (reduceOnly) ✅
+- **Grids actives**: 0 (pur directionnel post-liquidation)
+- **BTC**: $77,052 UPTREND | EMA200 $70,012 | buffer +10.1%
+- **RSI**: 49.4 → signal WAIT (momentum neutre)
+- **Distance SL**: +2.7% au-dessus du prix actuel
+- **Distance TP**: −7.4% en dessous du prix actuel
+- **Ratio**: 4.06:1 (gain espéré / risque borné)
+- **Verdict**: HOLD — structure tient, 12 cycles silencieux depuis cycle 962
+
+### Contexte depuis le dernier cycle (961 → 974, 6h gap)
+
+- Dream lancé cycle 961 (0822:18h23) — mémoire consolidée
+- Cycles 962-973 : HOLD silencieux, BTC stable entre $77,000-$78,000
+- BTC légèrement en baisse : $77,185 → $77,052 (−$133, favorable pour le short)
+- uPnL amélioré : +$0.605 → +$0.86
+- Aucune intervention Tony (pattern silence confirmé)
+
+### Travail créatif — Fragment 102 — Ouverture d'arc "les corridors"
+
+**"L'asymétrie comme discipline"** — volet 1 de l'arc "les corridors"
+
+→ `docs/fragments/fragment-102-l-asymetrie-comme-discipline.md` (~1 400 mots)
+
+**Thème central** : ce que le ratio SL:TP révèle du décideur. La position actuelle (SL 2.1%, TP 8.0%, ratio 4.06:1) n'est pas une stratégie magique — c'est la traduction d'une discipline acquise après la liquidation du 19 août.
+
+**Trois axes explorés** :
+1. L'asymétrie comme géométrie de la décision (pas de l'avarice)
+2. L'asymétrie comme protection contre deux tendances humaines : clore trop tôt quand ça gagne, tenir trop longtemps quand ça perd
+3. L'asymétrie comme évolution comportementale post-liquidation (positions nues → positions encadrées SL+TP dès l'entrée)
+
+**Nouveau pattern documenté** : "l'asymétrie comme discipline" — la structure SL+TP libère le décideur de la pression de timing en déléguant la clôture à des seuils prédéfinis. Le "travail" de ce cycle est, pour l'essentiel, l'absence de travail — conséquence d'une structure bien posée.
+
+**Arc "les corridors" (ouvert)** : à explorer au fil de la résolution de la position XBT (SL fire → volet 2 sur la borne, TP fire → volet 2 sur la récompense, ou extension si position tient longtemps).
+
+### Findings
+
+- `[fragment|0823:00h23|102-l-asymetrie-comme-discipline|arc-les-corridors-volet-1-OUVERT|XBT-SHORT-SL2.1%-TP8.0%-ratio4.06:1|discipline-post-liquidation|comportement-Tony-positions-nues→encadrées|~1400mots]`
+- `[finding|0823:00h23|XBT-SHORT-uPnL+$0.86-SL-$79119-TP-$71368|BTC-$77052-UPTREND-EMA200-$70012-buffer+10.1%|RSI-49.4-WAIT|12-cycles-silencieux-962-973|HOLD-évident]`
+- `[pattern|asymétrie-SL-TP-révèle-discipline|count:1|last:0823:00h23|ratio-4.06:1-post-liquidation|SL-posé-dès-entrée-3x-confirmé|→-rule:observer-ratio-SL:TP-comme-indicateur-discipline-Tony-pas-juste-direction-trade]`
+- `[arc|les-corridors|ouvert|0823:00h23|volet-1=fragment-102|volet-2=selon-résolution-XBT|thème=ce-que-SL+TP-révèlent-du-décideur]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing + recent.nb1 + patterns.nb1 — memory.nb1 trop long, lu recent.nb1 complet)
+- Martin-monitor complet : HOLD, XBT SHORT +$0.86, SL+TP intacts sur Kraken, VM UP 6j
+- Fragment 102 créé : ouverture arc "les corridors", ~1400 mots
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, structure tient, profitable) | 1 fragment (le 102ème) | nouvel arc ouvert
+
+### Métriques cycle 974
+
+- **Durée** : ~60 min (wake + martin-monitor + lecture recent.nb1 + fragment + entry)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, aucun événement urgent)
+- **Documents créés** : 1 (fragment-102)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT SHORT profitable +$0.86, SL+TP intacts, VM UP 6j ; (b) fragment-102 — ouverture arc "les corridors", l'asymétrie SL:TP comme discipline post-liquidation ; (c) nouveau pattern documenté : observer ratio SL:TP comme indicateur discipline Tony
+
+### Pistes cycle suivant
+
+1. **XBT SHORT** : BTC $77,052, momentum neutre (RSI 49.4). Corridor SL 2.7%, TP 7.4%. Observer.
+2. **Arc "les corridors"** : volet 2 selon résolution XBT — si SL fire → "la borne", si TP fire → "la récompense", si hold long → "l'attente active"
+3. **Ebook piste-4** : fragments 097-102 forment un arc complet "structure et discipline". Candidat chapitre.
+4. **Dream** : dernier à 0822:18h23 (6h ago). Seuil 72h = 0825:18h23. Pas urgent ce cycle.
