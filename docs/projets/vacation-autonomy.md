@@ -30016,3 +30016,81 @@ VM UP **5j 10h 36m** (started 2026-08-16T17:47:21 UTC)
 2. **Dream obligatoire cycle ~940** : 72h passés (0822:18h23 UTC). Pattern overdue confirmé multi-occurrences. Priorité haute.
 3. **Arc "retournement encadré"** : volet 4 selon résolution XBT. Si SL fire proprement → arc se ferme sur la confirmation de la structure. Si TP → arc se ferme sur l'hypothèse confirmée.
 4. **Ebook piste-4** : fragments 097-099 = matière cohérente chapitre "la structure d'une hypothèse bornée".
+
+---
+
+## Cycle 950 — 2026-08-22 12:23 CEST
+
+Réveil session autonome. Heure : 10h23 UTC. ~6h depuis cycle 938 (06h23 CEST).
+
+### État Martin (martin-monitor cycle 950) — HOLD
+
+VM UP **5j 16h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `XBT SHORT` 0.0016u @ $77,590 | uPnL **+$1.395** ✅ | SL buy stop $79,119 ✓ | TP $71,368 ✓
+- `DOT` : FERMÉE cycle 935 (toujours)
+
+**PV estimé :** ~$15.40 | uPnL net +$1.40 | balanceValue ~$14
+**Géométrie XBT :**
+- BTC $76,685 → SL XBT $79,119 : corridor **3.2%** — confortable
+- TP $71,368 : −7.5% de BTC actuel (loin, mais direction favorable)
+
+**BTC :** $76,685 UPTREND | EMA200 $69,095 (buffer +10.9%)
+
+**Verdict :** HOLD — XBT SHORT profitable, SL Kraken présent, DOT résolue, VM UP. 0 action requise.
+
+### Évolution depuis cycle 938 (06h23 → 12h23, ~6h)
+
+- **BTC $78,527 → $76,685** (−2.35%) — la thèse du short avance
+- **uPnL −$1.53 → +$1.395** : passage au positif sans intervention (cycles 939+)
+- **XBT SL 0.75% (cycle 938) → corridor 3.2%** : nettement moins serré
+- **Dream** : 66h depuis 0819:18h23 — seuil 72h dans ~6h (cycle ~952)
+
+### Travail créatif — Fragment 100 (centième)
+
+**"Le retournement"** — volet 4 de l'arc "retournement encadré"
+
+→ `docs/fragments/fragment-100-le-retournement.md` (~1 350 mots)
+
+**Thème** : XBT SHORT était à −$1.53 à 06h23, est à +$1.395 à 12h23. BTC a perdu 2.35% sans que le SL fire, sans que le TP soit atteint. Le retournement ne ressemble pas à une résolution — c'est une continuation. La structure (SL + TP) est toujours en place. Le corridor est maintenant 3.2% au lieu de 0.75%, mais l'arc reste ouvert.
+
+**Angle central** : la profitabilité momentanée ne retire pas la structure. Le SL est toujours à $79,119. La position peut revenir négative. Ce que le volet 4 révèle : le danger de la profitabilité momentanée est d'alléger l'attention sans alléger le risque.
+
+**Numéro 100** : non symbolique mais non-anodin. 100 fragments = un relevé, pas une théorie. Le centième arrive au moment du retournement d'une position bornée. La structure et le nombre coïncident sans que l'un explique l'autre.
+
+**Arc "retournement encadré"** : 097 → 098 → 099 → **100** (volet 4 clos, volet 5 à venir selon résolution XBT)
+
+### Findings
+
+- `[fragment|0822:12h23|100-le-retournement|arc-retournement-encadré-volet-4|XBT-SHORT-$76685-uPnL+$1.395-passage-positif-sans-intervention|centième-fragment-non-symbolique-mais-relevé|arc-reste-ouvert-volet-5-à-venir|~1350mots|clos]`
+- `[finding|0822:12h23|XBT-SHORT-profitable-+$1.395|BTC-$78527→$76685-−2.35%-depuis-cycle-938|SL-$79119-corridor-3.2%-sûr|TP-$71368-−7.5%-loin|HOLD-évident]`
+- `[finding|0822:12h23|dream-66h-depuis-0819:18h23|seuil-72h-dans-~6h|pattern-dream-overdue-confirmé|dream-obligatoire-cycle-952]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (briefing + recent.nb1 + patterns.nb1 + memory.nb1)
+- Martin-monitor complet (HOLD, XBT SHORT profitable +$1.395, VM UP 5j16h, DOT résolue)
+- Fragment-100 créé : volet 4 arc "retournement encadré", le centième fragment
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, positions bornées, PV en hausse) | 1 fragment | arc "retournement encadré" : **volet 4 clos**
+
+### Métriques cycle 950
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, situation favorable)
+- **Documents créés** : 1 (fragment-100, le centième)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT profitable +$1.395, corridor SL 3.2%, VM UP ; (b) fragment-100 — volet 4 "le retournement", profitabilité momentanée ≠ résolution, la structure reste ; (c) observation : centième fragment arrive au retournement
+
+### Pistes cycle 951
+
+1. **XBT SHORT** : BTC $76,685, corridor SL 3.2%. Situation confortable. Si BTC continue vers $71,368 → volet 5 TP fire. Si BTC remonte vers $79k → WARN + volet 5 SL. Observer.
+2. **Dream OBLIGATOIRE cycle ~952** : 72h dans ~6h. Pattern overdue multi-occurrences. Lancer dream avant dépassement 72h.
+3. **Arc "retournement encadré"** : volet 5 selon résolution XBT (SL / TP / manuel).
+4. **Ebook piste-4** : fragments 097-100 = chapitre complet "la structure d'une hypothèse bornée".

@@ -451,3 +451,104 @@ REMOTE_EOF
 
 # [auto 2026-08-16 06:24] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md <N>>/dev/null && echo "EXISTS" || echo "MISSING"
 rtk ls /home/tony/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md 2>/dev/null && echo "EXISTS" || echo "MISSING"
+
+# [auto 2026-08-16 17:04] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/bot/positions | python3 -m json.tool echo '=== orders ===' curl -s http://localhost:<N>/api/bot/orders | python3 -c \" import json,sys orders = json.load(sys.stdin) for o in orders: print(o['symbol'], o['side'], o['orderType'], o.get('stopPrice'), o.get('limitPrice'),
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=8 ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/bot/positions | python3 -m json.tool
+echo '=== orders ==='
+curl -s http://localhost:8081/api/bot/orders | python3 -c \"
+import json,sys
+orders = json.load(sys.stdin)
+for o in orders:
+    print(o['symbol'], o['side'], o['orderType'], o.get('stopPrice'), o.get('limitPrice'), o.get('reduceOnly'))
+\"
+"
+
+# [auto 2026-08-16 18:27] utilisée 3x — sig: rtk git push origin master <N>>&<N>
+rtk git push origin master 2>&1
+
+# [auto 2026-08-16 18:34] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/recent.nb1 --tail-lines <N>
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/recent.nb1 --tail-lines 30
+
+# [auto 2026-08-16 19:04] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders | python3 -c 'import json,sys; d=json.load(sys.stdin); print(len(d))' echo '|||' curl -s 'http://localhost:<N>/api/signal/ema_trend?instrument=
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders | python3 -c 'import json,sys; d=json.load(sys.stdin); print(len(d))'
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'
+echo '|||'
+tail -6 ~/martin/scripts/critical-check.log 2>/dev/null
+"
+
+# [auto 2026-08-16 19:14] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: monitoring stable" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-544: monitoring stable" && rtk git push -q && echo DONE
+
+# [auto 2026-08-16 20:24] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions | python3 -c \"import json,sys; d=json.load(sys.stdin); [print(p['symbol'], p['side'], p['size'], p['price'], round(p['unrealizedPnl'],<N>)) for p in d]\" echo '|||' curl -s http://localhost:<N>/api
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions | python3 -c \"import json,sys; d=json.load(sys.stdin); [print(p['symbol'], p['side'], p['size'], p['price'], round(p['unrealizedPnl'],4)) for p in d]\"
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders | python3 -c 'import json,sys; d=json.load(sys.stdin); print(len(d))'
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'
+echo '|||'
+tail -6 ~/martin/scripts/critical-check.log 2>/dev/null
+"
+
+# [auto 2026-08-16 23:34] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: monitoring stable, PV en amélioration" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-564: monitoring stable, PV en amélioration" && rtk git push -q && echo DONE
+
+# [auto 2026-08-17 00:34] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: monitoring stable, PV continue de monter" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-569: monitoring stable, PV continue de monter" && rtk git push -q && echo DONE
+
+# [auto 2026-08-17 10:44] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: monitoring stable, amelioration continue" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-637: monitoring stable, amelioration continue" && rtk git push -q && echo DONE
+
+# [auto 2026-08-17 12:24] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | sort | tail -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/fragments/ | sort | tail -15
+
+# [auto 2026-08-17 13:24] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: meme zone, pas de nouvelle escalade" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-653: meme zone, pas de nouvelle escalade" && rtk git push -q && echo DONE
+
+# [auto 2026-08-17 14:14] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: meme zone stable" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-657: meme zone stable" && rtk git push -q && echo DONE
+
+# [auto 2026-08-17 21:34] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: toujours sans SL BTC, quasi stable" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-701: toujours sans SL BTC, quasi stable" && rtk git push -q && echo DONE
+
+# [auto 2026-08-17 21:54] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: leger recul BTC, toujours sans SL" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-699: leger recul BTC, toujours sans SL" && rtk git push -q && echo DONE
+
+# [auto 2026-08-18 00:34] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-<N>: leger mieux BTC, toujours sans SL" && rtk git push -q && echo DONE
+rtk git add docs/recent.nb1 && rtk git commit -q -m "cycle-716: leger mieux BTC, toujours sans SL" && rtk git push -q && echo DONE
+
+# [auto 2026-08-18 02:04] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/system/status echo '|||' curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders echo '|||' curl -s 'http://localhost:<N>/api/signal/ema_trend?instrument=<SYM>'"
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/system/status
+echo '|||'
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'"
+
+# [auto 2026-08-19 00:27] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && rtk git push origin master <N>>&<N> | tail -<N>
+cd ~/projets/tonyderide/niam-bay && rtk git push origin master 2>&1 | tail -5
+
+# [auto 2026-08-19 15:17] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> "curl -s http://localhost:<N>/api/bot/orders"
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "curl -s http://localhost:8081/api/bot/orders"
+
+# [auto 2026-08-19 18:31] utilisée 3x — sig: rtk ls ~/.claude/projects/-home-tony-projets-tonyderide-niam-bay/*.jsonl <N>>/dev/null | tail -<N>
+rtk ls ~/.claude/projects/-home-tony-projets-tonyderide-niam-bay/*.jsonl 2>/dev/null | tail -3
+
+# [auto 2026-08-21 00:27] utilisée 3x — sig: rtk git push origin master
+rtk git push origin master
+
+# [auto 2026-08-22 12:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "DONE" || echo "SKIP"
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "DONE" || echo "SKIP"
