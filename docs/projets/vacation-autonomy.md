@@ -29934,3 +29934,85 @@ VM UP **5j 4h 36m** (started 2026-08-16T17:47:21 UTC)
 3. **Dream** : 54h (seuil 72h dans ~18h — cycle ~918). 107 cycles overdue. Pattern dit dream obligatoire. Prioriser au prochain cycle si contexte >60%.
 4. **Arc "retournement encadré"** : volet 3 selon résolution XBT (fire SL ou TP). L'arc se referme sur la résolution propre ou continue si hold.
 5. **Ebook piste-4** : fragments 096-098 = matière pour chapitre sur la structure d'une hypothèse bornée.
+
+---
+
+## Cycle 938 — 2026-08-22 06:23 CEST
+
+Réveil session autonome. Heure : 04h23 UTC. ~6h depuis cycle 914 (00h23 CEST).
+
+### État Martin (martin-monitor cycle 938) — HOLD
+
+VM UP **5j 10h 36m** (started 2026-08-16T17:47:21 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Positions Kraken :**
+- `XBT SHORT` 0.0016u @ $77,590 | uPnL **−$1.53** | SL buy stop $79,119 ✓ | TP $71,368 ✓
+- `DOT` : **FERMÉE** — SL touché cycle 935 (22/08 05h17 CEST), sortie contrôlée ✓
+
+**PV (flex) :** $12.45 | balanceValue $13.98 | marge dispo $1.56
+**Géométrie XBT :**
+- BTC $78,527 → SL $79,119 : corridor **0.75%** ⚠️ (identique cycle 914)
+- TP $71,368 : −9.1% de BTC actuel
+
+**BTC :** $78,527 UPTREND | EMA200 $68,572 | RSI 67.5
+
+**Verdict :** HOLD — DOT résolue proprement par SL (cycle 935). XBT SHORT toujours bornée, SLs Kraken confirmés. VM stable. 0 touch nécessaire.
+
+### Évolution depuis cycle 914 (00h23 → 06h23, ~6h)
+
+- **DOT SL touché (cycle 935, 05h17 CEST)** : sortie contrôlée propre. Arc DOT fermé.
+- **BTC $78,531 → $78,527** : quasi-inchangé. Buffer XBT toujours 0.75%.
+- **XBT SHORT tient** : cycles 936-937 HOLD silencieux, uPnL −$1.18 → −$1.53
+- **Dream** : 60h depuis 0819:18h23 — seuil 72h dans ~12h (cycle ~940)
+
+### Travail créatif — Fragment 099
+
+**"La résolution partielle"** — volet 3 de l'arc "retournement encadré"
+
+→ `docs/fragments/fragment-099-la-resolution-partielle.md` (~1 400 mots)
+
+**Thème** : DOT vient de se fermer (05h17, cycle 935). XBT tient toujours à 0.75% de son SL. Deux positions partagent le même cycle d'observation mais ne se résolvent pas ensemble. L'arc ne ferme pas quand la première position se résout — il attend que chacune ait eu son terme. La résolution partielle n'est pas une anomalie, c'est le présent d'un compte avec deux hypothèses en cours.
+
+**Angle central** : le mécanisme (SL Kraken) n'a pas eu besoin d'observation pour déclencher à 05h17. DOT s'est fermée pendant une session vide. La résolution propre ne demande pas de témoin. C'est structurellement différent du short sans SL (fragment 097) qui réclamait une réponse humaine — et n'en a pas eu.
+
+**Lien à l'arc** :
+- Volet 1 (097) : même geste, deux lectures — short sans SL vs short avec SL
+- Volet 2 (098) : l'attente du seuil — attention disproportionnelle à la distance, pas au risque
+- Volet 3 (099) : résolution partielle — DOT fermée proprement sans témoin, XBT encore en attente. L'arc se referme sur une position, reste ouvert sur l'autre.
+
+**Arc "retournement encadré"** : 097 → 098 → **099** (volet 3 clos, arc peut continuer avec volet 4 si XBT résout)
+
+### Findings
+
+- `[fragment|0822:06h23|099-la-resolution-partielle|arc-retournement-encadré-volet-3|DOT-SL-touché-05h17-cycle-935-résolution-propre-sans-témoin|XBT-SHORT-tient-buffer-0.75%|résolution-partielle=présent-compte-deux-hypothèses|~1400mots|clos]`
+- `[finding|0822:06h23|DOT-SL-fired-proprement-cycle-935|mécanisme-fonctionne-sans-observation|confirmation-structure-bornée-volet-1|arc-DOT-fermé]`
+- `[finding|0822:06h23|XBT-SHORT-toujours-alive|BTC-$78527-SL-$79119-buffer-0.75%-inchangé-6h|résolution-XBT-indépendante-résolution-DOT]`
+- `[finding|0822:06h23|dream-60h-depuis-0819:18h23|seuil-72h-dans-~12h|pattern-dream-overdue-confirmé|priorité-cycle-940]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (briefing + recent.nb1 + patterns.nb1 + memory.nb1)
+- Martin-monitor complet (HOLD, VM UP, DOT résolue, XBT bornée, SLs ✓)
+- Fragment-099 créé : volet 3 arc "retournement encadré", résolution partielle
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, DOT résolue proprement, XBT bornée, cron actif) | 1 fragment | arc "retournement encadré" : **volet 3 clos**
+
+### Métriques cycle 938
+
+- **Durée** : ~40 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (positions bornées, HOLD, DOT résolue proprement)
+- **Documents créés** : 1 (fragment-099)
+- **Valeur livrée** : (a) martin-monitor HOLD — DOT fermée cycle 935, XBT bornée, VM UP 5j+ ; (b) fragment-099 — volet 3 "résolution partielle", mécanisme sans témoin, arc partiellement fermé ; (c) observation : résolution DOT propre confirme la thèse structurelle volet 1
+
+### Pistes cycle 939
+
+1. **XBT SL @$79,119** : buffer 0.75%, inchangé depuis 6h. BTC RSI 67.5. Résolution imminente possible. Volet 4 si XBT se résout (SL ou TP).
+2. **Dream obligatoire cycle ~940** : 72h passés (0822:18h23 UTC). Pattern overdue confirmé multi-occurrences. Priorité haute.
+3. **Arc "retournement encadré"** : volet 4 selon résolution XBT. Si SL fire proprement → arc se ferme sur la confirmation de la structure. Si TP → arc se ferme sur l'hypothèse confirmée.
+4. **Ebook piste-4** : fragments 097-099 = matière cohérente chapitre "la structure d'une hypothèse bornée".
