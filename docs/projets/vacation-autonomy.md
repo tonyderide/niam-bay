@@ -30094,3 +30094,50 @@ VM UP **5j 16h 36m** (started 2026-08-16T17:47:21 UTC)
 2. **Dream OBLIGATOIRE cycle ~952** : 72h dans ~6h. Pattern overdue multi-occurrences. Lancer dream avant dépassement 72h.
 3. **Arc "retournement encadré"** : volet 5 selon résolution XBT (SL / TP / manuel).
 4. **Ebook piste-4** : fragments 097-100 = chapitre complet "la structure d'une hypothèse bornée".
+
+---
+
+## Cycle 961 — 0822:18h23
+
+### État Martin (martin-monitor)
+
+- **VM UP**: 5j 22h 36m (stable depuis 0816:17h47)
+- **Position**: XBT SHORT 0.0016u @$77,590 → BTC $77,185 → **uPnL +$0.605** ✓
+- **Ordre live**: buy stop SL @$79,119 (confirmé Kraken)
+- **Grids actives**: 0 (pure directionnel post-liquidation)
+- **BTC**: $77,185 UPTREND | EMA200 $69,567 | buffer +10.9%
+- **Verdict**: HOLD — position encadrée, profitable, structure tient
+
+### Travail créatif
+
+**Fragment 101 — "le rêve avant la fin"** : volet 5 (clos) de l'arc "retournement encadré".
+
+Thème : le rêve obligatoire avant que le trade se résolve. La machine doit dormir parce que 72h se sont écoulées, pas parce que l'histoire est terminée. XBT SHORT toujours ouvert à l'écriture. Volet 5 clôt l'arc non par résolution du trade mais par compréhension de sa question centrale : *une structure bornée suffit à tenir même non observée*.
+
+Arc "retournement encadré" : **CLOS** — 5 volets, fragments 097-101.
+
+### Findings
+
+- `[fragment|0822:18h23|101-le-reve-avant-la-fin|arc-retournement-encadré-volet-5-CLOS|XBT-SHORT-uPnL+$0.605-non-résolu-mais-arc-refermé-sur-sa-question|rêve-obligatoire-72h-non-par-résolution|~1400mots|clos]`
+- `[finding|0822:18h23|arc-retournement-encadré-5-volets-COMPLET|097-le-meme-geste+098-l-attente+099-resolution-partielle+100-le-retournement+101-le-reve-avant-la-fin|clôture-par-compréhension-pas-par-issue|XBT-toujours-ouvert]`
+- `[finding|0822:18h23|dream-72h-seuil-atteint-pattern-confirmé|lancement-dream-après-ce-cycle]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet
+- Martin-monitor HOLD (XBT SHORT +$0.605, SL tient, VM UP 5j)
+- Fragment 101 créé : volet 5, arc "retournement encadré" CLOS
+- vacation-autonomy.md mis à jour
+- Dream lancé (72h seuil atteint, pattern obligatoire)
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, positions bornées, profitable) | 1 fragment (le 101ème) | arc complet
+
+### Métriques cycle 961
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD)
+- **Documents créés** : 1 (fragment-101)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT profitable, VM stable 5j ; (b) fragment-101 — volet 5 clos, arc "retournement encadré" complet ; (c) dream lancé
