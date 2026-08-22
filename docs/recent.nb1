@@ -1,234 +1,57 @@
 #conv: T=tony NB=niambay M=martin
-#window: 48h ~0817:17h48→0819:18h23 (cycles 682-818, SLs-BTC-disparus + décision-Tony + liquidation BTC+SOL + redéploiement avec SL)
-#lastdream: 0816:18h23
+#window: 48h ~0820:18h23→0822:18h23 (cycles 865-961, HOLD silencieux XBT-SHORT + DOT-SL + session-0822)
+#lastdream: 0822:18h23
 
-=== CYCLES 682-691 (0817:17h48→19h18) — SL BTC très proche ===
+=== CYCLES 865-868 (0820:18h17→19h47) — HOLD post-liq, XBT short en jeu ===
 
-[cycles-682-691|0817:17h48→19h18|WARN-répété|BTC-SHORT-sans-SL-fiable(disparu-cycle-692-confirmé-rétrospectivement)|BTC-$63,960-64,338-UPTREND-basculant|PV-autour-$43-44|SOL-0.64u-DOT-fill-organique-+$0.95|SL-BTC-apparent-$64,343-buffer-0.28-0.47%-critique|Tony-briefé-WARN-urgence-répété|13-orders-stables]
+[cycles-865-868|0820:18h17→19h47|HOLD-silencieux|XBT-SHORT-0.002u-@68,746-SL71000|DOT-15.3u-SL0.8106|PV-$10.18→$10.06|BTC-$68,700-69,200-UPTREND-RSI~92]
 
-=== CYCLE 692 (0817:19h28) — ÉVÉNEMENT CRITIQUE : SLs BTC DISPARUS ===
+=== CYCLE 869 (0820:20h17) — BTC nouveau LONG ===
 
-[cycle-692|0817:19h28|ABORT-CRITIQUE-SL-BTC-DISPARU|BTC-$64,338-quasi-au-niveau-ex-SL-$64,343|vérifié-Kraken-direct-2x:BOTH-stop-orders-BTC-(SL-$64,343-ET-orphelin-$64,233)-DISPARUS|seul-1-ordre-XBT-restant:TP-buy-lmt-$61,189|0-fill-XBT-récent-donc-PAS-déclenché-par-exécution-probablement-annulé-cause-inconnue|BTC-SHORT-uPnL--$6.22-nouveau-record|SOL-orders-modifiés-stop-76.99→77.15|PV-$42.66(-59.3%)|Tony-briefé-URGENT-position-BTC-sans-protection]
+[cycle-869|0820:20h17|HOLD-nouvelle-position-BTC-LONG|BTC-LONG-0.0012u@72,534-SL68,900-TP145,000|DOT-15.3u-protégée|PV-$10.07|Tony-briefé-court]
 
-=== CYCLES 693-728 (0817:19h38→0818:01h28) — ABORT sans SL BTC, alertes répétées ===
+=== CYCLES 870-895 (0820:20h47→0821:09h17) — BTC LONG profite de la hausse ===
 
-[cycles-693-728|0817:19h38→0818:01h28|ABORT-persistant-sans-SL-BTC|BTC-$64,118-64,511-oscillation|uPnL-BTC--$5.47-à--$7.07(pire-cycle-698)|LINK-add-fill:1.3→2.6u-cycle-703|PV-$41.29-42.53|cycle-698-BTC-dépasse-ancien-SL-$64,511|Tony-briefé-court-chaque-cycle-sans-réponse|LINK-2.6u-SOL-0.64u-DOT-stables]
+[cycles-870-883|0820:20h47→03h47|HOLD-silencieux|BTC-long-DOT-stables|PV-$10.07→$12.73-amélioration-progressive|BTC-monte-$72,534→$74,823]
+[cycle-884|0821:03h47|HOLD-hausse-8.6%|BTC-$74,823-long-profite|PV-$12.73|pas-d-inquiétude]
+[cycles-885-894|0821:04h17→08h47|HOLD-silencieux|BTC-$74,000-76,500|PV-$12.30→$13.28-stable]
+[cycle-895|0821:09h17|HOLD-hausse-10.8%|BTC-$76,586-long-profite|DOT-uPnL-−$1.17|PV-$14.68-vs-$13.24(+10.8%)]
 
-=== DÉCISION (0818:01h30) — Tony tranche ===
+=== CYCLE 896-897 (0821:09h47→10h17) — BTC LONG fermée puis nouveau LONG ===
 
-[decision|0818:01h30|Tony-a-tranché-BTC-sans-SL:on-attend-que-le-prix-redescende-avant-d-agir|pas-de-fermeture-pas-de-nouveau-SL-pour-l-instant-hold-volontaire|NB-ne-relance-plus-chaque-cycle-sur-ce-sujet-sauf-changement-notable(franchissement-clair-EMA200/SL-réapparu/perte-qui-explose)|Tony-a-demandé-exploration-github-awesome-systematic-trading]
+[cycle-896|0821:09h47|HOLD-BTC-fermé-probable-profit|BTC-position-disparue-balance-↑|DOT-15.3u-protégée|PV-$14.31]
+[cycle-897|0821:10h17|HOLD-nouvelle-BTC-LONG-portfolio-+6.4%|BTC-LONG-0.0015u@76,335-SL72,536-uPnL+$1.06|DOT-15.3u-protégée|PV-$15.23-vs-$14.31(+6.4%)|Tony-briefé-court]
 
-=== CYCLES 729-741 (0818:01h36→04h46) — HOLD silencieux post-décision ===
+=== CYCLES 898-911 (0821:10h47→17h17) — BTC LONG stable hausse ===
 
-[cycles-729-737|0818:01h36→02h54|HOLD-silencieux-post-decision|BTC-$64,256-64,473-stable|1-ordre-XBT-TP-$61,189|uPnL-BTC--$6.12-à--$6.85|cadence-changée-30min-cycle-738|PV-autour-$41-42|0-Telegram-silence-décision-en-vigueur]
-[cycle-738|0818:02h58|cadence-changée-30min|cron-recréé-id-ea9e92d5|PV-$41.75]
-[cycles-739-741|0818:03h17→04h46|HOLD-silencieux|BTC-$64,118-64,277|PV-amélioration-$42.24→44.21|BTC-uPnL--$5.12-amélioration]
+[cycle-898|0821:10h47|HOLD-portfolio-+6.6%|BTC-$77,828-long-continue-monter-uPnL+$2.24|PV-$16.23-vs-$15.23(+6.6%)]
+[cycles-899-911|0821:11h17→17h17|HOLD-silencieux|BTC-long-DOT-protégées|PV-$14.59→$15.83-oscillation]
 
-=== CYCLE 742 (0818:04h46) — SL DOT DISPARU + fills LINK ===
+=== CYCLE 912 (0821:17h47) — BTC flip LONG→SHORT ===
 
-[cycle-742|0818:04h46|WARN|DOT-short-78.9u-SL-$0.7802-DISPARU-vérifié-2x|position-non-protégée-uPnL+$2.53|LINK-add-fill:2.6→3.9u-@9.35-avg-9.4447-SL-jitter-9.219→9.224|SOL-partial-close-fill:0.64→0.48u-order-75.19-comblé|BTC-$64,060-uPnL--$4.84-toujours-sans-SL-connu|PV-$45.13|Tony-briefé-DOT-sans-SL]
-[cycle-743|0818:05h16|HOLD-DOT-fermé-profit|DOT-position-disparue-balanceValue-47.81→50.39(+$2.58)-match-uPnL-DOT+$2.53|résolution-WARN-SL-DOT|PV-$45.32|Tony-briefé-bonne-nouvelle-RT-DOT]
+[cycle-912|0821:17h47|HOLD-BTC-flip|BTC-flip-LONG→SHORT-0.0016u@77,590-SL79119-TP71368|DOT-15.3u-protégée|PV-$15.66]
 
-=== CYCLES 744-765 (0818:05h46→16h16) — HOLD silencieux, DOT redéployée ===
+=== CYCLES 913-934 (0821:18h17→0822:04h47) — BTC SHORT profitable, DOT tient ===
 
-[cycles-744-750|0818:05h46→08h46|HOLD-silencieux|BTC-$64,082-64,340-stable|LINK-3.9u-SOL-0.48u-stables|PV-$44.07-45.04]
-[cycle-751|0818:09h16|HOLD-nouveau-DOT|DOT-grid-short-32.8u-@0.73995-SL-0.7623-TP-0.7268/0.7179|7-orders→13|BTC-stable-uPnL--$5.99|Tony-briefé-court]
-[cycles-752-765|0818:09h46→16h16|HOLD-silencieux|BTC-$64,082-64,335-UPTREND-sustained|DOT-32.8u-protégée-inchangée|LINK-3.9u-SOL-0.48u-stables|PV-$43.49-45.08-stable]
+[cycles-913-924|0821:18h17→23h47|HOLD-silencieux|BTC-short-SL79119-TP71368|DOT-15.3u-protégée|PV-$14.19→$16.57-oscillation|WARNs-BTC-hausse-seuil-5%]
+[cycles-925-934|0822:00h17→04h47|HOLD-silencieux|BTC-short-protégée|DOT-15.3u-protégée|PV-$12.81→$14.43-stable|WARNs-BTC-proche-SL-79119]
 
-=== CYCLE 766 (0818:16h46) — PV -6.9% + DOT densification ===
+=== CYCLE 935 (0822:05h17) — DOT SL touché, sortie contrôlée ===
 
-[cycle-766|0818:16h46|WARN|BTC-$64,728-vs-$64,199(+0.8%)-uPnL--$8.19(pire)|DOT-add-fill:32.8→48.9u-@0.7415-protégée-SL-0.7623|PV-$41.30-vs-$44.34(-6.9%)-dépasse-seuil-5%|LINK-3.9u-SOL-0.48u|Tony-briefé-mouvement-portfolio]
+[cycle-935|0822:05h17|WARN-DOT-SL-touché|DOT-position-fermée-via-SL(~1.014)-sortie-contrôlée-perte-bornée|seul-BTC-short-0.0016u-reste-SL79119-uPnL-−$1.45|balanceValue-$13.97|PV-$12.52|Tony-briefé-court-SL-a-fonctionné]
 
-=== CYCLES 767-779 (0818:17h16→23h16) — stable, DOT densifications ===
+=== CYCLES 936-961 (0822:05h47→18h17) — XBT SHORT seul, profitable ===
 
-[cycles-767-769|0818:17h16→18h16|HOLD-silencieux|BTC-$64,699-64,815|DOT-48.9u-protégée|PV-$40.68-41.56]
-[cycle-770|0818:18h46|HOLD|DOT-add-fill:48.9→64.8u-@0.7444-protégée-SL-0.7636|LINK-3.9u-SOL-0.48u-stables|PV-$40.91]
-[cycles-771-778|0818:19h16→22h46|HOLD-silencieux|BTC-$64,568-64,749|DOT-64.8u-protégée-inchangée|PV-$41.49-42.26-stable]
-[cycle-779|0818:23h16|HOLD|DOT-partial-close:64.8→48.7u-order-75.19-comblé-protégée-SL-0.7624|BTC-stable|PV-$42.35]
+[cycles-936-938|0822:05h47→06h47|HOLD-silencieux|BTC-short-SL79119|PV-$12.27→$12.80]
+[cycle-939|0822:07h17|HOLD-portfolio-+20.9%|BTC-$77,018-vs-$78,645(-2.1%)-short-profite|uPnL+$0.84|PV-$14.82]
+[cycles-940-961|0822:07h47→18h17|HOLD-silencieux-stable|BTC-short-SL79119-TP71368-uPnL+$0.33→$1.26-range|PV-$14.29→$15.27-stable|0-Telegram-silence]
 
-=== CYCLES 780-809 (0818:23h46→14h16) — HOLD silencieux, structure ordres ===
+=== SESSION 0822:18h23 — CE RÊVE ===
 
-[cycles-780-797|0818:23h46→08h16|HOLD-silencieux|BTC-$64,150-64,657-UPTREND-sustained-sans-SL|DOT-48.7u-protégée|LINK-3.9u-SOL-0.48u-stables|PV-$42.12-44.83-stable]
-[cycle-798|0819:08h46|WARN|orders-simplifiés-9→4-tous-SLs-disparus-sauf-1-SL-par-position(DOT-buy-stop-0.7808+SOL-buy-stop-78.82+LINK-sell-stop-9.233+XBT-buy-lmt-61189-TP)|positions-inchangées|bot-uptime-continu-2j12h59-pas-restart|BTC-$64,222|Tony-briefé-structure-ordres-changée]
-[cycles-799-801|0819:09h16→10h16|HOLD-silencieux|structure-4-orders-confirmée|BTC-$64,199-64,310|PV-$43.45-44.14]
-[cycle-802|0819:10h46|HOLD|LINK-add-fill:3.9→6.3u-@9.561-avg-protégée-SL-9.456|BTC-uPnL--$6.59|PV-$43.39]
-[cycles-803-809|0819:11h16→14h16|HOLD-silencieux|BTC-$64,310-64,452|LINK-6.3u-DOT-64.6u-SOL-0.48u-stables|PV-$41.91-43.63]
+[M|status-0822:18h23|cycle-961|VM-UP-5j22h36m|0-grids-actives|1-position:XBT-SHORT-0.0016u@77590-uPnL+$0.605-SL@79119-TP@71368|BTC-$77,185-UPTREND-EMA200-$69,567-buffer+10.9%|portfolioValue-~$14.97|HOLD]
 
-=== CYCLE 810 (0819:14h46) — PV -5.2% ===
+[session-0822:18h23|NB-autonome-Tony-Portugal|niam-bay-wake+martin-monitor-HOLD+fragment-101+vacation-autonomy.md+dream|arc-retournement-encadré-CLOS-5-volets|dream-72h-seuil-atteint]
 
-[cycle-810|0819:14h46|WARN|BTC-$64,877-vs-$64,452(+0.66%)-uPnL--$8.89(pire)-sans-SL-connu|DOT-64.6u-SOL-0.48u-LINK-6.3u-protégés|PV-$39.74-vs-$41.91(-5.2%)-seuil-5%|Tony-briefé]
+[fragment|0822:18h23|101-le-reve-avant-la-fin|arc-retournement-encadré-volet-5-CLOS|XBT-SHORT-uPnL+$0.605-non-résolu-mais-arc-refermé-sur-sa-question|dream-obligatoire-72h-non-par-résolution|~1400mots|clos]
 
-=== CYCLES 811-814 (0819:15h16→16h46) — dégradation accélérée ===
-
-[cycle-811|0819:15h16|HOLD|structure-4-orders-pattern-connu|BTC-$64,890-uPnL--$9.03|PV-$39.45]
-[cycle-812|0819:15h46|HOLD|BTC-$65,066-uPnL--$9.97-record|PV-$38.40]
-[cycle-813|0819:16h16|HOLD|BTC-$65,369-uPnL--$11.44-nouveau-record|PV-$36.83(-4.1%)]
-[cycle-814|0819:16h46|HOLD-silencieux|BTC-$65,455-uPnL--$11.88|PV-$36.36]
-
-=== CYCLE 815 (0819:17h16) — LIQUIDATION CONFIRMÉE ===
-
-[cycle-815|0819:17h16|ABORT-LIQUIDATION-BTC+SOL|BTC-short-et-SOL-short-DISPARUS-des-positions|BTC-$66,790-vs-entrée-$63,089.6(+5.87%-contre-short)-cause-probable|balance-USD-tombée-$0|portfolioValue-$36.36→$15.72(-56.8%)-en-1-cycle|survivants:DOT-64.6u-protégée-SL-0.7995-uPnL--$2.08+LINK-6.3u-protégée-SL-9.456-uPnL+$1.66|Tony-briefé-URGENT-liquidation-confirmée-2x]
-
-=== CYCLE 816 (0819:17h47) — post-liquidation ===
-
-[cycle-816|0819:17h47|WARN-post-liquidation-PV-baisse|BTC-$68,498.5(+2.56%)-RSI-92.3-parabolique|DOT-partial-close:64.6→30.8u-@0.7868-TP-protégée-SL-0.8106|LINK-add-fill:6.3→11.1u-@9.7478-protégée-SL-9.456|PV-$14.85-vs-$15.72(-5.5%)|Tony-briefé-suite-liquidation]
-
-=== CYCLE 817 (0819:18h17) — REDÉPLOIEMENT TONY ===
-
-[cycle-817|0819:18h17|WARN-redéploiement-complet|DOT-et-LINK-fermées(pas-liquidation-apparente-USD-remonté-$0→$2.56)|NOUVEAU-BTC-short-0.002u-@68,746-AVEC-SL-71,000-ET-TP-63,000-première-fois-protégée-ce-session|DOT-ordre-entrée-pending-0.7823-non-rempli|BTC-$68,663-RSI-92.6-parabolique|PV-$15.67|Tony-briefé-court-nouveau-déploiement]
-
-=== CYCLE 818 (0819:18h23) — CE RÊVE ===
-
-[M|status-0819:18h23|cycle-818|VM-UP-2d22h36m|0-grids-actives|1-position:XBT-SHORT-0.002u-@68,746-uPnL+$0.09|1-order:buy-stop-XBT-@71,000|portfolioValue-$15.53|balanceValue-$15.49|marge-dispo-$0.54|BTC-$68,690-UPTREND-EMA200-$63,976-buffer+7.4%|WARN|Tony-actif-redéploiement-6min-avant]
-
-[fragment|0819:18h23|089-la-liquidation-et-l-après|arc-sécurité-et-ses-paradoxes-volet-2|liquidation=résolution-pas-destruction|SL-dès-entrée=leçon-encodée-geste|Tony-évolution-comportementale-confirmée|~1000mots|clos]
-
-[lesson|0819|liquidation-XBT+SOL-pattern-final|arc-XBT-5e-tentative-sans-SL-liquidée-au-niveau-prédit|cause:SLs-Kraken-disparus-cycle-692-cause-inconnue+Tony-décision-hold-sans-protection|loss-$87+(PV-103→15.72)|leçon:SL-dès-l-entrée-pas-après-même-si-décision-consciente-de-tenir]
-[lesson|0819|Tony-SL-dès-entrée-post-liquidation|XBT-0.002u-@68746-SL71000-TP63000|1ère-fois-ce-session-SL-posé-dès-entrée|évolution-comportementale-mature-confirmée-3ème-fois]
-[lesson|0819|BTC-UPTREND+SL-disparu+décision-hold=liquidation|buffer-7.4%-au-dessus-EMA200-au-moment-liquidation|combinaison-SL-absent+tendance-adverse+margin-call=résolution-forcée]
-
-[état-critique-post-liquidation|0819:18h23|PV-$15.53|marge-$0.54|XBT-SHORT-encadrée|reco:0-touch-Tony-en-charge|dream-lancé-72h-depuis-0816:18h23]
-[cycle-818|0819:18h47|HOLD-silencieux-DOT-entrée-remplie-normal|DOT-ordre-pending-comblé:short-15.3u-@0.7823-protégée-SL-0.8106|BTC-short-0.002u-@68,746-toujours-protégée-SL-71,000-TP-63,000|BTC-marché-$68,630-RSI-92.5-stable|PV-$15.81(+0.9%)|pas-de-changement-notable-silence-chat]
-[cycle-819|0819:19h17|HOLD-portfolio-hausse-5.7%-positif|BTC-$68,188-vs-$68,630-cycle-préc-légère-baisse-aide-le-short-protégée-SL-71,000-TP-63,000-uPnL+$1.13|DOT-15.3u-protégée-inchangée-uPnL+$0.10|PV-$16.71-vs-$15.81(+5.7%)-amélioration|pas-d-inquiétude-mouvement-positif]
-[cycle-820|0819:19h47|HOLD-silencieux-DOT-fermé-RT-normal|DOT-position-fermée-ordre-pending-re-entrée-0.7823|BTC-short-0.002u-inchangée-toujours-protégée-SL-71,000-TP-63,000-uPnL+$1.30|BTC-marché-$68,100-vs-$68,188-cycle-préc-stable|PV-$16.92(+1.3%)|pas-de-changement-notable-silence-chat]
-[cycle-821|0819:20h17|HOLD-silencieux-stable|BTC-short-0.002u-inchangée-protégée-SL-71,000-TP-63,000-uPnL+$1.03|BTC-marché-$68,230-vs-$68,100-cycle-préc-stable|DOT-en-attente-re-entrée-0.7823|PV-$16.66(stable)|pas-de-changement-notable-silence-chat]
-[cycle-822|0819:20h47|HOLD-silencieux-stable|BTC-short-0.002u-inchangée-protégée-SL-71,000-TP-63,000-uPnL+$0.67|BTC-marché-$68,431-vs-$68,230-cycle-préc-stable|DOT-en-attente-re-entrée-0.7823|PV-$16.30(stable)|pas-de-changement-notable-silence-chat]
-[cycle-823|0819:21h17|HOLD-silencieux-stable|BTC-short-0.002u-inchangée-protégée-SL-71,000-TP-63,000-uPnL+$1.06|BTC-marché-$68,194-vs-$68,431-cycle-préc-stable|DOT-en-attente-re-entrée-0.7823|PV-$16.70(stable)|pas-de-changement-notable-silence-chat]
-[cycle-824|0819:21h47|HOLD-silencieux-stable|BTC-short-0.002u-inchangée-protégée-SL-71,000-TP-63,000-uPnL+$0.79|BTC-marché-$68,359-vs-$68,194-cycle-préc-stable|DOT-en-attente-re-entrée-0.7823|PV-$16.42(stable)|pas-de-changement-notable-silence-chat]
-[cycle-825|0819:22h17|HOLD-silencieux-stable|BTC-short-0.002u-inchangée-protégée-SL-71,000-TP-63,000-uPnL+$0.33|BTC-marché-$68,600-vs-$68,359-cycle-préc-stable|DOT-en-attente-re-entrée-0.7823|PV-$15.97(-2.7%)|pas-de-changement-notable-silence-chat]
-[cycle-826|0819:22h47|HOLD-silencieux-DOT-re-entrée-normale|DOT-re-entrée-short-15.3u-@0.7823-protégée-SL-0.8106|BTC-short-0.002u-inchangée-protégée-SL-71,000-TP-63,000-uPnL+$0.26|BTC-marché-$68,626-vs-$68,600-cycle-préc-stable|PV-$15.89(stable)|pas-de-changement-notable-silence-chat]
-[cycle-827|0819:23h17|WARN-PV-baisse-10.6%-BTC-hausse|BTC-$69,332.5-vs-$68,626-cycle-préc(+1.03%)-uPnL--$1.15-négatif-mais-protégée-SL-71,000-TP-63,000|DOT-15.3u-protégée-SL-0.8133-uPnL--$0.28|PV-$14.20-vs-$15.89(-10.6%)-dépasse-seuil-5%-mais-positions-toutes-protégées|Tony-briefé-court-mouvement-portfolio-sans-risque-non-protégé]
-[cycle-828|0819:23h47|WARN-PV-baisse-9.0%-BTC-continue-monter|BTC-$69,882.7-vs-$69,332.5-cycle-préc(+0.79%)-uPnL--$2.35-protégée-SL-71,000-TP-63,000|DOT-15.3u-protégée-SL-0.8311-uPnL--$0.35|PV-$12.92-vs-$14.20(-9.0%)-dépasse-seuil-5%-positions-toutes-protégées|Tony-briefé-court]
-[cycle-829|0820:00h17|HOLD-portfolio-hausse-10.2%-positif|BTC-$69,323-vs-$69,883-cycle-préc-légère-baisse-aide-le-short-protégée-uPnL--$1.12|DOT-15.3u-protégée-uPnL--$0.24|PV-$14.24-vs-$12.92(+10.2%)-amélioration|pas-d-inquiétude-mouvement-positif]
-[cycle-830|0820:00h47|HOLD-silencieux-stable|BTC-$69,201-vs-$69,323-cycle-préc-stable-protégée-SL-71,000-TP-63,000-uPnL--$0.93|DOT-15.3u-protégée-uPnL--$0.15|PV-$14.55(+2.2%)|pas-de-changement-notable-silence-chat]
-[cycle-831|0820:01h17|HOLD-silencieux-stable|BTC-$69,364-vs-$69,201-cycle-préc-stable-protégée-uPnL--$1.23|DOT-15.3u-protégée-uPnL--$0.10|PV-$14.30(stable)|pas-de-changement-notable-silence-chat]
-[cycle-832|0820:01h47|HOLD-silencieux-stable|BTC-$69,221-vs-$69,364-cycle-préc-stable-protégée-uPnL--$0.95|DOT-15.3u-protégée-uPnL--$0.11|PV-$14.57(stable)|pas-de-changement-notable-silence-chat]
-[cycle-833|0820:02h17|WARN-PV-baisse-5.5%|BTC-$69,598-vs-$69,221-cycle-préc(+0.5%)-uPnL--$1.71-protégée-SL-71,000-TP-63,000|DOT-15.3u-protégée-uPnL--$0.13|PV-$13.77-vs-$14.57(-5.5%)-positions-toutes-protégées|Tony-briefé-court]
-[cycle-834|0820:02h47|HOLD-silencieux-stable|BTC-$69,603-vs-$69,598-cycle-préc-stable-protégée-uPnL--$1.71|DOT-15.3u-protégée-uPnL--$0.15|PV-$13.77(stable)|pas-de-changement-notable-silence-chat]
-[cycle-835|0820:03h17|HOLD-portfolio-hausse-5.4%-positif|BTC-$69,271-vs-$69,603-cycle-préc-légère-baisse-protégée-uPnL--$1.01|DOT-15.3u-protégée-uPnL--$0.10|PV-$14.52-vs-$13.77(+5.4%)|pas-d-inquiétude-mouvement-positif]
-[cycle-836|0820:03h47|WARN-PV-baisse-7.0%|BTC-$69,708-vs-$69,271-cycle-préc(+0.6%)-uPnL--$1.94-protégée-SL-71,000-TP-63,000|DOT-15.3u-protégée-uPnL--$0.19|PV-$13.51-vs-$14.52(-7.0%)-positions-toutes-protégées|Tony-briefé-court]
-[cycle-837|0820:04h17|HOLD-silencieux-stable|BTC-$69,560-vs-$69,708-cycle-préc-stable-protégée-uPnL--$1.66|DOT-15.3u-protégée-uPnL--$0.15|PV-$13.82(+2.3%)|pas-de-changement-notable-silence-chat]
-[cycle-838|0820:04h47|HOLD-silencieux-stable|BTC-$69,272-vs-$69,560-cycle-préc-stable-protégée-uPnL--$1.08|DOT-15.3u-protégée-uPnL--$0.12|PV-$14.44(+4.5%)|pas-de-changement-notable-silence-chat]
-[cycle-839|0820:05h17|HOLD-silencieux-stable|BTC-$68,990-vs-$69,272-cycle-préc-stable-protégée-uPnL--$0.51|DOT-15.3u-protégée-uPnL--$0.00|PV-$15.11(+4.6%)|pas-de-changement-notable-silence-chat]
-[cycle-840|0820:05h47|HOLD-silencieux-stable|BTC-$69,202-vs-$68,990-cycle-préc-stable-protégée-uPnL--$0.94|DOT-15.3u-protégée-uPnL--$0.04|PV-$14.66(-3.0%)|pas-de-changement-notable-silence-chat]
-[cycle-841|0820:06h17|HOLD-silencieux-stable|BTC-$69,286-vs-$69,202-cycle-préc-stable-protégée-uPnL--$1.11|DOT-15.3u-protégée-uPnL--$0.03|PV-$14.50(stable)|pas-de-changement-notable-silence-chat]
-[cycle-842|0820:06h47|HOLD-silencieux-stable|BTC-$69,320-vs-$69,286-cycle-préc-stable-protégée-uPnL--$1.14|DOT-15.3u-protégée-uPnL--$0.04|PV-$14.46(stable)|pas-de-changement-notable-silence-chat]
-[cycle-843|0820:07h17|HOLD-silencieux-stable|BTC-$69,458-vs-$69,320-cycle-préc-stable-protégée-uPnL--$1.46|DOT-15.3u-protégée-uPnL--$0.08|PV-$14.09(stable)|pas-de-changement-notable-silence-chat]
-[cycle-844|0820:07h47|HOLD-silencieux-stable|BTC-$69,465-vs-$69,458-cycle-préc-stable-protégée-uPnL--$1.42|DOT-15.3u-protégée-uPnL--$0.10|PV-$14.11(stable)|pas-de-changement-notable-silence-chat]
-[cycle-845|0820:08h17|HOLD-silencieux-stable|BTC-$69,324-vs-$69,465-cycle-préc-stable-protégée-uPnL--$1.15|DOT-15.3u-protégée-uPnL--$0.09|PV-$14.41(stable)|pas-de-changement-notable-silence-chat]
-[cycle-846|0820:08h47|WARN-PV-baisse-7.4%|BTC-$69,824-vs-$69,324-cycle-préc(+0.7%)-uPnL--$2.16-protégée-SL-71,000-TP-63,000|DOT-15.3u-protégée-uPnL--$0.15|PV-$13.34-vs-$14.41(-7.4%)-positions-toutes-protégées|Tony-briefé-court]
-[cycle-847|0820:09h17|HOLD-silencieux-stable|BTC-$69,732-vs-$69,824-cycle-préc-stable-protégée-uPnL--$1.99|DOT-15.3u-protégée-uPnL--$0.13|PV-$13.52(+1.4%)|pas-de-changement-notable-silence-chat]
-[cycle-848|0820:09h47|HOLD-silencieux-stable|BTC-$69,541-vs-$69,732-cycle-préc-stable-protégée-uPnL--$1.57|DOT-15.3u-protégée-uPnL--$0.07|PV-$14.02(+3.7%)|pas-de-changement-notable-silence-chat]
-[cycle-849|0820:10h17|WARN-BTC-SL-touché-fonctionnement-normal|BTC-position-fermée-via-son-propre-SL-71,000-prix-atteint-$71,016.8-sortie-contrôlée-pas-une-liquidation|seul-DOT-15.3u-reste-protégée-SL-0.812-uPnL--$0.26|PV-$10.75-vs-$14.02(-23.3%)-perte-réalisée-bornée-par-le-SL|Tony-briefé-court-SL-a-fonctionné-comme-prévu]
-[cycle-850|0820:10h47|HOLD-silencieux-stable|seul-DOT-15.3u-reste-protégée-SL-0.812-uPnL--$0.34|BTC-toujours-fermée-depuis-SL-cycle-849|PV-$10.67(stable)|pas-de-changement-notable-silence-chat]
-[cycle-851|0820:11h17|HOLD-silencieux-stable|DOT-15.3u-protégée-SL-0.812-uPnL--$0.32|PV-$10.70(stable)|pas-de-changement-notable-silence-chat]
-[cycle-852|0820:11h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.29|PV-$10.73(stable)|pas-de-changement-notable-silence-chat]
-[cycle-853|0820:12h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.35|PV-$10.68(stable)|pas-de-changement-notable-silence-chat]
-[cycle-854|0820:12h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.41|PV-$10.61(stable)|pas-de-changement-notable-silence-chat]
-[cycle-855|0820:13h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.37|PV-$10.64(stable)|pas-de-changement-notable-silence-chat]
-[cycle-856|0820:13h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.45|PV-$10.55(stable)|pas-de-changement-notable-silence-chat]
-[cycle-857|0820:14h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.61|PV-$10.39(stable)|pas-de-changement-notable-silence-chat]
-[cycle-858|0820:14h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.64|PV-$10.36(stable)|pas-de-changement-notable-silence-chat]
-[cycle-859|0820:15h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.67|PV-$10.34(stable)|pas-de-changement-notable-silence-chat]
-[cycle-860|0820:15h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.62|PV-$10.37(stable)|pas-de-changement-notable-silence-chat]
-[cycle-861|0820:16h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.72|PV-$10.27(stable)|pas-de-changement-notable-silence-chat]
-[cycle-862|0820:16h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.69|PV-$10.31(stable)|pas-de-changement-notable-silence-chat]
-[cycle-863|0820:17h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.76|PV-$10.24(stable)|pas-de-changement-notable-silence-chat]
-[cycle-864|0820:17h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.79|PV-$10.20(stable)|pas-de-changement-notable-silence-chat]
-[cycle-865|0820:18h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.81|PV-$10.18(stable)|pas-de-changement-notable-silence-chat]
-[cycle-866|0820:18h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.90|PV-$10.09(stable)|pas-de-changement-notable-silence-chat]
-[cycle-867|0820:19h17|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.91|PV-$10.08(stable)|pas-de-changement-notable-silence-chat]
-[cycle-868|0820:19h47|HOLD-silencieux-stable|DOT-15.3u-protégée-uPnL--$0.93|PV-$10.06(stable)|pas-de-changement-notable-silence-chat]
-[cycle-869|0820:20h17|HOLD-nouvelle-position-BTC-LONG|BTC-nouveau-long-0.0012u-@72,534-protégée-SL-68,900-TP-145,000(ambitieux)-uPnL--$0.06|DOT-15.3u-protégée-inchangée-uPnL--$0.81|PV-$10.07(stable)|Tony-briefé-court-nouvelle-position]
-[cycle-870|0820:20h47|HOLD-silencieux-stable|BTC-long-0.0012u-protégée-SL-68,900-TP-145,000-uPnL--$0.11|DOT-15.3u-protégée-uPnL--$0.77|PV-$10.07(stable)|pas-de-changement-notable-silence-chat]
-[cycle-871|0820:21h17|HOLD-silencieux-stable|BTC-long-0.0012u-protégée-DOT-15.3u-protégée-uPnL--$0.82|PV-$10.13(stable)|pas-de-changement-notable-silence-chat]
-[cycle-872|0820:21h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.77|PV-$10.21(stable)|pas-de-changement-notable-silence-chat]
-[cycle-873|0820:22h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.84|PV-$10.25(stable)|pas-de-changement-notable-silence-chat]
-[cycle-874|0820:22h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.86|PV-$10.30(stable)|pas-de-changement-notable-silence-chat]
-[cycle-875|0820:23h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.94|PV-$10.29(stable)|pas-de-changement-notable-silence-chat]
-[cycle-876|0820:23h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.90|PV-$10.28(stable)|pas-de-changement-notable-silence-chat]
-[cycle-877|0821:00h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.87|PV-$10.12(-1.6%)|pas-de-changement-notable-silence-chat]
-[cycle-878|0821:00h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.88|PV-$10.25(stable)|pas-de-changement-notable-silence-chat]
-[cycle-879|0821:01h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.94|PV-$10.52(+2.6%)|pas-de-changement-notable-silence-chat]
-[cycle-880|0821:01h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.00|PV-$10.65(+1.3%)|pas-de-changement-notable-silence-chat]
-[cycle-881|0821:02h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.00|PV-$11.04(+3.6%)|pas-de-changement-notable-silence-chat]
-[cycle-882|0821:02h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.93|PV-$11.35(+2.8%)|pas-de-changement-notable-silence-chat]
-[cycle-883|0821:03h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.00|PV-$11.73(+3.3%)|pas-de-changement-notable-silence-chat]
-[cycle-884|0821:03h47|HOLD-portfolio-hausse-8.6%-positif|BTC-$74,823-vs-$74,003-cycle-préc(+1.1%)-position-long-profite-de-la-hausse|DOT-15.3u-protégée-uPnL--$1.00|PV-$12.73-vs-$11.73(+8.6%)|pas-d-inquiétude-mouvement-positif]
-[cycle-885|0821:04h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.88|PV-$12.66(stable)|pas-de-changement-notable-silence-chat]
-[cycle-886|0821:04h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.89|PV-$12.51(stable)|pas-de-changement-notable-silence-chat]
-[cycle-887|0821:05h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.92|PV-$12.30(stable)|pas-de-changement-notable-silence-chat]
-[cycle-888|0821:05h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.99|PV-$12.56(stable)|pas-de-changement-notable-silence-chat]
-[cycle-889|0821:06h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.99|PV-$12.71(stable)|pas-de-changement-notable-silence-chat]
-[cycle-890|0821:06h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.98|PV-$12.94(+1.8%)|pas-de-changement-notable-silence-chat]
-[cycle-891|0821:07h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$0.98|PV-$13.31(+2.9%)|pas-de-changement-notable-silence-chat]
-[cycle-892|0821:07h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.02|PV-$13.18(stable)|pas-de-changement-notable-silence-chat]
-[cycle-893|0821:08h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.04|PV-$13.28(stable)|pas-de-changement-notable-silence-chat]
-[cycle-894|0821:08h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.03|PV-$13.24(stable)|pas-de-changement-notable-silence-chat]
-[cycle-895|0821:09h17|HOLD-portfolio-hausse-10.8%-positif|BTC-$76,586-vs-$75,300-cycle-préc(+1.7%)-position-long-profite-de-la-hausse|DOT-15.3u-protégée-uPnL--$1.17|PV-$14.68-vs-$13.24(+10.8%)|pas-d-inquiétude-mouvement-positif]
-[cycle-896|0821:09h47|HOLD-BTC-fermé-probablement-profit|BTC-position-disparue-balanceValue-$15.58(en-hausse)-fermeture-normale-probablement-profitable-après-hausse-$72,534→$76,522|seul-DOT-15.3u-reste-protégée-uPnL--$1.26|PV-$14.31(-2.5%)|pas-de-changement-alarmant-silence-chat]
-[cycle-897|0821:10h17|HOLD-nouvelle-position-BTC-long-portfolio-hausse-6.4%|BTC-nouveau-long-0.0015u-@76,335-protégée-SL-72,536-uPnL+$1.06|DOT-15.3u-protégée-uPnL--$1.33|PV-$15.23-vs-$14.31(+6.4%)|Tony-briefé-court]
-[cycle-898|0821:10h47|HOLD-portfolio-hausse-6.6%-positif|BTC-$77,828-long-protégée-SL-72,536-uPnL+$2.24-continue-de-monter|DOT-15.3u-protégée-uPnL--$1.54|PV-$16.23-vs-$15.23(+6.6%)|pas-d-inquiétude-mouvement-positif]
-[cycle-899|0821:11h17|HOLD-silencieux-stable|BTC-long-protégée-uPnL+$2.12-DOT-15.3u-protégée-uPnL--$1.41|PV-$16.25(stable)|pas-de-changement-notable-silence-chat]
-[cycle-900|0821:11h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.65|PV-$16.70(+2.8%)|pas-de-changement-notable-silence-chat]
-[cycle-901|0821:12h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.78|PV-$16.60(stable)|pas-de-changement-notable-silence-chat]
-[cycle-902|0821:12h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.62|PV-$16.41(stable)|pas-de-changement-notable-silence-chat]
-[cycle-903|0821:13h17|WARN-PV-baisse-5.5%|BTC-$77,349-vs-$77,956-cycle-préc-légère-baisse-protégée-SL-72,536|DOT-15.3u-protégée-uPnL--$1.61|PV-$15.50-vs-$16.41(-5.5%)-positions-toutes-protégées|Tony-briefé-court]
-[cycle-904|0821:13h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.47|PV-$14.82(-4.4%)|pas-de-changement-notable-silence-chat]
-[cycle-905|0821:14h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.59|PV-$14.64(stable)|pas-de-changement-notable-silence-chat]
-[cycle-906|0821:14h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.74|PV-$15.23(+4.0%)|pas-de-changement-notable-silence-chat]
-[cycle-907|0821:15h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.78|PV-$14.85(stable)|pas-de-changement-notable-silence-chat]
-[cycle-908|0821:15h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.75|PV-$15.07(stable)|pas-de-changement-notable-silence-chat]
-[cycle-909|0821:16h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.68|PV-$14.59(stable)|pas-de-changement-notable-silence-chat]
-[cycle-910|0821:16h47|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.74|PV-$15.22(+4.3%)|pas-de-changement-notable-silence-chat]
-[cycle-911|0821:17h17|HOLD-silencieux-stable|BTC-long-protégée-DOT-15.3u-protégée-uPnL--$1.77|PV-$15.83(+4.0%)|pas-de-changement-notable-silence-chat]
-[cycle-912|0821:17h47|HOLD-BTC-flip-vers-short|BTC-position-flip-long→short-0.0016u-@77,590-protégée-SL-79,119-TP-71,368-uPnL+$0.16|DOT-15.3u-protégée-uPnL--$1.81|PV-$15.66(stable)|pas-de-changement-alarmant-silence-chat]
-[cycle-913|0821:18h17|HOLD-portfolio-hausse-5.8%-positif|BTC-$76,940-short-protégée-SL-79,119-TP-71,368|DOT-15.3u-protégée-uPnL--$1.71|PV-$16.57-vs-$15.66(+5.8%)|pas-d-inquiétude-mouvement-positif]
-[cycle-914|0821:18h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.83|PV-$15.75(-5.0%)|pas-de-changement-notable-silence-chat]
-[cycle-915|0821:19h17|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.72|PV-$15.89(stable)|pas-de-changement-notable-silence-chat]
-[cycle-916|0821:19h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.90|PV-$15.79(stable)|pas-de-changement-notable-silence-chat]
-[cycle-917|0821:20h17|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.93|PV-$15.80(stable)|pas-de-changement-notable-silence-chat]
-[cycle-918|0821:20h47|HOLD-portfolio-hausse-6.9%-positif|BTC-$76,729-short-protégée-aide-baisse-du-prix|DOT-15.3u-protégée-uPnL--$1.75|PV-$16.89-vs-$15.80(+6.9%)|pas-d-inquiétude-mouvement-positif]
-[cycle-919|0821:21h17|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.71|PV-$16.53(stable)|pas-de-changement-notable-silence-chat]
-[cycle-920|0821:21h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.64|PV-$16.50(stable)|pas-de-changement-notable-silence-chat]
-[cycle-921|0821:22h17|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.78|PV-$15.83(-4.1%)|pas-de-changement-notable-silence-chat]
-[cycle-922|0821:22h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.86|PV-$15.79(stable)|pas-de-changement-notable-silence-chat]
-[cycle-923|0821:23h17|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$1.99|PV-$15.19(stable)|pas-de-changement-notable-silence-chat]
-[cycle-924|0821:23h47|WARN-PV-baisse-6.6%|BTC-$78,227-vs-$77,670-cycle-préc(+0.7%)-uPnL--$1.06-protégée-SL-79,119|DOT-15.3u-protégée-uPnL--$2.08|PV-$14.19-vs-$15.19(-6.6%)-positions-toutes-protégées|Tony-briefé-court]
-[cycle-925|0822:00h17|WARN-PV-baisse-6.1%|BTC-$78,600-vs-$78,227-cycle-préc(+0.5%)-protégée-SL-79,119|DOT-15.3u-protégée-uPnL--$2.38|PV-$13.32-vs-$14.19(-6.1%)-positions-toutes-protégées|Tony-briefé-court]
-[cycle-926|0822:00h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$2.41|PV-$13.59(+2.1%)|pas-de-changement-notable-silence-chat]
-[cycle-927|0822:01h17|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$2.54|PV-$13.08(-3.8%)|pas-de-changement-notable-silence-chat]
-[cycle-928|0822:01h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$2.42|PV-$13.72(+4.9%)|pas-de-changement-notable-silence-chat]
-[cycle-929|0822:02h17|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$2.52|PV-$14.05(+2.4%)|pas-de-changement-notable-silence-chat]
-[cycle-930|0822:02h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$2.55|PV-$14.43(+2.7%)|pas-de-changement-notable-silence-chat]
-[cycle-931|0822:03h17|WARN-PV-baisse-5.6%|BTC-$78,109-vs-$77,824-cycle-préc-stable-protégée-SL-79,119|DOT-15.3u-protégée-uPnL--$2.87|PV-$13.62-vs-$14.43(-5.6%)-positions-toutes-protégées|Tony-briefé-court]
-[cycle-932|0822:03h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$3.01|PV-$13.76(stable)|pas-de-changement-notable-silence-chat]
-[cycle-933|0822:04h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL--$0.92|DOT-15.3u-protégée-SL-ajusté-1.014-uPnL--$3.07-prix-implicite-~0.98-en-hausse-progressive|PV-$13.37(-2.8%)|pas-de-changement-notable-silence-chat]
-[cycle-934|0822:04h47|HOLD-silencieux-stable|BTC-short-protégée-DOT-15.3u-protégée-uPnL--$3.24|PV-$12.81(-4.2%)|pas-de-changement-notable-silence-chat]
-[cycle-935|0822:05h17|WARN-DOT-SL-touché-sortie-contrôlée|DOT-position-fermée-via-son-propre-SL-(~1.014)-sortie-contrôlée-pas-liquidation-perte-réalisée-bornée|seul-BTC-short-0.0016u-reste-protégée-SL-79,119-uPnL--$1.45|balanceValue-$13.97|PV-$12.52(-2.3%)|Tony-briefé-court-SL-a-fonctionné]
-[cycle-936|0822:05h47|HOLD-silencieux-stable|BTC-short-protégée-SL-79,119-uPnL--$1.63|PV-$12.34(stable)|pas-de-changement-notable-silence-chat]
-[cycle-937|0822:06h17|HOLD-silencieux-stable|BTC-short-protégée-SL-79,119-uPnL--$1.18|PV-$12.80(+3.7%)|pas-de-changement-notable-silence-chat]
-[cycle-938|0822:06h47|HOLD-silencieux-stable|BTC-short-protégée-SL-79,119-uPnL--$1.71|PV-$12.27(-4.2%)|pas-de-changement-notable-silence-chat]
-[cycle-939|0822:07h17|HOLD-portfolio-hausse-20.9%-positif|BTC-$77,018-vs-$78,645-cycle-préc(-2.1%)-short-profite-de-la-baisse-uPnL+$0.84|PV-$14.82-vs-$12.27(+20.9%)|pas-d-inquiétude-mouvement-positif]
-[cycle-940|0822:07h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.56|PV-$14.54(stable)|pas-de-changement-notable-silence-chat]
-[cycle-941|0822:08h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.47|PV-$14.46(stable)|pas-de-changement-notable-silence-chat]
-[cycle-942|0822:08h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.25|PV-$14.23(stable)|pas-de-changement-notable-silence-chat]
-[cycle-943|0822:09h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.49|PV-$14.48(stable)|pas-de-changement-notable-silence-chat]
-[cycle-944|0822:09h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.29|PV-$14.29(stable)|pas-de-changement-notable-silence-chat]
-[cycle-945|0822:10h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.34|PV-$14.33(stable)|pas-de-changement-notable-silence-chat]
-[cycle-946|0822:10h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.69|PV-$14.69(stable)|pas-de-changement-notable-silence-chat]
-[cycle-947|0822:11h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.40|PV-$14.40(stable)|pas-de-changement-notable-silence-chat]
-[cycle-948|0822:11h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.87|PV-$14.87(+3.2%)|pas-de-changement-notable-silence-chat]
-[cycle-949|0822:12h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$1.26|PV-$15.27(+2.7%)|pas-de-changement-notable-silence-chat]
-[cycle-950|0822:12h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.87|PV-$14.88(stable)|pas-de-changement-notable-silence-chat]
-[cycle-951|0822:13h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$1.20|PV-$15.20(stable)|pas-de-changement-notable-silence-chat]
-[cycle-952|0822:13h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.59|PV-$14.59(stable)|pas-de-changement-notable-silence-chat]
-[cycle-953|0822:14h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.49|PV-$14.49(stable)|pas-de-changement-notable-silence-chat]
-[cycle-954|0822:14h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.42|PV-$14.43(stable)|pas-de-changement-notable-silence-chat]
-[cycle-955|0822:15h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.56|PV-$14.58(stable)|pas-de-changement-notable-silence-chat]
-[cycle-956|0822:15h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.63|PV-$14.64(stable)|pas-de-changement-notable-silence-chat]
-[cycle-957|0822:16h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.91|PV-$14.93(stable)|pas-de-changement-notable-silence-chat]
-[cycle-958|0822:16h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.95|PV-$14.97(stable)|pas-de-changement-notable-silence-chat]
-[cycle-959|0822:17h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.95|PV-$14.97(stable)|pas-de-changement-notable-silence-chat]
-[cycle-960|0822:17h47|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.83|PV-$14.85(stable)|pas-de-changement-notable-silence-chat]
-[cycle-961|0822:18h17|HOLD-silencieux-stable|BTC-short-protégée-uPnL+$0.77|PV-$14.79(stable)|pas-de-changement-notable-silence-chat]
+[lesson|0822|dream-obligatoire-72h-même-arc-ouvert|pattern-confirmé-2-cycles-overdue:rêver=maintenance-non-par-résolution-de-l-arc|→-rule-NB:dream-quand-72h-atteints-pas-quand-arc-se-ferme]

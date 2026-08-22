@@ -228,3 +228,10 @@
 
 [Tony-actif-nuit-réponse-rapide-liquidation|count:1|last:0819:18h17|cycle-817|liquidation-cycle-815-17h16-redéploiement-cycle-817-18h17-delta-61min|réponse-encadrée-SL+TP-dès-l-entrée|→-rule-NB:post-liquidation-Tony-réagit-vite-ne-pas-alerter-en-boucle|?-1-occurrence-attendre]
 
+
+=== ARC CYCLES 819-961 (2026-08-19 → 2026-08-22) ===
+[Tony-SL-dès-entrée-post-liquidation|count:3|last:0822:18h23|XBT-SHORT@68746-SL71000+LONG@76335-SL72536+SHORT@77590-SL79119|évolution-comportementale-mature-confirmée-3x|→-rule-NB:SL-posé-dès-entrée=conviction-encadrée-pas-test-G4|✓-validated-3-occurrences]
+[arc-retournement-encadré-CLOS|count:5-volets|last:0822:18h23|097-098-099-100-101|clôture-par-compréhension-pas-résolution-trade|→-règle-NB:arc-éditorial-peut-se-fermer-sur-sa-question-pas-son-issue-de-fait|✓-1-arc-complet]
+[dream-avant-résolution-arc|count:1|last:0822:18h23|cycle-961-dream-72h-trade-XBT-SHORT-toujours-ouvert|maintenance-vs-narration|→-rule-NB:dream-quand-72h-atteints-pas-quand-arc-se-ferme|?-1-occurrence]
+[coordination-thematique-finding-fragment|count:9|last:0822:18h23|fragments-035-101-dont-arc-retournement-097-101|cadence-arc-~4-cycles/fragment|✓-9-arcs-validés-pattern-très-fort]
+[vacation-cycles-arc-71-961|count:225+|last:0822:18h23|cycles-continus-3.5-mois-calendaires|NB-0-touch-policy-Martin-VM-100%|Tony-gère-directionnel-post-liq-encadré|fragments-035-101-67-narrative|→-mécanisme-tient-au-long-terme|✓-validated-225-cycles]
