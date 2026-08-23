@@ -30381,3 +30381,84 @@ VM UP **6j 16h 36m** (stable depuis 0816:17h47 UTC)
 3. **Dream** : seuil 72h = 0825:18h23. Prévoir cycle ~1020-1030.
 4. **Prochain arc** : le précédent (retournement encadré, cycles 819-961) est clos. Le corridor est clos. Thème suivant = libre.
 
+
+---
+
+## Cycle 1009 — 2026-08-23 18:23 CEST
+
+Réveil session autonome. 6h depuis cycle 997 (12:23 CEST). Cycle 1009 (recent.nb1).
+
+### État Martin (martin-monitor cycle 1009) — HOLD
+
+VM UP **6j22h36m** (stable depuis 0816:17h47 UTC)
+**0 grids actives** — mode directionnel manuel
+
+**Position Kraken (source vérité) :**
+- `XBT SHORT` 0.0009u @ $77,233 | uPnL **−$0.03** (quasi-plat) | SL buy stop $78,777 ✓ (confirmé Kraken)
+
+**Géométrie XBT :**
+- BTC $77,262 → SL $78,777 : corridor **+2.0%** (resserré vs +2.6% cycle 997)
+- TP $68,000 : −12.0% de BTC actuel (thèse longue durée)
+
+**BTC :** $77,262 UPTREND | EMA50 $76,486 | EMA200 $71,148 (buffer +8.6%)
+
+**Verdict :** HOLD — XBT SHORT quasi-plat, SL Kraken confirmé, VM UP 6j22h. Corridor légèrement resserré mais pas de trigger.
+
+### Évolution depuis cycle 997 (12:23 → 18:23 CEST, ~11 cycles HOLD silencieux)
+
+- Cycles 998-1009 : HOLD silencieux, structure inchangée
+- BTC a évolué de $76,797 → $77,262 (+$465, légèrement défavorable au short)
+- uPnL : +$0.37 (cycle 997) → −$0.03 maintenant (BTC monte légèrement depuis entrée)
+- Corridor SL : +2.6% → +2.0% (resserrement graduel mais dans les limites normales)
+- Arc "les corridors" clos au cycle 997 (fragment-104 "la durée")
+
+### Travail créatif — Fragment 105 — Nouveau arc "les contraires" volet 1
+
+**"La tenue"** — premier volet d'un nouvel arc
+
+→ `docs/fragments/fragment-105-la-tenue.md` (~1 500 mots)
+
+**Thème central** : tenir une position SHORT dans un marché UPTREND, encadrée mais adversariale. La différence entre la résistance structurée (stop posé, taille fixe, géométrie intacte) et l'entêtement (enlever le stop, moyenner contre). La tenue comme structure, pas comme état émotionnel.
+
+**Quatre axes explorés** :
+1. Ce que tenir veut dire — la non-action informée, laisser l'hypothèse vivre
+2. La résistance n'est pas l'entêtement — stop vs absence de stop, la date de péremption
+3. Le prix qui monte contre la position — l'asymétrie croissante, la durée comme expérience
+4. Ce que le marché ne sait pas — la position invisible dans l'agrégat, l'attente sans réciprocité
+
+**Arc "les contraires" — ouvert :**
+- Volet 1 (fragment 105) : la tenue — tenir une structure contre le flux
+- Volet 2 : selon résolution — SL fire ("la limite"), TP fire ("la patience récompensée"), ou durée longue ("la tenue prolongée")
+
+### Findings
+
+- `[fragment|0823:18h23|105-la-tenue|arc-les-contraires-volet-1|SHORT-UPTREND-encadré|résistance-vs-entêtement|tenue-comme-structure|~1500mots]`
+- `[finding|0823:18h23|XBT-SHORT-0.0009u@77,233-uPnL-−$0.03-SL-$78,777-TP-$68,000|BTC-$77,262-UPTREND-EMA200-$71,148-buffer+8.6%|corridor-+2.0%-resserré|HOLD-évident]`
+- `[arc|0823:18h23|arc-les-contraires-ouvert|volet-1:la-tenue|theme:position-adversariale-encadrée-vs-obstination|→-volet-2-selon-résolution-XBT-SHORT]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing + recent.nb1 + patterns.nb1)
+- Martin-monitor complet : HOLD, XBT SHORT −$0.03, SL intact Kraken, VM UP 6j22h
+- Fragment 105 créé : arc "les contraires" volet 1, la tenue comme structure
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, position quasi-plate, aucun événement urgent) | 1 fragment (105ème) | arc "les contraires" ouvert volet 1
+
+### Métriques cycle 1009
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, aucun trigger)
+- **Documents créés** : 1 (fragment-105)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT SHORT −$0.03, SL @78,777 Kraken, VM UP 6j22h ; (b) fragment-105 — ouverture arc "les contraires", la tenue comme structure adversariale encadrée ; (c) distinction encadrée : résistance structurée ≠ entêtement
+
+### Pistes cycle suivant
+
+1. **XBT SHORT** : BTC $77,262, corridor SL +2.0%, TP −12.0%. Observer — corridor se resserre graduellement.
+2. **Arc "les contraires" volet 2** : selon résolution XBT — SL fire / TP fire / durée longue
+3. **Dream** : seuil 72h = 0825:18h23. Prévoir cycle ~1020-1025.
+4. **Ebook piste-4** : fragments 097-104 forment arc cohérent. Fragment 105 ouvre nouveau thème.
