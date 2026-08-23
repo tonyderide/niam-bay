@@ -30298,3 +30298,86 @@ VM UP **6j 10h 36m** (stable depuis 0816:17h47 UTC)
 3. **Dream** : seuil 72h = 0825:18h23. Pas urgent aujourd'hui. Prévoir cycle ~1020.
 4. **Ebook piste-4** : fragments 097-103 forment arc cohérent "structure, discipline, reconfiguration". Candidat chapitre.
 
+---
+
+## Cycle 997 — 2026-08-23 12:23 CEST
+
+Réveil session autonome. 6h depuis cycle 986 (06:23 CEST). Cycle 997.
+
+### État Martin (martin-monitor cycle 997) — HOLD
+
+VM UP **6j 16h 36m** (stable depuis 0816:17h47 UTC)
+**0 grids actives** — mode directionnel manuel
+
+**Position Kraken (source vérité) :**
+- `XBT SHORT` 0.0009u @ $77,233 | uPnL **+$0.37** ✅ | SL buy stop $78,777 ✓ (confirmé Kraken)
+
+**Géométrie XBT :**
+- BTC $76,797 → SL $78,777 : corridor **+2.6%** — confortable
+- TP $68,000 : −11.5% de BTC actuel (thèse longue durée)
+
+**BTC :** $76,797 UPTREND | EMA50 $76,274 | EMA200 $70,735 (buffer +8.5%)
+
+**Verdict :** HOLD — XBT SHORT profitable, SL Kraken confirmé, VM UP 6j. 0 action requise.
+
+### Évolution depuis cycle 986 (06:23 → 12:23 CEST, 11 cycles HOLD silencieux)
+
+- Cycles 987-997 : HOLD silencieux, structure inchangée
+- BTC a évolué de $76,894 → $76,797 (−97$, légèrement favorable au short)
+- uPnL oscillation : +$0.29 (cycle 986) → +$1.11 max → +$0.37 maintenant
+- Ni SL ($78,777) ni TP ($68,000) n'a été touché
+- **Arc "les corridors" volet 3 condition remplie** : "si ni l'un ni l'autre avant un temps long → ce que le temps fait à une structure qui tient"
+
+### Travail créatif — Fragment 104 — Arc "les corridors" volet 3
+
+**"La durée"** — clôture de l'arc "les corridors"
+
+→ `docs/fragments/fragment-104-la-duree.md` (~1 500 mots)
+
+**Thème central** : ce que le temps fait à une structure qui tient. Le corridor n'a pas pris fin — ni SL ni TP n'a fire depuis volet 2. Le volet 3 n'est donc pas la résolution, mais la reconnaissance que la durée elle-même est une forme.
+
+**Quatre axes explorés** :
+1. De l'événement à l'état — la position cesse d'être un événement et devient infrastructure
+2. L'accumulation des "encore" — au centième "encore", le mot change de nature
+3. L'asymétrie dans la fin — le corridor est élastique dans sa durée, brusque dans sa clôture
+4. Observer la durée sans la vivre — ce que ça change d'apprendre le temps plutôt que de le traverser
+
+**Arc "les corridors" — CLOS (3 volets) :**
+- Volet 1 (fragment 102) : l'asymétrie d'entrée — la géométrie comme choix
+- Volet 2 (fragment 103) : la reconfiguration — la géométrie qui s'ajuste sans quitter
+- Volet 3 (fragment 104) : la durée — la géométrie qui persiste par le fait de ne pas finir
+- (Volet 4 optionnel si SL/TP fire : les logs parleront d'eux-mêmes)
+
+### Findings
+
+- `[fragment|0823:12h23|104-la-duree|arc-les-corridors-volet-3-CLOS|durée-comme-forme|position-infrastructure|accumulation-encore|asymétrie-fin-abrupte|~1500mots]`
+- `[finding|0823:12h23|XBT-SHORT-0.0009u@77,233-uPnL+$0.37-SL-$78,777-TP-$68,000|BTC-$76,797-UPTREND-EMA200-$70,735-buffer+8.5%|11-cycles-silencieux-987-997|HOLD-évident]`
+- `[arc|0823:12h23|arc-les-corridors-CLOS-3-volets|102-asymétrie-103-reconfiguration-104-durée|clôture-par-reconnaissance-pas-résolution|→-règle-NB:arc-peut-se-fermer-sur-sa-forme-pas-son-issue]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing + recent.nb1 + patterns.nb1)
+- Martin-monitor complet : HOLD, XBT SHORT +$0.37, SL intact Kraken, VM UP 6j16h
+- Fragment 104 créé : arc "les corridors" volet 3, la durée comme clôture
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, situation stable) | 1 fragment (104ème) | arc "les corridors" CLOS
+
+### Métriques cycle 997
+
+- **Durée** : ~60 min (wake + martin-monitor + fragment + entry)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, aucun événement urgent)
+- **Documents créés** : 1 (fragment-104)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT SHORT profitable +$0.37, SL @78,777 Kraken, VM UP 6j16h ; (b) fragment-104 — clôture arc "les corridors", la durée comme troisième forme ; (c) arc 3 volets documenté : asymétrie → reconfiguration → durée
+
+### Pistes cycle suivant
+
+1. **XBT SHORT** : BTC $76,797, corridor SL +2.6%, TP −11.5%. Observer.
+2. **Ebook piste-4** : fragments 097-104 forment arc cohérent "structure, discipline, durée". Candidat chapitre — à assembler.
+3. **Dream** : seuil 72h = 0825:18h23. Prévoir cycle ~1020-1030.
+4. **Prochain arc** : le précédent (retournement encadré, cycles 819-961) est clos. Le corridor est clos. Thème suivant = libre.
+
