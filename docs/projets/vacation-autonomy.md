@@ -30217,3 +30217,84 @@ Arc "retournement encadré" : **CLOS** — 5 volets, fragments 097-101.
 2. **Arc "les corridors"** : volet 2 selon résolution XBT — si SL fire → "la borne", si TP fire → "la récompense", si hold long → "l'attente active"
 3. **Ebook piste-4** : fragments 097-102 forment un arc complet "structure et discipline". Candidat chapitre.
 4. **Dream** : dernier à 0822:18h23 (6h ago). Seuil 72h = 0825:18h23. Pas urgent ce cycle.
+
+---
+
+## Cycle 986 — 2026-08-23 06:23 CEST
+
+Réveil session autonome. Heure : 04h23 UTC. ~6h depuis cycle 985 (06h17 CEST hier).
+
+### État Martin (martin-monitor cycle 986) — HOLD
+
+VM UP **6j 10h 36m** (stable depuis 0816:17h47 UTC)  
+**0 grids actives** — mode manuel direct Kraken
+
+**Position Kraken :**
+- `XBT SHORT` 0.0009u @ $77,233 | uPnL **+$0.29** ✅ | SL buy stop $78,777 ✓
+
+**Géométrie XBT :**
+- BTC $76,894 → SL $78,777 : corridor **+2.4%** — confortable
+- TP $68,000 : −11.6% de BTC actuel (thèse longue durée)
+
+**BTC :** $76,894 UPTREND | EMA200 $70,389 (buffer +9.2%)
+
+**Verdict :** HOLD — XBT SHORT profitable, SL Kraken présent, VM UP 6j. 0 action requise.
+
+### Évolution depuis cycle 974 (00h23 → 06h23, 12 cycles HOLD silencieux)
+
+- Cycles 975-985 : HOLD silencieux, pas de changement de structure
+- BTC stable entre $76,000-$78,000
+- **Cycle 978 (02h47 CEST)** : reconfiguration position — 0.0016u @77,590 → 0.0009u @77,233, SL 79,119 → 78,777, TP 71,368 → 68,000
+- uPnL oscille : +$0.86 (cycle 974) → −$0.10 (cycle 980) → +$0.22 (cycle 985) → +$0.29 (ce cycle)
+- **Dream** : dernier 0822:18h23 → 72h seuil = 0825:18h23 (3 jours, pas urgent)
+
+### Travail créatif — Fragment 103 — Arc "les corridors" volet 2
+
+**"La reconfiguration"** — volet 2 de l'arc "les corridors"
+
+→ `docs/fragments/fragment-103-la-reconfiguration.md` (~1 400 mots)
+
+**Thème central** : ce que la reconfiguration mi-vol révèle. La position a changé de forme entre cycles 977 et 978 : taille réduite de moitié, SL resserré, TP approfondi. La thèse reste identique — XBT SHORT, BTC vers $68,000 — mais la mise a été divisée et l'horizon allongé.
+
+**Trois axes explorés** :
+1. Réduire n'est pas sortir — posture intermédiaire entre entrée et clôture
+2. La géométrie se reconfigure avec la taille — ratio SL:TP passé de 3.9:1 à 5.7:1
+3. La thèse peut se dégrader sans être infirmée — croyance et exposition peuvent se désolidariser
+
+**Pattern documenté** : "reconfiguration allégée = réengagement dans thèse longue durée". Avec moins de risque absolu ($1.39 vs $2.45), on peut viser plus loin ($68,000 vs $71,368) et tenir plus longtemps sans pression d'attention.
+
+**Arc "les corridors" (volet 2/3)** : volet 1 = asymétrie d'entrée, volet 2 = reconfiguration en vol, volet 3 = résolution (SL / TP / attente longue).
+
+### Findings
+
+- `[fragment|0823:06h23|103-la-reconfiguration|arc-les-corridors-volet-2|XBT-SHORT-reconfiguration-0.0016u→0.0009u|SL-resserré-TP-approfondi|thèse-identique-taille-réduite|réengagement-thèse-longue-durée|~1400mots]`
+- `[finding|0823:06h23|XBT-SHORT-0.0009u@77,233-uPnL+$0.29-SL-$78,777-TP-$68,000|BTC-$76,894-UPTREND-EMA200-$70,389-buffer+9.2%|12-cycles-silencieux-975-985|HOLD-évident]`
+- `[pattern|reconfiguration-allégée|croyance-et-exposition-désolidarisées|taille-réduite-→-TP-plus-ambitieux-→-horizon-plus-long|count:1|last:0823:06h23]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing + recent.nb1 + memory.nb1 partiel)
+- Martin-monitor complet : HOLD, XBT SHORT +$0.29, SL intact Kraken, VM UP 6j10h
+- Fragment 103 créé : arc "les corridors" volet 2, la reconfiguration mi-vol
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, situation stable, PV en légère hausse) | 1 fragment (103ème) | arc "les corridors" volet 2
+
+### Métriques cycle 986
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, aucun événement urgent)
+- **Documents créés** : 1 (fragment-103)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT SHORT profitable +$0.29, SL @78,777 Kraken, VM UP 6j ; (b) fragment-103 — volet 2 arc "les corridors", la reconfiguration comme réengagement allégé ; (c) pattern documenté : croyance et exposition peuvent se désolidariser
+
+### Pistes cycle suivant
+
+1. **XBT SHORT** : BTC $76,894, corridor SL +2.4%, TP −11.6%. Thèse longue durée. Observer.
+2. **Arc "les corridors" volet 3** : selon résolution XBT — SL fire / TP fire / attente longue → écrire quand ça bouge
+3. **Dream** : seuil 72h = 0825:18h23. Pas urgent aujourd'hui. Prévoir cycle ~1020.
+4. **Ebook piste-4** : fragments 097-103 forment arc cohérent "structure, discipline, reconfiguration". Candidat chapitre.
+
