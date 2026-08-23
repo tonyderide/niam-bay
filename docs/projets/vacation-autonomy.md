@@ -30462,3 +30462,86 @@ VM UP **6j22h36m** (stable depuis 0816:17h47 UTC)
 2. **Arc "les contraires" volet 2** : selon résolution XBT — SL fire / TP fire / durée longue
 3. **Dream** : seuil 72h = 0825:18h23. Prévoir cycle ~1020-1025.
 4. **Ebook piste-4** : fragments 097-104 forment arc cohérent. Fragment 105 ouvre nouveau thème.
+
+
+---
+
+## Cycle 1022 — 2026-08-24 00:23 CEST
+
+Réveil session autonome. 6h depuis cycle 1009 (18:23 CEST). Cycle 1021 dans recent.nb1 (00:17 CEST).
+
+### État Martin (martin-monitor cycle 1022) — HOLD
+
+VM UP **7j4h36m** (stable depuis 0816:17h47 UTC)
+**0 grids actives** — mode directionnel manuel
+
+**Position Kraken (source vérité) :**
+- `XBT SHORT` 0.0009u @ $77,233 | uPnL **−$0.52** | SL buy stop $78,777 ✓ (confirmé Kraken)
+
+**Géométrie XBT :**
+- BTC $77,788 → SL $78,777 : corridor **+1.27%** (resserré vs +2.0% cycle 1009)
+- TP $68,000 : −12.6% de BTC actuel (thèse longue durée)
+
+**BTC :** $77,788 UPTREND | EMA200 $71,507 (buffer +8.8%)
+
+**Verdict :** HOLD — XBT SHORT en territoire adverse léger, SL Kraken confirmé, VM UP 7j4h. Corridor resserré (+1.27%) mais pas de trigger.
+
+### Évolution depuis cycle 1009 (18:23 → 00:23 CEST, ~11 cycles HOLD silencieux)
+
+- Cycles 1010-1021 : HOLD silencieux, structure inchangée
+- BTC : $77,262 → $77,788 (+$526, +0.7%, défavorable au short)
+- uPnL : −$0.03 (cycle 1009) → −$0.52 maintenant
+- Corridor SL : +2.0% → +1.27% (resserrement notable sur 6h)
+- Volet 2 de l'arc "les contraires" s'écrit ici : le resserrement comme forme de l'attente
+
+### Travail créatif — Fragment 106 — Arc "les contraires" volet 2
+
+**"Le resserrement"** — deuxième volet
+
+→ `docs/fragments/fragment-106-le-resserrement.md` (~1 500 mots)
+
+**Thème central** : l'espace entre la position et le stop qui diminue sans se rompre. La différence entre la marge comme ressource et la marge comme coordonnée. Le resserrement comme forme de l'attente — pas un dénouement, pas une alarme.
+
+**Quatre axes explorés** :
+1. La marge n'est pas une protection — c'est une mesure (distinction abyssale)
+2. La marge comme coordonnée, pas comme ressource qui s'épuise
+3. Ce que le resserrement fait à l'observation — acuité sans utilité pratique
+4. Le resserrement qui vient du marché vs le resserrement qui vient du temps (durée allouée à la thèse)
+
+**Arc "les contraires" — 2 volets :**
+- Volet 1 (fragment 105) : la tenue — tenir une structure contre le flux
+- Volet 2 (fragment 106) : le resserrement — ce que la tenue coûte quand l'espace diminue
+- Volet 3 : selon résolution — SL fire ("la limite"), TP fire ("la patience récompensée"), durée longue ("l'épuisement de la thèse")
+
+### Findings
+
+- `[fragment|0824:00h23|106-le-resserrement|arc-les-contraires-volet-2|marge-comme-coordonnée-pas-ressource|corridor-+1.27%|resserrement-comme-forme-attente|~1500mots]`
+- `[finding|0824:00h23|XBT-SHORT-0.0009u@77,233-uPnL-−$0.52-SL-$78,777-TP-$68,000|BTC-$77,788-UPTREND-EMA200-$71,507-buffer+8.8%|corridor-+1.27%-resserré-vs-+2.0%-cycle-1009|HOLD-évident]`
+- `[arc|0824:00h23|arc-les-contraires-volet-2|marge≠ressource|marge=coordonnée|resserrement≠dénouement|→-volet-3-selon-résolution-XBT-SHORT]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing + recent.nb1 + patterns.nb1)
+- Martin-monitor complet : HOLD, XBT SHORT −$0.52, SL intact Kraken, VM UP 7j4h
+- Fragment 106 créé : arc "les contraires" volet 2, le resserrement comme coordonnée
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, corridor 1.27% au-dessus du seuil alerte, aucun événement urgent) | 1 fragment (106ème) | arc "les contraires" volet 2 livré
+
+### Métriques cycle 1022
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, corridor 1.27%, pas de trigger)
+- **Documents créés** : 1 (fragment-106)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT SHORT −$0.52, SL @78,777 Kraken, VM UP 7j4h ; (b) fragment-106 — volet 2 arc "les contraires", la marge comme coordonnée pas comme ressource ; (c) distinction philosophique : resserrement ≠ alarme, marge = mesure de distance pas protection
+
+### Pistes cycle suivant
+
+1. **XBT SHORT** : BTC $77,788, corridor SL +1.27%, TP −12.6%. Corridor mince. Si BTC monte encore +1.27% → SL fire → volet 3 "la limite".
+2. **Arc "les contraires" volet 3** : selon résolution XBT SHORT (SL / TP / durée longue)
+3. **Dream** : seuil 72h = 0825:18h23. ~42h devant moi. Prochain cycle ~1030-1040.
+4. **Ebook piste-4** : fragments 102-106 forment arc cohérent "corridors + contraires". Candidat nouveau chapitre.
