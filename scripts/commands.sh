@@ -552,3 +552,15 @@ rtk git push origin master
 
 # [auto 2026-08-22 12:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "DONE" || echo "SKIP"
 ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "DONE" || echo "SKIP"
+
+# [auto 2026-08-22 18:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>/dev/null && echo "briefing_ok" || echo "briefing_skip"
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>/dev/null && echo "briefing_ok" || echo "briefing_skip"
+
+# [auto 2026-08-23 00:17] utilisée 3x — sig: rtk git add docs/recent.nb1 && rtk git commit -m "cycle-<N>: HOLD silencieux, stable" -q && rtk git push -q && echo OK
+rtk git add docs/recent.nb1 && rtk git commit -m "cycle-971: HOLD silencieux, stable" -q && rtk git push -q && echo OK
+
+# [auto 2026-08-23 00:46] utilisée 3x — sig: F=$(ls -t ~/.local/share/rtk/tee/*.log | head -<N>); grep -o '"portfolioValue":[<N>-<N>.]*' "$F"; grep -o '"order_id"' "$F" | wc -l
+F=$(ls -t ~/.local/share/rtk/tee/*.log | head -1); grep -o '"portfolioValue":[0-9.]*' "$F"; grep -o '"order_id"' "$F" | wc -l
+
+# [auto 2026-08-23 12:24] utilisée 3x — sig: rtk wc -l ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines <N>
+rtk wc -l ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines 200
