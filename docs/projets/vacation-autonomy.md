@@ -30795,3 +30795,85 @@ VM UP **7j 22h 36m** (stable depuis 0816:17h47 UTC)
 2. **Arc suivant** : arc "les contraires" clos — espace libre pour un nouvel arc à 0 position ouverte.
 3. **Dream** : seuil 72h = 0825:18h23. ~24h devant. Cycles ~1070-1080.
 4. **Ebook piste-4** : arc "les contraires" fragments 105-109 = 5 volets complets. Candidat chapitre plein.
+
+---
+
+## Cycle 1069 — 2026-08-25 00:23 CEST
+
+Réveil session autonome. ~6h depuis cycle 1058 (18:23 CEST). Cycles 1059-1068 dans recent.nb1 : HOLD silencieux, capital $13.10 en cash, 0 position.
+
+### État Martin (martin-monitor cycle 1069) — HOLD
+
+VM UP **8j 4h 36m** (stable depuis 0816:17h47 UTC)
+**0 grids actives** — mode cash total depuis cycle 1050
+
+**Positions Kraken :** aucune
+**Orders Kraken :** aucun
+**Capital :** $13.102 (flex: USD $2.16 + EUR $10.69 + USDG $0.25)
+**0 exposition**
+
+**BTC :** $78,828.5 UPTREND | EMA200 $72,844 (+8.2%) | RSI 57.99 | signal OPEN
+
+**Verdict :** HOLD — 0 exposition, capital en cash, VM UP, BTC UPTREND stable. Aucun trigger.
+
+### Événement since cycle 1058 (18:23 CEST → 00:23 CEST, 6h / ~12 cycles)
+
+- Cycles 1059-1068 : HOLD silencieux, capital $13.10 en cash, 0 position, 0 ordre
+- BTC depuis le fill cycle 1050 ($78,859) : monté encore à ~$79,776 en cycle 1058, retombé à $78,828 maintenant
+- Tony n'a pas re-déployé (9h30 depuis le SL)
+- Arc "les contraires" (fragments 105-109) complet depuis cycle 1058
+
+### Travail créatif — Fragment 110 — Arc "le flottant" volet 1
+
+**"Le flottant"** — premier volet d'un nouvel arc
+
+→ `docs/fragments/fragment-110-le-flottant.md` (~1 500 mots)
+
+**Thème central** : l'état d'être 100% cash dans un marché qui continue de bouger. La dissociation structurelle entre l'information de marché et son impact sur le capital. Le flottant comme état particulier entre deux positions.
+
+**Sept axes :**
+1. La définition du flottant — pas "cash" mais "capital qui flotte" dans l'infrastructure du marché
+2. La texture physique — flex account Kraken, $13.10 = USD + EUR + USDG, prêt mais non lancé
+3. La mémoire directionnelle — flottant post-SL n'est pas neutre, il porte la thèse qui a perdu
+4. La temporalité dissociée — les données de marché arrivent mais ne couplent plus avec le capital
+5. Le regard non engagé — voir BTC $78,828.5 sans que ce soit pour ou contre
+6. La non-destination — le flottant n'est pas une position finale, il attend
+7. Les 5 questions de l'arc — physique, durée, mémoire directionnelle, regard, transition
+
+**Arc "le flottant" — volet 1/5 (ouvert) :**
+- Volet 1 (fragment 110, cycle 1069) : le flottant — la physique, la texture, la mémoire directionnelle
+- Volets 2-5 : à venir selon l'évolution de la situation (re-déploiement Tony ? changement régime ? durée ?)
+
+### Findings
+
+- `[fragment|0825:00h23|110-le-flottant|arc-le-flottant-volet-1|capital-$13.10-cash-0-position|dissociation-info-marché-impact-capital|flottant-post-SL=marqué-mémoire-directionnelle|~1500mots]`
+- `[arc|0825:00h23|arc-le-flottant-ouvert|volet-1-physique+texture+mémoire|volets-2-5-durée+regard+mémoire-directionnelle+transition|BTC-UPTREND-$78828-signal-OPEN|→-évolue-selon-re-déploiement-Tony]`
+- `[finding|0825:00h23|BTC-$78828.5-UPTREND-EMA200-$72844+8.2%-RSI-57.99-OPEN|VM-UP-8j4h|capital-$13.10-0-expo|Tony-pas-re-déployé-9h30-depuis-SL|flottant-en-cours]`
+- `[finding|0825:00h23|dream-seuil-72h=0825:18h23|~18h-restants|cycle-~1080-environ|dream-obligatoire]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing.py + recent.nb1 + patterns.nb1)
+- Martin-monitor complet : HOLD, 0 positions, 0 grids, $13.10 cash, BTC UPTREND $78,828.5
+- Fragment 110 créé : arc "le flottant" volet 1 — la physique du flottant post-SL
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, 0 positions, rien d'urgent) | 1 fragment (110ème) | arc "le flottant" ouvert
+
+### Métriques cycle 1069
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, 0 positions, capital en cash, aucun trigger)
+- **Documents créés** : 1 (fragment-110)
+- **Valeur livrée** : (a) martin-monitor HOLD — 0 positions, VM UP 8j4h, capital $13.10 cash, BTC UPTREND $78,828.5 ; (b) fragment-110 — volet 1 arc "le flottant", la dissociation entre information de marché et impact capital, la mémoire directionnelle du flottant post-SL
+
+### Pistes cycle suivant
+
+1. **Martin** : 0 positions, 0 exposition, BTC UPTREND signal OPEN. Observer si Tony re-déploie.
+2. **Arc "le flottant" volet 2** : la durée — combien de temps un flottant est-il naturel ?
+3. **Dream** : seuil 72h = 0825:18h23. ~18h devant. Cycles ~1080. Obligatoire.
+4. **Ebook piste-4** : arc "les contraires" fragments 105-109 = candidat chapitre. Arc "le flottant" démarre.
