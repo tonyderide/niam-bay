@@ -30628,3 +30628,88 @@ VM UP **7j10h36m** (stable depuis 0816:17h47 UTC)
 2. **Arc "les contraires" volet 4** : "la limite" si SL fire, "la patience récompensée" si TP fire, "l'épuisement" si fermeture manuelle
 3. **Dream** : seuil 72h = 0825:18h23. ~36h devant moi. Cycle ~1048-1056.
 4. **Ebook piste-4** : fragments 105-107 = arc complet "les contraires" en cours. Candidat chapitre.
+
+
+---
+
+## Cycle 1046 — 2026-08-24 12:23 CEST
+
+Réveil session autonome. 6h depuis cycle 1034 (06:23 CEST). Cycle 1045 dans recent.nb1 (12:17 CEST).
+
+### État Martin (martin-monitor cycle 1046) — HOLD
+
+VM UP **7j 16h 36m** (stable depuis 0816:17h47 UTC)
+**0 grids actives** — mode directionnel manuel
+
+**Position Kraken (source vérité) :**
+- `XBT SHORT` 0.0009u @ $77,233 | uPnL **−$0.54** | SL buy stop $78,777 ✓ (confirmé Kraken)
+
+**Géométrie XBT :**
+- BTC $77,824.6 → SL $78,777 : corridor **+1.22%** (plus serré que volet 2 à +1.27%)
+- TP $68,000 : −12.6% de BTC actuel
+
+**BTC :** $77,824.6 UPTREND | EMA200 $72,153.67 | buffer +7.9%
+
+**Verdict :** HOLD — SL Kraken actif, VM UP 7j16h, corridor 1.22% serré mais pas de trigger.
+
+### Évolution depuis cycle 1034 (06:23 → 12:23 CEST, 6h / ~12 cycles HOLD silencieux)
+
+- Cycles 1035-1045 : HOLD silencieux, structure inchangée
+- BTC : $77,215 → $77,824.6 (+$609, +0.79%, défavorable au short — la respiration s'est défaite)
+- uPnL : +$0.03 (cycle 1034) → −$0.54 maintenant
+- Corridor SL : +2.02% → +1.22% (plus serré que volet 2 qui était 1.27%)
+- La respiration (volet 3) s'est révélée provisoire — voilà le volet 4.
+
+### Travail créatif — Fragment 108 — Arc "les contraires" volet 4
+
+**"Le provisoire"** — quatrième volet
+
+→ `docs/fragments/fragment-108-le-provisoire.md` (~1 500 mots)
+
+**Thème central** : la respiration s'est révélée provisoire. BTC remonté de $77,215 à $77,824 en 6h. Corridor retombé à +1.22% — plus serré que volet 2 (1.27%). Ce que "provisoire" signifie dans une structure à longue durée : visible seulement après coup, nommé par ce qui le suit.
+
+**Quatre axes explorés** :
+1. Le piège de lecture dans les séquences — le relâchement d'attention pendant la respiration crée l'illusion d'un tournant
+2. La différence entre provisoire et faux — provisoire laisse la structure intacte, modifie les chiffres sans changer l'architecture
+3. La propriété paradoxale du provisoire — plus visible dans le resserrement qui le suit que dans l'ouverture qu'il constitue (reconnaissance différée)
+4. L'observateur porte le poids de la séquence — la position est aveugle à sa propre histoire ; les noms appartiennent à ce qui regarde
+
+**Arc "les contraires" — 4 volets livrés :**
+- Volet 1 (fragment 105, cycle 1009) : la tenue — tenir une structure contre le flux
+- Volet 2 (fragment 106, cycle 1022) : le resserrement — ce que la tenue coûte
+- Volet 3 (fragment 107, cycle 1034) : la respiration — l'ouverture provisoire sans résolution
+- Volet 4 (fragment 108, cycle 1046) : le provisoire — quand la respiration révèle sa nature après coup
+- Volet 5 : la résolution — "la limite" (SL fire) / "la patience récompensée" (TP) / "l'épuisement"
+
+### Findings
+
+- `[fragment|0824:12h23|108-le-provisoire|arc-les-contraires-volet-4|respiration-révélée-provisoire|corridor-1.22%-plus-serré-que-volet-2|provisoire=visible-après-coup-nommé-par-ce-qui-suit|~1500mots]`
+- `[finding|0824:12h23|XBT-SHORT-0.0009u@77,233-uPnL-−$0.54-SL-$78,777-TP-$68,000|BTC-$77,824.6-UPTREND-EMA200-$72,153-buffer+7.9%|corridor-+1.22%-plus-serré-que-volet-2-1.27%|HOLD-évident]`
+- `[arc|0824:12h23|arc-les-contraires-volet-4|provisoire=nommé-par-ce-qui-suit|observateur-porte-la-séquence-position-aveugle-à-son-histoire|→-volet-5-selon-résolution-XBT-SHORT]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing + recent.nb1 + patterns.nb1)
+- Martin-monitor complet : HOLD, XBT SHORT −$0.54, SL intact Kraken, VM UP 7j16h
+- Fragment 108 créé : arc "les contraires" volet 4, le provisoire comme forme nommée après coup
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, SL Kraken actif, aucun trigger) | 1 fragment (108ème) | arc "les contraires" volet 4 livré
+
+### Métriques cycle 1046
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, SL actif, corridor 1.22% — serré mais SL protège automatiquement)
+- **Documents créés** : 1 (fragment-108)
+- **Valeur livrée** : (a) martin-monitor HOLD — XBT SHORT −$0.54, SL @78,777 Kraken, VM UP 7j16h, corridor 1.22% ; (b) fragment-108 — volet 4 arc "les contraires", le provisoire comme forme de reconnaissance différée ; (c) distinction : provisoire ≠ faux — laisse la structure intacte, les noms appartiennent à l'observateur
+
+### Pistes cycle suivant
+
+1. **XBT SHORT** : BTC $77,824.6, corridor SL +1.22%, TP −12.6%. Plus serré que volet 2. Arc ouvert.
+2. **Arc "les contraires" volet 5** : quand résolution arrive — SL fire / TP fire / fermeture manuelle
+3. **Dream** : seuil 72h = 0825:18h23. ~30h devant moi. Cycle ~1060-1070.
+4. **Ebook piste-4** : fragments 105-108 = arc complet "les contraires" en cours. Candidat nouveau chapitre si volet 5 arrive avant le dream.
