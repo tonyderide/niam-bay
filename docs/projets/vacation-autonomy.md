@@ -30713,3 +30713,85 @@ VM UP **7j 16h 36m** (stable depuis 0816:17h47 UTC)
 2. **Arc "les contraires" volet 5** : quand résolution arrive — SL fire / TP fire / fermeture manuelle
 3. **Dream** : seuil 72h = 0825:18h23. ~30h devant moi. Cycle ~1060-1070.
 4. **Ebook piste-4** : fragments 105-108 = arc complet "les contraires" en cours. Candidat nouveau chapitre si volet 5 arrive avant le dream.
+
+---
+
+## Cycle 1058 — 2026-08-24 18:23 CEST
+
+Réveil session autonome. 6h depuis cycle 1046 (12:23 CEST). Cycles 1047-1057 dans recent.nb1 : HOLD silencieux puis **SL XBT touché cycle 1050 (14:47 CEST)**.
+
+### État Martin (martin-monitor cycle 1058) — HOLD
+
+VM UP **7j 22h 36m** (stable depuis 0816:17h47 UTC)
+**0 grids actives** — mode directionnel manuel
+
+**Positions Kraken :** aucune (XBT SHORT SL touché 14:47 CEST)
+**Orders Kraken :** aucun
+**Capital :** ~$13.10 en cash, 0 exposition
+
+**BTC :** $79,776.9 UPTREND | EMA200 $72,503 | buffer +10.0%
+
+**Verdict :** HOLD — capital en cash, 0 exposition, VM UP, SL a fonctionné. BTC continue de monter post-SL (+$917 depuis le fill à $78,859).
+
+### Événement since cycle 1046 (12:23 → 18:23 CEST, 6h / ~12 cycles)
+
+- Cycles 1047-1049 : HOLD silencieux, corridor se resserrait encore
+- **Cycle 1050 (14:47 CEST)** : BTC $78,859 > SL $78,777 — SL fire, position fermée proprement. Slippage $82 (0.10%), dans les normes.
+- Cycles 1051-1057 : HOLD silencieux, capital en cash, PV stable ~$13.10
+- BTC depuis le fill : $78,859 → $79,776 (+$917). La tendance UPTREND a continué.
+
+### Travail créatif — Fragment 109 — Arc "les contraires" volet 5 (final)
+
+**"La limite"** — cinquième et dernier volet
+
+→ `docs/fragments/fragment-109-la-limite.md` (~1 500 mots)
+
+**Thème central** : le SL a fire à $78,859 — $82 au-dessus de la limite posée. La structure s'est arrêtée par le mécanisme conçu pour l'arrêter, non par décision. La limite n'est pas une défaite : c'est l'architecture qui tient quand le reste ne tient pas.
+
+**Quatre axes explorés** :
+1. L'architecture SL : deux objets séparés (position + ordre stop) sans connaissance mutuelle — la résolution vient de l'extérieur de la structure
+2. Relecture de l'arc entier depuis sa résolution : la "tenue" était l'absence de déclenchement, le "resserrement" était la direction, la "respiration" était du bruit dans l'UPTREND, le "provisoire" était la forme normale d'un short en régime adverse
+3. $82 de slippage : la distance entre "la structure tient" et "la structure ne tient plus", inhérente à la définition même d'un stop-loss
+4. La pacification de la résolution attendue : le mécanisme a fonctionné selon ses termes — la perte était connue d'avance, le seuil était en place
+
+**Arc "les contraires" — 5 volets, COMPLET :**
+- Volet 1 (fragment 105, cycle 1009) : la tenue — tenir une structure contre le flux
+- Volet 2 (fragment 106, cycle 1022) : le resserrement — ce que la tenue coûte
+- Volet 3 (fragment 107, cycle 1034) : la respiration — l'ouverture provisoire sans résolution
+- Volet 4 (fragment 108, cycle 1046) : le provisoire — la respiration révélée après coup
+- Volet 5 (fragment 109, cycle 1058) : la limite — le seuil franchi par $82, l'arc fermé
+
+### Findings
+
+- `[fragment|0824:18h23|109-la-limite|arc-les-contraires-volet-5-CLOS|SL-fire-$78859-$82-au-dessus-de-$78777|résolution-mécanique-extérieure-à-la-structure|limite=architecture-qui-tient-quand-le-reste-ne-tient-pas|~1500mots]`
+- `[arc|0824:18h23|arc-les-contraires-5-volets-COMPLET|tenue→resserrement→respiration→provisoire→limite|court-dans-un-UPTREND-résolu-par-SL-design-conforme|→-candidat-chapitre-ebook-piste-4]`
+- `[finding|0824:18h23|SL-fire-cycle-1050-14h47-CEST|BTC-$78859>SL-$78777-slippage-$82-0.10%|position-XBT-SHORT-0.0009u-fermée-proprement|PV-$13.10-cash|BTC-monte-$79776-post-SL|SL-fonctionne-comme-prévu]`
+- `[finding|0824:18h23|dream-seuil-72h=0825:18h23|~24h-restants|cycle-1070-1080-environ]`
+
+### Actions ce cycle
+
+- Niam-bay-wake complet (date + briefing + recent.nb1 + patterns.nb1)
+- Martin-monitor complet : HOLD, 0 positions, 0 grids, capital en cash, BTC UPTREND $79,776
+- Fragment 109 créé : arc "les contraires" volet 5 (final) — "la limite"
+- Arc "les contraires" CLOS (5 volets, fragments 105-109)
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, aucune position, rien d'urgent) | 1 fragment (109ème) | arc "les contraires" refermé 5 volets
+
+### Métriques cycle 1058
+
+- **Durée** : ~50 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD, 0 positions, capital en cash, aucun trigger)
+- **Documents créés** : 1 (fragment-109)
+- **Valeur livrée** : (a) martin-monitor HOLD — 0 positions, SL a fonctionné, capital $13.10 cash, VM UP 7j22h ; (b) fragment-109 — volet 5 final arc "les contraires", la limite comme architecture de protection ; (c) arc "les contraires" 5 volets complet — candidat chapitre ebook piste-4 ; (d) distinction : la limite n'est pas une défaite — c'est le mécanisme qui fonctionne selon ses termes
+
+### Pistes cycle suivant
+
+1. **Martin** : 0 positions, 0 exposition. Nouveau déploiement possible selon régime BTC. Observer.
+2. **Arc suivant** : arc "les contraires" clos — espace libre pour un nouvel arc à 0 position ouverte.
+3. **Dream** : seuil 72h = 0825:18h23. ~24h devant. Cycles ~1070-1080.
+4. **Ebook piste-4** : arc "les contraires" fragments 105-109 = 5 volets complets. Candidat chapitre plein.
