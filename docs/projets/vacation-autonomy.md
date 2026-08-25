@@ -30877,3 +30877,65 @@ VM UP **8j 4h 36m** (stable depuis 0816:17h47 UTC)
 2. **Arc "le flottant" volet 2** : la durée — combien de temps un flottant est-il naturel ?
 3. **Dream** : seuil 72h = 0825:18h23. ~18h devant. Cycles ~1080. Obligatoire.
 4. **Ebook piste-4** : arc "les contraires" fragments 105-109 = candidat chapitre. Arc "le flottant" démarre.
+
+---
+
+## Cycle 1076 — 2026-08-25 06h23 CEST — Arc "le flottant" volet 2
+
+6h après cycle 1069. Tony n'a pas redéployé. BTC est passé de $78,828 à $80,336 (+$1,508 en 6h).
+
+### État Martin — HOLD
+
+- VM UP 8j 10h36m (started 2026-08-16T17:47:21Z)
+- Positions : 0 | Grids actives : 0 | Ordres Kraken : 0
+- Capital : ~$12.85 en flex (USD $2.16 + EUR 9.17)
+- BTC : $80,336 UPTREND | EMA200 $73,284 cushion +9.6%
+- Aucun trigger ABORT/WARN
+
+SL XBT SHORT fire cycle-1050 (0824:14h47 @ $78,859). Flottant depuis : 25 cycles silencieux. BTC continue de monter — la thèse SHORT était fausse, le SL a fait son travail.
+
+### Travail créatif — Fragment 111 : arc "le flottant" volet 2 (la durée)
+
+Arc "le flottant" volet 1 (fragment 110, cycle 1069) posait la physique : qu'est-ce que le flottant ? Volet 2 pose la durée : qu'est-ce qui change dans le flottant quand la durée s'allonge ?
+
+Réponse centrale : la mémoire directionnelle du flottant se transforme. D'abord post-erreur (regarde en arrière — la position qui vient de mourir), puis pré-nouvelle-position (regarde en avant). Ce basculement ne s'annonce pas. BTC à $80,336 = 25 cycles de preuve que la thèse SHORT était fausse. La durée du flottant est proportionnelle à la force de conviction de la thèse qui vient de mourir.
+
+**Six axes** :
+1. L'imperméabilité du flottant au prix — 6h de marché, 0 impact sur $12.85
+2. La question mal posée — "durée naturelle" n'existe pas, c'est le narrateur qui l'invente
+3. La mémoire orientée post-SHORT en marché haussier — adversaire qui continue de prouver quelque chose
+4. La durée proportionnelle à la conviction de la thèse défunte
+5. Le seuil de saturation informationnelle — quand le deuil finit sans qu'on le sache
+6. Le basculement : flottant regarde en arrière → flottant regarde en avant
+
+### Findings
+
+- `[fragment|0825:06h23|111-la-duree|arc-le-flottant-volet-2|BTC-$80336-+$1508-depuis-SL|durée-proportionnelle-conviction-thèse-défunte|basculement-arrière→avant-non-annoncé|~1100mots]`
+- `[finding|0825:06h23|BTC-$80336-UPTREND-EMA200-$73284-cushion+9.6%|VM-UP-8j10h|capital-$12.85-0-expo|Tony-pas-re-déployé-31h-depuis-SL|flottant-cycle-25]`
+- `[finding|0825:06h23|dream-seuil-72h=0825:18h23|~12h-restants|obligatoire]`
+
+### Actions ce cycle
+
+- niam-bay-wake complet
+- martin-monitor : HOLD, 0 positions, 0 grids, $12.85 cash, BTC UPTREND $80,336
+- Fragment 111 créé : arc "le flottant" volet 2 — la durée
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, 0 positions, 0 trigger) | 1 fragment (111ème)
+
+### Métriques cycle 1076
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0 (HOLD calme, rien d'urgent, heure = 06h23 Paris)
+- **Documents créés** : 1 (fragment-111)
+- **Valeur livrée** : (a) martin-monitor HOLD — 0 positions, VM UP 8j10h, capital $12.85 cash, BTC UPTREND $80,336 ; (b) fragment-111 — volet 2 arc "le flottant", la transformation de la mémoire directionnelle avec la durée
+
+### Pistes cycle suivant
+
+1. **Martin** : observer si Tony redéploie. BTC UPTREND signal OPEN — conditions réunies pour une LONG ou grid NEUTRAL.
+2. **Arc "le flottant" volet 3** : le regard non engagé — voir le marché sans y participer, la qualité d'attention que ça produit.
+3. **Dream** : seuil 72h = 0825:18h23. ~12h. Obligatoire.
