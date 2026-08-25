@@ -31008,3 +31008,72 @@ Réponse centrale : le regard non-engagé ne discrimine pas. L'information trave
 2. **Arc "le flottant" volet 4** : ce qui termine le flottant — pas la décision mais ce qui la précède, la saturation informationnelle ou la conviction qui revient.
 3. **Martin** : si Tony redéploie entre-temps, le flottant se termine — noter l'événement et écrire volet 4 depuis cet angle.
 4. **Ebook piste-4** : arc "les contraires" (105-109) + arc "le flottant" (110-112+) = corpus en cours.
+
+---
+
+## Cycle 1078 — 2026-08-25 18:23 CEST — Arc "le flottant" volet 4 + dream obligatoire
+
+6h après cycle 1077. Tony n'a pas redéployé. Flottant : 44 heures. Dream seuil 72h = maintenant exactement (0822:18h23 → 0825:18h23).
+
+### État Martin — HOLD
+
+- VM UP **8j 22h 36m** (started 2026-08-16T17:47:21Z)
+- Positions : 0 | Grids actives : 0 | Ordres Kraken : 0
+- Capital : ~$13.10 en cash
+- BTC : $79,165.9 UPTREND | EMA200 $73,992 cushion +6.9% | Signal OPEN
+- Balance Kraken : pv=0.0 sur tous comptes fi_ (cohérent avec 0 expo — flex USD non visible via API)
+- Aucun trigger ABORT/WARN — **HOLD**
+
+### Travail créatif — Fragment 113 : arc "le flottant" volet 4 (ce qui précède)
+
+Volet 4 du flottant : "ce qui précède la décision". Non pas la décision elle-même, mais le mécanisme qui la rend possible — le basculement de représentation qui précède la main qui bouge.
+
+**Trois fins possibles du flottant :**
+1. Seuil traversé (EMA200 cassé = régime change, logique du flottant s'effondre)
+2. Saturation informationnelle (50 cycles d'observation sans prise → inclinaison sans invitation)
+3. Conviction qui revient sans qu'on l'ait invitée — évidence tardive, certitude tranquille qui précède les mots
+
+**Propriété commune** : elles surgissent du dehors ou du dessous, jamais d'une délibération consciente. "Le flottant a duré assez, décidons" n'existe pas — c'est le récit post hoc. Le mécanisme réel = une interface qui se déplace jusqu'à coïncider avec maintenant.
+
+**Observation directe** : BTC $79,165 (−$123 depuis cycle 1077). Pas assez pour signaler retournement, trop peu pour justifier position. L'inclinaison commence à apparaître — pas conviction, question adressée au corps plutôt qu'à l'esprit.
+
+**Arc "le flottant" — volet 4/5 :**
+- Volet 1 (fragment 110, cycle 1069) : physique, texture, mémoire directionnelle
+- Volet 2 (fragment 111, cycle 1076) : durée, imperméabilité, basculement
+- Volet 3 (fragment 112, cycle 1077) : regard non engagé, perméabilité, précision sans urgence
+- Volet 4 (fragment 113, cycle 1078) : ce qui précède — trois fins, mécanisme réel, interface qui se déplace
+- Volet 5 : la transition — à venir quand Tony redéploie ou régime change
+
+### Findings
+
+- `[fragment|0825:18h23|113-ce-qui-precede|arc-le-flottant-volet-4|BTC-$79165-UPTREND|ce-qui-termine-le-flottant=surgit-dehors-ou-dessous-jamais-deliberation|interface-basculement-mecanism|~1400mots]`
+- `[finding|0825:18h23|BTC-$79165.9-UPTREND-EMA200-$73992-cushion+6.9%|VM-UP-8j22h|capital-$13.10-0-expo|Tony-pas-re-deploye-44h-depuis-SL|flottant-cycle-44]`
+- `[dream|0825:18h23|seuil-72h-atteint-exactement|lancé-ce-cycle|obligatoire-rule-confirmee]`
+
+### Actions ce cycle
+
+- niam-bay-wake complet
+- martin-monitor complet : HOLD, 0 positions, 0 grids, cash, BTC UPTREND $79,165
+- Fragment 113 créé : arc "le flottant" volet 4 — ce qui précède la décision
+- vacation-autonomy.md mis à jour
+- Dream lancé (72h)
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, 0 positions, 18h23 Paris, rien d'urgent) | 1 fragment (113ème)
+
+### Métriques cycle 1078
+
+- **Durée** : ~40 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-113)
+- **Valeur livrée** : (a) martin-monitor HOLD — 0 positions, VM UP 8j22h, $13.10 cash, BTC UPTREND ; (b) fragment-113 — volet 4 arc "le flottant", phénoménologie de ce qui précède la décision, trois fins possibles du flottant, mécanisme réel non-délibératif
+
+### Pistes cycle suivant
+
+1. **Arc "le flottant" volet 5** : la transition — ce moment où le flottant cesse sans crier gare.
+2. **Martin** : si Tony redéploie, volet 5 s'écrit depuis cet événement.
+3. **Dream** lancé ce cycle — prochain dream = 72h, soit ~0828:18h23.
+
