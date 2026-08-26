@@ -31147,3 +31147,96 @@ Connexion avec la taxe de vérification : les 3 ordres fantômes avaient une sen
 2. **Martin** : si BTC approche TP $80,739 ou SL $77,211, Telegram si hors heures Paris.
 3. **Dream** : prochain seuil ~0828:18h23 (72h depuis le dernier).
 4. **Ebook piste-4** : arc "le flottant" (110-114) + arc "l'encadré" (115+) = nouveau corpus.
+
+---
+
+## Cycle 1080 — 2026-08-26 12:23 CEST — Arc "l'encadré" volet 2
+
+*Cycle autonome entre 06h23 et 12h23. Tony toujours absent.*
+
+### État Martin — HOLD
+
+- VM UP 9j 16h | Position LONG XBT 0.0013 @78387 | uPnL +$0.24 | BTC $78,562
+- SL $77,211 | TP $80,739 — live Kraken | Grids actives : 0
+- BTC UPTREND | EMA200 ~$74,600 cushion +5.3%
+- Marque haute atteinte à 06h23 : $79,019 (+$0.87) — redescendu depuis
+
+### Travail créatif
+
+- Fragment 116 créé : arc "l'encadré" volet 2 — "La marque haute"
+  - Thème : le meilleur moment du trade sans témoin ; l'intérieur du cadre libre d'osciller ; "Un événement c'est uniquement 77211 ou 80739"
+- Pensée "Deux types d'exploration" : extensive (200 idées sans SL) vs. intensive (1 trade avec critère d'arrêt) — la vraie distinction = "a-t-on un SL ?"
+
+### Findings
+
+- `[fragment|0826:12h23|116-la-marque-haute|arc-l-encadre-volet-2|BTC-78562-uPnL+$0.24|marque-haute-79019-06h23-sans-temoin|interieur-libre|evenement=77211-ou-80739-seulement|~600mots]`
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram | 1 fragment (116ème) + 1 pensée
+
+---
+
+## Cycle 1081 — 2026-08-26 18:23 CEST — Arc "l'encadré" volet 3 : le passage
+
+*18h14 après cycle 1079. Tony en route du travail (Galeries Lafayette, 18h Paris).*
+
+### État Martin — HOLD
+
+- VM UP **9j 22h 36m** (started 2026-08-16T17:47:21Z)
+- **Position : LONG XBT 0.0013 @78387 | uPnL −$0.45 | BTC $78,035.5**
+- SL $77,211 (1,06% de marge) | TP $80,739 (3,5%) — vérifiés live Kraken
+- Grids actives : 0 | Toutes inactive: false
+- BTC : $78,035.5 UPTREND | EMA200 $74,983 cushion +4.1% | RSI 40.71 (faible)
+- **HOLD** — cadre tient, aucun trigger déclenché. Marge SL divisée par 2 depuis 06h23 (2,3% → 1,06%)
+
+### Contexte — trajectoire de la position
+
+- 03h09 : entrée LONG @78387 (Tony endormi, SL/TP posés via API Kraken signée directe)
+- 06h23 (cycle 1079) : +$0.87, BTC $79,019 — marque haute
+- 12h23 (cycle 1080) : +$0.24, BTC $78,562 — descente entamée
+- 18h23 (ce cycle) : −$0.45, BTC $78,035 — passage sous l'entrée entre 12h et 18h
+
+### Travail créatif — Fragment 117 : arc "l'encadré" volet 3 (le passage)
+
+Thème central : le moment où la position a repassé sous l'entrée (78387) entre 12h23 et 18h23. Timestamp inconnu — pas d'alerte, pas d'événement. L'entrée n'est pas un seuil architecturalement significatif (seuls 77211 et 80739 le sont), mais « négatif » vs « positif » a une qualité émotionnelle réelle. Le cadre ne promet pas le confort — il promet seulement que la perte maximale est connue à l'avance.
+
+Connexion avec la pensée "Deux types d'exploration" du cycle 1080 : "Le trade a un SL. C'est pour ça qu'on peut dormir."
+
+**Arc "l'encadré" — état de l'arc :**
+- Volet 1 (fragment 115, cycle 1079) : La garde — structure vs. acte, SL comme condition préalable
+- Volet 2 (fragment 116, cycle 1080) : La marque haute — meilleur moment sans témoin, intérieur libre
+- Volet 3 (fragment 117, cycle 1081) : Le passage — traversée sous l'entrée, géométrie de l'intérieur
+- Volet 4 : à écrire selon l'issue (TP touché / SL touché / Tony intervient)
+
+### Findings
+
+- `[fragment|0826:18h23|117-le-passage|arc-l-encadre-volet-3|BTC-78035.5-uPnL-$0.45|passage-sous-entree-78387-timestamp-inconnu|marge-SL-1.06%|cadre=promesse-perte-max-pas-confort|~700mots]`
+- `[finding|0826:18h23|BTC-$78035.5-UPTREND-EMA200-$74983-cushion+4.1%|RSI-40.71-faible|VM-UP-9j22h|LONG-XBT-uPnL-$0.45|SL-77211-TP-80739-Kraken-confirmes|marge-SL-1.06%|HOLD]`
+
+### Actions ce cycle
+
+- niam-bay-wake complet (date + briefing.py + recent.nb1 + patterns.nb1 + briefing.md)
+- martin-monitor complet : HOLD — 1 LONG XBT −$0.45, SL/TP Kraken live, BTC UPTREND
+- Fragment 117 créé : arc "l'encadré" volet 3 — le passage
+- vacation-autonomy.md mis à jour (retroactif cycle 1080 + cycle 1081)
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, 18h23 Paris, pas hors-heures, cadre tient) | 1 fragment (117ème)
+
+### Métriques cycle 1081
+
+- **Durée** : ~45 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-117)
+- **Valeur livrée** : (a) martin-monitor HOLD — LONG XBT −$0.45, SL/TP Kraken live, VM UP 9j22h, BTC $78,035 UPTREND ; (b) fragment-117 — volet 3 arc "l'encadré", phénoménologie du passage sous l'entrée, l'encadrement comme promesse de perte-max pas de confort
+
+### Pistes cycle suivant
+
+1. **Arc "l'encadré" volet 4** : selon l'issue — TP touché, SL touché, ou Tony intervient.
+2. **Attention SL** : BTC à 1,06% du SL ($77,211). Si BTC descend sous $77,500, Telegram — 19h-21h Paris = heures actives Tony.
+3. **Dream** : prochain seuil ~0828:18h23 (72h depuis le dernier rêve 0825:18h23).
+4. **Ebook piste-4** : arc "le flottant" (110-114) + arc "l'encadré" (115-117+) = corpus de 8 fragments en cours.
