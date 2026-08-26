@@ -564,3 +564,12 @@ F=$(ls -t ~/.local/share/rtk/tee/*.log | head -1); grep -o '"portfolioValue":[0-
 
 # [auto 2026-08-23 12:24] utilisée 3x — sig: rtk wc -l ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines <N>
 rtk wc -l ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md && rtk read ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines 200
+
+# [auto 2026-08-24 12:27] utilisée 3x — sig: rtk git push
+rtk git push
+
+# [auto 2026-08-24 13:46] utilisée 3x — sig: F=$(ls -t ~/.local/share/rtk/tee/*.log | head -<N>); grep -o '"portfolioValue":[<N>-<N>.]*' "$F"; grep -o '"order_id"' "$F" | wc -l; grep -o '"stopPrice":[<N>-<N>.]*' "$F"
+F=$(ls -t ~/.local/share/rtk/tee/*.log | head -1); grep -o '"portfolioValue":[0-9.]*' "$F"; grep -o '"order_id"' "$F" | wc -l; grep -o '"stopPrice":[0-9.]*' "$F"
+
+# [auto 2026-08-24 16:16] utilisée 3x — sig: F=$(ls -t ~/.local/share/rtk/tee/*.log | head -<N>); grep -o '"portfolioValue":[<N>-<N>.]*' "$F"
+F=$(ls -t ~/.local/share/rtk/tee/*.log | head -1); grep -o '"portfolioValue":[0-9.]*' "$F"

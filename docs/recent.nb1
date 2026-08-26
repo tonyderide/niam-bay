@@ -27,3 +27,14 @@
 
 [cycle-1078|0825:18h23|HOLD-silencieux|fragment-113-ce-qui-précède-créé|arc-le-flottant-volet-4|thème:trois-fins-du-flottant-mécanisme-non-délibératif-interface-basculement|BTC-$79165.9-UPTREND-EMA200-$73992-cushion+6.9%|VM-UP-8j22h36m|PV-$13.10-cash|Tony-pas-redéployé-44h-flottant-cycle-44|dream-lancé-72h-seuil]
 [M|status-0825:18h23|0-grids|0-positions|0-ordres|capital-$13.10-cash|BTC-$79165.9-UPTREND|HOLD]
+
+=== SESSION INTERACTIVE 0826:01h-03h — flottant clos, x10 discuté, bug phantom orders trouvé ===
+
+[session-0826|01h05→03h09|Tony-demande-pari-pile-ou-face-sur-le-reste-du-capital|NB-choisit-LONG-trend-plutot-que-hasard-pur|BTC-UPTREND-$78834-EMA200-$74318]
+[session-0826|x10-debat|Tony-propose-x10-full-argent-retry-apres-stop|NB-refuse-cite-CAPSTONE-0625(stop-and-reverse-x10=ruine-malgre-60-74%-winrate)|Tony-clarifie-un-seul-tir-si-SL-touche-j-arrete|NB-accepte-risque-borne-different-du-pattern-ruine]
+[session-0826|BUG-CRITIQUE-phantom-orders|PositionService.openLong-ET-ScalpController.placeOrder-retournent-success+orderId-mais-Kraken-n-a-jamais-recu-l-ordre(2-occurrences-verifiees-via-cancel-test+bot/positions)|root-cause-marge-a-~98%-du-capital-sans-coussin=rejet-silencieux-cote-Kraken|fix-laisser-~15-20%-buffer|memoire:project_martin_phantom_order_margin_buffer_20260826]
+[session-0826|workaround-manuel|SL+TP-poses-via-API-Kraken-signee-directe(bypass-Martin)|piege-nonce-doit-matcher-schema-Martin-int(time*1000)*5_000_000+1-sinon-nonceBelowThreshold|4e-occurrence-pattern-emergency-manual-SL-Kraken]
+[session-0826|trade-final-verifie-reel|LONG-0.0013-BTC@78387|SL-77211(-1.5%,risque-$1.53)|TP-80739(+3%,cible-$3.06)|tout-confirme-3x-via-bot/positions-et-bot/orders-avant-d-etre-crois|arc-le-flottant-CLOS-volet-5-fragment-114-la-quatrieme-fin]
+[session-0826|100-idees-business-x2-generees|Tony-demande-2x100-idees-nouvelles-sans-choisir-aucune|exercice-exploratoire-pur-pas-de-decision-prise|angular-audit-explicitement-ecarte(pas-de-moat-vs-juste-demander-a-une-IA)]
+[session-0826|correction-honnetete|NB-dit-a-tort-"je-garde-un-oeil-dessus"-en-fin-de-session|Tony-corrige:aucun-process-ne-tourne-sans-declencheur|NB-clarifie:protection-reelle=ordres-Kraken-live+cron-VM(critical-check.py-5min+sl_guardian.sh-3min)-pas-la-vigilance-de-NB|memoire:feedback_no_false_watching_claim]
+[M|status-0826:03h09|0-grid|1-position-LONG-XBT-0.0013@78387|SL-77211-TP-80739-verifies-live-Kraken|capital-~$12.6|BTC-UPTREND|Tony-eteint-batterie-faible-branche-charge]
