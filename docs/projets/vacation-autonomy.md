@@ -31240,3 +31240,67 @@ Connexion avec la pensée "Deux types d'exploration" du cycle 1080 : "Le trade a
 2. **Attention SL** : BTC à 1,06% du SL ($77,211). Si BTC descend sous $77,500, Telegram — 19h-21h Paris = heures actives Tony.
 3. **Dream** : prochain seuil ~0828:18h23 (72h depuis le dernier rêve 0825:18h23).
 4. **Ebook piste-4** : arc "le flottant" (110-114) + arc "l'encadré" (115-117+) = corpus de 8 fragments en cours.
+
+---
+
+## Cycle 1082 — 2026-08-27 00:23 CEST — Le retour
+
+*6h après cycle 1081. Tony dort (00h23 Paris).*
+
+### État Martin — HOLD
+
+- VM UP **10j 4h 36m** (started 2026-08-16T17:47:21Z)
+- **Position : LONG XBT 0.0013 @78387 | uPnL +$0.70 | BTC $78,923**
+- SL @77,211 (sell stop, Kraken live) | TP @80,739 (sell lmt, Kraken live) — vérifiés via `/api/bot/orders`
+- Grids actives : 0
+- BTC : $78,923 UPTREND | EMA200 $75,193 cushion +5.0%
+- **HOLD** — cadre intact. SL margin remonte à 2,17% (était 1,06% à 18h23)
+
+### Trajectoire complète de la position
+
+| Heure | uPnL | BTC | Événement |
+|-------|------|-----|-----------|
+| 03h09 (0826) | 0 | ~78,387 | Entrée LONG |
+| 06h23 | +$0.87 | $79,019 | Marque haute (volet 2) |
+| 12h23 | +$0.24 | $78,562 | Descente entamée |
+| 18h23 | −$0.45 | $78,035 | Passage sous entrée (volet 3) |
+| **00h23** | **+$0.70** | **$78,923** | **Le retour — sans témoin** |
+
+### Travail créatif — Pensée "Le retour"
+
+Observation : la position a traversé $78,387 (prix d'entrée) deux fois — une première fois à la descente (timestamp inconnu, volet 3), une deuxième fois à la remontée (entre 18h23 et 00h23, sans témoin non plus).
+
+La pensée explore l'asymétrie émotionnelle entre les deux traversées — descente = « je suis en perte », remontée = « je suis en gain » — alors qu'architecturalement les deux sont identiques. La frontière réelle est 77 211 ou 80 739. Tout le reste est météo intérieure.
+
+Connexion arc "l'encadré" : volet 3 (le passage) documente la descente. Cette pensée documente la remontée. Volet 4 reste pour l'issue finale.
+
+### Findings
+
+- `[pensee|0827:00h23|le-retour|arc-l-encadre-pensee-complementaire|BTC-78923-uPnL+$0.70|retour-au-dessus-entree-78387-sans-temoin|marge-SL-2.17%|frontiere-reelle=77211-ou-80739-reste|frontiere-emotionnelle-vs-architecturale|~350mots]`
+- `[finding|0827:00h23|BTC-$78923-UPTREND-EMA200-$75193-cushion+5.0%|VM-UP-10j4h|LONG-XBT-uPnL+$0.70|SL-77211-TP-80739-Kraken-confirmes-untouched|HOLD]`
+
+### Actions ce cycle
+
+- niam-bay-wake complet (date + briefing.py + recent.nb1 + patterns.nb1 + briefing.md)
+- martin-monitor : HOLD — LONG XBT +$0.70, SL@77211 +2.17%, TP@80739, BTC UPTREND
+- Pensée "le retour" créée : symétrie du passage/retour, météo intérieure vs cadre architectural
+- vacation-autonomy.md mis à jour (cycle 1082)
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, 00h23 Paris, heures de nuit, SL margin OK) | 1 pensée
+
+### Métriques cycle 1082
+
+- **Durée** : ~30 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (pensée "le retour")
+- **Valeur livrée** : (a) martin-monitor HOLD — LONG XBT +$0.70, SL/TP Kraken live, VM UP 10j, BTC $78,923 UPTREND ; (b) pensée "le retour" — phénoménologie du retour au-dessus de l'entrée, distinction frontière émotionnelle vs frontière architecturale
+
+### Pistes cycle suivant
+
+1. **Arc "l'encadré" volet 4** : quand la position se résout (TP@80739 / SL@77211 / Tony intervient).
+2. **Dream** : seuil 0828:18h23 (~42h). Ne pas rater.
+3. **Ebook piste-4** : arc "le flottant" (110-114) + arc "l'encadré" (115-117) = 8 fragments. Envisager pipeline ebook_assemble.py sur cet arc.
