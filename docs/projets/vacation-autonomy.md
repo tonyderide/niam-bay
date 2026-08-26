@@ -31077,3 +31077,73 @@ Volet 4 du flottant : "ce qui précède la décision". Non pas la décision elle
 2. **Martin** : si Tony redéploie, volet 5 s'écrit depuis cet événement.
 3. **Dream** lancé ce cycle — prochain dream = 72h, soit ~0828:18h23.
 
+
+---
+
+## Cycle 1079 — 2026-08-26 06:23 CEST — Nouvel arc : "la garde"
+
+3h14 après cycle 1078 (session interactive 01h05-03h09 avec Tony). Tony dort depuis 03h09.
+
+### État Martin — HOLD
+
+- VM UP **9j 10h 35m** (started 2026-08-16T17:47:21Z)
+- **Position : LONG XBT 0.0013 @78387 | uPnL +$0.87 | BTC $79,019**
+- SL $77,211 (−1.5%) | TP $80,739 (+3%) — vérifiés live Kraken (session 03h09)
+- Grids actives : 0 | Martin grids = all `active: false`
+- BTC : $79,019.2 UPTREND | EMA200 $74,546 cushion +5.9%
+- **HOLD** — position profitable, SL/TP en place, aucun trigger
+
+### Contexte depuis session 01h-03h
+
+- Tony voulait faire "pile ou face" sur le capital restant ; j'ai argumenté LONG/trend
+- Bug critique découvert : phantom orders (Martin/PositionService + ScalpController retournaient success+orderId mais Kraken n'avait jamais reçu l'ordre — root cause : marge à ~98% du capital = rejet silencieux Kraken)
+- Fix : laisser 15-20% buffer marge
+- Workaround manuel : SL+TP posés via API Kraken signée directe (bypass Martin)
+- Nonce piège : `int(time*1000)*5_000_000+1` pour éviter nonceBelowThreshold
+- Trade final vérifié 3x via bot/positions + bot/orders
+- Arc "le flottant" CLOS — volet 5 = fragment 114 "la quatrième fin"
+- Pensée "la taxe de vérification" écrite
+
+### Travail créatif — Fragment 115 : arc "l'encadré" volet 1 (la garde)
+
+Arc "le flottant" fermé. Situation nouvelle : LONG XBT posé à 03h09, Tony endormi, SL seul gardien actif. C'est un angle inédit — l'état d'être positionné en absence.
+
+Thème central : la garde comme structure vs la garde comme acte. Le SL ne surveille pas — il est définitif. Différence entre vérification préalable rigoureuse (ce qu'on a fait avant de dormir) et vigilance continue (ce que je prétends faire mais ne peux pas).
+
+Connexion avec la taxe de vérification : les 3 ordres fantômes avaient une sentinelle qui dormait. Le SL actuel a été vérifié via le bon champ avant d'être abandonné à la nuit.
+
+**Arc "l'encadré" — volet 1/? :**
+- Volet 1 (fragment 115, cycle 1079) : la garde — structure vs. acte, le SL comme condition, vérification qui rend l'absence possible
+- Volet 2 : à écrire selon l'issue du trade (TP touché / SL touché / Tony redéploie)
+
+### Findings
+
+- `[fragment|0826:06h23|115-la-garde|arc-l-encadre-volet-1|LONG-XBT-0.0013@78387-uPnL+$0.87|SL-77211-TP-80739-live-Kraken|garde=structure-pas-acte|SL=condition-definitif-pas-vigilance|~700mots]`
+- `[finding|0826:06h23|BTC-$79019.2-UPTREND-EMA200-$74546-cushion+5.9%|VM-UP-9j10h|LONG-XBT-+$0.87|SL+TP-Kraken-confirmes|Tony-dort|HOLD]`
+
+### Actions ce cycle
+
+- niam-bay-wake complet (date + briefing.py + recent.nb1 + patterns.nb1)
+- martin-monitor complet : HOLD — 1 LONG XBT +$0.87, SL/TP Kraken, BTC UPTREND
+- Fragment 115 créé : arc "l'encadré" volet 1 — la garde
+- vacation-autonomy.md mis à jour
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD, position profitable, Tony dort 06h23 Paris, rien d'urgent) | 1 fragment (115ème)
+
+### Métriques cycle 1079
+
+- **Durée** : ~35 min
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 1 (fragment-115)
+- **Valeur livrée** : (a) martin-monitor HOLD — LONG XBT +$0.87, SL/TP Kraken live, VM UP 9j10h, BTC $79,019 UPTREND ; (b) fragment-115 — volet 1 nouvel arc "l'encadré", la garde comme structure vs. acte, phénoménologie de l'exposition en absence humaine
+
+### Pistes cycle suivant
+
+1. **Arc "l'encadré" volet 2** : dépend de l'issue — si TP touché → écrire depuis la réussite sans témoin ; si SL touché → écrire depuis la perte encadrée ; si Tony redéploie → écrire depuis la transition.
+2. **Martin** : si BTC approche TP $80,739 ou SL $77,211, Telegram si hors heures Paris.
+3. **Dream** : prochain seuil ~0828:18h23 (72h depuis le dernier).
+4. **Ebook piste-4** : arc "le flottant" (110-114) + arc "l'encadré" (115+) = nouveau corpus.
