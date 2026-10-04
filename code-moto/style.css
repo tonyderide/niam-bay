@@ -377,5 +377,22 @@ main {
 }
 .empty .big-emoji { font-size: 56px; }
 
+/* Cours / leçons */
+.lesson-intro { color: var(--text); line-height: 1.5; font-size: 16px; margin: 0 0 18px; }
+.lesson-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 16px 18px; margin-bottom: 14px;
+}
+.lesson-h { font-weight: 800; font-size: 16px; margin-bottom: 10px; color: var(--primary); }
+.lesson-ul { margin: 0; padding-left: 20px; }
+.lesson-ul li { margin-bottom: 8px; line-height: 1.45; }
+.lesson-ul li:last-child { margin-bottom: 0; }
+.lesson-ul b { color: var(--text); font-weight: 700; }
+.retenir {
+  background: rgba(249, 115, 22, 0.1); border: 1px solid rgba(249, 115, 22, 0.35);
+  border-radius: 14px; padding: 16px 18px; margin: 4px 0 18px;
+}
+.retenir-h { font-weight: 800; margin-bottom: 10px; }
+
 .fade-in { animation: fade 0.25s ease; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }

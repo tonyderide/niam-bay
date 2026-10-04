@@ -7,6 +7,7 @@
 
   const THEMES = window.THEMES;
   const QUESTIONS = window.QUESTIONS;
+  const LESSONS = window.LESSONS || [];
   const STORE_KEY = "codemoto:v1";
 
   const app = document.getElementById("app");
@@ -29,6 +30,7 @@
   let store = loadStore();
   store.seen = store.seen || {};        // id -> true si correctement répondu au moins une fois
   store.mistakes = store.mistakes || {}; // id -> true si déjà raté
+  store.read = store.read || {};         // thème -> true si la leçon a été lue
   store.streak = store.streak || 0;
   store.bestExam = store.bestExam || 0;
   store.examsDone = store.examsDone || 0;
@@ -58,7 +60,7 @@
   brandBtn.addEventListener("click", renderHome);
   resetBtn.addEventListener("click", () => {
     if (confirm("Réinitialiser toute ta progression (questions vues, erreurs, score) ?")) {
-      store = { seen: {}, mistakes: {}, streak: 0, bestExam: 0, examsDone: 0 };
+      store = { seen: {}, mistakes: {}, read: {}, streak: 0, bestExam: 0, examsDone: 0 };
       persist();
       updateStreakBadge();
       renderHome();
@@ -75,7 +77,8 @@
     const mistakeCount = Object.keys(store.mistakes).length;
 
     const modes = [
-      { emoji: "📚", title: "Apprendre par thème", desc: "Réviser tranquillement, thème par thème", act: renderThemes },
+      { emoji: "📖", title: "Les cours", desc: "Apprendre les règles, leçon par leçon", act: renderCourses },
+      { emoji: "📚", title: "S'entraîner par thème", desc: "Des questions, thème par thème", act: renderThemes },
       { emoji: "⚡", title: "Quiz rapide", desc: "10 questions au hasard", act: () => startQuiz(pickRandom(10), "Quiz rapide") },
       { emoji: "📝", title: "Examen blanc", desc: "40 questions comme à l'épreuve", act: () => startQuiz(pickRandom(40), "Examen blanc", true) },
       { emoji: "🔁", title: "Mes erreurs", desc: mistakeCount ? mistakeCount + " question(s) à revoir" : "Aucune erreur pour l'instant", act: startMistakes },
@@ -158,6 +161,110 @@
     h.innerHTML = "<h2>📚 Apprendre par thème</h2><p>Choisis un thème à réviser.</p>";
     wrap.appendChild(h);
     wrap.appendChild(buildThemeList());
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  /* ----------------------- Les cours ----------------------- */
+  function lessonFor(key) { return LESSONS.find((l) => l.theme === key); }
+
+  function renderCourses() {
+    setBack(renderHome);
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+    const h = el("div", "hero");
+    h.innerHTML = "<h2>📖 Les cours</h2><p>Lis les règles thème par thème, puis entraîne-toi.</p>";
+    wrap.appendChild(h);
+
+    const list = el("div", "theme-list");
+    THEMES.forEach((t) => {
+      if (!lessonFor(t.key)) return;
+      const read = store.read && store.read[t.key];
+      const row = el("button", "theme-row");
+      const info = el("div", "t-info");
+      info.innerHTML =
+        '<div style="display:flex;align-items:center;gap:8px">' +
+        '<span class="t-name">' + t.name + "</span>" +
+        '<span class="t-count">' + (read ? "✅ lu" : "à lire") + "</span></div>";
+      row.innerHTML = '<span class="t-emoji">' + t.emoji + "</span>";
+      row.appendChild(info);
+      row.addEventListener("click", () => renderLesson(t.key));
+      list.appendChild(row);
+    });
+    wrap.appendChild(list);
+    app.appendChild(wrap);
+    window.scrollTo(0, 0);
+  }
+
+  function renderLesson(key) {
+    setBack(renderCourses);
+    const t = themeMeta(key);
+    const lesson = lessonFor(key);
+    // Marquer comme lu
+    store.read = store.read || {};
+    store.read[key] = true;
+    persist();
+
+    app.innerHTML = "";
+    const wrap = el("div", "fade-in");
+
+    const h = el("div", "hero");
+    h.innerHTML = "<h2>" + t.emoji + " " + t.name + "</h2>";
+    wrap.appendChild(h);
+
+    const intro = el("p", "lesson-intro");
+    intro.innerHTML = lesson.intro;
+    wrap.appendChild(intro);
+
+    lesson.sections.forEach((sec) => {
+      const card = el("div", "lesson-card");
+      const ht = el("div", "lesson-h");
+      ht.textContent = sec.h;
+      card.appendChild(ht);
+      const ul = el("ul", "lesson-ul");
+      sec.items.forEach((it) => {
+        const li = el("li");
+        li.innerHTML = it;
+        ul.appendChild(li);
+      });
+      card.appendChild(ul);
+      wrap.appendChild(card);
+    });
+
+    if (lesson.retenir && lesson.retenir.length) {
+      const box = el("div", "retenir");
+      const rt = el("div", "retenir-h");
+      rt.textContent = "📌 À retenir";
+      box.appendChild(rt);
+      const ul = el("ul", "lesson-ul");
+      lesson.retenir.forEach((r) => { const li = el("li"); li.textContent = r; ul.appendChild(li); });
+      box.appendChild(ul);
+      wrap.appendChild(box);
+    }
+
+    // S'entraîner sur ce thème
+    const nbQ = byTheme(key).length;
+    const train = el("button", "btn");
+    train.textContent = "✏️ M'entraîner (" + nbQ + " questions)";
+    train.addEventListener("click", () => startQuiz(shuffle(byTheme(key)), t.emoji + " " + t.name));
+    wrap.appendChild(train);
+
+    // Navigation entre leçons
+    const themesWithLesson = THEMES.filter((x) => lessonFor(x.key));
+    const pos = themesWithLesson.findIndex((x) => x.key === key);
+    const nav = el("div", "btn-row");
+    const prev = el("button", "btn secondary");
+    prev.textContent = "← Précédent";
+    prev.disabled = pos <= 0;
+    prev.addEventListener("click", () => renderLesson(themesWithLesson[pos - 1].key));
+    const next = el("button", "btn secondary");
+    next.textContent = "Suivant →";
+    next.disabled = pos >= themesWithLesson.length - 1;
+    next.addEventListener("click", () => renderLesson(themesWithLesson[pos + 1].key));
+    nav.appendChild(prev);
+    nav.appendChild(next);
+    wrap.appendChild(nav);
+
     app.appendChild(wrap);
     window.scrollTo(0, 0);
   }

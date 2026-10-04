@@ -645,6 +645,219 @@ const QUESTIONS = [
   },
 ];
 
+/* =====================================================================
+   COURS — une leçon par thème (à lire avant de s'entraîner)
+   Chaque leçon : { theme, intro, sections:[{h, items:[...]}], retenir:[...] }
+   ===================================================================== */
+const LESSONS = [
+  {
+    theme: "equipement",
+    intro: "À moto, l'équipement n'est pas un accessoire : c'est ta carrosserie. On dit « s'habiller pour la chute, pas pour le trajet ». Certains équipements sont obligatoires, d'autres fortement conseillés.",
+    sections: [
+      { h: "Ce qui est obligatoire", items: [
+        "Le <b>casque homologué</b> (norme ECE 22-05 ou 22-06) et <b>attaché</b>, pour le conducteur ET le passager. Sans casque : 3 points en moins.",
+        "Des <b>gants certifiés CE</b>, pour le conducteur et le passager (depuis le 20 novembre 2016). Sans gants : amende de 68 € et 1 point en moins.",
+        "Avoir à bord un <b>gilet de haute visibilité</b> et le porter en cas d'arrêt d'urgence.",
+      ] },
+      { h: "Fortement conseillé (les EPI)", items: [
+        "Un <b>blouson</b> avec coques (coudes, épaules) et une <b>dorsale</b>.",
+        "Un <b>pantalon renforcé</b> et des <b>bottes ou chaussures montantes</b> qui protègent les chevilles.",
+        "Une <b>protection des yeux</b> : visière homologuée ou lunettes (contre vent, insectes, gravillons).",
+        "Des éléments <b>rétro-réfléchissants</b> et des couleurs vives pour être vu, surtout la nuit.",
+      ] },
+    ],
+    retenir: [
+      "Casque + gants = obligatoires, conducteur et passager.",
+      "Un bon équipement couvre de la tête aux pieds.",
+      "Être visible, c'est déjà se protéger.",
+    ],
+  },
+  {
+    theme: "signalisation",
+    intro: "Les panneaux et marquages parlent un langage de formes et de couleurs. En les lisant d'un coup d'œil, tu anticipes mieux — essentiel à moto.",
+    sections: [
+      { h: "La forme et la couleur", items: [
+        "<b>Triangle à bord rouge</b> → un <b>danger</b> à venir.",
+        "<b>Rond à bord rouge</b> → une <b>interdiction</b>.",
+        "<b>Rond bleu</b> → une <b>obligation</b>.",
+        "<b>Carré / rectangle bleu</b> → une <b>information</b> (service, direction).",
+      ] },
+      { h: "Les intersections", items: [
+        "<b>STOP</b> : arrêt total obligatoire (roues immobiles), puis céder le passage. Ne pas s'arrêter = 4 points.",
+        "<b>Cédez le passage</b> (triangle pointe en bas) : ralentir et laisser passer, sans forcément s'arrêter.",
+        "<b>Feu orange fixe</b> : s'arrêter si on peut le faire sans danger (pas de freinage brutal à moto).",
+      ] },
+      { h: "Les marquages au sol", items: [
+        "<b>Ligne continue</b> : interdiction de la franchir ou de la chevaucher.",
+        "<b>Ligne discontinue</b> : franchissement autorisé (dépassement) si la voie est libre.",
+        "<b>Zébras (hachures)</b> : zone interdite, on ne roule pas dessus.",
+      ] },
+    ],
+    retenir: [
+      "Triangle = danger, rond rouge = interdiction, rond bleu = obligation.",
+      "STOP = arrêt complet, toujours.",
+      "Ligne continue = on ne franchit jamais.",
+    ],
+  },
+  {
+    theme: "reglementation",
+    intro: "Connaître les limitations, les permis et les règles de base t'évite amendes et retraits de points — et surtout des accidents.",
+    sections: [
+      { h: "Les vitesses à retenir", items: [
+        "<b>50 km/h</b> en agglomération (parfois 30 en zone limitée).",
+        "<b>80 km/h</b> sur route hors agglomération (90 sur certains axes selon le département).",
+        "<b>110 km/h</b> sur voie rapide, <b>130 km/h</b> sur autoroute.",
+        "Par <b>pluie</b> : autoroute 110, voie rapide 100. Par brouillard (< 50 m de visibilité) : 50 km/h partout.",
+      ] },
+      { h: "Les permis moto", items: [
+        "<b>A1</b> (dès 16 ans) : 125 cm³, 11 kW max.",
+        "<b>A2</b> (dès 18 ans) : 35 kW (47,5 ch) max.",
+        "<b>A</b> : après 2 ans de A2 + une formation de 7 h → toutes cylindrées.",
+        "<b>Permis B</b> + 2 ans + formation de 7 h → conduire un 125 cm³.",
+      ] },
+      { h: "Alcool, points, téléphone", items: [
+        "Alcool : <b>0,5 g/L</b> de sang en général, <b>0,2 g/L</b> en permis probatoire.",
+        "Permis probatoire : <b>6 points</b> au départ, puis 8, 10, 12 sans infraction.",
+        "Feu de croisement <b>allumé en permanence</b>, jour et nuit.",
+        "Téléphone en main = interdit : 135 € et 3 points.",
+      ] },
+    ],
+    retenir: [
+      "50 / 80 / 110 / 130 — et on réduit par pluie.",
+      "A1 → A2 → A, chacun avec ses conditions.",
+      "Probatoire : 0,2 g/L d'alcool et 6 points au départ.",
+    ],
+  },
+  {
+    theme: "securite",
+    intro: "La moto pardonne peu. Deux clés : être vu des autres, et anticiper ce qui peut mal tourner. La majorité des accidents vient d'un « je n'avais pas vu la moto ».",
+    sections: [
+      { h: "Se rendre visible", items: [
+        "Évite de rester dans l'<b>angle mort</b> des voitures et camions.",
+        "Place-toi pour apparaître dans les <b>rétroviseurs</b> des autres.",
+        "Couleurs vives, feu allumé, équipement réfléchissant.",
+      ] },
+      { h: "L'adhérence, ta vie", items: [
+        "Dangereux : <b>plaques d'égout</b>, <b>bandes blanches mouillées</b>, <b>gravier</b>, <b>feuilles</b>, <b>rails de tram</b>.",
+        "Le <b>gasoil</b> (reflets irisés, souvent en sortie de rond-point) rend le sol très glissant.",
+        "Sur ces zones : on évite de freiner et de pencher.",
+      ] },
+      { h: "Anticiper", items: [
+        "Garde au moins <b>2 secondes</b> de distance avec le véhicule devant (plus sur sol mouillé).",
+        "Porte ton <b>regard loin</b> : « on va là où on regarde ».",
+        "Fatigue et froid réduisent les réflexes → fais des <b>pauses</b> régulières.",
+      ] },
+    ],
+    retenir: [
+      "Sors des angles morts, fais-toi voir.",
+      "Méfie-toi de tout ce qui réduit l'adhérence.",
+      "2 secondes de distance minimum, regard loin devant.",
+    ],
+  },
+  {
+    theme: "conduite",
+    intro: "Bien piloter, c'est surtout bien freiner, bien regarder et bien se placer. Quelques principes transforment ta sécurité.",
+    sections: [
+      { h: "Le freinage", items: [
+        "Utilise les <b>deux freins</b>, avec une dominante sur l'<b>avant</b> (l'essentiel de la décélération).",
+        "Freine de façon <b>progressive</b> : freiner d'un coup peut bloquer la roue.",
+        "L'<b>ABS</b> aide à ne pas bloquer les roues (obligatoire sur les motos > 125 cm³ depuis 2017).",
+      ] },
+      { h: "Le virage", items: [
+        "Trajectoire de sécurité : <b>extérieur → intérieur → extérieur</b>.",
+        "Entre <b>large</b> pour voir loin, vise la corde <b>tard</b>, garde une marge.",
+        "Le <b>contre-braquage</b> (pousser le guidon du côté du virage) amorce l'inclinaison à vitesse soutenue.",
+      ] },
+      { h: "Regarder & signaler", items: [
+        "Avant tout changement : <b>rétroviseur + clignotant + contrôle de l'angle mort</b> (coup d'œil par-dessus l'épaule).",
+        "Dans un rond-point : céder aux véhicules engagés, clignotant à droite avant de sortir.",
+        "Pense à <b>couper le clignotant</b> (il ne se coupe pas toujours seul à moto).",
+      ] },
+    ],
+    retenir: [
+      "Deux freins, progressif, dominante avant.",
+      "Virage : extérieur-intérieur-extérieur, regard loin.",
+      "Rétro + clignotant + angle mort avant de changer.",
+    ],
+  },
+  {
+    theme: "mecanique",
+    intro: "Une moto bien entretenue est une moto sûre. Un contrôle rapide avant de rouler évite la panne… et la chute.",
+    sections: [
+      { h: "Les points vitaux", items: [
+        "<b>Pneus</b> : pression correcte, usure régulière, sculptures suffisantes (témoins d'usure). Seul contact avec la route.",
+        "<b>Freins</b> : plaquettes, niveau de liquide, sensation à la poignée et à la pédale.",
+        "<b>Chaîne</b> : propre, graissée, tendue selon les préconisations (un peu de jeu, pas trop).",
+      ] },
+      { h: "Le contrôle avant départ", items: [
+        "Feux et clignotants qui fonctionnent.",
+        "Niveaux : huile, liquide de frein, liquide de refroidissement.",
+        "<b>Béquille latérale relevée</b> (beaucoup de motos coupent le moteur sinon).",
+      ] },
+      { h: "Les alertes", items: [
+        "Un <b>voyant rouge</b> en roulant = anomalie potentiellement grave → s'arrêter en sécurité et vérifier.",
+        "Un bruit, une fuite, une odeur inhabituelle : on n'ignore pas.",
+      ] },
+    ],
+    retenir: [
+      "Pneus, freins, chaîne : le trio de la sécurité.",
+      "Un contrôle de 2 minutes avant chaque trajet.",
+      "Voyant rouge = on s'arrête et on vérifie.",
+    ],
+  },
+  {
+    theme: "secours",
+    intro: "Face à un accident, des gestes simples peuvent sauver une vie. L'important est d'agir dans le bon ordre et sans aggraver la situation.",
+    sections: [
+      { h: "La règle PAS", items: [
+        "<b>P</b>rotéger : baliser, allumer les feux de détresse, éviter le suraccident.",
+        "<b>A</b>lerter : appeler les secours et donner les bonnes informations.",
+        "<b>S</b>ecourir : porter assistance dans la limite de ses capacités.",
+      ] },
+      { h: "Alerter correctement", items: [
+        "Numéros : <b>112</b> (urgence européenne), <b>15</b> (SAMU), <b>18</b> (pompiers), <b>17</b> (police).",
+        "Donner d'abord le <b>lieu précis</b>, puis la nature de l'accident, le nombre et l'état des victimes.",
+        "Ne jamais raccrocher avant que l'opérateur le dise.",
+      ] },
+      { h: "Les bons gestes", items: [
+        "Ne <b>pas retirer le casque</b> d'un motard, sauf nécessité vitale (ex. arrêt respiratoire).",
+        "Hémorragie : <b>comprimer la plaie</b> directement et sans relâcher.",
+        "Ne pas donner à boire, ne pas déplacer la victime sans raison.",
+      ] },
+    ],
+    retenir: [
+      "Protéger → Alerter → Secourir.",
+      "112 / 15 / 18 / 17, et le lieu d'abord.",
+      "On ne retire pas le casque sauf urgence vitale.",
+    ],
+  },
+  {
+    theme: "environnement",
+    intro: "Partager la route, c'est protéger les plus vulnérables et rouler de façon responsable — pour les autres et pour la planète.",
+    sections: [
+      { h: "Les usagers vulnérables", items: [
+        "<b>Piétons</b> : céder le passage à celui qui traverse ou s'engage. Ne pas céder = amende + 6 points.",
+        "<b>Cyclistes</b> : laisser au moins <b>1 m</b> en ville, <b>1,50 m</b> hors agglomération en dépassant.",
+        "Près d'une <b>école / zone 30</b> : ralentir fortement, couvrir les freins.",
+      ] },
+      { h: "Le partage de la route", items: [
+        "En agglomération, laisser repartir un <b>bus</b> qui signale son intention.",
+        "Anticiper les <b>travaux</b> et obstacles : ralentir en amont, pas de freinage d'urgence.",
+      ] },
+      { h: "Rouler responsable", items: [
+        "Un <b>pot d'échappement</b> non homologué (trop bruyant) est interdit et verbalisable.",
+        "L'<b>éco-conduite</b> (souplesse, anticipation) consomme moins, pollue moins et sécurise.",
+      ] },
+    ],
+    retenir: [
+      "Priorité et marge aux piétons et cyclistes.",
+      "1 m en ville, 1,50 m hors agglo pour dépasser un vélo.",
+      "Conduite souple = plus sûre et plus propre.",
+    ],
+  },
+];
+
 // Exposition globale (chargé avant app.js)
 window.THEMES = THEMES;
 window.QUESTIONS = QUESTIONS;
+window.LESSONS = LESSONS;
