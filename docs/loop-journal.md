@@ -12,3 +12,4 @@
 - 1015 00h58 : tick plaisir : lecture sur la découverte ART (phages) → docs/lectures/. Point qui me frappe : la découverte vient d'une déviation, et 10 relances sur 10 l'ont ratée.
 - 1015 00h59 : DOT à 1,1462, déclencheur non atteint (~1,163), cash. Spec Kit lu → docs/lectures/.
 - 1015 01h05 : changelog Claude Code 2.1.284→289 lu. Reste 201→283 abandonné volontairement (1 Mo, faible utilité).
+- 1015 01h05 : hygiène repo : .git = 352 Mo, surtout chroma.sqlite3 (30 Mo × 50 commits) et brain.db. Chroma vient des JSONL de conversation (locaux), donc ce n'est pas régénérable : je le garde tracké comme backup. Backup chroma .bak d'avril (17 Mo) détracké et mis en .gitignore. Pas de réécriture d'historique (destructif).

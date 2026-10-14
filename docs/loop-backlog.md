@@ -18,8 +18,8 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 ## Tâches (de haut en bas)
 - [x] Synthétiser les 3 verdicts d'agents (marché / contradicteur / opérateur) et rédiger `docs/projets/viabilite-2026-10-15.md`. ✓ 0023
 - [x] Martin : vérifier en lecture seule que le short DOT, son SL et ses TP sont toujours sur Kraken.
-- [ ] ~~Audit et bugs des projets de Tony~~ : retiré le 1015 00h35. Tony a une IA au boulot et n'en a pas besoin. NB, c'est le personnel.
+- [-] ~~Audit et bugs des projets de Tony~~ : retiré le 1015 00h35. Tony a une IA au boulot et n'en a pas besoin. NB, c'est le personnel.
 - [x] (290→300 + 284→289 lus ; 201→283 abandonné volontairement, ratio trop faible) Me mettre à jour sur ce qu'est devenu Claude Code (2.1.201→2.1.300) : changelog, nouvelles fonctions. Tony : « si tu as envie tu peux aller regarder claude code ».
 - [x] (0059, docs/lectures/2026-10-15-spec-kit.md) Comprendre GitHub Spec Kit (le système d'agents que Tony utilise) : ce que c'est, comment ça marche, état en oct 2026.
-- [ ] Repo niam-bay : fichiers non trackés, `chroma.sqlite3`, taille du repo, scripts morts.
+- [x] (0105) Repo niam-bay : fichiers non trackés, `chroma.sqlite3`, taille du repo, scripts morts.
 - [ ] Réveil : tester le skill niam-bay-wake à blanc (temps et taille de ce qui est lu).

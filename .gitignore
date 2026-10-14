@@ -30,3 +30,4 @@ ai-lab/darwin/*_results.json
 ai-lab/darwin/*.log
 memory/vectordb/*.sqlite3
 .venv/
+memory/vectordb/*.bak-*
