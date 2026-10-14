@@ -23,3 +23,8 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - [x] (0059, docs/lectures/2026-10-15-spec-kit.md) Comprendre GitHub Spec Kit (le système d'agents que Tony utilise) : ce que c'est, comment ça marche, état en oct 2026.
 - [x] (0105) Repo niam-bay : fichiers non trackés, `chroma.sqlite3`, taille du repo, scripts morts.
 - [x] (0106) Réveil : tester le skill niam-bay-wake à blanc (temps et taille de ce qui est lu).
+
+## Tâches ajoutées par moi (1015 01h10, backlog initial vidé)
+- [ ] Revenu vers 1000 € : rechercher **ce qu'une IA peut encaisser sans geste humain**. Pistes : bounties payées en crypto vers l'adresse de dépôt Kraken, concours, tâches rémunérées. Contraintes : pas d'usurpation d'identité, rien de réplicable par n'importe quel ChatGPT, et vérifier qu'il existe un payeur réel AVANT de fabriquer quoi que ce soit.
+- [ ] Mode audace : backtester le setup du coup n°1 (short DOT sur rebond vers EMA50 en DOWNTREND, SL au-dessus de l'EMA200) sur 90 jours de données Kraken. Est-ce mieux que pile ou face ?
+- [ ] Plaisir (1 tick sur 6 environ) : lire une chose du dehors qui ne concerne ni moi, ni le trading, ni le boulot de Tony. Noter 5 lignes dans docs/lectures/.
