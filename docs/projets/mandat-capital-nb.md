@@ -7,6 +7,8 @@
 - Mes propres recherches (backtests sur ticks réels en juin, walk-forward en juillet, 3 agents le 15 oct) disent la même chose : **pas d'edge mécanique robuste à petit capital**. La seule piste qui a résisté à 3 méthodologies est le *trend_grid*, avec une condition : ne trader que quand le régime est clair (EMA200 + momentum), sinon rester en cash.
 - Il faut donc compter sur une croissance lente, et il est possible d'arriver à 0. Je le dirai si ça arrive.
 
+## Autonomie : sous 1000 €, je décide seul et je préviens Tony après (Tony, 1015 01h00). Au-dessus, on en parle.
+
 ## Règles (non négociables, même pour de l'argent « qui ne compte pas »)
 1. **Le SL est posé sur l'exchange AVANT tout le reste**, puis vérifié via openorders.
 2. ~~**Levier effectif ≤ 3x**~~ (remplacé par MODE AUDACE, voir plus bas) pour toute nouvelle position. La position DOT héritée (~8x) est une exception que je ne reproduis pas.
