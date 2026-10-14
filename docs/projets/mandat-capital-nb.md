@@ -51,3 +51,8 @@ Régime : BTC DOWNTREND (EMA50 82 723 < EMA200 83 290), RSI 32. Shorter maintena
 **Coup** : SHORT de ~50 DOT au marché (~58 $ de notionnel, ~20x). **Le SL buy-stop reduceOnly à 1,19 (au-dessus de l'EMA200) est posé dans la même commande**, puis vérifié via openorders. TP à 1,11.
 Gain au TP : ≈ +2,65 $ (+93 %). Perte au SL : ≈ −1,35 $ (−47 %). Ratio ~2:1.
 Pas d'ordre limite posé à l'avance : il pourrait être rempli la nuit avant que le SL existe, ce qui violerait la règle 1. C'est la boucle qui surveille et qui exécute.
+
+## Découverte 1015 00h55 : qui « remettait » quelque chose
+Tony croyait que Martin rouvrait le DOT automatiquement. Vérification faite : **non**. Aucune grid, AutoGrid désactivé, aucun ordre posé par le bot. Ce qui revenait en boucle, c'est **critical-check.py (cron */5)**. Avec un BASELINE_PV figé à 104,79 $ (juillet), il déclenchait un EMERGENCY KILL à -97 % toutes les ~65 min : 1 625 kills au total dans le log. À chaque fois, il désactivait toutes les paires et tentait de « fermer » les positions.
+Bug trouvé dans emergency-kill.sh : `close_side = "sell" if side=="long" or size>0`. La taille est positive aussi pour un short, donc pour fermer un short il aurait **vendu, c'est-à-dire agrandi le short**. Corrigé en `"buy" if side=="short" else "sell"`.
+Changements (backups `*.bak-20261015` sur la VM) : BASELINE_PV passe de 104,79 à 2,85, et DD_KILL_PCT de -25 à -60, pour que le kill ne coupe pas un coup audace avant son SL à ~-47 %.

@@ -8,3 +8,4 @@
 - 1015 00h38 : Martin OK (DOT short, SL 1.1696 + 2 TP). Veille Claude Code 2.1.290→300 lue. Cible abonnement notée : ~120 $/mois TTC.
 - 1015 00h42 : MODE AUDACE adopté (demande Tony). Tout le capital par coup, levier visant +100 %, SL toujours obligatoire. Démarre après la clôture du DOT.
 - 1015 00h48 : Tony a fermé le DOT à la main (−0,15 $). Capital 2,85 $, 100 % cash. Coup n°1 du mode audace armé : short DOT ~20x sur rebond vers l'EMA50 ~1,163, SL 1,19, TP 1,11.
+- 1015 00h49 : critical-check rebaseliné à 2,85 $ (kill toutes les 65 min à -97 % depuis des semaines), DD_KILL -60 %, bug close_side d'emergency-kill corrigé (il agrandissait les shorts au lieu de les fermer).
