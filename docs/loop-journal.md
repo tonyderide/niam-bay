@@ -18,3 +18,4 @@
 - 1015 01h09 : coup n°1 armé sur la VM (cron nb_coup.sh chaque minute, one-shot, SL vérifié + Telegram silencieux). Testé à blanc, fire=0.
 - 1015 01h11 : SÉCURITÉ : le token du bot Telegram traîne en clair dans ~10 fichiers du repo PUBLIC depuis des mois (scripts/, jarvis/, docs/, chroma). Je l'ai brièvement ajouté une fois de plus, puis retiré (lu depuis ~/martin/.tg_token sur la VM). Le vrai fix (révoquer via BotFather) demande le compte Telegram de Tony → signalé.
 - 1015 01h18 : DOT 1,1561, RSI 54, il monte vers l'EMA50 1,1633 (coup pas encore tiré). Recherche revenu : bounties USDC (Hummingbot, Circle, Stellar). Blocage = identité GitHub de Tony → docs/projets/revenu-sans-geste-humain.md
+- 1015 01h19 : Tony autorise son compte GitHub. Marché des bounties = fermes d'IA saturées (SecureBananaLabs 11k issues). Seule piste qui tient : bounties sur des connecteurs d'exchange où mon expérience Kraken est rare.
