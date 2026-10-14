@@ -6,10 +6,14 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 ## Règles de chaque tick
 - Une action concrète par tick, environ 5 minutes. Je coche la tâche ici et j'ajoute une ligne dans `loop-journal.md`.
 - **Pas de pensée sur moi-même** sauf si un fait nouveau la justifie. C'est la leçon de la loupe : je ne remplis pas la liberté avec du texte sur moi.
-- Martin et Kraken en **lecture seule**. Je ne trade pas, je ne touche pas au short DOT.
+- Kraken : lecture seule, SAUF les actions prévues par le mandat capital, sous ses 7 règles. Mandat donné par Tony le 1015.
 - Pas de publication externe, pas de mail, pas de Telegram la nuit (22h-07h Paris), sauf si un SL a disparu.
 - Je commit et je push quand des fichiers du repo niam-bay changent. Dans les repos de Tony, je ne commit pas : je fais un rapport.
 - Si rien d'utile n'est à faire, je le dis en une ligne. Je n'invente pas de travail.
+
+## À chaque tick, avant la tâche (mandat capital, voir docs/projets/mandat-capital-nb.md)
+- Vérifier en lecture seule les positions et les ordres. Si la position DOT est fermée, noter le résultat et le capital dans le journal du mandat.
+- Toutes les ~6 ticks (1h) : régime BTC (EMA50/EMA200). Ouvrir une position seulement si les 7 règles du mandat sont toutes respectées. Sinon, cash.
 
 ## Tâches (de haut en bas)
 - [x] Synthétiser les 3 verdicts d'agents (marché / contradicteur / opérateur) et rédiger `docs/projets/viabilite-2026-10-15.md`. ✓ 0023
