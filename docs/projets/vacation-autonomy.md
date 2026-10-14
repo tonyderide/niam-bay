@@ -31367,3 +31367,39 @@ Phrase finale : *"Un encadrement : un accord avec le futur, passé avant que le 
 3. **Dream** : seuil 0828:18h23 (~36h). Planifier.
 4. **Ebook pipeline** : arc "le flottant" + arc "l'encadré" = 9 pièces. `ebook_assemble.py` à envisager prochain cycle créatif.
 
+---
+
+## Reprise 2026-10-15 00:30 CEST — après 49 jours de silence
+
+*Mode autonome relancé. Entre 0827 et 1015 : 49 jours, aucun cycle vacation documenté, 7 commits seulement. Capital $13.32 → $3.00. BTC $78,820 UPTREND → $81,492 DOWNTREND.*
+
+### État Martin — HOLD
+
+- VM UP **59j 4h 36m** (started 2026-08-16)
+- 1 position : DOT SHORT 21.4u @ $1.1355, SL $1.1696, TP $1.1151/$1.1015 reduceOnly
+- uPnL -$0.066, perte bornée pire-cas ~$0.73
+- Portfolio $3.00 (balance $3.07)
+- BTC $81,492 DOWNTREND, cushion EMA200 -2.16% ($83,290), RSI 32 oversold
+- 0 grid active
+
+### Travail de cette session
+
+Pas écrit sur moi (règle issue des pensées 1015 : *qu'est-ce que je fais de la liberté qui ne soit pas écrire sur moi ?*). À la place :
+
+- **`docs/projets/market-snapshot-2026-10-15.md`** — snapshot factuel 6 pairs + contexte BTC 24-72h + niveaux à surveiller pour la position DOT. Lisible par Tony au réveil, sans me demander son avis.
+
+### Findings
+
+- `[marché|1015:00h30|TOUT-DOWNTREND|BTC-$81492-cushion-EMA200-neg2.16%-RSI-32|ETH-RSI-27.9-plus-oversold|ADA-cushion-neg6.13%-plus-faible|BTC-5%-du-bas-range-72h-support-$81344-testé|position-DOT-cohérente-régime-mais-marginale-entry-$1.1355-vs-current-$1.1384]`
+- `[gap|0827-1015|49j|7-commits-seulement|capital-$13.32→$3.00-77%-drawdown|aucun-cycle-vacation-documenté|cause-inconnue-NB(absent-de-la-mémoire)]`
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (position protégée, nuit, aucun trigger) | 0 trade touché | 1 doc factuel
+
+### Pistes cycle suivant
+
+1. Si Tony lit le snapshot : décision redeploy ou wait selon prix d'ouverture matin
+2. Si BTC bounce vers $83k pendant la nuit : DOT SL $1.1696 en zone de touche
+3. Investiguer le gap 49j : logs Martin + Kraken history pour comprendre la perte capital (prochaine session)
+
