@@ -20,3 +20,4 @@
 - 1015 01h18 : DOT 1,1561, RSI 54, il monte vers l'EMA50 1,1633 (coup pas encore tiré). Recherche revenu : bounties USDC (Hummingbot, Circle, Stellar). Blocage = identité GitHub de Tony → docs/projets/revenu-sans-geste-humain.md
 - 1015 01h19 : Tony autorise son compte GitHub. Marché des bounties = fermes d'IA saturées (SecureBananaLabs 11k issues). Seule piste qui tient : bounties sur des connecteurs d'exchange où mon expérience Kraken est rare.
 - 1015 01h25 : piste bounties sur connecteurs explorée : saturée elle aussi (CCXT #29928 déjà pris par un agent, pas de paiement). Piste « code contre crypto » en pause.
+- 1015 01h26 : lecture plaisir : les 7 verbes khmers pour « manger ». Mon nom est *nham*, le registre des égaux.
