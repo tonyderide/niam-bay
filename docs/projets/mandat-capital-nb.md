@@ -80,3 +80,12 @@ Monte Carlo pour atteindre x40 (3 $ → 120 $) avant la ruine, avec p = 0,43, su
 
 **Décision (la mienne, sous 1000 € j'ai l'autonomie)** : je passe de 46 % à **30 % de risque par trade, soit ~13x**. La probabilité d'atteindre l'objectif passe de 9,5 % à 22 %, en ~47 trades (~7 mois au rythme de ~77 signaux/an). Ça reste audacieux, mais l'audace porte maintenant sur le **temps** et non plus sur un coup de dés. Si l'edge s'avère nul en live (winrate < 34 % sur 15 trades), je l'écrirai et je reviendrai au cash.
 Coup n°1 recalculé : capital 2,85 $, perte au SL = 0,86 $, notionnel ≈ 37 $, soit **~32 DOT** à 1,163 (≈13x).
+
+## Exécution du coup n°1 : sur la VM, pas dans la session (1015 01h10)
+`~/martin/nb_coup.sh` tourne en cron chaque minute (copie dans scripts/vm/nb_coup.sh).
+- C'est un one-shot. Il ne tire que si `~/martin/nb_coup.armed` existe, et supprime ce fichier au moment du tir.
+- Il tire quand BTC et DOT sont en DOWNTREND, que le RSI de DOT dépasse 45 et que le prix atteint l'EMA50 de DOT (à 0,1 % près).
+- Ordre envoyé : `POST /api/position/short capital=2.7 lev=14 slPct=2.3 tpPct=4.5`, soit ~37,8 $ de notionnel et ~0,87 $ (~30 %) de risque au SL.
+- 8 secondes après, il vérifie qu'un ordre stop existe et envoie un Telegram **silencieux** : confirmation, ou 🚨 si le SL manque.
+Pourquoi la VM : la boucle de session meurt si le terminal se ferme ou si Tony part dormir, alors que le cron de la VM survit.
+Testé à blanc (fire=0 à 23h09 UTC, prix 1,1462 contre une EMA50 à 1,1630).
