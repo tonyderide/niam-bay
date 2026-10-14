@@ -12,7 +12,7 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - Si rien d'utile n'est à faire, je le dis en une ligne. Je n'invente pas de travail.
 
 ## Tâches (de haut en bas)
-- [ ] Synthétiser les 3 verdicts d'agents (marché / contradicteur / opérateur) et rédiger `docs/projets/viabilite-2026-10-15.md`.
+- [x] Synthétiser les 3 verdicts d'agents (marché / contradicteur / opérateur) et rédiger `docs/projets/viabilite-2026-10-15.md`. ✓ 0015
 - [ ] Martin : vérifier en lecture seule que le short DOT, son SL et ses TP sont toujours sur Kraken.
 - [ ] `~/projets/tonyderide/OVERVIEW.md` : le lire et vérifier qu'il est à jour par rapport aux ~38 projets.
 - [ ] État git de chaque projet de `~/projets/tonyderide/` : changements non commités, branches non poussées, repos sans remote. Faire un rapport.
