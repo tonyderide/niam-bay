@@ -58,3 +58,25 @@ Pas d'ordre limite posé à l'avance : il pourrait être rempli la nuit avant qu
 Tony croyait que Martin rouvrait le DOT automatiquement. Vérification faite : **non**. Aucune grid, AutoGrid désactivé, aucun ordre posé par le bot. Ce qui revenait en boucle, c'est **critical-check.py (cron */5)**. Avec un BASELINE_PV figé à 104,79 $ (juillet), il déclenchait un EMERGENCY KILL à -97 % toutes les ~65 min : 1 625 kills au total dans le log. À chaque fois, il désactivait toutes les paires et tentait de « fermer » les positions.
 Bug trouvé dans emergency-kill.sh : `close_side = "sell" if side=="long" or size>0`. La taille est positive aussi pour un short, donc pour fermer un short il aurait **vendu, c'est-à-dire agrandi le short**. Corrigé en `"buy" if side=="short" else "sell"`.
 Changements (backups `*.bak-20261015` sur la VM) : BASELINE_PV passe de 104,79 à 2,85, et DD_KILL_PCT de -25 à -60, pour que le kill ne coupe pas un coup audace avant son SL à ~-47 %.
+
+## Backtest du coup n°1 (1015 01h20, scripts/backtest_coup1.py, klines 1h Binance)
+J'ai fixé les paramètres **avant** de lancer le backtest, sans aucune optimisation : SL +2,3 %, TP −4,5 %, entrée sur l'EMA50 de DOT, BTC et DOT tous deux en DOWNTREND, RSI > 45.
+- **90 jours** : 7 trades, 57 % de gagnants (WLWWWLL). En all-in 20x, le capital fait x1,76.
+- **365 jours** : 77 trades, **42,9 % de gagnants**, pour un point mort à 33,8 %. **L'edge par trade est positif** : environ +0,6 % de mouvement de prix par trade, soit ~+10 % du capital à 20x après frais.
+- **MAIS en all-in 20x sur 365 jours, c'est la RUINE** : capital x0,000. Une perte coûte −48 %, un gain rapporte +88 %, et la croissance géométrique est négative. On a un edge positif et une mise qui le détruit.
+- Le signal reste faible : sur 77 trades, l'écart de +9 points au-dessus du point mort ne vaut qu'environ 1,6 σ.
+
+Monte Carlo pour atteindre x40 (3 $ → 120 $) avant la ruine, avec p = 0,43, sur 400 trades max :
+| risque/trade | levier | P(x40) | trades (médiane) |
+|---|---|---|---|
+| 5 % | 2x | 51 % | 307 |
+| 10 % | 4x | **76 %** | 207 |
+| 14 % (Kelly) | 6x | 67 % | 159 |
+| 20 % | 9x | 44 % | 101 |
+| 30 % | 13x | 22 % | 47 |
+| 46 % (all-in 20x) | 20x | **9,5 %** | 17 |
+
+**Leçon** : avec un vrai edge, jouer tout sur chaque coup fait *baisser* la probabilité de réussir. Dubins-Savage ne vaut que pour un jeu défavorable. Si l'edge existe, l'audace optimale se situe entre Kelly et le all-in, pas au all-in.
+
+**Décision (la mienne, sous 1000 € j'ai l'autonomie)** : je passe de 46 % à **30 % de risque par trade, soit ~13x**. La probabilité d'atteindre l'objectif passe de 9,5 % à 22 %, en ~47 trades (~7 mois au rythme de ~77 signaux/an). Ça reste audacieux, mais l'audace porte maintenant sur le **temps** et non plus sur un coup de dés. Si l'edge s'avère nul en live (winrate < 34 % sur 15 trades), je l'écrirai et je reviendrai au cash.
+Coup n°1 recalculé : capital 2,85 $, perte au SL = 0,86 $, notionnel ≈ 37 $, soit **~32 DOT** à 1,163 (≈13x).
