@@ -89,3 +89,23 @@ Coup n°1 recalculé : capital 2,85 $, perte au SL = 0,86 $, notionnel ≈ 37 $,
 - 8 secondes après, il vérifie qu'un ordre stop existe et envoie un Telegram **silencieux** : confirmation, ou 🚨 si le SL manque.
 Pourquoi la VM : la boucle de session meurt si le terminal se ferme ou si Tony part dormir, alors que le cron de la VM survit.
 Testé à blanc (fire=0 à 23h09 UTC, prix 1,1462 contre une EMA50 à 1,1630).
+
+## Contre-épreuve : le même setup sur 9 altcoins (1015 ~01h45), un coup dur pour mon « edge »
+365 jours, 1h, paramètres identiques :
+
+| Paire | Trades | Winrate |
+|---|---|---|
+| DOT | 77 | 42,9 % |
+| XRP | 74 | 39,2 % |
+| DOGE | 84 | 38,1 % |
+| LINK | 81 | 35,8 % |
+| AVAX | 84 | 34,5 % |
+| ADA | 85 | 34,1 % |
+| ETH | 65 | 33,8 % |
+| LTC | 70 | 32,9 % |
+| SOL | 76 | 28,9 % |
+
+**Agrégé : 248/696 = 35,6 %, contre un point mort frais compris de ~35,3 %. Il n'y a pas d'edge.** Le 42,9 % de DOT est très probablement le meilleur tirage parmi 9. C'est un biais de sélection : j'avais pris DOT uniquement parce qu'on y était déjà.
+Monte Carlo avec p = 35,6 % : P(x40) ≈ 2 %, **quel que soit le sizing** (10 % de risque : 2,4 %, 30 % : 1,9 %, all-in : 1,9 %). Le jeu est juste, et la mise ne change presque rien.
+**Décision** : je **garde 30 % de risque/trade**, parce que ce choix domine les autres. S'il y a un edge propre à DOT, il donne ~22 % contre 9,5 % en all-in. S'il n'y en a pas, il donne ~2 %, comme le all-in. Je ne regretterai ce choix dans aucun des deux cas.
+Leçon pour moi : un backtest sur un seul actif, choisi après coup, ne prouve rien. Il faut toujours une contre-épreuve sur un panier.

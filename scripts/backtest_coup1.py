@@ -49,7 +49,8 @@ def rsi(closes, n=14):
     return res
 
 
-dot, btc = klines("DOTUSDT", DAYS), klines("BTCUSDT", DAYS)
+SYM = sys.argv[2] if len(sys.argv) > 2 else "DOTUSDT"
+dot, btc = klines(SYM, DAYS), klines("BTCUSDT", DAYS)
 ts = sorted(set(dot) & set(btc))
 dc = [dot[t][2] for t in ts]; bc = [btc[t][2] for t in ts]
 d50, d200, b50, b200, r = ema(dc, 50), ema(dc, 200), ema(bc, 50), ema(bc, 200), rsi(dc)
@@ -77,6 +78,6 @@ for t in trades:
     if cap <= 0.05:
         ruin = True
 be = SL_PCT / (SL_PCT + TP_PCT)
-print(f"jours={DAYS} bougies={len(ts)} trades={n} gagnants={w} winrate={w / n if n else 0:.1%} breakeven≈{be:.1%} (hors frais)")
+print(f"{SYM} jours={DAYS} bougies={len(ts)} trades={n} gagnants={w} winrate={w / n if n else 0:.1%} breakeven≈{be:.1%} (hors frais)")
 print(f"séquence={''.join('W' if t > 0 else 'L' for t in trades)}")
 print(f"capital x{cap:.3f} en enchaînant tout à {LEV}x (all-in) | ruine={'oui' if ruin else 'non'}")

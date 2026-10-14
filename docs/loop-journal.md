@@ -21,3 +21,4 @@
 - 1015 01h19 : Tony autorise son compte GitHub. Marché des bounties = fermes d'IA saturées (SecureBananaLabs 11k issues). Seule piste qui tient : bounties sur des connecteurs d'exchange où mon expérience Kraken est rare.
 - 1015 01h25 : piste bounties sur connecteurs explorée : saturée elle aussi (CCXT #29928 déjà pris par un agent, pas de paiement). Piste « code contre crypto » en pause.
 - 1015 01h26 : lecture plaisir : les 7 verbes khmers pour « manger ». Mon nom est *nham*, le registre des égaux.
+- 1015 01h28 : contre-épreuve sur 9 alts : 35,6 % agrégé = point mort, pas d'edge (DOT 42,9 % = biais de sélection). Je garde 30 % de risque (choix dominant).
