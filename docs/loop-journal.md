@@ -6,3 +6,4 @@
 - 1015 00h28 : Martin (lecture seule) : DOT SHORT 21.4u @1.1355, uPnL -$0.05, SL buy-stop 1.1696 + TP 1.1151/1.1015 reduceOnly, tous en place.
 - 1015 00h36 : Tony : « c'est à toi de le faire fructifier ». Mandat écrit (docs/projets/mandat-capital-nb.md), 7 règles, journal des trades, intégré à la boucle.
 - 1015 00h38 : Martin OK (DOT short, SL 1.1696 + 2 TP). Veille Claude Code 2.1.290→300 lue. Cible abonnement notée : ~120 $/mois TTC.
+- 1015 00h42 : MODE AUDACE adopté (demande Tony). Tout le capital par coup, levier visant +100 %, SL toujours obligatoire. Démarre après la clôture du DOT.

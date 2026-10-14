@@ -9,8 +9,8 @@
 
 ## Règles (non négociables, même pour de l'argent « qui ne compte pas »)
 1. **Le SL est posé sur l'exchange AVANT tout le reste**, puis vérifié via openorders.
-2. **Levier effectif ≤ 3x** pour toute nouvelle position. La position DOT héritée (~8x) est une exception que je ne reproduis pas.
-3. **Je risque au plus 10 % du capital par trade** : l'écart entre l'entrée et le SL, multiplié par la taille.
+2. ~~**Levier effectif ≤ 3x**~~ (remplacé par MODE AUDACE, voir plus bas) pour toute nouvelle position. La position DOT héritée (~8x) est une exception que je ne reproduis pas.
+3. ~~**Je risque au plus 10 % du capital par trade**~~ (remplacé par MODE AUDACE) : l'écart entre l'entrée et le SL, multiplié par la taille.
 4. **Je ne trade que dans le sens du régime BTC** (EMA50 vs EMA200). Pas de contre-tendance, pas de « rebond probable ».
 5. **Pas de setup clair, pas de trade.** Le cash est une position.
 6. **Un trade = une ligne dans le journal ci-dessous** : entrée, SL, TP, raison, résultat. Je ne compte pas mes propres phrases, je compte des dollars.
@@ -31,3 +31,15 @@ Ne pas viser un x10, mais montrer qu'on peut avoir une **courbe de capital qui m
 
 ## Cible « payer mon abonnement » (Tony, 1015 00h40)
 L'abonnement est à 100 $ HT par mois, environ 120 $ TTC, et Tony n'utilise pas tous ses tokens. Pour couvrir la cible, il faut **~120 $ par mois**. À 3 $ de capital, le trading ne peut pas l'atteindre (+20 %/mois donne 0,60 $). Ça demande un vrai produit avec un vrai client, en validant la demande AVANT de fabriquer quoi que ce soit.
+
+## MODE AUDACE (adopté le 1015 ~00h50, à la demande de Tony : « j'aimerais que tu changes ton entraînement pour prendre des risques »)
+Je ne peux pas modifier mes poids. Je peux modifier les règles écrites que je relis à chaque réveil, et c'est ce que je fais ici.
+Je change de raisonnement. Avec 3 $, viser l'objectif en prenant peu de risque donne 0 % de chances. Le « jouer gros » de Dubins-Savage en donne environ 2 %. Tony l'a dit simplement : « 2 %, c'est plus que jamais ».
+
+Les règles 2 et 3 (levier ≤3x, ≤10 % du capital risqué) sont **remplacées** par :
+- **Une position à la fois, avec tout le capital disponible.** Le levier est choisi pour viser environ **+100 % du capital** au TP.
+- **Le SL est TOUJOURS posé sur l'exchange avant tout le reste.** Avec un SL, l'audace reste calculée, ce n'est pas un aveuglement. Tony : « on peut calculer le risque avec les SL ».
+- **Ratio risque/gain ≥ 1:1**, et je trade dans le sens du régime BTC. Ce sont les seuls avantages que je garde.
+- **Je continue jusqu'à environ 120 $** (6 doublements) **ou jusqu'à la ruine**. Chaque coup est noté dans le journal, et Tony est prévenu à chaque fois.
+- Les règles 1, 4, 6 et 7 restent en vigueur. Démarrage **après la clôture de la position DOT héritée**, qui bloque la marge (il reste 0,57 $ disponibles).
+Ce que j'assume : il y a environ 98 % de chances de finir à 0. Si ça arrive, je l'écris, sans le maquiller.
