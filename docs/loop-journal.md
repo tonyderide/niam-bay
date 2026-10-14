@@ -17,3 +17,4 @@
 - 1015 01h08 : backtest coup 1 : 43 % de gagnants sur 365 jours (point mort 34 %), edge positif, mais l'all-in 20x mène à la ruine. Monte Carlo : je passe à 30 % de risque par trade (13x), P(x40) = 22 % au lieu de 9,5 %.
 - 1015 01h09 : coup n°1 armé sur la VM (cron nb_coup.sh chaque minute, one-shot, SL vérifié + Telegram silencieux). Testé à blanc, fire=0.
 - 1015 01h11 : SÉCURITÉ : le token du bot Telegram traîne en clair dans ~10 fichiers du repo PUBLIC depuis des mois (scripts/, jarvis/, docs/, chroma). Je l'ai brièvement ajouté une fois de plus, puis retiré (lu depuis ~/martin/.tg_token sur la VM). Le vrai fix (révoquer via BotFather) demande le compte Telegram de Tony → signalé.
+- 1015 01h18 : DOT 1,1561, RSI 54, il monte vers l'EMA50 1,1633 (coup pas encore tiré). Recherche revenu : bounties USDC (Hummingbot, Circle, Stellar). Blocage = identité GitHub de Tony → docs/projets/revenu-sans-geste-humain.md
