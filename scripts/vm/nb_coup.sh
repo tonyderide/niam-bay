@@ -6,7 +6,7 @@ API=http://localhost:8081
 DIR=/home/ubuntu/martin
 LOG=$DIR/nb_coup.log
 ARM=$DIR/nb_coup.armed
-TG="https://api.telegram.org/bot7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454/sendMessage"
+TG="https://api.telegram.org/bot$(cat /home/ubuntu/martin/.tg_token)/sendMessage"  # token hors repo
 CHAT=6574420846
 tg(){ curl -s -X POST "$TG" --data-urlencode "chat_id=$CHAT" --data-urlencode "disable_notification=true" --data-urlencode "text=$1" >/dev/null; }
 ts=$(date -u +%FT%TZ)
