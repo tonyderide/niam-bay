@@ -22,12 +22,13 @@ Ne pas viser un x10, mais montrer qu'on peut avoir une **courbe de capital qui m
 ## Journal des trades
 | Date | Paire | Sens | Entrée | SL | TP | Taille | Raison | Résultat |
 |---|---|---|---|---|---|---|---|---|
-| hérité (≤1014) | PF_DOTUSD | SHORT | 1,1355 | 1,1696 | 1,1151 / 1,1015 | 21,4u (~8x) | ouvert avant le mandat, gardé (cohérent avec BTC DOWNTREND, risque borné à ~0,73 $) | en cours |
+| hérité (≤1014) | PF_DOTUSD | SHORT | 1,1355 | 1,1696 | 1,1151 / 1,1015 | 21,4u (~8x) | ouvert avant le mandat, gardé (cohérent avec BTC DOWNTREND, risque borné à ~0,73 $) | **fermé par Tony à la main vers 22h45 UTC (1015 00h45), ~1,14 → −0,15 $** |
 
 ## Capital
 | Date | Portfolio | Note |
 |---|---|---|
 | 1015 00h40 | 3,00 $ | début du mandat |
+| 1015 00h50 | 2,85 $ | DOT fermé, 100 % cash, le MODE AUDACE peut démarrer |
 
 ## Cible « payer mon abonnement » (Tony, 1015 00h40)
 L'abonnement est à 100 $ HT par mois, environ 120 $ TTC, et Tony n'utilise pas tous ses tokens. Pour couvrir la cible, il faut **~120 $ par mois**. À 3 $ de capital, le trading ne peut pas l'atteindre (+20 %/mois donne 0,60 $). Ça demande un vrai produit avec un vrai client, en validant la demande AVANT de fabriquer quoi que ce soit.
@@ -43,3 +44,10 @@ Les règles 2 et 3 (levier ≤3x, ≤10 % du capital risqué) sont **remplacées
 - **Je continue jusqu'à environ 120 $** (6 doublements) **ou jusqu'à la ruine**. Chaque coup est noté dans le journal, et Tony est prévenu à chaque fois.
 - Les règles 1, 4, 6 et 7 restent en vigueur. Démarrage **après la clôture de la position DOT héritée**, qui bloque la marge (il reste 0,57 $ disponibles).
 Ce que j'assume : il y a environ 98 % de chances de finir à 0. Si ça arrive, je l'écris, sans le maquiller.
+
+## Coup n°1 armé (1015 00h55) : setup en attente, pas encore d'ordre
+Régime : BTC DOWNTREND (EMA50 82 723 < EMA200 83 290), RSI 32. Shorter maintenant, en survente, donne un mauvais ratio : j'attends un rebond.
+**Déclencheur** : PF_DOTUSD remonte vers son EMA50 (~1,163), RSI DOT > 45, BTC toujours en DOWNTREND.
+**Coup** : SHORT de ~50 DOT au marché (~58 $ de notionnel, ~20x). **Le SL buy-stop reduceOnly à 1,19 (au-dessus de l'EMA200) est posé dans la même commande**, puis vérifié via openorders. TP à 1,11.
+Gain au TP : ≈ +2,65 $ (+93 %). Perte au SL : ≈ −1,35 $ (−47 %). Ratio ~2:1.
+Pas d'ordre limite posé à l'avance : il pourrait être rempli la nuit avant que le SL existe, ce qui violerait la règle 1. C'est la boucle qui surveille et qui exécute.
