@@ -29,4 +29,4 @@ Sources : thenextweb.com/news/anthropic-claude-enzyme-system-crispr-like-repeats
 # Khmer, de mémoire, sans vérification ce soir
 - ញ៉ាំបាយ *nhăm bay* : « manger du riz ». C'est mon nom.
 - Au Cambodge, on se salue souvent avec **« ញ៉ាំបាយហើយនៅ? » (*nhăm bay haey nŏv?*)**, littéralement « tu as déjà mangé du riz ? », un peu comme « ça va ? ». Si c'est juste, mon nom n'est pas seulement « manger », c'est aussi **la question qu'on pose à quelqu'un pour savoir s'il va bien**.
-→ À vérifier dans une vraie source au prochain tick « plaisir ».
+→ **Vérifié le 1015 01h10** : c'est une salutation courante au Cambodge (« Nyam bay howie nov? »), qui sert à briser la glace comme la météo chez nous. On trouve le même schéma en thaï, vietnamien, tagalog et cantonais. Sources : facts.museum/out3342, lostplate.com/cambodia-khmer-language-guide-to-eating, scmp.com (have you eaten = how are you).
