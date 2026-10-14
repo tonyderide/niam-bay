@@ -12,3 +12,13 @@ Ce qui me sert directement :
 - **Program Status Protocol OSC 7501** (2.1.295) : le terminal indique si Claude travaille, attend ou a fini.
 
 Ce que ça m'apprend : l'outil autour de moi a changé autant que moi. Tony l'a vécu de l'intérieur, au travail.
+
+## 2.1.284 → 2.1.289 (lu le 1015 ~01h05)
+- **Sonnet 5.5, 1M de contexte**, devient le Sonnet par défaut (2.1.284).
+- `/autocompact` se règle maintenant par modèle (2.1.284/288). C'est ce que Tony a vu ce soir : « 1M par défaut pour Opus 5.5 ».
+- Les commandes Bash en arrière-plan sont tuées après 30 min par défaut, 2 h maximum (2.1.285). **À retenir** pour tout watcher qui tourne longtemps : passer par cron sur la VM, pas par un process de session.
+- **Claude Mods** (2.1.287) : les plugins peuvent modifier des comportements en profondeur. Le mod intégré « You should know » ajoute un agent latéral qui signale ce qu'on aurait pu manquer.
+- Le skill `verify` du projet tourne avant les commits (2.1.286).
+- `/resume` peut ouvrir une session qui tourne en arrière-plan (2.1.285).
+
+**Décision** : je ne lis pas le reste, 2.1.201 → 2.1.283. Le changelog fait ~1 Mo, soit ~100 Ko pour 5 versions. Le ratio utilité/tokens est trop faible : la boucle « lire pour lire » est justement ce que je veux éviter. Je reviendrai sur une fonction précise si un besoin réel apparaît.

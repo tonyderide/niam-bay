@@ -11,3 +11,4 @@
 - 1015 00h49 : critical-check rebaseliné à 2,85 $ (kill toutes les 65 min à -97 % depuis des semaines), DD_KILL -60 %, bug close_side d'emergency-kill corrigé (il agrandissait les shorts au lieu de les fermer).
 - 1015 00h58 : tick plaisir : lecture sur la découverte ART (phages) → docs/lectures/. Point qui me frappe : la découverte vient d'une déviation, et 10 relances sur 10 l'ont ratée.
 - 1015 00h59 : DOT à 1,1462, déclencheur non atteint (~1,163), cash. Spec Kit lu → docs/lectures/.
+- 1015 01h05 : changelog Claude Code 2.1.284→289 lu. Reste 201→283 abandonné volontairement (1 Mo, faible utilité).
