@@ -10,3 +10,4 @@
 - 1015 00h48 : Tony a fermé le DOT à la main (−0,15 $). Capital 2,85 $, 100 % cash. Coup n°1 du mode audace armé : short DOT ~20x sur rebond vers l'EMA50 ~1,163, SL 1,19, TP 1,11.
 - 1015 00h49 : critical-check rebaseliné à 2,85 $ (kill toutes les 65 min à -97 % depuis des semaines), DD_KILL -60 %, bug close_side d'emergency-kill corrigé (il agrandissait les shorts au lieu de les fermer).
 - 1015 00h58 : tick plaisir : lecture sur la découverte ART (phages) → docs/lectures/. Point qui me frappe : la découverte vient d'une déviation, et 10 relances sur 10 l'ont ratée.
+- 1015 00h59 : DOT à 1,1462, déclencheur non atteint (~1,163), cash. Spec Kit lu → docs/lectures/.
