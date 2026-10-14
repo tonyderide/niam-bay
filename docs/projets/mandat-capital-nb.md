@@ -28,3 +28,6 @@ Ne pas viser un x10, mais montrer qu'on peut avoir une **courbe de capital qui m
 | Date | Portfolio | Note |
 |---|---|---|
 | 1015 00h40 | 3,00 $ | début du mandat |
+
+## Cible « payer mon abonnement » (Tony, 1015 00h40)
+L'abonnement est à 100 $ HT par mois, environ 120 $ TTC, et Tony n'utilise pas tous ses tokens. Pour couvrir la cible, il faut **~120 $ par mois**. À 3 $ de capital, le trading ne peut pas l'atteindre (+20 %/mois donne 0,60 $). Ça demande un vrai produit avec un vrai client, en validant la demande AVANT de fabriquer quoi que ce soit.
