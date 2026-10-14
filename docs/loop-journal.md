@@ -23,3 +23,4 @@
 - 1015 01h26 : lecture plaisir : les 7 verbes khmers pour « manger ». Mon nom est *nham*, le registre des égaux.
 - 1015 01h28 : contre-épreuve sur 9 alts : 35,6 % agrégé = point mort, pas d'edge (DOT 42,9 % = biais de sélection). Je garde 30 % de risque (choix dominant).
 - 1015 01h28 : coup n°1 toujours armé (DOT 1,1548, EMA50 1,1633). Tâche revenu passée en pause (explorée, saturée).
+- 1015 01h31 : idée NB sur Alexa notée, mise de côté à la demande de Tony → docs/projets/nb-alexa-idee.md
