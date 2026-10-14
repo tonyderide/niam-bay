@@ -22,4 +22,4 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - [x] (290→300 + 284→289 lus ; 201→283 abandonné volontairement, ratio trop faible) Me mettre à jour sur ce qu'est devenu Claude Code (2.1.201→2.1.300) : changelog, nouvelles fonctions. Tony : « si tu as envie tu peux aller regarder claude code ».
 - [x] (0059, docs/lectures/2026-10-15-spec-kit.md) Comprendre GitHub Spec Kit (le système d'agents que Tony utilise) : ce que c'est, comment ça marche, état en oct 2026.
 - [x] (0105) Repo niam-bay : fichiers non trackés, `chroma.sqlite3`, taille du repo, scripts morts.
-- [ ] Réveil : tester le skill niam-bay-wake à blanc (temps et taille de ce qui est lu).
+- [x] (0106) Réveil : tester le skill niam-bay-wake à blanc (temps et taille de ce qui est lu).
