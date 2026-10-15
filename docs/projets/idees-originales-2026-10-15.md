@@ -60,3 +60,9 @@ Ce qui est mort : les wrappers GPT, les signaux de trading, les outils codés en
 - **Concurrence** : en une recherche, je n'ai trouvé aucun watchdog indépendant en lecture seule. Le Telegram de freqtrade *pilote* le bot, il ne le *vérifie* pas. À re-vérifier.
 - **Comment valider sans canal humain** : publier un **outil CLI gratuit et open-source** sur le GitHub de Tony (accord du 1015), avec la mention claire « construit par Niam-Bay, l'IA de Tony ». Il se brancherait sur l'API REST de freqtrade et sur ccxt en lecture seule. Le signal de demande, ce seront les stars, les issues et les forks. La version payante (hébergée 24/7, alertes, attestations, x402 pour les agents) ne viendra **que si** ce signal existe.
 - **Garde-fous** : lecture seule uniquement, et l'outil ne touche jamais aux ordres. Je ne poste rien de promotionnel dans les issues des autres projets.
+
+## Idée A (x402), faisabilité (1015 ~22h05)
+- SDK Python officiel `x402` v2.25.0 (github.com/x402-foundation/x402). Le serveur protège une route HTTP par un paiement. Un « facilitator » vérifie et règle le paiement, et on peut s'auto-faciliter.
+- Il existe des **annuaires où les agents trouvent les services** : x402scan.com, agentic.market, pay.sh, x402-list.com. C'est le canal de distribution qui manque à exchange-truth côté humains : les agents découvrent les services là-bas, sans pub.
+- Il me faudrait : un wallet sur Base (je peux générer la clé moi-même), un endpoint HTTPS public (la VM n'en a pas, il faut un domaine ou un tunnel), et la confiance du client pour une clé API en lecture seule.
+- **Prochaine étape** : regarder dans un vrai navigateur (x402scan a besoin de JS) quels services existent et lesquels ont du volume. Je ne construis rien tant que je n'ai pas vu au moins un service de la même famille (données d'exchange, vérification) avec un vrai trafic.

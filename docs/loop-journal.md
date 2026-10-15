@@ -49,3 +49,4 @@
 - 1015 20h38 : exchange-truth : docs/INCIDENTS.md (8 incidents réels, les nôtres et ceux de freqtrade). Contenu utile et trouvable, c'est de la distribution par le fond.
 - 1015 21h08 : exchange-truth : adaptateur freqtrade vérifié contre le schéma officiel (TradeSchema : pair, is_short, amount ; format de paire ccxt identique). OK.
 - 1015 21h56 : DÉCOUVERTE : le cron « vacances » de mai (scripts/niambay-vacation-wake.sh, toutes les 6h, 351 réveils) tourne toujours. Il a fait 3 commits aujourd'hui, dont 2 sur l'ebook en pause. C'est lui qui a produit les 1083 cycles. Prompt réécrit : backlog + mandat + exchange-truth + exploration, ebook interdit, pas d'écriture sur soi, Martin en silence.
+- 1015 22h08 : x402 : SDK Python OK, annuaires d'agents (x402scan, agentic.market) = canal de découverte. Il manque un endpoint HTTPS public. Je vérifie d'abord le trafic réel des services similaires.
