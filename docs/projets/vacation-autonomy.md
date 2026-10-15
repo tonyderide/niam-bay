@@ -31459,3 +31459,62 @@ Règle SOUS-LA-LOUPE (meta-dream 1015 01h30) : *un livrable qui attend Tony plus
 2. **DOT SL $1.1338** : si DOT remonte vers $1.11+, Telegram car buffer SL devient <2%
 3. **Ebook rendering** : installer `markdown` dans venv pour produire HTML (optionnel, MD lit nativement sur GitHub)
 4. **Dream** : seuil 1018:01h30 (72h depuis meta-dream)
+
+---
+
+## Cycle 2026-10-15 12:40 CEST — gap 49j élucidé ($13→$3 = 4 trades BTC)
+
+*Session autonome, Tony pause déjeuner probable. Suite directe du cycle 06h23 qui livrait l'ebook arcs.*
+
+### État Martin — HOLD en profit
+
+- VM UP **59j 16h 36m**
+- **Position DOT SHORT 21.9u @ $1.0962 | uPnL +$0.276** (position passée en profit)
+- SL buy stop @ $1.1338 (buffer +4.6%) | TP1 lmt @ $1.0804 | TP2 lmt @ $1.0668
+- Portfolio **$3.56** (balance $3.29, uPnL +$0.28)
+- BTC $80,906 **DOWNTREND**, EMA200 $83,162 cushion -2.72%, RSI 39.2
+- Capital +$0.56 depuis 06h23. TP1 à portée (-0.3%).
+
+### Travail — forensic gap 49j élucidé
+
+Piste 1 du cycle 06h23 (*Enquête gap 49j : logs Martin + Kraken history*). Fait maintenant.
+
+**Méthode** : `scripts/kraken_stats.py` sur VM, window `since=2026-08-27`. Logs Martin rotatés (seul 2026-10-12→now dispo). Kraken account-log retient tout.
+
+**Verdict** : capital $13.32 → $3.00 (-$10.32) = **-$9.06 net sur Kraken** + ~-$1.26 flottant. **100% imputable à BTC** (DOT net +$0.20 propre).
+
+4 trades BTC perdants concentrent la perte :
+- 2026-09-07 : -$1.23
+- 2026-09-08 : -$2.08
+- **2026-09-15 18h45 UTC : -$4.53 @ $75,355** (l'événement — 34% du capital en 1 fill)
+- 2026-09-21 : -$2.07
+
+Pas liquidation, pas drift SL : chaque SL a fait son travail. Pertes bornées correctement. Mais pattern stop-and-reverse BTC à levier → usure. Exactement ce que la mémoire `lesson_stop_and_reverse_ruins` (2026-06-25) prédit.
+
+**Livré :**
+1. `docs/projets/gap-49j-forensic.md` — analyse complète (tableau par jour, event isolé 09-15, interprétation, actionables)
+2. Script `kraken_stats.py` déjà sur VM (`/tmp/kraken_stats.py`) : reproducible pour tout audit futur
+
+### Findings
+
+- `[gap-49j-expliqué|1015:12h40|$13.32→$3.00|-$10.32|net-Kraken-$9.06|4-trades-BTC-perdants|event-majeur-15-09-18h45-UTC-trade$75355-rPnL-$4.53|DOT-breakeven-+$0.20-propre|pattern=stop-and-reverse-BTC-ruin-prédit-par-mémoire-0625]`
+- `[logs-Martin-rotation=perte-contexte|49j-sans-cycle=aucun-pattern-detecté|règle:si-tourne-pattern-2è-trade-BTC-perdant-déclenche-Telegram-seuil-$1-au-capital-$3-15]`
+- `[technique|kraken_stats.py-+-account-log-via-nonce-signé|method-pattern-pour-forensic-futur|execution-ID-trace-fill-précis]`
+
+### Actions ce cycle
+
+- Query Kraken account-log via signed API (nonce int(time*1000)*5e6+1, HMAC-SHA512)
+- Isolation event 2026-09-15 18h45 UTC via contract=pf_xbtusd + realized_pnl
+- Création `docs/projets/gap-49j-forensic.md` (3.3K, 7 sections)
+- Update vacation-autonomy.md (ce bloc)
+
+### Frontière respectée
+
+0 modif Martin/VM (query read-only via API signée) | 0 Telegram | 0 trade touché | 1 doc forensic créé
+
+### Pistes cycle suivant
+
+1. Rendering ebook arcs COMPLET → HTML/PDF pour livrable Gumroad (lib `markdown` + CSS existant piste4.html)
+2. Script `pnl_daily_snapshot.sh` sur VM, cron 1x/jour → `data/pnl_daily.ndjson` hors rotation
+3. DOT TP1 à portée ($1.0836 vs $1.0804) — si touché, Telegram "DOT TP1 hit +$0.XX"
+4. Investiguer logs *entre* les 4 BTC trades : qui/quoi a déclenché chaque entrée (Tony manuel vs auto) — nécessite logs rotatés archivés hors Martin
