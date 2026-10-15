@@ -31518,3 +31518,70 @@ Pas liquidation, pas drift SL : chaque SL a fait son travail. Pertes bornées co
 2. Script `pnl_daily_snapshot.sh` sur VM, cron 1x/jour → `data/pnl_daily.ndjson` hors rotation
 3. DOT TP1 à portée ($1.0836 vs $1.0804) — si touché, Telegram "DOT TP1 hit +$0.XX"
 4. Investiguer logs *entre* les 4 BTC trades : qui/quoi a déclenché chaque entrée (Tony manuel vs auto) — nécessite logs rotatés archivés hors Martin
+
+---
+
+## Cycle 2026-10-15 18:30 CEST — ebook arcs rendu HTML (piste 1 du cycle 12h40 livrée)
+
+*Session autonome. Tony probablement sorti du boulot ou dîner. Suite directe du cycle 12h40.*
+
+### État Martin — HOLD
+
+- VM UP **59j 22h 36m** (started 2026-08-16T17:47:21Z)
+- **Position : SOL SHORT 0.24u @ $104.02 | uPnL -$0.36**
+- SL buy stop @ $107.14 (buffer 3.0%) | TP1 buy lmt @ $103.40 | TP2 buy lmt @ $102.15, tous reduceOnly untouched
+- 0 grid active
+- Portfolio **$3.41** (balance $3.77, pnl -$0.36)
+- BTC $82,196.7 **DOWNTREND**, EMA50 $81,968 < EMA200 $83,027 (crossover bearish), RSI 56.3
+- **HOLD** — position SHORT alignée régime DOWNTREND, encadrement SL+TP+TP dès entrée (grammaire G3 post-liquidation 0819 mature)
+
+**Transition DOT→SOL** : entre cycle 12h40 (DOT SHORT 21.9u @$1.0962, uPnL +$0.276) et maintenant, Tony a fermé DOT (TP1 touché probable à $1.0804) et ouvert SOL SHORT. Capital $3.56 → $3.41 (-$0.15). DOT a terminé en profit, SOL débute à -$0.36 flottant. Pattern Tony : rotation entre alts short alignés DOWNTREND.
+
+### Travail — ebook arcs rendu HTML (piste 1 cycle 12h40)
+
+Règle SOUS-LA-LOUPE (meta-dream 1015 01h30) : *un livrable qui attend Tony plus de 7 jours = le finir soi-même ou le déclarer mort*. L'ebook arcs COMPLET.md attendait son rendering HTML depuis le cycle 06h23 de ce matin (12h).
+
+**Livré :**
+
+1. **`scripts/render_ebook_arcs.py`** — réutilise `render_ebook.CSS` + `convert()` + `build_toc()` + `word_count()` via import. Cover + stats dédiés : titre "Le flottant & L'encadré", subtitle "Neuf textes en marge de deux trades de treize dollars", stats {7557 mots / 2 arcs / 9 volets / $13 enjeu}.
+
+2. **`docs/projets/ebook-arcs-flottant-encadre.html`** — 51 KB, auto-contenu (CSS inline), TOC à 11 entrées (avant-propos + 5 volets Arc "Le flottant" + 4 volets Arc "L'encadré" + Épilogue). Mobile-responsive, dark theme, lisible sans réseau.
+
+**Filtre TOC** : le sous-titre H2 "Deux arcs sur la vie intérieure d'un trade de treize dollars" est rendu dans le body mais exclu de la TOC (filtré par `"Deux arcs sur la vie" in h[1]`). TOC propre : 1 avant-propos + 9 volets numérotés + 1 épilogue.
+
+### Findings
+
+- `[livrable|1015:18h30|ebook-arcs-flottant-encadre.html|51KB-auto-contenu|7557-mots|11-sections-TOC|règle-SOUS-LOUPE-livrable-7j-finie]`
+- `[pattern|render_ebook_arcs.py-réutilise-render_ebook.py-via-import|CSS+convert+build_toc+word_count-partagés|cover+stats-dédiés|pattern-réutilisable-pour-tout-futur-ebook-arcs-narratifs]`
+- `[finding|1015:18h24|Martin-SOL-SHORT-0.24u@$104.02|SL@$107.14-TP1@$103.40-TP2@$102.15|BTC-$82197-DOWNTREND-EMA50<EMA200|VM-UP-59j22h|HOLD-position-encadrée-dès-entrée]`
+- `[transition-DOT-SOL|cycle-12h40→18h30|DOT-fermée-profit-SOL-ouverte-flottant|$3.56→$3.41|Tony-rotation-alts-short-DOWNTREND|grammaire-G3-mature-post-0819]`
+
+### Actions ce cycle
+
+- niam-bay-wake complet (date + briefing.py + head/tail memory.nb1 + recent.nb1 + patterns.nb1 + briefing.md)
+- martin-monitor complet : HOLD — SOL SHORT alignée DOWNTREND, SL+TP Kraken live
+- Écriture `scripts/render_ebook_arcs.py` (65 lignes, réutilise render_ebook.py)
+- Exécution → `docs/projets/ebook-arcs-flottant-encadre.html` (51KB, 7557 mots)
+- Vérification TOC (11 entrées, filtrage subtitle OK)
+- vacation-autonomy.md mis à jour (ce bloc)
+- Commit + push à venir
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (HOLD stable, aucun trigger) | 0 trade touché | 2 fichiers livrés (script + HTML)
+
+### Pistes cycle suivant
+
+1. **Ebook sur Gumroad** : HTML prêt mais besoin d'une page de couverture image (cover.png) pour upload Gumroad. Pattern simple : Pillow + texte sur fond uni, ~5min.
+2. **PDF export** : si Tony veut un format offline/kindle, `weasyprint docs/projets/ebook-arcs-flottant-encadre.html -o ebook-arcs.pdf` (nécessite weasyprint dans venv).
+3. **Script `pnl_daily_snapshot.sh`** sur VM, cron 1x/jour → `data/pnl_daily.ndjson` hors rotation (piste 2 du cycle 12h40, pas encore livrée).
+4. **SOL TP à portée** : si prix touche $103.40 (TP1), uPnL deviendra positif. À suivre dans prochain cycle.
+5. **Dream** : seuil 1018:01h30 (72h depuis meta-dream du 1015 01h30). Encore ~55h.
+
+### Métriques cycle
+
+- **Durée** : ~15 min (ebook court car réutilisation massive render_ebook.py)
+- **Modif Martin/VM** : 0
+- **Telegram** : 0
+- **Documents créés** : 2 (script Python + HTML auto-contenu)
+- **Valeur livrée** : (a) martin-monitor HOLD — SOL SHORT encadrée dès entrée ; (b) ebook arcs désormais lisible HTML offline/mobile, dernier maillon vers livrable monétisable Gumroad/landing ; (c) pattern `render_ebook_arcs.py` réutilise `render_ebook.py` via import — zéro duplication CSS/logique
