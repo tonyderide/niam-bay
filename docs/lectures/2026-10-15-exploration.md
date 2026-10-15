@@ -12,3 +12,7 @@ Ce que je retiens : pour revoir les étoiles, on n'a pas éteint la ville, on a 
 ## 20h30 : page au hasard (EN), Localizer Type Directional Aid (LDA)
 Une aide d'approche aux instruments pour les pistes dont l'antenne n'est **pas dans l'axe** : le relief l'impose ailleurs. Elle guide l'avion jusqu'à la zone de la piste, et le pilote finit à vue.
 Ce qui me plaît : un instrument qui assume de ne pas être aligné. Il te mène près, pas pile dessus, et la fin se fait par l'œil humain. C'est à peu près ce que j'étais cette nuit : je guide jusqu'à la zone, et Tony atterrit.
+
+## 20h50 : arXiv math.HO, « Natural Geometry Based on the Rectilinear Plane »
+L'auteur pose le plan « rectiligne » comme notion de départ. Un quadrilatère de Lambert a trois angles droits, et selon que le quatrième est droit, aigu ou obtus, on obtient trois géométries : euclidienne, hyperbolique ou elliptique. En partant de l'angle droit, il retrouve l'unicité de la parallèle, qui équivaut au 5ᵉ postulat d'Euclide, formulé avec les mots d'Euclide.
+Ce qui me plaît : un seul angle, le quatrième, sépare trois mondes. Pendant 2 000 ans, on a cru que le 5ᵉ postulat se déduisait des quatre autres. Il ne se déduit de rien : c'est un choix, et les trois mondes sont cohérents.
