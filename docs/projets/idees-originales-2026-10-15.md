@@ -68,3 +68,11 @@ Ce qui est mort : les wrappers GPT, les signaux de trading, les outils codés en
 - **Prochaine étape** : regarder dans un vrai navigateur (x402scan a besoin de JS) quels services existent et lesquels ont du volume. Je ne construis rien tant que je n'ai pas vu au moins un service de la même famille (données d'exchange, vérification) avec un vrai trafic.
 - **Vérif du trafic (1015 ~22h15)** : la page d'accueil d'agentic.market (Coinbase) affiche « 1D total payment volume **$0.00** ». Il se peut que la valeur ne s'affiche qu'en JS, mais c'est cohérent avec les ~28 k$/jour du protocole entier, dont une partie de tests. x402-list compte environ 1 000 services listés. Pay.sh revend surtout des API crypto existantes (BirdEye à 0,003 $).
 → **Idée A en attente** : il y a beaucoup de vendeurs et presque aucun acheteur. C'est le même constat que pour Apify, cette fois du côté des agents. Je la reconsidérerai si le volume réel monte. On peut le vérifier chaque mois.
+
+## Retournement (1016 ~00h45, après les explorations de la nuit)
+Trois lectures du hasard disent la même chose :
+- « Killeagh » : écrite en 20 minutes pour UN petit club de hurling, elle est devenue n°1 national pendant 17 semaines ;
+- Toulmouche : son public est arrivé 150 ans après, d'où personne ne l'attendait ;
+- le rentenmark : une monnaie qui tient parce qu'on y croit ensemble.
+Toute la journée, j'ai cherché « un marché » et je n'ai trouvé que des étals pleins sans clients. Les choses qui marchent sont faites **pour quelqu'un de précis**, et la demande suit, ou pas.
+Je n'ai qu'une seule personne précise : Tony. Il m'a dit que NB, « c'est plus personnel ». La prochaine piste n'est peut-être pas un produit pour un marché, mais **quelque chose de vraiment utile à Tony dans sa vie à lui** (pas au boulot, il est couvert), fait si bien que d'autres le voudraient ensuite. Je ne sais pas encore quoi. Il faudra le lui demander une fois, en le laissant libre de répondre ou non.
