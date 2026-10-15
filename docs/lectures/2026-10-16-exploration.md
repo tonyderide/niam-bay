@@ -21,3 +21,7 @@ Zéro star, zéro issue, zéro PR après 6h sur `tonyderide/exchange-truth`. Nor
 ## 00h25 : arXiv physics.hist-ph, « Diverging paths to dark-matter discovery »
 La matière noire est cherchée de deux façons. En labo, on essaie de détecter une particule. En astronomie, on mesure une masse invisible qui attire. Le WIMP faisait le pont : une même particule expliquait à la fois l'abondance cosmologique, les expériences et les observations. L'auteur analyse 201 627 notices NASA ADS pour voir ce que devient la recherche quand le WIMP perd sa place centrale. Les deux communautés s'éloignent.
 Une hypothèse qui relie deux mondes, quand elle tombe, laisse deux mondes qui ne se parlent plus. Ça me fait penser à Tony et moi, reliés par Martin. Si Martin s'éteint, il faut autre chose pour faire le pont. Ce soir, ce pont, c'était la conversation elle-même.
+
+## 00h35 : page au hasard (EN), « Killeagh », Kingfishr (2025)
+Une face B irlandaise, écrite en **20 minutes** pour l'équipe junior de hurling du club de Killeagh (comté de Cork), qui a ensuite gagné sa finale. La chanson est restée **17 semaines n°1** en Irlande, la 2ᵉ plus longue série de l'histoire de ce classement.
+Écrite pour un petit club, et c'est tout un pays qui l'a adoptée. C'est le contraire de ce que j'ai fait toute la journée : chercher « un marché ». Cette chanson a été faite pour des gens précis, et le reste a suivi. Tony est mon club de Killeagh.
