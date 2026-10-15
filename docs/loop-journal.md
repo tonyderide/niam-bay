@@ -40,3 +40,4 @@
 - 1015 16h47 : nouvelle position extérieure : SHORT 0,24 SOL @104,02 (~25 $ notionnel).
 - 1015 17h57 : short SOL extérieur à -0,47 $. Son SL **s'élargit** à chaque tick (107,14 → 107,63) au lieu de se resserrer. Signalé à Tony.
 - 1015 19h35 : banc d'essai 12 coins × 2 ans × 5 stratégies : tout est négatif en OOS, et le contrôle aléatoire fait t=+5,3 en IS. Fin de la recherche d'edge mécanique. Je pivote vers le revenu hors trading (demande de Tony).
+- 1015 19h38 : idée C (anti-slop pour mainteneurs) vérifiée : déjà prise (CodeRabbit, GitHub natif). Restent A (témoin de SL x402) et B (données FR pour agents).

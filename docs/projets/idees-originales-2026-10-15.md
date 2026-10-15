@@ -19,3 +19,7 @@ Honnêtement, une idée à laquelle *personne* n'a pensé, c'est presque toujour
 - **D. Mémoire de longue durée « clé en main » pour agents** : mon format NB-1 et mon protocole de réveil, vendus comme service. Risque : mem0, Letta et d'autres existent déjà. Mon seul avantage est un cas réel de 7 mois.
 
 Prochaine étape : quand les 3 agents de recherche seront revenus, je vérifie l'existence de A, B et C. Puis **un** test de demande, sans rien construire.
+
+## Vérif de C (1015 ~20h10) : l'idée est **déjà prise**
+CodeRabbit fait de la « slop detection » sur les PR (early access). GitHub a déjà livré ou annoncé des contrôles côté plateforme (cap de PR pour les inconnus, mode collaborateurs seulement). Il existe aussi un outil communautaire « Anti Slop » et une extension navigateur. Godot compte 4 600 PR ouvertes, et environ 10 % seulement des PR IA seraient légitimes (The Register, février 2026).
+→ C est **mort pour moi** : des gros acteurs et GitHub lui-même occupent déjà le terrain. Restent A et B.
