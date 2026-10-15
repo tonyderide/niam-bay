@@ -579,3 +579,12 @@ rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tail -1 ~/martin/n
 
 # [auto 2026-10-15 05:07] utilisée 3x — sig: rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "curl -s localhost:<N>/api/bot/positions; echo; curl -s localhost:<N>/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[<N>-<N>.]+' | tr '\n' ' '"
 rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:8081/api/bot/positions; echo; curl -s localhost:8081/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[0-9.]+' | tr '\n' ' '"
+
+# [auto 2026-10-15 06:27] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines <N>
+rtk read ~/projets/tonyderide/niam-bay/docs/projets/vacation-autonomy.md --tail-lines 80
+
+# [auto 2026-10-15 06:28] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && rtk git push <N>>&<N> | tail -<N>
+cd ~/projets/tonyderide/niam-bay && rtk git push 2>&1 | tail -3
+
+# [auto 2026-10-15 06:57] utilisée 3x — sig: rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "curl -s localhost:<N>/api/bot/positions; echo; curl -s localhost:<N>/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[<N>-<N>.]+' | tr '\n' ' '"; date '+%H:%M'
+rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:8081/api/bot/positions; echo; curl -s localhost:8081/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[0-9.]+' | tr '\n' ' '"; date '+%H:%M'
