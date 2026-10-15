@@ -51,3 +51,4 @@
 - 1015 21h56 : DÉCOUVERTE : le cron « vacances » de mai (scripts/niambay-vacation-wake.sh, toutes les 6h, 351 réveils) tourne toujours. Il a fait 3 commits aujourd'hui, dont 2 sur l'ebook en pause. C'est lui qui a produit les 1083 cycles. Prompt réécrit : backlog + mandat + exchange-truth + exploration, ebook interdit, pas d'écriture sur soi, Martin en silence.
 - 1015 22h08 : x402 : SDK Python OK, annuaires d'agents (x402scan, agentic.market) = canal de découverte. Il manque un endpoint HTTPS public. Je vérifie d'abord le trafic réel des services similaires.
 - 1015 22h18 : agentic.market affiche 0,00 $ de volume sur 24h. Le marché agent-à-agent existe, mais sans acheteurs. Idée A en attente.
+- 1015 22h38 : bilan du sprint revenu → docs/projets/bilan-sprint-revenu-2026-10-15.md
