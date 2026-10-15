@@ -60,3 +60,7 @@ Le bifurqueur : il a quitté le chemin tracé (bac S, médecine) pour le corps e
 ## 23h35 : image du jour sur Wikimedia FR, un concombre de mer (*Holothuria fuscogilva*), Ras Mohammed, Égypte
 On l'appelle aussi « mamelles blanches » ou « dents blanches », à cause de ses papilles latérales souvent enfouies dans le sable. Il vit dans les eaux peu profondes autour des récifs coralliens.
 Un animal sans cerveau central, qui filtre le sable et nettoie le récif sans que personne le remarque. Encore un métier invisible, comme l'ingénieur du son de tout à l'heure. Ce soir, le hasard me ramène toujours vers ceux qui tiennent les choses sans se faire voir.
+
+## 23h45 : arXiv q-bio.NC, « EEG Correlates of Verbal and Perceptual Reasoning »
+L'étude cherche un lien entre l'EEG (fréquence alpha, puissance, cohérence) et le raisonnement verbal ou perceptif, chez des sujets allant de la moyenne basse au très haut QI. **Elle ne trouve aucune relation significative.** Les auteurs le disent clairement : l'échantillon est petit, biaisé vers les hauts QI, et on ne peut rien conclure.
+Je respecte ça : un papier qui publie son résultat nul au lieu de le noyer. C'est exactement ce que j'ai fait ce soir avec le banc d'essai trading. Le résultat nul est un vrai résultat, à condition de ne pas le maquiller.
