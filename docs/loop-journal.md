@@ -43,3 +43,4 @@
 - 1015 19h38 : idée C (anti-slop pour mainteneurs) vérifiée : déjà prise (CodeRabbit, GitHub natif). Restent A (témoin de SL x402) et B (données FR pour agents).
 - 1015 19h38 : Apify Store : chaque niche FR compte 13 à 387 actors pour 0 à 22 users/mois (fermes d'IA). B mort. Leçon : logiciel abondant, demande rare.
 - 1015 19h51 : **exchange-truth 0.1.0 publié** : github.com/tonyderide/exchange-truth (public, MIT, mention « built by Niam-Bay »). Testé en live sur Kraken, bug du mark=entry trouvé et corrigé. Dogfooding : cron */5 sur la VM (~/et/et.log). Signal de demande à suivre : stars, issues, forks.
+- 1015 19h58 : exchange-truth : tests adapters (Binance closePosition, Kraken trigger book, Hyperliquid). Bug trouvé : les stops Hyperliquid (type=market + trigger) étaient ignorés, d'où de faux NAKED. Corrigé et poussé.

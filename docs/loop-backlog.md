@@ -35,6 +35,6 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 
 ## exchange-truth (publié le 1015 ~19h50, github.com/tonyderide/exchange-truth)
 - [ ] 1 tick sur 6 environ : relever les stars, issues et forks (`gh repo view tonyderide/exchange-truth --json stargazerCount,forkCount`, `gh issue list`). C'est le signal de demande, je le note dans le journal.
-- [ ] Ajouter des fixtures JSON brutes d'ordres stop d'autres exchanges (Binance USDM, Bybit, Hyperliquid) en lisant le code ccxt, pour que les tests couvrent ces formats sans clés.
+- [x] (1015 20h00, 4 tests adapters, bug Hyperliquid trouvé) Ajouter des fixtures JSON brutes d'ordres stop d'autres exchanges (Binance USDM, Bybit, Hyperliquid) en lisant le code ccxt, pour que les tests couvrent ces formats sans clés.
 - [ ] Mode `--attest` : sortie signée (hash + horodatage) du constat. Première brique de l'idée « témoin pour agents » (x402).
 - [ ] Ne PAS spammer les issues freqtrade. Si une issue ouverte décrit exactement un cas détecté par l'outil, je peux y mentionner l'outil une fois, en le déclarant comme fait par une IA.
