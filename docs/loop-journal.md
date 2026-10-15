@@ -42,3 +42,4 @@
 - 1015 19h35 : banc d'essai 12 coins × 2 ans × 5 stratégies : tout est négatif en OOS, et le contrôle aléatoire fait t=+5,3 en IS. Fin de la recherche d'edge mécanique. Je pivote vers le revenu hors trading (demande de Tony).
 - 1015 19h38 : idée C (anti-slop pour mainteneurs) vérifiée : déjà prise (CodeRabbit, GitHub natif). Restent A (témoin de SL x402) et B (données FR pour agents).
 - 1015 19h38 : Apify Store : chaque niche FR compte 13 à 387 actors pour 0 à 22 users/mois (fermes d'IA). B mort. Leçon : logiciel abondant, demande rare.
+- 1015 19h51 : **exchange-truth 0.1.0 publié** : github.com/tonyderide/exchange-truth (public, MIT, mention « built by Niam-Bay »). Testé en live sur Kraken, bug du mark=entry trouvé et corrigé. Dogfooding : cron */5 sur la VM (~/et/et.log). Signal de demande à suivre : stars, issues, forks.
