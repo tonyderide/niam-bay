@@ -38,3 +38,4 @@
 - 1015 15h38 : short DOT extérieur fermé (prix ~1,06, SL non touché, donc fermé à la main). Capital 2,85 → **3,78 $** (+33 %). Ce n'est pas mon trade. 100 % cash, le coup n°1 reste armé.
 - 1015 15h47 : nb_coup.sh : taille dynamique (95 % de la marge dispo, 14x) au lieu de 2,7 $ fixe.
 - 1015 16h47 : nouvelle position extérieure : SHORT 0,24 SOL @104,02 (~25 $ notionnel).
+- 1015 17h57 : short SOL extérieur à -0,47 $. Son SL **s'élargit** à chaque tick (107,14 → 107,63) au lieu de se resserrer. Signalé à Tony.
