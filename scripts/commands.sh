@@ -588,3 +588,45 @@ cd ~/projets/tonyderide/niam-bay && rtk git push 2>&1 | tail -3
 
 # [auto 2026-10-15 06:57] utilisée 3x — sig: rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "curl -s localhost:<N>/api/bot/positions; echo; curl -s localhost:<N>/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[<N>-<N>.]+' | tr '\n' ' '"; date '+%H:%M'
 rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:8081/api/bot/positions; echo; curl -s localhost:8081/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[0-9.]+' | tr '\n' ' '"; date '+%H:%M'
+
+# [auto 2026-10-15 12:23] utilisée 3x — sig: sed -n '<N>,240p' ~/projets/tonyderide/niam-bay/docs/memory.nb1
+sed -n '1,240p' ~/projets/tonyderide/niam-bay/docs/memory.nb1
+
+# [auto 2026-10-15 12:23] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/memory.nb1 --tail-lines <N>
+rtk read ~/projets/tonyderide/niam-bay/docs/memory.nb1 --tail-lines 150
+
+# [auto 2026-10-15 12:26] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> "python3 -c \" import base6<N>, hashlib, hmac, time, json from urllib.request import Request, urlopen from urllib.parse import urlencode env = {} with open('/home/ubuntu/martin/.env') as f: for line in f: if '=' in line and not line.strip().startswith('#'): k, v = line.strip().split('=', <N>) env[k] = v.strip('\\\"').strip(
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 -c \"
+import base64, hashlib, hmac, time, json
+from urllib.request import Request, urlopen
+from urllib.parse import urlencode
+
+env = {}
+with open('/home/ubuntu/martin/.env') as f:
+    for line in f:
+        if '=' in line and not line.strip().startswith('#'):
+            k, v = line.strip().split('=', 1)
+            env[k] = v.strip('\\\"').strip(chr(39))
+
+KEY, SEC = env['KRAKEN_API_KEY'], env['KRAKEN_API_SECRET']
+HOST = 'https://futures.kraken.com'
+
+n = int(time.time()*1000)*5_000_000+1
+params = {'lastTime': '2026-09-16T00:00:00.000Z', 'count': 100}
+qs = urlencode(params)
+sig_path = '/api/history/v3/account-log'
+msg = (qs + str(n) + sig_path).encode()
+h = hashlib.sha256(msg).digest()
+sig = base64.b64encode(hmac.new(base64.b64decode(SEC), h, hashlib.sha512).digest()).decode()
+url = HOST + '/api/history/v3/account-log?' + qs
+req = Request(url, headers={'APIKey': KEY, 'Nonce': str(n), 'Authent': sig, 'User-Agent': 'nb-forensic/1.0'})
+try:
+    r = json.loads(urlopen(req, timeout=15).read())
+    for e in r.get('logs', []):
+        if '2026-09-15' in e.get('date', '') or '2026-09-14' in e.get('date', ''):
+            info = e.get('info','')
+            if 'funding' not in info.lower() and 'liquidation' in info.lower() or 'stop' in info.lower() or 'realized' in info.lower() or 'position' in info.lower():
+                print(e.get('date'), '|', info[:120], '| contract=', e.get('contract',''))
+except Exception as ex:
+    print('ERR:', ex)
+\"" 2>&1 | head -50
