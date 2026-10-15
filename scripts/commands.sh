@@ -630,3 +630,18 @@ try:
 except Exception as ex:
     print('ERR:', ex)
 \"" 2>&1 | head -50
+
+# [auto 2026-10-15 18:24] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/system/status echo '|||' curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders echo '|||' curl -s http://localhost:<N>/api/grid/active echo '|||' curl -s 'http://lo
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=10 ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/system/status
+echo '|||'
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders
+echo '|||'
+curl -s http://localhost:8081/api/grid/active
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'
+" 2>&1

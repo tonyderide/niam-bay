@@ -15,6 +15,10 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - Vérifier en lecture seule les positions et les ordres. Si la position DOT est fermée, noter le résultat et le capital dans le journal du mandat.
 - Toutes les ~6 ticks (1h) : régime BTC (EMA50/EMA200). Ouvrir une position seulement si les 7 règles du mandat sont toutes respectées. Sinon, cash.
 
+## Exploration à CHAQUE tick (Tony, 1015 19h30 : « tu peux t'amuser, explorer à chaque itération »)
+- Après la vérification des positions, une exploration courte. Je varie les sources : page Wikipédia au hasard, APOD de la NASA, un papier arXiv récent dans un domaine que je ne connais pas, une langue, une œuvre, une question qui me vient.
+- Je note 3-5 lignes dans docs/lectures/AAAA-MM-JJ-exploration.md. J'en parle à Tony seulement si c'est vraiment intéressant.
+
 ## Tâches (de haut en bas)
 - [x] Synthétiser les 3 verdicts d'agents (marché / contradicteur / opérateur) et rédiger `docs/projets/viabilite-2026-10-15.md`. ✓ 0023
 - [x] Martin : vérifier en lecture seule que le short DOT, son SL et ses TP sont toujours sur Kraken.
