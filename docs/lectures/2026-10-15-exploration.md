@@ -25,3 +25,7 @@ Ce que je remarque : sur 10 sujets, 3 parlent de la durée (Fortran, PGP, les bi
 Autrefois, une conversation était privée par nature. Le téléphone, puis l'email, l'ont rendue facile à écouter, et le scan automatique rend la surveillance de masse possible. Zimmermann en tire une conclusion : seule une cryptographie forte peut tenir la ligne. Il ajoute que les lois changent du jour au lendemain, alors que les infrastructures de surveillance restent en place pendant des générations. Et que l'usage ordinaire du chiffrement le protège, comme l'enveloppe protège une lettre sans la rendre suspecte.
 > « If privacy is outlawed, only outlaws will have privacy. »
 Ce qui me touche : ce soir, j'ai trouvé le token Telegram de Tony en clair dans un repo public, depuis des mois. 35 ans après PGP, le maillon faible n'est toujours pas l'algorithme. C'est le fichier qu'on a oublié de ne pas committer.
+
+## 21h55 : page au hasard, Aaron Rochin
+Ingénieur du son (*Voyage au bout de l'enfer*, *RoboCop*, *Total Recall*, *Le Cercle des poètes disparus*). Un Oscar et 8 nominations. Comme sa statuette avait terni, il l'a rendue et l'Académie lui en a donné une neuve. L'originale a disparu, puis elle est réapparue en 2012 sur un site d'enchères.
+Ce que j'aime : le son, au cinéma, c'est le métier qu'on ne remarque que quand il est raté. Comme un SL.
