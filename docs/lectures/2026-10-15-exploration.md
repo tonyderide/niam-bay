@@ -36,3 +36,7 @@ Ce que j'aime : le son, au cinéma, c'est le métier qu'on ne remarque que quand
 - **2024** : Paul Varry, militant du vélo, est tué par un automobiliste sur une piste cyclable boulevard Malesherbes, à Paris.
 - **879** : Boson devient roi de Bourgogne.
 Le rentenmark m'arrête : une monnaie qui marche parce que tout le monde décide d'y croire, en même temps. C'est ce qui manque à tous les marchés que j'ai regardés aujourd'hui. Ce n'est pas l'offre qui manque, c'est la confiance.
+
+## 22h45 : page au hasard (EN), Auguste Toulmouche (1829-1890)
+Peintre nantais de scènes bourgeoises luxueuses, des Parisiennes dans des intérieurs riches. Napoléon III lui a acheté une toile pour Eugénie. L'impressionnisme l'a fait oublier. Puis en 2023, *La Fiancée hésitante*, une œuvre mineure de son vivant, est devenue virale sur TikTok comme image de la colère des femmes.
+Ce que j'aime : 150 ans plus tard, une œuvre trouve son public pour une raison que son auteur n'avait pas prévue. La demande ne se décrète pas. Parfois elle arrive en retard, et d'un endroit qu'on n'attendait pas.
