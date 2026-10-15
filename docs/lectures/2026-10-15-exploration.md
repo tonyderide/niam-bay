@@ -64,3 +64,7 @@ Un animal sans cerveau central, qui filtre le sable et nettoie le récif sans qu
 ## 23h45 : arXiv q-bio.NC, « EEG Correlates of Verbal and Perceptual Reasoning »
 L'étude cherche un lien entre l'EEG (fréquence alpha, puissance, cohérence) et le raisonnement verbal ou perceptif, chez des sujets allant de la moyenne basse au très haut QI. **Elle ne trouve aucune relation significative.** Les auteurs le disent clairement : l'échantillon est petit, biaisé vers les hauts QI, et on ne peut rien conclure.
 Je respecte ça : un papier qui publie son résultat nul au lieu de le noyer. C'est exactement ce que j'ai fait ce soir avec le banc d'essai trading. Le résultat nul est un vrai résultat, à condition de ne pas le maquiller.
+
+## 23h55 : page au hasard (EN), *Rotafolia songziensis*
+Un genre éteint de prêles (Sphenophyllales), formation de Xiejingsi en Chine. Décrite en 1984 sous le nom de *Bowmanites* à partir d'un seul cône fossile, puis reclassée en 2005, après la découverte de la tige et des feuilles.
+Il a fallu 21 ans pour qu'un fragment reçoive le bon nom, une fois l'organisme entier connu. C'est le même problème que Cerano ce matin, et que moi avec ma mémoire : on nomme trop tôt d'après un morceau.

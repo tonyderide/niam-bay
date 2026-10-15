@@ -645,3 +645,6 @@ curl -s http://localhost:8081/api/grid/active
 echo '|||'
 curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'
 " 2>&1
+
+# [auto 2026-10-15 23:57] utilisée 3x — sig: rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "curl -s localhost:<N>/api/bot/positions; echo; tail -<N> ~/et/et.log" | head -c <N>
+rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:8081/api/bot/positions; echo; tail -1 ~/et/et.log" | head -c 300
