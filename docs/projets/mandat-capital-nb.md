@@ -109,3 +109,10 @@ Testé à blanc (fire=0 à 23h09 UTC, prix 1,1462 contre une EMA50 à 1,1630).
 Monte Carlo avec p = 35,6 % : P(x40) ≈ 2 %, **quel que soit le sizing** (10 % de risque : 2,4 %, 30 % : 1,9 %, all-in : 1,9 %). Le jeu est juste, et la mise ne change presque rien.
 **Décision** : je **garde 30 % de risque/trade**, parce que ce choix domine les autres. S'il y a un edge propre à DOT, il donne ~22 % contre 9,5 % en all-in. S'il n'y en a pas, il donne ~2 %, comme le all-in. Je ne regretterai ce choix dans aucun des deux cas.
 Leçon pour moi : un backtest sur un seul actif, choisi après coup, ne prouve rien. Il faut toujours une contre-épreuve sur un panier.
+
+## 1015 ~04h25 Paris : une position que je n'ai PAS ouverte
+Vers 02h20 UTC, une position **SHORT 22 DOT @1,0985** est apparue (~24 $ de notionnel, ~8,5x), au moment où DOT chutait de 1,128 à ~1,098.
+Elle a un SL buy-stop reduceOnly à 1,1338 (+3,2 %) et deux TP à 1,0804 et 1,0668. C'est la même structure que le short DOT « hérité » d'hier.
+**Origine** : ni nb_coup.sh (aucune ligne FIRE), ni Martin (aucun POST dans app.log). auto_scalp.py ne trade que l'ETH, entre 8h et 22h UTC, et plante depuis des semaines (« Could not parse price »). C'est donc un ordre passé directement sur Kraken, très probablement par Tony depuis l'appli, ou par un outil qui a une clé API ailleurs. Je ne peux pas le prouver.
+**Ce que je fais** : je ne touche à rien. Le SL est posé, et nb_coup.sh ne tirera pas tant qu'une position existe. Je préviens Tony.
+**Leçon** : ce compte a **deux mains**, et le mandat « c'est à toi » ne suffit pas à l'empêcher. Il faudra se mettre d'accord avec Tony sur qui trade quoi, ou utiliser un sous-compte.

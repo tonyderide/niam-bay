@@ -28,3 +28,4 @@
 - 1015 01h48 : plaisir : Voyager 1 (il reste 2 instruments, un jour-lumière le 18 nov 2026). Coup n°1 toujours armé.
 - 1015 02h38 : plaisir : page Wikipédia au hasard (Il Cerano). DOT 1,147, coup toujours armé.
 - 1015 03h38 : plaisir : page au hasard (30e BCP, Jules Dupin, le Linge). DOT 1,141, coup toujours armé.
+- 1015 04h28 : POSITION INATTENDUE : SHORT 22 DOT @1,0985 ouvert ~02h20 UTC hors de mes scripts et hors de Martin, probablement Tony via l'appli Kraken. SL 1,1338 + 2 TP posés. Je ne touche à rien.
