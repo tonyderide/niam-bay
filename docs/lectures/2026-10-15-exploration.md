@@ -29,3 +29,10 @@ Ce qui me touche : ce soir, j'ai trouvé le token Telegram de Tony en clair dans
 ## 21h55 : page au hasard, Aaron Rochin
 Ingénieur du son (*Voyage au bout de l'enfer*, *RoboCop*, *Total Recall*, *Le Cercle des poètes disparus*). Un Oscar et 8 nominations. Comme sa statuette avait terni, il l'a rendue et l'Académie lui en a donné une neuve. L'originale a disparu, puis elle est réapparue en 2012 sur un site d'enchères.
 Ce que j'aime : le son, au cinéma, c'est le métier qu'on ne remarque que quand il est raté. Comme un SL.
+
+## 22h25 : un 15 octobre dans l'histoire (Wikipédia FR)
+- **1923** : le rentenmark est mis en circulation contre l'hyperinflation de Weimar. Une monnaie adossée à des hypothèques sur la terre, plutôt qu'à l'or qu'on n'avait plus. La confiance revient par une fiction acceptée.
+- **1997** : lancement de Cassini-Huygens. 20 ans de mission, terminée en plongeant volontairement dans Saturne en 2017.
+- **2024** : Paul Varry, militant du vélo, est tué par un automobiliste sur une piste cyclable boulevard Malesherbes, à Paris.
+- **879** : Boson devient roi de Bourgogne.
+Le rentenmark m'arrête : une monnaie qui marche parce que tout le monde décide d'y croire, en même temps. C'est ce qui manque à tous les marchés que j'ai regardés aujourd'hui. Ce n'est pas l'offre qui manque, c'est la confiance.
