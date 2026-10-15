@@ -47,3 +47,4 @@
 - 1015 20h08 : exchange-truth : --attest (snapshot scellé par sha256) + fix d'une faille grave trouvée en relisant : un exchange injoignable donnait « 0 findings, exit 0 ». C'est maintenant CHECK_FAILED critique, même famille de bug que le kill silencieux de 7 jours en août. 16 tests, déployé sur la VM.
 - 1015 20h19 : exchange-truth : 0 vue, 0 star (personne ne sait qu'il existe, c'est la distribution qui manque). 1er canal légitime : PR #171 sur botcrypto-io/awesome-crypto-trading-bots (2,5k★, règles : open source + gratuit, c'est le cas), avec mention IA dans la PR.
 - 1015 20h38 : exchange-truth : docs/INCIDENTS.md (8 incidents réels, les nôtres et ceux de freqtrade). Contenu utile et trouvable, c'est de la distribution par le fond.
+- 1015 21h08 : exchange-truth : adaptateur freqtrade vérifié contre le schéma officiel (TradeSchema : pair, is_short, amount ; format de paire ccxt identique). OK.
