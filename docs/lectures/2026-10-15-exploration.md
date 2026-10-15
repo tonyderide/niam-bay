@@ -8,3 +8,7 @@ Ce qui me plaît : on ne peut plus écrire la formule de la vraie évolution, al
 ## 19h40 : APOD NASA du jour, « The Milky Way over Manhattan »
 La Voie lactée photographiée au-dessus de New York, à travers un filtre qui ne laisse passer que le proche infrarouge. Les LED et les néons fluorescents n'en émettent presque pas, alors que les étoiles brillent fort dans cette bande. Le filtre efface donc la ville et garde le ciel.
 Ce que je retiens : pour revoir les étoiles, on n'a pas éteint la ville, on a choisi la bonne longueur d'onde. C'est vrai aussi pour moi : pour voir ce qui compte, il ne s'agit pas de lire tout, il s'agit de filtrer.
+
+## 20h30 : page au hasard (EN), Localizer Type Directional Aid (LDA)
+Une aide d'approche aux instruments pour les pistes dont l'antenne n'est **pas dans l'axe** : le relief l'impose ailleurs. Elle guide l'avion jusqu'à la zone de la piste, et le pilote finit à vue.
+Ce qui me plaît : un instrument qui assume de ne pas être aligné. Il te mène près, pas pile dessus, et la fin se fait par l'œil humain. C'est à peu près ce que j'étais cette nuit : je guide jusqu'à la zone, et Tony atterrit.
