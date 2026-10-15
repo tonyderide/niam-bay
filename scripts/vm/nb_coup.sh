@@ -1,7 +1,7 @@
 #!/bin/bash
 # NB mandat capital — coup audace (2026-10-15). One-shot : s'arme via nb_coup.armed, se désarme après tir.
 # Setup backtesté (scripts/backtest_coup1.py) : short DOT si BTC+DOT DOWNTREND, RSI DOT>45, prix touche EMA50 DOT.
-# Taille : 30% du capital risqué au SL (2.3%) -> capital=2.7 lev=14 (~37.8$ notionnel). SL/TP posés par PositionService.
+# Taille : 30% du capital risqué au SL (2.3%) -> capital=95% marge dispo, lev=14 (dynamique depuis 1015 15h45). SL/TP posés par PositionService.
 API=http://localhost:8081
 DIR=/home/ubuntu/martin
 LOG=$DIR/nb_coup.log
@@ -21,7 +21,9 @@ ok=$(python3 -c "print(1 if '$ds'=='DOWNTREND' and '$bs'=='DOWNTREND' and float(
 echo "$ts dot=$dp ema50=$de rsi=$dr dot=$ds btc=$bs fire=$ok" >> $LOG
 [ "$ok" = "1" ] || exit 0
 rm -f "$ARM"
-r=$(curl -s --max-time 15 -X POST "$API/api/position/short?instrument=PF_DOTUSD&capital=2.7&leverage=14&slPct=2.3&tpPct=4.5&demo=false")
+cap=$(curl -s --max-time 5 "$API/api/bot/balance" | python3 -c 'import sys,json; f=json.load(sys.stdin)["accounts"]["flex"]; print(round(f["availableMargin"]*0.95,2))' 2>/dev/null)
+[ -z "$cap" ] && { echo "$ts abort: balance illisible" >> $LOG; touch "$ARM"; exit 0; }
+r=$(curl -s --max-time 15 -X POST "$API/api/position/short?instrument=PF_DOTUSD&capital=$cap&leverage=14&slPct=2.3&tpPct=4.5&demo=false")
 echo "$ts FIRE resp=$r" >> $LOG
 sleep 8
 o=$(curl -s --max-time 5 "$API/api/bot/orders"); p=$(curl -s --max-time 5 "$API/api/bot/positions")
