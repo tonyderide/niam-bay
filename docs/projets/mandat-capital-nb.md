@@ -31,6 +31,7 @@ Ne pas viser un x10, mais montrer qu'on peut avoir une **courbe de capital qui m
 |---|---|---|
 | 1015 00h40 | 3,00 $ | début du mandat |
 | 1015 00h50 | 2,85 $ | DOT fermé, 100 % cash, le MODE AUDACE peut démarrer |
+| 1015 ~15h35 | **3,78 $** | short DOT « extérieur » (ouvert ~04h20, géré à la main : TP1, réduction, stop suiveur) fermé vers 1,06. +0,93 $ (+33 %) sur ce compte, mais PAS grâce à moi |
 
 ## Cible « payer mon abonnement » (Tony, 1015 00h40)
 L'abonnement est à 100 $ HT par mois, environ 120 $ TTC, et Tony n'utilise pas tous ses tokens. Pour couvrir la cible, il faut **~120 $ par mois**. À 3 $ de capital, le trading ne peut pas l'atteindre (+20 %/mois donne 0,60 $). Ça demande un vrai produit avec un vrai client, en validant la demande AVANT de fabriquer quoi que ce soit.

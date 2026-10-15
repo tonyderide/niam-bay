@@ -35,3 +35,4 @@
 - 1015 09h57 : Kraken Futures revenu après ~35 min de 503. Short DOT intact (21,9u @1,0962, +0,01 $), SL 1,1338 + 2 TP toujours là.
 - 1015 14h37 : **TP1 touché** sur le short DOT (pas le mien) : 11,1u fermés à 1,0804, soit environ +0,18 $ réalisés. Il reste 10,8u, avec TP2 1,0668 et SL 1,1338 toujours posés.
 - 1015 14h57 : short DOT réduit de 10,8 à 8,1u sans que le TP2 (1,0668) soit touché (prix ~1,073). Encore une main extérieure (Tony ou un outil). SL 1,1338 + TP2 toujours posés.
+- 1015 15h38 : short DOT extérieur fermé (prix ~1,06, SL non touché, donc fermé à la main). Capital 2,85 → **3,78 $** (+33 %). Ce n'est pas mon trade. 100 % cash, le coup n°1 reste armé.
