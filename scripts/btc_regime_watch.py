@@ -48,7 +48,7 @@ VM_USER = "ubuntu"
 SSH_KEY = os.path.expanduser("~/.ssh/martin_vm.key")
 MARTIN_PORT = 8081
 
-BOT_TOKEN = "7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454"
+BOT_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 CHAT_ID = "6574420846"
 
 STATE_FILE = "/tmp/btc_regime_state.json"

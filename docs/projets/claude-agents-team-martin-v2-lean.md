@@ -55,7 +55,7 @@
 ### Secrets à mettre dans claude.ai
 
 ```
-TELEGRAM_BOT_TOKEN  = 7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454
+TELEGRAM_BOT_TOKEN  = <REDACTED : token Telegram, voir /home/ubuntu/martin/.tg_token sur la VM>
 TELEGRAM_CHAT_ID    = 6574420846
 MARTIN_API_BASE     = https://martin-api.tonyderide.com   # via Cloudflare Tunnel
 ```
@@ -177,7 +177,7 @@ Bonne garde.
 ### Secrets
 
 ```
-TELEGRAM_BOT_TOKEN  = 7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454
+TELEGRAM_BOT_TOKEN  = <REDACTED : token Telegram, voir /home/ubuntu/martin/.tg_token sur la VM>
 TELEGRAM_CHAT_ID    = 6574420846
 MARTIN_API_BASE     = https://martin-api.tonyderide.com
 GITHUB_TOKEN        = <token avec scope repo:read>

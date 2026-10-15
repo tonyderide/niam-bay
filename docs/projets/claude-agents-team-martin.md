@@ -36,7 +36,7 @@ URL finale : `https://martin-api.tonyderide.com/api/...`
 
 ### 2. Telegram credentials (déjà configurés sur VM)
 
-- `TELEGRAM_BOT_TOKEN` : `7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454`
+- `TELEGRAM_BOT_TOKEN` : `<REDACTED : token Telegram, voir /home/ubuntu/martin/.tg_token sur la VM>`
 - `TELEGRAM_CHAT_ID` : `6574420846`
 
 À mettre dans les **Secrets** de chaque agent claude.ai qui en a besoin.

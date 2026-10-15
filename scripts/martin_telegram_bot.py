@@ -24,7 +24,7 @@ import requests
 
 # ─── Config ─────────────────────────────────────────────────────────────────
 
-BOT_TOKEN = os.getenv("TELEGRAM_TOKEN", "7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454")
+BOT_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
 CHAT_ID   = os.getenv("TELEGRAM_CHAT",  "6574420846")
 
 # Martin API — localhost si SSH tunnel actif, sinon direct VM

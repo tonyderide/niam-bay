@@ -29,7 +29,7 @@ PORT = 8081
 BASE = f"http://localhost:{PORT}"
 STATE_FILE = "/home/ubuntu/martin-watchdog.state.json"
 LOG_FILE = "/home/ubuntu/martin-watchdog.log"
-TELEGRAM_TOKEN = "7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454"
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT = 6574420846
 COOLDOWN_SEC = 2 * 60 * 60  # 2h between duplicate alerts
 

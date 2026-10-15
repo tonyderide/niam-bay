@@ -6,6 +6,7 @@ Si le profit retombe de plus de TRAIL_AMOUNT depuis le pic, on stoppe le grid.
 
 Usage : python trailing_stop_btc.py [--interval 30] [--trail 0.30] [--min-profit 0.20]
 """
+import os
 import argparse
 import json
 import time
@@ -14,7 +15,7 @@ import urllib.error
 from datetime import datetime, timezone
 
 MARTIN_API = "http://localhost:8081"
-TELEGRAM_TOKEN = "7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454"
+TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT = "6574420846"
 PAIR = "PF_XBTUSD"
 

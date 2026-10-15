@@ -7,7 +7,7 @@
 # (remplace l'existant — même nom, même cron)
 
 API=http://localhost:8081
-TG="https://api.telegram.org/bot7913168011:AAG76RsddMBpUnveiEdK2HSk4PQLS7Ab454/sendMessage"
+TG="https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage"
 CHAT=6574420846
 MAXLOSS=10
 
