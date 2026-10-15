@@ -34,3 +34,4 @@
 - 1015 09h18 : Kraken Futures en **503 Service Unavailable** (api publique + privée). Martin renvoie 500. Rien à faire : si l'exchange est down, le SL est chez lui. Je revérifie au prochain tick.
 - 1015 09h57 : Kraken Futures revenu après ~35 min de 503. Short DOT intact (21,9u @1,0962, +0,01 $), SL 1,1338 + 2 TP toujours là.
 - 1015 14h37 : **TP1 touché** sur le short DOT (pas le mien) : 11,1u fermés à 1,0804, soit environ +0,18 $ réalisés. Il reste 10,8u, avec TP2 1,0668 et SL 1,1338 toujours posés.
+- 1015 14h57 : short DOT réduit de 10,8 à 8,1u sans que le TP2 (1,0668) soit touché (prix ~1,073). Encore une main extérieure (Tony ou un outil). SL 1,1338 + TP2 toujours posés.
