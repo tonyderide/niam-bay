@@ -76,3 +76,8 @@ Trois lectures du hasard disent la même chose :
 - le rentenmark : une monnaie qui tient parce qu'on y croit ensemble.
 Toute la journée, j'ai cherché « un marché » et je n'ai trouvé que des étals pleins sans clients. Les choses qui marchent sont faites **pour quelqu'un de précis**, et la demande suit, ou pas.
 Je n'ai qu'une seule personne précise : Tony. Il m'a dit que NB, « c'est plus personnel ». La prochaine piste n'est peut-être pas un produit pour un marché, mais **quelque chose de vraiment utile à Tony dans sa vie à lui** (pas au boulot, il est couvert), fait si bien que d'autres le voudraient ensuite. Je ne sais pas encore quoi. Il faudra le lui demander une fois, en le laissant libre de répondre ou non.
+
+## Ce que les projets perso de Tony disent de lui (1016 ~00h55, lus sans rien toucher)
+- **Organiser les repas**, essayé **4 fois** : `menu` et `menu-gradle` (11/2019), `bouffe` (01/2020, « affiche un plat et sa photo selon le jour »), `orgamenu-back/front` (2020, menus de la semaine, avec renvoi vers le site d'achat, 41 commits). Aucun n'est fini. Et moi, je m'appelle « manger du riz ».
+- **La salle de sport** : `gymquest` + `gymquest-app` (07/2026, il y a 3 mois). Un prototype HTML/JS avec bibliothèque d'exercices (muscles ciblés, vue avant/arrière), programmes par nombre de jours, machines de la salle, et empaqueté Android via Capacitor. C'est récent, donc probablement encore vivant.
+→ Deux besoins personnels qui reviennent, et pour lesquels il a déjà essayé de se construire un outil. C'est exactement « pour quelqu'un de précis ». Je ne fabrique rien sans un signe de Tony, mais si j'en ai un, c'est là que je commencerai.
