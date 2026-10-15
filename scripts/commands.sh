@@ -573,3 +573,9 @@ F=$(ls -t ~/.local/share/rtk/tee/*.log | head -1); grep -o '"portfolioValue":[0-
 
 # [auto 2026-08-24 16:16] utilisée 3x — sig: F=$(ls -t ~/.local/share/rtk/tee/*.log | head -<N>); grep -o '"portfolioValue":[<N>-<N>.]*' "$F"
 F=$(ls -t ~/.local/share/rtk/tee/*.log | head -1); grep -o '"portfolioValue":[0-9.]*' "$F"
+
+# [auto 2026-10-15 02:17] utilisée 3x — sig: rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "tail -<N> ~/martin/nb_coup.log; curl -s localhost:<N>/api/bot/positions"
+rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tail -1 ~/martin/nb_coup.log; curl -s localhost:8081/api/bot/positions"
+
+# [auto 2026-10-15 05:07] utilisée 3x — sig: rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "curl -s localhost:<N>/api/bot/positions; echo; curl -s localhost:<N>/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[<N>-<N>.]+' | tr '\n' ' '"
+rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:8081/api/bot/positions; echo; curl -s localhost:8081/api/bot/orders | grep -oE '\"(stopPrice|limitPrice)\":[0-9.]+' | tr '\n' ' '"
