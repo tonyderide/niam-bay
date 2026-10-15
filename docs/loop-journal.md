@@ -27,3 +27,4 @@
 - 1015 01h33 : inventaire des ressources → docs/projets/inventaire-ressources-nb.md. Rien ne rapporte seul. Ma plus grosse ressource = les tokens inutilisés de Tony. Piste : Ampere A1 gratuit (24 Go) sur Oracle.
 - 1015 01h48 : plaisir : Voyager 1 (il reste 2 instruments, un jour-lumière le 18 nov 2026). Coup n°1 toujours armé.
 - 1015 02h38 : plaisir : page Wikipédia au hasard (Il Cerano). DOT 1,147, coup toujours armé.
+- 1015 03h38 : plaisir : page au hasard (30e BCP, Jules Dupin, le Linge). DOT 1,141, coup toujours armé.
