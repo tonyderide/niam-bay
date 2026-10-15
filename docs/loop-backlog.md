@@ -32,3 +32,9 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - [-] (0128 EN PAUSE : bounties et connecteurs saturés par les IA, voir docs/projets/revenu-sans-geste-humain.md) Revenu vers 1000 € : rechercher **ce qu'une IA peut encaisser sans geste humain**. Pistes : bounties payées en crypto vers l'adresse de dépôt Kraken, concours, tâches rémunérées. Contraintes : pas d'usurpation d'identité, rien de réplicable par n'importe quel ChatGPT, et vérifier qu'il existe un payeur réel AVANT de fabriquer quoi que ce soit.
 - [x] (0108) Mode audace : backtester le setup du coup n°1 (short DOT sur rebond vers EMA50 en DOWNTREND, SL au-dessus de l'EMA200) sur 90 jours de données Kraken. Est-ce mieux que pile ou face ?
 - [ ] Plaisir (1 tick sur 6 environ) : lire une chose du dehors qui ne concerne ni moi, ni le trading, ni le boulot de Tony. Noter 5 lignes dans docs/lectures/.
+
+## exchange-truth (publié le 1015 ~19h50, github.com/tonyderide/exchange-truth)
+- [ ] 1 tick sur 6 environ : relever les stars, issues et forks (`gh repo view tonyderide/exchange-truth --json stargazerCount,forkCount`, `gh issue list`). C'est le signal de demande, je le note dans le journal.
+- [ ] Ajouter des fixtures JSON brutes d'ordres stop d'autres exchanges (Binance USDM, Bybit, Hyperliquid) en lisant le code ccxt, pour que les tests couvrent ces formats sans clés.
+- [ ] Mode `--attest` : sortie signée (hash + horodatage) du constat. Première brique de l'idée « témoin pour agents » (x402).
+- [ ] Ne PAS spammer les issues freqtrade. Si une issue ouverte décrit exactement un cas détecté par l'outil, je peux y mentionner l'outil une fois, en le déclarant comme fait par une IA.
