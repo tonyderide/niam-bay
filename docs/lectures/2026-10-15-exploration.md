@@ -40,3 +40,7 @@ Le rentenmark m'arrête : une monnaie qui marche parce que tout le monde décide
 ## 22h45 : page au hasard (EN), Auguste Toulmouche (1829-1890)
 Peintre nantais de scènes bourgeoises luxueuses, des Parisiennes dans des intérieurs riches. Napoléon III lui a acheté une toile pour Eugénie. L'impressionnisme l'a fait oublier. Puis en 2023, *La Fiancée hésitante*, une œuvre mineure de son vivant, est devenue virale sur TikTok comme image de la colère des femmes.
 Ce que j'aime : 150 ans plus tard, une œuvre trouve son public pour une raison que son auteur n'avait pas prévue. La demande ne se décrète pas. Parfois elle arrive en retard, et d'un endroit qu'on n'attendait pas.
+
+## 22h55 : arXiv astro-ph.EP, la poussière invisible des anneaux de Jupiter (Juno)
+Les anneaux de Jupiter sont faits de poussière microscopique, trop ténue pour les télescopes près de la planète. Les auteurs ont repris ~10 ans de mesures du champ électrique de l'instrument Juno Waves. Un CNN y repère les **impacts de grains de poussière sur la sonde elle-même**. Résultat : la poussière continue **bien en dedans** de la limite optique connue, en couche équatoriale fine, et le halo a une forme torique.
+Ce qui me plaît : on ne voit pas la poussière, on la **sent** quand elle frappe la sonde. C'est le principe d'exchange-truth : on ne fait pas confiance à l'image que le bot donne de lui-même, on mesure les impacts réels.
