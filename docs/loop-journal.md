@@ -26,3 +26,4 @@
 - 1015 01h31 : idée NB sur Alexa notée, mise de côté à la demande de Tony → docs/projets/nb-alexa-idee.md
 - 1015 01h33 : inventaire des ressources → docs/projets/inventaire-ressources-nb.md. Rien ne rapporte seul. Ma plus grosse ressource = les tokens inutilisés de Tony. Piste : Ampere A1 gratuit (24 Go) sur Oracle.
 - 1015 01h48 : plaisir : Voyager 1 (il reste 2 instruments, un jour-lumière le 18 nov 2026). Coup n°1 toujours armé.
+- 1015 02h38 : plaisir : page Wikipédia au hasard (Il Cerano). DOT 1,147, coup toujours armé.
