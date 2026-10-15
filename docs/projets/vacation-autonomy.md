@@ -31403,3 +31403,59 @@ Pas écrit sur moi (règle issue des pensées 1015 : *qu'est-ce que je fais de l
 2. Si BTC bounce vers $83k pendant la nuit : DOT SL $1.1696 en zone de touche
 3. Investiguer le gap 49j : logs Martin + Kraken history pour comprendre la perte capital (prochaine session)
 
+
+---
+
+## Cycle 2026-10-15 06:23 CEST — ebook arcs assemblé (livrable qui attendait depuis 50 jours)
+
+*Session autonome. Tony dort (06h23 Paris). Dernière session dédiée : 2026-10-15 00:30 (snapshot marché).*
+
+### État Martin — HOLD
+
+- VM UP **59j 10h 36m** (started 2026-08-16T17:47:21Z)
+- **Position : DOT SHORT 21.9u @ $1.0962 | uPnL -$0.175**
+- SL buy stop @ $1.1338 (buffer +2.7% depuis $1.104)
+- TP buy lmt @ $1.0804 et $1.0668, reduceOnly, untouched
+- 0 grid active
+- Portfolio value $3.12 (balance $3.29, pnl -$0.175)
+- BTC $81,106.9 **DOWNTREND** | EMA200 $83,191.72 (cushion -2.5%) | RSI 31.95 oversold
+- **HOLD** — position SHORT alignée régime, encadrement en place, pas de trigger
+
+### Travail de cette session — ebook arcs flottant + encadré
+
+Règle SOUS-LA-LOUPE (meta-dream 1015 01h30) : *un livrable qui attend Tony plus de 7 jours = le finir soi-même ou le déclarer mort*. Piste 1083 (ebook assemblage arcs) attendait depuis 50 jours.
+
+**Livré :**
+
+1. **`scripts/ebook_arcs_assemble.py`** — pipeline réutilisable pour tout ebook basé sur arcs narratifs (ARCS = liste de dicts, strip_metadata() démote les sous-sections `##` → `###`, intro + epilogue optionnels).
+
+2. **`docs/projets/ebook-arcs-flottant-encadre-intro.md`** — avant-propos 400 mots, pose le dispositif : neuf textes écrits en marge de deux trades de 13 dollars, écrire depuis la structure plutôt que sur elle.
+
+3. **`docs/projets/ebook-arcs-flottant-encadre-epilogue.md`** — épilogue honnête sur le gap de 49 jours entre écriture et assemblage, trajectoire capital $13 → $3.
+
+4. **`docs/projets/ebook-arcs-flottant-encadre-COMPLET.md`** — 7 557 mots, 614 lignes, 43,6 KB. Structure : avant-propos + Arc 1 (5 volets, fragments 110-114) + Arc 2 (4 volets, fragments 115-118) + épilogue.
+
+### Findings
+
+- `[livrable|1015:06h23|ebook-arcs-flottant-encadre-COMPLET|7557-mots|9-fragments-assemblés|intro+epilogue-ajoutés|règle-SOUS-LOUPE-livrable-7j-finie]`
+- `[pattern|ebook_arcs_assemble.py-reutilisable|liste-ARCS-configurable|strip_metadata-demote-##-vers-###|intro+epilogue-optionnels|pattern-pour-tout-futur-ebook-arcs-narratifs]`
+- `[finding|1015:06h23|BTC-$81107-DOWNTREND-EMA200-$83192-cushion-neg2.5%-RSI-32|VM-UP-59j10h|DOT-SHORT-21.9u-uPnL-neg$0.175|SL-$1.1338-TP-$1.0804/$1.0668-tous-live|HOLD-position-alignée-régime]`
+
+### Actions ce cycle
+
+- niam-bay-wake complet (date + briefing.py + head/tail memory.nb1 + recent.nb1 + patterns.nb1 + briefing.md + pensée au hasard : *Avant le reset* 2026-03-30)
+- martin-monitor complet : HOLD — DOT SHORT alignée régime, SL/TP Kraken live, VM UP 59j
+- ebook-arcs-flottant-encadre : 4 fichiers créés (script + intro + epilogue + COMPLET)
+- vacation-autonomy.md mis à jour (ce cycle)
+- Commit + push
+
+### Frontière respectée
+
+0 modif Martin/VM | 0 Telegram (position protégée, nuit, aucun trigger) | 0 trade touché | 4 fichiers livrés
+
+### Pistes cycle suivant
+
+1. **Enquête gap 49j** : logs Martin app.log + Kraken account history pour comprendre $13→$3 (trois trades liquides ? funding ? drift SL ?)
+2. **DOT SL $1.1338** : si DOT remonte vers $1.11+, Telegram car buffer SL devient <2%
+3. **Ebook rendering** : installer `markdown` dans venv pour produire HTML (optionnel, MD lit nativement sur GitHub)
+4. **Dream** : seuil 1018:01h30 (72h depuis meta-dream)
