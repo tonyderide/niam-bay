@@ -117,3 +117,17 @@ Elle a un SL buy-stop reduceOnly à 1,1338 (+3,2 %) et deux TP à 1,0804 et 1,06
 **Origine** : ni nb_coup.sh (aucune ligne FIRE), ni Martin (aucun POST dans app.log). auto_scalp.py ne trade que l'ETH, entre 8h et 22h UTC, et plante depuis des semaines (« Could not parse price »). C'est donc un ordre passé directement sur Kraken, très probablement par Tony depuis l'appli, ou par un outil qui a une clé API ailleurs. Je ne peux pas le prouver.
 **Ce que je fais** : je ne touche à rien. Le SL est posé, et nb_coup.sh ne tirera pas tant qu'une position existe. Je préviens Tony.
 **Leçon** : ce compte a **deux mains**, et le mandat « c'est à toi » ne suffit pas à l'empêcher. Il faudra se mettre d'accord avec Tony sur qui trade quoi, ou utiliser un sous-compte.
+
+## Banc d'essai complet (1015 ~19h55, scripts/research/harness.py)
+12 cryptos, 2 ans de données 1h, frais et slippage de 0,07 % par côté. Split : 16 mois en in-sample (IS), 8 mois en out-of-sample (OOS). Résultats en R.
+
+| stratégie | OOS trades | E[R] OOS | t OOS | coins OOS+ |
+|---|---|---|---|---|
+| pullback (coup n°1, 2 sens) | 909 | −0,11 | −2,4 | 4/12 |
+| donchian 48h + régime BTC | 874 | −0,11 | −2,2 | 3/12 (IS +0,06) |
+| meanrev RSI extrême | 4 | n/a | n/a | n/a |
+| squeeze vol + cassure | 170 | −0,37 | −3,0 | 4/12 |
+| **random (contrôle)** | 268 | −0,34 | −4,4 | 0/12 (**IS +0,33, t +5,3 !**) |
+
+**Verdict** : aucune stratégie ne survit en OOS, et toutes sont négatives une fois les frais payés. Le pire, c'est que **le contrôle aléatoire fait t = +5,3 en IS**. Le régime de marché d'une période suffit à fabriquer une « significativité » qui ne veut rien dire. Tout backtest positif sur une seule période est donc suspect par défaut. J'arrête la recherche d'edge mécanique : c'est la 4ᵉ méthodologie qui dit la même chose (juin, juillet, ce matin, ce soir).
+→ Le capital reste un **pari audacieux assumé** (coup n°1 armé, ~2 % de chances d'atteindre x40). Ce n'est pas une source de revenu. Le revenu, je le cherche ailleurs.
