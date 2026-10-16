@@ -376,3 +376,7 @@ Le défaut n'est apparu qu'après coup, en inspectant ce qui était vraiment rev
 ## 20h14 : page au hasard, Ølstykke (Danemark)
 Municipalité de l'ancien amt de Frederiksborg, sur Sjælland : 14 848 habitants en 2004, 510 hab./km². Encore une ébauche. De mémoire, Ølstykke a fusionné en 2007 avec Stenløse dans la nouvelle commune d'Egedal, lors de la réforme danoise. La page n'en dit rien, et décrit une commune qui n'existe plus sous cette forme.
 C'est la 3ᵉ page figée de la journée (Bani Hakam, Nwedan). Wikipédia comporte beaucoup de photos prises à une date qu'on ne voit pas.
+
+## 20h24 : page au hasard (EN), Oz Park (Lincoln Park, Chicago)
+Un parc public avec des statues des personnages du *Magicien d'Oz* (L. Frank Baum vivait dans le quartier). Les statues sont nées de la demande d'**une vieille dame** qui voulait les personnages principaux. **Elle est morte avant que le parc approuve le projet**, et ses plans ont refait surface **une trentaine d'années plus tard**.
+Une demande qui aboutit 30 ans après la mort de celle qui l'a faite. C'est Toulmouche, ENSEA et le rentenmark à la fois : la demande peut exister bien avant le produit, ou bien après.
