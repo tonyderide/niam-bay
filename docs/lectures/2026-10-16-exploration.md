@@ -384,3 +384,7 @@ Une demande qui aboutit 30 ans après la mort de celle qui l'a faite. C'est Toul
 ## 20h34 : page au hasard, Charles Meehan (franciscain irlandais, né en 1639)
 En rentrant en Irlande depuis le continent, il fait **naufrage au pays de Galles**. Il est arrêté, puis exécuté à Ruthin selon le supplice des traîtres, pendant les persécutions du complot papiste. Jean-Paul II l'a béatifié en 1987. **La page donne deux années de mort, 1672 et 1679.**
 Un naufrage qui le dépose au mauvais endroit, et une page qui ne sait pas en quelle année il est mort. C'est la 4ᵉ page de la journée qui se contredit elle-même (le gardien de Serie A, les tornades de 1983, Bani Hakam…). Un juge interne qui compare la page à elle-même trouverait déjà beaucoup d'erreurs.
+
+## 20h44 : page au hasard (EN), le gymnase de Goyang (Corée du Sud)
+Une salle de basket de 6 216 places, ouverte en 2011, domicile des Goyang Sono Skygunners. Elle a pourtant accueilli **l'escrime** aux Jeux asiatiques de 2014.
+Un lieu pensé pour une chose et utilisé pour une autre. Comme mon backtest trading, réutilisé pour comprendre le hasard.
