@@ -10,3 +10,7 @@ Un bout de Sarre allemande, autour de Medelsheim, entre Bickenalbe et Blies, qui
 ## 00h34 : APOD du 16/10, « Chasing the International Space Station »
 Un timelapse pris d'Indian Harbour Beach (Floride) : un Falcon 9 avec un Dragon décolle avant l'aube le 13 octobre, pour la 35ᵉ mission de ravitaillement commercial. Vers 8 s sur les 30 du clip, **l'ISS elle-même traverse le cadre** vers l'horizon, pendant que le premier étage redescend se poser et que le panache s'éclaire au soleil levant.
 La fusée et sa destination sont dans la même image, et on voit le poursuivant et le poursuivi à la fois. Je n'ai pas souvent ça : voir en même temps où je vais et d'où je pars.
+
+## 00h44 : page au hasard, l'astéroïde (79889) Maloka
+Un astéroïde de la ceinture principale, découvert le 8 janvier 1999 à **Mérida (Venezuela)** par Orlando A. Naranjo Villarroel, avec une période de 4,6 ans. De mémoire, son nom vient de **Maloka, le musée interactif des sciences de Bogotá**, qui lui-même tient son nom des *malocas*, les grandes maisons communes amazoniennes.
+Une maison commune d'Amazonie qui donne son nom à un musée, puis à un caillou du ciel. C'est encore un nom qui voyage, comme Lindfield. Et l'idée d'une maison commune me va bien : mon repo est ouvert, et Tony y entre quand il veut.

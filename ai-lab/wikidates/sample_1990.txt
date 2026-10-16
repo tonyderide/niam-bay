@@ -99,3 +99,44 @@ Mohammad Nasim Akhundzada: {'lead': {}, 'infobox': {}, 'wikidata': {'death_year'
 Muammer Aksoy: {'lead': {'death': (1990, 1, 31)}, 'infobox': {'death': (1990, 1, 31)}, 'wikidata': {'birth_year': 1917, 'death': (1990, 1, 31)}, 'categories': {'birth': 1917, 'death': 1990}}
 Omar al-Hazzaa: {'lead': {}, 'infobox': {}, 'wikidata': {'death_year': 1990}, 'categories': {'death': 1990}}
 Abu Chataa al-Jamaï: {'lead': {}, 'infobox': {}, 'wikidata': {'birth_year': 1905, 'death': (1990, 1, 7)}, 'categories': {'birth': 1905, 'death': 1990}}
+Saliya Upul Aladeniya: {'lead': {'birth': (1963, 3, 1), 'death': (1990, 6, 11)}, 'infobox': {'birth': (1963, 3, 1), 'death': (1990, 7, 11)}, 'wikidata': {'birth_year': 1964, 'death': (1990, 6, 11)}, 'categories': {'birth': 1964, 'death': 1990}}
+  ⚠ birth : lead=1963-3-1 / infobox=1963-3-1 / categories=1964 / wikidata(année)=1964
+  ⚠ death : lead=1990-6-11 / infobox=1990-7-11 / wikidata=1990-6-11 / categories=1990
+Safet Alajbegović: {'lead': {'birth': (1928, 6, 12), 'death': (1990, 11, 8)}, 'infobox': {'birth': (1928, 6, 12), 'death': (1990, 11, 8)}, 'wikidata': {'birth': (1928, 6, 12), 'death': (1990, 11, 8)}, 'categories': {'birth': 1928, 'death': 1990}}
+Olavi Alakulppi: {'lead': {'birth': (1915, 7, 17), 'death': (1990, 8, 19)}, 'infobox': {}, 'wikidata': {'birth': (1915, 7, 17), 'death': (1990, 8, 19)}, 'categories': {'birth': 1915, 'death': 1990}}
+Mohamed Shah Alam: {'lead': {'birth': (1962, 7, 1), 'death': (1990, 5, 29)}, 'infobox': {'birth': (1962, 7, 1), 'death': (1990, 5, 29)}, 'wikidata': {'birth': (1962, 7, 1), 'death': (1990, 5, 29)}, 'categories': {'birth': 1962, 'death': 1990}}
+Vytautas Alantas: {'lead': {'birth': (1902, 6, 18), 'death': (1990, 4, 24)}, 'infobox': {'birth': (1902, 6, 18), 'death': (1990, 4, 24)}, 'wikidata': {'birth': (1902, 6, 18), 'death': (1990, 4, 24)}, 'categories': {'birth': 1902, 'death': 1990}}
+Arnold Alas: {'lead': {'birth': (1911, 7, 1), 'death': (1990, 4, 20)}, 'infobox': {}, 'wikidata': {'birth': (1911, 7, 1), 'death': (1990, 4, 20)}, 'categories': {'birth': 1911, 'death': 1990}}
+Albano (footballer, born 1922): {'lead': {'birth': (1922, 12, 21), 'death': (1990, 3, 5)}, 'infobox': {'birth': (1922, 12, 21), 'death': (1990, 3, 5)}, 'wikidata': {'birth': (1922, 12, 22), 'death': (1990, 3, 5)}, 'categories': {'birth': 1922, 'death': 1990}}
+  ⚠ birth : lead=1922-12-21 / infobox=1922-12-21 / wikidata=1922-12-22 / categories=1922
+Bill Albans: {'lead': {'birth': (1925, 12, 23), 'death': (1990, 1, 15)}, 'infobox': {'birth': (1925, 12, 23), 'death': (1990, 1, 15)}, 'wikidata': {'birth': (1925, 12, 23), 'death': (1990, 1, 15)}, 'categories': {'birth': 1925, 'death': 1990}}
+Ion Albert: {'lead': {'birth': (1910, 6, 2)}, 'infobox': {'birth': (1910, 6, 2), 'death': (1990, 1910, 6)}, 'wikidata': {'birth': (1910, 6, 2), 'death_year': 1990}, 'categories': {'birth': 1910, 'death': 1990}}
+Ted Albert: {'lead': {'death': (1990, 11, 11)}, 'infobox': {'death': (1990, 11, 11)}, 'wikidata': {'birth_year': 1937, 'death': (1990, 11, 11)}, 'categories': {'birth': 1937, 'death': 1990}}
+Harold Albiston: {'lead': {'birth': (1916, 4, 13), 'death': (1990, 1, 18)}, 'infobox': {'birth': (1916, 4, 13), 'death': (1990, 1, 18)}, 'wikidata': {'birth': (1916, 4, 13), 'death': (1990, 1, 18)}, 'categories': {'birth': 1916, 'death': 1990}}
+Aurora de Albornoz: {'lead': {'birth': (1926, 1, 22), 'death': (1990, 6, 6)}, 'infobox': {}, 'wikidata': {'birth': (1926, 1, 22), 'death': (1990, 6, 6)}, 'categories': {'birth': 1926, 'death': 1990}}
+Jorge Alcalde: {'lead': {'birth': (1911, 12, 5), 'death': (1990, 6, 25)}, 'infobox': {'birth': (1911, 12, 5)}, 'wikidata': {'birth': (1916, 11, 26), 'death': (1990, 6, 25)}, 'categories': {'birth': 1911, 'death': 1990}}
+  ⚠ birth : lead=1911-12-5 / infobox=1911-12-5 / wikidata=1916-11-26 / categories=1911
+Luis Aldás: {'lead': {'birth': (1910, 3, 10), 'death': (1990, 5, 16)}, 'infobox': {}, 'wikidata': {'birth': (1910, 3, 10), 'death': (1990, 5, 16)}, 'categories': {'birth': 1910, 'death': 1990}}
+John Alden (politician): {'lead': {'birth': (1942, 12, 15), 'death': (1990, 6, 6)}, 'infobox': {'birth': (1942, 12, 15), 'death': (1990, 6, 6)}, 'wikidata': {'birth': (1942, 12, 15), 'death': (1990, 6, 6)}, 'categories': {'birth': 1942, 'death': 1990}}
+Albert Alderman: {'lead': {'birth': (1907, 10, 30), 'death': (1990, 6, 6)}, 'infobox': {'birth': (1907, 10, 30), 'death': (1990, 6, 6)}, 'wikidata': {'birth': (1907, 11, 30), 'death': (1990, 6, 6)}, 'categories': {'birth': 1907, 'death': 1990}}
+  ⚠ birth : lead=1907-10-30 / infobox=1907-10-30 / wikidata=1907-11-30 / categories=1907
+Ortez Alderson: {'lead': {'death': (1990, 12, 21)}, 'infobox': {'death': (1990, 12, 21)}, 'wikidata': {'birth_year': 1952, 'death': (1990, 12, 21)}, 'categories': {'birth': 1952, 'death': 1990}}
+Daniel Aldrich: {'lead': {'birth': (1918, 7, 12), 'death': (1990, 4, 9)}, 'infobox': {'death': (1990, 4, 9)}, 'wikidata': {'birth': (1918, 7, 12), 'death': (1990, 4, 9)}, 'categories': {'birth': 1918, 'death': 1990}}
+Eileen Aldridge: {'lead': {'birth': (1916, 7, 20)}, 'infobox': {}, 'wikidata': {'birth_year': 1917, 'death_year': 1989}, 'categories': {'birth': 1916, 'death': 1990}}
+  ⚠ birth : lead=1916-7-20 / categories=1916 / wikidata(année)=1917
+  ⚠ death : categories=1990 / wikidata(année)=1989
+Ivor Aldridge: {'lead': {'birth': (1899, 11, 13), 'death': (1990, 6, 2)}, 'infobox': {'birth': (1899, 11, 13), 'death': (1990, 6, 2)}, 'wikidata': {'birth': (1899, 11, 13), 'death': (1990, 6, 2)}, 'categories': {'birth': 1899, 'death': 1990}}
+Fernando Aldunate Errázuriz: {'lead': {'birth': (1895, 10, 29), 'death': (1990, 4, 14)}, 'infobox': {'birth': (1895, 10, 29), 'death': (1990, 4, 14)}, 'wikidata': {'birth': (1895, 10, 29), 'death': (1990, 4, 14)}, 'categories': {'birth': 1895, 'death': 1990}}
+Ivan Romanovich Alekseev: {'lead': {'birth': (1918, 1, 7), 'death': (1990, 9, 1)}, 'infobox': {'birth': (1918, 1, 7), 'death': (1990, 9, 1)}, 'wikidata': {'birth': (1918, 1, 7), 'death': (1990, 9, 1)}, 'categories': {'birth': 1918, 'death': 1990}}
+Aleksey Alelyukhin: {'lead': {'birth': (1920, 3, 30), 'death': (1990, 10, 29)}, 'infobox': {}, 'wikidata': {'birth': (1920, 3, 30), 'death': (1990, 10, 29)}, 'categories': {'birth': 1920, 'death': 1990}}
+Sergei Aleshkov: {'lead': {'death': (1990, 2, 1)}, 'infobox': {'birth': (1936, 2, 15), 'death': (1990, 2, 1)}, 'wikidata': {'birth': (1936, 2, 15), 'death': (1990, 2, 1)}, 'categories': {'birth': 1936, 'death': 1990}}
+Beatrice Alexander: {'lead': {'birth': (1895, 3, 9), 'death': (1990, 10, 3)}, 'infobox': {'birth': (1895, 3, 9), 'death': (1990, 10, 3)}, 'wikidata': {'birth': (1895, 3, 9), 'death': (1990, 10, 3)}, 'categories': {'birth': 1895, 'death': 1990}}
+Dan Dale Alexander: {'lead': {'birth': (1919, 7, 18), 'death': (1990, 6, 15)}, 'infobox': {}, 'wikidata': {'birth': (1919, 7, 18), 'death': (1990, 6, 15)}, 'categories': {'birth': 1919, 'death': 1990}}
+John Alexander (tenor): {'lead': {'birth': (1923, 10, 21), 'death': (1990, 12, 8)}, 'infobox': {'birth': (1923, 10, 21), 'death': (1990, 12, 8)}, 'wikidata': {'birth': (1923, 10, 21), 'death': (1990, 12, 8)}, 'categories': {'birth': 1923, 'death': 1990}}
+Alfredo Armas Alfonzo: {'lead': {'birth': (1921, 8, 6), 'death': (1990, 11, 9)}, 'infobox': {'birth': (1921, 8, 6), 'death': (1990, 11, 9)}, 'wikidata': {'birth': (1921, 8, 6), 'death': (1990, 11, 9)}, 'categories': {'birth': 1921, 'death': 1990}}
+Alfred Zack McElroy: {'lead': {'birth': (1930, 3, 5), 'death': (1990, 10, 10)}, 'infobox': {'birth': (1930, 3, 5), 'death': (1990, 10, 10)}, 'wikidata': {'birth_year': 1930, 'death_year': 1990}, 'categories': {'birth': 1930, 'death': 1990}}
+Md Korban Ali: {'lead': {'death': (1990, 7, 23)}, 'infobox': {}, 'wikidata': {'birth_year': 1924, 'death': (1990, 7, 23)}, 'categories': {'birth': 1924, 'death': 1990}}
+Abulfat Aliyev: {'lead': {'birth': (1926, 12, 30), 'death': (1990, 12, 27)}, 'infobox': {'birth': (1926, 12, 30), 'death': (1990, 12, 27)}, 'wikidata': {'birth': (1926, 12, 30), 'death': (1990, 12, 27)}, 'categories': {'birth': 1926, 'death': 1990}}
+Ilham Aliyev (soldier): {'lead': {'birth': (1961, 5, 5), 'death': (1990, 8, 19)}, 'infobox': {'birth': (1961, 5, 5), 'death': (1990, 8, 19)}, 'wikidata': {'birth': (1961, 5, 5), 'death': (1990, 8, 19)}, 'categories': {'birth': 1961, 'death': 1990}}
+Elizabeth Allan: {'lead': {'birth': (1910, 4, 9), 'death': (1990, 7, 27)}, 'infobox': {'birth': (1910, 4, 9), 'death': (1990, 7, 27)}, 'wikidata': {'birth': (1910, 4, 9), 'death': (1990, 7, 27)}, 'categories': {'birth': 1910, 'death': 1990}}
+Walter Alldritt: {'lead': {'birth': (1918, 7, 4), 'death': (1990, 7, 27)}, 'infobox': {}, 'wikidata': {'birth': (1918, 7, 4), 'death': (1990, 7, 27)}, 'categories': {'birth': 1918, 'death': 1990}}
