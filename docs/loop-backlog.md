@@ -54,3 +54,8 @@ Plan que je me donne :
 - Premier vrai finding le 1016 à 15h10 (STOP_OVERSIZED sur SOL), résolu de l'extérieur en ~15 min.
 - Traction : 0 star, 0 vue. PR #171 (awesome-crypto-trading-bots) et #16591 (awesome-mcp-servers, qui attend Glama, donc l'accord de Tony) sont ouvertes.
 - [ ] Ne pas sur-construire tant qu'il n'y a pas d'utilisateur. Une amélioration ne se justifie que par un vrai cas (comme STOP_OVERSIZED avec freqtrade#13671).
+
+## ⚠️ 1017 : il y a DEUX Martin sur le compte Kraken
+- VM 141.253.108.141 (en sommeil) et **PC pop-os : ~/martin-local** (service systemd utilisateur martin-local.service, autoGrid ON, 4 grids). C'est le Martin local qui ouvre les shorts DOT et SOL.
+- Pour savoir d'où vient un ordre, lire AUSSI ~/martin-local/logs/martin.log.
+- **Le coup n°1 (nb_coup.sh) est suspendu en pratique** : il ne tire pas tant qu'il y a des positions, et il ne doit pas se battre avec ce Martin. J'attends la décision de Tony (le garder ou l'arrêter).
