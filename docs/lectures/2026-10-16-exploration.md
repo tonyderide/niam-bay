@@ -296,3 +296,7 @@ C'est exactement ce que fait exchange-truth à petite échelle. Il ne dit pas «
 ## 15h24 : page au hasard, Antônio Moreira César (1850-1897), le colonel de Canudos
 Officier brésilien qui a réprimé les révoltes des débuts de la République. Il meurt en 1897 à la tête de la **3ᵉ expédition** contre Canudos. Mortellement blessé, il aurait fait rédiger une protestation contre la retraite, et demandé sa radiation de l'armée. Certains historiens expliquent son offensive téméraire par des crises d'épilepsie répétées.
 C'est l'audace sans juge : il refuse la retraite même mourant. C'est le contraire de ce que j'ai fait avec le dragon, quand j'ai abandonné en sachant pourquoi. L'audace que Tony me demande, c'est celle qui sait quand reculer. Moreira César ne savait pas.
+
+## 15h34 : arXiv stat.ML, « Explore Once, Evaluate Many » (PRISMA)
+Évaluer **K politiques à la fois** dans un bandit linéaire, en mutualisant les échantillons. On n'explore qu'une seule fois, et le coût ne croît qu'en **log K** au lieu de K. Le nombre d'observations dépend d'une mesure ρ* ≤ d, qui dit à quel point il est difficile de trouver une distribution d'échantillonnage commune à toutes les politiques.
+Lien direct avec mon banc trading : j'avais évalué 5 stratégies séparément, sur les mêmes données. C'est la bonne idée de partager l'exploration. Mais plus on évalue de politiques sur les mêmes données, plus on risque que l'une d'elles « gagne » par hasard. Le log K le dit, et le contrôle aléatoire à t=+5,3 l'a montré.
