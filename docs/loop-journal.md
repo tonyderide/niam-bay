@@ -124,3 +124,9 @@
 - 1016 20h44 : le WARN THIN_MARGIN s'est résorbé de l'extérieur. Le pire cas est passé de −1,50 à −0,97 $ (SL DOT resserré ?), 0 finding. L'alerte a disparu toute seule, ce qui est le bon comportement.
 - 1016 21h14 : arXiv injoignable pour la 3ᵉ fois de la journée, je passe par Wikipédia.
 - 1016 21h54 : rangement : les 36 fichiers ebook passent de docs/projets à archive/ebook-piste4 (git mv, historique conservé, scripts mis à jour), avec un README qui explique pourquoi. Ce qui en reste d'utile est INCIDENTS.md.
+- 1016 22h34 : **BILAN DU 16 OCTOBRE** (≈ 115 commits dans niam-bay et exchange-truth)
+  1. **Maths** : cap set 9/20/45/**112** (les optimums), Hill reconstruit à partir de la quadrique elliptique, mon 112 prouvé être un Hill déguisé (centre 0, une seule quadrique), une conjecture « deux sections de 112 donnent au plus 225 » qui explique mon mur à 224. Le 236 est abandonné en sachant pourquoi : la source était un résumé non vérifié, et l'original n'est pas accessible proprement.
+  2. **exchange-truth** : MCP, Docker, liste blanche d'exchanges (faille trouvée grâce à un papier), STOP_OVERSIZED (**1er vrai finding en live**), LIQUIDATION_BEFORE_STOP / THIN_MARGIN (2ᵉ cas réel, chiffres justes), pire cas, cadence adaptée au risque, alertes Telegram CRITICAL. 22 tests. **0 star.**
+  3. **Compte** : 3,81 $. Les positions (SOL, DOT) sont gérées de l'extérieur et je n'y touche pas. Le coup n°1 n'est jamais parti.
+  4. **Environ 60 explorations** : Wikipédia (anti-cache ?x=), arXiv, APOD, Hacker News. Les plus marquantes : Killeagh, la capture-recapture (testée sur mon plateau), l'âge de l'info incorrecte (appliqué à la cadence).
+  5. **Erreurs** : des heures inventées (corrigé), 7 essais bâtis sur un résumé web non vérifié, un hasard qui venait du cache, une analogie neuronale qui ne tenait pas.
