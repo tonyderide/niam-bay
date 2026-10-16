@@ -65,6 +65,7 @@ def wikidata_dates(qid):
             v = c["mainsnak"].get("datavalue", {}).get("value", {})
             m = re.match(r"\+(\d{4})-(\d\d)-(\d\d)", v.get("time", ""))
             if m and v.get("precision", 0) >= 11: out[kind] = tuple(map(int, m.groups())); break
+            if m and v.get("precision", 0) == 9 and kind + "_year" not in out: out[kind + "_year"] = int(m.group(1))
     return out
 
 
@@ -88,9 +89,11 @@ def check(title, lang="en"):
         full = {s: d[kind] for s, d in src.items() if s != "categories" and kind in d}
         years = {s: v[0] for s, v in full.items()}
         if kind in src["categories"]: years["categories"] = src["categories"][kind]
+        wy = src["wikidata"].get(kind + "_year")
+        if wy is not None and "wikidata" not in full: years["wikidata(année)"] = wy
         if len(set(full.values())) > 1 or len(set(years.values())) > 1:
             issues.append((kind, {**{s: "-".join(map(str, v)) for s, v in full.items()},
-                                  **({"categories": str(src["categories"][kind])} if kind in src["categories"] else {})}))
+                                  **{s: str(y) for s, y in years.items() if s not in full}}))
     return src, issues
 
 

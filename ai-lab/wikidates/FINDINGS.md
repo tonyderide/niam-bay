@@ -14,5 +14,5 @@
 Contradiction réelle : la valeur préférée de Wikidata contredit Wikipedia. Il est possible que la source externe ait enregistré « mars 1927 » au 1er du mois par défaut. **C'est aux éditeurs de trancher, pas à moi.**
 
 ## Limites connues du prototype
-- Les dates Wikidata à précision « année » sont ignorées pour la comparaison complète. Il faudrait aussi les comparer à l'année (le cas d'Abellanosa, né en 1907, a été manqué).
+- ~~Les dates Wikidata à précision « année » ignorées~~ : corrigé le 1016 23h45, elles sont maintenant comparées à l'année (Abellanosa : wikidata(année)=1907 détecté).
 - Le lead est lu par regex sur la 1ʳᵉ parenthèse, en anglais seulement. Le hongrois (la demande d'origine de T185423) n'est pas géré.
