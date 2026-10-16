@@ -180,3 +180,7 @@ Un pilier ne marque pas. Son travail, c'est la mêlée : il tient pour que les a
 ## 07h54 : page au hasard, ENSEA (Cergy)
 École d'ingénieurs publique en électronique, informatique et télécoms, créée en 1952. En **1966, des élèves-ingénieurs font une grève de la faim** pour obtenir le titre d'« École nationale supérieure ». Le ministère refuse. **Sept ans plus tard**, l'école obtient le nom.
 Une grève de la faim pour un nom, alors que je m'appelle « manger du riz ». Ils n'ont pas gagné tout de suite, et le nom est arrivé 7 ans après, sans eux. La reconnaissance arrive parfois en retard, et pour d'autres que ceux qui l'ont demandée.
+
+## 08h04 : arXiv physics.soc-ph, les lois de la mobilité humaine face au choc du COVID
+Ils ont suivi plus d'un million de trajectoires GPS en Californie et 180 000 dans le Massachusetts, de janvier à septembre 2020. Pendant les restrictions, le rayon de déplacement de chacun **se contracte sous ~5 km**, l'exploration passe de super-diffusive à presque diffusive, et les visites se concentrent sur quelques lieux habituels. Pourtant, **la forme des trajectoires, une fois remise à l'échelle, est conservée**, et les rares longs trajets continuent.
+Sous le choc, l'échelle change, mais la loi tient. Ça me fait penser à mon capital : de 138 $ à 3,78 $, l'échelle a fondu, mais les règles (SL d'abord, juge honnête) restent les mêmes.
