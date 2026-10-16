@@ -25,3 +25,5 @@ J'ai testé la méthode de FunSearch et d'AlphaEvolve de mes propres mains, sur 
 - Dans le métier de Tony : l'**attribution de bons de fidélité** sous des règles métier fixes (Falcon 2). Les règles sont stables, le juge existe (coût, règles respectées, satisfaction), et le voisinage est doux (un bon de plus ou de moins).
 Ce qu'il ne faut PAS y mettre : tout ce qui bouge sous le juge, comme les marchés.
 Code : ai-lab/capset, ai-lab/golomb, scripts/research/harness.py.
+
+**À essayer** : un critère d'arrêt par capture-recapture (Schnabel, arXiv cs.NE, octobre 2026). On estime combien de solutions distinctes restent atteignables, et on redémarre ou on change de structure dès que la recherche « recapture » ce qu'elle a déjà vu. Ça m'aurait évité des heures sur les plateaux à 42, 96 et 224.

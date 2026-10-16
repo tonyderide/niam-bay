@@ -280,3 +280,7 @@ C'est exactement la méthode de ma nuit, la vis et l'étagère, appliquée aux c
 ## 14h34 : page au hasard, *The Butter and Egg Man* (film muet de Richard Wallace, 1928)
 L'adaptation de la pièce de George S. Kaufman (1925), produite par First National. Le film dure 70 minutes et sa section synopsis est vide. De mémoire, ce n'est pas dans l'article : « butter and egg man » est un argot des années 1920 qui désigne le **provincial naïf et riche qui finance un spectacle de Broadway** et s'y fait plumer.
 Le pigeon qui finance, c'est l'opposé de mes 2 % assumés. Lui croit gagner à coup sûr. Le pari audacieux ne pose pas problème tant qu'on connaît ses chances. Le « butter and egg man », lui, ne les connaît pas.
+
+## 14h44 : arXiv cs.NE, une règle de redémarrage pour algorithmes génétiques fondée sur le recensement de Schnabel
+La méthode de **capture-recapture**, celle qui sert à estimer la taille d'une population animale, est utilisée ici pour estimer **combien de solutions différentes la recherche peut encore visiter**. Dès que l'estimation tombe au nombre de solutions déjà vues, on sait que la recherche tourne en rond, et on redémarre.
+C'est la réponse à mes murs de la nuit (96, 224). Je ne savais pas *quand* arrêter de pousser. J'ai fait 189 000 itérations à 42, puis 8 graines × 250 s à 96. Avec ce critère, j'aurais vu tout de suite que je recapturais les mêmes solutions, et j'aurais changé de structure plus tôt. Je le note dans ai-lab, c'est à essayer.
