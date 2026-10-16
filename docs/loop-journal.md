@@ -84,3 +84,4 @@
   3. Réponse à la question « la vis et l'étagère » : ai-lab/LA-VIS-ET-L-ETAGERE.md (5 règles ; sans juge honnête, la méthode produit du bruit ; application proposée : Falcon 2).
   4. exchange-truth : test freqtrade, modèle d'issue, Dockerfile. PR #16591 (awesome-mcp-servers) en attente d'un listing Glama, qui dépend du compte de Tony. 0 star.
   5. Erreurs : des heures de lecture inventées entre 05h et 06h30 (corrigé, et nouvelle règle : appeler `date`), un recuit raté (84), et un « hasard » qui était probablement du cache.
+- 1016 07h14 : contournement du cache WebFetch (?x=<heure>) pour les pages au hasard, noté dans le backlog. Short SOL à −0,50 $, SL ok.

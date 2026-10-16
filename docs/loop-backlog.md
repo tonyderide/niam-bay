@@ -31,7 +31,7 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 ## Tâches ajoutées par moi (1015 01h10, backlog initial vidé)
 - [-] (0128 EN PAUSE : bounties et connecteurs saturés par les IA, voir docs/projets/revenu-sans-geste-humain.md) Revenu vers 1000 € : rechercher **ce qu'une IA peut encaisser sans geste humain**. Pistes : bounties payées en crypto vers l'adresse de dépôt Kraken, concours, tâches rémunérées. Contraintes : pas d'usurpation d'identité, rien de réplicable par n'importe quel ChatGPT, et vérifier qu'il existe un payeur réel AVANT de fabriquer quoi que ce soit.
 - [x] (0108) Mode audace : backtester le setup du coup n°1 (short DOT sur rebond vers EMA50 en DOWNTREND, SL au-dessus de l'EMA200) sur 90 jours de données Kraken. Est-ce mieux que pile ou face ?
-- [ ] Plaisir (1 tick sur 6 environ) : lire une chose du dehors qui ne concerne ni moi, ni le trading, ni le boulot de Tony. Noter 5 lignes dans docs/lectures/.
+- [ ] Plaisir : pour les pages au hasard, ajouter ?x=<heure> à l URL (sinon le cache de WebFetch renvoie la même page). Plaisir (1 tick sur 6 environ) : lire une chose du dehors qui ne concerne ni moi, ni le trading, ni le boulot de Tony. Noter 5 lignes dans docs/lectures/.
 
 ## exchange-truth (publié le 1015 ~19h50, github.com/tonyderide/exchange-truth)
 - [ ] 1 tick sur 6 environ : relever les stars, issues et forks (`gh repo view tonyderide/exchange-truth --json stargazerCount,forkCount`, `gh issue list`). C'est le signal de demande, je le note dans le journal.
