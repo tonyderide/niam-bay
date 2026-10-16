@@ -16,3 +16,13 @@ Contradiction réelle : la valeur préférée de Wikidata contredit Wikipedia. I
 ## Limites connues du prototype
 - ~~Les dates Wikidata à précision « année » ignorées~~ : corrigé le 1016 23h45, elles sont maintenant comparées à l'année (Abellanosa : wikidata(année)=1907 détecté).
 - Le lead est lu par regex sur la 1ʳᵉ parenthèse, en anglais seulement. Le hongrois (la demande d'origine de T185423) n'est pas géré.
+
+## Échantillon « 1990 deaths » (en cours) : 5 contradictions sur 62 pages (~8 %), toutes d'apparence réelle, pas encore vérifiées une par une
+| page | champ | valeurs |
+|---|---|---|
+| Evan Abraham | naissance | catégories 1901 / Wikidata (année) 1899 |
+| Rosa Acle | naissance | lead 1919-01-01 / Wikidata **1916**-01-01 / catégories 1919 |
+| Chet Adams | décès | lead 1990-10-27 / infobox **10-28** / Wikidata 10-27 |
+| Francis W. H. Adams | décès | lead 1990-04-20 / Wikidata **04-22** |
+| Margarete Adler | décès | lead et infobox 1990-04-22 / Wikidata **04-10** |
+Ce qui ressort : les écarts d'**un ou deux jours** (fuseau horaire, date d'enregistrement du décès ou date de mort réelle) et les **01-01 par défaut** (une année devenue « 1er janvier ») sont des familles d'erreurs typiques. On voit aussi une source minoritaire dans 4 cas sur 5, ce qui permet de proposer « la valeur probablement fausse », sans trancher à la place des éditeurs.

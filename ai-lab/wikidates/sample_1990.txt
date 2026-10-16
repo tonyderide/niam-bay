@@ -1,0 +1,67 @@
+Deaths in January 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in February 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in March 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in April 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in May 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in June 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in July 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in August 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in September 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in October 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in November 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Deaths in December 1990: {'lead': {}, 'infobox': {}, 'wikidata': {}, 'categories': {'death': 1990}}
+Lyyli Aalto: {'lead': {'birth': (1916, 4, 6), 'death': (1990, 9, 26)}, 'infobox': {}, 'wikidata': {'birth': (1916, 4, 6), 'death': (1990, 9, 26)}, 'categories': {'birth': 1916, 'death': 1990}}
+Erkki Aaltonen: {'lead': {'birth': (1910, 8, 17), 'death': (1990, 3, 8)}, 'infobox': {}, 'wikidata': {'birth': (1910, 8, 17), 'death': (1990, 3, 8)}, 'categories': {'birth': 1910, 'death': 1990}}
+Egil Aarvik: {'lead': {'birth': (1912, 12, 12), 'death': (1990, 7, 19)}, 'infobox': {'birth': (1912, 12, 12), 'death': (1990, 7, 19)}, 'wikidata': {'birth': (1912, 12, 12), 'death': (1990, 7, 19)}, 'categories': {'birth': 1912, 'death': 1990}}
+Hiram Abas: {'lead': {'death': (1990, 9, 26)}, 'infobox': {}, 'wikidata': {'birth_year': 1932, 'death': (1990, 9, 26)}, 'categories': {'birth': 1932, 'death': 1990}}
+Dodo Abashidze: {'lead': {'birth': (1924, 5, 1), 'death': (1990, 1, 26)}, 'infobox': {'birth': (1924, 5, 1), 'death': (1990, 1, 26)}, 'wikidata': {'birth': (1924, 5, 1), 'death': (1990, 1, 26)}, 'categories': {'birth': 1924, 'death': 1990}}
+Oyinkansola Abayomi: {'lead': {'birth': (1897, 3, 6), 'death': (1990, 3, 19)}, 'infobox': {'birth': (1897, 3, 6), 'death': (1990, 3, 19)}, 'wikidata': {'birth': (1897, 3, 6), 'death': (1990, 3, 19)}, 'categories': {'birth': 1897, 'death': 1990}}
+Nicola Abbagnano: {'lead': {'birth': (1901, 7, 15), 'death': (1990, 9, 9)}, 'infobox': {'death': (1990, 9, 9)}, 'wikidata': {'birth': (1901, 7, 15), 'death': (1990, 9, 9)}, 'categories': {'birth': 1901, 'death': 1990}}
+Sammie Abbott: {'lead': {'birth': (1908, 4, 25), 'death': (1990, 12, 15)}, 'infobox': {'birth': (1908, 4, 25), 'death': (1990, 12, 15)}, 'wikidata': {'birth': (1908, 4, 25), 'death': (1990, 12, 15)}, 'categories': {'birth': 1908, 'death': 1990}}
+Ihsan Abdel Quddous: {'lead': {}, 'infobox': {'birth': (1919, 1, 1), 'death': (1990, 1, 11)}, 'wikidata': {'birth': (1919, 1, 1), 'death': (1990, 1, 11)}, 'categories': {'birth': 1919, 'death': 1990}}
+Gely Abdel Rahman: {'lead': {'death': (1990, 8, 24)}, 'infobox': {}, 'wikidata': {'birth_year': 1931, 'death': (1990, 8, 24)}, 'categories': {'birth': 1931, 'death': 1990}}
+Sheikh Abdul Jabbar: {'lead': {}, 'infobox': {}, 'wikidata': {'death_year': 1990}, 'categories': {'birth': 1931, 'death': 1990}}
+Abdul Jalal Razmanda: {'lead': {'death': (1990, 4, 6)}, 'infobox': {}, 'wikidata': {'birth_year': 1952, 'death': (1990, 4, 6)}, 'categories': {'birth': 1952, 'death': 1990}}
+Tunku Abdul Rahman: {'lead': {'birth': (1903, 2, 8), 'death': (1990, 12, 6)}, 'infobox': {'birth': (1903, 2, 8), 'death': (1990, 12, 6)}, 'wikidata': {'birth': (1903, 2, 8), 'death': (1990, 12, 6)}, 'categories': {'birth': 1903, 'death': 1990}}
+Abdullah bin Khaz'al: {'lead': {'death': (1990, 10, 10)}, 'infobox': {'death': (1990, 10, 10)}, 'wikidata': {'birth_year': 1903, 'death': (1990, 10, 10)}, 'categories': {'birth': 1903, 'death': 1990}}
+Kathleen Hamilton, Duchess of Abercorn: {'lead': {'birth': (1905, 7, 8), 'death': (1990, 2, 2)}, 'infobox': {'birth': (1905, 7, 8), 'death': (1990, 2, 2)}, 'wikidata': {'birth': (1905, 7, 8), 'death': (1990, 2, 2)}, 'categories': {'birth': 1905, 'death': 1990}}
+Ralph Abernathy: {'lead': {'birth': (1926, 3, 11), 'death': (1990, 4, 17)}, 'infobox': {'birth': (1926, 3, 11), 'death': (1990, 4, 17)}, 'wikidata': {'birth': (1926, 3, 11), 'death': (1990, 4, 17)}, 'categories': {'birth': 1926, 'death': 1990}}
+Robert Abernathy: {'lead': {'birth': (1924, 6, 6), 'death': (1990, 4, 6)}, 'infobox': {'birth': (1924, 6, 6), 'death': (1990, 4, 6)}, 'wikidata': {'birth_year': 1924, 'birth': (1924, 6, 6), 'death_year': 1990, 'death': (1990, 4, 6)}, 'categories': {'birth': 1924, 'death': 1990}}
+Evan Abraham: {'lead': {}, 'infobox': {'death': (1990, 11, 27)}, 'wikidata': {'birth_year': 1899, 'death_year': 1990}, 'categories': {'birth': 1901, 'death': 1990}}
+  ⚠ birth : categories=1901 / wikidata(année)=1899
+Bennie Abrahams: {'lead': {}, 'infobox': {'birth': (1906, 7, 28), 'death': (1990, 1, 29)}, 'wikidata': {'birth': (1906, 7, 28), 'death_year': 1990}, 'categories': {'birth': 1906, 'death': 1990}}
+Howard D. Abramowitz: {'lead': {'birth': (1930, 6, 18), 'death': (1990, 4, 9)}, 'infobox': {}, 'wikidata': {'birth': (1930, 6, 18), 'death': (1990, 4, 9)}, 'categories': {'birth': 1930, 'death': 1990}}
+Talbert Abrams: {'lead': {'birth': (1895, 8, 17), 'death': (1990, 8, 25)}, 'infobox': {'birth': (1895, 8, 17), 'death': (1990, 8, 25)}, 'wikidata': {'birth': (1895, 8, 17), 'death': (1990, 8, 25)}, 'categories': {'birth': 1895, 'death': 1990}}
+Xavier Abril: {'lead': {'birth': (1905, 11, 4), 'death': (1990, 1, 1)}, 'infobox': {}, 'wikidata': {'birth': (1905, 11, 4), 'death': (1990, 1, 1)}, 'categories': {'birth': 1905, 'death': 1990}}
+Tony Abruzzo: {'lead': {}, 'infobox': {'birth': (1916, 6, 21), 'death': (1990, 12, 30)}, 'wikidata': {'birth': (1916, 6, 21), 'death': (1990, 12, 30)}, 'categories': {'birth': 1916, 'death': 1990}}
+Asim Abu Shakra: {'lead': {}, 'infobox': {}, 'wikidata': {'birth': (1961, 11, 11), 'death': (1990, 4, 5)}, 'categories': {'birth': 1961, 'death': 1990}}
+Omar Abu Risha: {'lead': {'birth': (1910, 4, 10), 'death': (1990, 7, 15)}, 'infobox': {}, 'wikidata': {'birth': (1910, 4, 10), 'death': (1990, 7, 15)}, 'categories': {'birth': 1910, 'death': 1990}}
+Enrique Accorsi: {'lead': {'birth': (1916, 9, 22), 'death': (1990, 4, 28)}, 'infobox': {'birth': (1916, 9, 22), 'death': (1990, 4, 28)}, 'wikidata': {'birth': (1916, 9, 22), 'death': (1990, 4, 28)}, 'categories': {'birth': 1916, 'death': 1990}}
+David J. Acer: {'lead': {'birth': (1949, 11, 11), 'death': (1990, 9, 3)}, 'infobox': {'birth': (1949, 11, 11), 'death': (1990, 9, 3)}, 'wikidata': {'birth': (1949, 11, 11), 'death': (1990, 9, 3)}, 'categories': {'birth': 1949, 'death': 1990}}
+Angelo Thomas Acerra: {'lead': {'birth': (1925, 11, 7), 'death': (1990, 7, 26)}, 'infobox': {'birth': (1925, 11, 7), 'death': (1990, 7, 26)}, 'wikidata': {'birth': (1925, 11, 7), 'death': (1990, 7, 26)}, 'categories': {'birth': 1925, 'death': 1990}}
+Art Acker: {'lead': {'birth': (1891, 7, 17), 'death': (1990, 12, 24)}, 'infobox': {'birth': (1891, 7, 17), 'death': (1990, 12, 24)}, 'wikidata': {'birth_year': 1891, 'death_year': 1990}, 'categories': {'birth': 1891, 'death': 1990}}
+Richard Acland: {'lead': {'birth': (1906, 11, 26), 'death': (1990, 11, 24)}, 'infobox': {'birth': (1906, 11, 26), 'death': (1990, 11, 24)}, 'wikidata': {'birth': (1906, 11, 26), 'death': (1990, 11, 24)}, 'categories': {'birth': 1906, 'death': 1990}}
+Rosa Acle: {'lead': {'birth': (1919, 1, 1), 'death': (1990, 6, 11)}, 'infobox': {}, 'wikidata': {'birth': (1916, 1, 1), 'death': (1990, 6, 11)}, 'categories': {'birth': 1919, 'death': 1990}}
+  ⚠ birth : lead=1919-1-1 / wikidata=1916-1-1 / categories=1919
+József Ács (painter): {'lead': {}, 'infobox': {}, 'wikidata': {'birth': (1914, 10, 14), 'death': (1990, 4, 3)}, 'categories': {'birth': 1914, 'death': 1990}}
+Hazel Adair (novelist): {'lead': {'birth': (1900, 5, 30), 'death': (1990, 10, 1)}, 'infobox': {'birth': (1900, 5, 30), 'death': (1990, 10, 1)}, 'wikidata': {'birth': (1900, 5, 30), 'death': (1990, 10, 1)}, 'categories': {'birth': 1900, 'death': 1990}}
+Molly Adair: {'lead': {'birth': (1905, 3, 24), 'death': (1990, 9, 9)}, 'infobox': {}, 'wikidata': {'birth': (1905, 3, 24), 'death': (1990, 9, 9)}, 'categories': {'birth': 1905, 'death': 1990}}
+Allen Adams: {'lead': {'birth': (1946, 2, 16), 'death': (1990, 9, 5)}, 'infobox': {'birth': (1946, 2, 16), 'death': (1990, 9, 5)}, 'wikidata': {'birth': (1946, 2, 16), 'death': (1990, 9, 5)}, 'categories': {'birth': 1946, 'death': 1990}}
+Aubrey Adams: {'lead': {'birth': (1920, 6, 17), 'death': (1990, 8, 6)}, 'infobox': {}, 'wikidata': {'birth': (1920, 6, 17), 'death': (1990, 8, 6)}, 'categories': {'birth': 1920, 'death': 1990}}
+Buster Adams: {'lead': {'birth': (1915, 6, 24), 'death': (1990, 9, 1)}, 'infobox': {'birth': (1915, 6, 24), 'death': (1990, 9, 1)}, 'wikidata': {'birth': (1915, 6, 24), 'death': (1990, 9, 1)}, 'categories': {'birth': 1915, 'death': 1990}}
+Chet Adams: {'lead': {'birth': (1915, 10, 24), 'death': (1990, 10, 27)}, 'infobox': {'birth': (1915, 10, 24), 'death': (1990, 10, 28)}, 'wikidata': {'birth': (1915, 10, 24), 'death': (1990, 10, 27)}, 'categories': {'birth': 1915, 'death': 1990}}
+  ⚠ death : lead=1990-10-27 / infobox=1990-10-28 / wikidata=1990-10-27 / categories=1990
+Francis W. H. Adams: {'lead': {'birth': (1904, 6, 26), 'death': (1990, 4, 20)}, 'infobox': {}, 'wikidata': {'birth': (1904, 6, 26), 'death': (1990, 4, 22)}, 'categories': {'birth': 1904, 'death': 1990}}
+  ⚠ death : lead=1990-4-20 / wikidata=1990-4-22 / categories=1990
+Paul L. Adams (Michigan judge): {'lead': {'birth': (1908, 4, 9), 'death': (1990, 11, 23)}, 'infobox': {'birth': (1908, 4, 9), 'death': (1990, 11, 23)}, 'wikidata': {'birth': (1908, 4, 9), 'death': (1990, 11, 23)}, 'categories': {'birth': 1908, 'death': 1990}}
+Robert Adams (science fiction writer): {'lead': {'birth': (1933, 8, 31), 'death': (1990, 1, 4)}, 'infobox': {'birth': (1933, 8, 31), 'death': (1990, 1, 4)}, 'wikidata': {'birth': (1933, 8, 31), 'death': (1990, 1, 4)}, 'categories': {'birth': 1933, 'death': 1990}}
+Jenny Addams: {'lead': {'birth': (1909, 2, 15), 'death': (1990, 1, 10)}, 'infobox': {'birth': (1909, 2, 15), 'death': (1990, 1, 10)}, 'wikidata': {'birth': (1909, 2, 15), 'death_year': 1990}, 'categories': {'birth': 1909, 'death': 1990}}
+George Addes: {'lead': {'birth': (1911, 8, 26), 'death': (1990, 6, 19)}, 'infobox': {'birth': (1911, 8, 26), 'death': (1990, 6, 19)}, 'wikidata': {'birth': (1911, 8, 26), 'death': (1990, 6, 19)}, 'categories': {'birth': 1911, 'death': 1990}}
+Bernard Addison: {'lead': {'birth': (1905, 4, 15), 'death': (1990, 12, 18)}, 'infobox': {'birth': (1905, 4, 15), 'death': (1990, 12, 18)}, 'wikidata': {'birth': (1905, 4, 15), 'death': (1990, 12, 18)}, 'categories': {'birth': 1905, 'death': 1990}}
+Roy Francis Adkins: {'lead': {'birth': (1947, 10, 4), 'death': (1990, 9, 28)}, 'infobox': {'birth': (1947, 10, 4), 'death': (1990, 9, 28)}, 'wikidata': {'birth': (1947, 10, 4), 'death': (1990, 9, 28)}, 'categories': {'birth': 1947, 'death': 1990}}
+Benjamin Adler: {'lead': {'birth': (1903, 11, 10), 'death': (1990, 4, 16)}, 'infobox': {}, 'wikidata': {'birth': (1903, 11, 10), 'death': (1990, 4, 16)}, 'categories': {'birth': 1903, 'death': 1990}}
+Margarete Adler: {'lead': {'birth': (1896, 2, 13), 'death': (1990, 4, 22)}, 'infobox': {'birth': (1896, 2, 13), 'death': (1990, 4, 22)}, 'wikidata': {'birth': (1896, 2, 13), 'death': (1990, 4, 10)}, 'categories': {'birth': 1896, 'death': 1990}}
+  ⚠ death : lead=1990-4-22 / infobox=1990-4-22 / wikidata=1990-4-10 / categories=1990
+Peter Herman Adler: {'lead': {'birth': (1899, 12, 2), 'death': (1990, 10, 2)}, 'infobox': {}, 'wikidata': {'birth': (1899, 12, 2), 'death': (1990, 10, 2)}, 'categories': {'birth': 1899, 'death': 1990}}
+Ephraim Adrale: {'lead': {}, 'infobox': {}, 'wikidata': {'death_year': 1990}, 'categories': {'death': 1990}}
+Rhys Adrian: {'lead': {'birth': (1928, 2, 28), 'death': (1990, 2, 8)}, 'infobox': {'death': (1990, 2, 8)}, 'wikidata': {'birth': (1928, 2, 28), 'death': (1990, 2, 8)}, 'categories': {'birth': 1928, 'death': 1990}}
