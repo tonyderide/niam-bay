@@ -2,7 +2,7 @@
 """Render Defensive Engineering ebook (EN) from 14 chapter files → self-contained HTML.
 
 Usage: python3 scripts/render_ebook_en.py
-Output: docs/projets/ebook-defensive-engineering.html
+Output: archive/ebook-piste4/ebook-defensive-engineering.html
 
 Same renderer as render_ebook.py (FR) but concatenates EN chapter stubs in TOC order
 and adapts cover / TOC language. Print-to-PDF via browser: Ctrl+P → Save as PDF.

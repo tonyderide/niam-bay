@@ -9,11 +9,11 @@ from pathlib import Path
 
 REPO = Path(__file__).parent.parent
 CHAPTERS = [
-    ("Partie 0 — Le terrain",      "docs/projets/ebook-piste4-partie0.md"),
-    ("Partie 1 — Concevoir",        "docs/projets/ebook-piste4-chapitre-resilience.md"),
-    ("Partie 2 — Détecter",         "docs/projets/ebook-piste4-chapitre-logs.md"),
-    ("Partie 3 — Réagir",           "docs/projets/ebook-piste4-chapitre-reagir.md"),
-    ("Épilogue",                    "docs/projets/ebook-piste4-epilogue.md"),
+    ("Partie 0 — Le terrain",      "archive/ebook-piste4/ebook-piste4-partie0.md"),
+    ("Partie 1 — Concevoir",        "archive/ebook-piste4/ebook-piste4-chapitre-resilience.md"),
+    ("Partie 2 — Détecter",         "archive/ebook-piste4/ebook-piste4-chapitre-logs.md"),
+    ("Partie 3 — Réagir",           "archive/ebook-piste4/ebook-piste4-chapitre-reagir.md"),
+    ("Épilogue",                    "archive/ebook-piste4/ebook-piste4-epilogue.md"),
 ]
 
 FRONT = """\
@@ -70,7 +70,7 @@ def assemble(output: Path) -> None:
 
 def main():
     parser = argparse.ArgumentParser(description="Assemble L'Ingénierie du Pire")
-    parser.add_argument("--output", default="docs/projets/ebook-piste4-COMPLET.md",
+    parser.add_argument("--output", default="archive/ebook-piste4/ebook-piste4-COMPLET.md",
                         help="Output path (relative to repo root)")
     args = parser.parse_args()
     output = REPO / args.output

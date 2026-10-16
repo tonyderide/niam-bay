@@ -6,8 +6,8 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).parent.parent
-SRC = ROOT / "docs/projets/ebook-piste4-COMPLET.md"
-OUT = ROOT / "docs/projets/ebook-piste4.html"
+SRC = ROOT / "archive/ebook-piste4/ebook-piste4-COMPLET.md"
+OUT = ROOT / "archive/ebook-piste4/ebook-piste4.html"
 
 CSS = """
 :root {

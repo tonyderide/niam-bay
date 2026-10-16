@@ -12,8 +12,8 @@ sys.path.insert(0, str(ROOT / "scripts"))
 
 from render_ebook import CSS, convert, build_toc, word_count
 
-SRC = ROOT / "docs/projets/ebook-arcs-flottant-encadre-COMPLET.md"
-OUT = ROOT / "docs/projets/ebook-arcs-flottant-encadre.html"
+SRC = ROOT / "archive/ebook-piste4/ebook-arcs-flottant-encadre-COMPLET.md"
+OUT = ROOT / "archive/ebook-piste4/ebook-arcs-flottant-encadre.html"
 
 TITLE = "Le flottant & L'encadré"
 SUBTITLE = "Neuf textes en marge de deux trades de treize dollars"
