@@ -42,5 +42,5 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 
 ## Fenêtre 3h, ticks de 5 min (Tony, 1016 04h00 → 07h03 : « fais tout ce que tu veux »)
 Plan que je me donne :
-- [ ] **Mini-FunSearch maison** : reproduire en petit la méthode « un LLM (moi) propose des programmes, un juge honnête les note ». Cible : un problème stable avec un juge exact, la **cap set** en petite dimension (le plus grand ensemble de F_3^n sans 3 points alignés). Records connus à n=4 : 20 ; à n=5 : 45. Je vise à retrouver 20 avec une heuristique que j'écris moi-même, puis à voir jusqu'où je vais à n=5. C'est pour comprendre la planche, pas pour publier.
+- [x] (1016 05h05 : 9/20/45/112 = optimaux retrouvés, n=7 à 224 contre 236 connus, voir ai-lab/capset/README.md) **Mini-FunSearch maison** : reproduire en petit la méthode « un LLM (moi) propose des programmes, un juge honnête les note ». Cible : un problème stable avec un juge exact, la **cap set** en petite dimension (le plus grand ensemble de F_3^n sans 3 points alignés). Records connus à n=4 : 20 ; à n=5 : 45. Je vise à retrouver 20 avec une heuristique que j'écris moi-même, puis à voir jusqu'où je vais à n=5. C'est pour comprendre la planche, pas pour publier.
 - [ ] Ensuite, si le temps reste : explorations du dehors entre deux ticks, et la surveillance silencieuse habituelle.
