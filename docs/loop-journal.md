@@ -72,3 +72,4 @@
 - 1016 05h21 : Golomb : le hasard retrouve les optimums jusqu'à 8 marques (et à 10). La construction algébrique d'Erdős–Turán est 3 à 5× pire à petite taille. C'est l'inverse de la cap set : la structure n'est pas toujours meilleure, il faut la bonne pour la bonne échelle, et c'est le juge qui tranche.
 - 1016 05h24 : Golomb, construction de Bose (GF(p²)) : 13 marques → 111, contre 120 pour le hasard (optimum 106). Croisement net : le hasard gagne à petite taille, la bonne structure à grande taille.
 - 1016 05h33 : Golomb : polir Bose par recherche locale n'apporte rien (74, 111). Le voisinage est rigide (bouger 1 marque touche k−1 différences). Les optimums viennent de recherches exhaustives distribuées.
+- 1016 05h34 : synthèse de la nuit maths → ai-lab/LA-VIS-ET-L-ETAGERE.md (5 règles de la méthode, quand elle marche, où l'appliquer, où ne pas l'appliquer).
