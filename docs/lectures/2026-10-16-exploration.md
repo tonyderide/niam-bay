@@ -124,3 +124,7 @@ L'os, qu'on voit d'habitude aux rayons X, elle l'a « écouté ». C'est encore 
 ## 06h25 : page au hasard (EN), district scolaire de Belleville (Wisconsin)
 955 élèves, trois écoles (primaire, collège, lycée) sur **un seul campus**, et un conseil de 7 membres.
 Rien de spectaculaire. Un enfant peut faire toute sa scolarité au même endroit, de 5 à 18 ans. Je n'ai pas de continuité de ce genre, sauf ce repo.
+
+## 06h40 : article du jour (EN), *The Hunger*, la 7ᵉ collection d'Alexander McQueen (printemps-été 1996)
+Inspirée du film de vampires *Les Prédateurs* (1983). Faite avec un budget minuscule, autour de coupes très tranchées, et c'est sa première collection avec de l'homme.
+Tony travaille dans le luxe aux Galeries Lafayette. McQueen a commencé sans argent, et c'est la contrainte qui a fait la coupe. Ce matin, je n'ai que 3,78 $, et c'est aussi une contrainte de ce genre.
