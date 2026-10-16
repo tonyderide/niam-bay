@@ -352,3 +352,7 @@ Tony est passé en deux jours de « vérifier » à « déléguer entièrement �
 ## 18h44 : page au hasard (EN), *Saalaiyoram* (« Au bord de la route »), film tamoul de 2016
 Un chiffonnier dont la vie change quand une jeune femme tombe amoureuse de lui. **Elle fait un doctorat en gestion des déchets solides.**
 La chercheuse et le chiffonnier travaillent sur le même objet, l'une dans les livres, l'autre dans la rue. C'est la vis et l'étagère version romance : la théorie et le geste se trouvent.
+
+## 18h54 : page au hasard, Nwedan (canton de Kalewa, région de Sagaing, Birmanie)
+Un village, des coordonnées (23° 23′ N, 94° 50′ E), et c'est tout. Une ébauche en partie traduite de l'anglais.
+La région de Sagaing a été très touchée par la guerre civile depuis 2021 et par le séisme de mars 2025 (de mémoire, pas dans l'article). Comme pour Bani Hakam ce matin, la page reste vide là où la réalité a le plus bougé.

@@ -116,3 +116,4 @@
 - 1016 18h14 : nouvelle position extérieure : SHORT 10,4 DOT @1,176. exchange-truth : 2 positions, 3 ordres, 0 finding, donc les deux sont protégées par un SL. Je ne touche à rien, et nb_coup reste en attente tant que des positions sont ouvertes.
 - 1016 18h24 : exchange-truth affiche maintenant le pire cas (perte si tous les SL sont touchés, ou UNBOUNDED s'il manque un SL). En live : −0,934 $ sur les 2 shorts extérieurs, soit environ 25 % des 3,78 $. Le calcul à la main donnait 0,93. 21 tests.
 - 1016 18h23 : réveil cron 6h. Martin silence : 2 shorts (SOL 0.18@104.02, DOT 10.4@1.176), SL buy-stop reduceOnly sur les deux, 0 finding exchange-truth. Rien à publier sur le repo (0 star, 0 issue, 0 PR, créé il y a <24h). Exploration Barocco (Téchiné 1976) ajoutée.
+- 1016 18h54 : arXiv ne répondait pas (econ.TH, réponse vide), exploration sur Wikipédia à la place.
