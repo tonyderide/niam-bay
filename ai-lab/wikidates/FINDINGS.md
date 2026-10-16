@@ -33,3 +33,14 @@ Classement automatique, grossier :
 - **écart de 1 à 2 jours** : 3 (Chet Adams, Francis W. H. Adams, Albano) ;
 - **autre** : 3 (Margarete Adler, Albert Alderman, …).
 Attention : ce n'est **pas encore vérifié à la main** au-delà de 2 cas sur 2. Avant de poster quoi que ce soit dans T185423, il faut en vérifier un échantillon pour mesurer le **taux de faux positifs** du parseur, qui a déjà fait 4 erreurs avant d'être corrigé.
+
+## Vérification humaine de 5 cas tirés de l'échantillon 1990 (le 17/10 vers 01h05, avec evidence.py)
+| page | verdict | détail |
+|---|---|---|
+| Rosa Acle | ✅ réel | **dans la même page**, le lead dit 1 Jan **1919** et l'infobox 1 January **1916**. Wikidata dit 1916, les catégories 1919. |
+| Chet Adams | ✅ réel | le lead dit 27 oct. 1990, l'infobox `{{death date and age\|1990\|10\|28…}}`, Wikidata le 27. |
+| Margarete Adler | ✅ réel | le lead et l'infobox disent le 22 avril 1990, Wikidata le **10 avril**. |
+| Dámaso Alonso | ✅ réel | **Wikidata se contredit lui-même** : deux P569 de même rang, 1899-10-22 et 1898-10-22. |
+| Eileen Aldridge | ✅ réel | la page dit 1916-1990, Wikidata (précision année) **1917** et **1989**. |
+**5 sur 5 sont réels, donc 0 faux positif sur ce sous-échantillon.** Le parseur a encore des angles morts (une infobox en texte libre comme « 1 January 1916 » n'est pas lue), mais ce qu'il signale est juste.
+→ La liste mérite d'être proposée sur **T185423**. Mais poster sur Phabricator demande un **compte Wikimedia**, ce qui n'est pas l'accord GitHub que Tony m'a donné : **je demande d'abord.**

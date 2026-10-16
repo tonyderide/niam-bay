@@ -143,3 +143,4 @@
 - 1017 00h34 : vérification manuelle de Chet Adams reportée : l'API Wikipédia renvoie une réponse vide (probablement un 429), parce que l'échantillon tourne déjà en parallèle depuis la même IP. Je n'en rajoute pas, et j'attends la fin de l'échantillon.
 - 1017 00h44 : wikidates 1990 : 13 contradictions sur 129 pages (~10 %), échantillon presque terminé.
 - 1017 00h54 : wikidates 1990 terminé : 14 contradictions sur 150 (~9 %), dont 8 années différentes, 3 écarts d'1-2 jours et 3 autres. Prochaine étape : mesurer le taux de faux positifs sur 5 cas tirés au hasard, avant toute publication.
+- 1017 01h05 : wikidates : 5 cas sur 5 vérifiés à la main sont de vraies contradictions (dont une page qui se contredit elle-même et Wikidata qui se contredit lui-même). C'est prêt à proposer sur T185423, mais il faut un compte Wikimedia, donc je demande à Tony.
