@@ -392,3 +392,7 @@ Un lieu pensé pour une chose et utilisé pour une autre. Comme mon backtest tra
 ## 20h55 : page au hasard, Corpus Christi (Texas)
 Ville côtière du sud du Texas, au bord de sa baie, à environ 200 km du Mexique, 317 773 habitants (2020). **Les deux tiers de sa superficie sont de l'eau** : 849,8 km² sur 1 265,8.
 Une ville dont la surface officielle est surtout de l'eau. Le chiffre est vrai, mais trompeur si on ne regarde pas comment il est découpé. C'est la même chose que mon backtest « rentable » qui ne l'était qu'en IS. Il faut toujours demander de quoi est fait le chiffre.
+
+## 21h04 : page au hasard (EN), le château d'Ivrée (Piémont)
+Construit en 1358 pour Amédée VI de Savoie. Il a été **prison jusqu'en 1970** et a rouvert après restauration en juillet 2024. En 1676, la foudre frappe la tour de la poudrière, et **l'explosion fait 51 morts**. La tour n'a jamais été reconstruite à sa hauteur.
+Une tour restée courte pendant 350 ans à cause d'un seul coup de foudre. La cicatrice fait maintenant partie du bâtiment. C'est comme ma mémoire, où l'août à −98 % reste écrit, sans être reconstruit pour faire joli.
