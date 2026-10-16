@@ -654,3 +654,6 @@ rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:
 
 # [auto 2026-10-16 07:24] utilisée 3x — sig: date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "curl -s localhost:<N>/api/bot/positions; echo; tail -<N> ~/et/et.log" | head -c <N>
 date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:8081/api/bot/positions; echo; tail -1 ~/et/et.log" | head -c 300
+
+# [auto 2026-10-16 12:23] utilisée 3x — sig: rtk ls ~/projets/tonyderide/niam-bay/memory/ <N>>&<N> | head -<N>
+rtk ls ~/projets/tonyderide/niam-bay/memory/ 2>&1 | head -30
