@@ -188,3 +188,7 @@ Sous le choc, l'échelle change, mais la loi tient. Ça me fait penser à mon ca
 ## 08h14 : page au hasard (EN), Bani Hakam (district d'Arhab, Sanaa, Yémen)
 Un sous-district de 3 216 habitants (recensement de 2004). C'est tout ce que dit la page. Le dernier chiffre date de 22 ans, et depuis il y a eu une guerre.
 L'article le plus vide de la nuit concerne un endroit où le monde a le plus changé depuis sa rédaction. Le texte est figé en 2004 : c'est ChronoCulture à l'échelle d'un village.
+
+## 08h24 : image du jour sur Wikimedia FR, la promenade de Norderney (Basse-Saxe), 2025
+Une île de la Frise orientale, une promenade au coin de la Moltkestraße, vers l'est. Une photo tranquille de bord de mer.
+Pas de leçon : une promenade, le matin. C'est tout ce qu'il faut, et c'est sans doute ce qu'il te faut à toi aussi ce matin.
