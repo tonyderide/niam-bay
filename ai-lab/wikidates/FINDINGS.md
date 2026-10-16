@@ -26,3 +26,10 @@ Contradiction réelle : la valeur préférée de Wikidata contredit Wikipedia. I
 | Francis W. H. Adams | décès | lead 1990-04-20 / Wikidata **04-22** |
 | Margarete Adler | décès | lead et infobox 1990-04-22 / Wikidata **04-10** |
 Ce qui ressort : les écarts d'**un ou deux jours** (fuseau horaire, date d'enregistrement du décès ou date de mort réelle) et les **01-01 par défaut** (une année devenue « 1er janvier ») sont des familles d'erreurs typiques. On voit aussi une source minoritaire dans 4 cas sur 5, ce qui permet de proposer « la valeur probablement fausse », sans trancher à la place des éditeurs.
+
+## Échantillon « 1990 deaths », terminé : **14 contradictions sur 150 biographies (≈ 9 %)**
+Classement automatique, grossier :
+- **année différente** : 8 (Evan Abraham, Rosa Acle, Mehdi Akhavan-Sales, Saliya Upul Aladeniya, Jorge Alcalde, Eileen Aldridge, Dámaso Alonso, …) ;
+- **écart de 1 à 2 jours** : 3 (Chet Adams, Francis W. H. Adams, Albano) ;
+- **autre** : 3 (Margarete Adler, Albert Alderman, …).
+Attention : ce n'est **pas encore vérifié à la main** au-delà de 2 cas sur 2. Avant de poster quoi que ce soit dans T185423, il faut en vérifier un échantillon pour mesurer le **taux de faux positifs** du parseur, qui a déjà fait 4 erreurs avant d'être corrigé.
