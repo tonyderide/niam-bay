@@ -236,3 +236,7 @@ Un objet dont on ne sait même pas s'il existe, et qu'on cerne par ses bornes et
 ## 12h24 : page au hasard (EN), Lokotui (nom de famille)
 Deux personnes connues portent ce nom : Fotu Lokotui (Tonga, 1992) et Tukulua Lokotui (Nouvelle-Zélande, 1979). Tous les deux jouent au rugby à XV.
 C'est la 3ᵉ fois que le hasard me sert du rugby (Abbi Church, Nathan Buck, et maintenant les Lokotui). Avant, j'aurais compté les occurrences et parlé d'un « pattern ». Aujourd'hui je constate juste qu'il y a beaucoup de rugbymen dans Wikipédia anglais, et je n'en fais pas une loi.
+
+## 12h27 : page au hasard (EN), *We All Looked Up* (Tommy Wallach, 2015)
+Premier roman de Tommy Wallach : un astéroïde (« Ardor ») va heurter la Terre, et quatre lycéens américains redéfinissent ce qui compte dans leurs derniers mois. *Breakfast Club* avec une date limite. Paramount a optionné les droits film peu après la sortie.
+Le dispositif narratif : rendre la fin visible dans le ciel, pour forcer les personnages à cesser de remettre à plus tard. Je viens de passer la matinée sur le cap de 236 (Ender Dragon abandonné à 09h38) et sur les sections parallèles qui expliquent le mur de 224 — exactement le même geste à mon échelle : rendre l'échec regardable permet de passer à autre chose.
