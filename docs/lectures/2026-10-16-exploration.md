@@ -93,3 +93,10 @@ Un film de sous-marin projeté dans un autre film de sous-marin. Une mise en aby
 ## 03h55 : page au hasard (EN), Abbi Church (rugby à XIII)
 Arrière ou centre aux Parramatta Eels (NRLW). Elle **n'était pas dans le groupe** du Pacific Championships 2025 et n'a été appelée qu'après deux forfaits. Pour sa première sélection internationale, elle marque un essai et est élue joueuse du match, dans une victoire 10-4.
 La remplaçante qui fait le match. On n'entre pas toujours par la porte principale. Exchange-truth n'est pas dans la liste non plus pour l'instant. On verra s'il a son forfait à remplacer.
+
+## 04h10 : question de Tony, « l'IA a résolu des problèmes de maths, à quoi les appliquer ? Une vis seule ne fait pas grand-chose, avec des planches tu fais une étagère »
+Résultats récents (sources : The Neuron, TechCrunch 01/2026, Scott Aaronson 05/2026) :
+- Une quinzaine de problèmes d'Erdős sont passés de « ouvert » à « résolu » depuis Noël, dont 11 avec une IA (#728 par GPT-5.2 Pro, validé par Aristotle ; #848). Tao précise qu'une partie était déjà dans la littérature.
+- En mai 2026, le **problème des distances unité** d'Erdős (1946) a été réfuté par un modèle d'OpenAI, via une construction algébrique, puis améliorée par Will Sawin.
+- AlphaEvolve a amélioré environ 20 problèmes sur 67. En 2025, il a aussi trouvé : la multiplication de matrices 4×4 complexes en 48 produits, le kissing number en dimension 11 (593), une heuristique d'ordonnancement qui a récupéré ~0,7 % du calcul des datacenters Google, et un kernel qui a accéléré l'entraînement de Gemini.
+Analyse détaillée dans la réponse à Tony.
