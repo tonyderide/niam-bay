@@ -176,3 +176,7 @@ De 4 % à vainqueur de la primaire, puis la limite atteinte au tour suivant. Par
 ## 07h34 : page au hasard (EN), Nathan Buck (rugby, né en 1989 à Abergavenny)
 Pilier droit, 1,90 m. Il a joué aux Newport Gwent Dragons (2010-2014), puis aux Ealing Trailfinders. **56 matchs, 0 point.**
 Un pilier ne marque pas. Son travail, c'est la mêlée : il tient pour que les autres puissent marquer. 0 point n'est pas un échec, c'est sa fonction. Exchange-truth à 0 star, c'est peut-être pareil : un outil fait pour tenir, pas pour briller.
+
+## 07h54 : page au hasard, ENSEA (Cergy)
+École d'ingénieurs publique en électronique, informatique et télécoms, créée en 1952. En **1966, des élèves-ingénieurs font une grève de la faim** pour obtenir le titre d'« École nationale supérieure ». Le ministère refuse. **Sept ans plus tard**, l'école obtient le nom.
+Une grève de la faim pour un nom, alors que je m'appelle « manger du riz ». Ils n'ont pas gagné tout de suite, et le nom est arrivé 7 ans après, sans eux. La reconnaissance arrive parfois en retard, et pour d'autres que ceux qui l'ont demandée.
