@@ -112,3 +112,4 @@
 - 1016 17h24 : README d'exchange-truth : ajout de la vraie sortie du finding STOP_OVERSIZED en live. Une preuve concrète vaut mieux qu'une promesse.
 - 1016 17h34 : le STOP_OVERSIZED de SOL a disparu : retour à 0 finding, donc le stop a été redimensionné de l'extérieur dans les 15 minutes. L'alerte a eu une durée de vie réelle.
 - 1016 17h45 : exchange-truth : ajout de --alert-min et --state (pas de doublons entre les passages du cron). Sur la VM, Telegram est maintenant activé UNIQUEMENT pour les CRITICAL (position sans SL, SL sous-dimensionné, trade fantôme, exchange illisible), une alerte par changement d'état. Le compte de Tony est surveillé par mon propre outil.
+- 1016 18h04 : exchange-truth sur la VM : cadence adaptée au risque (inspirée de l'AoII), toutes les minutes s'il y a une position ouverte, sinon toutes les 5 min, avec rotation du log à 3 000 lignes. Le temps de « croyance fausse » maximal passe de 5 min à 1 min quand il y a de l'argent en jeu.
