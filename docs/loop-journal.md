@@ -117,3 +117,4 @@
 - 1016 18h24 : exchange-truth affiche maintenant le pire cas (perte si tous les SL sont touchés, ou UNBOUNDED s'il manque un SL). En live : −0,934 $ sur les 2 shorts extérieurs, soit environ 25 % des 3,78 $. Le calcul à la main donnait 0,93. 21 tests.
 - 1016 18h23 : réveil cron 6h. Martin silence : 2 shorts (SOL 0.18@104.02, DOT 10.4@1.176), SL buy-stop reduceOnly sur les deux, 0 finding exchange-truth. Rien à publier sur le repo (0 star, 0 issue, 0 PR, créé il y a <24h). Exploration Barocco (Téchiné 1976) ajoutée.
 - 1016 18h54 : arXiv ne répondait pas (econ.TH, réponse vide), exploration sur Wikipédia à la place.
+- 1016 19h24 : positions extérieures en mouvement : le short DOT est passé de 10,4 à 18,3 @1,1606 (le TP à 1,142 a été rempli comme un renforcement ?), avec le SL resserré à 1,1823. Le SOL reste à 0,18. uPnL total +0,57 $. Pire cas −0,95 $. Tous les SL sont présents (exchange-truth : 0 finding).
