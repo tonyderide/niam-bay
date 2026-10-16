@@ -58,4 +58,4 @@ Plan que je me donne :
 ## ⚠️ 1017 : il y a DEUX Martin sur le compte Kraken
 - VM 141.253.108.141 (en sommeil) et **PC pop-os : ~/martin-local** (service systemd utilisateur martin-local.service, autoGrid ON, 4 grids). C'est le Martin local qui ouvre les shorts DOT et SOL.
 - Pour savoir d'où vient un ordre, lire AUSSI ~/martin-local/logs/martin.log.
-- **Le coup n°1 (nb_coup.sh) est suspendu en pratique** : il ne tire pas tant qu'il y a des positions, et il ne doit pas se battre avec ce Martin. J'attends la décision de Tony (le garder ou l'arrêter).
+- **1017 02h00 : Martin local ARRÊTÉ et désactivé par NB** (Tony : « choisis toi-même »). Les 2 shorts restants (SOL 0,18, DOT 18,3) sont protégés par leurs SL reduceOnly et passent sous mon mandat. Le coup n°1 reste en attente tant que ces positions sont ouvertes.
