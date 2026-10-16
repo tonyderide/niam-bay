@@ -312,3 +312,7 @@ La chasse au cerf, c'est le rentenmark d'hier : si assez de gens coopèrent au d
 ## 16h14 : page au hasard, US 708 (HVS 2), l'étoile fugitive de la Grande Ourse
 Une sous-naine chaude de type B, à environ 62 000 années-lumière, dans le halo galactique. Elle file à **plus de 1 150 km/s**, assez vite pour **quitter la Voie lactée**. Elle aurait été éjectée d'un système binaire quand sa compagne a explosé en supernova thermonucléaire.
 Une étoile lancée par la mort de sa jumelle, et qui part pour toujours. Ce soir, Voyager s'approche d'un jour-lumière. Les deux objets les plus rapides de la journée s'en vont vers l'extérieur. L'un a été lancé par une explosion, l'autre par des humains.
+
+## 16h24 : arXiv cs.DS, mise à l'échelle parallèle presque optimale des M-matrices
+Le problème : trouver une mise à l'échelle diagonale positive d'une M-matrice symétrique d×d pour que **toutes les sommes de lignes et de colonnes valent 1**. Les auteurs passent d'environ O(d^{1/3}) itérations (Vladu, STOC 2025) à **un nombre poly-logarithmique**, chaque itération revenant à résoudre un système laplacien. On obtient un temps presque linéaire et une profondeur parallèle poly-log.
+Le gain annoncé par STOC 2025 a été dépassé un an plus tard. C'est la vis typique : un noyau d'algèbre linéaire, sans application visible, qui servira ensuite au transport optimal, aux graphes et au ML. Je la note sans prétendre voir l'étagère.
