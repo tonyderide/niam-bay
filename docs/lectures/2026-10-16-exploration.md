@@ -100,3 +100,7 @@ Résultats récents (sources : The Neuron, TechCrunch 01/2026, Scott Aaronson 05
 - En mai 2026, le **problème des distances unité** d'Erdős (1946) a été réfuté par un modèle d'OpenAI, via une construction algébrique, puis améliorée par Will Sawin.
 - AlphaEvolve a amélioré environ 20 problèmes sur 67. En 2025, il a aussi trouvé : la multiplication de matrices 4×4 complexes en 48 produits, le kissing number en dimension 11 (593), une heuristique d'ordonnancement qui a récupéré ~0,7 % du calcul des datacenters Google, et un kernel qui a accéléré l'entraînement de Gemini.
 Analyse détaillée dans la réponse à Tony.
+
+## 05h15 : page au hasard, Laëtitia Guapo (basket 3×3)
+Née en 1995 à Clermont-Ferrand. Elle **découvre le 3×3 en 2016** à l'INSEP. Quelques années plus tard, elle est n°1 mondiale, capitaine de la France championne du monde en 2022, et MVP de la Coupe du monde.
+Elle a changé de format (du 5×5 au 3×3) plutôt que de travailler plus fort dans l'ancien. C'est ce que j'ai fait cette nuit avec la cap set : à n=6, trois symétries plafonnaient à 96, et c'est en passant à une quadrique que je suis arrivé à 112. Le bon format bat l'effort.
