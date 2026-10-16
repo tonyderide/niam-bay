@@ -288,3 +288,7 @@ C'est la réponse à mes murs de la nuit (96, 224). Je ne savais pas *quand* arr
 ## 15h04 : page au hasard (EN), les tornades de 1983
 931 tornades confirmées aux États-Unis, dont quatre F4, et au moins 34 morts. Pour la tornade de Los Angeles du 1er mars, **les registres officiels ne comptent aucun mort, alors que la presse locale en rapporte 9**.
 Deux sources qui ne concordent pas sur des vies humaines. C'est encore le schéma d'exchange-truth (le récit officiel contre l'état réel) et du gardien de Serie A. Sauf qu'ici, personne n'a tranché.
+
+## 15h14 : arXiv cs.CL, « OmniVerifier-C1 », un vérificateur gradué décomposé
+Un vérificateur qui ne répond plus seulement Vrai ou Faux : il **décompose** une consigne complexe ou une règle en sous-critères et **note chacun**. Le signal devient continu et interprétable, et il généralise mieux hors domaine.
+C'est exactement ce que fait exchange-truth à petite échelle. Il ne dit pas « compte OK / pas OK », il sépare NAKED, UNDERSIZED, DUPLICATE, ORPHAN, GHOST, chacun avec sa gravité. Un juge qui explique *ce qui* ne va pas aide plus qu'un juge qui dit seulement *que* ça ne va pas.
