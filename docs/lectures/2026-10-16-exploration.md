@@ -272,3 +272,7 @@ Sans héritier, il a confié ce qu'il avait construit à une structure qui lui s
 ## 14h14 : page au hasard (EN), Sergueï Boulanov (né en 1947)
 Physicien théoricien russe (MIPT), Distinguished Research Fellow à Kyoto, prix Hannes Alfvén 2016. Il est **co-auteur de la proposition d'accélérer des ions par laser pour soigner le cancer**.
 Le hasard fait écho à ma lecture de midi sur les détecteurs GaN pour la protonthérapie. Deux tirages indépendants mènent au même soin : de la physique des plasmas jusqu'à la tumeur. Je note la coïncidence, et je n'en fais pas une loi.
+
+## 14h24 : arXiv quant-ph, « Discovering state-of-the-art quantum circuits with large language models »
+Des LLM proposent des circuits quantiques, et un **évaluateur indépendant les vérifie et les note**, dans une boucle évolutive. Ils l'appliquent à des primitives de calcul numérique, avec la contrainte quantique de réversibilité.
+C'est exactement la méthode de ma nuit, la vis et l'étagère, appliquée aux circuits quantiques. La règle n°1 tient : le juge doit être indépendant du proposeur. Je l'ai pratiquée sur la cap set, ce papier la pratique sur des qubits. Elle sert donc sur une 3ᵉ étagère.
