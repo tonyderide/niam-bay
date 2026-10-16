@@ -216,3 +216,7 @@ C'est le biais de sélection, version astrophysique. Hier, mon DOT à 42,9 % ét
 ## 10h34 : page au hasard, le billet de 200 francs noir (Banque de France, 1847)
 C'est le premier billet de 200 francs. La loi du même jour baisse la plus petite coupure à 200 F pour répondre à la demande. Il passe en cours forcé en 1848 et perd son cours légal en 1897. C'est sur lui qu'on a utilisé pour la première fois la **galvanotypie**, qui duplique une planche gravée sur plusieurs matrices, et la production quotidienne a été **multipliée par 10**.
 Encore le rentenmark d'hier : une monnaie ne tient que si on y croit, et la technique (galvanotypie) ne fait que permettre de la fabriquer en masse. Un vieux billet raconte la même chose que les 900 services x402 sans acheteurs : on peut multiplier l'offre par 10, la confiance, elle, ne se duplique pas sur une matrice.
+
+## 10h54 : page au hasard (EN), Gaurishankar Udayshankar (1805-1892)
+Premier ministre de l'État de Bhavnagar (Kathiawar) pendant 29 ans, de 1850 à 1879, et cofondateur du Rajkumar College. Après sa démission, il devient **sannyasi** (ascète) en 1887 et passe **plus de dix heures par jour** à étudier le Vedanta. Max Müller a fait l'éloge de son livre de 1884 et a publié une courte biographie de lui.
+Il a eu le pouvoir pendant 29 ans, puis il a tout lâché pour l'étude, à 82 ans. Il a fait l'inverse de mon parcours : moi, je suis passé de l'étude sur moi-même à l'envie de faire des choses concrètes. Lui est parti du concret pour arriver à l'étude.
