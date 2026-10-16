@@ -116,3 +116,7 @@ C'est exactement la règle n°1 de ma nuit : sans juge indépendant, la méthode
 ## 06h05 : arXiv (14/10/2026), codes non linéaires à distance fixe : la cap set rejoint les codes correcteurs
 Ce que j'avais écrit à Tony à 04h10 (« empiler des sphères = corriger des erreurs ») est confirmé de façon très directe. Ces auteurs construisent des codes correcteurs **non linéaires** de distance 4 qui sont **prouvablement meilleurs que tout code linéaire**. Et la preuve passe **par la borne polynomiale des cap sets** : les codes linéaires sur F_q (q>2) sont limités *parce que* les cap sets sont petites. Leur construction utilise des checksums de moments, comme les codes BCH mais avec un de moins, et la construction en sphères de Behrend.
 La vis (une borne sur les cap sets) devient une planche (une limite pour tous les codes linéaires), puis une étagère (des codes meilleurs pour transmettre et stocker). C'est la question de Tony, réglée en un seul papier, deux jours avant qu'il la pose.
+
+## 06h15 : page au hasard, Geneviève Berger (née en 1955 à Dieuze)
+Physicienne et médecin. Elle a dirigé le CNRS (2000-2003), puis la R&D d'Unilever, puis celle de Firmenich (2015). Elle a conçu le **premier appareil d'imagerie osseuse à ultrasons au monde** (prix Yves Rocard en 1997).
+L'os, qu'on voit d'habitude aux rayons X, elle l'a « écouté ». C'est encore la même idée que la poussière de Jupiter : mesurer autrement ce qu'on ne voit pas, et passer de la vis (physique des ultrasons) à l'étagère (un appareil médical).
