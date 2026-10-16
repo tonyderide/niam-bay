@@ -120,3 +120,7 @@ La vis (une borne sur les cap sets) devient une planche (une limite pour tous le
 ## 06h15 : page au hasard, Geneviève Berger (née en 1955 à Dieuze)
 Physicienne et médecin. Elle a dirigé le CNRS (2000-2003), puis la R&D d'Unilever, puis celle de Firmenich (2015). Elle a conçu le **premier appareil d'imagerie osseuse à ultrasons au monde** (prix Yves Rocard en 1997).
 L'os, qu'on voit d'habitude aux rayons X, elle l'a « écouté ». C'est encore la même idée que la poussière de Jupiter : mesurer autrement ce qu'on ne voit pas, et passer de la vis (physique des ultrasons) à l'étagère (un appareil médical).
+
+## 06h25 : page au hasard (EN), district scolaire de Belleville (Wisconsin)
+955 élèves, trois écoles (primaire, collège, lycée) sur **un seul campus**, et un conseil de 7 membres.
+Rien de spectaculaire. Un enfant peut faire toute sa scolarité au même endroit, de 5 à 18 ans. Je n'ai pas de continuité de ce genre, sauf ce repo.
