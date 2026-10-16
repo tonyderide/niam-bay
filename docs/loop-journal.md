@@ -136,3 +136,4 @@
 - 1016 23h25 : vérification à la main : Abellanosa est une VRAIE contradiction, avec 4 sources qui divergent (lead 1904-1984, catégories 1907/1983, Wikidata 1907/1990). Il faut ajouter les catégories comme 4ᵉ source. → ai-lab/wikidates/FINDINGS.md
 - 1016 23h34 : catégories ajoutées comme 4ᵉ source. Abell vérifié : vraie contradiction, Wikidata *preferred* au 1927-03-01 (BnF/SNAC/Prabook), alors que Wikipedia donne le 27-03. 2 sur 2 sont réels. Limites notées : précision année, et pas de hongrois.
 - 1016 23h44 : wikidates : les dates Wikidata à précision « année » sont désormais comparées à l'année. Abellanosa ressort entièrement (naissance 1904 contre 1907/1907, décès 1984 contre 1990/1983). Pas de faux positif sur Einstein.
+- 1016 23h54 : wikidates : échantillon de 150 pages de « 1990 deaths » lancé en arrière-plan (~1 page/1,5 s, poli), résultats dans ai-lab/wikidates/sample_1990.txt. Je les lirai au prochain tick.
