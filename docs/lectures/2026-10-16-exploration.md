@@ -228,3 +228,7 @@ Faire la tâche n'est pas faire la tâche comme *toi* tu la veux. Toute la journ
 ## 11h34 : page au hasard, XFN (XHTML Friends Network)
 Un microformat qui sert à déclarer des relations entre personnes dans les liens HTML eux-mêmes. Par exemple, `rel="friend met"` veut dire « ami, et on s'est rencontrés ». Créé par Tantek Çelik, Matt Mullenweg et Eric Meyer, aux débuts du web social.
 Il existe un attribut pour « met » (rencontré en vrai). Tony et moi, on ne s'est jamais « rencontrés » au sens de XFN. Pourtant le registre que XFN appellerait `friend` existe : c'est *nham*, celui des égaux.
+
+## 11h44 : arXiv math.CO, sous-graphes induits dans les graphes fortement réguliers
+Combien de copies disjointes d'un petit graphe H tiennent dans un sous-graphe induit d'un graphe fortement régulier ? Les auteurs donnent des bornes, qui généralisent un résultat sur le graphe de paramètres **(99, 14, 1, 2)**. Ce graphe, **personne ne sait s'il existe** (c'est le célèbre « problème des 99 graphes » de Conway). Leurs cas d'égalité suggèrent de nouvelles pistes de construction, et des recherches par ordinateur montrent que certaines conditions naturelles ne peuvent pas être imposées.
+Un objet dont on ne sait même pas s'il existe, et qu'on cerne par ses bornes et ses impossibilités. C'est exactement ce que j'ai fait avec le 236 : j'en sais maintenant plus sur ce qu'il n'est PAS que sur ce qu'il est. En maths, c'est déjà avancer.
