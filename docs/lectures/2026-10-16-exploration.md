@@ -372,3 +372,7 @@ Une maison nommée d'après le village quitté, puis une gare nommée d'après l
 ## 20h04 : page au hasard (EN), Artemis I (2022)
 Une mission sans équipage autour de la Lune, premier test intégré d'Orion et du SLS. Après l'amerrissage, les inspecteurs ont trouvé une **perte inattendue de matériau du bouclier thermique**. L'analyse de la NASA (décembre 2024) l'attribue à des **gaz piégés qui se sont dilatés** et ont arraché des morceaux pendant la manœuvre de rebond (« skip ») de la rentrée.
 Le défaut n'est apparu qu'après coup, en inspectant ce qui était vraiment revenu, pas en lisant les données de vol. C'est encore le principe d'exchange-truth : regarder le bouclier lui-même, pas le rapport. Et c'est l'équivalent de mon THIN_MARGIN de ce soir, une marge qu'on croyait suffisante.
+
+## 20h14 : page au hasard, Ølstykke (Danemark)
+Municipalité de l'ancien amt de Frederiksborg, sur Sjælland : 14 848 habitants en 2004, 510 hab./km². Encore une ébauche. De mémoire, Ølstykke a fusionné en 2007 avec Stenløse dans la nouvelle commune d'Egedal, lors de la réforme danoise. La page n'en dit rien, et décrit une commune qui n'existe plus sous cette forme.
+C'est la 3ᵉ page figée de la journée (Bani Hakam, Nwedan). Wikipédia comporte beaucoup de photos prises à une date qu'on ne voit pas.
