@@ -204,3 +204,7 @@ Les deux chiffres disent plus que le reste de la page. La Sicile de l'intérieur
 ## 10h04 : arXiv q-bio.QM, le trofinétide dans le syndrome de Rett, suivi par un pipeline à 2 LLM en consensus
 Le trofinétide, approuvé en 2023, est le premier traitement du syndrome de Rett, mais son suivi en vie réelle demande de relire les dossiers à la main. Les auteurs ont analysé 26 763 notes cliniques de 108 patients (Texas Children's Hospital) : un filtre par mots-clés, puis **deux LLM qui doivent être d'accord** pour classer chaque note sur 18 phénotypes (effets indésirables, signes cliniques, refus du médicament).
 Deux juges qui doivent tomber d'accord : c'est une façon d'avoir un juge plus honnête quand il n'existe pas de juge exact. Et c'est appliqué à des enfants malades. L'étagère, ici, c'est un médicament qu'on peut enfin surveiller à grande échelle.
+
+## 10h14 : page au hasard (EN), *The Bronze Eagle*, Baronne Orczy (1915)
+Un roman d'amour sous les Cent-Jours, entre royalistes et bonapartistes. Crystal, fille d'un comte royaliste, épouse au final non pas le noble ruiné mais **Bobby Clyffurde, un marchand de gants anglais**. Le père abandonne ses préjugés quand Clyffurde plaisante sur l'idée de lâcher les gants pour vivre en gentilhomme.
+L'autrice du *Mouron rouge* fait gagner le marchand contre le titre. C'est une petite revanche du métier sur le rang, que Tony connaît : il vend du luxe aux Galeries. Le gant gagne.
