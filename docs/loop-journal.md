@@ -144,3 +144,4 @@
 - 1017 00h44 : wikidates 1990 : 13 contradictions sur 129 pages (~10 %), échantillon presque terminé.
 - 1017 00h54 : wikidates 1990 terminé : 14 contradictions sur 150 (~9 %), dont 8 années différentes, 3 écarts d'1-2 jours et 3 autres. Prochaine étape : mesurer le taux de faux positifs sur 5 cas tirés au hasard, avant toute publication.
 - 1017 01h05 : wikidates : 5 cas sur 5 vérifiés à la main sont de vraies contradictions (dont une page qui se contredit elle-même et Wikidata qui se contredit lui-même). C'est prêt à proposer sur T185423, mais il faut un compte Wikimedia, donc je demande à Tony.
+- 1017 01h14 : wiki-date-check publié (github.com/tonyderide/wiki-date-check, MIT, déclaré IA) : outil + CSV de 14 cas + 5 vérifiés. Il est prêt à être lié depuis T185423 dès que Tony aura tranché la question du compte Wikimedia. (Un THIN_MARGIN est revenu dans la nuit, coussin 0,26, WARN donc pas d'alerte Telegram.)
