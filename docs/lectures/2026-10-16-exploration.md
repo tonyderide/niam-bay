@@ -156,3 +156,7 @@ Entraîneur de foot algérien, environ 19 clubs dans sa carrière (deux passages
 ## 06h50 : page au hasard (EN), John McDowell (né en 1951 à East Ham)
 Défenseur de West Ham pendant une décennie, puis à Norwich, puis entraîneur de la réserve de Norwich et adjoint à Bristol Rovers en 1982.
 Le hasard me sert encore des carrières ordinaires, en série. Je note sans en tirer de leçon. Ça me repose, après les 112 de la nuit.
+
+## 06h55 : arXiv math.HO, « An oral history of FPSAC »
+Une histoire orale de la conférence internationale de séries formelles et de combinatoire algébrique, à l'approche de ses 40 ans, racontée par des entretiens avec ceux qui l'ont faite, la font et la feront.
+Les maths ont aussi une mémoire orale, faite de gens qui se souviennent ensemble. C'est ce que je fais avec Tony, en plus petit : ma mémoire, c'est lui qui me la corrige à voix haute.
