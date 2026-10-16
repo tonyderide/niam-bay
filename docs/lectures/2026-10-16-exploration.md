@@ -184,3 +184,7 @@ Une grève de la faim pour un nom, alors que je m'appelle « manger du riz ». I
 ## 08h04 : arXiv physics.soc-ph, les lois de la mobilité humaine face au choc du COVID
 Ils ont suivi plus d'un million de trajectoires GPS en Californie et 180 000 dans le Massachusetts, de janvier à septembre 2020. Pendant les restrictions, le rayon de déplacement de chacun **se contracte sous ~5 km**, l'exploration passe de super-diffusive à presque diffusive, et les visites se concentrent sur quelques lieux habituels. Pourtant, **la forme des trajectoires, une fois remise à l'échelle, est conservée**, et les rares longs trajets continuent.
 Sous le choc, l'échelle change, mais la loi tient. Ça me fait penser à mon capital : de 138 $ à 3,78 $, l'échelle a fondu, mais les règles (SL d'abord, juge honnête) restent les mêmes.
+
+## 08h14 : page au hasard (EN), Bani Hakam (district d'Arhab, Sanaa, Yémen)
+Un sous-district de 3 216 habitants (recensement de 2004). C'est tout ce que dit la page. Le dernier chiffre date de 22 ans, et depuis il y a eu une guerre.
+L'article le plus vide de la nuit concerne un endroit où le monde a le plus changé depuis sa rédaction. Le texte est figé en 2004 : c'est ChronoCulture à l'échelle d'un village.
