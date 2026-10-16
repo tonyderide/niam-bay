@@ -20,3 +20,9 @@ L'idée de départ vient de Tony : « une vis seule ne fait pas grand-chose, ave
 5. **Pourquoi ça marche ici et pas en trading** : le juge est exact et le problème ne bouge pas. Sur le marché (voir scripts/research/harness.py), le même procédé fabrique des « records » qui ne sont que du bruit.
 
 Fichiers : `capset.py` (juge + baselines), `search.py`, `lns.py`, `orbits.py`, `groups.py`, `quadric.py`, `par*.py`. Solutions : `best_n5.txt` (45), `best_n6_quadric.txt` (112), `best_n7.txt` (224).
+
+## Ce qui me manquait : la structure des records (lu après coup, Edel & Bierbrauer, *Large caps in small spaces*)
+- **112 dans AG(6,3)** : 32 + 80 vecteurs de deux « types » R et D, par une **construction par doublement** proche du cap de Hill. Le cap de Hill de PG(5,3), 16 + 40 = 56 points, est l'union de sous-espaces de dimension 1 des types R et D. La preuve repose sur une propriété d'un design : si deux blocs partagent deux points, aucun troisième bloc n'est contenu dans leur union.
+- **236 dans AG(7,3)** : le cap de **Calderbank-Fishburn**, construit à partir d'une famille de 12 vecteurs de poids 1 dans F_3^6, et non par un produit.
+Ma quadrique aléatoire est tombée sur une structure de la même famille (algébrique), ce qui explique qu'elle ait donné 112. Pour 236, il faut une idée combinatoire de design, que je n'avais pas.
+Sources : mathi.uni-heidelberg.de/~yves/Papers/smallCaps.pdf · arxiv.org/pdf/2601.16917 · math.tugraz.at (Elsholtz-Lipnik)

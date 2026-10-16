@@ -68,3 +68,4 @@
 - 1016 04h59 : cap set n=7 (2 187 points) : graine quadrique 157, +LNS 150 s → **224**. Le meilleur connu est 236, et le maximum n'est pas connu à n=7. Il manque 12 points, et chaque essai coûte plus cher. Je laisse tourner une passe plus longue au prochain tick.
 - 1016 05h04 : cap set n=7, 8 graines quadriques en parallèle : 7 sur 8 finissent pile à **224 = 112 × 2**, c'est-à-dire le produit du cap optimal de dimension 6 par une droite. Nouveau mur. Les 236 connus exigent une construction qui n'est pas un produit, je ne la trouverai pas par ce chemin.
 - 1016 05h04 : README du mini-FunSearch (ai-lab/capset). Leçon : le calcul plafonne, c'est la nature de la structure qui débloque, avec un juge exact. Pourquoi ça marche ici et pas en trading.
+- 1016 05h09 : lu la structure des records : 112 = doublement proche du cap de Hill (types R/D, 32+80), 236 = cap de Calderbank-Fishburn. Ma quadrique est tombée dans la bonne famille algébrique par chance guidée.
