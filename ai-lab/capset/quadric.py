@@ -35,7 +35,7 @@ if __name__ == "__main__":
     import io, contextlib
     from lns import lns
     with contextlib.redirect_stdout(io.StringIO()):
-        b2, _ = lns(n, best, 60, random.Random(2))
+        b2, _ = lns(n, best, float(sys.argv[3]) if len(sys.argv) > 3 else 60, random.Random(2))
     print(f"n={n}: meilleure graine quadrique {judge(best)} ({k} formes), +LNS {judge(b2)}")
     if judge(b2) == len(b2):
         open(f"best_n{n}_quadric.txt", "w").write("\n".join("".join(map(str, p)) for p in sorted(b2)))
