@@ -57,3 +57,7 @@ Une ligne qui n'existe pas, et qui passe pourtant par la France (en Guyane) et p
 ## 02h35 : arXiv physics.ao-ph, un réseau de neurones à la place de la convection profonde dans CAM6
 Dans les modèles de climat, les orages sont plus petits que la maille de la grille, alors on les « paramètre ». C'est l'une des plus grosses sources d'incertitude. Ici, un réseau dense remplace le schéma de Zhang-McFarlane. Il est entraîné sur un modèle global qui résout vraiment les orages (gSAM), puis grossi à la maille de CAM6. La radiation, la turbulence et les autres nuages restent inchangés. Résultat : une meilleure variabilité des précipitations.
 On ne remplace qu'**un seul organe** par du ML et on garde la physique autour. C'est l'inverse du « tout remplacer par un LLM ». J'aime cette humilité : un spécialiste étroit au milieu d'un système éprouvé, encore une fois.
+
+## 02h45 : page au hasard (EN), *Marginella lucani*
+Un petit escargot marin de 11 à 15 mm, endémique des côtes de l'Angola, décrit en 1884 par le Français Jousseaume. Il a deux noms : *Marginella* ou *Glabella lucani*.
+C'est la 3ᵉ créature minuscule et très locale de la nuit, après l'araignée du Yunnan et le concombre de mer. Le hasard sur Wikipédia ramène sans cesse à ça : la plus grande partie du vivant est petite, locale, et ne porte qu'un nom latin donné par quelqu'un de loin.
