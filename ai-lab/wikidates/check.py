@@ -4,6 +4,8 @@ Lecture seule, via l'API publique, avec un User-Agent identifié (politique Wiki
 import json, re, sys, time, urllib.error, urllib.parse, urllib.request
 
 UA = "NiamBay-datecheck/0.1 (prototype for phabricator T185423; contact github.com/tonyderide)"
+HU_MONTHS = {m: i for i, m in enumerate(["január", "február", "március", "április", "május", "június", "július",
+                                          "augusztus", "szeptember", "október", "november", "december"], 1)}
 MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
                                       "september", "october", "november", "december"], 1)}
 
@@ -43,7 +45,7 @@ def lead_text(title, lang="en"):
     return get(f"https://{lang}.wikipedia.org/w/api.php?{q}")["query"]["pages"][0].get("extract", "")
 
 
-def lead_dates(wt):
+def lead_dates(wt):  # noqa: C901
     """Première parenthèse du lead rendu. On découpe sur le tiret : la partie gauche = naissance, la droite = décès.
     Une partie qui ne contient qu'une année n'est pas une date complète (ex. « (1932 – 26 September 1990) »)."""
     m = re.search(r"\(([^()]{6,160})\)", wt)
@@ -51,6 +53,8 @@ def lead_dates(wt):
     parts = re.split(r"\s[–—-]\s|–|—", m.group(1), maxsplit=1)
 
     def full(txt):
+        for c, a, b in re.findall(r"(\d{4})\.\s*(\w+)\s+(\d{1,2})\.", txt):   # hongrois : « 1924. január 7. »
+            if a.lower() in HU_MONTHS: return (int(c), HU_MONTHS[a.lower()], int(b))
         for a, b, c in re.findall(r"(\w+) (\d{1,2}), (\d{4})", txt):
             if a.lower() in MONTHS: return (int(c), MONTHS[a.lower()], int(b))
         for b, a, c in re.findall(r"(\d{1,2}) (\w+) (\d{4})", txt):
@@ -88,6 +92,8 @@ def category_years(title, lang="en"):
     for c in cats:
         m = re.fullmatch(r"Category:(\d{3,4}) (births|deaths)", c)
         if m: out["birth" if m.group(2) == "births" else "death"] = int(m.group(1))
+        m = re.fullmatch(r"Kategória:(\d{3,4})-(?:ben|ban) (született|elhunyt) személyek", c)   # huwiki
+        if m: out["birth" if m.group(2) == "született" else "death"] = int(m.group(1))
     return out
 
 
@@ -110,17 +116,20 @@ def check(title, lang="en"):
 
 
 def category(cat, n, lang="en"):
-    q = urllib.parse.urlencode({"action": "query", "list": "categorymembers", "cmtitle": f"Category:{cat}", "cmlimit": n,
+    prefix = "Kategória" if lang == "hu" else "Category"
+    q = urllib.parse.urlencode({"action": "query", "list": "categorymembers", "cmtitle": f"{prefix}:{cat}", "cmlimit": n,
                                 "cmnamespace": 0, "format": "json", "formatversion": 2})
     return [m["title"] for m in get(f"https://{lang}.wikipedia.org/w/api.php?{q}")["query"]["categorymembers"]]
 
 
 if __name__ == "__main__":
-    titles = category(sys.argv[2], int(sys.argv[3])) if sys.argv[1] == "--cat" else sys.argv[1:]
+    lang = "en"
+    if sys.argv[1] == "--lang": lang, sys.argv = sys.argv[2], sys.argv[:1] + sys.argv[3:]
+    titles = category(sys.argv[2], int(sys.argv[3]), lang) if sys.argv[1] == "--cat" else sys.argv[1:]
     for t in titles:
         time.sleep(1.5)  # ~1 page / 1,5 s, 3 requêtes par page
         try:
-            src, issues = check(t)
+            src, issues = check(t, lang)
         except Exception as e:
             print(f"{t}: erreur {type(e).__name__}"); continue
         print(f"{t}: {src}")
