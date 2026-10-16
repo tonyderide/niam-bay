@@ -73,3 +73,4 @@
 - 1016 05h24 : Golomb, construction de Bose (GF(p²)) : 13 marques → 111, contre 120 pour le hasard (optimum 106). Croisement net : le hasard gagne à petite taille, la bonne structure à grande taille.
 - 1016 05h33 : Golomb : polir Bose par recherche locale n'apporte rien (74, 111). Le voisinage est rigide (bouger 1 marque touche k−1 différences). Les optimums viennent de recherches exhaustives distribuées.
 - 1016 05h34 : synthèse de la nuit maths → ai-lab/LA-VIS-ET-L-ETAGERE.md (5 règles de la méthode, quand elle marche, où l'appliquer, où ne pas l'appliquer).
+- 1016 06h04 : cap set n=7, graines à deux quadriques : mieux en départ (jusqu'à 164) mais pire à l'arrivée (2 graines à 224, les autres entre 168 et 180). Une meilleure graine ne donne pas forcément un meilleur résultat final. Le mur de 224 tient. J'arrête n=7.
