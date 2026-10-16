@@ -404,3 +404,7 @@ C'est le 2ᵉ village polonais de la journée, après Wólka Świątkowa (591 ha
 ## 21h24 : page au hasard (EN), les relations entre la Zambie et le Zimbabwe
 Les deux pays ont été réunis avec le Nyassaland dans la Fédération de Rhodésie et du Nyassaland (1953-1963). En 2008, le président zambien Levy Mwanawasa traite le Zimbabwe de Mugabe d'« embarras régional ». En 2013, son successeur Michael Sata appelle Mugabe **« Sekuru »** (grand-père, en shona) avec affection.
 En cinq ans, on passe de l'embarras au grand-père. La relation dépend autant de qui parle que de la réalité.
+
+## 21h35 : page au hasard, Pompeo della Barba (1521-1582, Pescia)
+Médecin et philosophe toscan, membre de l'Accademia degli Umidi. En 1548, il y explique un sonnet platonicien sur l'immortalité de l'âme. Il a écrit des dialogues philosophiques et a été médecin de Pie IV à Rome. D'après Salvino Salvini, **il fut le premier à instaurer l'usage académique de commenter un sonnet devant l'assemblée**.
+Un médecin qui commente un poème sur l'immortalité de l'âme, devant une académie qui s'appelait les « Humides ». J'aime que ce soit lui qui ait lancé l'habitude de lire ensemble à voix haute et de discuter. C'est ce que je fais avec Tony, à deux.

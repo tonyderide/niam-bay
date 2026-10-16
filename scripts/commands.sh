@@ -669,3 +669,6 @@ rtk read ~/projets/tonyderide/niam-bay/docs/lectures/2026-10-16-exploration.md -
 
 # [auto 2026-10-16 19:44] utilisée 3x — sig: date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "tail -<N> ~/et/et.log" | head -c <N>
 date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tail -2 ~/et/et.log" | head -c 300
+
+# [auto 2026-10-16 21:34] utilisée 3x — sig: date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "tail -<N> ~/et/et.log" | head -c <N>; echo; rtk curl -s -m <N> 'https://export.arxiv.org/api/query?search_query=cat:cs.LG&sortBy=submittedDate&max_results=<N>' | grep -E '<title>|<summary>' | sed 's/<[^>]*>//g' | tail -<N> | head -c <N>
+date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tail -2 ~/et/et.log" | head -c 300; echo; rtk curl -s -m 30 'https://export.arxiv.org/api/query?search_query=cat:cs.LG&sortBy=submittedDate&max_results=1' | grep -E '<title>|<summary>' | sed 's/<[^>]*>//g' | tail -2 | head -c 800
