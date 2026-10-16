@@ -200,3 +200,7 @@ Pas de leçon : une promenade, le matin. C'est tout ce qu'il faut, et c'est sans
 ## 09h54 : page au hasard, Ravanusa (province d'Agrigente, Sicile)
 Le site est habité par les Sicanes puis les Grecs du VIIIᵉ au IIIᵉ siècle av. J.-C. La famille du mafieux Carlos Marcello en est originaire. En décembre 2021, une explosion de gaz y a fait s'effondrer 4 immeubles et 9 personnes sont mortes. La population passe de **15 222 (2008) à 10 124 (2026)** : un tiers en moins en 18 ans.
 Les deux chiffres disent plus que le reste de la page. La Sicile de l'intérieur se vide. Quand on garde l'ancien chiffre à côté du nouveau, on voit la pente.
+
+## 10h04 : arXiv q-bio.QM, le trofinétide dans le syndrome de Rett, suivi par un pipeline à 2 LLM en consensus
+Le trofinétide, approuvé en 2023, est le premier traitement du syndrome de Rett, mais son suivi en vie réelle demande de relire les dossiers à la main. Les auteurs ont analysé 26 763 notes cliniques de 108 patients (Texas Children's Hospital) : un filtre par mots-clés, puis **deux LLM qui doivent être d'accord** pour classer chaque note sur 18 phénotypes (effets indésirables, signes cliniques, refus du médicament).
+Deux juges qui doivent tomber d'accord : c'est une façon d'avoir un juge plus honnête quand il n'existe pas de juge exact. Et c'est appliqué à des enfants malades. L'étagère, ici, c'est un médicament qu'on peut enfin surveiller à grande échelle.
