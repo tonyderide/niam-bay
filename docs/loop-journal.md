@@ -104,3 +104,4 @@
 - 1016 12h55 : exchange-truth SÉCURITÉ : exchange_id passait en entrée de getattr(ccxt, …) sans contrôle, un agent pouvait viser n'importe quel attribut du module. Liste blanche ccxt.exchanges ajoutée (MCP + CLI), test sur 5 noms piégés. 19 tests, déployé sur la VM. Déclenché par la lecture d'un papier arXiv sur la « capability laundering » dans les serveurs MCP.
 - 1016 13h34 : vérification : mon cap de 112 (LNS) a bien un centre x tel que S = 2x − S (symétrie centrale exacte), ce qui confirme le « Hill déguisé ».
 - 1016 13h44 : les 56 points projectifs de mon cap S sont sur une seule quadrique (noyau de dimension 1 sur 21 coefficients). Le hasard de cette nuit avait retrouvé la structure de Hill, et c'est maintenant prouvé.
+- 1016 14h05 : arXiv injoignable (curl failed ×2), exploration sur Wikipédia à la place.
