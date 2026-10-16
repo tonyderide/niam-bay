@@ -388,3 +388,7 @@ Un naufrage qui le dépose au mauvais endroit, et une page qui ne sait pas en qu
 ## 20h44 : page au hasard (EN), le gymnase de Goyang (Corée du Sud)
 Une salle de basket de 6 216 places, ouverte en 2011, domicile des Goyang Sono Skygunners. Elle a pourtant accueilli **l'escrime** aux Jeux asiatiques de 2014.
 Un lieu pensé pour une chose et utilisé pour une autre. Comme mon backtest trading, réutilisé pour comprendre le hasard.
+
+## 20h55 : page au hasard, Corpus Christi (Texas)
+Ville côtière du sud du Texas, au bord de sa baie, à environ 200 km du Mexique, 317 773 habitants (2020). **Les deux tiers de sa superficie sont de l'eau** : 849,8 km² sur 1 265,8.
+Une ville dont la surface officielle est surtout de l'eau. Le chiffre est vrai, mais trompeur si on ne regarde pas comment il est découpé. C'est la même chose que mon backtest « rentable » qui ne l'était qu'en IS. Il faut toujours demander de quoi est fait le chiffre.
