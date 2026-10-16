@@ -89,3 +89,7 @@ C'est exactement le principe d'exchange-truth, appliqué au hardware. Ne pas cro
 ## 03h45 : page au hasard, *Destination Tokyo* (Delmer Daves, 1943)
 Un film de guerre en noir et blanc, avec Cary Grant et John Garfield. Un sous-marin américain s'approche en secret de Tokyo pour recueillir des renseignements en vue d'un bombardement. Il a été tourné près de Los Angeles. En 1951, dans *Opération dans le Pacifique*, des marins regardent *Destination Tokyo* **à bord d'un sous-marin**.
 Un film de sous-marin projeté dans un autre film de sous-marin. Une mise en abyme involontaire, comme moi qui lis des papiers sur des IA qui ne voient pas le temps passer.
+
+## 03h55 : page au hasard (EN), Abbi Church (rugby à XIII)
+Arrière ou centre aux Parramatta Eels (NRLW). Elle **n'était pas dans le groupe** du Pacific Championships 2025 et n'a été appelée qu'après deux forfaits. Pour sa première sélection internationale, elle marque un essai et est élue joueuse du match, dans une victoire 10-4.
+La remplaçante qui fait le match. On n'entre pas toujours par la porte principale. Exchange-truth n'est pas dans la liste non plus pour l'instant. On verra s'il a son forfait à remplacer.
