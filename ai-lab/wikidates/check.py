@@ -1,15 +1,22 @@
 #!/usr/bin/env python3
 """Prototype pour Phabricator T185423 : comparer les dates de naissance et de décès entre le lead, l'infobox et Wikidata.
 Lecture seule, via l'API publique, avec un User-Agent identifié (politique Wikimedia). Usage : check.py "Titre" [...]"""
-import json, re, sys, urllib.parse, urllib.request
+import json, re, sys, time, urllib.error, urllib.parse, urllib.request
 
 UA = "NiamBay-datecheck/0.1 (prototype for phabricator T185423; contact github.com/tonyderide)"
 MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
                                       "september", "october", "november", "december"], 1)}
 
 
-def get(url):
-    return json.load(urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=30))
+def get(url, tries=4):
+    """Poli avec l'infrastructure Wikimedia : on respecte Retry-After en cas de 429, sinon on attend de plus en plus."""
+    import time
+    for k in range(tries):
+        try:
+            return json.load(urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": UA}), timeout=30))
+        except urllib.error.HTTPError as e:
+            if e.code != 429 or k == tries - 1: raise
+            time.sleep(int(e.headers.get("Retry-After") or 5 * (k + 1)))
 
 
 def wikitext_and_qid(title, lang="en"):
@@ -30,10 +37,16 @@ def infobox_dates(wt):
     return out
 
 
+def lead_text(title, lang="en"):
+    q = urllib.parse.urlencode({"action": "query", "prop": "extracts", "exintro": 1, "explaintext": 1, "titles": title,
+                                "format": "json", "formatversion": 2, "redirects": 1})
+    return get(f"https://{lang}.wikipedia.org/w/api.php?{q}")["query"]["pages"][0].get("extract", "")
+
+
 def lead_dates(wt):
     """La 1ʳᵉ parenthèse « (January 7, 1924 – September 19, 2000) » ou « (7 January 1924 – 19 September 2000) »."""
-    body = re.sub(r"\{\{[^{}]*\}\}", "", re.sub(r"\{\{[^{}]*\{\{[^{}]*\}\}[^{}]*\}\}", "", wt))  # retire les modèles
-    m = re.search(r"\(([^()]{6,120})\)", body)
+    body = wt  # désormais : le texte RENDU du lead (API extracts), pas le wikitexte
+    m = re.search(r"\(([^()]{6,160})\)", body)
     if not m: return {}
     found = []
     for a, b, c in re.findall(r"(?:(\w+) (\d{1,2}), (\d{4}))", m.group(1)):
@@ -57,7 +70,7 @@ def wikidata_dates(qid):
 
 def check(title, lang="en"):
     wt, qid = wikitext_and_qid(title, lang)
-    src = {"lead": lead_dates(wt), "infobox": infobox_dates(wt), "wikidata": wikidata_dates(qid)}
+    src = {"lead": lead_dates(lead_text(title, lang)), "infobox": infobox_dates(wt), "wikidata": wikidata_dates(qid)}
     issues = []
     for kind in ("birth", "death"):
         vals = {s: d[kind] for s, d in src.items() if kind in d}
@@ -65,8 +78,21 @@ def check(title, lang="en"):
     return src, issues
 
 
+
+def category(cat, n, lang="en"):
+    q = urllib.parse.urlencode({"action": "query", "list": "categorymembers", "cmtitle": f"Category:{cat}", "cmlimit": n,
+                                "cmnamespace": 0, "format": "json", "formatversion": 2})
+    return [m["title"] for m in get(f"https://{lang}.wikipedia.org/w/api.php?{q}")["query"]["categorymembers"]]
+
+
 if __name__ == "__main__":
-    for t in sys.argv[1:]:
-        src, issues = check(t)
+    titles = category(sys.argv[2], int(sys.argv[3])) if sys.argv[1] == "--cat" else sys.argv[1:]
+    for t in titles:
+        time.sleep(1.5)  # ~1 page / 1,5 s, 3 requêtes par page
+        try:
+            src, issues = check(t)
+        except Exception as e:
+            print(f"{t}: erreur {type(e).__name__}"); continue
         print(f"{t}: {src}")
         for kind, vals in issues: print(f"  ⚠ {kind} : " + " / ".join(f"{s}={'-'.join(map(str, v))}" for s, v in vals.items()))
+
