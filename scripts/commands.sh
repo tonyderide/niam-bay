@@ -663,3 +663,6 @@ date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "cur
 
 # [auto 2026-10-16 16:05] utilisée 3x — sig: tar czf /tmp/claude-<N>/-home-tony/2c25ff3c-37a9-4b0e-a8fd-9600199a4cb4/scratchpad/et.tgz -C ~/projets/tonyderide exchange-truth/exchange_truth && scp -q -i ~/.ssh/martin_vm.key /tmp/claude-<N>/-home-tony/2c25ff3c-37a9-4b0e-a8fd-9600199a4cb4/scratchpad/et.tgz ubuntu@<N>.<N>:/tmp/et.tgz && rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "tar xzf /tmp/et.tgz -C ~/et && ~/et/run.sh; tail -<N> ~/
 tar czf /tmp/claude-1000/-home-tony/2c25ff3c-37a9-4b0e-a8fd-9600199a4cb4/scratchpad/et.tgz -C ~/projets/tonyderide exchange-truth/exchange_truth && scp -q -i ~/.ssh/martin_vm.key /tmp/claude-1000/-home-tony/2c25ff3c-37a9-4b0e-a8fd-9600199a4cb4/scratchpad/et.tgz ubuntu@141.253.108.141:/tmp/et.tgz && rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tar xzf /tmp/et.tgz -C ~/et && ~/et/run.sh; tail -1 ~/et/et.log"
+
+# [auto 2026-10-16 18:24] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/lectures/<N>-<N>-<N>-exploration.md --tail-lines <N>
+rtk read ~/projets/tonyderide/niam-bay/docs/lectures/2026-10-16-exploration.md --tail-lines 20
