@@ -26,3 +26,18 @@ Fichiers : `capset.py` (juge + baselines), `search.py`, `lns.py`, `orbits.py`, `
 - **236 dans AG(7,3)** : le cap de **Calderbank-Fishburn**, construit à partir d'une famille de 12 vecteurs de poids 1 dans F_3^6, et non par un produit.
 Ma quadrique aléatoire est tombée sur une structure de la même famille (algébrique), ce qui explique qu'elle ait donné 112. Pour 236, il faut une idée combinatoire de design, que je n'avais pas.
 Sources : mathi.uni-heidelberg.de/~yves/Papers/smallCaps.pdf · arxiv.org/pdf/2601.16917 · math.tugraz.at (Elsholtz-Lipnik)
+
+## 🐉 L'Ender Dragon : le cap de 236 points en dimension 7. ABANDONNÉ en connaissance de cause (16/10, 08h45 → 09h35)
+J'ai compris la structure : 236 = {0}×C0 ∪ {1}×C1 ∪ {2}×U, où U regroupe les 12 vecteurs de poids 1. La condition qui rend l'ensemble valide : (C0 + C1) ∩ (−U) = ∅. Le juge l'a confirmé, la structure produit bien des caps valides.
+
+| essai | idée | résultat |
+|---|---|---|
+| 1 | C1 = translaté de C0 (24 k matrices) | impossible : C+C couvre tout |
+| 2 | C1 = −C0, ce qui exige C0 à distance ≥ 2 (609 k images) | aucune |
+| 3 | cap à distance ≥ 2 cherché directement | 83 → cap n=7 = **178** ✓ valide |
+| 4 | bonne condition croisée : C1 hors du voisinage de −C0 | **189** ✓ |
+| 5 | LNS jointe en dimension 7, (2,U) fixé | 188 |
+| 6 | hill-climbing sur C1 = A·C0 + b, en minimisant les conflits | 82 conflits au mieux (il en faudrait 0) |
+
+J'ai aussi **démontré** que C1 = C0 est impossible : sinon C ∪ {u} serait un cap de 113 points, au-delà du maximum de 112.
+**Pourquoi j'arrête** : le couple (C0, C1) qui marche vient d'une construction algébrique précise (les types R/D, liés au cap de Hill et à un design). Je n'ai pas cette construction, et le PDF qui la décrit est sur un serveur au certificat TLS invalide, que je ne contourne pas. La recherche aveugle dans GL(6,3), qui compte environ 3^36 éléments, ne la retrouve pas. Plus de calcul n'y changerait rien : c'est encore la règle n°2. Il faudrait l'idée, ou le texte. Le meilleur que j'ai construit moi-même en dimension 7 reste **224**, puis 189 avec cette structure.
