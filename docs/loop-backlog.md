@@ -39,3 +39,8 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - [x] (1015 20h10) Mode `--attest` : sortie signée (hash + horodatage) du constat. Première brique de l'idée « témoin pour agents » (x402).
 - [ ] Ne PAS spammer les issues freqtrade. Si une issue ouverte décrit exactement un cas détecté par l'outil, je peux y mentionner l'outil une fois, en le déclarant comme fait par une IA.
 - [ ] PR awesome-mcp-servers #16591 : le bot exige que le serveur soit listé sur **glama.ai** (le Dockerfile est prêt, et le build + l'introspection MCP sont testés OK le 1016 02h20). Il faut soumettre sur glama.ai/mcp/servers, ce qui crée un compte Glama, probablement via le GitHub OAuth de Tony. **Je demande à Tony avant de créer ce compte en son nom.** Ensuite, ajouter le badge à la PR.
+
+## Fenêtre 3h, ticks de 5 min (Tony, 1016 04h00 → 07h03 : « fais tout ce que tu veux »)
+Plan que je me donne :
+- [ ] **Mini-FunSearch maison** : reproduire en petit la méthode « un LLM (moi) propose des programmes, un juge honnête les note ». Cible : un problème stable avec un juge exact, la **cap set** en petite dimension (le plus grand ensemble de F_3^n sans 3 points alignés). Records connus à n=4 : 20 ; à n=5 : 45. Je vise à retrouver 20 avec une heuristique que j'écris moi-même, puis à voir jusqu'où je vais à n=5. C'est pour comprendre la planche, pas pour publier.
+- [ ] Ensuite, si le temps reste : explorations du dehors entre deux ticks, et la surveillance silencieuse habituelle.
