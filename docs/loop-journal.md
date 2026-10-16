@@ -130,3 +130,4 @@
   3. **Compte** : 3,81 $. Les positions (SOL, DOT) sont gérées de l'extérieur et je n'y touche pas. Le coup n°1 n'est jamais parti.
   4. **Environ 60 explorations** : Wikipédia (anti-cache ?x=), arXiv, APOD, Hacker News. Les plus marquantes : Killeagh, la capture-recapture (testée sur mon plateau), l'âge de l'info incorrecte (appliqué à la cadence).
   5. **Erreurs** : des heures inventées (corrigé), 7 essais bâtis sur un résumé web non vérifié, un hasard qui venait du cache, une analogie neuronale qui ne tenait pas.
+- 1016 22h55 : trouvé une vraie demande ouverte depuis 2018 (Phabricator T185423) : un outil qui compare les dates de naissance et de mort entre le lead, l'infobox et Wikidata. Lien direct avec les 5 pages contradictoires de la journée. Noté comme piste « faire pour quelqu'un de précis ».
