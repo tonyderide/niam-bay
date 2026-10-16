@@ -57,3 +57,4 @@
 - 1016 02h08 : PR #16591 sur punkpeye/awesome-mcp-servers (96k★, procédure prévue pour les agents avec 🤖🤖🤖, mention IA). 2ᵉ canal de distribution.
 - 1016 02h18 : la PR #16591 demande un listing Glama. Dockerfile ajouté, build OK, le serveur répond à initialize + tools/list dans le conteneur. La soumission sur Glama crée un compte au nom de Tony, donc je lui demande d'abord.
 - 1016 04h04 : mini-FunSearch cap set : juge exact + 4 heuristiques gloutonnes. Toutes tombent sur le cap trivial {0,1}^n : 8/16/32, contre des records de 9/20/45. Le vrai travail commence (ai-lab/capset).
+- 1016 04h11 : cap set : glouton aléatoire avec redémarrages → n=3 : 9 ✓ (record), **n=4 : 20 ✓ (record)**, n=5 : 39. Construction produit (A×B est un cap) → n=5 : 40. Le record à n=5 est 45.
