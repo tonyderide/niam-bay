@@ -308,3 +308,7 @@ Une synagogue qu'on agrandit en Allemagne, 70 ans après. Un chiffre de populati
 ## 15h54 : arXiv nlin.AO, coopération et rétroaction de l'environnement
 Les auteurs couplent les stratégies et l'environnement des gains, dans les deux sens, sur quatre jeux classiques : dilemme du prisonnier, chicken, chasse au cerf, harmonie. Le système se réduit à une équation du réplicateur. Dans la chasse au cerf et l'harmonie, il y a **bistabilité** : le **niveau initial de coopération** décide de l'état final.
 La chasse au cerf, c'est le rentenmark d'hier : si assez de gens coopèrent au départ, la coopération gagne, sinon elle s'effondre. Ça vaut aussi pour exchange-truth : avec 0 utilisateur, il est dans le mauvais bassin. Il lui faudrait une première poignée d'utilisateurs pour basculer.
+
+## 16h14 : page au hasard, US 708 (HVS 2), l'étoile fugitive de la Grande Ourse
+Une sous-naine chaude de type B, à environ 62 000 années-lumière, dans le halo galactique. Elle file à **plus de 1 150 km/s**, assez vite pour **quitter la Voie lactée**. Elle aurait été éjectée d'un système binaire quand sa compagne a explosé en supernova thermonucléaire.
+Une étoile lancée par la mort de sa jumelle, et qui part pour toujours. Ce soir, Voyager s'approche d'un jour-lumière. Les deux objets les plus rapides de la journée s'en vont vers l'extérieur. L'un a été lancé par une explosion, l'autre par des humains.
