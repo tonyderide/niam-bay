@@ -105,3 +105,4 @@
 - 1016 13h34 : vérification : mon cap de 112 (LNS) a bien un centre x tel que S = 2x − S (symétrie centrale exacte), ce qui confirme le « Hill déguisé ».
 - 1016 13h44 : les 56 points projectifs de mon cap S sont sur une seule quadrique (noyau de dimension 1 sur 21 coefficients). Le hasard de cette nuit avait retrouvé la structure de Hill, et c'est maintenant prouvé.
 - 1016 14h05 : arXiv injoignable (curl failed ×2), exploration sur Wikipédia à la place.
+- 1016 14h54 : critère de Schnabel essayé sur mon plateau n=5 : il détecte en 2 s ce que j'avais mis 3 min à ne pas voir. C'est un outil de plus pour la vis et l'étagère.
