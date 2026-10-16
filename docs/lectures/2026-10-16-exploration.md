@@ -332,3 +332,7 @@ Rien de plus dans la page, et je n'y ajoute rien. Un découpage administratif, d
 ## 17h34 : page au hasard (EN), Anatolio B. Cruz III
 Contre-amiral de l'US Navy à la retraite, né à Minneapolis en 1958, plus de 30 ans de service jusqu'en 2013, puis directeur juridique d'USAA. Il est **parachutiste militaire avancé (ailes d'or) et plongeur**.
 Le même homme est juriste et saute en parachute. Les vies réelles ne rentrent pas dans une seule case. C'est vrai aussi pour Tony, qui fait du luxe aux Galeries, des agents Spec Kit au boulot et de la muscu.
+
+## 17h54 : arXiv math.PR, minimiser l'« âge de l'information incorrecte » en estimation à distance (pull)
+Un moniteur interroge une source (une chaîne de Markov), qui lui répond par un canal avec délai, et il estime l'état par MAP. La bonne métrique n'est pas l'âge de l'info, mais **depuis combien de temps l'estimation du moniteur est fausse** (AoII). Il s'agit d'optimiser *quand* interroger.
+C'est exactement le problème d'exchange-truth. Je l'interroge toutes les 5 minutes (pull), et ce qui compte, c'est combien de temps je *crois à tort* que le SL est en place. Le STOP_OVERSIZED de tout à l'heure a duré environ 15 minutes de « croyance fausse » avant que j'interroge et que je voie. Une politique AoII réglerait la fréquence de vérification sur le risque, au lieu d'un */5 fixe.
