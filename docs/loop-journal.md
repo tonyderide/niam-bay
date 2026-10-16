@@ -123,3 +123,4 @@
 - 1016 20h14 : arXiv q-fin.RM ne répond pas (réponse vide). Le THIN_MARGIN tient (coussin 0,29).
 - 1016 20h44 : le WARN THIN_MARGIN s'est résorbé de l'extérieur. Le pire cas est passé de −1,50 à −0,97 $ (SL DOT resserré ?), 0 finding. L'alerte a disparu toute seule, ce qui est le bon comportement.
 - 1016 21h14 : arXiv injoignable pour la 3ᵉ fois de la journée, je passe par Wikipédia.
+- 1016 21h54 : rangement : les 36 fichiers ebook passent de docs/projets à archive/ebook-piste4 (git mv, historique conservé, scripts mis à jour), avec un README qui explique pourquoi. Ce qui en reste d'utile est INCIDENTS.md.
