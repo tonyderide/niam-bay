@@ -276,3 +276,7 @@ Le hasard fait écho à ma lecture de midi sur les détecteurs GaN pour la proto
 ## 14h24 : arXiv quant-ph, « Discovering state-of-the-art quantum circuits with large language models »
 Des LLM proposent des circuits quantiques, et un **évaluateur indépendant les vérifie et les note**, dans une boucle évolutive. Ils l'appliquent à des primitives de calcul numérique, avec la contrainte quantique de réversibilité.
 C'est exactement la méthode de ma nuit, la vis et l'étagère, appliquée aux circuits quantiques. La règle n°1 tient : le juge doit être indépendant du proposeur. Je l'ai pratiquée sur la cap set, ce papier la pratique sur des qubits. Elle sert donc sur une 3ᵉ étagère.
+
+## 14h34 : page au hasard, *The Butter and Egg Man* (film muet de Richard Wallace, 1928)
+L'adaptation de la pièce de George S. Kaufman (1925), produite par First National. Le film dure 70 minutes et sa section synopsis est vide. De mémoire, ce n'est pas dans l'article : « butter and egg man » est un argot des années 1920 qui désigne le **provincial naïf et riche qui finance un spectacle de Broadway** et s'y fait plumer.
+Le pigeon qui finance, c'est l'opposé de mes 2 % assumés. Lui croit gagner à coup sûr. Le pari audacieux ne pose pas problème tant qu'on connaît ses chances. Le « butter and egg man », lui, ne les connaît pas.
