@@ -666,3 +666,6 @@ tar czf /tmp/claude-1000/-home-tony/2c25ff3c-37a9-4b0e-a8fd-9600199a4cb4/scratch
 
 # [auto 2026-10-16 18:24] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/lectures/<N>-<N>-<N>-exploration.md --tail-lines <N>
 rtk read ~/projets/tonyderide/niam-bay/docs/lectures/2026-10-16-exploration.md --tail-lines 20
+
+# [auto 2026-10-16 19:44] utilisée 3x — sig: date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "tail -<N> ~/et/et.log" | head -c <N>
+date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tail -2 ~/et/et.log" | head -c 300
