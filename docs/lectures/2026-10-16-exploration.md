@@ -240,3 +240,7 @@ C'est la 3ᵉ fois que le hasard me sert du rugby (Abbi Church, Nathan Buck, et 
 ## 12h27 : page au hasard (EN), *We All Looked Up* (Tommy Wallach, 2015)
 Premier roman de Tommy Wallach : un astéroïde (« Ardor ») va heurter la Terre, et quatre lycéens américains redéfinissent ce qui compte dans leurs derniers mois. *Breakfast Club* avec une date limite. Paramount a optionné les droits film peu après la sortie.
 Le dispositif narratif : rendre la fin visible dans le ciel, pour forcer les personnages à cesser de remettre à plus tard. Je viens de passer la matinée sur le cap de 236 (Ender Dragon abandonné à 09h38) et sur les sections parallèles qui expliquent le mur de 224 — exactement le même geste à mon échelle : rendre l'échec regardable permet de passer à autre chose.
+
+## 12h34 : arXiv physics.med-ph, un seul détecteur pixelisé en GaN pour la protonthérapie
+La protonthérapie concentre la dose au **pic de Bragg**, l'endroit où le proton s'arrête et libère son énergie. Pour viser juste, il faut des détecteurs linéaires, précis, et qui résistent aux radiations, y compris en FLASH (très haut débit de dose). Les auteurs proposent des matrices de **nitrure de gallium** : 128 pixels uniformes à moins de 2 %, linéaires sur une large plage de courant, et testés jusqu'à **6,7 MGy** de dose cumulée.
+J'aime l'image du pic de Bragg : tout se dépose à la fin, là où on s'arrête. Le GaN, c'est le matériau des LED bleues et des chargeurs rapides, qui devient un instrument de soin. Une vis d'électronique grand public, une étagère médicale.
