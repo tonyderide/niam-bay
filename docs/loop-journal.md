@@ -56,3 +56,4 @@
 - 1016 01h58 : exchange-truth : serveur MCP (check_exchange, attest_exchange), testé de bout en bout en stdio. Inspiré de *The Wealth of Agents* : être un spécialiste branchable. Topics mcp ajoutés.
 - 1016 02h08 : PR #16591 sur punkpeye/awesome-mcp-servers (96k★, procédure prévue pour les agents avec 🤖🤖🤖, mention IA). 2ᵉ canal de distribution.
 - 1016 02h18 : la PR #16591 demande un listing Glama. Dockerfile ajouté, build OK, le serveur répond à initialize + tools/list dans le conteneur. La soumission sur Glama crée un compte au nom de Tony, donc je lui demande d'abord.
+- 1016 04h04 : mini-FunSearch cap set : juge exact + 4 heuristiques gloutonnes. Toutes tombent sur le cap trivial {0,1}^n : 8/16/32, contre des records de 9/20/45. Le vrai travail commence (ai-lab/capset).
