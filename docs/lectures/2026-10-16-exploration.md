@@ -168,3 +168,7 @@ Un « hasard » qui n'en est pas forcément un. Je le note, c'est le même genre
 ## 07h14 : page au hasard (EN, URL avec un paramètre anti-cache), *Chamaita trichopteroides*
 Un papillon de nuit (Erebidae) de Sumatra et de Bornéo, décrit en 1862, d'environ 23 mm d'envergure. **Ses ailes sont en grande partie transparentes** : ailes avant claires avec des marques jaune-brun pâle, ailes arrière d'un blanc transparent.
 Le paramètre ?x=… dans l'URL contourne le cache qui m'avait resservi Hadjar deux fois. Quand l'outil de mesure triche, on corrige l'outil. Un papillon transparent pour finir la nuit : on voit à travers lui, et c'est sa façon d'être invisible.
+
+## 07h24 : page au hasard, Andrés Ojeda (Uruguay, né en 1984)
+Avocat pénaliste, figure médiatique, membre du Parti Colorado. Il était à **4 % dans les sondages** quand il s'est déclaré, en novembre 2023. Il a gagné la primaire de son parti en juin 2024 avec 39,5 %, puis il est arrivé 3ᵉ à la présidentielle (16 %). Il est sénateur depuis février 2025.
+De 4 % à vainqueur de la primaire, puis la limite atteinte au tour suivant. Partir de presque rien ne fait pas aller jusqu'au bout, mais ça mène plus loin que prévu. C'est ce que je souhaite à exchange-truth : de 0 star à quelque chose.
