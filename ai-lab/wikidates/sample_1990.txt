@@ -65,3 +65,37 @@ Margarete Adler: {'lead': {'birth': (1896, 2, 13), 'death': (1990, 4, 22)}, 'inf
 Peter Herman Adler: {'lead': {'birth': (1899, 12, 2), 'death': (1990, 10, 2)}, 'infobox': {}, 'wikidata': {'birth': (1899, 12, 2), 'death': (1990, 10, 2)}, 'categories': {'birth': 1899, 'death': 1990}}
 Ephraim Adrale: {'lead': {}, 'infobox': {}, 'wikidata': {'death_year': 1990}, 'categories': {'death': 1990}}
 Rhys Adrian: {'lead': {'birth': (1928, 2, 28), 'death': (1990, 2, 8)}, 'infobox': {'death': (1990, 2, 8)}, 'wikidata': {'birth': (1928, 2, 28), 'death': (1990, 2, 8)}, 'categories': {'birth': 1928, 'death': 1990}}
+Ahmad Meshari Al-Adwani: {'lead': {'death': (1990, 6, 17)}, 'infobox': {'death': (1990, 6, 17)}, 'wikidata': {'birth_year': 1923, 'death': (1990, 6, 17)}, 'categories': {'birth': 1923, 'death': 1990}}
+Hans Aebli: {'lead': {'birth': (1923, 8, 6), 'death': (1990, 7, 26)}, 'infobox': {}, 'wikidata': {'birth': (1923, 8, 6), 'death': (1990, 7, 26)}, 'categories': {'birth': 1923, 'death': 1990}}
+Affandi: {'lead': {'death': (1990, 5, 23)}, 'infobox': {'death': (1990, 5, 23)}, 'wikidata': {'birth': (1907, 5, 18), 'death': (1990, 5, 23)}, 'categories': {'birth': 1907, 'death': 1990}}
+Soheil Afnan: {'lead': {}, 'infobox': {}, 'wikidata': {'birth_year': 1904, 'death_year': 1990}, 'categories': {'birth': 1904, 'death': 1990}}
+Mike Agee: {'lead': {'birth': (1938, 6, 7), 'death': (1990, 2, 1)}, 'infobox': {'birth': (1938, 6, 7), 'death': (1990, 2, 1)}, 'wikidata': {'birth': (1938, 6, 7), 'death': (1990, 2, 1)}, 'categories': {'birth': 1938, 'death': 1990}}
+Ethel G. Aginsky: {'lead': {'birth': (1910, 9, 24), 'death': (1990, 3, 28)}, 'infobox': {'birth': (1910, 9, 24), 'death': (1990, 3, 28)}, 'wikidata': {'birth': (1910, 9, 24), 'death': (1990, 3, 28)}, 'categories': {'birth': 1910, 'death': 1990}}
+Sir Peter Agnew, 1st Baronet: {'lead': {'birth': (1900, 7, 9), 'death': (1990, 8, 26)}, 'infobox': {'birth': (1900, 7, 9), 'death': (1990, 8, 26)}, 'wikidata': {'birth': (1900, 7, 9), 'death': (1990, 8, 26)}, 'categories': {'birth': 1900, 'death': 1990}}
+Herb Agocs: {'lead': {'birth': (1928, 11, 6), 'death': (1990, 9, 15)}, 'infobox': {'birth': (1928, 11, 6), 'death': (1990, 9, 15)}, 'wikidata': {'birth': (1928, 11, 6), 'death': (1990, 9, 15)}, 'categories': {'birth': 1928, 'death': 1990}}
+Getulio Agostini: {'lead': {}, 'infobox': {}, 'wikidata': {'birth_year': 1943, 'death_year': 1990}, 'categories': {'birth': 1943, 'death': 1990}}
+Mario Aguilar (sailor): {'lead': {'birth': (1925, 5, 23), 'death': (1990, 3, 6)}, 'infobox': {'birth': (1925, 5, 23), 'death': (1990, 3, 6)}, 'wikidata': {'birth': (1925, 5, 23), 'death_year': 1990}, 'categories': {'birth': 1925, 'death': 1990}}
+Ignacio Aguirre: {'lead': {'birth': (1900, 12, 23), 'death': (1990, 7, 11)}, 'infobox': {'birth': (1900, 12, 23), 'death': (1990, 7, 11)}, 'wikidata': {'birth': (1900, 12, 23), 'death': (1990, 7, 11)}, 'categories': {'birth': 1900, 'death': 1990}}
+Vicente Aguirre: {'lead': {'birth': (1901, 1, 22), 'death': (1990, 6, 11)}, 'infobox': {'birth': (1901, 1, 22), 'death': (1990, 6, 11)}, 'wikidata': {'birth': (1901, 1, 22), 'death': (1990, 6, 11)}, 'categories': {'birth': 1901, 'death': 1990}}
+Arthur John Ahearn: {'lead': {'birth': (1902, 6, 20), 'death': (1990, 6, 12)}, 'infobox': {'birth': (1902, 6, 20), 'death': (1990, 6, 12)}, 'wikidata': {'birth_year': 1902, 'death_year': 1990}, 'categories': {'birth': 1902, 'death': 1990}}
+Tofig Ahmadov: {'lead': {'birth': (1926, 5, 22)}, 'infobox': {'birth': (1926, 5, 22), 'death': (1990, 6, 1926)}, 'wikidata': {'birth': (1926, 5, 22)}, 'categories': {'birth': 1926, 'death': 1990}}
+Najeeb Ahmed: {'lead': {'birth': (1963, 11, 17), 'death': (1990, 4, 11)}, 'infobox': {}, 'wikidata': {'death': (1990, 4, 11)}, 'categories': {'birth': 1963, 'death': 1990}}
+Nazir Ahmed (filmmaker): {'lead': {'death': (1990, 2, 1)}, 'infobox': {'death': (1990, 2, 1)}, 'wikidata': {'birth_year': 1925, 'death': (1990, 2, 1)}, 'categories': {'birth': 1925, 'death': 1990}}
+Nizam Uddin Ahmed (Awami League politician): {'lead': {}, 'infobox': {}, 'wikidata': {'birth_year': 1948, 'death_year': 1990}, 'categories': {'birth': 1948, 'death': 1990}}
+Kaarina Aho: {'lead': {'birth': (1925, 1, 28), 'death': (1990, 9, 23)}, 'infobox': {}, 'wikidata': {'birth': (1925, 1, 28), 'death': (1990, 9, 23)}, 'categories': {'birth': 1925, 'death': 1990}}
+Louis H. Ahrens: {'lead': {'birth': (1918, 4, 24), 'death': (1990, 9, 5)}, 'infobox': {'birth': (1918, 4, 24), 'death': (1990, 9, 5)}, 'wikidata': {'birth': (1918, 4, 24), 'death': (1990, 9, 5)}, 'categories': {'birth': 1918, 'death': 1990}}
+Alyn Ainsworth: {'lead': {'birth': (1924, 8, 24), 'death': (1990, 10, 4)}, 'infobox': {}, 'wikidata': {'birth': (1924, 8, 24), 'death': (1990, 10, 4)}, 'categories': {'birth': 1924, 'death': 1990}}
+Gordon Aitchison: {'lead': {'birth': (1909, 6, 14), 'death': (1990, 1, 6)}, 'infobox': {'birth': (1909, 6, 14), 'death': (1990, 1, 6)}, 'wikidata': {'birth': (1909, 6, 14), 'death': (1990, 1, 6)}, 'categories': {'birth': 1909, 'death': 1990}}
+John Aldam Aizlewood: {'lead': {'birth': (1895, 1, 4), 'death': (1990, 9, 27)}, 'infobox': {'birth': (1895, 1, 4), 'death': (1990, 9, 27)}, 'wikidata': {'birth': (1895, 1, 4), 'death': (1990, 9, 27)}, 'categories': {'birth': 1895, 'death': 1990}}
+Mustafa Ajanović: {'lead': {'birth': (1927, 3, 1), 'death': (1990, 7, 31)}, 'infobox': {}, 'wikidata': {'birth': (1927, 3, 1), 'death': (1990, 7, 31)}, 'categories': {'birth': 1927, 'death': 1990}}
+Bernard Akana: {'lead': {'birth': (1919, 6, 20), 'death': (1990, 4, 12)}, 'infobox': {}, 'wikidata': {'death': (1990, 4, 12)}, 'categories': {'death': 1990}}
+Bin Akao: {'lead': {'birth': (1899, 1, 15), 'death': (1990, 2, 6)}, 'infobox': {'birth': (1899, 1, 15), 'death': (1990, 2, 6)}, 'wikidata': {'birth': (1899, 1, 15), 'death': (1990, 2, 6)}, 'categories': {'birth': 1899, 'death': 1990}}
+Jon Akass: {'lead': {'birth': (1933, 7, 16), 'death': (1990, 6, 4)}, 'infobox': {'birth': (1933, 7, 16), 'death': (1990, 6, 4)}, 'wikidata': {'birth': (1933, 7, 16), 'death': (1990, 6, 4)}, 'categories': {'birth': 1933, 'death': 1990}}
+Mehdi Akhavan-Sales: {'lead': {'birth': (1929, 3, 1), 'death': (1990, 8, 26)}, 'infobox': {'birth': (1929, 3, 1), 'death': (1990, 8, 26)}, 'wikidata': {'birth_year': 1928, 'death': (1990, 8, 26)}, 'categories': {'birth': 1929, 'death': 1990}}
+  ⚠ birth : lead=1929-3-1 / infobox=1929-3-1 / categories=1929 / wikidata(année)=1928
+Igor Akhremchik: {'lead': {'birth': (1933, 10, 18), 'death': (1990, 1, 5)}, 'infobox': {'birth': (1933, 10, 18), 'death': (1990, 1, 5)}, 'wikidata': {'birth': (1933, 10, 18), 'death_year': 1990}, 'categories': {'birth': 1933, 'death': 1990}}
+Sadri Akhun: {'lead': {'birth': (1903, 3, 16), 'death': (1990, 6, 21)}, 'infobox': {}, 'wikidata': {'birth': (1903, 3, 16), 'death': (1990, 6, 21)}, 'categories': {'birth': 1903, 'death': 1990}}
+Mohammad Nasim Akhundzada: {'lead': {}, 'infobox': {}, 'wikidata': {'death_year': 1990}, 'categories': {'death': 1990}}
+Muammer Aksoy: {'lead': {'death': (1990, 1, 31)}, 'infobox': {'death': (1990, 1, 31)}, 'wikidata': {'birth_year': 1917, 'death': (1990, 1, 31)}, 'categories': {'birth': 1917, 'death': 1990}}
+Omar al-Hazzaa: {'lead': {}, 'infobox': {}, 'wikidata': {'death_year': 1990}, 'categories': {'death': 1990}}
+Abu Chataa al-Jamaï: {'lead': {}, 'infobox': {}, 'wikidata': {'birth_year': 1905, 'death': (1990, 1, 7)}, 'categories': {'birth': 1905, 'death': 1990}}

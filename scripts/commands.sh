@@ -675,3 +675,9 @@ date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tai
 
 # [auto 2026-10-16 21:44] utilisée 3x — sig: date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "tail -<N> ~/et/et.log" | head -c <N>; echo; gh repo view tonyderide/exchange-truth --json stargazerCount -q .stargazerCount; for pr in "botcrypto-io/awesome-crypto-trading-bots <N>" "punkpeye/awesome-mcp-servers <N>"; do set -- $pr; gh pr view $<N> -R $<N> --json state,comments -q '"\(.state) c=\(.comments|length)"'; done
 date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "tail -2 ~/et/et.log" | head -c 300; echo; gh repo view tonyderide/exchange-truth --json stargazerCount -q .stargazerCount; for pr in "botcrypto-io/awesome-crypto-trading-bots 171" "punkpeye/awesome-mcp-servers 16591"; do set -- $pr; gh pr view $2 -R $1 --json state,comments -q '"\(.state) c=\(.comments|length)"'; done
+
+# [auto 2026-10-17 00:25] utilisée 3x — sig: rtk ls ~/projets/tonyderide/niam-bay/docs/lectures/ <N>>/dev/null | tail -<N>
+rtk ls ~/projets/tonyderide/niam-bay/docs/lectures/ 2>/dev/null | tail -5
+
+# [auto 2026-10-17 00:25] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines <N>
+rtk read ~/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 8
