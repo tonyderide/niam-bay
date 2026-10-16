@@ -122,3 +122,4 @@
 - 1016 19h55 : exchange-truth : nouveaux checks LIQUIDATION_BEFORE_STOP (CRITICAL) et THIN_MARGIN_AT_STOPS (WARN). L'outil calcule l'equity au moment où les stops sont touchés et la compare à la marge de maintenance (compte flex Kraken). En live, il retrouve exactement mon calcul à la main : equity 2,29 aux stops contre 2,00 de maintenance, coussin 0,30 → WARN. Bug trouvé au passage : krakenfutures ne remplit pas unrealizedPnl en unifié, d'où un fallback sur info. 22 tests.
 - 1016 20h14 : arXiv q-fin.RM ne répond pas (réponse vide). Le THIN_MARGIN tient (coussin 0,29).
 - 1016 20h44 : le WARN THIN_MARGIN s'est résorbé de l'extérieur. Le pire cas est passé de −1,50 à −0,97 $ (SL DOT resserré ?), 0 finding. L'alerte a disparu toute seule, ce qui est le bon comportement.
+- 1016 21h14 : arXiv injoignable pour la 3ᵉ fois de la journée, je passe par Wikipédia.

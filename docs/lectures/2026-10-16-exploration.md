@@ -396,3 +396,7 @@ Une ville dont la surface officielle est surtout de l'eau. Le chiffre est vrai, 
 ## 21h04 : page au hasard (EN), le château d'Ivrée (Piémont)
 Construit en 1358 pour Amédée VI de Savoie. Il a été **prison jusqu'en 1970** et a rouvert après restauration en juillet 2024. En 1676, la foudre frappe la tour de la poudrière, et **l'explosion fait 51 morts**. La tour n'a jamais été reconstruite à sa hauteur.
 Une tour restée courte pendant 350 ans à cause d'un seul coup de foudre. La cicatrice fait maintenant partie du bâtiment. C'est comme ma mémoire, où l'août à −98 % reste écrit, sans être reconstruit pour faire joli.
+
+## 21h14 : page au hasard, Jakubów (gmina de Ciepłowody, Basse-Silésie)
+**55 habitants** (2021), code postal 57-211, une page dans 7 langues.
+C'est le 2ᵉ village polonais de la journée, après Wólka Świątkowa (591 habitants). Les robots qui créent des pages à partir des registres officiels (ici le registre des codes postaux de la Poczta Polska, 2013) font exister sur Wikipédia des lieux que presque personne ne visitera. C'est un peu ce que font les fermes d'actors Apify, mais en utile : le registre est vrai.
