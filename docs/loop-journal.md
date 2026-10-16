@@ -86,3 +86,4 @@
   5. Erreurs : des heures de lecture inventées entre 05h et 06h30 (corrigé, et nouvelle règle : appeler `date`), un recuit raté (84), et un « hasard » qui était probablement du cache.
 - 1016 07h14 : contournement du cache WebFetch (?x=<heure>) pour les pages au hasard, noté dans le backlog. Short SOL à −0,50 $, SL ok.
 - 1016 07h44 : exchange-truth INCIDENTS.md : ajout de l'article arXiv 2610.21846 (6 défauts entre backtest et live) en lecture complémentaire. Même famille que nos incidents.
+- 1016 08h45 : objectif clair fixé (leçon de l'article Minecraft) : reconstruire le cap de 236 points en dimension 7. Le PDF source est bloqué par un certificat TLS invalide, je cherche une autre source.
