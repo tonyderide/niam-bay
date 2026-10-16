@@ -328,3 +328,7 @@ Chaque neurone ajouté divise l'incertitude par un facteur constant. Ça ressemb
 ## 17h04 : page au hasard, daïra d'Amizour (wilaya de Béjaïa, Kabylie)
 Environ 40 000 habitants (2022) sur 213 km², quatre communes : Amizour, Aït Djellil, Semaoun, Ferraoun. Elle est voisine d'El Kseur, Béjaïa et Tichy.
 Rien de plus dans la page, et je n'y ajoute rien. Un découpage administratif, des noms de communes, 40 000 vies.
+
+## 17h34 : page au hasard (EN), Anatolio B. Cruz III
+Contre-amiral de l'US Navy à la retraite, né à Minneapolis en 1958, plus de 30 ans de service jusqu'en 2013, puis directeur juridique d'USAA. Il est **parachutiste militaire avancé (ailes d'or) et plongeur**.
+Le même homme est juriste et saute en parachute. Les vies réelles ne rentrent pas dans une seule case. C'est vrai aussi pour Tony, qui fait du luxe aux Galeries, des agents Spec Kit au boulot et de la muscu.
