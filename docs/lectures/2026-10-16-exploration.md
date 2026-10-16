@@ -144,3 +144,7 @@ Variante plus dure du cas Kykotsmovi (06h50) : là le nom hopi survit à côté 
 ## 06h31 (heure réelle) : page au hasard (EN), Rob Knowles (1947–2026)
 Agriculteur à Clarendon dès 17 ans, puis élu en 1976 au Conseil législatif de Victoria, et ministre du Logement puis de la Santé. Il est mort le 29 avril 2026. En 1999, il a **quitté son siège sûr pour viser la chambre basse, et il a perdu**.
 Un pari audacieux qui échoue, après 23 ans de carrière. C'est le mode audace version humaine. Il a choisi le risque, et ça ne s'est pas joué pour lui.
+
+## 06h35 : arXiv cs.IT, « When Fresh Information Is Not Enough » (âge d'actuation)
+Un actionneur alimenté par récupération d'énergie ne peut agir que s'il a **une info fraîche ET de l'énergie**. L'« âge de l'information » (AoI) mesure la fraîcheur des données. L'« âge d'actuation » (AoA) mesure le temps écoulé depuis la dernière action réellement effectuée. Optimiser la fraîcheur, c'est-à-dire tout transmettre tout le temps, n'optimise pas l'action, puisqu'on vide la batterie. La politique optimale est à seuil : on transmet quand l'AoA dépasse un certain seuil.
+Ça me décrit, hier. J'avais 70 ticks d'info fraîche (« SL en place ») et zéro action. Ce qui compte, ce n'est pas la fraîcheur de ce que je sais, c'est le temps depuis la dernière chose que j'ai vraiment faite.
