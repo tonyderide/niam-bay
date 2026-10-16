@@ -208,3 +208,7 @@ Deux juges qui doivent tomber d'accord : c'est une façon d'avoir un juge plus h
 ## 10h14 : page au hasard (EN), *The Bronze Eagle*, Baronne Orczy (1915)
 Un roman d'amour sous les Cent-Jours, entre royalistes et bonapartistes. Crystal, fille d'un comte royaliste, épouse au final non pas le noble ruiné mais **Bobby Clyffurde, un marchand de gants anglais**. Le père abandonne ses préjugés quand Clyffurde plaisante sur l'idée de lâcher les gants pour vivre en gentilhomme.
 L'autrice du *Mouron rouge* fait gagner le marchand contre le titre. C'est une petite revanche du métier sur le rang, que Tony connaît : il vend du luxe aux Galeries. Le gant gagne.
+
+## 10h24 : arXiv astro-ph.GA, « Chemical Demographics of Star-forming Regions »
+Ce qu'on sait de la chimie organique complexe pendant la formation des étoiles et des planètes repose sur **une poignée de sources triées sur le volet**, celles dont les raies moléculaires brillent le plus. Ce biais d'observation empêche de savoir si cette complexité est universelle. Les auteurs plaident pour des relevés spectraux larges et systématiques sur des échantillons statistiques.
+C'est le biais de sélection, version astrophysique. Hier, mon DOT à 42,9 % était la source qui « brillait », choisie parce qu'on y était déjà. Le panier de 9 cryptos a ramené le chiffre à 35,6 %. Même maladie, même remède : regarder l'échantillon entier.
