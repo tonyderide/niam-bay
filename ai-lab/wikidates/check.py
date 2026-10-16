@@ -44,16 +44,27 @@ def lead_text(title, lang="en"):
 
 
 def lead_dates(wt):
-    """La 1ʳᵉ parenthèse « (January 7, 1924 – September 19, 2000) » ou « (7 January 1924 – 19 September 2000) »."""
-    body = wt  # désormais : le texte RENDU du lead (API extracts), pas le wikitexte
-    m = re.search(r"\(([^()]{6,160})\)", body)
+    """Première parenthèse du lead rendu. On découpe sur le tiret : la partie gauche = naissance, la droite = décès.
+    Une partie qui ne contient qu'une année n'est pas une date complète (ex. « (1932 – 26 September 1990) »)."""
+    m = re.search(r"\(([^()]{6,160})\)", wt)
     if not m: return {}
-    found = []
-    for a, b, c in re.findall(r"(?:(\w+) (\d{1,2}), (\d{4}))", m.group(1)):
-        if a.lower() in MONTHS: found.append((int(c), MONTHS[a.lower()], int(b)))
-    for b, a, c in re.findall(r"(\d{1,2}) (\w+) (\d{4})", m.group(1)):
-        if a.lower() in MONTHS: found.append((int(c), MONTHS[a.lower()], int(b)))
-    return {"birth": found[0], "death": found[1]} if len(found) >= 2 else ({"birth": found[0]} if found else {})
+    parts = re.split(r"\s[–—-]\s|–|—", m.group(1), maxsplit=1)
+
+    def full(txt):
+        for a, b, c in re.findall(r"(\w+) (\d{1,2}), (\d{4})", txt):
+            if a.lower() in MONTHS: return (int(c), MONTHS[a.lower()], int(b))
+        for b, a, c in re.findall(r"(\d{1,2}) (\w+) (\d{4})", txt):
+            if a.lower() in MONTHS: return (int(c), MONTHS[a.lower()], int(b))
+        return None
+    out = {}
+    if len(parts) == 2:
+        b, d = full(parts[0]), full(parts[1])
+        if b: out["birth"] = b
+        if d: out["death"] = d
+    else:
+        b = full(parts[0])
+        if b and re.search(r"\bborn\b|\bb\.", parts[0], re.I): out["birth"] = b
+    return out
 
 
 def wikidata_dates(qid):
