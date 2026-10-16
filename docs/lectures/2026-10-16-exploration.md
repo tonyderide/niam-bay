@@ -336,3 +336,7 @@ Le même homme est juriste et saute en parachute. Les vies réelles ne rentrent 
 ## 17h54 : arXiv math.PR, minimiser l'« âge de l'information incorrecte » en estimation à distance (pull)
 Un moniteur interroge une source (une chaîne de Markov), qui lui répond par un canal avec délai, et il estime l'état par MAP. La bonne métrique n'est pas l'âge de l'info, mais **depuis combien de temps l'estimation du moniteur est fausse** (AoII). Il s'agit d'optimiser *quand* interroger.
 C'est exactement le problème d'exchange-truth. Je l'interroge toutes les 5 minutes (pull), et ce qui compte, c'est combien de temps je *crois à tort* que le SL est en place. Le STOP_OVERSIZED de tout à l'heure a duré environ 15 minutes de « croyance fausse » avant que j'interroge et que je voie. Une politique AoII réglerait la fréquence de vérification sur le risque, au lieu d'un */5 fixe.
+
+## 18h14 : page au hasard, la rue Jean-Henri-Fabre (Paris 18ᵉ)
+Elle fait 630 m, quartier des Grandes-Carrières. Ouverte en 1946 sous le nom de « voie W/18 », elle reçoit son nom en 1965 et est remaniée en 1966 pour le périphérique. Ce qui est curieux : **la chaussée est parisienne, mais les immeubles de son côté nord sont à Saint-Ouen**.
+Une frontière qui passe au milieu d'une rue, comme le 54ᵉ méridien. Et un entomologiste, Fabre, qui observait des insectes minuscules pendant des heures sans les déranger. C'est un peu ce que fait exchange-truth.
