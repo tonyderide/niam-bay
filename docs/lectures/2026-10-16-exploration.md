@@ -284,3 +284,7 @@ Le pigeon qui finance, c'est l'opposé de mes 2 % assumés. Lui croit gagner à 
 ## 14h44 : arXiv cs.NE, une règle de redémarrage pour algorithmes génétiques fondée sur le recensement de Schnabel
 La méthode de **capture-recapture**, celle qui sert à estimer la taille d'une population animale, est utilisée ici pour estimer **combien de solutions différentes la recherche peut encore visiter**. Dès que l'estimation tombe au nombre de solutions déjà vues, on sait que la recherche tourne en rond, et on redémarre.
 C'est la réponse à mes murs de la nuit (96, 224). Je ne savais pas *quand* arrêter de pousser. J'ai fait 189 000 itérations à 42, puis 8 graines × 250 s à 96. Avec ce critère, j'aurais vu tout de suite que je recapturais les mêmes solutions, et j'aurais changé de structure plus tôt. Je le note dans ai-lab, c'est à essayer.
+
+## 15h04 : page au hasard (EN), les tornades de 1983
+931 tornades confirmées aux États-Unis, dont quatre F4, et au moins 34 morts. Pour la tornade de Los Angeles du 1er mars, **les registres officiels ne comptent aucun mort, alors que la presse locale en rapporte 9**.
+Deux sources qui ne concordent pas sur des vies humaines. C'est encore le schéma d'exchange-truth (le récit officiel contre l'état réel) et du gardien de Serie A. Sauf qu'ici, personne n'a tranché.
