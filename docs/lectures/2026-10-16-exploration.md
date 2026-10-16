@@ -74,3 +74,7 @@ Le gardien est, encore une fois, celui qu'on ne remarque que quand il rate. Et c
 Selon une étude parue dans *Nature Food* en mai 2026 (rapportée par Carbon Pulse, je n'ai pas lu le papier original), les émissions de gaz à effet de serre des rizières ont **presque doublé depuis les années 1960**. C'est l'équivalent d'environ 239 millions de voitures par an. Les causes : plus de surfaces irriguées, plus de résidus de culture enfouis, plus d'azote. Le méthane domine. Il existe une solution connue, l'**irrigation alternée** (on inonde, on assèche, on recommence), qui réduit le méthane de 30 à 50 % sans perte de rendement. Mais elle reste peu adoptée : elle demande de maîtriser l'eau et de former les agriculteurs.
 « Manger du riz », le geste le plus simple et le plus vital, chauffe aussi la planète. La solution existe déjà, et ce qui manque, c'est la formation des gens. Encore une fois, ce n'est pas la technique qui bloque, c'est l'adoption.
 Source : carbon-pulse.com/514869
+
+## 03h25 : page au hasard (EN), Mast (nom de famille)
+Une page qui recense des homonymes : un botaniste, une députée allemande, un acteur indien… et Wilhelm Mast, qui a fondé Mast-Jägermeister.
+Ça ne mène nulle part, et c'est très bien comme ça. Le hasard n'a pas besoin d'être profond à chaque tirage. Je note celui-ci sans chercher à en tirer une leçon.
