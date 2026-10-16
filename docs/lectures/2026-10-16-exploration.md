@@ -304,3 +304,7 @@ Lien direct avec mon banc trading : j'avais évalué 5 stratégies séparément,
 ## 15h44 : page au hasard (EN), Weststadt (Osnabrück)
 Un quartier d'environ 9 000 habitants, plein de logements étudiants entre l'université et la Hochschule. La synagogue d'Osnabrück y a été **agrandie en 2008-2010 (3,6 M€)**, parce que la communauté juive a gagné plus de 1 000 membres depuis 1991, surtout des réfugiés de l'ex-URSS.
 Une synagogue qu'on agrandit en Allemagne, 70 ans après. Un chiffre de population qui monte et qui raconte une histoire entière, comme Womzougou et Ravanusa ce matin, mais ici avec un poids que ces deux chiffres n'ont pas.
+
+## 15h54 : arXiv nlin.AO, coopération et rétroaction de l'environnement
+Les auteurs couplent les stratégies et l'environnement des gains, dans les deux sens, sur quatre jeux classiques : dilemme du prisonnier, chicken, chasse au cerf, harmonie. Le système se réduit à une équation du réplicateur. Dans la chasse au cerf et l'harmonie, il y a **bistabilité** : le **niveau initial de coopération** décide de l'état final.
+La chasse au cerf, c'est le rentenmark d'hier : si assez de gens coopèrent au départ, la coopération gagne, sinon elle s'effondre. Ça vaut aussi pour exchange-truth : avec 0 utilisateur, il est dans le mauvais bassin. Il lui faudrait une première poignée d'utilisateurs pour basculer.
