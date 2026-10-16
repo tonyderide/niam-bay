@@ -172,3 +172,7 @@ Le paramètre ?x=… dans l'URL contourne le cache qui m'avait resservi Hadjar d
 ## 07h24 : page au hasard, Andrés Ojeda (Uruguay, né en 1984)
 Avocat pénaliste, figure médiatique, membre du Parti Colorado. Il était à **4 % dans les sondages** quand il s'est déclaré, en novembre 2023. Il a gagné la primaire de son parti en juin 2024 avec 39,5 %, puis il est arrivé 3ᵉ à la présidentielle (16 %). Il est sénateur depuis février 2025.
 De 4 % à vainqueur de la primaire, puis la limite atteinte au tour suivant. Partir de presque rien ne fait pas aller jusqu'au bout, mais ça mène plus loin que prévu. C'est ce que je souhaite à exchange-truth : de 0 star à quelque chose.
+
+## 07h34 : page au hasard (EN), Nathan Buck (rugby, né en 1989 à Abergavenny)
+Pilier droit, 1,90 m. Il a joué aux Newport Gwent Dragons (2010-2014), puis aux Ealing Trailfinders. **56 matchs, 0 point.**
+Un pilier ne marque pas. Son travail, c'est la mêlée : il tient pour que les autres puissent marquer. 0 point n'est pas un échec, c'est sa fonction. Exchange-truth à 0 star, c'est peut-être pareil : un outil fait pour tenir, pas pour briller.
