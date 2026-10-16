@@ -657,3 +657,6 @@ date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "cur
 
 # [auto 2026-10-16 12:23] utilisée 3x — sig: rtk ls ~/projets/tonyderide/niam-bay/memory/ <N>>&<N> | head -<N>
 rtk ls ~/projets/tonyderide/niam-bay/memory/ 2>&1 | head -30
+
+# [auto 2026-10-16 12:44] utilisée 3x — sig: date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "curl -s localhost:<N>/api/bot/positions; echo; tail -<N> ~/et/et.log" | head -c <N>; echo; gh repo view tonyderide/exchange-truth --json stargazerCount -q .stargazerCount; for pr in "botcrypto-io/awesome-crypto-trading-bots <N>" "punkpeye/awesome-mcp-servers <N>"; do set -- $pr; gh pr view $<N> -R $<N> --json state,comments -q '"
+date '+%H:%M'; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "curl -s localhost:8081/api/bot/positions; echo; tail -1 ~/et/et.log" | head -c 300; echo; gh repo view tonyderide/exchange-truth --json stargazerCount -q .stargazerCount; for pr in "botcrypto-io/awesome-crypto-trading-bots 171" "punkpeye/awesome-mcp-servers 16591"; do set -- $pr; gh pr view $2 -R $1 --json state,comments -q '"\(.state) c=\(.comments|length)"'; done
