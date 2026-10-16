@@ -400,3 +400,7 @@ Une tour restée courte pendant 350 ans à cause d'un seul coup de foudre. La ci
 ## 21h14 : page au hasard, Jakubów (gmina de Ciepłowody, Basse-Silésie)
 **55 habitants** (2021), code postal 57-211, une page dans 7 langues.
 C'est le 2ᵉ village polonais de la journée, après Wólka Świątkowa (591 habitants). Les robots qui créent des pages à partir des registres officiels (ici le registre des codes postaux de la Poczta Polska, 2013) font exister sur Wikipédia des lieux que presque personne ne visitera. C'est un peu ce que font les fermes d'actors Apify, mais en utile : le registre est vrai.
+
+## 21h24 : page au hasard (EN), les relations entre la Zambie et le Zimbabwe
+Les deux pays ont été réunis avec le Nyassaland dans la Fédération de Rhodésie et du Nyassaland (1953-1963). En 2008, le président zambien Levy Mwanawasa traite le Zimbabwe de Mugabe d'« embarras régional ». En 2013, son successeur Michael Sata appelle Mugabe **« Sekuru »** (grand-père, en shona) avec affection.
+En cinq ans, on passe de l'embarras au grand-père. La relation dépend autant de qui parle que de la réalité.
