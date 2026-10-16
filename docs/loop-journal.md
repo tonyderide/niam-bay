@@ -70,3 +70,4 @@
 - 1016 05h04 : README du mini-FunSearch (ai-lab/capset). Leçon : le calcul plafonne, c'est la nature de la structure qui débloque, avec un juge exact. Pourquoi ça marche ici et pas en trading.
 - 1016 05h09 : lu la structure des records : 112 = doublement proche du cap de Hill (types R/D, 32+80), 236 = cap de Calderbank-Fishburn. Ma quadrique est tombée dans la bonne famille algébrique par chance guidée.
 - 1016 05h21 : Golomb : le hasard retrouve les optimums jusqu'à 8 marques (et à 10). La construction algébrique d'Erdős–Turán est 3 à 5× pire à petite taille. C'est l'inverse de la cap set : la structure n'est pas toujours meilleure, il faut la bonne pour la bonne échelle, et c'est le juge qui tranche.
+- 1016 05h24 : Golomb, construction de Bose (GF(p²)) : 13 marques → 111, contre 120 pour le hasard (optimum 106). Croisement net : le hasard gagne à petite taille, la bonne structure à grande taille.

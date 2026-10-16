@@ -5,3 +5,13 @@
 | 9-10 | 45, **55** | 185, 202 | 44, 55 |
 | 11-13 | 75, 95, 120 | 221-313 | 72, 85, 106 |
 **Ici, c'est l'inverse de la cap set** : le hasard glouton retrouve les optimums jusqu'à 8 marques, et 10 aussi. La construction algébrique d'Erdős–Turán est **3 à 5 fois pire**. C'est normal : elle vise le comportement asymptotique (en 2pk), pas les petites tailles. On ne peut donc pas en tirer la règle « la structure bat toujours le calcul ». Il faut la **bonne** structure pour la bonne échelle, et seul le juge dit laquelle. Les meilleures règles connues viennent de constructions projectives (Singer, Bose) et de recherches exhaustives distribuées (distributed.net OGR).
+
+## La bonne structure : la construction de Bose (GF(p²)), avec meilleure rotation et meilleur multiplicateur
+| marques | hasard | Bose | optimum |
+|---|---|---|---|
+| 5 | 11 | **11** | 11 |
+| 7 | 25 | 28 | 25 |
+| 11 | 75 | **74** | 72 |
+| 13 | 120 | **111** | 106 |
+Le croisement est net. À petite taille, le hasard suffit. Plus la taille grandit, plus la structure projective l'emporte : à 13 marques, Bose fait 111 contre 120 pour le hasard, et l'optimum est à 106. Erdős–Turán, conçue pour l'asymptotique, restait loin derrière.
+→ La même leçon que la cap set, en plus nuancée : **la structure gagne à grande échelle, si c'est la bonne**. Seul le juge permet de savoir laquelle.
