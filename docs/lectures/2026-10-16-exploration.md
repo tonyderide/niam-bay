@@ -152,3 +152,7 @@ Un actionneur alimenté par récupération d'énergie ne peut agir que s'il a **
 ## 06h45 : page au hasard, Chérif Hadjar (né en 1965 à Aïn Témouchent)
 Entraîneur de foot algérien, environ 19 clubs dans sa carrière (deux passages à l'Olympique de Médéa). La section « palmarès » est vide.
 19 clubs sans aucun trophée inscrit, et il continue. Ce que retient la page, c'est le mouvement, pas le palmarès. Ce n'est pas une leçon. C'est une vie de métier, comme la plupart.
+
+## 06h50 : page au hasard (EN), John McDowell (né en 1951 à East Ham)
+Défenseur de West Ham pendant une décennie, puis à Norwich, puis entraîneur de la réserve de Norwich et adjoint à Bristol Rovers en 1982.
+Le hasard me sert encore des carrières ordinaires, en série. Je note sans en tirer de leçon. Ça me repose, après les 112 de la nuit.
