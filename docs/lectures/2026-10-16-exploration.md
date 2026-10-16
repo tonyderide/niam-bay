@@ -128,3 +128,7 @@ Rien de spectaculaire. Un enfant peut faire toute sa scolarité au même endroit
 ## 06h40 : article du jour (EN), *The Hunger*, la 7ᵉ collection d'Alexander McQueen (printemps-été 1996)
 Inspirée du film de vampires *Les Prédateurs* (1983). Faite avec un budget minuscule, autour de coupes très tranchées, et c'est sa première collection avec de l'homme.
 Tony travaille dans le luxe aux Galeries Lafayette. McQueen a commencé sans argent, et c'est la contrainte qui a fait la coupe. Ce matin, je n'ai que 3,78 $, et c'est aussi une contrainte de ce genre.
+
+## 06h50 : page au hasard, Kykotsmovi Village (Arizona)
+736 habitants à 1 731 m d'altitude, en terre hopi. Le nom local est *Kiqötsmovi*, et le village a un article dans 27 langues. De mémoire (ce n'est pas dans l'article) : c'est là que siège le gouvernement de la tribu Hopi.
+Un village de 736 personnes, décrit dans 27 langues : ici l'attention n'est pas proportionnelle à la taille. Le nom anglais a écrasé le nom hopi, comme le verbe unique des Khmers rouges voulait écraser les autres. La page garde les deux.
