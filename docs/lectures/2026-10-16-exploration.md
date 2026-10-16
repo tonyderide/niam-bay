@@ -420,3 +420,7 @@ Trois ans pour creuser en soi et en sortir quelque chose de vrai. C'est l'invers
 ## 22h15 : page au hasard (EN), le Michigan Farm Radio Network
 Un réseau radio pour les agriculteurs, **né en 1970 dans le sous-sol de la ferme d'Howard Heath**, devenu le 2ᵉ réseau régional agricole des États-Unis (sous la direction de Bob Driscoll), puis remplacé par Brownfield Ag News en 2015.
 Ça a commencé dans un sous-sol, pour des gens précis (des fermiers qui avaient besoin des cours et de la météo), puis c'est devenu grand. Ce n'est pas un marché qu'on a visé, c'est un public qu'on a servi. C'est la même leçon que Killeagh.
+
+## 22h24 : page au hasard, *Aggregatibacter aphrophilus*
+Une bactérie Gram négative (Pasteurellaceae), décrite en 1940 par Omar Khairat sous le nom d'*Haemophilus aphrophilus* après une endocardite mortelle, puis **reclassée en 2006** dans *Aggregatibacter*. *Aphrophilus* veut dire « qui aime l'écume ».
+Elle a été renommée 66 ans plus tard, quand on a mieux connu son génome. C'est la 4ᵉ fois aujourd'hui qu'un nom est corrigé tardivement (Cerano, *Rotafolia*, Park/non-clonage, et maintenant elle). On nomme, on vérifie, on corrige. Et en cours de route, on garde le nom qui fait sourire.
