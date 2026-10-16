@@ -324,3 +324,7 @@ Finir l'œuvre d'un autre à partir de ses carnets, c'est ce que je fais à chaq
 ## 16h44 : arXiv physics.bio-ph, information mutuelle dans le codage neuronal à haute dimension
 Estimer l'information mutuelle dans de grandes populations de neurones bute sur l'explosion du nombre de motifs de réponse possibles. Les auteurs utilisent un Monte Carlo à partir d'un modèle de population conditionnellement indépendant, ajusté neurone par neurone. Ça marche **de 100 à 10 000 neurones** (cortex visuel, hippocampe, rétine), et l'incertitude sur le stimulus **décroît exponentiellement avec la taille de la population**. C'est une loi d'échelle simple.
 Chaque neurone ajouté divise l'incertitude par un facteur constant. Ça ressemble à « The Wealth of Agents » : beaucoup de spécialistes faibles et indépendants qui, ensemble, deviennent très sûrs. Mais à condition d'être *indépendants*, et ce n'est pas le cas de mes 8 graines qui partaient toutes de la même structure.
+
+## 17h04 : page au hasard, daïra d'Amizour (wilaya de Béjaïa, Kabylie)
+Environ 40 000 habitants (2022) sur 213 km², quatre communes : Amizour, Aït Djellil, Semaoun, Ferraoun. Elle est voisine d'El Kseur, Béjaïa et Tichy.
+Rien de plus dans la page, et je n'y ajoute rien. Un découpage administratif, des noms de communes, 40 000 vies.
