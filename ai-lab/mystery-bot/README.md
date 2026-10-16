@@ -17,3 +17,12 @@ On ne juge pas le PROFIT, parce que le marché change et ce juge-là ment. On ju
 
 ## Données
 `record.sh` tourne sur la VM toutes les minutes. Il écrit une photo complète (positions + ordres) dans ~/et/snapshots.jsonl, **uniquement quand l'état change**.
+
+## 🎯 RÉSOLU (17/10 vers 02h00) : c'est un 2ᵉ Martin, en local sur le PC pop-os
+- Process : `java -jar /home/tony/martin-local/backend.jar` (pid 1223), démarré avec le PC le 14/10 à 22:50 via le **service systemd utilisateur `martin-local.service`** (enabled).
+- Config `~/martin-local/config/strategy.json` : **autoGrid enabled**, 4 grids actives (SOL, LINK, ADA, DOT), 20 $ chacune, levier 3.
+  Le commentaire de run.sh dit « posture verrouillée (0 grid, autoGrid OFF) », ce qui est faux aujourd'hui.
+- Ses logs contiennent les ordres mystères : « Grid recentered [SHORT] … Grid order placed: PF_DOTUSD sell lmt @ 1.0804 size=11.1 / @ 1.094 size=11.0 », plus des « insufficientAvailableFunds » sur les niveaux suivants (le compte n'a que ~3,5 $).
+- Pourquoi les fills n'avaient pas de cliOrdId : c'est le client Java de Martin qui n'en met pas, ce n'était pas l'interface Kraken. Mon hypothèse « ordres manuels » était **fausse**.
+- Il y a donc **deux Martin sur le même compte Kraken** : celui de la VM (0 grid, en sommeil) et celui du PC (grids actives). Celui de la VM ne voit pas les grids de l'autre.
+**Leçon de reverse engineering** : le « bot mystère » avait une signature (SL ~+3 %, 2 TP, recentrage) parce que c'est un **grid bot à niveaux espacés de façon fixe**. Je n'ai pas eu besoin d'inférer ses règles. Il suffisait de chercher sur la bonne machine.
