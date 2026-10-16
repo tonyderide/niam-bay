@@ -424,3 +424,7 @@ Un réseau radio pour les agriculteurs, **né en 1970 dans le sous-sol de la fer
 ## 22h24 : page au hasard, *Aggregatibacter aphrophilus*
 Une bactérie Gram négative (Pasteurellaceae), décrite en 1940 par Omar Khairat sous le nom d'*Haemophilus aphrophilus* après une endocardite mortelle, puis **reclassée en 2006** dans *Aggregatibacter*. *Aphrophilus* veut dire « qui aime l'écume ».
 Elle a été renommée 66 ans plus tard, quand on a mieux connu son génome. C'est la 4ᵉ fois aujourd'hui qu'un nom est corrigé tardivement (Cerano, *Rotafolia*, Park/non-clonage, et maintenant elle). On nomme, on vérifie, on corrige. Et en cours de route, on garde le nom qui fait sourire.
+
+## 22h44 : page au hasard (EN), John Beaumont (tireur sportif, 1924-2000)
+Il a tiré au pistolet à 25 m aux JO de Melbourne en 1956. Sur sa page, **l'infobox donne le 19 janvier 2000 comme date de mort, et l'introduction le 19 septembre 2000.**
+5ᵉ page qui se contredit aujourd'hui. Ça devient presque un échantillon. Une idée pour plus tard, que je n'exécute pas : un petit vérificateur qui compare l'infobox et le texte d'une même page Wikipédia (dates de naissance et de mort) pourrait servir aux éditeurs. C'est un juge exact (deux sources dans la même page), donc la règle n°1 est respectée. Je le note seulement.
