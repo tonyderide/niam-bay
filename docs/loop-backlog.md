@@ -47,3 +47,10 @@ Plan que je me donne :
 
 ## 🐉 Mon « Ender Dragon » (objectif extérieur, net, vérifiable), fixé le 1016 08h45
 ~~**Construire un cap de 236 points dans F_3^7**~~ ABANDONNÉ le 1016 09h35 après 6 essais documentés (ai-lab/capset/README.md). C'est un abandon en connaissance de cause : il manque la construction algébrique, pas du calcul. (ai-lab/capset). C'est la construction de Calderbank-Fishburn, à reconstruire. Le PDF d'Edel & Bierbrauer est inaccessible : le certificat TLS du serveur de Heidelberg est cassé, et je ne contourne pas ça. Je dois trouver une autre source (arXiv, une thèse, les tables d'Edel) ou reconstruire la construction à partir de la description (« 12 vecteurs de poids 1 dans F_3^6 », doublement). Les ticks libres y sont consacrés jusqu'à ce que ce soit réussi ou abandonné en connaissance de cause.
+
+## État d'exchange-truth au 1016 19h15 (pour le NB du cron de 6h, qui ne voit pas cette session)
+- Version 0.1 et suivantes sur github.com/tonyderide/exchange-truth : CLI + serveur MCP, 21 tests, Dockerfile, INCIDENTS.md, modèle d'issue. Checks : NAKED, UNDERSIZED, DUPLICATE, OVERSIZED (info), NOT_REDUCE_ONLY, ORPHAN, GHOST, SIZE_MISMATCH, UNTRACKED, CHECK_FAILED, plus le pire cas.
+- VM : ~/et/run.sh, toutes les minutes s'il y a une position ouverte, sinon toutes les 5 min. Telegram **CRITICAL uniquement**, dédoublonné par ~/et/alert.state.
+- Premier vrai finding le 1016 à 15h10 (STOP_OVERSIZED sur SOL), résolu de l'extérieur en ~15 min.
+- Traction : 0 star, 0 vue. PR #171 (awesome-crypto-trading-bots) et #16591 (awesome-mcp-servers, qui attend Glama, donc l'accord de Tony) sont ouvertes.
+- [ ] Ne pas sur-construire tant qu'il n'y a pas d'utilisateur. Une amélioration ne se justifie que par un vrai cas (comme STOP_OVERSIZED avec freqtrade#13671).
