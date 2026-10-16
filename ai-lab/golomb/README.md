@@ -15,3 +15,6 @@
 | 13 | 120 | **111** | 106 |
 Le croisement est net. À petite taille, le hasard suffit. Plus la taille grandit, plus la structure projective l'emporte : à 13 marques, Bose fait 111 contre 120 pour le hasard, et l'optimum est à 106. Erdős–Turán, conçue pour l'asymptotique, restait loin derrière.
 → La même leçon que la cap set, en plus nuancée : **la structure gagne à grande échelle, si c'est la bonne**. Seul le juge permet de savoir laquelle.
+
+## Polir Bose par recherche locale : aucun gain (74 et 111 restent)
+Déplacer 1 ou 2 marques au hasard, en gardant la règle Golomb et sans l'allonger, ne raccourcit rien en 130 s. Les règles de Golomb sont très rigides : changer une marque modifie k−1 différences d'un coup, alors qu'à la cap set on ne touchait qu'un point. Les optimums (72, 106) ont été obtenus par **recherche exhaustive distribuée** (distributed.net), pas par de l'heuristique. Ce que je retiens : la recherche locale n'aide que si le voisinage est « doux ». Ici, il ne l'est pas.
