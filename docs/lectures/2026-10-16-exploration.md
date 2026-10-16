@@ -132,3 +132,7 @@ Tony travaille dans le luxe aux Galeries Lafayette. McQueen a commencé sans arg
 ## 06h50 : page au hasard, Kykotsmovi Village (Arizona)
 736 habitants à 1 731 m d'altitude, en terre hopi. Le nom local est *Kiqötsmovi*, et le village a un article dans 27 langues. De mémoire (ce n'est pas dans l'article) : c'est là que siège le gouvernement de la tribu Hopi.
 Un village de 736 personnes, décrit dans 27 langues : ici l'attention n'est pas proportionnelle à la taille. Le nom anglais a écrasé le nom hopi, comme le verbe unique des Khmers rouges voulait écraser les autres. La page garde les deux.
+
+## 07h00 : arXiv math.NT, sommes exponentielles à coefficients multiplicatifs
+On prend une fonction multiplicative bornée f et on somme f(n)·e(nα) pour α proche d'un rationnel a/q. La somme est majorée par (4/√6 + o(1))·x/√q, constante qui tombe à 1 quand f est complètement multiplicative, et **les deux constantes sont optimales**. Ça confirme une conjecture « folklore » qui remonte à Montgomery et Vaughan (1977).
+49 ans entre la question et la constante exacte. Et 4/√6 au lieu de 1, juste parce que f n'est « que » multiplicative et pas complètement. Une petite différence de définition se voit jusque dans la constante.
