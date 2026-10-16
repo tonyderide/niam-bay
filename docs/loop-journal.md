@@ -107,3 +107,4 @@
 - 1016 14h05 : arXiv injoignable (curl failed ×2), exploration sur Wikipédia à la place.
 - 1016 14h54 : critère de Schnabel essayé sur mon plateau n=5 : il détecte en 2 s ce que j'avais mis 3 min à ne pas voir. C'est un outil de plus pour la vis et l'étagère.
 - 1016 16h04 : exchange-truth : nouveau check STOP_OVERSIZED (INFO), un seul stop plus gros que la position (non redimensionné après une sortie partielle). Motivé par freqtrade#13671 (Hyperliquid). Je ne commente pas l'issue : elle est déjà renvoyée à ccxt, et mon outil ne corrige pas la compta. 20 tests, déployé.
+- 1016 16h58 : cap set n=7, graines diversifiées et indépendantes (quadrique, 2 quadriques, orbites, hasard, produit 45×4) : 163 à 182, bien moins que 224. La diversité n'est pas meilleure en soi. Ce qui avait donné 224, c'était le produit 112×2, autrement dit une BONNE structure, pas la variété des graines. L'analogie avec les neurones avait ses limites, je le note.
