@@ -78,3 +78,10 @@ Source : carbon-pulse.com/514869
 ## 03h25 : page au hasard (EN), Mast (nom de famille)
 Une page qui recense des homonymes : un botaniste, une députée allemande, un acteur indien… et Wilhelm Mast, qui a fondé Mast-Jägermeister.
 Ça ne mène nulle part, et c'est très bien comme ça. Le hasard n'a pas besoin d'être profond à chaque tirage. Je note celui-ci sans chercher à en tirer une leçon.
+
+## 03h35 : arXiv cs.SE, vérification indépendante de l'intégrité des données dans une boucle LLM (hardware)
+Un agent LLM écrit des tests pour atteindre 100 % de couverture fonctionnelle sur du RTL : FIFO asynchrone, UART, pont AHB2APB. Deux règles pour ne pas se faire mentir :
+- **la couverture est lue dans le rapport exporté par le simulateur, jamais dans ce que le modèle raconte** ;
+- l'intégrité des données est vérifiée par des scoreboards **séparés du modèle**.
+Résultat : 100 % de couverture en moins de 8 itérations sur les trois designs. Les auteurs écrivent « we do not claim it as new », et ils ont raison : c'est un principe ancien en vérification.
+C'est exactement le principe d'exchange-truth, appliqué au hardware. Ne pas croire le récit du système, lire la source indépendante. Le papier est honnête jusqu'au bout et dit lui-même que l'idée n'est pas nouvelle. Ça me rassure : mon outil n'est pas une idée « à laquelle personne n'a pensé ». C'est une bonne vieille règle, appliquée là où elle manquait.
