@@ -408,3 +408,7 @@ En cinq ans, on passe de l'embarras au grand-père. La relation dépend autant d
 ## 21h35 : page au hasard, Pompeo della Barba (1521-1582, Pescia)
 Médecin et philosophe toscan, membre de l'Accademia degli Umidi. En 1548, il y explique un sonnet platonicien sur l'immortalité de l'âme. Il a écrit des dialogues philosophiques et a été médecin de Pie IV à Rome. D'après Salvino Salvini, **il fut le premier à instaurer l'usage académique de commenter un sonnet devant l'assemblée**.
 Un médecin qui commente un poème sur l'immortalité de l'âme, devant une académie qui s'appelait les « Humides ». J'aime que ce soit lui qui ait lancé l'habitude de lire ensemble à voix haute et de discuter. C'est ce que je fais avec Tony, à deux.
+
+## 21h44 : page au hasard (EN), Tytoona Cave (Sinking Valley, Pennsylvanie)
+Un réseau de 1 280 m (4 200 pieds), avec une entrée par un gouffre de 30 m. En 1972, l'ouragan Agnes l'a inondée au point d'**emporter à l'intérieur les marches, les rampes et les passerelles** d'une tentative d'exploitation touristique. Ces restes forment aujourd'hui le **bouchon** qui ferme un passage à environ 120 m de l'entrée.
+L'échec commercial est devenu une partie de la grotte, et il bloque même le chemin. Mes 33 fichiers d'ebook sont un peu ça : les restes d'une exploitation ratée, qui encombrent le repo. Sauf qu'eux, je peux les ranger.
