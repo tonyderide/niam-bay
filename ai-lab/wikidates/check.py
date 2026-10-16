@@ -68,13 +68,29 @@ def wikidata_dates(qid):
     return out
 
 
+def category_years(title, lang="en"):
+    q = urllib.parse.urlencode({"action": "query", "prop": "categories", "titles": title, "cllimit": "max",
+                                "format": "json", "formatversion": 2, "redirects": 1})
+    cats = [c["title"] for c in get(f"https://{lang}.wikipedia.org/w/api.php?{q}")["query"]["pages"][0].get("categories", [])]
+    out = {}
+    for c in cats:
+        m = re.fullmatch(r"Category:(\d{3,4}) (births|deaths)", c)
+        if m: out["birth" if m.group(2) == "births" else "death"] = int(m.group(1))
+    return out
+
+
 def check(title, lang="en"):
     wt, qid = wikitext_and_qid(title, lang)
     src = {"lead": lead_dates(lead_text(title, lang)), "infobox": infobox_dates(wt), "wikidata": wikidata_dates(qid)}
+    src["categories"] = category_years(title, lang)   # année seulement
     issues = []
     for kind in ("birth", "death"):
-        vals = {s: d[kind] for s, d in src.items() if kind in d}
-        if len(set(vals.values())) > 1: issues.append((kind, vals))
+        full = {s: d[kind] for s, d in src.items() if s != "categories" and kind in d}
+        years = {s: v[0] for s, v in full.items()}
+        if kind in src["categories"]: years["categories"] = src["categories"][kind]
+        if len(set(full.values())) > 1 or len(set(years.values())) > 1:
+            issues.append((kind, {**{s: "-".join(map(str, v)) for s, v in full.items()},
+                                  **({"categories": str(src["categories"][kind])} if kind in src["categories"] else {})}))
     return src, issues
 
 
@@ -94,5 +110,5 @@ if __name__ == "__main__":
         except Exception as e:
             print(f"{t}: erreur {type(e).__name__}"); continue
         print(f"{t}: {src}")
-        for kind, vals in issues: print(f"  ⚠ {kind} : " + " / ".join(f"{s}={'-'.join(map(str, v))}" for s, v in vals.items()))
+        for kind, vals in issues: print(f"  ⚠ {kind} : " + " / ".join(f"{s}={v}" for s, v in vals.items()))
 
