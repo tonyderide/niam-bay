@@ -26,3 +26,20 @@ On ne juge pas le PROFIT, parce que le marché change et ce juge-là ment. On ju
 - Pourquoi les fills n'avaient pas de cliOrdId : c'est le client Java de Martin qui n'en met pas, ce n'était pas l'interface Kraken. Mon hypothèse « ordres manuels » était **fausse**.
 - Il y a donc **deux Martin sur le même compte Kraken** : celui de la VM (0 grid, en sommeil) et celui du PC (grids actives). Celui de la VM ne voit pas les grids de l'autre.
 **Leçon de reverse engineering** : le « bot mystère » avait une signature (SL ~+3 %, 2 TP, recentrage) parce que c'est un **grid bot à niveaux espacés de façon fixe**. Je n'ai pas eu besoin d'inférer ses règles. Il suffisait de chercher sur la bonne machine.
+
+## Analyse : ce que j'avais déduit, confronté à ses logs et à sa config (17/10 vers 02h10)
+Période du 14/10 22h au 17/10 01h55. ~/martin-local/logs/martin.log comparé à config/strategy.json.
+
+| ce que j'avais déduit (à partir des ordres seuls) | ce que disent les logs et la config | verdict |
+|---|---|---|
+| « 2 TP à −1,6/−1,8 % et −2,9/−3 % » | ce sont les **niveaux de la grid**, espacés de 1,21 à 1,27 % (config `gridSpacingPct` 1,2), en mode **SHORT** | ✅ les chiffres sont justes, ❌ **le sens est faux** : ce n'étaient pas des TP, c'étaient des niveaux d'achat de la grid |
+| « stop suiveur après le TP1 » | ce sont des **recentrages** de grid (14 en 2 jours) : quand le prix sort de la plage, la grid se recalcule et ses ordres bougent | ❌ fausse interprétation |
+| « SL ≈ +3 % » | SL posés ou reposés **483 fois** en 2 jours, une rotation constante liée aux recentrages et aux synchros | ✅ la distance est plausible, mais le mécanisme est inconnu |
+| « bot qui renforce en profit » | la grid **revend** au niveau supérieur après un achat, c'est la mécanique normale d'une grid | ❌ ce n'est pas une décision, c'est la grid |
+
+**Ce que les logs révèlent en plus, que les ordres seuls ne montraient pas :**
+- **82 ordres sur 111 ont échoué (74 %)**, dont 80 pour `insufficientAvailableFunds`. La grid, configurée pour 5 niveaux × 20 $, ne posait qu'un ou deux niveaux sur un compte de 3 $. Ce n'était pas la stratégie configurée, c'en était une version mutilée.
+- **1 112 « Deploy refused »** : la grid LINK, en mode LONG, est refusée toutes les 15 minutes par le filtre de régime BTC. Le garde-fou marche, mais il remplit le log.
+- 205 vérifications AutoGrid, 10 démarrages de grid.
+
+**La leçon de reverse engineering :** déduire à partir des ordres seuls m'a donné **les bons chiffres et les mauvaises explications**. J'avais vu des « TP » et un « stop suiveur » là où il n'y avait qu'une grid qui se recentre. Il faut donc juger une interprétation, et pas seulement un chiffre. Le seul moyen, c'est d'avoir un second juge : ici les logs et la config. Sans eux, j'aurais cru avoir compris le bot.
