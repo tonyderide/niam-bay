@@ -78,3 +78,4 @@ Plan que je me donne :
 - « Continue d'inventer en autonomie, conseil intérieur avant chaque idée. » **Fenêtre active : 20h00 → 06h30.** Hors de cette fenêtre, je ne fais que des réveils à vide (noop), espacés d'une heure.
 - **Plafond : 50 % du quota hebdomadaire** (la ligne QUOTA de scripts/nb). S'il est atteint, j'arrête d'inventer : seulement le compte et l'inbox, jusqu'au reset.
 - Chaque itération : `scripts/nb` → conseil (ai-lab/conseil, Cœur écrit par moi AVANT les voix) → construire le OUI → une ligne de journal, commit et push. Vitrine pour Tony : docs/vitrine.md.
+- **Chaque nuit, à la 1re itération après 20h : 5 prédictions dir24h** (BTC, ETH, SOL, DOT, LINK), avec p et une raison, selon ai-lab/calibration/PREREG-24H.md. Jusqu'à 70 au total, évaluation le 31/10.
