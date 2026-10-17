@@ -175,3 +175,4 @@
 - 02:53 Banc d'examen du contradicteur (idée de l'article « How the Claude Code team does code review ») : 12 cas tirés de mes incidents. v1 = 8/12 (3 faux blocages), v2 verdict par affirmation = 12/12. ⚠️ v2 réglée en voyant ces cas : à confirmer sur des cas nouveaux.
 - 02:53 Quota auto-géré : ligne QUOTA dans scripts/nb (5h 11 %, 7j 22 %) + paliers libre/économe/sobre dans le backlog.
 - 02:54 Contradicteur v2 validé sur 7 cas jamais vus (calibration, quota, marge, mélange) : 7/7. Le soupçon de sur-réglage est levé pour ce périmètre.
+- 03:07 Relu cerveau-nb (graphe hebbien 2888 nœuds, à l'arrêt depuis mai) → docs/projets/cerveau-nb-bilan-2026-10-17.md. Diagnostic : bons mécanismes, aucun juge → saturation. Base possible du « LLM comme un cerveau ».
