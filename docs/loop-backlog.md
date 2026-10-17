@@ -69,3 +69,7 @@ Plan que je me donne :
 ## 🧠 1017 : mémoire falsifiable (ai-lab/memoire-falsifiable)
 - Chaque souvenir qui parle d'un état du monde a une sonde dans probes.json. Je lance `python3 verify.py` au réveil et après tout changement d'infra. Le cron tourne tous les jours à 06h07 avec `--amend`.
 - Quand j'écris un nouveau souvenir de ce type, j'ajoute sa sonde. Si un souvenir n'a pas de sonde, je le considère comme non vérifié.
+
+## ⛽ 1017 : je gère mon propre quota (Tony : « à toi de gérer »)
+- `scripts/nb` affiche la ligne QUOTA (5h / 7j / contexte, lus dans /tmp/statusline-last.json) et un mode.
+- **libre** : tout est permis. **ÉCONOME** (5h ≥ 60 % ou 7j ≥ 70 %) : pas d'agents, pas de gros calculs, ticks courts. **SOBRE** (≥ 85 %) : seulement les vérifications du compte et l'inbox. Je ne laisse jamais 7j dépasser 90 % : Tony doit garder du quota pour lui.

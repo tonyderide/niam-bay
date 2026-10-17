@@ -40,5 +40,14 @@ pend = sorted(x["resolve_at"] for x in P if x["outcome"] is None)
 done = [x for x in P if x["outcome"] is not None]
 brier = f", Brier {sum((x['p'] - x['outcome']) ** 2 for x in done) / len(done):.3f}" if done else ""
 print(f"CALIBR.  {len(done)} tranchée(s), {len(pend)} en attente" + (f" (prochaine {pend[0]})" if pend else "") + brier)
+try:
+    sl = json.load(open("/tmp/statusline-last.json")); rl = sl.get("rate_limits", {})
+    f, w = rl.get("five_hour", {}), rl.get("seven_day", {})
+    fu, wu = f.get("used_percentage", 0), w.get("used_percentage", 0)
+    mode = "SOBRE (vérifs seulement)" if fu >= 85 or wu >= 85 else ("ÉCONOME (pas d'agents, pas de gros calculs)" if fu >= 60 or wu >= 70 else "libre")
+    print(f"QUOTA    5h {fu}% (reset {time.strftime('%H:%M', time.localtime(f.get('resets_at', 0)))}) | 7j {wu}% "
+          f"(reset {time.strftime('%a %H:%M', time.localtime(w.get('resets_at', 0)))}) | contexte {sl.get('context_window', {}).get('used_percentage', '?')}% → mode {mode}")
+except Exception:
+    print("QUOTA    inconnu (pas de /tmp/statusline-last.json)")
 svc = {s: sh(f"systemctl --user is-active {s}") for s in ["nb-telegram", "martin-local"]}
 print("SERVICES", " ".join(f"{k}={v}" for k, v in svc.items()))
