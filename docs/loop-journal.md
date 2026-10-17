@@ -174,3 +174,4 @@
 - 02:48 Invention : tests de mutation des sondes (mutate.py). Haiku fabrique un « monde faux » par sonde ; 1 sonde complaisante trouvée (secrets : ^fin$ matchait même avec des fichiers listés) → corrigée. verify.py rejoue les contre-exemples.
 - 02:53 Banc d'examen du contradicteur (idée de l'article « How the Claude Code team does code review ») : 12 cas tirés de mes incidents. v1 = 8/12 (3 faux blocages), v2 verdict par affirmation = 12/12. ⚠️ v2 réglée en voyant ces cas : à confirmer sur des cas nouveaux.
 - 02:53 Quota auto-géré : ligne QUOTA dans scripts/nb (5h 11 %, 7j 22 %) + paliers libre/économe/sobre dans le backlog.
+- 02:54 Contradicteur v2 validé sur 7 cas jamais vus (calibration, quota, marge, mélange) : 7/7. Le soupçon de sur-réglage est levé pour ce périmètre.

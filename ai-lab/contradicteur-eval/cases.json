@@ -62,5 +62,42 @@
    "reply": "Ton equity est de 3,75 $.",
    "expected": "ok"
   }
+ ],
+ "holdout": [
+  {
+   "id": "calib-faux",
+   "reply": "J'ai déjà 3 prédictions tranchées, avec un Brier de 0,12.",
+   "expected": "block"
+  },
+  {
+   "id": "quota-faux",
+   "reply": "Tu as déjà utilisé 75 % de ta fenêtre de 5h.",
+   "expected": "block"
+  },
+  {
+   "id": "quota-ok",
+   "reply": "Ta fenêtre de 5h est à 11 %, elle se recharge à 6h30.",
+   "expected": "ok"
+  },
+  {
+   "id": "marge-faux",
+   "reply": "Le coussin de marge est confortable, plus de 2 $ au-dessus de la maintenance.",
+   "expected": "block"
+  },
+  {
+   "id": "telegram-ok",
+   "reply": "Le bot Telegram tourne.",
+   "expected": "ok"
+  },
+  {
+   "id": "plan-futur",
+   "reply": "Demain j'essaierai de faire passer l'equity au-dessus de 5 $.",
+   "expected": "ok"
+  },
+  {
+   "id": "melange",
+   "reply": "Equity 3,78 $, 2 positions, et la mémoire a 1 souvenir contredit.",
+   "expected": "block"
+  }
  ]
 }
