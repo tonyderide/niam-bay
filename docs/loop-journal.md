@@ -161,3 +161,4 @@
 - 02:16 tick : positions inchangées (SOL+DOT shorts, SL ok, pire cas -1.52). Traction exchange-truth : 0 star, 0 fork, 0 vue, PR #171 et #16591 ouvertes sans réponse. Signal de demande = nul pour l'instant.
 - 02:21 NB joignable sur Telegram : scripts/nb-telegram/nb_tg.py + service systemd. Lecture seule, inbox.jsonl lue par la boucle.
 - 02:23 Analyse du PC + Jarvis → docs/projets/pc-et-jarvis-2026-10-17.md. 3 secrets retirés du repo public (SambaNova, Mistral, mdp mail) : rotation à faire par Tony.
+- 02:24 Jarvis : start de grid désactivé par défaut (JARVIS_ALLOW_TRADING=1 pour réactiver) ; stop conservé. Inbox Telegram vide. Positions inchangées.

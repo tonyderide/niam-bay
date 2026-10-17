@@ -33,6 +33,8 @@ DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "DeepSeek-V3-0324")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")
 TELEGRAM_CHAT = os.getenv("TELEGRAM_CHAT", "6574420846")
 MAX_HISTORY = 20  # conversation turns to keep
+# Un chat ne doit pas pouvoir ouvrir un grid (le 2e Martin du 1017 a ouvert des positions sans que personne le sache).
+ALLOW_START = os.getenv("JARVIS_ALLOW_TRADING") == "1"
 
 # ─── Shared HTTP client (connection pooling) ───
 http_client: httpx.AsyncClient = None
@@ -123,6 +125,8 @@ async def martin_start(
     max_loss: float = 15,
     mode: str = "NEUTRAL",
 ):
+    if not ALLOW_START:
+        return {"error": "start désactivé dans Jarvis (JARVIS_ALLOW_TRADING=1 pour réactiver)"}
     try:
         r = await http_client.post(
             f"{MARTIN_API}/api/grid/start",
