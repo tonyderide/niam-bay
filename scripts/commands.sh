@@ -79,7 +79,7 @@
 # python -c "import urllib.request,json; d=json.loads(urllib.request.urlopen('https://api.kraken.com/0/public/Ticker?pair=DOTUSD,SOLUSD,ADAUSD,ETHUSD',timeout=10).read())['result']; [print(k.replace('ZUSD','').replace('USD',''),':',v['c'][0]) for k,v in d.items()]"
 
 # --- LAUNCH SELFCODER ---
-# cd C:/niambay-v2 && SAMBANOVA_API_KEY="4fad50d2-e867-47d1-be65-e4b03571128e" MISTRAL_API_KEY="uTu0O4NS4FsYeNLqgnq1CVOOhDZTUMY6" NIAMBAY_EMAIL_PWD="tonytony!01" PYTHONUNBUFFERED=1 nohup python -u run_selfcoder.py > selfcoder.log 2>&1 &
+# cd C:/niambay-v2 && SAMBANOVA_API_KEY="$SAMBANOVA_API_KEY" MISTRAL_API_KEY="$MISTRAL_API_KEY" NIAMBAY_EMAIL_PWD="$NIAMBAY_EMAIL_PWD" PYTHONUNBUFFERED=1 nohup python -u run_selfcoder.py > selfcoder.log 2>&1 &
 
 # --- LAUNCH TRADING MONITOR ---
 # cd C:/niambay-v2 && PYTHONUNBUFFERED=1 nohup python -u trading_monitor.py > trading_monitor.log 2>&1 &
@@ -88,7 +88,7 @@
 # cd C:/niambay-v2 && python -m pytest tests/ -q
 
 # --- LLM TEST (SambaNova) ---
-# python -c "import urllib.request,json; print(json.loads(urllib.request.urlopen(urllib.request.Request('https://api.sambanova.ai/v1/chat/completions',data=json.dumps({'model':'DeepSeek-V3-0324','messages':[{'role':'user','content':'dis OK'}],'max_tokens':5}).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer 4fad50d2-e867-47d1-be65-e4b03571128e'}),timeout=15).read())['choices'][0]['message']['content'])"
+# python -c "import urllib.request,json; print(json.loads(urllib.request.urlopen(urllib.request.Request('https://api.sambanova.ai/v1/chat/completions',data=json.dumps({'model':'DeepSeek-V3-0324','messages':[{'role':'user','content':'dis OK'}],'max_tokens':5}).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer "+__import__("os").environ["SAMBANOVA_API_KEY"]+"'}),timeout=15).read())['choices'][0]['message']['content'])"
 
 # === SKILLS DISPONIBLES ===
 # /brainstorm — brainstormer une idée avant de coder

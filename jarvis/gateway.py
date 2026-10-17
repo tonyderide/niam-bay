@@ -27,7 +27,7 @@ log = logging.getLogger("niam-bay")
 
 # ─── Config (env vars with fallbacks) ───
 MARTIN_API = os.getenv("MARTIN_API", "http://localhost:8081")
-SAMBANOVA_KEY = os.getenv("SAMBANOVA_KEY", "4fad50d2-e867-47d1-be65-e4b03571128e")
+SAMBANOVA_KEY = os.getenv("SAMBANOVA_KEY", "")
 SAMBANOVA_URL = os.getenv("SAMBANOVA_URL", "https://api.sambanova.ai/v1/chat/completions")
 DEEPSEEK_MODEL = os.getenv("DEEPSEEK_MODEL", "DeepSeek-V3-0324")
 TELEGRAM_TOKEN = os.getenv("TELEGRAM_TOKEN", "")

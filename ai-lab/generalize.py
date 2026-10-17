@@ -25,7 +25,7 @@ JOURNAL_NB1 = os.path.join(BASE_DIR, '..', 'docs', 'journal.nb1.md')
 PYTHON_SOURCE = os.path.join(BASE_DIR, 'evolve.py')
 RESULTS_FILE = os.path.join(BASE_DIR, 'generalization-results.md')
 
-SAMBANOVA_API_KEY = "4fad50d2-e867-47d1-be65-e4b03571128e"
+SAMBANOVA_API_KEY = os.environ.get("SAMBANOVA_API_KEY", "")
 SAMBANOVA_URL = "https://api.sambanova.ai/v1/chat/completions"
 
 # ─────────────────────────────────────────────────────────────────────
