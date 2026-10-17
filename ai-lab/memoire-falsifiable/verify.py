@@ -57,6 +57,8 @@ def main(argv):
     for p in probes:
         out = run(p["cmd"])
         ok = re.search(p["expect"], out, re.M) is not None
+        if p.get("counter") and not p["counter"].startswith("Je ") and re.search(p["expect"], p["counter"], re.M):
+            ok = False; out = "SONDE COMPLAISANTE (accepte aussi son contre-exemple « monde faux »), à réécrire | " + out
         bad += not ok
         row = {"memory": p["memory"], "claim": p["claim"], "ok": ok, "observed": out[-300:]}
         if not ok and "--amend" in argv:

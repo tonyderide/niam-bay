@@ -171,3 +171,4 @@
 - 02:40 Invention : contradicteur avant envoi sur Telegram. Haiku confronte les chiffres de ma réponse au compte live + mémoire vérifiée ; si contradiction, message de correction juste après. Testé : attrape exactement l'erreur 2,25 $ (≈9 s, en arrière-plan).
 - 02:40 Outil pour moi : scripts/nb (état complet en 1 commande, remplace 3-4 appels par tick).
 - 02:42 Invention : contradicteur dans le terminal (hook Stop, sessions lancées depuis niam-bay). Bloque ma réponse si un montant/% est contredit par scripts/nb. Testé : bloque « il te reste 2,25 $ », laisse passer la bonne version (tolérance 5 %). ~7 s, seulement si la réponse contient $/€/%.
+- 02:48 Invention : tests de mutation des sondes (mutate.py). Haiku fabrique un « monde faux » par sonde ; 1 sonde complaisante trouvée (secrets : ^fin$ matchait même avec des fichiers listés) → corrigée. verify.py rejoue les contre-exemples.

@@ -1,6 +1,6 @@
-# Vérification de la mémoire de NB (2026-10-17 02:38)
+# Vérification de la mémoire de NB (2026-10-17 02:48)
 
-15/15 souvenirs confirmés par le monde, **0 contredits**.
+16/16 souvenirs confirmés par le monde, **0 contredits**.
 
 - ✅ `project_martin_local_second_instance` : martin-local ne tourne plus (désactivé, aucun process java)
 - ✅ `project_niambay_own_capital_20260826` : le capital NB (equity actuelle, pas l'equity aux stops) est de quelques dollars (2-5 $ depuis le 1015)
@@ -17,3 +17,4 @@
 - ✅ `project_martin_bug_2026-04-22` : backup de config dans ~/martin/archive/strategy-config.json.orphan-20260509
 - ✅ `project_memoire_falsifiable` : le cron quotidien verify.py est installé
 - ✅ `project_calibration_nb` : le cron horaire resolve.py est installé
+- ✅ `project_memoire_falsifiable` : le hook Stop contradicteur est déclaré dans niam-bay/.claude/settings.json
