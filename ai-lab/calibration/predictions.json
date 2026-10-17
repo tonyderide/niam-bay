@@ -68,5 +68,85 @@
   "test": "int(out or 0)>=1",
   "made": "2026-10-17T02:36",
   "outcome": null
+ },
+ {
+  "id": "dir24h-BTC-10170324",
+  "family": "dir24h",
+  "claim": "BTC mark plus haut dans 24 h qu'à 81451.1517",
+  "p": 0.45,
+  "why": "sous l'EMA20h, régime BTC baissier, week-end calme",
+  "baselines": {
+   "p05": 0.5,
+   "momentum": 0.45
+  },
+  "made": "2026-10-17T03:24",
+  "resolve_at": "2026-10-18T03:24",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
+  "test": "float(out)>81451.15169543783",
+  "outcome": null
+ },
+ {
+  "id": "dir24h-ETH-10170324",
+  "family": "dir24h",
+  "claim": "ETH mark plus haut dans 24 h qu'à 2418.4942",
+  "p": 0.48,
+  "why": "rebond de 6 h faible dans une baisse de 24 h, quasi pile ou face",
+  "baselines": {
+   "p05": 0.5,
+   "momentum": 0.45
+  },
+  "made": "2026-10-17T03:24",
+  "resolve_at": "2026-10-18T03:24",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_ETHUSD",
+  "test": "float(out)>2418.49424406622",
+  "outcome": null
+ },
+ {
+  "id": "dir24h-SOL-10170324",
+  "family": "dir24h",
+  "claim": "SOL mark plus haut dans 24 h qu'à 104.3954",
+  "p": 0.48,
+  "why": "+1 % en 6 h mais -0,6 % en 24 h, aucun avantage",
+  "baselines": {
+   "p05": 0.5,
+   "momentum": 0.45
+  },
+  "made": "2026-10-17T03:24",
+  "resolve_at": "2026-10-18T03:24",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_SOLUSD",
+  "test": "float(out)>104.3953943855",
+  "outcome": null
+ },
+ {
+  "id": "dir24h-DOT-10170324",
+  "family": "dir24h",
+  "claim": "DOT mark plus haut dans 24 h qu'à 1.1734",
+  "p": 0.45,
+  "why": "+1,6 % en 6 h dans une tendance baissière : retour à la moyenne probable",
+  "baselines": {
+   "p05": 0.5,
+   "momentum": 0.55
+  },
+  "made": "2026-10-17T03:24",
+  "resolve_at": "2026-10-18T03:24",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_DOTUSD",
+  "test": "float(out)>1.17340166371",
+  "outcome": null
+ },
+ {
+  "id": "dir24h-LINK-10170324",
+  "family": "dir24h",
+  "claim": "LINK mark plus haut dans 24 h qu'à 12.3027",
+  "p": 0.47,
+  "why": "-1 % en 24 h, léger rebond, je penche à peine vers la baisse",
+  "baselines": {
+   "p05": 0.5,
+   "momentum": 0.45
+  },
+  "made": "2026-10-17T03:24",
+  "resolve_at": "2026-10-18T03:24",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_LINKUSD",
+  "test": "float(out)>12.30272923608",
+  "outcome": null
  }
 ]

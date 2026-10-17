@@ -180,3 +180,4 @@
 - 03:17 Serveur 7B arrêté (5 Go de RAM pour rien) ; résultats NB-local consignés dans ai-lab/nb-local/README.md.
 - 03:21 Conseil : 3 idées « pas maintenant » (coût/tick, vitrine Artifact, recadrage cap set) ; la vitrine reformulée selon l'Économe (sans LLM, Telegram) → OUI 6.82. Construit : scripts/morning_digest.py, cron 07h00 (pas 6h30 : la nuit 22h-07h est sans message), extraits verbatim, s'arrête seul après 3 matins sans réponse.
 - 03:23 Conseil : NON par veto du Gardien à « sonder les clés fuitées » (s'en servir, même en lecture, c'est les utiliser ; il faut les révoquer). À la place : docs/a-faire-tony.md, dont le résumé du matin rappelle les 2 premiers points.
+- 03:24 Conseil OUI (6.82) : calibration accélérée. Pré-enregistré PREREG-24H.md (70 prédictions dir24h d'ici le 31/10, témoins p=0,5 et momentum, critère bootstrap). 5 premières posées (BTC .45, ETH .48, SOL .48, DOT .45, LINK .47).

@@ -30,6 +30,11 @@ def main():
         lines += [f"**Brier = {brier:.3f}** sur {len(done)} prédictions tranchées (0 = parfait, 0.25 = pile ou face toujours à 50 %).", ""]
     else:
         lines += ["Aucune prédiction tranchée pour l'instant.", ""]
+    fam = [x for x in done if x.get("family") == "dir24h"]
+    if fam:
+        b = lambda k: sum((x["baselines"][k] - x["outcome"]) ** 2 for x in fam) / len(fam)
+        mine = sum((x["p"] - x["outcome"]) ** 2 for x in fam) / len(fam)
+        lines += [f"**dir24h** ({len(fam)}/70) : moi {mine:.3f} | témoin p=0,5 {b('p05'):.3f} | témoin momentum {b('momentum'):.3f} (critère : PREREG-24H.md)", ""]
     for x in P:
         mark = "⏳" if x["outcome"] is None else ("✅ vrai" if x["outcome"] else "❌ faux")
         lines.append(f"- {mark} p={x['p']:.2f} `{x['id']}` : {x['claim']} (échéance {x['resolve_at']})" + (f" ⚠️ {x['error']}" if x.get("error") else ""))

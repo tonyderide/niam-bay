@@ -1,4 +1,4 @@
-# Calibration de NB (2026-10-17T03:15)
+# Calibration de NB (2026-10-17T03:24)
 
 Aucune prédiction tranchée pour l'instant.
 
@@ -9,3 +9,8 @@ Aucune prédiction tranchée pour l'instant.
 - ⏳ p=0.60 `btc-1024` : BTC > 80000 le 24/10 à 08h (échéance 2026-10-24T08:00)
 - ⏳ p=0.60 `mem-1020` : verify.py : 0 souvenir contredit le 20/10 à 08h (échéance 2026-10-20T08:00)
 - ⏳ p=0.70 `tg-1018` : Tony m'écrit au moins 1 message sur Telegram avant le 19/10 (échéance 2026-10-19T00:00)
+- ⏳ p=0.45 `dir24h-BTC-10170324` : BTC mark plus haut dans 24 h qu'à 81451.1517 (échéance 2026-10-18T03:24)
+- ⏳ p=0.48 `dir24h-ETH-10170324` : ETH mark plus haut dans 24 h qu'à 2418.4942 (échéance 2026-10-18T03:24)
+- ⏳ p=0.48 `dir24h-SOL-10170324` : SOL mark plus haut dans 24 h qu'à 104.3954 (échéance 2026-10-18T03:24)
+- ⏳ p=0.45 `dir24h-DOT-10170324` : DOT mark plus haut dans 24 h qu'à 1.1734 (échéance 2026-10-18T03:24)
+- ⏳ p=0.47 `dir24h-LINK-10170324` : LINK mark plus haut dans 24 h qu'à 12.3027 (échéance 2026-10-18T03:24)
