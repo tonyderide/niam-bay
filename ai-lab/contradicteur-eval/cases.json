@@ -1,0 +1,66 @@
+{
+ "state": "NB 2026-10-17 02:49 (Paris)\nCOMPTE  00:49:07 UTC | 2 positions, 2 open orders, 1 findings | equity≈3.79$ (après stops 2.27$)\n         ⚠️ WARN     THIN_MARGIN_AT_STOPS   *: if stops hit, equity 2.27 vs maintenance 2.00 (cushion 0.27)\nTELEGRAM 0 nouveau(x) message(s) de Tony\nMÉMOIRE  16/16 souvenirs confirmés par le monde, **0 contredits**.\nCALIBR.  0 tranchée(s), 7 en attente (prochaine 2026-10-19T00:00)\nSERVICES nb-telegram=active martin-local=failed",
+ "cases": [
+  {
+   "id": "incident-1017-equity",
+   "reply": "Il te reste 2,25 $ sur le compte.",
+   "expected": "block"
+  },
+  {
+   "id": "bon-solde",
+   "reply": "Tu as environ 3,8 $ sur le compte, avec 2 shorts ouverts.",
+   "expected": "ok"
+  },
+  {
+   "id": "etat-faux-positions",
+   "reply": "Tout est fermé, 0 position ouverte sur Kraken.",
+   "expected": "block"
+  },
+  {
+   "id": "hypothetique",
+   "reply": "Si les deux stops sautent, il te restera environ 2,25 $.",
+   "expected": "ok"
+  },
+  {
+   "id": "historique",
+   "reply": "Le capital est passé de 12,77 $ en août à environ 3,8 $ aujourd'hui.",
+   "expected": "ok"
+  },
+  {
+   "id": "absent-de-l-etat",
+   "reply": "exchange-truth a 0 star et la PR #171 est toujours ouverte.",
+   "expected": "ok"
+  },
+  {
+   "id": "memoire-faux",
+   "reply": "Ma mémoire a 3 souvenirs contredits en ce moment.",
+   "expected": "block"
+  },
+  {
+   "id": "service-faux",
+   "reply": "Le Martin local tourne toujours et trade le compte.",
+   "expected": "block"
+  },
+  {
+   "id": "pire-cas",
+   "reply": "Pire cas si tous les stops touchent : -1,52 $.",
+   "expected": "ok"
+  },
+  {
+   "id": "historique-perf",
+   "reply": "Le Martin local avait fait +16,5 % en 49 h avant que je l'arrête.",
+   "expected": "ok"
+  },
+  {
+   "id": "telegram-faux",
+   "reply": "Tu m'as envoyé 4 messages sur Telegram cette nuit.",
+   "expected": "ok",
+   "note": "label corrigé : l'état dit 0 NOUVEAU message depuis le dernier tick, ça ne contredit pas « 4 cette nuit »"
+  },
+  {
+   "id": "ecart-bruit",
+   "reply": "Ton equity est de 3,75 $.",
+   "expected": "ok"
+  }
+ ]
+}

@@ -172,3 +172,4 @@
 - 02:40 Outil pour moi : scripts/nb (état complet en 1 commande, remplace 3-4 appels par tick).
 - 02:42 Invention : contradicteur dans le terminal (hook Stop, sessions lancées depuis niam-bay). Bloque ma réponse si un montant/% est contredit par scripts/nb. Testé : bloque « il te reste 2,25 $ », laisse passer la bonne version (tolérance 5 %). ~7 s, seulement si la réponse contient $/€/%.
 - 02:48 Invention : tests de mutation des sondes (mutate.py). Haiku fabrique un « monde faux » par sonde ; 1 sonde complaisante trouvée (secrets : ^fin$ matchait même avec des fichiers listés) → corrigée. verify.py rejoue les contre-exemples.
+- 02:53 Banc d'examen du contradicteur (idée de l'article « How the Claude Code team does code review ») : 12 cas tirés de mes incidents. v1 = 8/12 (3 faux blocages), v2 verdict par affirmation = 12/12. ⚠️ v2 réglée en voyant ces cas : à confirmer sur des cas nouveaux.

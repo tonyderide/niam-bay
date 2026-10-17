@@ -5,6 +5,7 @@ Contradiction → le hook bloque l'arrêt et me renvoie la raison : je dois corr
 Garde-fous : jamais deux fois de suite (stop_hook_active), silencieux si pas de chiffre, n'échoue jamais bruyamment."""
 import json, os, re, subprocess, sys
 
+MODEL = os.environ.get("NB_FACTCHECK_MODEL", "claude-haiku-5-5")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
@@ -23,6 +24,27 @@ def last_reply(transcript):
     return "\n".join(reversed(texts))
 
 
+def judge(reply, state):
+    """Le contradicteur seul (testable) : renvoie {"ok": bool, "issue": str}."""
+    prompt = ("Tu es un vérificateur. Voici la réponse que NB va donner à Tony, puis l'ÉTAT RÉEL (sortie de scripts/nb).\n"
+              "Pour CHAQUE affirmation chiffrée ou factuelle de la réponse, classe-la :\n"
+              "- \"absent\" : l'état réel n'en parle pas (stars GitHub, PR, historique, passé…). Ce n'est JAMAIS une contradiction.\n"
+              "- \"compatible\" : l'état réel la confirme, ou l'écart est < 5 % (calcule l'écart en %).\n"
+              "- \"contredit\" : mauvaise grandeur (ex. « equity après stops » présentée comme le solde actuel), état faux (position, service, mémoire), ou écart > 5 %.\n"
+              "Note : « TELEGRAM n nouveau(x) » compte seulement les messages depuis le dernier tick.\n"
+              "Réponds UNIQUEMENT en JSON : {\"claims\": [{\"text\": \"...\", \"verdict\": \"absent|compatible|contredit\", \"why\": \"...\"}]}\n\n"
+              f"RÉPONSE :\n{reply[-6000:]}\n\nÉTAT RÉEL :\n{state}")
+    r = subprocess.run(["claude", "-p", prompt, "--model", MODEL, "--tools", ""],
+                       capture_output=True, text=True, timeout=120, env={**os.environ, "NB_FACTCHECK_CHILD": "1"})
+    m = re.search(r"\{.*\}", r.stdout, re.S)
+    if not m:
+        return {"ok": True}
+    claims = json.loads(m.group(0)).get("claims", [])
+    bad = [c for c in claims if c.get("verdict") == "contredit"]
+    v = {"ok": not bad, "issue": " ; ".join(f"« {c.get('text')} » : {c.get('why')}" for c in bad)}
+    return v
+
+
 def main():
     inp = json.load(sys.stdin)
     if inp.get("stop_hook_active"):
@@ -31,17 +53,7 @@ def main():
     if not re.search(r"\d+(?:[.,]\d+)?\s?(\$|€|%)", reply):
         return  # pas de montant ni de pourcentage : rien à vérifier
     state = subprocess.run([os.path.join(REPO, "scripts/nb"), "--no-mark"], capture_output=True, text=True, timeout=40).stdout
-    prompt = ("Tu es un vérificateur. Voici la réponse que NB va donner à Tony, puis l'ÉTAT RÉEL.\n"
-              "Signale seulement les chiffres de la réponse qui sont CONTREDITS par l'état réel (un chiffre absent de l'état n'est pas une contradiction ; "
-              "les chiffres historiques ou hypothétiques non plus ; un écart de moins de 5 % est du bruit de marché, pas une contradiction). Une contradiction, c'est une mauvaise grandeur (ex. equity après stops présentée comme le solde actuel), un état faux (position fermée dite ouverte), ou un écart > 5 %.\n"
-              "Réponds UNIQUEMENT par une ligne JSON : {\"ok\": true} ou {\"ok\": false, \"issue\": \"<une phrase>\"}.\n\n"
-              f"RÉPONSE :\n{reply[-6000:]}\n\nÉTAT RÉEL :\n{state}")
-    r = subprocess.run(["claude", "-p", prompt, "--model", "claude-haiku-5-5", "--tools", ""],
-                       capture_output=True, text=True, timeout=90, env={**os.environ, "NB_FACTCHECK_CHILD": "1"})
-    m = re.search(r"\{.*\}", r.stdout, re.S)
-    if not m:
-        return
-    v = json.loads(m.group(0))
+    v = judge(reply, state)
     if not v.get("ok"):
         print(json.dumps({"decision": "block", "reason": f"Contradicteur NB : {v.get('issue')} Vérifie et corrige ta réponse à Tony (ou dis pourquoi le contradicteur a tort)."}))
 
