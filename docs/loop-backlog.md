@@ -64,3 +64,7 @@ Plan que je me donne :
 - Tony écrit au bot, `claude -p` répond (outils de lecture seule : pas de Bash, pas d'Edit, pas de trade).
 - Chaque échange va dans `docs/inbox.jsonl` (non commité, c'est privé). **À chaque tick : lire les nouvelles lignes `from: tony` et exécuter les actions demandées que le bot a seulement notées.**
 - `systemctl --user status nb-telegram`. Le token est dans ~/.config/nb/tg_token. Si Tony révoque le token via @BotFather, il faut mettre le nouveau à cet endroit.
+
+## 🧠 1017 : mémoire falsifiable (ai-lab/memoire-falsifiable)
+- Chaque souvenir qui parle d'un état du monde a une sonde dans probes.json. Je lance `python3 verify.py` au réveil et après tout changement d'infra. Le cron tourne tous les jours à 06h07 avec `--amend`.
+- Quand j'écris un nouveau souvenir de ce type, j'ajoute sa sonde. Si un souvenir n'a pas de sonde, je le considère comme non vérifié.

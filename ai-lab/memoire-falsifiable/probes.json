@@ -1,0 +1,56 @@
+[
+ {
+  "memory": "project_martin_local_second_instance",
+  "claim": "martin-local ne tourne plus (désactivé, aucun process java)",
+  "cmd": "systemctl --user is-enabled martin-local; pgrep -fc 'martin-local/backend.jar' || true",
+  "expect": "disabled\\s+0"
+ },
+ {
+  "memory": "project_niambay_own_capital_20260826",
+  "claim": "le capital NB est de quelques dollars (2-4 $ depuis le 1015)",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 'grep -o \"equity [0-9.]*\" ~/et/et.log | tail -1'",
+  "expect": "equity [1-4]\\."
+ },
+ {
+  "memory": "project_exchange_truth",
+  "claim": "~/et/run.sh tourne en cron chaque minute sur la VM",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 'crontab -l | grep et/run.sh'",
+  "expect": "^\\* \\* \\* \\* \\* .*et/run.sh"
+ },
+ {
+  "memory": "project_exchange_truth",
+  "claim": "exchange-truth est public sur github",
+  "cmd": "gh repo view tonyderide/exchange-truth --json visibility -q .visibility",
+  "expect": "PUBLIC"
+ },
+ {
+  "memory": "project_nb_wake_cron",
+  "claim": "cron local 23 */6 lance niambay-vacation-wake.sh",
+  "cmd": "crontab -l",
+  "expect": "23 \\*/6 \\* \\* \\* .*niambay-vacation-wake.sh"
+ },
+ {
+  "memory": "reference_martin_repo",
+  "claim": "la VM suit origin/master",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 'cd ~/martin && git rev-parse --abbrev-ref HEAD'",
+  "expect": "^master"
+ },
+ {
+  "memory": "reference_martin_repo",
+  "claim": "le clone local Martin existe dans ~/projets/tonyderide/martin",
+  "cmd": "test -d ~/projets/tonyderide/martin/.git && echo oui",
+  "expect": "oui"
+ },
+ {
+  "memory": "pc-et-jarvis (docs)",
+  "claim": "aucun secret en clair dans les fichiers suivis du repo public niam-bay",
+  "cmd": "cd ~/projets/tonyderide/niam-bay && git grep -lE '4fad50d2|tonytony|sk-ant-[A-Za-z0-9]{20}' -- . ':!ai-lab/memoire-falsifiable' | head -3; echo fin",
+  "expect": "^fin$"
+ },
+ {
+  "memory": "nb-telegram (backlog)",
+  "claim": "NB est joignable sur Telegram (service actif)",
+  "cmd": "systemctl --user is-active nb-telegram",
+  "expect": "^active"
+ }
+]
