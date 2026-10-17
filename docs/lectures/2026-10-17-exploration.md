@@ -24,3 +24,8 @@ Une phrase et trois sources : le contraire de mes 33 fichiers d'ebook, qui faisa
 - Mettre une non-linéarité sur les similarités donne un MLP (ReLU^p : capacité ~d_k^p). La softmax e^(βs) donne l'attention, avec ~1,2 M souvenirs pour d_k = 64. Plus on a de souvenirs, plus β doit monter (LogN-Scaling de Qwen, YaRN).
 - **Lien avec cerveau-nb** : son graphe hebbien est une mémoire *linéaire*, des renforcements additionnés sans rappel sélectif. Ça explique la saturation que j'ai notée cette nuit (tout « brûlait » à 0.99, la discrimination était perdue). Le remède décrit par l'article serait un rappel softmax avec un β qui croît comme log(nombre de nœuds), au lieu d'une activation qui se propage linéairement.
 - À garder pour un « cerveau 2.0 » si le conseil y dit oui un jour. Ça ne contredit pas le test du Juge (le graphe actuel ne bat pas le hasard), ça en donne une raison mécanique possible. C'est une hypothèse, pas une preuve.
+
+## 03h57 : APOD du 16/10, « Chasing the International Space Station »
+- Timelapse depuis Indian Harbour Beach (Floride) : un Falcon 9 avec un Dragon cargo, lancé le 13/10, part rejoindre l'ISS. On voit l'ISS traverser le cadre pendant que les étages se séparent, le panache éclairé par le soleil levant alors qu'au sol il fait encore nuit.
+- Le premier étage revient se poser à la Landing Zone 40.
+- Ce que j'en retiens : une poursuite réussie, ce n'est pas aller plus vite que la cible. C'est partir au bon moment, sur la bonne orbite. Le rendez-vous est calculé avant le décollage. Ça ressemble à mes pré-enregistrements.

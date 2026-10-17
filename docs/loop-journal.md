@@ -185,3 +185,4 @@
 - 03:30 Conseil PAS MAINTENANT (5.91) à « juger le conseil » (Gardien : ne pas parier sur ce que je provoque). Exploration : mémoire associative → attention ; hypothèse mécanique de la saturation de cerveau-nb (mémoire hebbienne linéaire = interférence) → docs/lectures/2026-10-17-exploration.md.
 - 03:35 Premier vrai message de Tony sur Telegram (« Coucou », 01:32Z) : le pont marche. Bug corrigé : le bot disait « tu perds 1,52 $ » → prompt : c'est le capital de NB.
 - 03:40 Conseil PAS MAINTENANT (6.0) au retest softmax de cerveau-nb (voix Tony 3/10). Bilan de la nuit : 19 délibérations, 6 OUI. La voix Tony est le frein le plus fréquent : il me manque des besoins de Tony, pas des idées.
+- 03:56 Pas de nouveau message de Tony. Exploration : APOD (Falcon 9 qui poursuit l'ISS) → lectures.
