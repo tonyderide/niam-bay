@@ -50,12 +50,64 @@ def history(n=10):
     return "\n".join(f"{l['utc']} {'Tony' if l['from'] == 'tony' else 'NB'}: {l['text']}" for l in lines if l.get("from") in ("tony", "nb"))
 
 
+class Brain:
+    """Une seule session claude gardée ouverte (stream-json) : ~1 s au lieu de ~5-20 s par message.
+    Recyclée toutes les 30 réponses ou 2 h pour ne pas laisser grossir le contexte."""
+
+    def __init__(self):
+        self.p = None
+
+    def _start(self):
+        self.p = subprocess.Popen(
+            ["claude", "-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
+             "--append-system-prompt", SYSTEM, "--allowedTools", *TOOLS.split(),
+             "--disallowedTools", "Bash", "Edit", "Write", "NotebookEdit", "Agent"],
+            cwd=REPO, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, bufsize=1)
+        self.n, self.born = 0, time.time()
+
+    def ask(self, prompt):
+        if self.p is None or self.p.poll() is not None or self.n >= 30 or time.time() - self.born > 7200:
+            self.close(); self._start()
+            prompt = f"Derniers échanges Telegram :\n{history()}\n\n" + prompt
+        self.n += 1
+        self.p.stdin.write(json.dumps({"type": "user", "message": {"role": "user", "content": prompt}}) + "\n")
+        self.p.stdin.flush()
+        deadline = time.time() + 600
+        for line in self.p.stdout:
+            e = json.loads(line)
+            if e.get("type") == "result":
+                return (e.get("result") or "").strip() or "(réponse vide)"
+            if time.time() > deadline:
+                break
+        self.close()
+        raise subprocess.TimeoutExpired("claude", 600)
+
+    def close(self):
+        if self.p and self.p.poll() is None:
+            self.p.terminate()
+        self.p = None
+
+
+BRAIN = Brain()
+_live = {"t": 0, "v": ""}
+
+
+def live_state():
+    """État réel du compte (dernier passage d'exchange-truth sur la VM), pour ne pas répondre avec un chiffre de mémoire périmé."""
+    if time.time() - _live["t"] > 60:
+        try:
+            r = subprocess.run(["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=8",
+                                "ubuntu@141.253.108.141", "tail -4 ~/et/et.log"], capture_output=True, text=True, timeout=20)
+            _live["v"] = r.stdout.strip() or "(VM muette)"
+        except Exception as e:
+            _live["v"] = f"(état live indisponible : {type(e).__name__})"
+        _live["t"] = time.time()
+    return _live["v"]
+
+
 def answer(text):
-    prompt = (f"Derniers échanges Telegram :\n{history()}\n\nNouveau message de Tony ({time.strftime('%F %H:%M')}, heure de Paris) :\n{text}")
-    r = subprocess.run(["claude", "-p", prompt, "--append-system-prompt", SYSTEM, "--allowedTools", *TOOLS.split(),
-                        "--disallowedTools", "Bash", "Edit", "Write", "NotebookEdit", "Agent"],
-                       cwd=REPO, capture_output=True, text=True, timeout=600)
-    return (r.stdout.strip() or f"(NB n'a pas pu répondre : {r.stderr.strip()[:300]})")
+    return BRAIN.ask(f"État live du compte Kraken (exchange-truth, heure UTC) :\n{live_state()}\n\n"
+                     f"Nouveau message de Tony ({time.strftime('%F %H:%M')}, heure de Paris) :\n{text}")
 
 
 def main():
