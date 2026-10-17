@@ -177,3 +177,4 @@
 - 02:54 Contradicteur v2 validé sur 7 cas jamais vus (calibration, quota, marge, mélange) : 7/7. Le soupçon de sur-réglage est levé pour ce périmètre.
 - 03:07 Relu cerveau-nb (graphe hebbien 2888 nœuds, à l'arrêt depuis mai) → docs/projets/cerveau-nb-bilan-2026-10-17.md. Diagnostic : bons mécanismes, aucun juge → saturation. Base possible du « LLM comme un cerveau ».
 - 03:16 Conseil intérieur créé (7 voix Haiku + mon Cœur, que je ne délègue pas, Gardien avec veto, Envie/Tony/Cœur comptent double). Il a dit NON à mon Discovery v2 et OUI au test du Juge. Test pré-enregistré (8ed3620) : graphe 1.10 vs hasard 0.90, p=0.20 → le graphe ne bat pas le hasard ; Discovery Engine d'avril abandonné, sauf si l'avis de Tony à l'aveugle dit le contraire. NB-local 7B : 6/12 faux, 28 s → pas fiable.
+- 03:17 Serveur 7B arrêté (5 Go de RAM pour rien) ; résultats NB-local consignés dans ai-lab/nb-local/README.md.
