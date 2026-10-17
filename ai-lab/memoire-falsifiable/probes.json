@@ -82,5 +82,11 @@
   "claim": "le cron quotidien verify.py est installé",
   "cmd": "crontab -l",
   "expect": "memoire-falsifiable && .*verify.py"
+ },
+ {
+  "memory": "project_calibration_nb",
+  "claim": "le cron horaire resolve.py est installé",
+  "cmd": "crontab -l",
+  "expect": "calibration && .*resolve.py"
  }
 ]

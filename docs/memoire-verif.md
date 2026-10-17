@@ -1,6 +1,6 @@
-# Vérification de la mémoire de NB (2026-10-17 02:35)
+# Vérification de la mémoire de NB (2026-10-17 02:36)
 
-14/14 souvenirs confirmés par le monde, **0 contredits**.
+15/15 souvenirs confirmés par le monde, **0 contredits**.
 
 - ✅ `project_martin_local_second_instance` : martin-local ne tourne plus (désactivé, aucun process java)
 - ✅ `project_niambay_own_capital_20260826` : le capital NB est de quelques dollars (2-4 $ depuis le 1015)
@@ -16,3 +16,4 @@
 - ✅ `reference_projets_dir` : les repos de Tony sont dans ~/projets/tonyderide
 - ✅ `project_martin_bug_2026-04-22` : backup de config dans ~/martin/archive/strategy-config.json.orphan-20260509
 - ✅ `project_memoire_falsifiable` : le cron quotidien verify.py est installé
+- ✅ `project_calibration_nb` : le cron horaire resolve.py est installé

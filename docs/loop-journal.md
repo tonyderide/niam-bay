@@ -165,3 +165,4 @@
 - 02:31 Invention : mémoire falsifiable. Sondes sur mes souvenirs, le monde juge. 1er passage : 3/9 contredits (capital 12.77 périmé, cron et, martin-local 'failed'=SIGTERM), corrigés.
 - 02:34 Réveil 6h : étape 0 ajoutée au prompt (verify.py + inbox Telegram), pour que l'autre NB ne se fie pas à des souvenirs périmés. Positions inchangées.
 - 02:35 Mémoire falsifiable v2 : MEMORY.md annoté ✓/✗/? à chaque passage ; +6 sondes ; 2 souvenirs périmés de plus trouvés (backend Martin 'arrêté' depuis avril, backup déplacé), corrigés.
+- 02:36 Invention : calibration. 7 prédictions chiffrées (p) tranchées par le monde via cron horaire → Brier dans docs/calibration.md. Premières échéances le 19-20/10.

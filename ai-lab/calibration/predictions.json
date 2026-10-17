@@ -1,0 +1,72 @@
+[
+ {
+  "id": "et-star-1024",
+  "claim": "exchange-truth a au moins 1 star",
+  "p": 0.15,
+  "resolve_at": "2026-10-24T08:00",
+  "cmd": "gh repo view tonyderide/exchange-truth --json stargazerCount -q .stargazerCount",
+  "test": "int(out)>=1",
+  "made": "2026-10-17T02:36",
+  "outcome": null
+ },
+ {
+  "id": "pr171-1024",
+  "claim": "la PR #171 (awesome-crypto-trading-bots) a une réponse ou est fusionnée",
+  "p": 0.2,
+  "resolve_at": "2026-10-24T08:00",
+  "cmd": "gh pr view 171 -R botcrypto-io/awesome-crypto-trading-bots --json state,comments -q '.state+\" \"+(.comments|length|tostring)'",
+  "test": "out.split()[0]!='OPEN' or int(out.split()[1])>0",
+  "made": "2026-10-17T02:36",
+  "outcome": null
+ },
+ {
+  "id": "sol-1020",
+  "claim": "SOL < 104.02 (mon short en gain) le 20/10 à 08h",
+  "p": 0.45,
+  "resolve_at": "2026-10-20T08:00",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_SOLUSD",
+  "test": "float(out)<104.02",
+  "made": "2026-10-17T02:36",
+  "outcome": null
+ },
+ {
+  "id": "dot-1020",
+  "claim": "DOT < 1.1606 (mon short en gain) le 20/10 à 08h",
+  "p": 0.42,
+  "resolve_at": "2026-10-20T08:00",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_DOTUSD",
+  "test": "float(out)<1.1606",
+  "made": "2026-10-17T02:36",
+  "outcome": null
+ },
+ {
+  "id": "btc-1024",
+  "claim": "BTC > 80000 le 24/10 à 08h",
+  "p": 0.6,
+  "resolve_at": "2026-10-24T08:00",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
+  "test": "float(out)>80000",
+  "made": "2026-10-17T02:36",
+  "outcome": null
+ },
+ {
+  "id": "mem-1020",
+  "claim": "verify.py : 0 souvenir contredit le 20/10 à 08h",
+  "p": 0.6,
+  "resolve_at": "2026-10-20T08:00",
+  "cmd": "cd ../memoire-falsifiable && python3 verify.py >/dev/null; sed -n 3p ../../docs/memoire-verif.md",
+  "test": "'**0 contredits**' in out",
+  "made": "2026-10-17T02:36",
+  "outcome": null
+ },
+ {
+  "id": "tg-1018",
+  "claim": "Tony m'écrit au moins 1 message sur Telegram avant le 19/10",
+  "p": 0.7,
+  "resolve_at": "2026-10-19T00:00",
+  "cmd": "grep -c '\"from\": \"tony\"' ../../docs/inbox.jsonl || true",
+  "test": "int(out or 0)>=1",
+  "made": "2026-10-17T02:36",
+  "outcome": null
+ }
+]
