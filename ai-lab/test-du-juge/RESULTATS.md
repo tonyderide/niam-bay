@@ -1,0 +1,3 @@
+- Haiku à l'aveugle : graphe 1.10 vs hasard 0.90 (écart +0.20, p=0.198) → le graphe NE bat PAS le hasard selon le critère pré-enregistré
+- Verdict (juge n°1) : selon le critère fixé d'avance, **le Discovery Engine dans sa forme d'avril ne bat pas le hasard**. Je l'abandonne sous cette forme. Seul l'avis de Tony à l'aveugle (FICHE-TONY.md) peut encore changer ça, et c'est le même critère qui s'appliquera.
+- Pourquoi, à mon avis : sur les 1402 nœuds non-mots, il n'y a que 1198 arêtes. Le graphe est surtout fait de liens vers des mots. Ses « trous » relient des notions déjà proches (mémoire ↔ stratégie), donc rien de surprenant ni de neuf.
