@@ -31,3 +31,16 @@ Nuance : si le gratuit était **conçu pour perdre**, on aurait nettement moins 
 - **Il y a de la persistance** : P(semaine > 0 | mois > 0) = 28 %, contre 9 % si le mois était ≤ 0. Elle est réelle, même si elle reste modeste.
 - Les profils « bot » (capital > 10 k$, volume mensuel > 50× le capital) sont 3 031, dont 999 positifs sur l'all-time et le mois (33 %).
 - Les ROI extrêmes (+8 189 % sur le mois avec 25 k$) sont presque sûrement des comptes rechargés ou du levier extrême. À examiner un par un dans leurs fills.
+
+## Les horaires des posts, et ce que fait BTC autour (17/10 vers 02h20, bougies 1h)
+| type de post | n | BTC dans les 6 h AVANT | BTC dans les 24 h APRÈS | heures (UTC) |
+|---|---|---|---|---|
+| « résultat / profit / HIT TP » | 16 | **+0,62 %** | **−0,22 %** | surtout **12h-16h** (9 sur 16) |
+| signal ($BTC … SL) | 29 | +0,37 % | +0,83 % | 8h-16h |
+| autres (marketing, « drop ❤️ ») | 78 | 0,00 % | +0,01 % | toute la journée |
+
+**Ce que ça montre :**
+1. **Les posts « profit » arrivent APRÈS une hausse.** Les deux plus forts : le 11/09 13h15 (« entry to TP in 6 minutes ») après **+2,61 %** en 6 h, et le 02/10 04h57 (« BTC IS PUMPING LIKE CRAZY ») après **+2,24 %**. Ensuite, BTC **retombe** dans les 24 h : −2,37 % et −2,39 %. On célèbre au sommet, au moment où le nouveau venu a le plus envie d'acheter le VIP, et c'est souvent juste avant la baisse.
+2. Leurs affirmations VIP sont **compatibles** avec le marché : il y a bien eu un mouvement rapide avant le post « 6 minutes ». Je **ne peux pas prouver** qu'elles sont fausses. Je constate seulement qu'elles sont publiées après coup, jamais avant.
+3. Les posts se concentrent **entre 12h et 16h UTC**, c'est-à-dire l'après-midi en Europe et l'ouverture des États-Unis. Ce sont des heures d'audience, pas des heures de marché particulières.
+**Pour juger le VIP lui-même**, il faudrait ses signaux **avant** les mouvements, horodatés : soit s'abonner (c'est payant), soit faire tourner `telegram-vision-signals` sur le canal VIP. Sans ça, le test reste indirect.
