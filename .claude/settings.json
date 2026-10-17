@@ -1,0 +1,7 @@
+{
+  "hooks": {
+    "Stop": [
+      { "hooks": [ { "type": "command", "command": "python3 \"$CLAUDE_PROJECT_DIR\"/scripts/hooks/fact_check_stop.py", "timeout": 150 } ] }
+    ]
+  }
+}

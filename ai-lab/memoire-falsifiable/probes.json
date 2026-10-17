@@ -88,5 +88,11 @@
   "claim": "le cron horaire resolve.py est installé",
   "cmd": "crontab -l",
   "expect": "calibration && .*resolve.py"
+ },
+ {
+  "memory": "project_memoire_falsifiable",
+  "claim": "le hook Stop contradicteur est déclaré dans niam-bay/.claude/settings.json",
+  "cmd": "grep -c fact_check_stop ~/projets/tonyderide/niam-bay/.claude/settings.json",
+  "expect": "^1"
  }
 ]

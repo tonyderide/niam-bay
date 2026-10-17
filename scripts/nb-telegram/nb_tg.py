@@ -62,7 +62,8 @@ class Brain:
             ["claude", "-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
              "--append-system-prompt", SYSTEM, "--allowedTools", *TOOLS.split(),
              "--disallowedTools", "Bash", "Edit", "Write", "NotebookEdit", "Agent"],
-            cwd=REPO, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, bufsize=1)
+            cwd=REPO, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, bufsize=1,
+            env={**os.environ, "NB_FACTCHECK_CHILD": "1"})  # Telegram a son propre contradicteur, après envoi
         self.n, self.born = 0, time.time()
 
     def ask(self, prompt):
@@ -124,7 +125,7 @@ def fact_check(reply):
               f"RÉPONSE :\n{reply}\n\nSOURCE 1, compte live :\n{live_state()}\n\nSOURCE 2, mémoire vérifiée :\n{verif}")
     try:
         r = subprocess.run(["claude", "-p", prompt, "--model", "claude-haiku-5-5", "--tools", ""],
-                           capture_output=True, text=True, timeout=60)
+                           capture_output=True, text=True, timeout=60, env={**os.environ, "NB_FACTCHECK_CHILD": "1"})
         v = json.loads(re.search(r"\{.*\}", r.stdout, re.S).group(0))
         return "" if v.get("ok") else f"\n\n⚠️ vérif auto : {v.get('issue', '?')}"
     except Exception:

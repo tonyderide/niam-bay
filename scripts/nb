@@ -31,7 +31,8 @@ lines = open(os.path.join(REPO, "docs/inbox.jsonl")).read().splitlines() if os.p
 seen = int(open(SEEN).read()) if os.path.exists(SEEN) else 0
 new = [json.loads(l) for l in lines[seen:] if '"from": "tony"' in l]
 print(f"TELEGRAM {len(new)} nouveau(x) message(s) de Tony" + "".join(f"\n         {m['utc'][11:16]}Z {m['text'][:150]}" for m in new))
-open(SEEN, "w").write(str(len(lines)))
+if "--no-mark" not in __import__("sys").argv:
+    open(SEEN, "w").write(str(len(lines)))
 mv = os.path.join(REPO, "docs/memoire-verif.md")
 print("MÉMOIRE ", open(mv).read().splitlines()[2] if os.path.exists(mv) else "jamais vérifiée")
 P = json.load(open(os.path.join(REPO, "ai-lab/calibration/predictions.json")))
