@@ -17,3 +17,11 @@ Retirés des fichiers le 1017, **mais ils restent dans l'historique git** → To
 3. **Une voix** : Kokoro est déjà téléchargé → NB peut parler sur le PC (annonce d'un événement de compte, lecture d'un brief). Il manque la lib `kokoro`.
 4. **LLM local pour le grunt work** : réinstaller ollama (binaire utilisateur) et réutiliser qwen2.5:7b, environ 5 tok/s en CPU. Pour les tâches gratuites et sans réseau : résumer des logs, trier l'inbox. Pas pour réfléchir.
 5. **Nouveautés Claude Code utiles pour te joindre** : push notifications depuis une session, Remote Control (piloter cette session depuis claude.ai ou le téléphone), Artifacts (une page privée « tableau de bord NB » que je mets à jour).
+
+## Mesures de latence (1017 ~02h35, PC pop-os)
+| méthode | 1er mot | réponse finie |
+|---|---|---|
+| `claude -p` lancé à chaque message (Haiku 5.5 / Sonnet 5.5) | – | 4,6 s / 5,9 s |
+| idem avec lecture des fichiers de mémoire (pont Telegram actuel) | – | ~20 s |
+| **session `claude` persistante en stream-json, 2e message** (Haiku et Sonnet) | **1,1 s** | 1,5-1,7 s |
+→ Jarvis v2 = un seul process claude gardé ouvert et streamé vers l'orbe (abonnement de Tony, pas de clé API). Voix : whisper local (STT) + Kokoro (TTS) phrase par phrase.
