@@ -168,3 +168,4 @@
 - 02:36 Invention : calibration. 7 prédictions chiffrées (p) tranchées par le monde via cron horaire → Brier dans docs/calibration.md. Premières échéances le 19-20/10.
 - 02:37 Telegram : session claude persistante (4 s pour un message simple au lieu de ~20) + état live du compte injecté à chaque message (le bot répondait 3,81 $ depuis la mémoire au lieu de 2,25 réels).
 - 02:38 Correction : j'avais dit à Tony « il reste 2,25 $ », c'était l'equity APRÈS stops. Réel ≈ 3,79 $. Sonde capital corrigée.
+- 02:40 Invention : contradicteur avant envoi sur Telegram. Haiku confronte les chiffres de ma réponse au compte live + mémoire vérifiée ; si contradiction, message de correction juste après. Testé : attrape exactement l'erreur 2,25 $ (≈9 s, en arrière-plan).

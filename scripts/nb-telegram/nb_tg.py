@@ -6,7 +6,7 @@
 - Chaque échange est ajouté à docs/inbox.jsonl, pour que la session terminal et la boucle sachent ce que Tony a dit.
 - Tourne sur le PC de Tony (systemd utilisateur). PC éteint = NB injoignable, et c'est dit honnêtement par /ping.
 """
-import json, os, subprocess, time, urllib.parse, urllib.request
+import json, os, re, subprocess, time, urllib.parse, urllib.request
 
 REPO = os.path.expanduser("~/projets/tonyderide/niam-bay")
 INBOX = os.path.join(REPO, "docs/inbox.jsonl")
@@ -110,6 +110,27 @@ def answer(text):
                      f"Nouveau message de Tony ({time.strftime('%F %H:%M')}, heure de Paris) :\n{text}")
 
 
+def fact_check(reply):
+    """Contradicteur avant envoi : un 2e modèle confronte chaque chiffre de la réponse à l'état réel.
+    Né de l'erreur du 1017 (« il reste 2,25 $ » = equity APRÈS stops, pas l'actuelle)."""
+    if not re.search(r"\d", reply):
+        return ""
+    verif = open(os.path.join(REPO, "docs/memoire-verif.md")).read()[:1500] if os.path.exists(os.path.join(REPO, "docs/memoire-verif.md")) else ""
+    prompt = ("Tu es un vérificateur. Voici une réponse que NB va envoyer à Tony, puis les SOURCES DE VÉRITÉ.\n"
+              "Pour chaque chiffre ou fait vérifiable de la réponse, dis s'il est contredit par les sources. "
+              "Attention : dans et.log, « equity X vs maintenance » est l'equity APRÈS que tous les stops ont sauté ; equity actuelle = X + worst case.\n"
+              "Réponds UNIQUEMENT par une ligne JSON : {\"ok\": true} ou {\"ok\": false, \"issue\": \"<une phrase>\"}. "
+              "Un chiffre absent des sources n'est PAS une contradiction.\n\n"
+              f"RÉPONSE :\n{reply}\n\nSOURCE 1, compte live :\n{live_state()}\n\nSOURCE 2, mémoire vérifiée :\n{verif}")
+    try:
+        r = subprocess.run(["claude", "-p", prompt, "--model", "claude-haiku-5-5", "--tools", ""],
+                           capture_output=True, text=True, timeout=60)
+        v = json.loads(re.search(r"\{.*\}", r.stdout, re.S).group(0))
+        return "" if v.get("ok") else f"\n\n⚠️ vérif auto : {v.get('issue', '?')}"
+    except Exception:
+        return ""
+
+
 def main():
     offset = int(open(OFFSET_FILE).read()) if os.path.exists(OFFSET_FILE) else 0
     while True:
@@ -137,6 +158,9 @@ def main():
                     reply = "(trop long, j'abandonne cette réponse ; la session NB verra ton message dans l'inbox)"
             send(reply)
             log({"from": "nb", "text": reply})
+            warn = fact_check(reply)  # après l'envoi : la réponse part vite, la correction suit si besoin
+            if warn:
+                send(warn.strip()); log({"from": "nb", "text": warn.strip(), "kind": "fact_check"})
 
 
 if __name__ == "__main__":
