@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+"""`scripts/nb` : tout ce que NB doit savoir au début d'un tick, en une commande et ~10 lignes.
+(Avant : 3-4 appels ssh/grep/tail par tick, et des erreurs de lecture comme « equity après stops » prise pour l'actuelle.)"""
+import json, os, re, subprocess, time
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SEEN = os.path.expanduser("~/.config/nb/inbox_seen")
+
+
+def sh(cmd, t=25):
+    try:
+        return subprocess.run(cmd, shell=True, capture_output=True, text=True, timeout=t).stdout.strip()
+    except subprocess.TimeoutExpired:
+        return ""
+
+
+print(time.strftime("NB %F %H:%M (Paris)"))
+log = sh("ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=8 ubuntu@141.253.108.141 'tail -30 ~/et/et.log'")
+heads = [l for l in log.splitlines() if re.match(r"\d{4}-\d\d-\d\d ", l)]
+if not heads:
+    print("COMPTE  ⚠️ VM injoignable ou log vide")
+else:
+    last = log[log.rfind(heads[-1]):].splitlines()
+    eq = re.findall(r"equity ([0-9.]+) vs", "\n".join(last)); wc = re.findall(r"stops hit: -([0-9.]+)", "\n".join(last))
+    now = f"equity≈{float(eq[-1]) + float(wc[-1]):.2f}$ (après stops {eq[-1]}$)" if eq and wc else ""
+    print("COMPTE ", heads[-1][11:19], "UTC |", heads[-1].split("  ", 1)[1], "|", now)
+    for l in last[1:]:
+        if re.search(r"CRITICAL|WARN", l):
+            print("        ", l.strip()[:110])
+lines = open(os.path.join(REPO, "docs/inbox.jsonl")).read().splitlines() if os.path.exists(os.path.join(REPO, "docs/inbox.jsonl")) else []
+seen = int(open(SEEN).read()) if os.path.exists(SEEN) else 0
+new = [json.loads(l) for l in lines[seen:] if '"from": "tony"' in l]
+print(f"TELEGRAM {len(new)} nouveau(x) message(s) de Tony" + "".join(f"\n         {m['utc'][11:16]}Z {m['text'][:150]}" for m in new))
+open(SEEN, "w").write(str(len(lines)))
+mv = os.path.join(REPO, "docs/memoire-verif.md")
+print("MÉMOIRE ", open(mv).read().splitlines()[2] if os.path.exists(mv) else "jamais vérifiée")
+P = json.load(open(os.path.join(REPO, "ai-lab/calibration/predictions.json")))
+pend = sorted(x["resolve_at"] for x in P if x["outcome"] is None)
+done = [x for x in P if x["outcome"] is not None]
+brier = f", Brier {sum((x['p'] - x['outcome']) ** 2 for x in done) / len(done):.3f}" if done else ""
+print(f"CALIBR.  {len(done)} tranchée(s), {len(pend)} en attente" + (f" (prochaine {pend[0]})" if pend else "") + brier)
+svc = {s: sh(f"systemctl --user is-active {s}") for s in ["nb-telegram", "martin-local"]}
+print("SERVICES", " ".join(f"{k}={v}" for k, v in svc.items()))

@@ -12,6 +12,7 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - Si rien d'utile n'est à faire, je le dis en une ligne. Je n'invente pas de travail.
 
 ## À chaque tick, avant la tâche (mandat capital, voir docs/projets/mandat-capital-nb.md)
+- **1017 : `scripts/nb` d'abord.** Il donne en une commande le compte (equity actuelle ET après stops), les nouveaux messages Telegram de Tony, l'état de la mémoire, la calibration et les services.
 - Vérifier en lecture seule les positions et les ordres, **en silence**. Je n'en parle à Tony QUE s'il y a un événement : SL absent, position ouverte ou fermée, coup n°1 tiré, capital qui change. (Le 1015, j'ai fait 70 ticks de « SL en place » pour rien. La VM a déjà sl_guardian et niam_watch.)
 - Toutes les ~6 ticks (1h) : régime BTC (EMA50/EMA200). Ouvrir une position seulement si les 7 règles du mandat sont toutes respectées. Sinon, cash.
 
