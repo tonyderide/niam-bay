@@ -1,0 +1,265 @@
+[
+ {
+  "addr": "0x30bc26f0c70d07781108364f53f085d7cfe7a011",
+  "capital": 66515,
+  "roi_mois": 99.6,
+  "roi_all": 69.0,
+  "turnover": 131,
+  "fills": 2000,
+  "span_h": 259.7,
+  "fills_par_h": 7.7,
+  "maker": 0,
+  "winrate": 50,
+  "pnl_fills": 7717,
+  "fees": 2702,
+  "coins": [
+   [
+    "EIGEN",
+    705
+   ],
+   [
+    "UMA",
+    240
+   ],
+   [
+    "NEAR",
+    212
+   ]
+  ],
+  "taille_med": 375,
+  "heures": {
+   "0": 501,
+   "6": 147,
+   "12": 431,
+   "18": 921
+  }
+ },
+ {
+  "addr": "0xa0d149c9e3fee0a9f920058c4139c73894c2be98",
+  "capital": 56497,
+  "roi_mois": 99.2,
+  "roi_all": 339.5,
+  "turnover": 173,
+  "fills": 2000,
+  "span_h": 625.6,
+  "fills_par_h": 3.2,
+  "maker": 0,
+  "winrate": 36,
+  "pnl_fills": 25426,
+  "fees": 5789,
+  "coins": [
+   [
+    "HYPE",
+    1138
+   ],
+   [
+    "BTC",
+    416
+   ],
+   [
+    "ZEC",
+    172
+   ]
+  ],
+  "taille_med": 1360,
+  "heures": {
+   "0": 220,
+   "6": 71,
+   "12": 788,
+   "18": 921
+  }
+ },
+ {
+  "addr": "0x8d0c44cd9493ea7954fafd8b4e7cacf3b91ae17b",
+  "capital": 186715,
+  "roi_mois": 89.0,
+  "roi_all": 111.3,
+  "turnover": 67,
+  "fills": 2000,
+  "span_h": 1011.1,
+  "fills_par_h": 2.0,
+  "maker": 0,
+  "winrate": 65,
+  "pnl_fills": 175261,
+  "fees": 10490,
+  "coins": [
+   [
+    "SOL",
+    2000
+   ]
+  ],
+  "taille_med": 4236,
+  "heures": {
+   "0": 554,
+   "6": 134,
+   "12": 975,
+   "18": 337
+  }
+ },
+ {
+  "addr": "0x79b1709cd32839cadc63bf6f17b37ac19faeda9d",
+  "capital": 86808,
+  "roi_mois": 85.4,
+  "roi_all": 85.4,
+  "turnover": 164,
+  "fills": 2000,
+  "span_h": 529.7,
+  "fills_par_h": 3.8,
+  "maker": 9,
+  "winrate": 82,
+  "pnl_fills": 48008,
+  "fees": 4309,
+  "coins": [
+   [
+    "ONDO",
+    894
+   ],
+   [
+    "BTC",
+    557
+   ],
+   [
+    "xyz:COIN",
+    186
+   ]
+  ],
+  "taille_med": 1000,
+  "heures": {
+   "0": 106,
+   "6": 621,
+   "12": 839,
+   "18": 434
+  }
+ },
+ {
+  "addr": "0xbf732ea04197942783e34730ed6e0f6099575d58",
+  "capital": 3667755,
+  "roi_mois": 85.4,
+  "roi_all": 499.4,
+  "turnover": 361,
+  "fills": 2000,
+  "span_h": 1.0,
+  "fills_par_h": 2046.1,
+  "maker": 76,
+  "winrate": 17,
+  "pnl_fills": -2497,
+  "fees": 881,
+  "coins": [
+   [
+    "xyz:BRENTOIL",
+    1953
+   ],
+   [
+    "PUMP",
+    47
+   ]
+  ],
+  "taille_med": 364,
+  "heures": {
+   "0": 214,
+   "18": 1786
+  }
+ },
+ {
+  "addr": "0x777d062defa9a95fb0066b4b3f410d170b110111",
+  "capital": 104939,
+  "roi_mois": 85.4,
+  "roi_all": 70.8,
+  "turnover": 173,
+  "fills": 2000,
+  "span_h": 228.1,
+  "fills_par_h": 8.8,
+  "maker": 44,
+  "winrate": 98,
+  "pnl_fills": 34100,
+  "fees": 2286,
+  "coins": [
+   [
+    "NEAR",
+    1351
+   ],
+   [
+    "LIT",
+    311
+   ],
+   [
+    "BTC",
+    242
+   ]
+  ],
+  "taille_med": 814,
+  "heures": {
+   "0": 747,
+   "12": 487,
+   "18": 766
+  }
+ },
+ {
+  "addr": "0x1317ea30e98a643fe356f01f5bc33cd0756044cb",
+  "capital": 56452,
+  "roi_mois": 85.1,
+  "roi_all": 583.6,
+  "turnover": 208,
+  "fills": 2000,
+  "span_h": 462.3,
+  "fills_par_h": 4.3,
+  "maker": 61,
+  "winrate": 49,
+  "pnl_fills": 23407,
+  "fees": 1471,
+  "coins": [
+   [
+    "LIT",
+    367
+   ],
+   [
+    "ETHFI",
+    288
+   ],
+   [
+    "HYPE",
+    273
+   ]
+  ],
+  "taille_med": 437,
+  "heures": {
+   "6": 1,
+   "12": 1654,
+   "18": 345
+  }
+ },
+ {
+  "addr": "0x90cc9850f850bb51a2cc6054a8a57246c02b40ed",
+  "capital": 114089,
+  "roi_mois": 84.8,
+  "roi_all": 104.9,
+  "turnover": 4055,
+  "fills": 2000,
+  "span_h": 7.0,
+  "fills_par_h": 284.7,
+  "maker": 88,
+  "winrate": 54,
+  "pnl_fills": -492,
+  "fees": 133,
+  "coins": [
+   [
+    "FARTCOIN",
+    311
+   ],
+   [
+    "xyz:COIN",
+    303
+   ],
+   [
+    "INJ",
+    154
+   ]
+  ],
+  "taille_med": 152,
+  "heures": {
+   "0": 7,
+   "12": 924,
+   "18": 1069
+  }
+ }
+]
