@@ -65,6 +65,8 @@ def main(dry):
         oui = sum(x.startswith("OUI") for x in v)
         msg.append(f"🗳 conseil : {len(v)} idées, {oui} OUI. Dernière : {v[-1][:90]}")
     msg.append("💰 " + acct[:150])
+    todo = [l[6:].split(".")[0][:110] for l in open(os.path.join(REPO, "docs/a-faire-tony.md")).read().splitlines() if l.startswith("- [ ] ")]
+    msg += ["📌 pour toi : " + t for t in todo[:2]]
     msg.append("❓ Qu'est-ce qui manquait ou était faux ? (une réponse, même « rien », me dit que tu l'as lu)")
     text = "\n".join(msg)
     if dry:
