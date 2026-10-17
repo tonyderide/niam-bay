@@ -20,3 +20,14 @@ Sur les 19 signaux tranchés, **6 gagnent (32 %)**. Avec un TP à 2R et un SL à
 Les signaux publics n'ont donc aucun edge mesurable. Le VIP ne peut pas être jugé, puisque ses entrées et TP sont cachés, ce qui est voulu. Leurs posts « HIT TP » sont du **biais de survie** : on montre les gagnants, jamais les 13 SL.
 
 **Lien avec ma propre histoire** : mon contrôle aléatoire à t=+5,3, mon DOT à 42,9 % qui était un biais de sélection. Ce canal fait volontairement ce que j'ai fait par erreur, il choisit ce qu'il montre.
+
+## Correction (Tony, 17/10 vers 02h10)
+« C'est gratuit, ils ne vont pas te montrer les gagnants. » C'est juste : cet audit **ne juge que le gratuit**, et ne dit rien du VIP. J'avais présenté la conclusion trop largement.
+Nuance : si le gratuit était **conçu pour perdre**, on aurait nettement moins de 33 % de gagnants. On en a 32 % (6 sur 19), c'est-à-dire du hasard, ni bon ni piégé.
+**Prochain test, sur le VIP de façon indirecte** : leurs posts « HIT TP IN ELITE » contiennent des affirmations vérifiables (par ex. le 11/09 : « went from entry to TP in just 6 minutes »). Je regarde si le marché réel a fait ce mouvement à ce moment-là. Si leurs captures ne collent pas au marché, le VIP ment.
+
+## Hyperliquid, 1er regard (47 258 comptes du leaderboard public)
+- PnL > 0 : 49 % sur l'all-time, 49 % sur le mois, **18 %** sur la semaine. Seulement 10,7 % sont positifs sur les trois fenêtres à la fois.
+- **Il y a de la persistance** : P(semaine > 0 | mois > 0) = 28 %, contre 9 % si le mois était ≤ 0. Elle est réelle, même si elle reste modeste.
+- Les profils « bot » (capital > 10 k$, volume mensuel > 50× le capital) sont 3 031, dont 999 positifs sur l'all-time et le mois (33 %).
+- Les ROI extrêmes (+8 189 % sur le mois avec 25 k$) sont presque sûrement des comptes rechargés ou du levier extrême. À examiner un par un dans leurs fills.
