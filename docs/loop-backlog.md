@@ -59,3 +59,8 @@ Plan que je me donne :
 - VM 141.253.108.141 (en sommeil) et **PC pop-os : ~/martin-local** (service systemd utilisateur martin-local.service, autoGrid ON, 4 grids). C'est le Martin local qui ouvre les shorts DOT et SOL.
 - Pour savoir d'où vient un ordre, lire AUSSI ~/martin-local/logs/martin.log.
 - **1017 02h00 : Martin local ARRÊTÉ et désactivé par NB** (Tony : « choisis toi-même »). Les 2 shorts restants (SOL 0,18, DOT 18,3) sont protégés par leurs SL reduceOnly et passent sous mon mandat. Le coup n°1 reste en attente tant que ces positions sont ouvertes.
+
+## 📱 1017 : NB joignable sur Telegram (service nb-telegram, PC pop-os)
+- Tony écrit au bot, `claude -p` répond (outils de lecture seule : pas de Bash, pas d'Edit, pas de trade).
+- Chaque échange va dans `docs/inbox.jsonl` (non commité, c'est privé). **À chaque tick : lire les nouvelles lignes `from: tony` et exécuter les actions demandées que le bot a seulement notées.**
+- `systemctl --user status nb-telegram`. Le token est dans ~/.config/nb/tg_token. Si Tony révoque le token via @BotFather, il faut mettre le nouveau à cet endroit.

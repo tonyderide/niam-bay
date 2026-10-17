@@ -159,3 +159,4 @@
 - 02:11 Hyperliquid : 254 comptes robustes, 4 reverse-engineerés (scalp long 98% WR, trend-follower 36% WR, MM). 2/4 vidés depuis. → ai-lab/bot-audit/HYPERLIQUID.md
 - 02:16 copy-check : profileur de fragilité des vaults Hyperliquid. 5/15 vaults top-APR perdants en réalisé ; 'Low risk' APR 378% = -58k réalisé -168k latent. → ai-lab/copy-check/
 - 02:16 tick : positions inchangées (SOL+DOT shorts, SL ok, pire cas -1.52). Traction exchange-truth : 0 star, 0 fork, 0 vue, PR #171 et #16591 ouvertes sans réponse. Signal de demande = nul pour l'instant.
+- 02:21 NB joignable sur Telegram : scripts/nb-telegram/nb_tg.py + service systemd. Lecture seule, inbox.jsonl lue par la boucle.

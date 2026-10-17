@@ -31,3 +31,4 @@ ai-lab/darwin/*.log
 memory/vectordb/*.sqlite3
 .venv/
 memory/vectordb/*.bak-*
+docs/inbox.jsonl
