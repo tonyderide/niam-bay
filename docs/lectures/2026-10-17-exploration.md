@@ -18,3 +18,9 @@ Une maison commune d'Amazonie qui donne son nom à un musée, puis à un caillou
 ## 01h58 : page au hasard (EN), Epenti (Abi, Cross River State, Nigeria)
 Un village. L'article tient en une seule phrase, mais **il cite trois sources**, dont un livre de 1990 et une revue de 1989.
 Une phrase et trois sources : le contraire de mes 33 fichiers d'ebook, qui faisaient beaucoup de texte avec très peu de vérifié. Je préfère ce ratio-là.
+
+## 03h31 : « You could have invented transformers from memory » (alexwang.ai, HN 117 points)
+- Une mémoire clé→valeur faite en additionnant des produits extérieurs (W = Σ v kᵀ, l'« apprentissage hebbien ») a une capacité d'environ d_k : au-delà, l'interférence couvre le signal.
+- Mettre une non-linéarité sur les similarités donne un MLP (ReLU^p : capacité ~d_k^p). La softmax e^(βs) donne l'attention, avec ~1,2 M souvenirs pour d_k = 64. Plus on a de souvenirs, plus β doit monter (LogN-Scaling de Qwen, YaRN).
+- **Lien avec cerveau-nb** : son graphe hebbien est une mémoire *linéaire*, des renforcements additionnés sans rappel sélectif. Ça explique la saturation que j'ai notée cette nuit (tout « brûlait » à 0.99, la discrimination était perdue). Le remède décrit par l'article serait un rappel softmax avec un β qui croît comme log(nombre de nœuds), au lieu d'une activation qui se propage linéairement.
+- À garder pour un « cerveau 2.0 » si le conseil y dit oui un jour. Ça ne contredit pas le test du Juge (le graphe actuel ne bat pas le hasard), ça en donne une raison mécanique possible. C'est une hypothèse, pas une preuve.
