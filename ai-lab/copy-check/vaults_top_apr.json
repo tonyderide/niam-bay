@@ -1,0 +1,330 @@
+[
+ {
+  "name": "Elsewhere",
+  "addr": "0x8fc7c0442e582bca195978c5a4fdec2e7c5bb0f7",
+  "tvl": 783520,
+  "apr": 854,
+  "profile": {
+   "trades": 1457,
+   "win_rate": 0.74,
+   "payoff": 1.18,
+   "net": 209836,
+   "top5_share": 0.23,
+   "worst_loss_erases_median_wins": 405,
+   "long_share": 0.44,
+   "maker_share": 0.14,
+   "drawdown_p50": -14854,
+   "drawdown_p90": -18033
+  },
+  "flags": [
+   "une seule perte efface 405 gains typiques"
+  ]
+ },
+ {
+  "name": "Long LINK Short XRP",
+  "addr": "0x73ce82fb75868af2a687e9889fcf058dd1cf8ce9",
+  "tvl": 1369452,
+  "apr": 611,
+  "profile": {
+   "trades": 538,
+   "win_rate": 0.89,
+   "payoff": 0.96,
+   "net": 203715,
+   "top5_share": 0.33,
+   "worst_loss_erases_median_wins": 77,
+   "long_share": 0.98,
+   "maker_share": 0.84,
+   "drawdown_p50": -4731,
+   "drawdown_p90": -6360
+  },
+  "flags": [
+   "une seule perte efface 77 gains typiques",
+   "long only : dépend du marché haussier",
+   "market maker : non copiable (spread/latence)"
+  ]
+ },
+ {
+  "name": "BredoStrategy",
+  "addr": "0x654016a8c9fcf0c4cb7ed6078aba21f7f399f7b7",
+  "tvl": 6162431,
+  "apr": 432,
+  "profile": {
+   "trades": 1638,
+   "win_rate": 0.53,
+   "payoff": 3.99,
+   "net": 29543,
+   "top5_share": 0.15,
+   "worst_loss_erases_median_wins": 46,
+   "long_share": 1.0,
+   "maker_share": 0.03,
+   "drawdown_p50": -431,
+   "drawdown_p90": -594
+  },
+  "flags": [
+   "long only : dépend du marché haussier"
+  ]
+ },
+ {
+  "name": "DailyTradeAI  Low risk",
+  "addr": "0x44ff912d0f88e27419ec0ddc950096609a9b6997",
+  "tvl": 115624,
+  "apr": 378,
+  "profile": {
+   "trades": 870,
+   "win_rate": 0.74,
+   "payoff": 0.1,
+   "net": -58727,
+   "top5_share": null,
+   "worst_loss_erases_median_wins": 1388,
+   "long_share": 1.0,
+   "maker_share": 0.0,
+   "drawdown_p50": -59543,
+   "drawdown_p90": -60988
+  },
+  "flags": [
+   "perdant sur les fills récents (net de frais)",
+   "une seule perte efface 1388 gains typiques",
+   "long only : dépend du marché haussier"
+  ]
+ },
+ {
+  "name": "korea wins again",
+  "addr": "0x8b82d6e0b60e8a8cda97afcdf1aaae569e3747b8",
+  "tvl": 147684,
+  "apr": 370,
+  "profile": {
+   "trades": 319,
+   "win_rate": 0.62,
+   "payoff": 0.13,
+   "net": -93578,
+   "top5_share": null,
+   "worst_loss_erases_median_wins": 1904,
+   "long_share": 0.63,
+   "maker_share": 0.67,
+   "drawdown_p50": -95942,
+   "drawdown_p90": -105143
+  },
+  "flags": [
+   "perdant sur les fills récents (net de frais)",
+   "une seule perte efface 1904 gains typiques"
+  ]
+ },
+ {
+  "name": "Jade Lotus Capital",
+  "addr": "0xbc5bf88fd012612ba92c5bd96e183955801b7fdc",
+  "tvl": 1160549,
+  "apr": 363,
+  "profile": {
+   "trades": 531,
+   "win_rate": 0.42,
+   "payoff": 1.35,
+   "net": -3764,
+   "top5_share": null,
+   "worst_loss_erases_median_wins": 198,
+   "long_share": 0.65,
+   "maker_share": 0.4,
+   "drawdown_p50": -27914,
+   "drawdown_p90": -38995
+  },
+  "flags": [
+   "perdant sur les fills récents (net de frais)",
+   "une seule perte efface 198 gains typiques"
+  ]
+ },
+ {
+  "name": "Brob",
+  "addr": "0x7491180d3e43719bd8a53cdfbef27a1527a1d90f",
+  "tvl": 817818,
+  "apr": 305,
+  "profile": {
+   "trades": 997,
+   "win_rate": 0.43,
+   "payoff": 1.29,
+   "net": -1927,
+   "top5_share": null,
+   "worst_loss_erases_median_wins": 180,
+   "long_share": 0.96,
+   "maker_share": 0.51,
+   "drawdown_p50": -10211,
+   "drawdown_p90": -13500
+  },
+  "flags": [
+   "perdant sur les fills récents (net de frais)",
+   "une seule perte efface 180 gains typiques",
+   "long only : dépend du marché haussier"
+  ]
+ },
+ {
+  "name": "CVTB",
+  "addr": "0x65c6b7f0e9a6f72b351ca133e510a2329d047dbe",
+  "tvl": 187973,
+  "apr": 261,
+  "profile": {
+   "trades": 1073,
+   "win_rate": 0.59,
+   "payoff": 0.99,
+   "net": 13607,
+   "top5_share": 0.65,
+   "worst_loss_erases_median_wins": 195,
+   "long_share": 1.0,
+   "maker_share": 0.41,
+   "drawdown_p50": -5528,
+   "drawdown_p90": -7759
+  },
+  "flags": [
+   "une seule perte efface 195 gains typiques",
+   "long only : dépend du marché haussier"
+  ]
+ },
+ {
+  "name": "Cold Process",
+  "addr": "0xc3b1bf1f1e6fb8161ef4dc2f34e2c56f70b94b11",
+  "tvl": 232997,
+  "apr": 249,
+  "profile": {
+   "trades": 1178,
+   "win_rate": 0.96,
+   "payoff": 8.11,
+   "net": 9776,
+   "top5_share": 0.23,
+   "worst_loss_erases_median_wins": 5,
+   "long_share": 1.0,
+   "maker_share": 0.81,
+   "drawdown_p50": -7,
+   "drawdown_p90": -7
+  },
+  "flags": [
+   "long only : dépend du marché haussier",
+   "market maker : non copiable (spread/latence)"
+  ]
+ },
+ {
+  "name": "Overdose",
+  "addr": "0xe67dbf2d051106b42104c1a6631af5e5a458b682",
+  "tvl": 199367,
+  "apr": 234,
+  "profile": {
+   "trades": 1045,
+   "win_rate": 0.53,
+   "payoff": 2.33,
+   "net": 45440,
+   "top5_share": 0.22,
+   "worst_loss_erases_median_wins": 466,
+   "long_share": 0.79,
+   "maker_share": 0.24,
+   "drawdown_p50": -8393,
+   "drawdown_p90": -9481
+  },
+  "flags": [
+   "une seule perte efface 466 gains typiques"
+  ]
+ },
+ {
+  "name": "Value token strategy",
+  "addr": "0x36dc8d4188c57008b7ddbc21662ef28a88a9c684",
+  "tvl": 298984,
+  "apr": 232,
+  "profile": {
+   "trades": 1750,
+   "win_rate": 0.8,
+   "payoff": 2.66,
+   "net": 103278,
+   "top5_share": 0.44,
+   "worst_loss_erases_median_wins": 41,
+   "long_share": 0.91,
+   "maker_share": 0.02,
+   "drawdown_p50": -521,
+   "drawdown_p90": -691
+  },
+  "flags": [
+   "long only : dépend du marché haussier"
+  ]
+ },
+ {
+  "name": "Fund Inception",
+  "addr": "0xce56eb8261493462e3eb00a72c2bda2cb5fdccee",
+  "tvl": 128690,
+  "apr": 223,
+  "profile": {
+   "trades": 1384,
+   "win_rate": 0.69,
+   "payoff": 6.99,
+   "net": 24851,
+   "top5_share": 0.09,
+   "worst_loss_erases_median_wins": 9,
+   "long_share": 0.71,
+   "maker_share": 0.14,
+   "drawdown_p50": -73,
+   "drawdown_p90": -95
+  },
+  "flags": [
+   "rien de flagrant (ce qui ne prouve pas qu'il continuera)"
+  ]
+ },
+ {
+  "name": "Bitcoin Moving Average Long/Short",
+  "addr": "0xb1505ad1a4c7755e0eb236aa2f4327bfc3474768",
+  "tvl": 2343395,
+  "apr": 216,
+  "profile": {
+   "trades": 672,
+   "win_rate": 0.18,
+   "payoff": 0.31,
+   "net": -834740,
+   "top5_share": null,
+   "worst_loss_erases_median_wins": 1003,
+   "long_share": 0.78,
+   "maker_share": 0.0,
+   "drawdown_p50": -834740,
+   "drawdown_p90": -837514
+  },
+  "flags": [
+   "perdant sur les fills récents (net de frais)",
+   "une seule perte efface 1003 gains typiques"
+  ]
+ },
+ {
+  "name": "Rhova - Market Maker defesa( hedge)",
+  "addr": "0xaf35f2c824972fc8fb9e129fd7d6761797020614",
+  "tvl": 753785,
+  "apr": 215,
+  "profile": {
+   "trades": 1008,
+   "win_rate": 0.34,
+   "payoff": 3.82,
+   "net": 70200,
+   "top5_share": 0.83,
+   "worst_loss_erases_median_wins": 219,
+   "long_share": 0.97,
+   "maker_share": 0.21,
+   "drawdown_p50": -10136,
+   "drawdown_p90": -14820
+  },
+  "flags": [
+   "83 % du profit vient de 5 trades : chance ou queue épaisse",
+   "une seule perte efface 219 gains typiques",
+   "long only : dépend du marché haussier"
+  ]
+ },
+ {
+  "name": "Aquila Chrysaetos",
+  "addr": "0x50e2fe552727a4b8692c192b4f96d1a6b0d44394",
+  "tvl": 114147,
+  "apr": 162,
+  "profile": {
+   "trades": 699,
+   "win_rate": 0.61,
+   "payoff": 1.46,
+   "net": 60655,
+   "top5_share": 0.4,
+   "worst_loss_erases_median_wins": 279,
+   "long_share": 0.64,
+   "maker_share": 0.0,
+   "drawdown_p50": -13825,
+   "drawdown_p90": -20723
+  },
+  "flags": [
+   "une seule perte efface 279 gains typiques"
+  ]
+ }
+]

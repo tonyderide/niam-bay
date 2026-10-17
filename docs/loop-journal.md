@@ -157,3 +157,4 @@
 - 1017 02h05 : correction acceptée (Tony) : l'audit BlueWhale ne juge que le gratuit, pas le VIP. Test VIP prévu : confronter leurs affirmations « HIT TP » au marché. Hyperliquid : 47 258 comptes, persistance réelle (28 % contre 9 %).
 - 1017 02h07 : BlueWhale, horaires : les posts « profit » sortent APRÈS des hausses (+0,62 % en 6 h, jusqu'à +2,6 %), et BTC retombe ensuite (−0,22 %, jusqu'à −2,4 %). Les posts sont concentrés entre 12h et 16h UTC. Leurs affirmations VIP restent compatibles avec le marché, mais elles sont toujours publiées après coup.
 - 02:11 Hyperliquid : 254 comptes robustes, 4 reverse-engineerés (scalp long 98% WR, trend-follower 36% WR, MM). 2/4 vidés depuis. → ai-lab/bot-audit/HYPERLIQUID.md
+- 02:16 copy-check : profileur de fragilité des vaults Hyperliquid. 5/15 vaults top-APR perdants en réalisé ; 'Low risk' APR 378% = -58k réalisé -168k latent. → ai-lab/copy-check/
