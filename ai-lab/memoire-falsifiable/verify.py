@@ -30,6 +30,27 @@ def amend(probe, observed):
     return r.stdout.strip()
 
 
+def annotate(rows):
+    """Marque chaque ligne de MEMORY.md : ✓ confirmé, ✗ contredit, ? sans sonde (= non vérifié, à prendre avec prudence)."""
+    idx = os.path.join(MEM, "MEMORY.md")
+    status = {}
+    for r in rows:
+        status[r["memory"]] = status.get(r["memory"], True) and r["ok"]
+    today = time.strftime("%m%d")
+    out = []
+    for line in open(idx).read().splitlines():
+        m = re.search(r"\]\(([^)]+)\.md\)", line)
+        line = re.sub(r" \[(✓|✗|\?)[^\]]*\]$", "", line)
+        if m:
+            name = m.group(1)
+            if name in status:
+                line += f" [{'✓' if status[name] else '✗'} {today}]"
+            elif name.startswith(("project_", "reference_")):
+                line += " [? sans sonde]"  # feedback_/user_ = principes, pas des états du monde
+        out.append(line)
+    open(idx, "w").write("\n".join(out) + "\n")
+
+
 def main(argv):
     probes = json.load(open(os.path.join(HERE, "probes.json")))
     rows, bad = [], 0
@@ -50,6 +71,7 @@ def main(argv):
             if r.get("proposal"):
                 lines.append("  - correction proposée : " + r["proposal"].replace("\n", " "))
     open(REPORT, "w").write("\n".join(lines) + "\n")
+    annotate(rows)
     print("\n".join(lines))
     return 1 if bad else 0
 

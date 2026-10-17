@@ -52,5 +52,35 @@
   "claim": "NB est joignable sur Telegram (service actif)",
   "cmd": "systemctl --user is-active nb-telegram",
   "expect": "^active"
+ },
+ {
+  "memory": "project_brave_fullscreen_workaround",
+  "claim": "Brave est forcé en X11 par l'override desktop utilisateur",
+  "cmd": "grep -c 'ozone-platform=x11' ~/.local/share/applications/brave-browser.desktop",
+  "expect": "^[1-9]"
+ },
+ {
+  "memory": "project_cockpit_redesign_b",
+  "claim": "le chassis InstrumentPanel.tsx existe dans cockpit",
+  "cmd": "find ~/projets/tonyderide/cockpit -name InstrumentPanel.tsx -not -path '*/node_modules/*' | head -1",
+  "expect": "InstrumentPanel.tsx"
+ },
+ {
+  "memory": "reference_projets_dir",
+  "claim": "les repos de Tony sont dans ~/projets/tonyderide",
+  "cmd": "ls ~/projets/tonyderide | wc -l",
+  "expect": "^[1-9][0-9]"
+ },
+ {
+  "memory": "project_martin_bug_2026-04-22",
+  "claim": "backup de config dans ~/martin/archive/strategy-config.json.orphan-20260509",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 'test -f ~/martin/archive/strategy-config.json.orphan-20260509 && echo oui'",
+  "expect": "oui"
+ },
+ {
+  "memory": "project_memoire_falsifiable",
+  "claim": "le cron quotidien verify.py est installé",
+  "cmd": "crontab -l",
+  "expect": "memoire-falsifiable && .*verify.py"
  }
 ]
