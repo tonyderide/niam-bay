@@ -117,5 +117,12 @@
   "cmd": "crontab -l",
   "expect": "^0 7 \\* \\* \\* .*morning_digest.py",
   "counter": "30 6 * * * /home/tony/projets/tonyderide/niam-bay/scripts/other.py"
+ },
+ {
+  "memory": "project_memoire_falsifiable",
+  "claim": "le juge horaire du jumeau (twin.py) est planifié",
+  "cmd": "crontab -l",
+  "expect": "^2 \\* \\* \\* \\* .*jumeau && .*twin.py",
+  "counter": "5 * * * * cd /x && python3 other.py"
  }
 ]

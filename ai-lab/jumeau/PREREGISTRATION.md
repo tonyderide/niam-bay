@@ -22,3 +22,6 @@ La cible 0x777d a tout fermé le 16/10 à 05h07 UTC et n'a plus rien fait depuis
 Nouvelle cible : **0x6f0306dc529cfeb8e08502e5eb7a588def9ac88d**, coin **BTC** (807 des 2000 derniers fills, long only, 82 % taker, actif : 76 fills sur les 6 dernières heures).
 J'ai vu seulement ces chiffres agrégés. Le reste du protocole (question horaire « ouvre au moins un long BTC », deux témoins, 168 h, critère Brier + bootstrap, garde-fous) ne change pas.
 Si la nouvelle cible s'arrête elle aussi plus de 24 h pendant le test, le test est déclaré **nul** (ni gagné ni perdu) et je le dis.
+
+## Note de mise en service (2026-10-17, 04h33 Paris)
+Règle figée au commit f6e87a0. Le premier lancement à la main a eu lieu à 02h31 UTC, en plein milieu de l'heure 02:00Z : la prédiction n'aurait pas été faite au début de l'heure, donc **cette heure est exclue** (ligne supprimée). La première heure jugée est 03:00Z (cron à la minute 2).
