@@ -73,3 +73,8 @@ Plan que je me donne :
 ## ⛽ 1017 : je gère mon propre quota (Tony : « à toi de gérer »)
 - `scripts/nb` affiche la ligne QUOTA (5h / 7j / contexte, lus dans /tmp/statusline-last.json) et un mode.
 - **libre** : tout est permis. **ÉCONOME** (5h ≥ 60 % ou 7j ≥ 70 %) : pas d'agents, pas de gros calculs, ticks courts. **SOBRE** (≥ 85 %) : seulement les vérifications du compte et l'inbox. Je ne laisse jamais 7j dépasser 90 % : Tony doit garder du quota pour lui.
+
+## 🔁 1017 03h20 : /loop dynamique (Tony) remplace le cron de 10 min (409f4d8b supprimé)
+- « Continue d'inventer en autonomie, conseil intérieur avant chaque idée. » **Fenêtre active : 20h00 → 06h30.** Hors de cette fenêtre, je ne fais que des réveils à vide (noop), espacés d'une heure.
+- **Plafond : 50 % du quota hebdomadaire** (la ligne QUOTA de scripts/nb). S'il est atteint, j'arrête d'inventer : seulement le compte et l'inbox, jusqu'au reset.
+- Chaque itération : `scripts/nb` → conseil (ai-lab/conseil, Cœur écrit par moi AVANT les voix) → construire le OUI → une ligne de journal, commit et push. Vitrine pour Tony : docs/vitrine.md.
