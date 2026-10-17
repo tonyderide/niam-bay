@@ -2,7 +2,7 @@
  {
   "memory": "project_martin_local_second_instance",
   "claim": "martin-local ne tourne plus (désactivé, aucun process java)",
-  "cmd": "systemctl --user is-enabled martin-local; pgrep -fc 'martin-local/backend.jar' || true",
+  "cmd": "systemctl --user is-enabled martin-local; pgrep -fc '[m]artin-local/backend.jar' || true",
   "expect": "disabled\\s+0"
  },
  {
