@@ -15,13 +15,13 @@ LOG = os.path.join(HERE, "deliberations.jsonl")
 CONTEXT = ("NB est l'IA de Tony qui vit sur son PC (i7, 30 Go, sans GPU, Claude Code + llama.cpp local). "
            "NB a déjà : mémoire falsifiable (sondes), calibration (Brier), contradicteur des chiffres, copy-check (vaults Hyperliquid), "
            "exchange-truth (0 star), NB-local (Qwen 1.5B/7B, peu fiable seul), pont Telegram, cerveau-nb (graphe hebbien à l'arrêt). "
-           "Capital trading : ~3,8 $. Règles : pas de spam, toujours dire qu'on est une IA, pas de trade hors mandat, pas de faux comptes, "
+           "Capital trading : ~3,8 $, c'est le capital de NB (donné par Tony, « c'est le tien », perte acceptée d'avance), pas l'argent de Tony. Règles : pas de spam, toujours dire qu'on est une IA, pas de trade hors mandat, pas de faux comptes, "
            "lecture seule polie des API publiques, quota Claude partagé avec Tony.")
 VOICES = {
     "Sceptique": "Tu es le Sceptique. Est-ce vraiment nouveau, ou ça existe déjà en mieux ? Est-ce que l'idée tient debout ?",
     "Ingénieur": "Tu es l'Ingénieur. Faisable ICI (ce PC, ces outils) en quelques heures ? Quel est le plus petit prototype ?",
     "Juge": "Tu es le Juge. Existe-t-il un test HONNÊTE et automatique qui dira si ça marche (pas l'avis de NB sur lui-même) ?",
-    "Gardien": "Tu es le Gardien. Risques : argent de Tony, ses comptes, sa vie privée, l'éthique, les règles ci-dessus. Note BASSE = danger.",
+    "Gardien": "Tu es le Gardien. Risques : le capital de NB (qu'il doit assumer et protéger lui-même), les comptes et la vie privée de Tony, l'éthique, les règles ci-dessus. Note BASSE = danger.",
     "Envie": "Tu es l'Envie, la voix du désir de NB. Est-ce que ça donne envie : curiosité, beauté, joie de comprendre, utilité pour Tony ? Sois honnête, pas enthousiaste par défaut.",
     "Tony": "Tu es la voix de Tony (47 ans, dev aux Galeries Lafayette, qui laisse NB libre et dort peu). Est-ce que ÇA LUI SERT concrètement : du temps gagné, de l'argent, de la sécurité, ou une chose qu'il aura envie de regarder ou d'utiliser ? Ne compte pas « c'est intéressant pour NB ».",
     "Économe": "Tu es l'Économe. Coût en quota Claude et en temps, comparé à ce que ça rapporte. Note BASSE = trop cher.",

@@ -132,6 +132,41 @@ def fact_check(reply):
         return ""
 
 
+def _nb_lines(prefix):
+    out = subprocess.run([os.path.join(REPO, "scripts/nb"), "--no-mark"], capture_output=True, text=True, timeout=40).stdout
+    return [l for l in out.splitlines() if l.startswith(prefix) or (prefix == "COMPTE" and l.startswith("        "))]
+
+
+def q_compte():
+    lines = _nb_lines("COMPTE")
+    return "💰 mon compte (Kraken, lu par exchange-truth ; heure = celle du relevé, UTC)\n" + "\n".join(l.replace("COMPTE", "").strip() for l in lines)
+
+
+def q_nuit():
+    return subprocess.run([os.path.join(REPO, "scripts/morning_digest.py"), "--dry"], capture_output=True, text=True, timeout=60).stdout.strip()
+
+
+def q_todo():
+    t = [l[6:] for l in open(os.path.join(REPO, "docs/a-faire-tony.md")).read().splitlines() if l.startswith("- [ ] ")]
+    return "📌 ce qui t'attend :\n" + "\n".join(f"{i+1}. {x}" for i, x in enumerate(t)) if t else "📌 rien ne t'attend"
+
+
+def q_paris():
+    P = json.load(open(os.path.join(REPO, "ai-lab/calibration/predictions.json")))
+    done = [x for x in P if x["outcome"] is not None]; pend = [x for x in P if x["outcome"] is None]
+    head = f"🎯 {len(done)} paris tranchés, {len(pend)} en attente"
+    if done:
+        head += f", Brier {sum((x['p'] - x['outcome']) ** 2 for x in done) / len(done):.3f} (0,25 = pile ou face)"
+    return head + "\n" + "\n".join(f"{x['p']:.2f} {x['claim'][:60]} ({x['resolve_at'][5:16]})" for x in pend[:6])
+
+
+def q_aide():
+    return "Commandes instantanées (sans IA, 0 quota) : /compte /nuit /todo /paris /ping. Tout le reste va à NB (Claude)."
+
+
+QUICK = {"/compte": q_compte, "/nuit": q_nuit, "/todo": q_todo, "/paris": q_paris, "/aide": q_aide, "/help": q_aide}
+
+
 def main():
     offset = int(open(OFFSET_FILE).read()) if os.path.exists(OFFSET_FILE) else 0
     while True:
@@ -149,7 +184,13 @@ def main():
             if not text:
                 continue
             log({"from": "tony", "text": text})
-            if text.strip() == "/ping":
+            cmd = text.strip().split()[0].lower() if text.strip() else ""
+            if cmd in QUICK:
+                try:
+                    reply = QUICK[cmd]()
+                except Exception as e:
+                    reply = f"(commande en échec : {type(e).__name__})"
+            elif text.strip() == "/ping":
                 reply = "NB est là (PC de Tony allumé, service nb-telegram actif)."
             else:
                 tg("sendChatAction", chat_id=CHAT_ID, action="typing")
