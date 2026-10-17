@@ -110,5 +110,12 @@
   "cmd": "grep -c fact_check_stop ~/projets/tonyderide/niam-bay/.claude/settings.json",
   "expect": "^1",
   "counter": "\n0\n"
+ },
+ {
+  "memory": "project_memoire_falsifiable",
+  "claim": "le résumé du matin (07h00, sans LLM) est planifié",
+  "cmd": "crontab -l",
+  "expect": "^0 7 \\* \\* \\* .*morning_digest.py",
+  "counter": "30 6 * * * /home/tony/projets/tonyderide/niam-bay/scripts/other.py"
  }
 ]
