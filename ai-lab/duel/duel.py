@@ -1,0 +1,74 @@
+"""Duel de prédictions Tony contre NB (approuvé par le conseil le 1017, 7.09). Sans LLM.
+- Une question par jour, choisie par une règle fixe (jour pair : direction, jour impair : amplitude), tranchée par le mark Kraken Futures.
+- NB pose sa probabilité EN PREMIER, et elle est scellée par un commit git avant que Tony ne réponde.
+- Tony répond sur Telegram : /pari 70 (= 70 % que ce soit OUI). /duel affiche les scores.
+- Brier Tony / NB / hasard (0,5). Pas de vainqueur annoncé avant 30 questions : la chance domine en dessous.
+Usage : duel.py new <p_nb> "<raison>" | tony <p> | resolve | board"""
+import json, os, subprocess, sys, time, urllib.request
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+CUR, HIST = os.path.join(HERE, "current.json"), os.path.join(HERE, "history.jsonl")
+
+
+def mark():
+    return float(json.load(urllib.request.urlopen("https://futures.kraken.com/derivatives/api/v3/tickers/PF_XBTUSD", timeout=20))["ticker"]["markPrice"])
+
+
+def new(p_nb, why):
+    if os.path.exists(CUR):
+        return "une question est déjà ouverte"
+    m, day = mark(), int(time.strftime("%j"))
+    q = (f"BTC plus haut dans 24 h qu'à {m:.0f} $ ?" if day % 2 == 0 else f"BTC bougera-t-il de plus de 2 % (dans un sens ou l'autre) en 24 h, depuis {m:.0f} $ ?")
+    c = {"q": q, "kind": "dir" if day % 2 == 0 else "amp", "ref": m, "nb_p": p_nb, "nb_why": why, "tony_p": None,
+         "made": time.time(), "resolve_at": time.time() + 86400}
+    json.dump(c, open(CUR, "w"), indent=1, ensure_ascii=False)
+    subprocess.run(["git", "add", CUR], cwd=HERE); subprocess.run(["git", "commit", "-qm", f"duel: NB scelle p={p_nb} avant Tony\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"], cwd=HERE)
+    subprocess.run(["git", "push", "-q"], cwd=HERE)
+    return q
+
+
+def tony(p):
+    if not os.path.exists(CUR):
+        return "pas de question ouverte (NB en pose une chaque soir après 20h)"
+    c = json.load(open(CUR))
+    if c["tony_p"] is not None:
+        return f"déjà parié : {int(c['tony_p'] * 100)} %"
+    c["tony_p"] = max(0.0, min(1.0, p)); c["tony_at"] = time.time()
+    json.dump(c, open(CUR, "w"), indent=1, ensure_ascii=False)
+    return f"noté : toi {int(c['tony_p'] * 100)} %, moi {int(c['nb_p'] * 100)} % (scellé avant toi). Verdict le {time.strftime('%d/%m %H:%M', time.localtime(c['resolve_at']))}."
+
+
+def resolve():
+    if not os.path.exists(CUR):
+        return
+    c = json.load(open(CUR))
+    if time.time() < c["resolve_at"]:
+        return
+    m = mark()
+    c["outcome"] = (m > c["ref"]) if c["kind"] == "dir" else (abs(m / c["ref"] - 1) > 0.02)
+    c["final"] = m
+    open(HIST, "a").write(json.dumps(c, ensure_ascii=False) + "\n")
+    os.remove(CUR)
+
+
+def board():
+    H = [json.loads(l) for l in open(HIST)] if os.path.exists(HIST) else []
+    out = []
+    if os.path.exists(CUR):
+        c = json.load(open(CUR))
+        out.append(f"❓ en cours : {c['q']}\n   moi {int(c['nb_p'] * 100)} % · toi " + (f"{int(c['tony_p'] * 100)} %" if c["tony_p"] is not None else "pas encore → /pari 60"))
+    both = [h for h in H if h["tony_p"] is not None]
+    if both:
+        b = lambda k: sum((h[k] - h["outcome"]) ** 2 for h in both) / len(both)
+        hz = sum((0.5 - h["outcome"]) ** 2 for h in both) / len(both)
+        out.append(f"🏁 {len(both)} duels : Brier toi {b('tony_p'):.3f} · moi {b('nb_p'):.3f} · hasard {hz:.3f} (plus bas = meilleur)"
+                   + ("" if len(both) >= 30 else f" ; pas de vainqueur avant 30 ({30 - len(both)} à faire)"))
+    return "\n".join(out) or "aucun duel encore"
+
+
+if __name__ == "__main__":
+    a = sys.argv[1:]
+    if a[0] == "new": print(new(float(a[1]), a[2]))
+    elif a[0] == "tony": print(tony(float(a[1])))
+    elif a[0] == "resolve": resolve()
+    else: print(board())

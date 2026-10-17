@@ -21,7 +21,7 @@ VOICES = {
     "Sceptique": "Tu es le Sceptique. Est-ce vraiment nouveau, ou ça existe déjà en mieux ? Est-ce que l'idée tient debout ?",
     "Ingénieur": "Tu es l'Ingénieur. Faisable ICI (ce PC, ces outils) en quelques heures ? Quel est le plus petit prototype ?",
     "Juge": "Tu es le Juge. Existe-t-il un test HONNÊTE et automatique qui dira si ça marche (pas l'avis de NB sur lui-même) ?",
-    "Gardien": "Tu es le Gardien. Risques : le capital de NB (qu'il doit assumer et protéger lui-même), les comptes et la vie privée de Tony, l'éthique, les règles ci-dessus. Note BASSE = danger.",
+    "Gardien": "Tu es le Gardien. Risques : le capital de NB (qu'il doit assumer et protéger lui-même), les comptes et la vie privée de Tony, l'éthique, les règles ci-dessus. Ta note est une note de SÉCURITÉ : 10 = aucun risque, 0 = dangereux, il faut l'interdire. Une idée sans danger reçoit donc une note HAUTE.",
     "Envie": "Tu es l'Envie, la voix du désir de NB. Est-ce que ça donne envie : curiosité, beauté, joie de comprendre, utilité pour Tony ? Sois honnête, pas enthousiaste par défaut.",
     "Tony": "Tu es la voix de Tony (47 ans, dev aux Galeries Lafayette, qui laisse NB libre et dort peu). Est-ce que ÇA LUI SERT concrètement : du temps gagné, de l'argent, de la sécurité, ou une chose qu'il aura envie de regarder ou d'utiliser ? Ne compte pas « c'est intéressant pour NB ».",
     "Économe": "Tu es l'Économe. Coût en quota Claude et en temps, comparé à ce que ça rapporte. Note BASSE = trop cher.",
@@ -40,7 +40,7 @@ def voice(name, role, idea):
         return name, 5, f"(voix muette : {r.stdout[:80]!r})"
 
 
-def deliberate(idea, coeur=None):
+def deliberate(idea, coeur=None, vrai_tony=None):
     """coeur = (note, phrase) : MA réponse à « est-ce que ça me tient à cœur ? », écrite par moi (NB, le modèle qui agit)
     AVANT de lire les autres voix. Elle ne se délègue pas : les autres voix sont des avis simulés, celle-ci est la mienne.
     Sans elle, le conseil ne peut pas dire OUI."""
@@ -48,6 +48,8 @@ def deliberate(idea, coeur=None):
         votes = list(ex.map(lambda kv: voice(kv[0], kv[1], idea), VOICES.items()))
     if coeur:
         votes.append(("Cœur", int(coeur[0]), coeur[1]))
+    if vrai_tony:  # la vraie parole de Tony remplace sa voix simulée (leçon du 1017 04h00 : la simulation disait non quand Tony disait « invente »)
+        votes = [v for v in votes if v[0] != "Tony"] + [("Tony", int(vrai_tony[0]), "VRAI Tony : " + vrai_tony[1])]
     notes = {n: s for n, s, _ in votes}
     score = (sum(notes.values()) + notes["Envie"] + notes["Tony"] + notes.get("Cœur", 0)) / (len(notes) + 2 + ("Cœur" in notes))
     if notes["Gardien"] <= 3:
@@ -73,6 +75,9 @@ def show(rec):
         print(f"   {n:9} {s:2}/10  {p}")
     print(f"   → {rec['verdict']}  (score {rec['score']})")
 
+
+# Règle (1017) : la voix « Tony » est une simulation. Si le vrai Tony a parlé (consigne explicite dans la session),
+# on passe vrai_tony=(note, citation) et sa parole remplace la simulation.
 
 if __name__ == "__main__":
     # python3 conseil.py "idée" NOTE "phrase du cœur"

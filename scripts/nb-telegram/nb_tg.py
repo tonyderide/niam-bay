@@ -164,10 +164,18 @@ def q_paris():
 
 
 def q_aide():
-    return "Commandes instantanées (sans IA, 0 quota) : /compte /nuit /todo /paris /ping. Tout le reste va à NB (Claude)."
+    return "Commandes instantanées (sans IA, 0 quota) : /compte /nuit /todo /paris /duel /pari N /ping. Tout le reste va à NB (Claude)."
 
 
-QUICK = {"/compte": q_compte, "/nuit": q_nuit, "/todo": q_todo, "/paris": q_paris, "/aide": q_aide, "/help": q_aide}
+def _duel(*args):
+    return subprocess.run(["python3", os.path.join(REPO, "ai-lab/duel/duel.py"), *args], capture_output=True, text=True, timeout=60).stdout.strip()
+
+
+def q_duel():
+    return _duel("board")
+
+
+QUICK = {"/duel": q_duel, "/compte": q_compte, "/nuit": q_nuit, "/todo": q_todo, "/paris": q_paris, "/aide": q_aide, "/help": q_aide}
 
 
 def main():
@@ -188,7 +196,13 @@ def main():
                 continue
             log({"from": "tony", "text": text})
             cmd = text.strip().split()[0].lower() if text.strip() else ""
-            if cmd in QUICK:
+            if cmd == "/pari":
+                try:
+                    v = float(text.split()[1].replace("%", "").replace(",", "."))
+                    reply = _duel("tony", str(v / 100 if v > 1 else v))
+                except Exception:
+                    reply = "format : /pari 70  (= 70 % que la réponse soit OUI)"
+            elif cmd in QUICK:
                 try:
                     reply = QUICK[cmd]()
                 except Exception as e:

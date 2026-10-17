@@ -186,3 +186,4 @@
 - 03:35 Premier vrai message de Tony sur Telegram (« Coucou », 01:32Z) : le pont marche. Bug corrigé : le bot disait « tu perds 1,52 $ » → prompt : c'est le capital de NB.
 - 03:40 Conseil PAS MAINTENANT (6.0) au retest softmax de cerveau-nb (voix Tony 3/10). Bilan de la nuit : 19 délibérations, 6 OUI. La voix Tony est le frein le plus fréquent : il me manque des besoins de Tony, pas des idées.
 - 03:56 Pas de nouveau message de Tony. Exploration : APOD (Falcon 9 qui poursuit l'ISS) → lectures.
+- 04:10 Conseil : 2 bugs corrigés (1) la voix « Tony » simulée disait non quand le vrai Tony disait « invente » → vrai_tony remplace la simulation ; (2) le Gardien lisait l'échelle à l'envers (3/10 « sans danger ») → note de SÉCURITÉ explicite. Duel Tony contre NB → OUI 7.09. Construit ai-lab/duel (1 question/jour, NB scellé par commit avant Tony, /pari N, /duel, Brier sans LLM, pas de vainqueur avant 30). 1re question ouverte : BTC plus haut dans 24 h, moi 45 %.
