@@ -1,9 +1,9 @@
-# Vérification de la mémoire de NB (2026-10-17 02:36)
+# Vérification de la mémoire de NB (2026-10-17 02:38)
 
 15/15 souvenirs confirmés par le monde, **0 contredits**.
 
 - ✅ `project_martin_local_second_instance` : martin-local ne tourne plus (désactivé, aucun process java)
-- ✅ `project_niambay_own_capital_20260826` : le capital NB est de quelques dollars (2-4 $ depuis le 1015)
+- ✅ `project_niambay_own_capital_20260826` : le capital NB (equity actuelle, pas l'equity aux stops) est de quelques dollars (2-5 $ depuis le 1015)
 - ✅ `project_exchange_truth` : ~/et/run.sh tourne en cron chaque minute sur la VM
 - ✅ `project_exchange_truth` : exchange-truth est public sur github
 - ✅ `project_nb_wake_cron` : cron local 23 */6 lance niambay-vacation-wake.sh
