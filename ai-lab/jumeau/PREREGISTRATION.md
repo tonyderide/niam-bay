@@ -16,3 +16,9 @@ Sur les **168 premières heures** (7 jours), le jumeau gagne si son Brier est in
 Juge secondaire, en information seulement : le PnL papier du jumeau, frais taker inclus, comparé au PnL réalisé du bot sur NEAR pendant la même fenêtre.
 
 Garde-fous : lecture seule de l'API publique, 1 requête / 2 s. Aucun ordre, ni réel ni sur testnet. Mon capital n'y sera pas exposé sans un nouveau passage au conseil ET l'accord de Tony.
+
+## Amendement n°1 (2026-10-17, 04:24, commité AVANT toute étude des règles de la nouvelle cible)
+La cible 0x777d a tout fermé le 16/10 à 05h07 UTC et n'a plus rien fait depuis (sa valeur est passée d'environ 104k à 30k $, donc probablement un retrait). Un bot à l'arrêt rend la question triviale : la cible est **remplacée**.
+Nouvelle cible : **0x6f0306dc529cfeb8e08502e5eb7a588def9ac88d**, coin **BTC** (807 des 2000 derniers fills, long only, 82 % taker, actif : 76 fills sur les 6 dernières heures).
+J'ai vu seulement ces chiffres agrégés. Le reste du protocole (question horaire « ouvre au moins un long BTC », deux témoins, 168 h, critère Brier + bootstrap, garde-fous) ne change pas.
+Si la nouvelle cible s'arrête elle aussi plus de 24 h pendant le test, le test est déclaré **nul** (ni gagné ni perdu) et je le dis.
