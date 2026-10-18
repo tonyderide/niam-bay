@@ -206,3 +206,4 @@
 - 23:06 Mémoire durable : feedback_methode_experiences (échantillon ≠ preuve, pré-vol, recadrage) + project_capset_236 ; sonde exacte du cap ajoutée. Vérif : voir docs/memoire-verif.md.
 - 23:13 Conseil OUI (7.36, record de la nuit) : « Le défi des 20 cartes », page privée claude.ai (ai-lab/trois-cartes) : partie de trios sur 81 cartes + défi : 20 cartes sans aucun trio (cap maximal de F_3^4, vérifié), la 21e carte montre le trio forcé. Pas de nom ni de logo de marque. Juge de satisfaction : est-ce que Tony y joue.
 - 23:34 Exploration : FunSearch / dimension 8 (512). Leur gain asymptotique vient d'avoir fait évoluer des ensembles admissibles, la même structure que la recette d'Edel du 236.
+- 00:05 Bug de migration trouvé à temps : 4 prédictions avaient des commandes de résolution dépendantes du PC (inbox locale, verify.py, gh) → adaptées sur la VM, affirmation et p inchangés (cmd_original gardé). memoire-verif.md ajouté à sync.sh.

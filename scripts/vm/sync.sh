@@ -4,7 +4,7 @@
 #  VM -> PC : prédictions tranchées, duel, journal du jumeau, inbox (privée, non commitée)
 set -e
 R=~/projets/tonyderide/niam-bay; K="-i $HOME/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes"; V=ubuntu@141.253.108.141
-scp -q $K $R/docs/loop-journal.md $R/ai-lab/conseil/deliberations.jsonl $R/docs/a-faire-tony.md $V:nb/
+scp -q $K $R/docs/loop-journal.md $R/ai-lab/conseil/deliberations.jsonl $R/docs/a-faire-tony.md $R/docs/memoire-verif.md $V:nb/
 # prédictions : on envoie celles du PC, la VM fusionne (elle garde ses issues, ajoute les nouvelles par id)
 scp -q $K $R/ai-lab/calibration/predictions.json $V:nb/calibration/predictions.pc.json
 ssh $K $V 'cd ~/nb/calibration && python3 - <<PY
