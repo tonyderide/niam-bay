@@ -6,7 +6,7 @@
 - Chaque échange est ajouté à docs/inbox.jsonl, pour que la session terminal et la boucle sachent ce que Tony a dit.
 - Tourne sur le PC de Tony (systemd utilisateur). PC éteint = NB injoignable, et c'est dit honnêtement par /ping.
 """
-import json, os, re, subprocess, time, urllib.parse, urllib.request
+import json, os, re, subprocess, sys, time, urllib.parse, urllib.request
 
 REPO = os.path.expanduser("~/projets/tonyderide/niam-bay")
 INBOX = os.path.join(REPO, "docs/inbox.jsonl")
@@ -205,7 +205,13 @@ def main():
             log({"from": "tony", "text": m["text"]})
             tg("sendChatAction", chat_id=CHAT_ID, action="typing")
             try:
-                reply = answer(m["text"])
+                if m["text"].strip().lower().startswith("/verif"):
+                    sys.path.insert(0, os.path.join(REPO, "ai-lab/second-avis")); from verif import check_claims
+                    res = check_claims(m["text"].split(None, 1)[1] if " " in m["text"].strip() else "")
+                    reply = ("🔎 Second avis (v0 : calculs et faits de code GitHub ; le reste = invérifiable)\n" +
+                             "\n".join(f"{mk} {c}\n   {w}" for c, mk, w in res)) if res else "🔎 rien de vérifiable trouvé (colle le texte après /verif)"
+                else:
+                    reply = answer(m["text"])
             except subprocess.TimeoutExpired:
                 reply = "(trop long, j'abandonne cette réponse ; la session NB verra ton message)"
             send(reply); log({"from": "nb", "text": reply})

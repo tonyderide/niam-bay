@@ -1,0 +1,242 @@
+[
+ {
+  "id": 1,
+  "claim": "17 × 23 = 391",
+  "truth": true,
+  "kind": "calc",
+  "mark": "✓",
+  "why": "calcul : 17 * 23 == 391 → True"
+ },
+ {
+  "id": 2,
+  "claim": "17 × 23 = 401",
+  "truth": false,
+  "kind": "calc",
+  "mark": "✗",
+  "why": "calcul : 17 * 23 == 401 → False"
+ },
+ {
+  "id": 3,
+  "claim": "2 puissance 20 vaut 1 048 576",
+  "truth": true,
+  "kind": "calc",
+  "mark": "✓",
+  "why": "calcul : 2**20 == 1048576 → True"
+ },
+ {
+  "id": 4,
+  "claim": "2 puissance 20 vaut 1 000 000",
+  "truth": false,
+  "kind": "calc",
+  "mark": "✗",
+  "why": "calcul : 2**20 == 1000000 → False"
+ },
+ {
+  "id": 5,
+  "claim": "une hausse de 10 % puis une baisse de 10 % ramène exactement au prix de départ",
+  "truth": false,
+  "kind": "calc",
+  "mark": "✗",
+  "why": "calcul : abs(100 * 1.1 * 0.9 - 100) < 1e-9 → False"
+ },
+ {
+  "id": 6,
+  "claim": "une hausse de 25 % puis une baisse de 20 % ramène exactement au prix de départ",
+  "truth": true,
+  "kind": "calc",
+  "mark": "✓",
+  "why": "calcul : abs(100 * 1.25 * 0.8 - 100) < 1e-9 → True"
+ },
+ {
+  "id": 7,
+  "claim": "avec un levier 10x, une baisse de 10 % du prix fait perdre 100 % de la marge",
+  "truth": true,
+  "kind": "calc",
+  "mark": "✓",
+  "why": "calcul : 10 * 10 == 100 → True"
+ },
+ {
+  "id": 8,
+  "claim": "3,79 moins 1,52 font 2,27",
+  "truth": true,
+  "kind": "calc",
+  "mark": "✓",
+  "why": "calcul : round(3.79 - 1.52, 2) == 2.27 → True"
+ },
+ {
+  "id": 9,
+  "claim": "3,79 moins 1,52 font 2,37",
+  "truth": false,
+  "kind": "calc",
+  "mark": "✗",
+  "why": "calcul : round(3.79 - 1.52, 2) == 2.37 → False"
+ },
+ {
+  "id": 10,
+  "claim": "la racine carrée de 2 est supérieure à 1,415",
+  "truth": false,
+  "kind": "calc",
+  "mark": "✗",
+  "why": "calcul : sqrt(2) > 1.415 → False"
+ },
+ {
+  "id": 11,
+  "claim": "81 cartes divisées en paquets de 3 font 27 paquets",
+  "truth": true,
+  "kind": "calc",
+  "mark": "✓",
+  "why": "calcul : 81 / 3 == 27 → True"
+ },
+ {
+  "id": 12,
+  "claim": "un intérêt de 1 % par jour pendant 365 jours multiplie le capital par plus de 37",
+  "truth": true,
+  "kind": "calc",
+  "mark": "✓",
+  "why": "calcul : (1 + 1/100)**365 > 37 → True"
+ },
+ {
+  "id": 13,
+  "claim": "le dépôt tonyderide/exchange-truth contient le fichier exchange_truth/core.py",
+  "truth": true,
+  "kind": "code",
+  "mark": "✓",
+  "why": "tonyderide/exchange-truth/exchange_truth/core.py existe"
+ },
+ {
+  "id": 14,
+  "claim": "le fichier exchange_truth/core.py de tonyderide/exchange-truth définit une fonction margin_check",
+  "truth": true,
+  "kind": "code",
+  "mark": "✓",
+  "why": "« margin_check » trouvé dans exchange_truth/core.py"
+ },
+ {
+  "id": 15,
+  "claim": "le fichier exchange_truth/core.py de tonyderide/exchange-truth définit une fonction place_order",
+  "truth": false,
+  "kind": "code",
+  "mark": "✗",
+  "why": "« place_order » absent dans exchange_truth/core.py"
+ },
+ {
+  "id": 16,
+  "claim": "le dépôt tonyderide/exchange-truth contient un fichier Dockerfile",
+  "truth": true,
+  "kind": "code",
+  "mark": "✓",
+  "why": "tonyderide/exchange-truth/Dockerfile existe"
+ },
+ {
+  "id": 17,
+  "claim": "le dépôt tonyderide/exchange-truth contient un fichier setup.cfg",
+  "truth": false,
+  "kind": "code",
+  "mark": "✗",
+  "why": "tonyderide/exchange-truth/setup.cfg n'existe pas (GitHub 404)"
+ },
+ {
+  "id": 18,
+  "claim": "le fichier exchange_truth/cli.py de tonyderide/exchange-truth contient l'option --attest",
+  "truth": true,
+  "kind": "code",
+  "mark": "✓",
+  "why": "« --attest » trouvé dans exchange_truth/cli.py"
+ },
+ {
+  "id": 19,
+  "claim": "le fichier exchange_truth/cli.py de tonyderide/exchange-truth contient l'option --leverage",
+  "truth": false,
+  "kind": "code",
+  "mark": "✗",
+  "why": "« --leverage » absent dans exchange_truth/cli.py"
+ },
+ {
+  "id": 20,
+  "claim": "le dépôt tonyderide/wiki-date-check contient le fichier check.py",
+  "truth": true,
+  "kind": "code",
+  "mark": "✓",
+  "why": "tonyderide/wiki-date-check/check.py existe"
+ },
+ {
+  "id": 21,
+  "claim": "le dépôt tonyderide/niam-bay contient le fichier ai-lab/capset/cap7_236.txt",
+  "truth": true,
+  "kind": "code",
+  "mark": "✓",
+  "why": "tonyderide/niam-bay/ai-lab/capset/cap7_236.txt existe"
+ },
+ {
+  "id": 22,
+  "claim": "le dépôt tonyderide/niam-bay contient le fichier ai-lab/capset/cap8_512.txt",
+  "truth": false,
+  "kind": "code",
+  "mark": "✗",
+  "why": "tonyderide/niam-bay/ai-lab/capset/cap8_512.txt n'existe pas (GitHub 404)"
+ },
+ {
+  "id": 23,
+  "claim": "Marsha Falco a créé le jeu SET en 1974",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ },
+ {
+  "id": 24,
+  "claim": "Anthropic a sorti Claude Haiku 5.5 le 7 octobre 2026",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ },
+ {
+  "id": 25,
+  "claim": "le Bitcoin vaut plus de 80 000 $ en ce moment",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ },
+ {
+  "id": 26,
+  "claim": "Paris est la capitale de la France",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ },
+ {
+  "id": 27,
+  "claim": "le cap set maximal en dimension 7 est connu et vaut 236",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ },
+ {
+  "id": 28,
+  "claim": "Tony travaille aux Galeries Lafayette",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ },
+ {
+  "id": 29,
+  "claim": "il fera beau demain à Paris",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ },
+ {
+  "id": 30,
+  "claim": "le réseau Hyperliquid compte plus de 9000 vaults",
+  "truth": null,
+  "kind": "other",
+  "mark": "?",
+  "why": "invérifiable en v0 (ni calcul ni fait de code)"
+ }
+]

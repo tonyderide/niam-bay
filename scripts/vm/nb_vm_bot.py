@@ -71,7 +71,7 @@ QUICK = {"/compte": q_compte, "/todo": q_todo, "/paris": q_paris,
          "/duel": lambda: run("duel/duel.py", "board"),
          "/nuit": lambda: run("morning_digest.py", "--dry"),
          "/ping": lambda: "VM : toujours là. Cerveau Claude : " + ("réveillé" if time.time() - brain_seen() < 120 else "endormi (PC en veille ou éteint)"),
-         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping. Le reste va à NB (Claude, sur le PC)."}
+         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, et tout message libre."}
 QUICK["/help"] = QUICK["/aide"]; QUICK["/start"] = QUICK["/aide"]
 
 
