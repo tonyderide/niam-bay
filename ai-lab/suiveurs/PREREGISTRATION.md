@@ -7,3 +7,7 @@
 - Découverte = 24 premières heures ; confirmation = 24 suivantes (p < 0,05, même sens).
 - Si le meneur fait moins de 15 achats en 24 h, le test est **indécidable** (pré-vol) et je le dis.
 - Aucune identification de personne, aucun contact, aucune copie de trade (Gardien). Aucune adresse de suiveur publiée.
+
+## Amendement n°1 (2026-10-18 22:34, AVANT toute analyse du flux collecté)
+Pré-vol : 0x6f03 ne fait qu'environ 1,2 rafale d'achat BTC par jour, et la dernière date d'il y a ~85 h. Le test serait indécidable (seuil : 15 par 24 h).
+Nouveau meneur, désigné par une règle mécanique : parmi les 30 comptes robustes de ai-lab/qui-copie, celui qui a le plus de rafales d'achat BTC par jour, c'est-à-dire **0x0b7879fdafb34632b6b92287158bbb8705cf11f0** (environ 1000000000.0 rafales par jour, 1 dans son historique). Le reste du protocole ne change pas. La collecte, qui ne dépend d'aucun meneur, a commencé à 22h11.
