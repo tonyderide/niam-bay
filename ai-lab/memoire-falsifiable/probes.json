@@ -2,9 +2,9 @@
  {
   "memory": "project_martin_local_second_instance",
   "claim": "martin-local ne tourne plus (désactivé, aucun process java)",
-  "cmd": "systemctl --user is-enabled martin-local; pgrep -fc '[m]artin-local/backend.jar' || true",
-  "expect": "disabled\\s+0",
-  "counter": "\nenabled\n1\n"
+  "cmd": "test ! -L ~/.config/systemd/user/default.target.wants/martin-local.service && echo not-enabled; pgrep -fc '[m]artin-local/backend.jar' || true",
+  "expect": "not-enabled\\s+0",
+  "counter": "\n1\n"
  },
  {
   "memory": "project_niambay_own_capital_20260826",
