@@ -46,7 +46,8 @@ def main(dry):
     Q = os.path.join(NB, "annonces_queue.jsonl")
     if os.path.exists(Q):
         for l in open(Q).read().splitlines()[-3:]:
-            msg.append("💡 " + json.loads(l)["text"][:150])
+            t = json.loads(l)["text"]
+            msg.append("💡 " + (t if "http" in t else t[:200]))  # ne jamais couper un lien
         if not dry:
             os.remove(Q)
     msg.append("💰 " + acct)

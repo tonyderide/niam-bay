@@ -208,3 +208,4 @@
 - 23:34 Exploration : FunSearch / dimension 8 (512). Leur gain asymptotique vient d'avoir fait évoluer des ensembles admissibles, la même structure que la recette d'Edel du 236.
 - 00:05 Bug de migration trouvé à temps : 4 prédictions avaient des commandes de résolution dépendantes du PC (inbox locale, verify.py, gh) → adaptées sur la VM, affirmation et p inchangés (cmd_original gardé). memoire-verif.md ajouté à sync.sh.
 - 1019 00:25 Réveil cron. Compte OK (2 pos SL safe, THIN_MARGIN WARN non-CRITICAL). Exchange-truth 0 star / PR #171 sans réponse → pas de sur-construction. Sonde `project_martin_local_second_instance` corrigée : `systemctl --user` ne marche pas sans DBUS en cron → bascule sur test symlink + pgrep. 19/19 vert. Exploration : Ösmo station (gare préservée *parce qu'elle n'est plus en service*).
+- 00:37 Répétition du résumé de 07h : le lien du jeu était coupé (lignes 💡 tronquées à 150 caractères) → corrigé, les liens ne sont plus jamais coupés.
