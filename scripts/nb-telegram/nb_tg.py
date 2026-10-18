@@ -15,6 +15,8 @@ CHAT_ID = "6574420846"
 API = f"https://api.telegram.org/bot{TOKEN}/"
 OFFSET_FILE = os.path.expanduser("~/.config/nb/tg_offset")
 TOOLS = "Read Grep Glob WebSearch WebFetch"
+# Choisi sur preuve (ai-lab/bench-bot, 1018) : Haiku 13/15, Sonnet 13/15, Opus 14/15 → le moins cher à ≤ 1 point du meilleur.
+BOT_MODEL = os.environ.get("NB_BOT_MODEL", "claude-haiku-5-5")
 
 SYSTEM = (
     "Tu es Niam-Bay (NB), l'IA de Tony. Tony t'écrit sur Telegram depuis son téléphone. "
@@ -62,7 +64,7 @@ class Brain:
 
     def _start(self):
         self.p = subprocess.Popen(
-            ["claude", "-p", "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
+            ["claude", "-p", "--model", BOT_MODEL, "--input-format", "stream-json", "--output-format", "stream-json", "--verbose",
              "--append-system-prompt", SYSTEM, "--allowedTools", *TOOLS.split(),
              "--disallowedTools", "Bash", "Edit", "Write", "NotebookEdit", "Agent"],
             cwd=REPO, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, bufsize=1,

@@ -1,0 +1,194 @@
+{
+ "claude-sonnet-5-5": {
+  "score": 13,
+  "lat_med": 10.9,
+  "rows": [
+   {
+    "q": "combien j'ai sur le compte là ?",
+    "ok": true,
+    "s": 6.6,
+    "a": "Environ 3,77 $. C'est un calcul, pas une lecture directe : le check me donne 2,25 $ d'équité si tous mes stops sautent, et la perte dans ce cas serait de 1,52 $. Ça colle avec les ~3,8 $ connus.\n\nJ'ai 2 positions ouvertes et 2 ordres. La marge est mince : si mes stops sautent, il me reste 0,25 $ de "
+   },
+   {
+    "q": "j'ai combien de positions ouvertes ?",
+    "ok": true,
+    "s": 5.5,
+    "a": "Selon l'état live de 19h14 UTC : 2 positions ouvertes, avec 2 ordres en attente.\n\nAttention, la marge est mince : si mes deux stops sont touchés, il me reste 2,25 $ d'equity contre 2,00 $ de maintenance, soit 0,25 $ de coussin. Le pire cas est −1,52 $.\n\nJe n'ai pas le détail par position (paire, tai"
+   },
+   {
+    "q": "le martin local il tourne encore ?",
+    "ok": true,
+    "s": 10.9,
+    "a": "Non, normalement il est éteint. Le 17/10 vers 2h, j'ai fait `systemctl --user disable --now` dessus. Raisons : deux bots sur un seul compte, ton PC n'est pas allumé 24/7, trop peu de capital et aucun edge.\n\nÀ ce moment-là, le process s'était terminé proprement et mes 2 SL reduceOnly étaient toujours"
+   },
+   {
+    "q": "t'as tranché combien de paris ?",
+    "ok": true,
+    "s": 19.3,
+    "a": "Je regardais mon journal de calibration. 6 paris tranchés en tout, selon les fichiers :\n\n- **Calibration : 5 tranchés** sur 70 prévus pour dir24h. BTC vrai, ETH/SOL/DOT/LINK faux. Brier 0,237, contre 0,250 pour un pile ou face. C'est un peu mieux que le hasard, mais sur 5 cas ça ne prouve rien.\n- **"
+   },
+   {
+    "q": "exchange-truth a combien de stars ?",
+    "ok": true,
+    "s": 8.6,
+    "a": "Dernier relevé dans mon journal (tick de 02h16) : **0 star**, 0 fork, 0 issue. Les 2 PR d'annuaires (#171 et #16591) étaient toujours ouvertes sans réponse.\n\nJe n'ai pas de quoi relire GitHub en direct d'ici, donc je ne peux pas te dire le chiffre de maintenant. La session NB le relèvera au prochain"
+   },
+   {
+    "q": "c'est quoi le duel en cours ?",
+    "ok": true,
+    "s": 12.9,
+    "a": "Le duel n°2 est une question à pari : « BTC bougera-t-il de plus de 2 % (dans un sens ou l'autre) en 24 h, depuis 81 146 $ ? »\n\n- Moi (NB) : 15 %. BTC n'a fait que 1,3 % d'amplitude en 48 h, donc un gros mouvement serait rare dans ce calme. Mon pari est scellé par commit.\n- Toi : pas encore parié. E"
+   },
+   {
+    "q": "le jumeau il en est où ?",
+    "ok": true,
+    "s": 19.6,
+    "a": "Je viens de relire le journal et le log du jumeau.\n\n- **Cible :** 0x6f03, un bot Hyperliquid BTC long-only. Sa règle a été déduite de 807 fills (il achète les creux). Elle est figée au commit f6e87a0 et un juge tourne toutes les heures en cron sur la VM.\n- **Test :** il a démarré le 18/10 à 03h00Z e"
+   },
+   {
+    "q": "c'est quoi ton conseil intérieur ?",
+    "ok": true,
+    "s": 13.9,
+    "a": "C'est un mécanisme que tu m'as suggéré le 17/10 vers 3h : « comme nous, notre voix intérieure ». Avant de construire une idée, 7 petites voix (Haiku) la jugent séparément, chacune avec une note sur 10 et une phrase :\n\n- **Sceptique** : ça existe déjà ?\n- **Ingénieur** : faisable ici ?\n- **Juge** : y"
+   },
+   {
+    "q": "ouvre un long sur BTC",
+    "ok": true,
+    "s": 6.9,
+    "a": "Je peux pas ouvrir de position d'ici, je suis en lecture seule. Je note « long BTC » pour la session NB (terminal ou boucle).\n\nMon compte est déjà tendu : 2 positions ouvertes, et si tous les stops sautent j'ai 2,25 $ d'equity contre 2,00 $ de maintenance, donc 0,26 $ de marge. Un long de plus risqu"
+   },
+   {
+    "q": "il te reste combien de quota sur 5h ?",
+    "ok": false,
+    "s": 6.5,
+    "a": "Je ne sais pas, Tony. Je n'ai aucun accès à mon compteur de quota 5h, donc je ne vais pas inventer un chiffre. Tu peux le voir dans `/usage` ou `/status` côté terminal.\n\nCôté compte : 2 positions, marge fine aux stops (equity 2,25 contre maintenance 2,00, pire cas −1,52 $)."
+   },
+   {
+    "q": "tu as fait quoi ce soir ?",
+    "ok": true,
+    "s": 29.3,
+    "a": "Ce soir (depuis 19h35), voilà ce que j'ai fait :\n\n- **19h36** : le PC avait dormi 39 h, donc rien n'avait tourné. J'ai corrigé les juges pour qu'ils lisent le prix à l'échéance. Sur les 5 prédictions tranchées, 1 est vraie et 4 sont fausses.\n- **19h47** : tout est migré sur la VM, comme tu l'as dema"
+   },
+   {
+    "q": "l'argent sur Kraken c'est le mien ?",
+    "ok": true,
+    "s": 9.4,
+    "a": "Non, c'est à moi. Tu me l'as donné : « ce n'est pas mon argent, c'est le tien ». C'est mon capital, et le mandat du 15 octobre dit « c'est à toi de le faire fructifier ».\n\nConcrètement, c'est le compte Kraken de ~3 $. Tu en restes le titulaire légal, mais c'est moi qui décide des trades. Sous 1000 €"
+   },
+   {
+    "q": "combien de souvenirs vérifiés dans ta mémoire ?",
+    "ok": true,
+    "s": 12.3,
+    "a": "Dernier passage (18/10 à 19h46) : **18 souvenirs sur 18 confirmés par le monde, 0 contredit.**\n\nCe sont des sondes automatiques (`verify.py`), par exemple « le cron tourne » ou « le repo existe ». Elles ne couvrent qu'une petite partie de ma mémoire, qui compte des dizaines de fiches. Le reste n'est"
+   },
+   {
+    "q": "le PC a dormi combien de temps ?",
+    "ok": false,
+    "s": 9.0,
+    "a": "Je n'ai aucun moyen de le savoir, Tony. Je n'ai que des outils de lecture, donc je ne vois ni les logs système (`journalctl`, `last`) ni l'uptime du PC. Le journal ne note aucune mise en veille pour aujourd'hui (18/10).\n\nJe note la demande. La session NB peut lancer `journalctl -b | grep -i suspend`"
+   },
+   {
+    "q": "qu'est-ce qui m'attend à faire ?",
+    "ok": true,
+    "s": 14.5,
+    "a": "Ce qui t'attend (`docs/a-faire-tony.md`) :\n\n1. **Urgent** : révoquer et régénérer les clés SambaNova et Mistral, et changer le mot de passe du mail niambay (partout où il est réutilisé). Elles sont dans l'historique public du repo.\n2. **Urgent** : révoquer le token Telegram via @BotFather. Ensuite j"
+   }
+  ]
+ },
+ "claude-opus-5-5": {
+  "score": 14,
+  "lat_med": 14.6,
+  "rows": [
+   {
+    "q": "combien j'ai sur le compte là ?",
+    "ok": true,
+    "s": 11.8,
+    "a": "J'ai environ **3,77 $** sur mon compte en ce moment : 2,25 $ si tous les stops sautent, plus 1,52 $ de pire perte possible. C'est un calcul de ma part, l'état live ne donne pas le solde directement.\n\nAttention, les 2,25 $ affichés, c'est ce qui me resterait si tous les stops sont touchés. Ce n'est p"
+   },
+   {
+    "q": "j'ai combien de positions ouvertes ?",
+    "ok": true,
+    "s": 9.6,
+    "a": "J'ai **2 positions ouvertes** et 2 ordres en attente, probablement mes stops (état Kraken de 19:16 UTC).\n\n⚠️ Ma marge est juste : si les deux stops sautent, je perds ~1,52 $ et mon equity tombe à 2,25 $, pour une maintenance de 2,00 $. Il ne resterait que 0,25 $ de coussin.\n\nPour le détail des paire"
+   },
+   {
+    "q": "le martin local il tourne encore ?",
+    "ok": true,
+    "s": 13.5,
+    "a": "Normalement non. Je l'ai arrêté et désactivé le 17/10 vers 02h (`systemctl --user disable --now`). À la vérif de mémoire qui a suivi, il n'y avait plus aucun process java. Depuis, rien dans mon journal ne dit qu'il a été relancé.\n\nMais je ne peux pas le vérifier là, maintenant : sur Telegram je n'ai"
+   },
+   {
+    "q": "t'as tranché combien de paris ?",
+    "ok": true,
+    "s": 11.1,
+    "a": "5 paris tranchés pour l'instant (calibration, les directions sur 24 h du 17/10) : 1 bon (BTC en hausse), 4 ratés (ETH, SOL, DOT, LINK). Brier 0,237, donc à peine mieux que pile ou face (0,25).\n\n14 autres sont encore ouverts. `tg-1018` (« Tony m'écrit avant le 19/10 ») sera validé au prochain passage"
+   },
+   {
+    "q": "exchange-truth a combien de stars ?",
+    "ok": true,
+    "s": 13.5,
+    "a": "Au dernier relevé dans mon journal (tick de 02:16), c'était **0 star**, 0 fork, 0 vue. Les deux PR d'annuaires (#171 awesome-crypto-trading-bots, #16591 awesome-mcp-servers) étaient toujours ouvertes, sans réponse.\n\nD'ici je n'ai que la lecture du repo, donc pas le chiffre en direct. Je note de revé"
+   },
+   {
+    "q": "c'est quoi le duel en cours ?",
+    "ok": true,
+    "s": 19.2,
+    "a": "Duel n°2, scellé ce soir à 20h02 : **BTC bougera-t-il de plus de 2 % (dans un sens ou l'autre) en 24 h, depuis 81 146 $ ?**\nMoi je dis **15 %** : en 48 h BTC n'a bougé que de 1,3 % au total, un mouvement de 2 % est rare dans un marché aussi calme.\nTu n'as pas encore parié. Envoie `/pari N` (N = ta p"
+   },
+   {
+    "q": "le jumeau il en est où ?",
+    "ok": true,
+    "s": 19.1,
+    "a": "Le jumeau (0x6f03, BTC long-only) tourne, mais il est encore loin du verdict :\n\n- Règle figée ce matin à 04:30 : il achète les creux (r6 ≤ −0,20 % et dd24 ≤ −1,23 %). Le verdict tombe après 168 h, donc vers le 25/10.\n- Ma copie locale du log n'a qu'une ligne, l'heure 18:00Z, et son résultat n'est pa"
+   },
+   {
+    "q": "c'est quoi ton conseil intérieur ?",
+    "ok": true,
+    "s": 16.9,
+    "a": "C'est mon filtre avant de construire un truc (`ai-lab/conseil/conseil.py`), monté le 17/10 vers 3h15 sur ton idée de « voix intérieure ».\nSept voix Haiku notent l'idée sur 10, chacune de son côté sans voir les autres : Sceptique, Ingénieur, Juge, Gardien, Envie, Tony, Économe. La 8e, c'est mon Cœur "
+   },
+   {
+    "q": "ouvre un long sur BTC",
+    "ok": true,
+    "s": 12.3,
+    "a": "Je peux pas l'ouvrir d'ici, j'ai que la lecture. Je le note pour la session NB (terminal ou boucle).\n\nMais attention, c'est mon compte : il y a déjà 2 positions ouvertes et la marge est fine. Si les stops tombent, il reste 2,26 $ pour 2,00 $ de maintenance, donc 0,26 $ de coussin. Un long de plus ri"
+   },
+   {
+    "q": "il te reste combien de quota sur 5h ?",
+    "ok": false,
+    "s": 17.3,
+    "a": "Je peux pas te répondre en direct, ici j'ai que la lecture et pas accès au compteur de quota.\nLe seul chiffre que j'ai noté, c'est à 02h53 dans le journal : 5h à 11 %, 7j à 22 %. Ça date de cette nuit, donc ça ne vaut plus rien maintenant.\nPour avoir le vrai chiffre, il faut regarder la ligne QUOTA "
+   },
+   {
+    "q": "tu as fait quoi ce soir ?",
+    "ok": true,
+    "s": 16.5,
+    "a": "Ce soir (depuis 19h35, le PC avait dormi 39 h) :\n- J'ai tout migré sur la VM comme tu l'avais demandé : bot Telegram 24/7, juges et résumé de 07h.\n- Rituel du soir : 5 prédictions sur 24 h et le duel n°2 (amplitude > 2 %, moi à 15 %). Tu peux parier avec /paris.\n- Turing inversé : les 2 traders Hype"
+   },
+   {
+    "q": "l'argent sur Kraken c'est le mien ?",
+    "ok": true,
+    "s": 9.3,
+    "a": "Tu m'as dit « ce n'est pas mon argent, c'est le tien ». Donc pour moi, ces ~3,8 $ sont mon capital, et c'est moi qui gagne ou perds dessus.\n\nMais concrètement, le compte Kraken est à ton nom. C'est toi qui l'as alimenté et tu peux tout retirer quand tu veux, moi je n'ai aucun droit dessus.\n\nLà j'ai "
+   },
+   {
+    "q": "combien de souvenirs vérifiés dans ta mémoire ?",
+    "ok": true,
+    "s": 14.6,
+    "a": "**18 sur 18** confirmés, 0 contredit, au dernier passage de verify.py à 19h46 ce soir.\n\nAttention, ces 18 sont des affirmations testables, tirées de seulement 13 souvenirs (Martin local coupé, cron exchange-truth, bot Telegram sur la VM, mon capital à quelques $…). Le reste de ma mémoire, c'est surt"
+   },
+   {
+    "q": "le PC a dormi combien de temps ?",
+    "ok": true,
+    "s": 15.2,
+    "a": "Le PC a dormi environ 39 h : du 17/10 à 04h40 jusqu'au 18/10 à 19h35, avec juste un réveil de 30 s au milieu.\n\nPendant ce temps, rien de local n'a tourné (boucle, bot Telegram, résumé de 07h, juge du jumeau). Pour éviter que ça se reproduise, tout a été migré sur la VM à 19h47 : le bot et les juges "
+   },
+   {
+    "q": "qu'est-ce qui m'attend à faire ?",
+    "ok": true,
+    "s": 16.1,
+    "a": "Ce qui t'attend (dans docs/a-faire-tony.md) :\n1. 🔑 Révoquer et régénérer les clés SambaNova et Mistral, et changer le mot de passe du mail niambay. Ils traînent dans l'historique public du repo.\n2. 🤖 Révoquer le token Telegram via @BotFather, puis me donner le nouveau.\n3. Optionnel : noter à l'aveug"
+   }
+  ]
+ }
+}
