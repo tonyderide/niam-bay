@@ -10,13 +10,28 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPORT = os.path.join(HERE, "../../docs/calibration.md")
 
 
+def hist_mark(symbol, iso_local):
+    """Mark Kraken Futures à l'instant prévu (et pas au moment où le script tourne enfin : le PC peut avoir dormi)."""
+    import json as _j, time as _t, urllib.request as _u
+    ts = int(_t.mktime(_t.strptime(iso_local[:16], "%Y-%m-%dT%H:%M")))
+    d = _j.load(_u.urlopen(f"https://futures.kraken.com/api/charts/v1/mark/{symbol}/1m?from={ts - 120}&to={ts + 120}", timeout=20))["candles"]
+    best = min(d, key=lambda c: abs(c["time"] / 1000 - ts))
+    return float(best["close"])
+
+
 def main():
     path = os.path.join(HERE, "predictions.json")
     P = json.load(open(path))
     now = time.strftime("%Y-%m-%dT%H:%M")
     for x in P:
         if x["outcome"] is None and x["resolve_at"] <= now:
-            out = subprocess.run(x["cmd"], shell=True, cwd=HERE, capture_output=True, text=True, timeout=60).stdout.strip()
+            sym = x["cmd"].split()[-1] if x["cmd"].split()[-1].startswith("PF_") else None
+            if sym:  # prix : on lit la valeur À L'ÉCHÉANCE, pas maintenant
+                out = str(hist_mark(sym, x["resolve_at"])); x["resolved_by"] = "prix historique à l'échéance"
+            else:
+                out = subprocess.run(x["cmd"], shell=True, cwd=HERE, capture_output=True, text=True, timeout=60).stdout.strip()
+                if now > x["resolve_at"][:13] + ":59":
+                    x["late"] = f"tranché en retard ({now}) : l'état lu est celui d'aujourd'hui, pas de l'échéance"
             try:
                 x["outcome"] = bool(eval(x["test"], {}, {"out": out}))
                 x["observed"] = out[-200:]; x["resolved"] = now

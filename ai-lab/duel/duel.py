@@ -14,6 +14,15 @@ def mark():
     return float(json.load(urllib.request.urlopen("https://futures.kraken.com/derivatives/api/v3/tickers/PF_XBTUSD", timeout=20))["ticker"]["markPrice"])
 
 
+def hist_mark(symbol, iso_local):
+    """Mark Kraken Futures à l'instant prévu (et pas au moment où le script tourne enfin : le PC peut avoir dormi)."""
+    import json as _j, time as _t, urllib.request as _u
+    ts = int(_t.mktime(_t.strptime(iso_local[:16], "%Y-%m-%dT%H:%M")))
+    d = _j.load(_u.urlopen(f"https://futures.kraken.com/api/charts/v1/mark/{symbol}/1m?from={ts - 120}&to={ts + 120}", timeout=20))["candles"]
+    best = min(d, key=lambda c: abs(c["time"] / 1000 - ts))
+    return float(best["close"])
+
+
 def new(p_nb, why):
     if os.path.exists(CUR):
         return "une question est déjà ouverte"
@@ -44,7 +53,7 @@ def resolve():
     c = json.load(open(CUR))
     if time.time() < c["resolve_at"]:
         return
-    m = mark()
+    m = hist_mark("PF_XBTUSD", time.strftime("%Y-%m-%dT%H:%M", time.localtime(c["resolve_at"])))  # prix à l'échéance, même si le PC dormait
     c["outcome"] = (m > c["ref"]) if c["kind"] == "dir" else (abs(m / c["ref"] - 1) > 0.02)
     c["final"] = m
     open(HIST, "a").write(json.dumps(c, ensure_ascii=False) + "\n")

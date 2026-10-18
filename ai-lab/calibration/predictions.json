@@ -83,7 +83,10 @@
   "resolve_at": "2026-10-18T03:24",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
   "test": "float(out)>81451.15169543783",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "81524.25718777592",
+  "resolved": "2026-10-18T19:36"
  },
  {
   "id": "dir24h-ETH-10170324",
@@ -99,7 +102,10 @@
   "resolve_at": "2026-10-18T03:24",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_ETHUSD",
   "test": "float(out)>2418.49424406622",
-  "outcome": null
+  "outcome": false,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "2405.64469939299",
+  "resolved": "2026-10-18T19:36"
  },
  {
   "id": "dir24h-SOL-10170324",
@@ -115,7 +121,10 @@
   "resolve_at": "2026-10-18T03:24",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_SOLUSD",
   "test": "float(out)>104.3953943855",
-  "outcome": null
+  "outcome": false,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "103.69631071045",
+  "resolved": "2026-10-18T19:36"
  },
  {
   "id": "dir24h-DOT-10170324",
@@ -131,7 +140,10 @@
   "resolve_at": "2026-10-18T03:24",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_DOTUSD",
   "test": "float(out)>1.17340166371",
-  "outcome": null
+  "outcome": false,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "1.11232637401",
+  "resolved": "2026-10-18T19:36"
  },
  {
   "id": "dir24h-LINK-10170324",
@@ -147,6 +159,9 @@
   "resolve_at": "2026-10-18T03:24",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_LINKUSD",
   "test": "float(out)>12.30272923608",
-  "outcome": null
+  "outcome": false,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "11.97937153168",
+  "resolved": "2026-10-18T19:36"
  }
 ]
