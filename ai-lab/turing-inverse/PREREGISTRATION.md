@@ -12,3 +12,6 @@ Ce test mesure la *prévisibilité*, pas « bot ou humain » : aucune adresse ne
 - **Mécanicité = skill de Brier sur le test** : 1 − Brier(arbre) / Brier(meilleur témoin).
 - **Critère** : « mécanique » si skill > 0,10 ET P(skill > 0) > 0,9 au bootstrap par blocs de 24 h. « Pas mécanique » sinon. Si un compte a moins de 10 heures avec ouverture dans le test, il est « indécidable ».
 - Juge différé : pour les comptes jugés mécaniques, l'arbre figé est rejugé sur les 7 jours suivants (en direct, sur la VM).
+
+## Amendement n°1 (2026-10-18, 20:35, avant le passage n°2)
+Le passage n°1 était surtout indécidable : trop peu d'ouvertures dans le test, à cause de la limite de 2000 fills. Pour le passage n°2, l'historique est **paginé** avec userFillsByTime (en remontant le temps, jusqu'à 10 000 fills ou 60 jours par compte). Comptes, variables, modèle, découpage 70/30, témoins et critère sont **inchangés**.

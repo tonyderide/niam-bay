@@ -11,8 +11,24 @@ def info(b):
     return json.load(urllib.request.urlopen(r, timeout=30))
 
 
+def history(addr, max_fills=10000, max_days=60):
+    """Amendement n°1 : on pagine vers le passé avec userFillsByTime."""
+    end = int(time.time() * 1000); start_floor = end - max_days * 86400000; out = {}
+    while len(out) < max_fills:
+        page = info({"type": "userFillsByTime", "user": addr, "startTime": start_floor, "endTime": end}); time.sleep(2)
+        if not page:
+            break
+        for x in page:
+            out[(x["tid"], x["oid"], x["time"])] = x
+        oldest = min(x["time"] for x in page)
+        if len(page) < 2000 or oldest <= start_floor:
+            break
+        end = oldest - 1
+    return list(out.values())
+
+
 def dataset(addr):
-    f = info({"type": "userFills", "user": addr}); time.sleep(2)
+    f = history(addr)
     coin = collections.Counter(x["coin"] for x in f if not x["coin"].startswith(("@", "xyz:"))).most_common(1)[0][0]
     f = [x for x in f if x["coin"] == coin]
     t0 = min(x["time"] for x in f) // 3600000 * 3600000; t1 = max(x["time"] for x in f) // 3600000 * 3600000
