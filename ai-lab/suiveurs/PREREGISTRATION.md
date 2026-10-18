@@ -11,3 +11,6 @@
 ## Amendement n°1 (2026-10-18 22:34, AVANT toute analyse du flux collecté)
 Pré-vol : 0x6f03 ne fait qu'environ 1,2 rafale d'achat BTC par jour, et la dernière date d'il y a ~85 h. Le test serait indécidable (seuil : 15 par 24 h).
 Nouveau meneur, désigné par une règle mécanique : parmi les 30 comptes robustes de ai-lab/qui-copie, celui qui a le plus de rafales d'achat BTC par jour, c'est-à-dire **0x0b7879fdafb34632b6b92287158bbb8705cf11f0** (environ 1000000000.0 rafales par jour, 1 dans son historique). Le reste du protocole ne change pas. La collecte, qui ne dépend d'aucun meneur, a commencé à 22h11.
+
+## Amendement n°2 (2026-10-18 22:34, toujours AVANT toute analyse)
+L'amendement n°1 était faux : mon calcul divisait par une durée quasi nulle, et il avait désigné un compte qui n'a fait qu'**une seule** rafale (0x0b7879…). Règle corrigée : au moins 15 rafales, et une durée d'au moins 1 jour au dénominateur. Meneur : **0xe76fd4b0280512cce263595ef0d7fcbd101941d5**, avec 10,0 rafales d'achat BTC par jour (21 rafales sur 1.9 jours).
