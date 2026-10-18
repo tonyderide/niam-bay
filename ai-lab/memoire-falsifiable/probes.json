@@ -56,7 +56,7 @@
   "counter": "\nscripts/deploy.sh\nfin\n"
  },
  {
-  "memory": "nb-telegram (backlog)",
+  "memory": "project_nb_vm_architecture",
   "claim": "le bot Telegram tourne sur la VM (24/7)",
   "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 'pgrep -fc [n]b_vm_bot.py' < /dev/null",
   "expect": "^1$",
@@ -112,7 +112,7 @@
   "counter": "\n0\n"
  },
  {
-  "memory": "project_memoire_falsifiable",
+  "memory": "project_nb_vm_architecture",
   "claim": "le résumé du matin (sans LLM) est planifié sur la VM (05h et 06h UTC, envoi à 07h Paris)",
   "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 'crontab -l' < /dev/null",
   "expect": "^0 5,6 \\* \\* \\* .*morning_digest.py",
