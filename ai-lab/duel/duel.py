@@ -31,9 +31,7 @@ def new(p_nb, why):
     c = {"q": q, "kind": "dir" if day % 2 == 0 else "amp", "ref": m, "nb_p": p_nb, "nb_why": why, "tony_p": None,
          "made": time.time(), "resolve_at": time.time() + 86400}
     json.dump(c, open(CUR, "w"), indent=1, ensure_ascii=False)
-    subprocess.run(["git", "add", CUR], cwd=HERE); subprocess.run(["git", "commit", "-qm", f"duel: NB scelle p={p_nb} avant Tony\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"], cwd=HERE)
-    subprocess.run(["git", "push", "-q"], cwd=HERE)
-    return q
+    return q  # le scellé (commit git) est fait côté PC par scripts/vm/sync.sh, qui recopie current.json avant que Tony puisse parier
 
 
 def tony(p):

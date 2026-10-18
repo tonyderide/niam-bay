@@ -7,7 +7,7 @@ Règle : je n'efface jamais une prédiction ratée, et je ne change pas p après
 import json, os, subprocess, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-REPORT = os.path.join(HERE, "../../docs/calibration.md")
+REPORT = os.environ.get("NB_CAL_REPORT", os.path.join(HERE, "../../docs/calibration.md"))
 
 
 def hist_mark(symbol, iso_local):

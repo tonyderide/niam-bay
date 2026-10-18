@@ -30,7 +30,7 @@ else:
 lines = open(os.path.join(REPO, "docs/inbox.jsonl")).read().splitlines() if os.path.exists(os.path.join(REPO, "docs/inbox.jsonl")) else []
 seen = int(open(SEEN).read()) if os.path.exists(SEEN) else 0
 new = [json.loads(l) for l in lines[seen:] if '"from": "tony"' in l]
-print(f"TELEGRAM {len(new)} nouveau(x) message(s) de Tony" + "".join(f"\n         {m['utc'][11:16]}Z {m['text'][:150]}" for m in new))
+print(f"TELEGRAM {len(new)} nouveau(x) message(s) de Tony traités par le relais" + "".join(f"\n         {m['utc'][11:16]}Z {m['text'][:150]}" for m in new))
 if "--no-mark" not in __import__("sys").argv:
     open(SEEN, "w").write(str(len(lines)))
 mv = os.path.join(REPO, "docs/memoire-verif.md")
@@ -50,4 +50,5 @@ try:
 except Exception:
     print("QUOTA    inconnu (pas de /tmp/statusline-last.json)")
 svc = {s: sh(f"systemctl --user is-active {s}") for s in ["nb-telegram", "martin-local"]}
+svc["vm-bot"] = "actif" if sh("ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=8 -o BatchMode=yes ubuntu@141.253.108.141 'pgrep -fc [n]b_vm_bot.py' < /dev/null") == "1" else "ARRÊTÉ"
 print("SERVICES", " ".join(f"{k}={v}" for k, v in svc.items()))

@@ -178,48 +178,35 @@ def q_duel():
 QUICK = {"/duel": q_duel, "/compte": q_compte, "/nuit": q_nuit, "/todo": q_todo, "/paris": q_paris, "/aide": q_aide, "/help": q_aide}
 
 
+VM = ["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=8", "-o", "BatchMode=yes", "ubuntu@141.253.108.141"]
+PULL = ("python3 -c \"import json,os;N=os.path.expanduser('~/nb');open(N+'/brain_heartbeat','w').write('x');"
+        "A={json.loads(l)['ts'] for l in open(N+'/answered.jsonl')} if os.path.exists(N+'/answered.jsonl') else set();"
+        "R=[json.loads(l) for l in open(N+'/inbox.jsonl')] if os.path.exists(N+'/inbox.jsonl') else [];"
+        "print(json.dumps([r for r in R if r.get('from')=='tony' and r.get('status')=='pending' and r['ts'] not in A]))\"")
+
+
 def main():
-    offset = int(open(OFFSET_FILE).read()) if os.path.exists(OFFSET_FILE) else 0
+    """Mode relais (1018) : c'est la VM qui écoute Telegram 24/7. Le PC ne fait plus que le cerveau.
+    Toutes les 10 s, il signale qu'il est réveillé, prend les messages en attente, répond avec Claude et marque le message traité."""
     while True:
         try:
-            ups = tg("getUpdates", offset=offset, timeout=30)["result"]
+            r = subprocess.run(VM + [PULL], capture_output=True, text=True, timeout=30)
+            pending = json.loads(r.stdout or "[]")
         except Exception:
-            time.sleep(10); continue
-        for u in ups:
-            offset = u["update_id"] + 1
-            open(OFFSET_FILE, "w").write(str(offset))
-            m = u.get("message") or {}
-            text = m.get("text", "")
-            if str(m.get("chat", {}).get("id")) != CHAT_ID:
-                log({"from": "inconnu", "chat": m.get("chat", {}).get("id"), "text": text[:200]}); continue
-            if not text:
-                continue
-            log({"from": "tony", "text": text})
-            cmd = text.strip().split()[0].lower() if text.strip() else ""
-            if cmd == "/pari":
-                try:
-                    v = float(text.split()[1].replace("%", "").replace(",", "."))
-                    reply = _duel("tony", str(v / 100 if v > 1 else v))
-                except Exception:
-                    reply = "format : /pari 70  (= 70 % que la réponse soit OUI)"
-            elif cmd in QUICK:
-                try:
-                    reply = QUICK[cmd]()
-                except Exception as e:
-                    reply = f"(commande en échec : {type(e).__name__})"
-            elif text.strip() == "/ping":
-                reply = "NB est là (PC de Tony allumé, service nb-telegram actif)."
-            else:
-                tg("sendChatAction", chat_id=CHAT_ID, action="typing")
-                try:
-                    reply = answer(text)
-                except subprocess.TimeoutExpired:
-                    reply = "(trop long, j'abandonne cette réponse ; la session NB verra ton message dans l'inbox)"
-            send(reply)
-            log({"from": "nb", "text": reply})
-            warn = fact_check(reply)  # après l'envoi : la réponse part vite, la correction suit si besoin
+            pending = []
+        for m in pending:
+            log({"from": "tony", "text": m["text"]})
+            tg("sendChatAction", chat_id=CHAT_ID, action="typing")
+            try:
+                reply = answer(m["text"])
+            except subprocess.TimeoutExpired:
+                reply = "(trop long, j'abandonne cette réponse ; la session NB verra ton message)"
+            send(reply); log({"from": "nb", "text": reply})
+            subprocess.run(VM + [f"echo '{json.dumps({'ts': m['ts']})}' >> ~/nb/answered.jsonl"], timeout=30)
+            warn = fact_check(reply)
             if warn:
                 send(warn.strip()); log({"from": "nb", "text": warn.strip(), "kind": "fact_check"})
+        time.sleep(10)
 
 
 if __name__ == "__main__":

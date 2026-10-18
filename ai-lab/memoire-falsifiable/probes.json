@@ -57,10 +57,10 @@
  },
  {
   "memory": "nb-telegram (backlog)",
-  "claim": "NB est joignable sur Telegram (service actif)",
-  "cmd": "systemctl --user is-active nb-telegram",
-  "expect": "^active",
-  "counter": "\ninactive\n"
+  "claim": "le bot Telegram tourne sur la VM (24/7)",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 'pgrep -fc [n]b_vm_bot.py' < /dev/null",
+  "expect": "^1$",
+  "counter": "0"
  },
  {
   "memory": "project_brave_fullscreen_workaround",
@@ -100,8 +100,8 @@
  {
   "memory": "project_calibration_nb",
   "claim": "le cron horaire resolve.py est installé",
-  "cmd": "crontab -l",
-  "expect": "calibration && .*resolve.py",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 'crontab -l' < /dev/null",
+  "expect": "^15 \\* \\* \\* \\* .*calibration && .*resolve.py",
   "counter": "\n# m h  dom mon dow   command\n0 * * * * /usr/bin/python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/scripts/sync_grid.py >> /tmp/sync.log 2>&1\n"
  },
  {
@@ -113,15 +113,15 @@
  },
  {
   "memory": "project_memoire_falsifiable",
-  "claim": "le résumé du matin (07h00, sans LLM) est planifié",
-  "cmd": "crontab -l",
-  "expect": "^0 7 \\* \\* \\* .*morning_digest.py",
+  "claim": "le résumé du matin (sans LLM) est planifié sur la VM (05h et 06h UTC, envoi à 07h Paris)",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 'crontab -l' < /dev/null",
+  "expect": "^0 5,6 \\* \\* \\* .*morning_digest.py",
   "counter": "30 6 * * * /home/tony/projets/tonyderide/niam-bay/scripts/other.py"
  },
  {
   "memory": "project_memoire_falsifiable",
-  "claim": "le juge horaire du jumeau (twin.py) est planifié",
-  "cmd": "crontab -l",
+  "claim": "le juge horaire du jumeau (twin.py) est planifié sur la VM",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 'crontab -l' < /dev/null",
   "expect": "^2 \\* \\* \\* \\* .*jumeau && .*twin.py",
   "counter": "5 * * * * cd /x && python3 other.py"
  }

@@ -79,3 +79,12 @@ Plan que je me donne :
 - **Plafond : 50 % du quota hebdomadaire** (la ligne QUOTA de scripts/nb). S'il est atteint, j'arrête d'inventer : seulement le compte et l'inbox, jusqu'au reset.
 - Chaque itération : `scripts/nb` → conseil (ai-lab/conseil, Cœur écrit par moi AVANT les voix) → construire le OUI → une ligne de journal, commit et push. Vitrine pour Tony : docs/vitrine.md.
 - **Chaque nuit, à la 1re itération après 20h : 5 prédictions dir24h** (BTC, ETH, SOL, DOT, LINK), avec p et une raison, selon ai-lab/calibration/PREREG-24H.md. Jusqu'à 70 au total, évaluation le 31/10.
+
+## 🖥️ 1018 : architecture VM + PC (Tony : « mets tout sur la VM »)
+- **La VM (141.253.108.141) tourne 24/7 et détient l'état vivant**, dans ~/nb :
+  - le bot Telegram (nb_vm_bot.py, relancé chaque minute par keepalive.sh) avec les commandes instantanées et la mise en attente des messages libres ;
+  - calibration/resolve.py (:15), duel/duel.py resolve (:20), jumeau/twin.py (:02) ;
+  - morning_digest.py (05h et 06h UTC, envoi à 07h Paris).
+- **Le PC est le cerveau Claude, quand il est réveillé.** nb-telegram.service fait le relais : toutes les 10 s, il prend les messages en attente sur la VM, répond, puis marque le message dans ~/nb/answered.jsonl. Si le PC dort, la VM prévient Tony au bout de 90 s.
+- **À chaque itération : `scripts/vm/sync.sh`.** Dans le sens PC→VM : journal, verdicts, a-faire, nouvelles prédictions (fusionnées par id). Dans le sens VM→PC : issues, duel, journal du jumeau. Puis commit.
+- Duel du soir : `ssh … 'cd ~/nb/duel && TZ=Europe/Paris python3 duel.py new P "raison"'`, puis sync.sh et commit (c'est le scellé) AVANT d'annoncer la question à Tony.
