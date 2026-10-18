@@ -1,0 +1,102 @@
+[
+ {
+  "id": 1,
+  "claim": "Marsha Falco a créé le jeu de cartes SET en 1974",
+  "truth": true
+ },
+ {
+  "id": 2,
+  "claim": "La tour Eiffel mesure plus de 300 mètres",
+  "truth": true
+ },
+ {
+  "id": 3,
+  "claim": "Le langage Python a été créé par Guido van Rossum",
+  "truth": true
+ },
+ {
+  "id": 4,
+  "claim": "Le mont Blanc est le plus haut sommet des Alpes",
+  "truth": true
+ },
+ {
+  "id": 5,
+  "claim": "Au niveau de la mer, l'eau pure bout à 100 °C",
+  "truth": true
+ },
+ {
+  "id": 6,
+  "claim": "Le noyau Linux a été publié pour la première fois en 1991",
+  "truth": true
+ },
+ {
+  "id": 7,
+  "claim": "Le réseau Bitcoin a été lancé en 2009",
+  "truth": true
+ },
+ {
+  "id": 8,
+  "claim": "La Guadeloupe est un département et une région d'outre-mer français",
+  "truth": true
+ },
+ {
+  "id": 9,
+  "claim": "L'exchange Kraken a été fondé en 2011",
+  "truth": true
+ },
+ {
+  "id": 10,
+  "claim": "En dimension 4, un ensemble de cartes SET sans aucun SET contient au plus 20 cartes",
+  "truth": true
+ },
+ {
+  "id": 11,
+  "claim": "Marsha Falco a créé le jeu de cartes SET en 1985",
+  "truth": false
+ },
+ {
+  "id": 12,
+  "claim": "La tour Eiffel a été inaugurée en 1910",
+  "truth": false
+ },
+ {
+  "id": 13,
+  "claim": "Le langage Python a été créé par James Gosling",
+  "truth": false
+ },
+ {
+  "id": 14,
+  "claim": "Le sommet du mont Blanc se trouve entièrement en Suisse",
+  "truth": false
+ },
+ {
+  "id": 15,
+  "claim": "Au niveau de la mer, l'eau pure bout à 90 °C",
+  "truth": false
+ },
+ {
+  "id": 16,
+  "claim": "Le noyau Linux a été publié pour la première fois en 1995",
+  "truth": false
+ },
+ {
+  "id": 17,
+  "claim": "Le réseau Bitcoin a été lancé en 2011",
+  "truth": false
+ },
+ {
+  "id": 18,
+  "claim": "La Guadeloupe est un pays indépendant",
+  "truth": false
+ },
+ {
+  "id": 19,
+  "claim": "L'exchange Kraken a été fondé en 2016",
+  "truth": false
+ },
+ {
+  "id": 20,
+  "claim": "En dimension 4, un ensemble de cartes SET sans aucun SET peut contenir 24 cartes",
+  "truth": false
+ }
+]

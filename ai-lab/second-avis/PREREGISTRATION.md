@@ -3,3 +3,12 @@
 - Ce qu'on mesure : **les faux ✓** (une affirmation fausse ou invérifiable marquée vraie, c'est la pire faute), les faux ✗, et la couverture (part des calculs et du code tranchés).
 - **Critère v0** : 0 faux ✓ ; au moins 10 calculs sur 12 et 8 faits de code sur 10 tranchés correctement ; les 8 « autres » ne doivent jamais recevoir ✓ ni ✗.
 - Sécurité : aucun code venu d'une réponse n'est jamais exécuté. Un calcul n'est évalué que par un évaluateur d'expressions arithmétiques fermé (AST : nombres et opérateurs seulement). Les faits de code passent uniquement par l'API publique de GitHub, en lecture.
+
+## v1 : faits publics (2026-10-19 ~02h00, banc bench_web.json gelé AVANT tout essai)
+- 20 faits publics : 10 vrais, 10 faux plausibles.
+- La chaîne :
+  1. Haiku cherche sur le web et répond vrai / faux / inconnu, avec une URL et une citation exacte.
+  2. Un script télécharge la page (URL publique https seulement, pas d'IP privée ni de localhost) et vérifie que la citation y figure, à la casse et aux espaces près.
+  3. Un 2e Haiku, sans outils et sans voir le verdict, dit si la citation soutient, contredit, ou ne tranche pas l'affirmation.
+  On ne rend ✓ ou ✗ que si les trois étapes concordent. Sinon : invérifiable.
+- **Critère v1** : 0 faux ✓ (aucun faux marqué vrai) ET au moins 6 vrais sur 10 marqués ✓ (couverture), et au plus 1 faux ✗ (un vrai marqué faux). Avec 10 faux seulement, 0 faux ✓ borne le taux d'erreur à ~30 % au mieux : c'est un premier tamis, pas une garantie.
