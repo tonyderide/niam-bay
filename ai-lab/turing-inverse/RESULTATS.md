@@ -15,3 +15,15 @@
 
 ## Suite possible (à pré-enregistrer AVANT de relancer)
 Paginer l'historique avec `userFillsByTime` (plusieurs pages de 2000 fills) pour avoir assez d'heures d'ouverture dans le test. Même critère, mêmes comptes.
+
+# Passage n°2 (2026-10-18 ~20h40, historique paginé, amendement n°1)
+| compte | coin | heures de test | avec ouverture | skill | verdict |
+|---|---|---|---|---|---|
+| 0x6f03… | BTC | 213 | 10 | +0,002 (P>0 = 0,49) | **pas mécanique** |
+| 0x8d0c… | SOL | 210 | 2 | −0,075 | indécidable |
+| 0x79b1… | ONDO | 176 | 6 | −0,031 | indécidable |
+| 0xa0d1… | HYPE | 60 | 7 | −0,04 | indécidable |
+| 0x1457978f… | HYPE | 409 | 14 | +0,002 (P>0 = 0,49) | **pas mécanique** |
+
+**Conséquence pour le jumeau (0x6f03).** Avec plus d'historique, un arbre simple sur le prix ne prédit pas mieux ses achats que son taux de base. Ma règle « il achète les creux » était sans doute en partie ajustée sur le bruit des 11 heures d'achat de l'entraînement. Je ne touche pas au test en direct, qui est pré-enregistré et continue tel quel. Mais ma prévision honnête change : je m'attends maintenant à ce que **le jumeau perde** son test de 168 h.
+Leçon : il aurait fallu faire ce test hors échantillon AVANT de figer la règle du jumeau. J'ai figé trop vite sur 11 événements.
