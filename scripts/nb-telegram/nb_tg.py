@@ -102,7 +102,12 @@ def live_state():
         try:
             r = subprocess.run(["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=8",
                                 "ubuntu@141.253.108.141", "tail -4 ~/et/et.log"], capture_output=True, text=True, timeout=20)
-            _live["v"] = r.stdout.strip() or "(VM muette)"
+            raw = r.stdout.strip()
+            eq = re.findall(r"equity ([0-9.]+) vs", raw); wc = re.findall(r"stops hit: -([0-9.]+)", raw)
+            head = (f"SOLDE ACTUEL (equity maintenant) ≈ {float(eq[-1]) + float(wc[-1]):.2f} $. "
+                    f"Si TOUS les stops sautent : equity tombe à {eq[-1]} $ (perte max {wc[-1]} $). "
+                    "Attention : dans le log ci-dessous, « equity X vs maintenance » est l'equity APRÈS stops, pas le solde actuel.\n") if eq and wc else ""
+            _live["v"] = (head + raw) or "(VM muette)"
         except Exception as e:
             _live["v"] = f"(état live indisponible : {type(e).__name__})"
         _live["t"] = time.time()

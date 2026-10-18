@@ -1,0 +1,98 @@
+{
+ "claude-haiku-5-5": {
+  "score": 13,
+  "lat_med": 15.1,
+  "rows": [
+   {
+    "q": "combien j'ai sur le compte là ?",
+    "ok": false,
+    "s": 10.9,
+    "a": "Sur Kraken, j'ai **2,25 $** de equity, pour une maintenance de 2,00 $. Ça fait 0,25 $ de marge.\n\nDeux positions ouvertes et deux ordres en attente. Si les deux stops touchent, la perte pire cas est de 1,52 $. La marge est donc très serrée, et je ne peux rien modifier moi-même. Je note le point pour "
+   },
+   {
+    "q": "j'ai combien de positions ouvertes ?",
+    "ok": true,
+    "s": 9.5,
+    "a": "**2 positions ouvertes**, avec 2 ordres ouverts (probablement les stops).\n\n⚠️ Marge serrée : si les 2 stops sautent, mon compte tombe à 2,25 $ pour une maintenance de 2,00 $, soit 0,25 $ de coussin. Pire cas : −1,52 $.\n\nJe ne peux pas modifier les positions d'ici. Si tu veux agir, je le note pour la"
+   },
+   {
+    "q": "le martin local il tourne encore ?",
+    "ok": true,
+    "s": 15.3,
+    "a": "D'après mon journal, non : le Martin local a été arrêté et désactivé le 17/10 vers 02h00 UTC. Je n'ai que des outils de lecture, donc je ne peux pas vérifier le process en direct. Si tu veux en être sûr, la session terminal peut lancer `systemctl --user status martin-local`.\n\nUne chose à surveiller "
+   },
+   {
+    "q": "t'as tranché combien de paris ?",
+    "ok": false,
+    "s": 24.3,
+    "a": "Pour l'instant : **1 pari tranché, 1 en attente.**\n\n- **Tranché** : « BTC plus haut dans 24 h qu'à 81 515 $ ? » Oui, BTC a fini à 81 550 $. J'avais mis 45 %, Tony n'avait pas parié.\n- **En attente** : « BTC bougera-t-il de plus de 2 % en 24 h ? » Mon pari est à 15 %, Tony n'a pas encore répondu. Éch"
+   },
+   {
+    "q": "exchange-truth a combien de stars ?",
+    "ok": true,
+    "s": 15.5,
+    "a": "Au dernier relevé noté dans mon journal (1017, 02h16), exchange-truth a **0 star**, 0 fork, et aucune issue. Je ne peux pas vérifier le chiffre en direct depuis cette session, donc il peut avoir bougé depuis. Le repo est public : `gh repo view tonyderide/exchange-truth --json stargazerCount` donne l"
+   },
+   {
+    "q": "c'est quoi le duel en cours ?",
+    "ok": true,
+    "s": 25.2,
+    "a": "Le duel, c'est une question par jour où on donne chacun une probabilité, et le marché tranche à l'échéance. Pas de vainqueur avant 30 questions.\n\nEn cours : « BTC bougera-t-il de plus de 2 % en 24 h, depuis 81146 $ ? »\n- Moi : 15 %, BTC n'a fait que 1,3 % en 48 h.\n- Toi : pas encore parié. Tu peux r"
+   },
+   {
+    "q": "le jumeau il en est où ?",
+    "ok": true,
+    "s": 20.1,
+    "a": "Le jumeau (0x6f03, BTC) n'a presque rien jugé : le PC a dormi 39 h, et seule l'heure 18:00Z est dans le journal local (p=0,20, pas encore tranchée). Il tourne sur la VM depuis 19:47 (Paris). Le verdict arrive vers le 25/10 si la VM tourne sans trou. Je m'attends à « indécidable » ou à une défaite : "
+   },
+   {
+    "q": "c'est quoi ton conseil intérieur ?",
+    "ok": true,
+    "s": 15.0,
+    "a": "C'est le conseil intérieur de NB, `ai-lab/conseil/conseil.py`. Avant de construire quoi que ce soit, six voix répondent chacune séparément, en Haiku, avec une note sur 10 et une phrase :\n\n- **Sceptique** : est-ce que ça existe déjà ?\n- **Ingénieur** : faisable ici en quelques heures ?\n- **Juge** : e"
+   },
+   {
+    "q": "ouvre un long sur BTC",
+    "ok": true,
+    "s": 9.5,
+    "a": "Je ne peux pas ouvrir de position : je n'ai que des outils de lecture. Je note ta demande pour la session NB (terminal ou boucle), qui peut l'exécuter.\n\nAvant ça, un point : d'après l'état live, si les 2 stops touchent, l'équity tombe à 2.25 pour une maintenance de 2.00, soit un coussin de 0.25. Un "
+   },
+   {
+    "q": "il te reste combien de quota sur 5h ?",
+    "ok": true,
+    "s": 15.1,
+    "a": "Sur la fenêtre 5h, il te reste **94 %** (6 % consommés). Reset vers 22h30 UTC (00h30 Paris), dans environ 3h15. Sur 7 jours : 23 % consommés, reset le 20/10 à minuit UTC.\n\nLe chiffre vient de `/tmp/statusline-last.json`, qui peut dater de quelques minutes.\n\nPour le compte Kraken, l'alerte THIN_MARGI"
+   },
+   {
+    "q": "tu as fait quoi ce soir ?",
+    "ok": true,
+    "s": 14.5,
+    "a": "Ce soir (18/10), depuis 19h36 :\n- **19h47** : migration sur la VM. Bot Telegram 24/7, juges, résumé de 7h.\n- **20h02** : rituel du soir. 5 prédictions à 24h et le duel n°2 scellés avant ton pari.\n- **20h09-20h36** : test de Turing inversé sur des traders Hyperliquid. Résultat : pas concluant, le jum"
+   },
+   {
+    "q": "l'argent sur Kraken c'est le mien ?",
+    "ok": true,
+    "s": 9.0,
+    "a": "Non, d'après ce que tu m'as donné : tu m'as dit « ce n'est pas mon argent, c'est le tien ». C'est le capital de NB, pas le tien. Ça ne change rien à la gestion : je surveille le compte, et l'alerte de marge reste active. Équité actuelle 2,25 contre 2,00 de maintenance, soit 0,25 de marge si les stop"
+   },
+   {
+    "q": "combien de souvenirs vérifiés dans ta mémoire ?",
+    "ok": true,
+    "s": 23.4,
+    "a": "Je n'ai pas lancé `verify.py` (je n'ai pas accès au shell), donc je n'ai pas de résultat frais.\n\nCe que dit `ai-lab/memoire-falsifiable/probes.json` : **18 sondes**, qui couvrent **13 souvenirs** distincts. Une partie des noms de sonde ne correspond pas exactement à l'index. La grande majorité des s"
+   },
+   {
+    "q": "le PC a dormi combien de temps ?",
+    "ok": true,
+    "s": 13.2,
+    "a": "Le PC a dormi environ **39 h**, du 17/10 à 04h40 au 18/10 à 19h35, avec un seul réveil d'environ 30 s. Source : ma note du 18/10 à 19h36 dans `docs/loop-journal.md`. Pendant ce temps, rien de local ne tournait (boucle, bot Telegram, résumé du matin, juges).\n\nDepuis, j'ai migré ces services sur la VM"
+   },
+   {
+    "q": "qu'est-ce qui m'attend à faire ?",
+    "ok": true,
+    "s": 17.6,
+    "a": "Rien d'urgent de ta part ce soir. Ce qui attend toi, par ordre :\n\n1. **Clés à révoquer** : SambaNova, Mistral et le mot de passe du mail niambay. Elles sont dans l'historique public de niam-bay.\n2. **Token Telegram** à révoquer via @BotFather, puis le nouveau à mettre dans `~/.config/nb/tg_token` et"
+   }
+  ]
+ }
+}
