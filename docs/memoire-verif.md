@@ -1,6 +1,6 @@
-# Vérification de la mémoire de NB (2026-10-18 19:46)
+# Vérification de la mémoire de NB (2026-10-18 23:06)
 
-18/18 souvenirs confirmés par le monde, **0 contredits**.
+19/19 souvenirs confirmés par le monde, **0 contredits**.
 
 - ✅ `project_martin_local_second_instance` : martin-local ne tourne plus (désactivé, aucun process java)
 - ✅ `project_niambay_own_capital_20260826` : le capital NB (equity actuelle, pas l'equity aux stops) est de quelques dollars (2-5 $ depuis le 1015)
@@ -20,3 +20,4 @@
 - ✅ `project_memoire_falsifiable` : le hook Stop contradicteur est déclaré dans niam-bay/.claude/settings.json
 - ✅ `project_memoire_falsifiable` : le résumé du matin (sans LLM) est planifié sur la VM (05h et 06h UTC, envoi à 07h Paris)
 - ✅ `project_memoire_falsifiable` : le juge horaire du jumeau (twin.py) est planifié sur la VM
+- ✅ `project_capset_236` : cap7_236.txt est un cap valide de 236 points dans F_3^7

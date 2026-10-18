@@ -124,5 +124,12 @@
   "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 'crontab -l' < /dev/null",
   "expect": "^2 \\* \\* \\* \\* .*jumeau && .*twin.py",
   "counter": "5 * * * * cd /x && python3 other.py"
+ },
+ {
+  "memory": "project_capset_236",
+  "claim": "cap7_236.txt est un cap valide de 236 points dans F_3^7",
+  "cmd": "cd ~/projets/tonyderide/niam-bay/ai-lab/capset && python3 -c \"import itertools;C=[tuple(map(int,l.strip())) for l in open('cap7_236.txt')];S=set(C);n=lambda v:tuple((-x)%3 for x in v);b=sum(1 for x,y in itertools.combinations(C,2) if (z:=n(tuple((a+c)%3 for a,c in zip(x,y)))) in S and z!=x and z!=y);print(len(S),b)\"",
+  "expect": "^236 0$",
+  "counter": "236 14"
  }
 ]
