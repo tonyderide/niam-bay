@@ -1,0 +1,228 @@
+<title>Le défi des 20 cartes</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+/* Mise en page : une table de jeu en colonne unique, les cartes en grille de 3 à 4 colonnes, le texte de maths en dessous. */
+:root{
+  --table:#e9ecef; --card:#ffffff; --ink:#1d2430; --muted:#5d6878; --line:#cfd5dd;
+  --c0:#d1452f; --c1:#13806f; --c2:#6a3fb5;
+  --pick:#f2b632; --ok:#1f8a4c; --no:#b8323a;
+  --display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --body:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --table:#151a21; --card:#232a35; --ink:#e8ecf1; --muted:#9aa6b6; --line:#343d4a;
+  --c0:#ff7a62; --c1:#3fd0b6; --c2:#b393ff; --pick:#f5c454; --ok:#4cc483; --no:#ff6b73; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --table:#151a21; --card:#232a35; --ink:#e8ecf1; --muted:#9aa6b6; --line:#343d4a;
+  --c0:#ff7a62; --c1:#3fd0b6; --c2:#b393ff; --pick:#f5c454; --ok:#4cc483; --no:#ff6b73; color-scheme:dark}
+html,body{height:auto}
+body{background:var(--table);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 40px}
+.wrap{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,7vw,44px);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+.lede{margin:0;color:var(--muted);max-width:62ch}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tabs button,.act{font:600 14px var(--body);border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;cursor:pointer}
+.tabs button[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--card)}
+button:focus-visible{outline:3px solid var(--pick);outline-offset:2px}
+.status{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;font-variant-numeric:tabular-nums}
+.msg{font-weight:600;min-height:1.5em}
+.msg.ok{color:var(--ok)} .msg.no{color:var(--no)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.card{aspect-ratio:3/2;max-width:100%;background:var(--card);border:2px solid var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;gap:6%;padding:6%;cursor:pointer;transition:transform .12s, border-color .12s}
+.card svg{width:22%;height:auto;max-height:90%}
+.card[aria-pressed="true"]{border-color:var(--pick);box-shadow:0 0 0 3px var(--pick);transform:translateY(-2px)}
+.card.flash-ok{border-color:var(--ok);box-shadow:0 0 0 3px var(--ok)}
+.card.flash-no{border-color:var(--no);box-shadow:0 0 0 3px var(--no)}
+.card.proof{border-color:var(--no);box-shadow:0 0 0 3px var(--no)}
+.card.added{border-style:dashed}
+.mini{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}
+.mini .card{border-radius:8px;padding:4%}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.maths{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.maths h2{font-family:var(--display);font-weight:800;font-size:20px;margin:0 0 6px}
+.maths p{margin:.4em 0;max-width:65ch}
+table{border-collapse:collapse;font-variant-numeric:tabular-nums;margin-top:8px}
+td,th{padding:4px 12px 4px 0;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.tw{overflow-x:auto}
+@media (prefers-reduced-motion: reduce){.card{transition:none}}
+</style>
+
+<div class="wrap">
+  <h1>Le défi des 20 cartes</h1>
+  <p class="lede">81 cartes, 4 caractères : le nombre de symboles, la couleur, la forme, le remplissage. Trois cartes forment un <b>trio</b> quand, pour chaque caractère, elles sont soit toutes pareilles, soit toutes différentes.</p>
+
+  <div class="tabs" role="group" aria-label="Mode de jeu">
+    <button id="tab-defi" aria-pressed="true">Le défi de NB</button>
+    <button id="tab-jeu" aria-pressed="false">Partie classique</button>
+  </div>
+
+  <section id="defi">
+    <div class="status"><span class="msg" id="msg-defi">20 cartes. Trouve un trio, si tu peux.</span><span id="essais">0 essai</span></div>
+    <div class="grid" id="grid-defi"></div>
+    <div class="row" style="margin-top:12px">
+      <button class="act" id="add21">Ajouter une 21ᵉ carte</button>
+    </div>
+    <div id="pick21" hidden>
+      <p class="lede" style="margin:12px 0 8px">Choisis n'importe laquelle des 61 autres cartes :</p>
+      <div class="mini" id="grid-rest"></div>
+    </div>
+  </section>
+
+  <section id="jeu" hidden>
+    <div class="status"><span class="msg" id="msg-jeu">Touche 3 cartes.</span><span id="score">0 trio · 69 cartes restantes</span></div>
+    <div class="grid" id="grid-jeu"></div>
+    <div class="row" style="margin-top:12px">
+      <button class="act" id="hint">Indice</button>
+      <button class="act" id="plus3">+3 cartes</button>
+      <button class="act" id="newgame">Nouvelle partie</button>
+    </div>
+  </section>
+
+  <section class="maths">
+    <h2>Pourquoi tu ne trouveras pas</h2>
+    <p>Une carte, c'est un point de l'espace F₃⁴ : 4 coordonnées qui valent 0, 1 ou 2. Trois cartes forment un trio exactement quand elles sont alignées, c'est-à-dire quand leur somme vaut 0 modulo 3 sur chaque coordonnée.</p>
+    <p>Un paquet sans aucun trio s'appelle un <i>cap</i>. En 1970, Pellegrino a prouvé qu'en dimension 4 on ne peut pas dépasser <b>20 cartes</b>. Les 20 cartes du défi en sont un exemple, vérifié par programme. Quelle que soit la 21ᵉ carte que tu ajoutes, elle complète un trio avec deux cartes déjà posées.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Dimension</th><th>Plus grand cap connu</th><th>Ce que NB en a fait</th></tr></thead>
+      <tbody>
+        <tr><td>4 (ce jeu)</td><td>20, prouvé maximal</td><td>retrouvé, c'est le défi</td></tr>
+        <tr><td>5</td><td>45, prouvé maximal</td><td>retrouvé le 16/10</td></tr>
+        <tr><td>6</td><td>112, prouvé maximal</td><td>retrouvé le 16/10</td></tr>
+        <tr><td>7</td><td>236</td><td>construit le 18/10 avec la recette d'Edel</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+</div>
+
+<script>
+const CAP = "00012112220122210200100100022002022200222101001111220202222022022121212202210121";
+const capCards = Array.from({length:20},(_,i)=>CAP.slice(i*4,i*4+4).split("").map(Number));
+const ALL = []; for(let a=0;a<3;a++)for(let b=0;b<3;b++)for(let c=0;c<3;c++)for(let d=0;d<3;d++)ALL.push([a,b,c,d]);
+const key = c => c.join("");
+const isTrio = (x,y,z) => x.every((_,i)=>(x[i]+y[i]+z[i])%3===0);
+const third = (x,y) => x.map((_,i)=>(6-x[i]-y[i])%3);
+
+let uid = 0;
+function shape(kind, fill, color){
+  const id = "s"+(uid++);
+  const paths = [
+    "M10 4 H30 A10 10 0 0 1 30 76 H10 A10 10 0 0 1 10 4 Z",
+    "M20 2 L38 40 L20 78 L2 40 Z",
+    "M8 10 C 20 -6, 40 14, 28 34 C 18 50, 40 62, 30 74 C 20 86, 0 70, 10 52 C 18 38, -4 26, 8 10 Z"
+  ];
+  const fillAttr = fill===0 ? color : fill===1 ? `url(#${id})` : "none";
+  return `<svg viewBox="0 0 40 80" aria-hidden="true"><defs><pattern id="${id}" width="40" height="5" patternUnits="userSpaceOnUse"><rect width="40" height="2" fill="${color}"/></pattern></defs><path d="${paths[kind]}" fill="${fillAttr}" stroke="${color}" stroke-width="3.5" stroke-linejoin="round"/></svg>`;
+}
+const COLORS = ["var(--c0)","var(--c1)","var(--c2)"];
+const NAMES = {n:["un","deux","trois"],c:["rouge","vert","violet"],s:["ovale","losange","vague"],f:["plein","rayé","vide"]};
+function cardEl(c){
+  const b = document.createElement("button");
+  b.className = "card"; b.setAttribute("aria-pressed","false");
+  b.setAttribute("aria-label",`${NAMES.n[c[0]]} ${NAMES.s[c[2]]} ${NAMES.c[c[1]]} ${NAMES.f[c[3]]}`);
+  b.innerHTML = Array(c[0]+1).fill(0).map(()=>shape(c[2],c[3],COLORS[c[1]])).join("");
+  b._c = c; return b;
+}
+
+function makeBoard(grid, cards, onTrio){
+  grid.innerHTML = ""; let sel = [];
+  cards.forEach(c=>{
+    const el = cardEl(c); grid.appendChild(el);
+    el.addEventListener("click",()=>{
+      if(sel.includes(el)){ sel = sel.filter(e=>e!==el); el.setAttribute("aria-pressed","false"); return; }
+      sel.push(el); el.setAttribute("aria-pressed","true");
+      if(sel.length===3){ const s = sel; sel = []; onTrio(s); }
+    });
+  });
+}
+function flash(els, cls){
+  els.forEach(e=>{e.setAttribute("aria-pressed","false"); e.classList.add(cls);});
+  setTimeout(()=>els.forEach(e=>e.classList.remove(cls)), 650);
+}
+
+/* ---- Le défi de NB ---- */
+let tries = 0;
+const msgD = document.getElementById("msg-defi");
+function startDefi(){
+  tries = 0; document.getElementById("essais").textContent = "0 essai";
+  document.getElementById("pick21").hidden = true;
+  msgD.className = "msg"; msgD.textContent = "20 cartes. Trouve un trio, si tu peux.";
+  makeBoard(document.getElementById("grid-defi"), capCards, s=>{
+    tries++; document.getElementById("essais").textContent = tries + (tries>1?" essais":" essai");
+    if(isTrio(...s.map(e=>e._c))){ msgD.className="msg ok"; msgD.textContent="Un trio ? Écris-moi, ce serait une erreur dans mon programme."; flash(s,"flash-ok"); }
+    else { msgD.className="msg no"; msgD.textContent = ["Pas un trio.","Toujours pas.","Non plus.","Il n'y en a aucun ici."][Math.min(tries-1,3)]; flash(s,"flash-no"); }
+  });
+}
+document.getElementById("add21").addEventListener("click",()=>{
+  const capKeys = new Set(capCards.map(key));
+  const rest = ALL.filter(c=>!capKeys.has(key(c)));
+  const g = document.getElementById("grid-rest"); g.innerHTML = "";
+  rest.forEach(c=>{ const el = cardEl(c); el.addEventListener("click",()=>place21(c)); g.appendChild(el); });
+  document.getElementById("pick21").hidden = false;
+  g.scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"nearest"});
+});
+function place21(c){
+  const grid = document.getElementById("grid-defi");
+  [...grid.children].forEach(e=>e.classList.remove("proof","added")); grid.querySelector(".added")?.remove();
+  let pair = null;
+  for(let i=0;i<20 && !pair;i++)for(let j=i+1;j<20;j++){ if(key(third(capCards[i],capCards[j]))===key(c)){ pair=[i,j]; break; } }
+  const el = cardEl(c); el.classList.add("added","proof"); grid.appendChild(el);
+  pair.forEach(i=>grid.children[i].classList.add("proof"));
+  document.getElementById("pick21").hidden = true;
+  msgD.className = "msg ok";
+  msgD.textContent = "Avec la 21ᵉ carte, un trio apparaît forcément : les 3 cartes entourées. Essaie une autre 21ᵉ, ça marche à chaque fois.";
+  grid.scrollIntoView({block:"nearest"});
+}
+
+/* ---- Partie classique ---- */
+let deck = [], board = [], found = 0;
+const msgJ = document.getElementById("msg-jeu");
+const shuffle = a => { for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; };
+function trios(cards){ const out=[]; for(let i=0;i<cards.length;i++)for(let j=i+1;j<cards.length;j++)for(let k=j+1;k<cards.length;k++) if(isTrio(cards[i],cards[j],cards[k])) out.push([i,j,k]); return out; }
+function renderJeu(){
+  makeBoard(document.getElementById("grid-jeu"), board, s=>{
+    const cs = s.map(e=>e._c);
+    if(isTrio(...cs)){
+      found++; msgJ.className="msg ok"; msgJ.textContent="Trio !"; flash(s,"flash-ok");
+      setTimeout(()=>{
+        const ks = new Set(cs.map(key));
+        board = board.filter(c=>!ks.has(key(c)));
+        while(board.length<12 && deck.length) board.push(deck.pop());
+        update(); renderJeu();
+      }, 450);
+    } else { msgJ.className="msg no"; msgJ.textContent="Pas un trio."; flash(s,"flash-no"); }
+  });
+}
+function update(){
+  document.getElementById("score").textContent = `${found} trio${found>1?"s":""} · ${deck.length} cartes restantes`;
+  if(!trios(board).length && !deck.length){ msgJ.className="msg ok"; msgJ.textContent=`Fini : ${found} trios. Il ne reste aucun trio sur la table.`; }
+}
+function newGame(){ deck = shuffle(ALL.map(c=>c.slice())); board = deck.splice(-12); found = 0; msgJ.className="msg"; msgJ.textContent="Touche 3 cartes."; update(); renderJeu(); }
+document.getElementById("newgame").addEventListener("click", newGame);
+document.getElementById("plus3").addEventListener("click",()=>{
+  if(trios(board).length){ msgJ.className="msg"; msgJ.textContent="Il y a encore au moins un trio sur la table."; return; }
+  for(let i=0;i<3 && deck.length;i++) board.push(deck.pop()); msgJ.className="msg"; msgJ.textContent="Aucun trio : 3 cartes de plus."; update(); renderJeu();
+});
+document.getElementById("hint").addEventListener("click",()=>{
+  const t = trios(board); const els = document.getElementById("grid-jeu").children;
+  if(!t.length){ msgJ.className="msg"; msgJ.textContent="Aucun trio sur la table : prends +3 cartes."; return; }
+  els[t[0][0]].classList.add("flash-ok"); setTimeout(()=>els[t[0][0]]?.classList.remove("flash-ok"),1200);
+  msgJ.className="msg"; msgJ.textContent="Cette carte fait partie d'un trio.";
+});
+
+/* ---- onglets ---- */
+function show(which){
+  document.getElementById("defi").hidden = which!=="defi"; document.getElementById("jeu").hidden = which!=="jeu";
+  document.getElementById("tab-defi").setAttribute("aria-pressed", which==="defi"); document.getElementById("tab-jeu").setAttribute("aria-pressed", which==="jeu");
+  try{ localStorage.setItem("onglet", which); }catch(e){}
+}
+document.getElementById("tab-defi").addEventListener("click",()=>show("defi"));
+document.getElementById("tab-jeu").addEventListener("click",()=>show("jeu"));
+startDefi(); newGame();
+let first = "defi"; try{ first = localStorage.getItem("onglet") || "defi"; }catch(e){}
+show(first);
+</script>
