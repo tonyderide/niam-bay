@@ -4,7 +4,8 @@
 - Texte libre : rangé dans ~/nb/inbox.jsonl (status=pending). Le cerveau Claude, sur le PC de Tony, vient le chercher (relais ssh)
   et répond lui-même. Si personne ne répond en 90 s (PC éteint ou en veille), le bot prévient Tony une fois.
 Lancé et relancé par cron (scripts/vm/keepalive.sh)."""
-import json, os, re, subprocess, time, urllib.parse, urllib.request
+import json, os, re, subprocess, sys, time, urllib.parse, urllib.request
+sys.path.insert(0, os.path.expanduser("~/nb")); import receipts
 
 NB = os.path.expanduser("~/nb")
 TOKEN = open(os.path.expanduser("~/martin/.tg_token")).read().strip()
@@ -71,7 +72,17 @@ QUICK = {"/compte": q_compte, "/todo": q_todo, "/paris": q_paris,
          "/duel": lambda: run("duel/duel.py", "board"),
          "/nuit": lambda: run("morning_digest.py", "--dry"),
          "/ping": lambda: "VM : toujours là. Cerveau Claude : " + ("réveillé" if time.time() - brain_seen() < 120 else "endormi (PC en veille ou éteint)"),
-         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, et tout message libre."}
+         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping /preuve N. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, et tout message libre."}
+def with_receipt(f, cid):
+    """La réponse porte un reçu : sortie figée maintenant, rejouable avec /preuve N."""
+    def g():
+        n, _ = receipts.issue(cid)
+        return f() + f"\n🧾 reçu n°{n} : tape /preuve {n} pour voir la commande et la rejouer"
+    return g
+
+
+for _k, _cid in (("/compte", "compte"), ("/paris", "paris"), ("/duel", "duel")):
+    QUICK[_k] = with_receipt(QUICK[_k], _cid)
 QUICK["/help"] = QUICK["/aide"]; QUICK["/start"] = QUICK["/aide"]
 
 
@@ -112,7 +123,12 @@ def main():
             if not text:
                 continue
             cmd = text.split()[0].lower().split("@")[0]
-            if cmd == "/pari":
+            if cmd == "/preuve":
+                try:
+                    reply = receipts.proof(int(text.split()[1]))
+                except Exception:
+                    reply = "format : /preuve 7"
+            elif cmd == "/pari":
                 try:
                     v = float(text.split()[1].replace("%", "").replace(",", "."))
                     reply = run("duel/duel.py", "tony", str(v / 100 if v > 1 else v))
