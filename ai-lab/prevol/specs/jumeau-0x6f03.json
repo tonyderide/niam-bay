@@ -1,0 +1,2 @@
+{"name": "jumeau 0x6f03 (BTC), figé le 17/10 (commit f6e87a0)", "events_train": 11, "base_rate": 0.055, "n_test_planned": 168, "baseline": "taux de base + heure d'avant", "oos_skill": 0.002,
+ "activity_cmd": "python3 -c \"import json,time,urllib.request;r=urllib.request.Request('https://api.hyperliquid.xyz/info',data=json.dumps({'type':'userFills','user':'0x6f0306dc529cfeb8e08502e5eb7a588def9ac88d'}).encode(),headers={'Content-Type':'application/json'});f=json.load(urllib.request.urlopen(r,timeout=30));print((time.time()*1000-max(x['time'] for x in f))/3.6e6)\""}

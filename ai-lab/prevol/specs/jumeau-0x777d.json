@@ -1,0 +1,2 @@
+{"name": "jumeau 0x777d (NEAR), tel que je l'avais pré-enregistré le 17/10", "events_train": 783, "base_rate": 0.3, "n_test_planned": 168, "baseline": "taux de base", "oos_skill": null,
+ "activity_cmd": "python3 -c \"import json,time,urllib.request;r=urllib.request.Request('https://api.hyperliquid.xyz/info',data=json.dumps({'type':'userFills','user':'0x777d062defa9a95fb0066b4b3f410d170b110111'}).encode(),headers={'Content-Type':'application/json'});f=json.load(urllib.request.urlopen(r,timeout=30));print((time.time()*1000-max(x['time'] for x in f))/3.6e6)\""}

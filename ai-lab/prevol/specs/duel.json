@@ -1,0 +1,1 @@
+{"name": "duel Tony contre NB, 1 question par jour", "events_train": 0, "base_rate": 0.5, "n_test_planned": 30, "baseline": "pile ou face (0,5)", "oos_skill": null, "kind": "comparaison"}

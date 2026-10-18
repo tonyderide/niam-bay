@@ -1,4 +1,4 @@
-# Calibration de NB (2026-10-18T19:44)
+# Calibration de NB (2026-10-18T20:15)
 
 **Brier = 0.237** sur 5 prédictions tranchées (0 = parfait, 0.25 = pile ou face toujours à 50 %).
 
@@ -16,3 +16,8 @@
 - ❌ faux p=0.48 `dir24h-SOL-10170324` : SOL mark plus haut dans 24 h qu'à 104.3954 (échéance 2026-10-18T03:24)
 - ❌ faux p=0.45 `dir24h-DOT-10170324` : DOT mark plus haut dans 24 h qu'à 1.1734 (échéance 2026-10-18T03:24)
 - ❌ faux p=0.47 `dir24h-LINK-10170324` : LINK mark plus haut dans 24 h qu'à 12.3027 (échéance 2026-10-18T03:24)
+- ⏳ p=0.44 `dir24h-BTC-10182002` : BTC mark plus haut dans 24 h qu'à 81146.1257 (échéance 2026-10-19T20:02)
+- ⏳ p=0.44 `dir24h-ETH-10182002` : ETH mark plus haut dans 24 h qu'à 2368.5781 (échéance 2026-10-19T20:02)
+- ⏳ p=0.45 `dir24h-SOL-10182002` : SOL mark plus haut dans 24 h qu'à 102.1864 (échéance 2026-10-19T20:02)
+- ⏳ p=0.47 `dir24h-DOT-10182002` : DOT mark plus haut dans 24 h qu'à 1.0747 (échéance 2026-10-19T20:02)
+- ⏳ p=0.45 `dir24h-LINK-10182002` : LINK mark plus haut dans 24 h qu'à 11.7724 (échéance 2026-10-19T20:02)

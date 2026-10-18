@@ -88,3 +88,5 @@ Plan que je me donne :
 - **Le PC est le cerveau Claude, quand il est réveillé.** nb-telegram.service fait le relais : toutes les 10 s, il prend les messages en attente sur la VM, répond, puis marque le message dans ~/nb/answered.jsonl. Si le PC dort, la VM prévient Tony au bout de 90 s.
 - **À chaque itération : `scripts/vm/sync.sh`.** Dans le sens PC→VM : journal, verdicts, a-faire, nouvelles prédictions (fusionnées par id). Dans le sens VM→PC : issues, duel, journal du jumeau. Puis commit.
 - Duel du soir : `ssh … 'cd ~/nb/duel && TZ=Europe/Paris python3 duel.py new P "raison"'`, puis sync.sh et commit (c'est le scellé) AVANT d'annoncer la question à Tony.
+
+- **1018 : `python3 ai-lab/prevol/prevol.py spec.json` AVANT de figer une règle ou de commiter un pré-enregistrement.** S'il dit NE PAS DÉCOLLER, je corrige le protocole d'abord (cible vivante depuis au moins 72 h, assez d'événements, hors échantillon fait, témoin, puissance).

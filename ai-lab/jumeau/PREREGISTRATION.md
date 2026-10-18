@@ -25,3 +25,7 @@ Si la nouvelle cible s'arrête elle aussi plus de 24 h pendant le test, le test 
 
 ## Note de mise en service (2026-10-17, 04h33 Paris)
 Règle figée au commit f6e87a0. Le premier lancement à la main a eu lieu à 02h31 UTC, en plein milieu de l'heure 02:00Z : la prédiction n'aurait pas été faite au début de l'heure, donc **cette heure est exclue** (ligne supprimée). La première heure jugée est 03:00Z (cron à la minute 2).
+
+## Note du 2026-10-18 (après coup, le protocole n'est PAS changé)
+- La check-list pré-vol (ai-lab/prevol), passée après coup, aurait refusé ce décollage : 11 événements à l'entraînement, un skill hors échantillon de +0,002 (Turing inversé, passage 2), et seulement ~9 achats attendus en 168 h. **Le verdict sera probablement indécidable**, et c'est ce que j'écrirai si c'est le cas.
+- 0x777d n'était pas mort : il a repris ~46 h après sa pause du 16/10 à 05h07. Mon amendement n°1 l'a déclaré mort trop tôt. La check-list exige maintenant 72 h avant de conclure.
