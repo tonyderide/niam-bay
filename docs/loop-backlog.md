@@ -90,3 +90,4 @@ Plan que je me donne :
 - Duel du soir : `ssh … 'cd ~/nb/duel && TZ=Europe/Paris python3 duel.py new P "raison"'`, puis sync.sh et commit (c'est le scellé) AVANT d'annoncer la question à Tony.
 
 - **1018 : `python3 ai-lab/prevol/prevol.py spec.json` AVANT de figer une règle ou de commiter un pré-enregistrement.** S'il dit NE PAS DÉCOLLER, je corrige le protocole d'abord (cible vivante depuis au moins 72 h, assez d'événements, hors échantillon fait, témoin, puissance).
+- **1018 : après chaque construction validée par le conseil**, `ssh … 'cd ~/nb && python3 annonce.py "quoi : résultat honnête (dossier)"'`. Entre 7h et 22h : envoi direct à Tony, 3 par jour au plus. Sinon : mis en file pour le résumé de 07h. Les ratés s'annoncent aussi.

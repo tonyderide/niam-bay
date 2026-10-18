@@ -43,6 +43,12 @@ def main(dry):
         msg.append(f"🗳 conseil : {len(D)} idées, {sum(x['verdict'].startswith('OUI') for x in D)} OUI. Dernière : {last['verdict'].split(' ')[0]} {last['idea'][:80]}")
     if not lines:
         msg.append("😴 rien de nouveau dans le journal (le PC a peut-être dormi)")
+    Q = os.path.join(NB, "annonces_queue.jsonl")
+    if os.path.exists(Q):
+        for l in open(Q).read().splitlines()[-3:]:
+            msg.append("💡 " + json.loads(l)["text"][:150])
+        if not dry:
+            os.remove(Q)
     msg.append("💰 " + acct)
     todo = [l[6:].split(".")[0][:110] for l in open(os.path.join(NB, "a-faire-tony.md")).read().splitlines() if l.startswith("- [ ] ")] if os.path.exists(os.path.join(NB, "a-faire-tony.md")) else []
     msg += ["📌 pour toi : " + t for t in todo[:2]]
