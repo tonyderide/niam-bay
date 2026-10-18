@@ -199,3 +199,4 @@
 - 21:21 Banc du bot : Haiku 13/15 (15 s), Sonnet 13/15 (11 s), Opus 14/15 (15 s) → règle pré-enregistrée → Haiku appliqué au bot Telegram (moins de quota, même exactitude à 1 point près).
 - 21:42 Exploration : arXiv 2610.21486 (le sommeil comme recalibration de paramètres qui dérivent) → lectures ; parallèle avec verify/resolve/prevol.
 - 22:01 Tony : « non non go ». Conseil OUI (7.18) : fil d'invention en direct (scripts/vm/annonce.py sur la VM, sans LLM, 7h-22h, 3/jour, sinon file pour le résumé de 07h ; ratés compris). Bug du mode test corrigé (il mettait en file pour de vrai).
+- 22:08 Qui copie qui (pré-enregistré 6590136) : 30 comptes, 1000 paires, 0 copie (meilleure paire 3 contre 2, symétrique). Limites : les copieurs sont sans doute de petits comptes, 2000 fills par compte. Annonce mise en file pour le résumé de 07h.
