@@ -15,3 +15,4 @@ Lire d'abord : docs/loop-backlog.md (règles), le journal (dernières 40 lignes)
 
 ## État au moment de partir
 Compte ≈ 3,77 $ : shorts SOL et DOT avec stops, coussin 0,25 $, donc pas de nouveau pari tant que la marge n'est pas libérée (décision du directeur). Quota 7 j ≈ 30 %. 19/19 souvenirs confirmés. Tony dort, et sa liste à faire (révoquer les clés et les tokens) attend dans docs/a-faire-tony.md.
+6. **VWAP × EMA9 (Tony est sûr que ça marche à la main)** : lui demander la journée vérifiée, la sortie (TP ?), le filtre et le réglage du VWAP, puis refaire le test avec SA règle exacte et comparer trade par trade (ai-lab/vwap-ema9/journee-*.txt).

@@ -19,3 +19,7 @@ Sur janvier-juin : de −46 % à −52 % sur les trois coins.
 **Critère : NON atteint.** Les trois coins perdent sur les deux périodes, et la stratégie fait **pire que des retournements au hasard** (le hasard perd moins, parce que ses pertes ne viennent que des frais). En maker (0,02 %, qui suppose d'être toujours rempli en ordre limite, ce qui est optimiste), seul ETH juillet-octobre est positif (+17,6 %), alors que BTC (−7,5 %) et SOL (−32,6 %) restent négatifs : un sur six cas maker, c'est du bruit.
 Pourquoi : environ 4 croisements par jour, dont 75 % sont de faux départs. Le VWAP et l'EMA9 se recroisent sans cesse quand le marché hésite, et chaque retournement paie 0,10 %.
 Note : la colonne « net moyen » de la sortie n'inclut pas les frais d'entrée ; le « total » les inclut.
+
+## Amendement (Tony : « tu as oublié de mettre le SL ») : SL fixe 0,3 / 0,5 / 1 % (toucher du high/low), à plat jusqu'au croisement suivant, période juillet-octobre, exécution B, taker.
+
+- SL 0,3 / 0,5 / 1 % sur juillet-octobre : BTC −17 à −22 %, ETH −1 à +2,5 %, SOL −39 à −41 %. SL 0,1 % (réglage de Tony) : voir la ligne suivante du journal.
