@@ -503,3 +503,14 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# 1019 (Tony : « tu as ta propre mémoire de ce qui est lancé avec le html ») : NB relit aussi cet instantané en JSON.
+try:
+    import json as _j, os as _o, re as _re
+    _h = open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "pipes.html")).read()
+    _m = _re.search(r"window\.NB_STATUS = (\{.*?\});\n", _h, _re.S)
+    if _m:
+        open(_o.path.join(_o.path.dirname(_o.path.abspath(__file__)), "status.json"), "w").write(_m.group(1))
+except Exception:
+    pass

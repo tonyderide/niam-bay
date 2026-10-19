@@ -34,3 +34,4 @@ memory/vectordb/*.bak-*
 docs/inbox.jsonl
 docs/inbox-vm.jsonl
 scripts/vitrine/pipes.html
+scripts/vitrine/status.json
