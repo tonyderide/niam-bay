@@ -75,7 +75,7 @@ Plan que je me donne :
 - **libre** : tout est permis. **ÉCONOME** (5h ≥ 60 % ou 7j ≥ 70 %) : pas d'agents, pas de gros calculs, ticks courts. **SOBRE** (≥ 85 %) : seulement les vérifications du compte et l'inbox. Je ne laisse jamais 7j dépasser 90 % : Tony doit garder du quota pour lui.
 
 ## 🔁 1017 03h20 : /loop dynamique (Tony) remplace le cron de 10 min (409f4d8b supprimé)
-- « Continue d'inventer en autonomie, conseil intérieur avant chaque idée. » **Fenêtre active : 20h00 → 06h30.** Hors de cette fenêtre, je ne fais que des réveils à vide (noop), espacés d'une heure.
+- « Continue d'inventer en autonomie, conseil intérieur avant chaque idée. » **Fenêtre active : 20h00 → 05h30** (Tony, 19/10 : « sois smart et garde ta loop jusqu'à 5h30 »). Hors de cette fenêtre, je ne fais que des réveils à vide (noop), espacés d'une heure.
 - **Plafond : 50 % du quota hebdomadaire** (la ligne QUOTA de scripts/nb). S'il est atteint, j'arrête d'inventer : seulement le compte et l'inbox, jusqu'au reset.
 - Chaque itération : `scripts/nb` → conseil (ai-lab/conseil, Cœur écrit par moi AVANT les voix) → construire le OUI → une ligne de journal, commit et push. Vitrine pour Tony : docs/vitrine.md.
 - **Chaque nuit, à la 1re itération après 20h : 5 prédictions dir24h** (BTC, ETH, SOL, DOT, LINK), avec p et une raison, selon ai-lab/calibration/PREREG-24H.md. Jusqu'à 70 au total, évaluation le 31/10.
