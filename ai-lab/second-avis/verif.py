@@ -66,7 +66,13 @@ def check(c):
             return ("✓" if hit else "✗"), f"« {sym} » {'trouvé' if hit else 'absent'} dans {c['path']}"
     except Exception as e:
         return "?", f"invérifiable ({type(e).__name__}: {str(e)[:80]})"
-    return "?", "invérifiable en v0 (ni calcul ni fait de code)"
+    if k == "other":  # v1 (banc web f050c08 : 0 faux ✓, 0 faux ✗, 6/10 vrais confirmés)
+        try:
+            from web import check_web
+            return check_web(c.get("claim", ""))
+        except Exception as e:
+            return "?", f"invérifiable ({type(e).__name__})"
+    return "?", "invérifiable"
 
 
 def check_claims(text):

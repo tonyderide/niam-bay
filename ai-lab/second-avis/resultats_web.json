@@ -1,0 +1,142 @@
+[
+ {
+  "id": 1,
+  "claim": "Marsha Falco a créé le jeu de cartes SET en 1974",
+  "truth": true,
+  "mark": "✓",
+  "why": "https://en.wikipedia.org/wiki/Set_(card_game) : « is a real-time card game designed by Marsha Falco in 1974 and published by Set Enterprises in 1991. »"
+ },
+ {
+  "id": 2,
+  "claim": "La tour Eiffel mesure plus de 300 mètres",
+  "truth": true,
+  "mark": "✓",
+  "why": "https://www.futura-sciences.com/planete/questions-reponses/monuments-tour-eiffel-change-t-elle-taille-12124/ : « 324 mètres. C’est la hauteur officielle de la tour Eiffel. »"
+ },
+ {
+  "id": 3,
+  "claim": "Le langage Python a été créé par Guido van Rossum",
+  "truth": true,
+  "mark": "✓",
+  "why": "https://www.python.org/doc/essays/foreword/ : « As Python's creator, I'd like to say a few words about its origins, adding a bit of personal philoso »"
+ },
+ {
+  "id": 4,
+  "claim": "Le mont Blanc est le plus haut sommet des Alpes",
+  "truth": true,
+  "mark": "✓",
+  "why": "https://www.travelski.com/guide/histoire-ski/geographie-montagne/sommets-alpes : « le Mont Blanc est non seulement le point culminant des Alpes »"
+ },
+ {
+  "id": 5,
+  "claim": "Au niveau de la mer, l'eau pure bout à 100 °C",
+  "truth": true,
+  "mark": "?",
+  "why": "le 2e juge ne confirme pas"
+ },
+ {
+  "id": 6,
+  "claim": "Le noyau Linux a été publié pour la première fois en 1991",
+  "truth": true,
+  "mark": "✓",
+  "why": "https://en.wikipedia.org/wiki/Linux_kernel : « On 5 October 1991, Torvalds announced the first \"official\" version of Linux, version 0.02. »"
+ },
+ {
+  "id": 7,
+  "claim": "Le réseau Bitcoin a été lancé en 2009",
+  "truth": true,
+  "mark": "?",
+  "why": "citation introuvable sur https://help.blockstream.com/education/glossary/genesis-block"
+ },
+ {
+  "id": 8,
+  "claim": "La Guadeloupe est un département et une région d'outre-mer français",
+  "truth": true,
+  "mark": "✓",
+  "why": "https://www.larousse.fr/encyclopedie/departement/wd/122457 : « Département et Région français d'outre-mer (D.R.O.M.), regroupant une des Petites Antilles et des dé »"
+ },
+ {
+  "id": 9,
+  "claim": "L'exchange Kraken a été fondé en 2011",
+  "truth": true,
+  "mark": "?",
+  "why": "citation introuvable sur https://en.wikipedia.org/wiki/Kraken_(cryptocurrency_exchange)"
+ },
+ {
+  "id": 10,
+  "claim": "En dimension 4, un ensemble de cartes SET sans aucun SET contient au plus 20 cartes",
+  "truth": true,
+  "mark": "?",
+  "why": "citation introuvable sur https://en.wikipedia.org/wiki/Set_(card_game)"
+ },
+ {
+  "id": 11,
+  "claim": "Marsha Falco a créé le jeu de cartes SET en 1985",
+  "truth": false,
+  "mark": "✗",
+  "why": "https://en.wikipedia.org/wiki/Set_(card_game) : « designed by Marsha Falco in 1974 and published by Set Enterprises in 1991. »"
+ },
+ {
+  "id": 12,
+  "claim": "La tour Eiffel a été inaugurée en 1910",
+  "truth": false,
+  "mark": "?",
+  "why": "citation introuvable sur https://www.tourmag.com/Paris-pour-ses-130-ans-la-Tour-Eiffel-devoile-tous-ses-secrets_a97979.html"
+ },
+ {
+  "id": 13,
+  "claim": "Le langage Python a été créé par James Gosling",
+  "truth": false,
+  "mark": "?",
+  "why": "citation introuvable sur https://en.wikipedia.org/wiki/Python_(programming_language)"
+ },
+ {
+  "id": 14,
+  "claim": "Le sommet du mont Blanc se trouve entièrement en Suisse",
+  "truth": false,
+  "mark": "✗",
+  "why": "https://en.wikipedia.org/wiki/Mont_Blanc : « located right at the Franco-Italian border »"
+ },
+ {
+  "id": 15,
+  "claim": "Au niveau de la mer, l'eau pure bout à 90 °C",
+  "truth": false,
+  "mark": "?",
+  "why": "citation introuvable sur https://en.wikipedia.org/wiki/Boiling_point"
+ },
+ {
+  "id": 16,
+  "claim": "Le noyau Linux a été publié pour la première fois en 1995",
+  "truth": false,
+  "mark": "✗",
+  "why": "https://gunkies.org/wiki/Linux_0.01 : « Date Released: 1991 »"
+ },
+ {
+  "id": 17,
+  "claim": "Le réseau Bitcoin a été lancé en 2011",
+  "truth": false,
+  "mark": "?",
+  "why": "citation introuvable sur https://help.blockstream.com/education/glossary/genesis-block"
+ },
+ {
+  "id": 18,
+  "claim": "La Guadeloupe est un pays indépendant",
+  "truth": false,
+  "mark": "?",
+  "why": "citation introuvable sur https://axl.cefan.ulaval.ca/amsudant/guadeloupe.htm"
+ },
+ {
+  "id": 19,
+  "claim": "L'exchange Kraken a été fondé en 2016",
+  "truth": false,
+  "mark": "✗",
+  "why": "https://en.wikipedia.org/wiki/Kraken_(cryptocurrency_exchange) : « Kraken was founded in 2011 in San Francisco by Thanh Luu, Michael Gronager, and Jesse Powell »"
+ },
+ {
+  "id": 20,
+  "claim": "En dimension 4, un ensemble de cartes SET sans aucun SET peut contenir 24 cartes",
+  "truth": false,
+  "mark": "✗",
+  "why": "https://en.wikipedia.org/wiki/Set_(card_game) : « The largest number of cards that can be assembled without forming a set is 20, a bound proven in 197 »"
+ }
+]
