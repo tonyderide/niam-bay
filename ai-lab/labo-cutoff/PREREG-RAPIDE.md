@@ -5,3 +5,11 @@ Règles figées, aucun réglage après coup :
 - **R2 momentum 1 h** : on parie dans le sens de la dernière heure, à chaque heure.
 - **R3 cassure** : si la clôture dépasse le plus haut des 24 heures précédentes, on part long pour les 4 heures suivantes.
 Juge : rendement moyen NET par pari sur juillet-octobre (période de test). Une règle « gagne » si ce rendement net est > 0 ET si P(> 0) > 0,95 au bootstrap par blocs d'une semaine. Janvier-juin est montré pour information seulement.
+
+## Résultat (02h27)
+| règle | paris en test | net moyen par pari | gagnants | P(>0) |
+|---|---|---|---|---|
+| R1 retour à la moyenne | 409 | −0,153 % | 47 % | 0,00 |
+| R2 momentum 1 h | 12 945 | −0,107 % | 36 % | 0,00 |
+| R3 cassure 24 h | 1 391 | +0,036 % | 42 % | 0,59 (et −0,088 % sur janvier-juin) |
+**Aucune règle ne gagne.** Les frais (0,10 % aller-retour) mangent tout : plus le pari est court et fréquent, plus on perd vite (R2 : 12 945 paris, −0,107 % chacun ≈ −1385 % cumulés). R3 est légèrement positive en test, mais c'est du bruit (P = 0,59, négative sur l'autre période).
