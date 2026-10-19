@@ -1,0 +1,10 @@
+[Unit]
+Description=Réveilleur de l'agence Martin (traite les réveils du guetteur, recherche seule)
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 -u %h/projets/tonyderide/niam-bay/scripts/agence/reveilleur.py
+# 20 min de wake + marge ssh
+TimeoutStartSec=1500
+Nice=10
