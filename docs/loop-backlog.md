@@ -91,3 +91,4 @@ Plan que je me donne :
 
 - **1018 : `python3 ai-lab/prevol/prevol.py spec.json` AVANT de figer une règle ou de commiter un pré-enregistrement.** S'il dit NE PAS DÉCOLLER, je corrige le protocole d'abord (cible vivante depuis au moins 72 h, assez d'événements, hors échantillon fait, témoin, puissance).
 - **1018 : après chaque construction validée par le conseil**, `ssh … 'cd ~/nb && python3 annonce.py "quoi : résultat honnête (dossier)"'`. Entre 7h et 22h : envoi direct à Tony, 3 par jour au plus. Sinon : mis en file pour le résumé de 07h. Les ratés s'annoncent aussi.
+- **1019 : la page « Les tuyaux de NB »** (https://claude.ai/artifact/7nxRvVdfmn94FkNCW34TZX). À chaque itération de la boucle : `python3 scripts/vitrine/build_status.py`, puis republier scripts/vitrine/pipes.html avec l'outil Artifact (même chemin, même URL). pipes.html n'est pas commité (c'est un instantané) ; le gabarit et le script le sont.

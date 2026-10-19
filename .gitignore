@@ -33,3 +33,4 @@ memory/vectordb/*.sqlite3
 memory/vectordb/*.bak-*
 docs/inbox.jsonl
 docs/inbox-vm.jsonl
+scripts/vitrine/pipes.html
