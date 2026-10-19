@@ -3,7 +3,7 @@ Lire d'abord : docs/loop-backlog.md (règles), le journal (dernières 40 lignes)
 
 ## À faire, par ordre de priorité
 1. **Agence : la brancher sur la vérité du compte.** Elle est aveugle depuis le PC : MARTIN_API vise localhost:8081, mais Martin tourne sur la VM. Pistes : un tunnel ssh, ou lire ~/et/et.log par ssh. Ensuite, empêcher l'agence d'envoyer des Telegram la nuit (22h-07h), car elle en a envoyé un à 04h57.
-2. **Mesurer le funding Hyperliquid/Kraken par script** (BTC, ETH, SOL, 30 jours, API publiques), puis rendre le chiffre et le protocole à l'agence (étape 2 de la charte). Ne PAS réveiller les 12 agents pour une simple mesure.
+2. ✅ (fait 05h30, ai-lab/funding) **Mesurer le funding Hyperliquid/Kraken par script** (BTC, ETH, SOL, 30 jours, API publiques), puis rendre le chiffre et le protocole à l'agence (étape 2 de la charte). Ne PAS réveiller les 12 agents pour une simple mesure.
 3. **Échéances des expériences :**
    - suiveurs cachés : 20/10 vers 22h15 (ai-lab/suiveurs, meneur = amendement n°2) ;
    - blocs de baleine : même flux, pré-vol ≥ 15 blocs par côté et par moitié ;
