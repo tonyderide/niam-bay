@@ -25,3 +25,6 @@ Note : la colonne « net moyen » de la sortie n'inclut pas les frais d'entrée 
 - SL 0,3 / 0,5 / 1 % sur juillet-octobre : BTC −17 à −22 %, ETH −1 à +2,5 %, SOL −39 à −41 %. SL 0,1 % (réglage de Tony) : voir la ligne suivante du journal.
 
 ## ⚠️ BUG TROUVÉ (19/10, 17h40) : l'API ne renvoie que 2000 bougies max par appel ; le test demandait des fenêtres de 5000 min → ~60 % des minutes manquaient. Tony avait raison (« dans ton banc de test il doit y avoir un problème »). Pagination corrigée à 1800 min, test relancé à l'identique.
+
+## Relance avec des données complètes (17h55)
+Juillet-octobre, bougie suivante, taker : BTC −65,6 % (1050 trades), ETH −67,3 % (1104), SOL −76,2 % (1112). Janvier-juin : de −82 % à −87 %. Avec les données complètes, il y a 2 fois plus de croisements, donc 2 fois plus de frais. La conclusion tient, en pire, et c'est cohérent avec l'agent indépendant (−52 à −66 %).
