@@ -3,3 +3,4 @@
 - [ ] Révoquer le token Telegram via @BotFather (il a été dans des fichiers suivis, dans niam-bay ET dans martin-agency docs/superpowers/plans/2026-05-14…, retiré le 19/10 mais il reste dans l’historique git) ; ensuite mettre le nouveau dans ~/.config/nb/tg_token et ~/martin/.tg_token (VM).
 - [ ] Optionnel : noter à l'aveugle les 40 paires de ai-lab/test-du-juge/FICHE-TONY.md (juge n°2 du Discovery Engine).
 - [ ] Optionnel : accord pour le compte Glama (PR awesome-mcp-servers #16591).
+- [ ] (NB s'en charge) Agence : le log httpx écrit l'URL Telegram avec le token en clair. NB va le faire taire. Raison de plus de révoquer le token.
