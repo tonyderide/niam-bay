@@ -214,6 +214,12 @@ def main():
                     reply = answer(m["text"])
             except subprocess.TimeoutExpired:
                 reply = "(trop long, j'abandonne cette réponse ; la session NB verra ton message)"
+            if re.search(r"\d+[.,]\d+\s?\$", reply):  # un montant affirmé → reçu figé sur la VM
+                try:
+                    out = subprocess.run(VM + ["cd ~/nb && python3 receipts.py issue compte"], capture_output=True, text=True, timeout=40).stdout
+                    reply += f"\n🧾 reçu n°{json.loads(out)[0]} : tape /preuve {json.loads(out)[0]} pour voir d'où vient ce chiffre"
+                except Exception:
+                    reply += "\n(⚠️ non prouvé : reçu indisponible)"
             send(reply); log({"from": "nb", "text": reply})
             subprocess.run(VM + [f"echo '{json.dumps({'ts': m['ts']})}' >> ~/nb/answered.jsonl"], timeout=30)
             warn = fact_check(reply)
