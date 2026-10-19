@@ -75,8 +75,15 @@ def check(c):
     return "?", "invérifiable"
 
 
-def check_claims(text):
-    return [(c.get("claim", ""),) + check(c) for c in extract(text)]
+def check_claims(text, auteur=None):
+    """auteur = identifiant du modèle qui a écrit le texte (ex. claude-haiku-5-5) → active l'alarme de l'angle mort."""
+    from angle_mort import flag
+    out = []
+    for c in extract(text):
+        claim, (mark, why) = c.get("claim", ""), check(c)
+        f = flag(claim, auteur) if auteur else None
+        out.append((claim, mark, why + (f"\n   {f}" if f else "")))
+    return out
 
 
 if __name__ == "__main__":

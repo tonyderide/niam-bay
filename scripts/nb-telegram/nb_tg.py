@@ -207,7 +207,11 @@ def main():
             try:
                 if m["text"].strip().lower().startswith("/verif"):
                     sys.path.insert(0, os.path.join(REPO, "ai-lab/second-avis")); from verif import check_claims
-                    res = check_claims(m["text"].split(None, 1)[1] if " " in m["text"].strip() else "")
+                    body = m["text"].split(None, 1)[1] if " " in m["text"].strip() else ""
+                    auteur = None
+                    if body.startswith("@"):  # /verif @claude-haiku-5-5 texte → alarme de l'angle mort
+                        auteur, _, body = body[1:].partition(" ")
+                    res = check_claims(body, auteur)
                     reply = ("🔎 Second avis (v0 : calculs et faits de code GitHub ; le reste = invérifiable)\n" +
                              "\n".join(f"{mk} {c}\n   {w}" for c, mk, w in res)) if res else "🔎 rien de vérifiable trouvé (colle le texte après /verif)"
                 else:

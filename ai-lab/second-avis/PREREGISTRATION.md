@@ -12,3 +12,6 @@
   3. Un 2e Haiku, sans outils et sans voir le verdict, dit si la citation soutient, contredit, ou ne tranche pas l'affirmation.
   On ne rend ✓ ou ✗ que si les trois étapes concordent. Sinon : invérifiable.
 - **Critère v1** : 0 faux ✓ (aucun faux marqué vrai) ET au moins 6 vrais sur 10 marqués ✓ (couverture), et au plus 1 faux ✗ (un vrai marqué faux). Avec 10 faux seulement, 0 faux ✓ borne le taux d'erreur à ~30 % au mieux : c'est un premier tamis, pas une garantie.
+
+## Alarme de l'angle mort (19/10 ~03h40, conseil OUI 6.55)
+Un DRAPEAU, jamais un verdict : « ce modèle ne pouvait pas le savoir, demande-lui sa source ». Usage : `/verif @claude-haiku-5-5 <texte>`. Mini-banc de 20 phrases : 10/10 drapeaux justes, 0/10 fausse alarme. ⚠️ Honnêteté : ce banc a été écrit en même temps que le code, il n'était PAS gelé avant, et la détection repose sur des dates explicites (regex). Il ne voit pas une affirmation récente qui ne donne pas de date.

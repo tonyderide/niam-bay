@@ -684,3 +684,6 @@ rtk read ~/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 8
 
 # [auto 2026-10-18 23:06] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && scripts/nb | sed -n '<N>,2p;4p;7p'; rtk read docs/inbox.jsonl --tail-lines <N> | grep '"tony"' | tail -<N> | cut -c1-<N>
 cd ~/projets/tonyderide/niam-bay && scripts/nb | sed -n '1,2p;4p;7p'; rtk read docs/inbox.jsonl --tail-lines 3 | grep '"tony"' | tail -1 | cut -c1-200
+
+# [auto 2026-10-19 03:34] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && scripts/nb | sed -n '<N>,2p;4p;7p'; rtk read docs/inbox.jsonl --tail-lines <N> | grep tony | tail -<N> | cut -c1-<N>
+cd ~/projets/tonyderide/niam-bay && scripts/nb | sed -n '1,2p;4p;7p'; rtk read docs/inbox.jsonl --tail-lines 3 | grep tony | tail -1 | cut -c1-200
