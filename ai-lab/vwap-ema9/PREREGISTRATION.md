@@ -28,3 +28,10 @@ Note : la colonne « net moyen » de la sortie n'inclut pas les frais d'entrée 
 
 ## Relance avec des données complètes (17h55)
 Juillet-octobre, bougie suivante, taker : BTC −65,6 % (1050 trades), ETH −67,3 % (1104), SOL −76,2 % (1112). Janvier-juin : de −82 % à −87 %. Avec les données complètes, il y a 2 fois plus de croisements, donc 2 fois plus de frais. La conclusion tient, en pire, et c'est cohérent avec l'agent indépendant (−52 à −66 %).
+
+## Variante « pas trop précis » (1019 ~18h45, idée de Tony)
+On ne prend que les croisements nets : écart EMA9/VWAP ≥ seuil, maintenu pendant `conf` bougies 3m. 72 réglages ont été testés, choisis sur janvier-juin (filtre.py) puis jugés sur juillet-octobre.
+- Réglage retenu : seuil 0,5 %, conf 5, sans SL. Janvier-juin : −19 / −55 / −29 %. Juillet-octobre : BTC +20 %, ETH +21 %, SOL +27 %.
+- Au hasard, avec le même nombre de trades (hasard.py) : p95 de +29 / +42 / +41 %. La stratégie se classe au 87e-91e centile, donc **sous le p95**. Simplement garder du juillet au octobre donnait +39 / +54 / +42 %.
+- Les résultats sont instables d'un seuil voisin à l'autre (à 0,75 % et 1 %, souvent négatifs).
+- Verdict : **presque**. Le filtre réduit les frais (≈100 trades au lieu de 1 100) mais ne démontre pas d'avantage sur le hasard. C'est la hausse du marché qui porte le résultat.
