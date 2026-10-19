@@ -23,3 +23,10 @@ Période : 2024-01-01 → 2025-12-31 (UTC). Marchés : BTC, ETH, SOL. Bougies 1h
 2. La somme des 3 marchés dépasse le 95e centile du hasard.
 3. Il y a au moins 30 trades.
 4. Le net est positif chaque année (2024 et 2025) sur la somme des 3 marchés.
+
+## Résultat (1019 ~20h30, revalid2024.py → revalid2024.log)
+Rendements sommés trade par trade, frais compris.
+- **A, chocs 1h « suite »** : BTC −60,7 %, ETH +18,8 %, SOL −59,3 % sur environ 350 trades par marché. Somme −101 %. Le hasard donne une médiane de −120 % et un p95 de +77 %. Chaque année est négative. **PERD.**
+- **B, funding contrarien** : BTC −52 %, ETH −203 %, SOL −148 % sur environ 1 000 trades par marché. Somme −404 %, **sous la médiane du hasard** (−297 %). **PERD.** La variante aux seuils figés sur 2026 fait pire.
+
+Les deux « presque » de 2026 étaient des coups de chance de période. Le bilan de la chasse passe donc à 0 sur 10, sans piste vivante.
