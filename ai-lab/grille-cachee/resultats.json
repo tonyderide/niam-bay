@@ -1,0 +1,35 @@
+[
+ {
+  "compte": "0x93c48e9d",
+  "coin": "xyz:MU",
+  "fills": 1091,
+  "type": "arith",
+  "pas": "0.01",
+  "train": 1.0,
+  "test": 1.0,
+  "hasard": 1,
+  "retrouve": false
+ },
+ {
+  "compte": "0x9aaeadf3",
+  "coin": "BTC",
+  "fills": 98,
+  "type": "arith",
+  "pas": "1",
+  "train": 1.0,
+  "test": 1.0,
+  "hasard": 1,
+  "retrouve": false
+ },
+ {
+  "compte": "0x0f4fbea1",
+  "coin": "ZEC",
+  "fills": 581,
+  "type": "arith",
+  "pas": "0.1",
+  "train": 1.0,
+  "test": 1.0,
+  "hasard": 1,
+  "retrouve": false
+ }
+]
