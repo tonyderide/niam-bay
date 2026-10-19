@@ -1,0 +1,3 @@
+Voici 48 rendements horaires consécutifs (en %, du plus ancien au plus récent) d'un actif crypto, anonymisé.
+Donne ta probabilité que son prix soit PLUS HAUT dans 24 heures qu'à la fin de cette série.
+Réfléchis brièvement, puis termine par une ligne unique : P=0.xx
