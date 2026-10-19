@@ -23,3 +23,5 @@ Note : la colonne « net moyen » de la sortie n'inclut pas les frais d'entrée 
 ## Amendement (Tony : « tu as oublié de mettre le SL ») : SL fixe 0,3 / 0,5 / 1 % (toucher du high/low), à plat jusqu'au croisement suivant, période juillet-octobre, exécution B, taker.
 
 - SL 0,3 / 0,5 / 1 % sur juillet-octobre : BTC −17 à −22 %, ETH −1 à +2,5 %, SOL −39 à −41 %. SL 0,1 % (réglage de Tony) : voir la ligne suivante du journal.
+
+## ⚠️ BUG TROUVÉ (19/10, 17h40) : l'API ne renvoie que 2000 bougies max par appel ; le test demandait des fenêtres de 5000 min → ~60 % des minutes manquaient. Tony avait raison (« dans ton banc de test il doit y avoir un problème »). Pagination corrigée à 1800 min, test relancé à l'identique.

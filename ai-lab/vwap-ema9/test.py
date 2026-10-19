@@ -3,10 +3,10 @@ M = 60; ts = lambda d: int(time.mktime(time.strptime(d, "%Y-%m-%d")))
 def candles(sym):
     out = {}; t = ts("2026-01-01"); end = ts("2026-10-17")
     while t < end:
-        try: d = json.load(urllib.request.urlopen(f"https://futures.kraken.com/api/charts/v1/trade/{sym}/1m?from={t}&to={min(end, t+5000*M)}", timeout=60))["candles"]
+        try: d = json.load(urllib.request.urlopen(f"https://futures.kraken.com/api/charts/v1/trade/{sym}/1m?from={t}&to={min(end, t+1800*M)}", timeout=60))["candles"]
         except Exception: time.sleep(3); continue
         for c in d: out[c["time"]//1000] = (float(c["open"]), float(c["high"]), float(c["low"]), float(c["close"]), float(c["volume"]))
-        t += 5000*M; time.sleep(0.2)
+        t += 1800*M; time.sleep(0.15)
     b = {}
     for t, v in out.items():
         k = t // 180 * 180; o = b.get(k)
