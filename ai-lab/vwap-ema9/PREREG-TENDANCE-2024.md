@@ -17,3 +17,12 @@ Figé le 2026-10-19 vers 19h30, avant tout téléchargement des données 2024-20
 3. Le résultat est positif sur chaque année (2024 et 2025) prise séparément, sur au moins 2 marchés sur 3.
 
 À titre indicatif seulement (ces chiffres n'entrent pas dans le verdict) : acheter et garder, et la même règle sans filtre de tendance.
+
+## Résultat (1019 ~20h, tendance2024.py → tendance2024.log)
+| | Trades | Total | Hasard p95 | 2024 | 2025 | Sans filtre tendance (indicatif) | Garder (indicatif) |
+|---|---|---|---|---|---|---|---|
+| BTC | 972 | −44,7 % | −15,0 % | −5,2 % | −41,6 % | −37,6 % | +107 % |
+| ETH | 1 321 | −39,9 % | −28,8 % | −10,5 % | −32,9 % | +32,1 % | +30 % |
+| SOL | 1 768 | −86,1 % | −52,0 % | −76,9 % | −39,8 % | −81,3 % | +22 % |
+
+**VERDICT : ÉCHEC** sur les 3 critères. Le filtre de tendance n'aide pas : il fait même pire que la même règle sans filtre. Le +20 % de juillet-octobre 2026 venait de la période, pas de la règle.
