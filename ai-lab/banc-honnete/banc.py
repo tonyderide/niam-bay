@@ -17,6 +17,7 @@ import calendar, json, math, os, pickle, random, sys, time, urllib.request
 
 FEE = 0.0005
 SYM = {"BTC": "PF_XBTUSD", "ETH": "PF_ETHUSD", "SOL": "PF_SOLUSD"}
+for _c in "XRP DOGE ADA LINK AVAX DOT LTC BCH UNI ATOM NEAR FIL AAVE APT OP TRX XLM ETC".split(): SYM[_c] = f"PF_{_c}USD"
 STEP = {"5m": 300, "15m": 900, "30m": 1800, "1h": 3600, "4h": 14400, "12h": 43200, "1d": 86400}
 CACHE = os.path.expanduser("~/.cache/banc-honnete")
 ts = lambda d: calendar.timegm(time.strptime(d, "%Y-%m-%d"))
@@ -24,9 +25,10 @@ PERIODES = (("2024-2025", ts("2024-01-01"), ts("2026-01-01")), ("2026", ts("2026
 
 
 def candles(sym, tf):
-    os.makedirs(CACHE, exist_ok=True); f = f"{CACHE}/{sym}_{tf}.pkl"
+    debut = "2022-11-01" if tf == "1d" else "2023-11-01"  # en journalier, la SMA200 a besoin de ~200 j avant 2024
+    os.makedirs(CACHE, exist_ok=True); f = f"{CACHE}/{sym}_{tf}_{debut}.pkl"
     if os.path.exists(f): return pickle.load(open(f, "rb"))
-    step = STEP[tf]; a, b = ts("2023-11-01"), ts("2026-10-17"); out = {}; t = a
+    step = STEP[tf]; a, b = ts(debut), ts("2026-10-17"); out = {}; t = a
     while t < b:  # l'API rend 2000 bougies max par appel : tranches de 1800
         for _ in range(8):
             try:
@@ -130,10 +132,11 @@ def tester(spec, C, T, a, b):
     return trades, C2, lo, hi, so, toujours
 
 
-def hasard(C, lo, hi, trades, so, toujours, rnd):
+def hasard(C, lo, hi, trades, so, toujours, rnd, sens=(1, -1)):
+    """sens = les directions que la stratégie peut prendre : une stratégie long-only est comparée à des longs au hasard."""
     tot = 0
     for _, dur in trades:
-        i = rnd.randrange(lo + 1, hi - 1); s = rnd.choice((1, -1))
+        i = rnd.randrange(lo + 1, hi - 1); s = rnd.choice(sens)
         if toujours: j = min(hi - 1, i + dur); tot += s * (C[j][0] / C[i][0] - 1) - 2 * FEE  # même durée de tenue
         else: tot += sortir(C, i, s, so, None)[0]
     return tot
@@ -141,12 +144,13 @@ def hasard(C, lo, hi, trades, so, toujours, rnd):
 
 def banc(spec):
     out = [f"# {spec['nom']}  ({spec['tf']})"]; ok = True
-    data = {m: candles(SYM[m], spec["tf"]) for m in spec.get("marches", list(SYM))}
+    data = {m: candles(SYM[m], spec["tf"]) for m in spec.get("marches", ["BTC", "ETH", "SOL"])}
     for per, a, b in PERIODES:
         S_ = 0; pos = 0; N = 0; R = [0.0] * 500; lig = []
         for m, (T, C) in data.items():
             tr, C2, lo, hi, so, tj = tester(spec, C, T, a, b); r = sum(x for x, _ in tr); S_ += r; pos += r > 0; N += len(tr)
-            for k in range(500): R[k] += hasard(C2, lo, hi, tr, so, tj, random.Random(k))
+            sens = tuple(x for x, e in ((1, spec.get("long")), (-1, spec.get("short"))) if e)
+            for k in range(500): R[k] += hasard(C2, lo, hi, tr, so, tj, random.Random(k), sens)
             g = sum(x > 0 for x, _ in tr) / max(1, len(tr))
             lig.append(f"{m} {len(tr)} trades, {g:.0%} gagnants, somme {r * 100:+.1f} % (composé {(math.prod(1 + x for x, _ in tr) - 1) * 100:+.1f} %)")
         R.sort(); good = S_ > 0 and pos >= 2 and S_ > R[475] and N >= 30; ok &= good

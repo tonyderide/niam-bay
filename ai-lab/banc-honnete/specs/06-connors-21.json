@@ -1,0 +1,1 @@
+{"nom": "06 RSI-2 de Connors, 21 cryptos", "tf": "1d", "marches": ["BTC","ETH","SOL","XRP","DOGE","ADA","LINK","AVAX","DOT","LTC","BCH","UNI","ATOM","NEAR","FIL","AAVE","APT","OP","TRX","XLM","ETC"], "long": "(close > sma(200)) & (rsi(2) < 10)", "short": null, "sortie": {"si_long": "close > sma(5)"}}

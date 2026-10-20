@@ -1,0 +1,5 @@
+# 05c RSI-2 de Connors  (1d)
+2024-2025 : BTC 15 trades, 73% gagnants, somme +9.0 % (composé +8.8 %) | ETH 9 trades, 78% gagnants, somme +29.2 % (composé +32.3 %) | SOL 15 trades, 60% gagnants, somme -5.3 % (composé -8.6 %) || somme +33.0 % · hasard méd. +22.8 % p95 +87.2 % · NON
+2026 : BTC 2 trades, 100% gagnants, somme +2.4 % (composé +2.4 %) | ETH 3 trades, 67% gagnants, somme +2.5 % (composé +2.5 %) | SOL 2 trades, 50% gagnants, somme -0.6 % (composé -0.8 %) || somme +4.3 % · hasard méd. +2.4 % p95 +23.1 % · NON
+VERDICT : ÉCHEC
+(relancé après correction : hasard dans le même sens que la stratégie)

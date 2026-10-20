@@ -1,0 +1,4 @@
+# 05a Bollinger + EMA200 (TST)  (15m)
+2024-2025 : BTC 1013 trades, 40% gagnants, somme -104.3 % (composé -67.4 %) | ETH 1410 trades, 39% gagnants, somme -185.2 % (composé -85.9 %) | SOL 1714 trades, 41% gagnants, somme -112.9 % (composé -71.6 %) || somme -402.4 % · hasard méd. -404.6 % p95 -225.7 % · NON
+2026 : BTC 364 trades, 42% gagnants, somme -20.4 % (composé -20.7 %) | ETH 477 trades, 40% gagnants, somme -48.6 % (composé -40.7 %) | SOL 532 trades, 42% gagnants, somme -30.2 % (composé -29.0 %) || somme -99.2 % · hasard méd. -117.8 % p95 -1.0 % · NON
+VERDICT : ÉCHEC

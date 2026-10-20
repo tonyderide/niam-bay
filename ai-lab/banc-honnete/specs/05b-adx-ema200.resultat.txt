@@ -1,0 +1,4 @@
+# 05b ADX + EMA200 (TST)  (15m)
+2024-2025 : BTC 866 trades, 48% gagnants, somme -46.2 % (composé -40.2 %) | ETH 1072 trades, 47% gagnants, somme -81.4 % (composé -58.5 %) | SOL 1120 trades, 46% gagnants, somme -89.5 % (composé -61.8 %) || somme -217.1 % · hasard méd. -305.8 % p95 -162.8 % · NON
+2026 : BTC 312 trades, 47% gagnants, somme -16.7 % (composé -16.9 %) | ETH 341 trades, 48% gagnants, somme -14.3 % (composé -15.1 %) | SOL 401 trades, 48% gagnants, somme -20.9 % (composé -20.8 %) || somme -51.9 % · hasard méd. -96.4 % p95 -10.0 % · NON
+VERDICT : ÉCHEC
