@@ -13,3 +13,8 @@ Conseil intérieur : OUI à 6,73. Réserves notées : peu de semaines pour juger
   - Hasard : 2 000 tirages de paniers aléatoires (5 longs et 5 shorts chaque semaine), avec les mêmes frais.
   - GAGNE si la somme de 2026 est > 0, qu'elle dépasse le 95e centile du hasard, et que plus de 50 % des semaines sont positives.
 - À titre d'information : la répartition avant et après le 30/06/2026.
+
+## Résultat (1021 vers 01h25, t10.log) : ÉCHEC
+- Sélection sur 2024-2025 : **momentum sur 1 semaine**, +40 % sur 105 semaines, mais seulement 50 % de semaines positives.
+- Jugement sur 2026 : **−25,8 %**, 42 % de semaines positives, **8e centile du hasard**, donc pire que des paniers tirés au sort. Janvier-juin : +5,5 %. Juillet-octobre : −31,3 %.
+- Même sur la période de sélection, aucune configuration ne dépassait 52 % de semaines positives. Le momentum entre cryptos ne se retrouve pas sur ces 21 cryptos en 2024-2026.
