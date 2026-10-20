@@ -72,7 +72,7 @@ QUICK = {"/compte": q_compte, "/todo": q_todo, "/paris": q_paris,
          "/duel": lambda: run("duel/duel.py", "board"),
          "/nuit": lambda: run("morning_digest.py", "--dry"),
          "/ping": lambda: "VM : toujours là. Cerveau Claude : " + ("réveillé" if time.time() - brain_seen() < 120 else "endormi (PC en veille ou éteint)"),
-         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping /preuve N. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, et tout message libre."}
+         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping /preuve N. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, /banc <stratégie en français> pour la tester honnêtement (puis /banc ok), et tout message libre."}
 def with_receipt(f, cid):
     """La réponse porte un reçu : sortie figée maintenant, rejouable avec /preuve N."""
     def g():

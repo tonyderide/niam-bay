@@ -99,7 +99,7 @@ def sortir(C, i, s, so, opp):
         o, h, l, c, _ = C[j]
         if sl and ((s > 0 and l <= ent * (1 - sl)) or (s < 0 and h >= ent * (1 + sl))):
             px = min(o, ent * (1 - sl)) if s > 0 else max(o, ent * (1 + sl)); return s * (px / ent - 1) - 2 * FEE, j
-        if tp and ((s > 0 and h >= ent * (1 + tp)) or (s < 0 and l <= ent * (1 - tp))): return s * tp - 2 * FEE, j
+        if tp and ((s > 0 and h >= ent * (1 + tp)) or (s < 0 and l <= ent * (1 - tp))): return tp - 2 * FEE, j  # un TP est toujours un gain, long ou short
         if j + 1 < len(C) and ((mx and j - i + 1 >= mx) or (opp and opp[j])): return s * (C[j + 1][0] / ent - 1) - 2 * FEE, j + 1
     return s * (C[-1][3] / ent - 1) - 2 * FEE, len(C) - 1
 

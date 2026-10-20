@@ -205,7 +205,11 @@ def main():
             log({"from": "tony", "text": m["text"]})
             tg("sendChatAction", chat_id=CHAT_ID, action="typing")
             try:
-                if m["text"].strip().lower().startswith("/verif"):
+                if m["text"].strip().lower().startswith("/banc"):
+                    import banc_tg
+                    body = m["text"].strip()[5:].strip()
+                    reply = banc_tg.lancer(lambda t: (send(t), log({"from": "nb", "text": t}))) if body.lower() in ("ok", "oui") else banc_tg.proposer(body)
+                elif m["text"].strip().lower().startswith("/verif"):
                     sys.path.insert(0, os.path.join(REPO, "ai-lab/second-avis")); from verif import check_claims
                     body = m["text"].split(None, 1)[1] if " " in m["text"].strip() else ""
                     auteur = None
