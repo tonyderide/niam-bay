@@ -5,3 +5,5 @@
 - [ ] Optionnel : accord pour le compte Glama (PR awesome-mcp-servers #16591).
 - [ ] (NB s'en charge) Agence : le log httpx écrit l'URL Telegram avec le token en clair. NB va le faire taire. Raison de plus de révoquer le token.
 - **Banc honnête** : rapport n°1 (3 stratégies virales, 3 échecs) en page privée https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ. À Tony de décider s'il la diffuse et où (forum, Reddit). Le code est sur GitHub, dans le dépôt public.
+- **Argent qu'on te doit peut-être (1020)** : 1) vérifier sur le relevé bancaire s'il y a deux débits de 71,89 € le 15/09 (Melt). 2) Le vol aller Paris → Bangkok du 23/11/2024 (MF826) a-t-il eu 3 h de retard ou plus ? Si oui, 600 € × 2 via l'UE 261. Le détail est en local dans `~/.local/state/nb/remboursements.md`.
+- **Impôts, avant le 31/12/2026** : dernier délai pour corriger les revenus 2023. Répondre aux 5 questions de l'audit fiscal. Vérifier que le compte Kraken a bien été déclaré (formulaire 3916-bis, amende de 750 € par compte et par an).
