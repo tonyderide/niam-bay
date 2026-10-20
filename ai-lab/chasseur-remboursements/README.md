@@ -19,3 +19,12 @@ Test honnête, demandé par le Juge :
 - Un contrefactuel : est-ce que Tony l'aurait récupérée de toute façon ?
 
 Statut au 1020 à 22h36 : le connecteur Gmail demande une nouvelle connexion (`/mcp`). La recherche n'a pas encore commencé.
+
+## Passage n°1 (1020 vers 22h45), résumé anonymisé
+- 4 pistes, toutes à vérifier par Tony (le détail reste en local) :
+  - 1 double débit possible, d'environ 72 € ;
+  - 1 vol au départ de l'UE couvert par l'UE 261 (jusqu'à 1 200 € s'il a eu du retard) ;
+  - 1 vol low-cost dont l'historique est sur une autre boîte mail ;
+  - 1 vol à venir à surveiller.
+- Abonnements : aucun doublon trouvé.
+- Plafond si tout est confirmé : environ 1 270 €. Somme réellement versée : 0 € pour l'instant (mesure prévue le 1119).
