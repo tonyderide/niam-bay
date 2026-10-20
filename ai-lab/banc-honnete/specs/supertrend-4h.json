@@ -1,0 +1,2 @@
+{"nom": "Supertrend (10,3) — contrôle du moteur contre t03", "tf": "4h",
+ "long": "cross_up(supertrend(10, 3), 0)", "short": "cross_down(supertrend(10, 3), 0)", "sortie": {}}
