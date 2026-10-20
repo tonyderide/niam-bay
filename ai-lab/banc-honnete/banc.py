@@ -95,6 +95,8 @@ def namespace(T, C):
         mdm = S([0] + [max(l[i - 1] - l[i], 0) if l[i - 1] - l[i] > h[i] - h[i - 1] else 0 for i in range(1, n)])
         a = atr(k); P, M = rma(pdm, k), rma(mdm, k)
         dx = S(abs(P[i] - M[i]) / (P[i] + M[i]) * 100 if (P[i] + M[i]) else 0 for i in range(n)); return rma(dx, k)
+    vmin = lambda a, b: S(min(x, y) for x, y in zip(a, b)); vmax = lambda a, b: S(max(x, y) for x, y in zip(a, b))
+    absv = lambda a: S(abs(x) for x in a)
     shift = lambda s, k=1: S([s[0]] * k + s[:-k])
     highest = lambda s, k: S(max(s[max(0, i - k + 1):i + 1]) for i in range(n))
     lowest = lambda s, k: S(min(s[max(0, i - k + 1):i + 1]) for i in range(n))
