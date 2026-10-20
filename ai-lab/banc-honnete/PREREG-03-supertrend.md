@@ -16,3 +16,13 @@ La stratégie GAGNE seulement si :
 - on compte au moins 30 trades par case.
 
 À titre indicatif : le résultat d'un simple « acheter et garder ».
+
+## Résultat (1020 04h25, t03.py → t03.log) : PERD
+Sommes nettes sur 3 marchés :
+
+| Bougies | 2024-2025 | 2026 |
+|---|---|---|
+| 1h | −234 % | −21 % |
+| 4h | −14 % | −28 % |
+
+Aucune des 4 cases ne passe le critère. Garder sans trader a fait mieux en 2024-2025. En 2026, Supertrend perd un peu moins que garder sur ETH et SOL, ce qui en fait un parachute, pas un gain.
