@@ -205,7 +205,10 @@ def main():
             log({"from": "tony", "text": m["text"]})
             tg("sendChatAction", chat_id=CHAT_ID, action="typing")
             try:
-                if m["text"].strip().lower().startswith("/banc"):
+                if m["text"].strip().lower().startswith("/vend"):
+                    import vend_tg
+                    reply = vend_tg.proposer(m["text"].strip()[5:].strip(), API)
+                elif m["text"].strip().lower().startswith("/banc"):
                     import banc_tg
                     body = m["text"].strip()[5:].strip()
                     reply = banc_tg.lancer(lambda t: (send(t), log({"from": "nb", "text": t}))) if body.lower() in ("ok", "oui") else banc_tg.proposer(body)
