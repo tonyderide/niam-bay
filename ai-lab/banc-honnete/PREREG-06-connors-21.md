@@ -1,4 +1,4 @@
-# Pré-enregistrement 06 : RSI-2 de Connors sur 21 cryptos (1021 vers 01h00, avant calcul)
+# Pré-enregistrement 06 : RSI-2 de Connors sur 21 cryptos (1021 vers 00h35, avant calcul)
 Pourquoi ce test : sur BTC, ETH et SOL (05c), Connors était positif sur les 2 périodes, avec 60 à 78 % de gagnants, mais avec trop peu de trades (39 et 7) pour pouvoir conclure. Tony a demandé de l'essayer sur plus de cryptos.
 ⚠️ **Deuxième regard sur la même stratégie** : ce test n'existe que parce que le premier avait l'air bon. On ne relâche rien sur le critère, et aucun réglage n'est modifié.
 
@@ -13,7 +13,7 @@ GAGNE seulement si, sur 2024-2025 ET sur 2026 :
 - le résultat dépasse le 95e centile du hasard ;
 - on compte au moins 30 trades.
 
-## Résultat (1021 vers 01h15) : ÉCHEC
+## Résultat (1021 vers 00h40) : ÉCHEC
 | Période | Somme (21 marchés) | Médiane du hasard | 95e centile du hasard | Rang | Marchés > 0 |
 |---|---|---|---|---|---|
 | 2024-2025 | +243,8 % | +155,1 % | +727,1 % | 60e centile | 14/21 |

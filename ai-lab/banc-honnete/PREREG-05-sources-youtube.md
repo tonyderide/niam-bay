@@ -1,4 +1,4 @@
-# Pré-enregistrement 05 : 3 stratégies dont la source est vérifiable (1021, vers 00h50, avant tout calcul)
+# Pré-enregistrement 05 : 3 stratégies dont la source est vérifiable (1021, vers 00h30, avant tout calcul)
 Méthode du banc (`banc.py`) : BTC, ETH et SOL ; périodes 2024-2025 et 2026 ; frais de 0,05 % par côté ; comparaison à 500 tirages au hasard.
 GAGNE seulement si, sur les DEUX périodes : somme > 0, au moins 2 marchés positifs sur 3, résultat au-dessus du 95e centile du hasard, et au moins 30 trades.
 
