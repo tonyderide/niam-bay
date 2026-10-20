@@ -43,13 +43,13 @@ class Oreilles:
         while time.time() - t0 < max_s:
             b = rec.stdout.read(trame); a = array.array("h", b); rms = math.sqrt(sum(x * x for x in a) / max(1, len(a)))
             if len(fond) < 15: fond.append(rms); continue          # 0,45 s pour mesurer le bruit de fond
-            seuil = max(350, 3 * sorted(fond)[len(fond) // 2], self.seuil_tony or 0)
+            seuil = self.seuil_tony or max(45, 4 * sorted(fond)[len(fond) // 2] + 15)  # relatif au bruit (micro de Tony calme : fond ~10, voix 100-275)
             if rms > seuil: parle = True; silence = 0
             elif parle: silence += 1
             if parle: audio += b
             if parle and silence > 30: break                          # ~0,9 s de silence après la parole
         rec.terminate()
-        if len(audio) < 16000: return ""
+        if len(audio) < 8000: return ""  # moins de 0,25 s : rien
         import numpy as np
         segs, _ = self.m.transcribe(np.frombuffer(bytes(audio), np.int16).astype(np.float32) / 32768, language="fr", beam_size=1, vad_filter=True, initial_prompt=VOCAB)
         return " ".join(x.text for x in segs).strip()
@@ -113,11 +113,11 @@ def enrolement():
     nf = np.frombuffer(fond, np.int16).astype(float); bruit = float(np.sqrt((nf ** 2).mean()))
     while time.time() - t0 < 25:
         b = rec.stdout.read(960); a = np.frombuffer(b, np.int16).astype(float); r = float(np.sqrt((a ** 2).mean()))
-        data += b; parle = parle or r > 3 * bruit + 200; silence = silence + 1 if (parle and r < 2 * bruit + 150) else 0
+        data += b; parle = parle or r > 4 * bruit + 15; silence = silence + 1 if (parle and r < 3 * bruit + 10) else 0
         if parle and silence > 50 and time.time() - t0 > 5: break
     rec.terminate()
     x = np.frombuffer(bytes(data), np.int16).astype(float); trames = x[: len(x) // 480 * 480].reshape(-1, 480)
-    rms = np.sqrt((trames ** 2).mean(1)); voix = rms[rms > 3 * bruit + 200]
+    rms = np.sqrt((trames ** 2).mean(1)); voix = rms[rms > 4 * bruit + 15]
     f = os.path.join(PROFIL, "voix-tony-%s.wav" % time.strftime("%Y%m%d-%H%M"))
     w = wave.open(f, "wb"); w.setnchannels(1); w.setsampwidth(2); w.setframerate(16000); w.writeframes(bytes(data)); w.close(); os.chmod(f, 0o600)
     o = Oreilles(); segs, _ = o.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=1, vad_filter=True, initial_prompt=VOCAB)
@@ -125,7 +125,7 @@ def enrolement():
     mots = lambda t: re.findall(r"[a-zàâçéèêëîïôûùüÿœ0-9-]+", t.lower())
     ref, hyp = mots(TEXTE_ENROLEMENT), set(mots(lu)); compris = sum(m in hyp for m in ref) / len(ref)
     profil = {"date": time.strftime("%Y-%m-%dT%H:%M"), "bruit_rms": round(bruit), "voix_rms_mediane": round(float(np.median(voix))) if len(voix) else None,
-              "seuil": round(max(350, 0.35 * float(np.median(voix)))) if len(voix) else None, "mots_compris": round(compris, 3), "fichier": f}
+              "seuil": round(max(4 * bruit + 15, 0.35 * float(np.median(voix)))) if len(voix) else None, "mots_compris": round(compris, 3), "fichier": f}
     json.dump(profil, open(os.path.join(PROFIL, "profil.json"), "w"), indent=1); os.chmod(os.path.join(PROFIL, "profil.json"), 0o600)
     print(f"\nJ'ai entendu : {lu}\n\nBruit de fond {profil['bruit_rms']} · ta voix {profil['voix_rms_mediane']} · seuil réglé à {profil['seuil']} · "
           f"mots du texte compris : {compris:.0%}\nEnregistrement gardé en local : {f}")
