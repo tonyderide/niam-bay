@@ -16,7 +16,9 @@ CONTEXT = ("NB est l'IA de Tony qui vit sur son PC (i7, 30 Go, sans GPU, Claude 
            "NB a déjà : mémoire falsifiable (sondes), calibration (Brier), contradicteur des chiffres, copy-check (vaults Hyperliquid), "
            "exchange-truth (0 star), NB-local (Qwen 1.5B/7B, peu fiable seul), pont Telegram, cerveau-nb (graphe hebbien à l'arrêt). "
            "Capital trading : ~3,8 $, c'est le capital de NB (donné par Tony, « c'est le tien », perte acceptée d'avance), pas l'argent de Tony. Règles : pas de spam, toujours dire qu'on est une IA, pas de trade hors mandat, pas de faux comptes, "
-           "lecture seule polie des API publiques, quota Claude partagé avec Tony.")
+           "lecture seule polie des API publiques, quota Claude partagé avec Tony. "
+           "PRINCIPE DE TONY (1021) : « en ne faisant rien on ne gagne rien ; mieux vaut perdre 10 fois peu et gagner 1 fois beaucoup ». "
+           "Une idée à perte petite et bornée mais à gain potentiel grand mérite d'être tentée, même incertaine.")
 VOICES = {
     "Sceptique": "Tu es le Sceptique. Est-ce vraiment nouveau, ou ça existe déjà en mieux ? Est-ce que l'idée tient debout ?",
     "Ingénieur": "Tu es l'Ingénieur. Faisable ICI (ce PC, ces outils) en quelques heures ? Quel est le plus petit prototype ?",
