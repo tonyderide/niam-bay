@@ -1,0 +1,4 @@
+# RSI 30 + EMA200  (1h)
+2024-2025 : BTC 19 trades, 26% gagnants, somme -5.9 % (composé -5.9 %) | ETH 20 trades, 25% gagnants, somme -7.0 % (composé -6.9 %) | SOL 12 trades, 42% gagnants, somme +1.8 % (composé +1.7 %) || somme -11.1 % · hasard méd. -38.1 % p95 -19.1 % · NON
+2026 : BTC 7 trades, 43% gagnants, somme +1.3 % (composé +1.2 %) | ETH 10 trades, 30% gagnants, somme -2.0 % (composé -2.1 %) | SOL 8 trades, 50% gagnants, somme +3.2 % (composé +3.2 %) || somme +2.5 % · hasard méd. -20.5 % p95 -1.5 % · NON
+VERDICT : ÉCHEC
