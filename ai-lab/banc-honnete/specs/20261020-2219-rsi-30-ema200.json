@@ -1,0 +1,12 @@
+{
+ "nom": "RSI 30 + EMA200",
+ "tf": "1h",
+ "long": "cross_down(rsi(14), 30) & (close > ema(200))",
+ "short": null,
+ "sortie": {
+  "sl": 0.01,
+  "tp": 0.02
+ },
+ "notes": "Pas de max_bougies ni de sortie inverse : la position ne sort que sur SL 1 % ou TP 2 %, et « passe sous 30 » est traduit par cross_down(rsi(14), 30), le franchissement à la baisse.",
+ "texte_tony": "long quand le RSI 14 passe sous 30 et que le prix est au-dessus de l EMA200, SL 1 %, TP 2 %, en 1h"
+}
