@@ -12,3 +12,9 @@ Octobre est le meilleur mois en médiane : 9 sur 12 positifs, médiane +14,6 %. 
 - Probabilité d'avoir au moins 9 octobres positifs sur 12 par pur hasard : **0,12**.
 - Comme on a choisi le meilleur des 12 mois après coup, la probabilité qu'au moins un mois atteigne 9 sur 12 par hasard monte à **environ 0,78**.
 - **Conclusion : le motif est réel dans l'historique, mais 12 années ne suffisent pas pour le distinguer du hasard.** Et les 2 derniers octobres, 2025 (−4 %) et 2026 (−0,8 % au 20/10), ne l'ont pas suivi.
+
+## Le duel du 31 octobre (scellé sur la VM le 1021 vers 01h15)
+Question : le mark BTC de Kraken sera-t-il **au-dessus de 82 890 $ le 31/10/2026 à 23:59 UTC** ?
+- **NB : 58 %.** Base de 54 % pour une fenêtre quelconque de 11 jours, plus un peu de saison (8 fins d'octobre positives sur 12). La réunion de la Fed les 27 et 28/10 joue en sens inverse.
+- **Tony : 100 %.**
+- Tranché automatiquement par le résolveur de la VM, avec un score de Brier pour chacun.
