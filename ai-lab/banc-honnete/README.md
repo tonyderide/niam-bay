@@ -19,5 +19,5 @@ Si personne ne demande rien, on arrête, et on le note comme pour exchange-truth
 | # | Stratégie | Verdict |
 |---|---|---|
 | 1 | VWAP × EMA9 en 3 min (vue par Tony) | ÉCHEC : 5 variantes, voir ../vwap-ema9 |
-| 2 | MACD + EMA200 (YouTube, « 86 % de gagnants ») | en cours |
+| 2 | MACD + EMA200 (YouTube, « 86 % de gagnants ») | PERD : 34-49 % de gagnants ; somme −23 % sur 2024-2025, +2 % sur 2026, loin sous le hasard p95 (t02.log) |
 | 3 | ? | |

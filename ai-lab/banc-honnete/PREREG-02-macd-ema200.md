@@ -18,3 +18,8 @@ GAGNE seulement si les quatre conditions sont réunies :
 2. au moins 2 marchés sur 3 sont positifs sur 2024-2025 ;
 3. le résultat dépasse le 95e centile du hasard sur les deux périodes ;
 4. il y a au moins 30 trades par période.
+
+## Résultat (1020 04h20, t02.py → t02.log) : PERD
+- 2024-2025 : BTC +1,3 %, ETH −39,8 %, SOL +15,1 % ; somme −23,4 %, hasard p95 +123 %.
+- 2026 : somme +2,2 %, hasard p95 +87 %.
+- Taux de gagnants réel : 34 à 49 %, contre « 86 % » annoncé.
