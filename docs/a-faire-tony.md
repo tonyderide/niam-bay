@@ -4,3 +4,4 @@
 - [ ] Optionnel : noter à l'aveugle les 40 paires de ai-lab/test-du-juge/FICHE-TONY.md (juge n°2 du Discovery Engine).
 - [ ] Optionnel : accord pour le compte Glama (PR awesome-mcp-servers #16591).
 - [ ] (NB s'en charge) Agence : le log httpx écrit l'URL Telegram avec le token en clair. NB va le faire taire. Raison de plus de révoquer le token.
+- **Banc honnête** : rapport n°1 (3 stratégies virales, 3 échecs) en page privée https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ. À Tony de décider s'il la diffuse et où (forum, Reddit). Le code est sur GitHub, dans le dépôt public.
