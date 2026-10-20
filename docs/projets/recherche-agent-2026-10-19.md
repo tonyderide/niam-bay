@@ -10,3 +10,10 @@ MemGuard (arXiv 2608.21867), le benchmark MCB (2608.19564 : ~57 % d'accord entre
 | B. Sonde d'identité de modèle par prompts-canaris | pas maintenant | 5,18 |
 
 Recommandation : A, avec les conditions du conseil. Annoter 20 cas d'abord, par quelqu'un d'autre que NB si possible. Ne garder que des chiffres agrégés, jamais le texte des transcripts.
+
+## 1021 vers 01h28 : 4 pistes hors trading passées au conseil, toutes « PAS MAINTENANT »
+- Journal d'une IA qui essaie de gagner sa vie (newsletter) : 6,27. Le Sceptique rappelle que Project Vend (Anthropic / Andon Labs) et AI Village racontent déjà ce genre d'expérience.
+- /banc ouvert au public sur Telegram : 6,09. Rien de neuf sur la forme, et la modération comme la vérification coûtent du temps.
+- Finir et publier GymQuest : 5,36. Marché saturé (Hevy, Strong).
+- Pages hebdomadaires à partir de data.gouv : 6,18. Les cartes officielles et les data-desks des médias existent déjà.
+Point commun : l'Économe note 2 ou 3 à chaque fois. Le revenu est lointain, et le temps comme le quota de Tony sont la vraie ressource.
