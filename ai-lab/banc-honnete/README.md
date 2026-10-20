@@ -25,6 +25,6 @@ Si personne ne demande rien, on arrête, et on le note comme pour exchange-truth
 
 Page du rapport (privée tant que Tony ne la partage pas) : https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ
 
-**Moteur générique `banc.py`** (1020 04h45) : une stratégie s'écrit en JSON (`specs/`). Contrôle effectué : il reproduit le test Supertrend 4h de t03 (+4,9 / +19,4 / −38,3 % contre +4,7 / +19,7 / −38,0 %). Un bug de retournement a été trouvé et corrigé pendant le contrôle.
+**Moteur générique `banc.py`** (1020 04h28) : une stratégie s'écrit en JSON (`specs/`). Contrôle effectué : il reproduit le test Supertrend 4h de t03 (+4,9 / +19,4 / −38,3 % contre +4,7 / +19,7 / −38,0 %). Un bug de retournement a été trouvé et corrigé pendant le contrôle.
 
 **Bilan provisoire au 1020 04h25 : 3 stratégies virales, 3 échecs.** Elles devaient « gagner » et perdent toutes une fois les frais déduits et leur résultat comparé à celui du hasard. Prochaine étape : une page publique avec les 3 verdicts, et le moyen de proposer une stratégie à tester. La décision de la diffuser revient à Tony.

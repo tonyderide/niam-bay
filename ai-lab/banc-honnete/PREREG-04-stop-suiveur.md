@@ -30,7 +30,7 @@ Il faut, sur chaque période jugée :
 - un résultat au-dessus du 95e centile du hasard ;
 - au moins 2 marchés positifs sur 3.
 
-## Résultat (1020 04h35, t04.py → t04.log) : PERD
+## Résultat (1020 ~04h25, t04.py → t04.log) : PERD
 **A. Stop suiveur à 8 %**, valeur choisie sur janvier-juin 2026, où elle limitait déjà la perte à −4 %.
 - 2024-2025 : somme −155 % (SOL −92 %).
 - Juillet-octobre 2026 : +24 %.
