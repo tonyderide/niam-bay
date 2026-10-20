@@ -37,6 +37,28 @@ class Oreilles:
         try: self.seuil_tony = json.load(open(os.path.join(PROFIL, "profil.json")))["seuil"]
         except Exception: pass
 
+    def ecouter_bascule(self, garder=True):
+        """Appui sur Entrée = début, nouvel appui = fin. La prise est gardée en LOCAL (dossier privé) pour régler les choses."""
+        import numpy as np, wave
+        rec = subprocess.Popen(["parec", "--raw", "--rate=16000", "--format=s16le", "--channels=1"], stdout=subprocess.PIPE)
+        audio = bytearray(); stop = threading.Event()
+        def lire():
+            while not stop.is_set():
+                b = rec.stdout.read(960)
+                if not b: break
+                audio.extend(b)
+        th = threading.Thread(target=lire, daemon=True); th.start()
+        input("  🔴 j'enregistre… (Entrée pour terminer) "); stop.set(); rec.terminate(); th.join(1)
+        if len(audio) < 8000: return "", None
+        x = np.frombuffer(bytes(audio), np.int16)
+        if garder:
+            os.makedirs(PROFIL, mode=0o700, exist_ok=True); f = os.path.join(PROFIL, "prise-%s.wav" % time.strftime("%Y%m%d-%H%M%S"))
+            w = wave.open(f, "wb"); w.setnchannels(1); w.setsampwidth(2); w.setframerate(16000); w.writeframes(bytes(audio)); w.close(); os.chmod(f, 0o600)
+        t = x[: len(x) // 480 * 480].astype(float).reshape(-1, 480); r = np.sqrt((t ** 2).mean(1))
+        niveau = {"fond": int(np.percentile(r, 10)), "voix": int(np.percentile(r, 90)), "max": int(np.abs(x).max()), "duree": round(len(x) / 16000, 1)}
+        segs, _ = self.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=1, vad_filter=True, initial_prompt=VOCAB)
+        return " ".join(s.text for s in segs).strip(), niveau
+
     def ecouter(self, max_s=25):
         rec = subprocess.Popen(["parec", "--raw", "--rate=16000", "--format=s16le", "--channels=1"], stdout=subprocess.PIPE)
         trame = 480 * 2; fond = []; audio = bytearray(); parle = False; silence = 0; t0 = time.time()
@@ -140,11 +162,12 @@ def main():
     elif len(sys.argv) > 1:
         questions = iter(lambda: input("Toi > "), "")
     else:
-        oreilles = Oreilles(); bouche.dire("Je t'écoute. Appuie sur Entrée, puis parle.")
+        oreilles = Oreilles(); bouche.dire("Je t'écoute. Appuie sur Entrée pour parler, et encore sur Entrée quand tu as fini.")
         def micro():
             while True:
-                input("\n[Entrée puis parle] "); t = time.time(); txt = oreilles.ecouter()
-                print(f"Toi (entendu en {time.time() - t:.1f} s) : {txt or '(rien)'}")
+                input("\n[Entrée pour parler] "); txt, niv = oreilles.ecouter_bascule(); t = time.time()
+                print(f"Toi : {txt or '(rien compris)'}   [niveau voix {niv and niv['voix']} / fond {niv and niv['fond']}, max {niv and niv['max']}]")
+                if niv and niv["max"] < 2000: print("  (ta voix arrive faible : monte le volume du micro ou rapproche-toi)")
                 if not txt: continue
                 if re.search(r"\bau revoir\b", txt.lower()): bouche.dire("À plus tard, Tony."); bouche.q.join(); return
                 yield txt
