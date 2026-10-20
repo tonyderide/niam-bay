@@ -1,4 +1,4 @@
-# Pré-enregistrement 07 : la chasse aux tracés (idée de Tony, 1021 vers 00h50, avant tout calcul)
+# Pré-enregistrement 07 : la chasse aux tracés (idée de Tony, 1021 vers 00h40, avant tout calcul)
 Bougies de 1 jour, 21 cryptos (comme en 06), frais de 0,05 % par côté, entrée à l'ouverture de la bougie suivante, sortie après H bougies.
 
 ## Les 6 motifs classiques (le short est le miroir exact du long)
@@ -17,7 +17,7 @@ Durée de tenue H ∈ {3, 5, 10} jours, soit 18 configurations au total.
 - GAGNE seulement si, sur 2026 : la somme est > 0, au moins 60 % des marchés sont positifs, le résultat dépasse le 95e centile du hasard, et on compte au moins 30 trades.
 - En plus, à titre d'information : le découpage avant et après le 30/06/2026 (date de fin des connaissances du modèle).
 
-## Résultat (1021 vers 00h55) : ÉCHEC
+## Résultat (1021 vers 00h45) : ÉCHEC
 - Sélection sur 2024-2025 : **avalement, H = 10 jours**, 891 trades, +548 %.
 - Jugement sur 2026 : **−29 %**, 50e centile du hasard (pile la médiane), 8 marchés positifs sur 21.
   - Janvier-juin 2026 : +72 %.
