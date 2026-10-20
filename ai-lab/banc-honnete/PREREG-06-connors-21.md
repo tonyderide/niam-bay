@@ -12,3 +12,20 @@ GAGNE seulement si, sur 2024-2025 ET sur 2026 :
 - au moins 60 % des marchés sont positifs ;
 - le résultat dépasse le 95e centile du hasard ;
 - on compte au moins 30 trades.
+
+## Résultat (1021 vers 01h15) : ÉCHEC
+| Période | Somme (21 marchés) | Médiane du hasard | 95e centile du hasard | Rang | Marchés > 0 |
+|---|---|---|---|---|---|
+| 2024-2025 | +243,8 % | +155,1 % | +727,1 % | 60e centile | 14/21 |
+| 2026 | +76,6 % | +1,2 % | +137,0 % | 82e centile | 15/21 |
+
+Lecture :
+- La stratégie gagne de l'argent sur les deux périodes et bat la médiane du hasard.
+- En 2026, année plutôt baissière, elle fait +77 % alors que le hasard en long est à plat (+1 %).
+- Mais elle ne dépasse jamais le 95e centile du hasard : avec si peu de trades par marché (49 en 2026), on ne peut pas écarter la chance.
+- Résultat honnête : **c'est le candidat le plus solide jamais passé au banc, mais il n'est pas prouvé.**
+
+Incidents du moteur pendant ce test, tous corrigés :
+1. Le hasard des stratégies long-only tirait aussi des shorts sans sortie, ce qui gonflait le 95e centile (corrigé en 05c).
+2. Un commentaire ajouté par sed avait désactivé `ok &= good`, et le moteur affichait « GAGNE » à tort.
+3. Pendant la correction, le `R.sort()` a sauté, ce qui faussait les centiles. Rétabli ; Supertrend 4h refait pour vérifier que le moteur n'a pas régressé.

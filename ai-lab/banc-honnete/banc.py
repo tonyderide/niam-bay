@@ -153,8 +153,8 @@ def banc(spec):
             for k in range(500): R[k] += hasard(C2, lo, hi, tr, so, tj, random.Random(k), sens)
             g = sum(x > 0 for x, _ in tr) / max(1, len(tr))
             lig.append(f"{m} {len(tr)} trades, {g:.0%} gagnants, somme {r * 100:+.1f} % (composé {(math.prod(1 + x for x, _ in tr) - 1) * 100:+.1f} %)")
-        R.sort(); good = S_ > 0 and pos >= 2 and S_ > R[475] and N >= 30; ok &= good
-        out.append(f"{per} : " + " | ".join(lig) + f" || somme {S_ * 100:+.1f} % · hasard méd. {R[250] * 100:+.1f} % p95 {R[475] * 100:+.1f} % · {'OK' if good else 'NON'}")
+        R.sort(); good = S_ > 0 and pos >= max(2, math.ceil(0.6 * len(data))) and S_ > R[475] and N >= 30; ok &= good  # 3 marchés : 2 ; 21 : 13
+        out.append(f"{per} : " + " | ".join(lig) + f" || somme {S_ * 100:+.1f} % · hasard méd. {R[250] * 100:+.1f} % p95 {R[475] * 100:+.1f} % · rang {sum(x < S_ for x in R) / 5:.0f}e centile · {pos}/{len(data)} marchés > 0 · {'OK' if good else 'NON'}")
     out.append("VERDICT : " + ("GAGNE" if ok else "ÉCHEC"))
     return "\n".join(out)
 
