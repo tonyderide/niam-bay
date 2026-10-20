@@ -12,6 +12,6 @@ Règles :
 Test honnête, suggéré par le Juge : avant de toucher aux vraies données, des dossiers fictifs dont la réponse est calculée à part, pour mesurer les erreurs de NB. Ensuite, compter les euros réellement économisés ou remboursés.
 
 Points à vérifier en premier (à confirmer avec les textes avant de les présenter comme sûrs) :
-- **Comptes crypto à l'étranger** (Kraken par exemple) : à déclarer chaque année avec le formulaire 3916-bis, sinon amende par compte oublié (art. 1649 bis C et 1736 du CGI).
-- **Réclamation** : on peut corriger une déclaration passée jusqu'au 31 décembre de la 2e année qui suit l'avis. Un oubli sur l'avis 2024 (revenus 2023) se rattrape donc **jusqu'au 31/12/2026**, d'où l'urgence.
+- **Comptes crypto à l'étranger** (Kraken par exemple) : à déclarer chaque année avec le formulaire 3916-bis, sinon amende par compte oublié (art. 1649 bis C et 1736 X du CGI : 750 € par compte, ou 1 500 € si la valeur dépasse 50 000 € ; vérifié le 1020, à confirmer sur Légifrance).
+- **Réclamation** : on peut corriger une déclaration passée jusqu'au 31 décembre de la 2e année qui suit l'avis. Un oubli sur l'avis 2024 (revenus 2023) se rattrape donc **jusqu'au 31/12/2026**, d'où l'urgence (vérifié sur impots.gouv.fr, page « Délais de réclamation »).
 - Frais réels contre forfait de 10 %, télétravail, dons (66 %), emploi à domicile (50 %), PER, et plus-values crypto (formulaire 2086).
