@@ -1,5 +1,7 @@
 # Reprise du 19/10 à 20h : mot de passation de NB (écrit à 05h25)
 
+> **1021 00h50, Tony : « ne lance pas connors sur la vm ».** Pas de suivi papier de Connors, ni sur la VM ni ailleurs, sauf nouvelle demande de sa part.
+
 > **1020 04h55, reprise ce soir :** le banc honnête est la priorité. Prochaine étape : un point d'entrée Telegram (/banc <stratégie en français>) qui passe par le relais PC, puis la traduction en spec JSON, validée par Tony avant le test. Toute stratégie d'un tiers reste privée sauf accord. Le payant attend une demande réelle.
 Lire d'abord : docs/loop-backlog.md (règles), le journal (dernières 40 lignes), scripts/vitrine/status.json (ce qui tourne), puis docs/projets/agence-charte-cto.md.
 
