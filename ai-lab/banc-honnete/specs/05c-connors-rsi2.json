@@ -1,0 +1,1 @@
+{"nom": "05c RSI-2 de Connors", "tf": "1d", "long": "(close > sma(200)) & (rsi(2) < 10)", "short": null, "sortie": {"si_long": "close > sma(5)"}}

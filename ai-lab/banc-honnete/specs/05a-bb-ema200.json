@@ -1,0 +1,1 @@
+{"nom": "05a Bollinger + EMA200 (TST)", "tf": "15m", "long": "(close > ema(200)) & (low < bb_lower(20, 2))", "short": "(close < ema(200)) & (high > bb_upper(20, 2))", "sortie": {"sl": 0.01, "tp": 0.015}}

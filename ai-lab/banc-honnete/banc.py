@@ -5,9 +5,9 @@ Spec (exemple) :
  "long": "cross_down(rsi(14), 30) & (close > ema(200))", "short": null,
  "sortie": {"sl": 0.01, "tp": 0.02, "max_bougies": 48}}
 - "long"/"short" : expressions sur des séries (open high low close volume, ema(n), sma(n), rsi(n), atr(n), vwap(),
-  macd(), macd_signal(), supertrend(n, m), highest(s, n), lowest(s, n), shift(s, k), cross_up(a, b), cross_down(a, b)),
+  macd(), macd_signal(), supertrend(n, m), bb_upper(n, k), bb_lower(n, k), adx(n), highest(s, n), lowest(s, n), shift(s, k), cross_up(a, b), cross_down(a, b)),
   combinées avec & | ~ et < > <= >=. Valeur évaluée sur la bougie close ; entrée à l'ouverture suivante.
-- "sortie" : sl/tp en fraction (optionnels), "max_bougies" (optionnel), "inverse": true = sortie sur signal opposé.
+- "sortie" : sl/tp en fraction (optionnels), "max_bougies" (optionnel), "inverse": true = sortie sur signal opposé, "si_long"/"si_short": expression de sortie.
   Sans sl/tp/max, la position est tenue jusqu'au signal opposé (toujours en position).
 Verdict : GAGNE si, sur 2024-2025 ET 2026, somme > 0, >= 2 marchés/3 positifs, somme > p95 de 500 tirages au hasard
 (mêmes sorties, mêmes nombres de trades, instants et sens aléatoires), et >= 30 trades par période.
@@ -84,6 +84,15 @@ def namespace(T, C):
                 d[i] = 1 if (d[i - 1] == -1 and c[i] > dn[i - 1]) else -1 if (d[i - 1] == 1 and c[i] < up[i - 1]) else d[i - 1]
             up[i], dn[i] = u, w
         return d
+    def stdev(k, s=None):
+        s = c if s is None else s; m = sma(k, s); return S((sum((x - m[i]) ** 2 for x in s[max(0, i - k + 1):i + 1]) / min(i + 1, k)) ** .5 for i in range(n))
+    bb_upper = lambda k=20, m=2: sma(k) + stdev(k) * m
+    bb_lower = lambda k=20, m=2: sma(k) - stdev(k) * m
+    def adx(k=14):  # ADX de Wilder
+        pdm = S([0] + [max(h[i] - h[i - 1], 0) if h[i] - h[i - 1] > l[i - 1] - l[i] else 0 for i in range(1, n)])
+        mdm = S([0] + [max(l[i - 1] - l[i], 0) if l[i - 1] - l[i] > h[i] - h[i - 1] else 0 for i in range(1, n)])
+        a = atr(k); P, M = rma(pdm, k), rma(mdm, k)
+        dx = S(abs(P[i] - M[i]) / (P[i] + M[i]) * 100 if (P[i] + M[i]) else 0 for i in range(n)); return rma(dx, k)
     shift = lambda s, k=1: S([s[0]] * k + s[:-k])
     highest = lambda s, k: S(max(s[max(0, i - k + 1):i + 1]) for i in range(n))
     lowest = lambda s, k: S(min(s[max(0, i - k + 1):i + 1]) for i in range(n))
@@ -100,15 +109,18 @@ def sortir(C, i, s, so, opp):
         if sl and ((s > 0 and l <= ent * (1 - sl)) or (s < 0 and h >= ent * (1 + sl))):
             px = min(o, ent * (1 - sl)) if s > 0 else max(o, ent * (1 + sl)); return s * (px / ent - 1) - 2 * FEE, j
         if tp and ((s > 0 and h >= ent * (1 + tp)) or (s < 0 and l <= ent * (1 - tp))): return tp - 2 * FEE, j  # un TP est toujours un gain, long ou short
-        if j + 1 < len(C) and ((mx and j - i + 1 >= mx) or (opp and opp[j])): return s * (C[j + 1][0] / ent - 1) - 2 * FEE, j + 1
+        cond = so.get('_cl') if s > 0 else so.get('_cs')
+        if j + 1 < len(C) and ((mx and j - i + 1 >= mx) or (opp and opp[j]) or (cond and cond[j])): return s * (C[j + 1][0] / ent - 1) - 2 * FEE, j + 1
     return s * (C[-1][3] / ent - 1) - 2 * FEE, len(C) - 1
 
 
 def tester(spec, C, T, a, b):
     ns = namespace(T, C); lo = next(i for i, t in enumerate(T) if t >= a); hi = max(i for i, t in enumerate(T) if t < b) + 1
     ev = lambda e: eval(e, {"__builtins__": {}}, ns) if e else S([False] * len(C))
-    L, Sh = ev(spec.get("long")), ev(spec.get("short")); so = spec.get("sortie", {})
-    toujours = not (so.get("sl") or so.get("tp") or so.get("max_bougies"))
+    L, Sh = ev(spec.get("long")), ev(spec.get("short")); so = dict(spec.get("sortie", {}))
+    if so.get("si_long"): so["_cl"] = ev(so["si_long"])
+    if so.get("si_short"): so["_cs"] = ev(so["si_short"])
+    toujours = not (so.get("sl") or so.get("tp") or so.get("max_bougies") or so.get("si_long") or so.get("si_short"))
     C2 = C[:hi]; trades = []; i = max(lo, 250)
     while i < hi - 1:
         s = 1 if L[i] else -1 if Sh[i] else 0
