@@ -30,3 +30,4 @@ Statut au 1020 à 22h36 : le connecteur Gmail demande une nouvelle connexion (`/
 - Plafond si tout est confirmé : environ 1 270 €. Somme réellement versée : 0 € pour l'instant (mesure prévue le 1119).
 
 - 1020 23h30 : la piste du double débit est fermée, c'était le même mail reçu 2 fois (1 fausse alerte sur 4, précision en cours : 0 confirmée, 1 fausse). Plafond restant : environ 1 200 €.
+- 1021 00h15 : la piste du vol UE 261 est fermée (arrivé à l'heure). Bilan du passage 1 : 0 piste confirmée et 2 fermées sur 4. Restent le vol low-cost de mars 2024 (mails sur Hotmail, invérifiable) et le vol à venir. Gain réel : 0 €. Leçon : la boîte Gmail de Tony contient peu d'argent oublié. La source la plus prometteuse serait Hotmail, où arrivent les factures.
