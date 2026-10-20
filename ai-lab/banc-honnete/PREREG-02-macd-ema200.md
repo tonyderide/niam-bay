@@ -22,4 +22,6 @@ GAGNE seulement si les quatre conditions sont réunies :
 ## Résultat (1020 04h20, t02.py → t02.log) : PERD
 - 2024-2025 : BTC +1,3 %, ETH −39,8 %, SOL +15,1 % ; somme −23,4 %, hasard p95 +123 %.
 - 2026 : somme +2,2 %, hasard p95 +87 %.
-- Taux de gagnants réel : 34 à 49 %, contre « 86 % » annoncé.
+- Taux de gagnants réel : 34 à 49 %, contre des taux de 59 à 86 % que des résumés secondaires prêtent aux vidéos (NON vérifié à la source).
+
+**Correction du 1021 vers 00h45** : j'avais écrit « 86 % annoncé sur YouTube » de mémoire, sans aucune source. Tony l'a relevé. Recherche faite ensuite : un Substack parle d'une vidéo « qui annonce 86 % » ; un résumé d'une autre vidéo donne 59 % sur 100 trades ; un backtest indépendant (Backtrex, USD/JPY 4h, 2016-2026) trouve 32,7 % de gagnants et −22,1 %. Règle : aucune promesse n'est attribuée à quelqu'un sans source primaire.
