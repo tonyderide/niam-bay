@@ -29,3 +29,12 @@ Sur 2024-2025, les motifs de continuation perdent énormément : trois soldats H
 - On teste UNE seule config : le pire de 2024-2025, **trois soldats H=5, pris à l'envers**. Après 3 bougies vertes on prend un short, après 3 rouges un long, et on sort au bout de 5 jours.
 - Le critère de jugement sur 2026 est le même que plus haut.
 - ⚠️ C'est un regard a posteriori sur la sélection, et je le déclare comme tel. Mais 2026 n'a été regardé pour AUCUNE configuration de type « à l'envers ».
+
+## Résultat 07b : ÉCHEC
+- 2024-2025 (sélection, pour rappel) : +1 457 %, mais seulement au 89e centile du hasard. Même sur sa propre période de sélection, ce n'est pas significatif.
+- 2026 (jugement) : +110 %, 58e centile, 9 marchés positifs sur 21.
+  - Janvier-juin : −197 %.
+  - Juillet-octobre : +309 %.
+- Le hasard a une dispersion énorme, avec un p95 vers +1 000 %. Des trades de 5 jours sur des cryptos, c'est très bruité : un motif journalier ne ressort qu'avec beaucoup plus de données.
+
+**Bilan de la chasse aux tracés : 0 sur 18 (et 0 sur 1 pour l'avenant).** Les figures classiques ne battent pas le hasard sur 21 cryptos.
