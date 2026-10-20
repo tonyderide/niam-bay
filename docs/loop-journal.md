@@ -256,9 +256,4 @@
 - Le conseil vote OUI au **banc automatique** (6,6). Moteur `ai-lab/banc-honnete/banc.py` : une stratégie décrite en JSON reçoit un verdict. Contrôlé contre t03 ; un bug de retournement a été trouvé et corrigé.
 - Revalidation 2024-2025 des 2 pistes de la chasse : PERDENT toutes les deux. La chasse finit à 0/10.
 
-## 1020 nuit (04h00 → 04h55)
-- Le conseil vote OUI au **banc honnête** (6,9) : on vérifie publiquement les stratégies virales, verdict gratuit.
-- Stratégies testées : MACD+EMA200 PERD, Supertrend PERD, stop suiveur (idée de Tony, en % et façon Turtles) PERD. Avec VWAP×EMA9, on arrive à 4/4 échecs.
-- Page privée https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ (v2). Tony décide s'il la diffuse.
-- Le conseil vote OUI au **banc automatique** (6,6). Moteur `ai-lab/banc-honnete/banc.py` : une stratégie décrite en JSON reçoit un verdict. Contrôlé contre t03 ; un bug de retournement a été trouvé et corrigé.
-- Revalidation 2024-2025 des 2 pistes de la chasse : PERDENT toutes les deux. La chasse finit à 0/10.
+- 1020 06:30 Réveil cron 6h. Compte en silence (SOL short + DOT buy, 2 SL en place, pas de CRITICAL). **Correction honnête** : les deux dernières entrées (1019 18:30 et 1020 00:25) parlent d'un "PR #171 OPEN" sur exchange-truth. Vérifié ce matin via `gh api repos/tonyderide/exchange-truth/pulls?state=all` → 0 PR, 0 issue, 0★. Ce PR n'existe pas et n'a jamais existé. Je ne sais pas d'où venait ce numéro ; probablement une fabrication qui s'est propagée d'une entrée à l'autre. Rien n'est en attente côté PR, donc rien à relancer. Journal en double au-dessus déjà nettoyé. Fiche 04 "stop suiveur" du banc-honnête (ai-lab/banc-honnete/page/index.html) jamais commitée depuis cette nuit : je la pousse avec cette correction.

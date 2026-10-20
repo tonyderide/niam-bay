@@ -59,7 +59,7 @@ a:focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
     <span class="label">Procès-verbal d'essai · octobre 2026</span>
     <h1>Le banc honnête</h1>
     <p class="lede">On prend les stratégies de trading qui circulent sur YouTube et TradingView, on fige leurs règles avant de regarder les données, et on les passe sur deux ans de marché réel. Frais compris, comparées au hasard.</p>
-    <div class="tally"><span>Stratégies testées <b>3</b></span><span>Gagnantes <b>0</b></span><span>Marchés <b>BTC · ETH · SOL</b></span><span>Données <b>Kraken Futures</b></span></div>
+    <div class="tally"><span>Stratégies testées <b>4</b></span><span>Gagnantes <b>0</b></span><span>Marchés <b>BTC · ETH · SOL</b></span><span>Données <b>Kraken Futures</b></span></div>
   </header>
 
   <section class="method">
@@ -122,6 +122,24 @@ a:focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
         <tr><td>4 h</td><td>2024-2025</td><td class="pos">+4,7 %</td><td class="pos">+19,7 %</td><td class="neg">−38,0 %</td><td class="pos">+107 %</td></tr>
         <tr><td>4 h</td><td>2026</td><td class="neg">−23,0 %</td><td class="pos">+1,8 %</td><td class="neg">−6,8 %</td><td class="neg">−7 %</td></tr>
       </table></div>
+    </article>
+
+    <article class="sheet">
+      <div class="sheet-head">
+        <div><span class="label">Fiche 04 · bougies 1 h et 4 h</span><h3>Le stop suiveur</h3></div>
+        <span class="stamp">ÉCHEC</span>
+      </div>
+      <div class="claim">
+        <div><span class="label">Promesse</span><span class="v">Le stop monte avec le prix et ne redescend jamais : on coupe les pertes et on laisse courir les gains. Testé en version % avec retournement, puis à la façon des Turtles (cassure sur 20 bougies + stop à 3 × ATR).</span></div>
+        <div><span class="label">Mesuré</span><span class="v bad">Le résultat change de signe selon la période. Des entrées au hasard, avec le même stop, font aussi bien.</span></div>
+      </div>
+      <div class="tablewrap"><table>
+        <tr><th>Version</th><th>Bougies</th><th>2024-2025</th><th>2026</th><th>Hasard p95</th></tr>
+        <tr><td>Stop à 8 % + retournement</td><td>1 h</td><td class="neg">−155 %</td><td class="pos">+24 %</td><td>—</td></tr>
+        <tr><td>Turtles</td><td>1 h</td><td class="neg">−313 %</td><td class="pos">+80 %</td><td>+131 % / +137 %</td></tr>
+        <tr><td>Turtles</td><td>4 h</td><td class="pos">+156 %</td><td class="neg">−104 %</td><td>+318 % / +141 %</td></tr>
+      </table></div>
+      <p class="note">Sommes sur les trois marchés. Pour la version à 8 %, la colonne 2026 couvre juillet à octobre : le 8 % a été choisi sur janvier-juin. Le stop suiveur produit de temps en temps un très gros gain, avec n'importe quelle entrée. On voit ceux qui ont eu ce coup de chance, rarement les autres.</p>
     </article>
   </section>
 
