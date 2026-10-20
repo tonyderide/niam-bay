@@ -69,7 +69,7 @@ def q_paris():
 
 
 QUICK = {"/compte": q_compte, "/todo": q_todo, "/paris": q_paris,
-         "/duel": lambda: run("duel/duel.py", "board"), "/certitudes": q_certitudes,
+         "/duel": lambda: run("duel/duel.py", "board"), "/certitudes": lambda: q_certitudes(),
          "/nuit": lambda: run("morning_digest.py", "--dry"),
          "/ping": lambda: "VM : toujours là. Cerveau Claude : " + ("réveillé" if time.time() - brain_seen() < 120 else "endormi (PC en veille ou éteint)"),
          "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping /preuve N. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, /banc <stratégie en français> pour la tester honnêtement (puis /banc ok), une photo d'objet (+ légende) pour une annonce de vente, /sur <ta certitude en %> (puis /certitudes, sans IA), et tout message libre."}
