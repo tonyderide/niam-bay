@@ -25,7 +25,7 @@ PERIODES = (("2024-2025", ts("2024-01-01"), ts("2026-01-01")), ("2026", ts("2026
 
 
 def candles(sym, tf):
-    debut = "2022-11-01" if tf == "1d" else "2023-11-01"  # en journalier, la SMA200 a besoin de ~200 j avant 2024
+    debut = "2022-11-01" if tf == "1d" else "2025-12-01" if tf == "5m" else "2023-11-01"  # en journalier, la SMA200 a besoin de ~200 j avant 2024
     os.makedirs(CACHE, exist_ok=True); f = f"{CACHE}/{sym}_{tf}_{debut}.pkl"
     if os.path.exists(f): return pickle.load(open(f, "rb"))
     step = STEP[tf]; a, b = ts(debut), ts("2026-10-17"); out = {}; t = a
