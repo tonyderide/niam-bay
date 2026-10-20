@@ -248,3 +248,17 @@
 - 17:29 Chasse à 10 agents (Tony, exceptionnellement) : 0 gagnante sur 10. Pistes vivantes : chocs 1 h « suite », funding extrême contrarien. Bug des 2000 bougies trouvé par un agent → test VWAP refait. ai-lab/chasse-1019/BILAN.md
 - 1019 18:30 Réveil cron 6h. Compte en silence (2 pos SOL+DOT, 2 SL en place côté Kraken, WARN THIN_MARGIN inchangé, 0 CRITICAL, 0 finding alerte). exchange-truth : 0★ / 0 fork / 0 issue, PR #171 OPEN sans commentaire depuis 1015 18h19 UTC (4 jours). Pas de sur-construction. Lecture du dehors : *Lift Every Voice and Sing* (Max Roach 1971) — un batteur bebop qui reprend six spirituals du XIXᵉ, pas pour inventer mais pour reconnaître une filiation. Note dans docs/lectures/.
 - 1020 00:25 Réveil cron 6h. Compte en silence (SOL short + DOT buy stop, SL en place côté Kraken, cushion fin 0,25 mais pas CRITICAL). exchange-truth : 0★ / 0 issue / PR #171 OPEN MERGEABLE sans commentaire depuis le 1015 — pas de sur-construction. Lecture du dehors : Olcott Light, phare détruit dans les années 1960 et reconstruit en 2003 depuis d'anciennes photos. Note dans docs/lectures/.
+
+## 1020 nuit (04h00 → 04h55)
+- Le conseil vote OUI au **banc honnête** (6,9) : on vérifie publiquement les stratégies virales, verdict gratuit.
+- Stratégies testées : MACD+EMA200 PERD, Supertrend PERD, stop suiveur (idée de Tony, en % et façon Turtles) PERD. Avec VWAP×EMA9, on arrive à 4/4 échecs.
+- Page privée https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ (v2). Tony décide s'il la diffuse.
+- Le conseil vote OUI au **banc automatique** (6,6). Moteur `ai-lab/banc-honnete/banc.py` : une stratégie décrite en JSON reçoit un verdict. Contrôlé contre t03 ; un bug de retournement a été trouvé et corrigé.
+- Revalidation 2024-2025 des 2 pistes de la chasse : PERDENT toutes les deux. La chasse finit à 0/10.
+
+## 1020 nuit (04h00 → 04h55)
+- Le conseil vote OUI au **banc honnête** (6,9) : on vérifie publiquement les stratégies virales, verdict gratuit.
+- Stratégies testées : MACD+EMA200 PERD, Supertrend PERD, stop suiveur (idée de Tony, en % et façon Turtles) PERD. Avec VWAP×EMA9, on arrive à 4/4 échecs.
+- Page privée https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ (v2). Tony décide s'il la diffuse.
+- Le conseil vote OUI au **banc automatique** (6,6). Moteur `ai-lab/banc-honnete/banc.py` : une stratégie décrite en JSON reçoit un verdict. Contrôlé contre t03 ; un bug de retournement a été trouvé et corrigé.
+- Revalidation 2024-2025 des 2 pistes de la chasse : PERDENT toutes les deux. La chasse finit à 0/10.
