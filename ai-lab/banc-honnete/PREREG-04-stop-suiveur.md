@@ -29,3 +29,19 @@ Il faut, sur chaque période jugée :
 - une somme > 0 sur les 3 marchés ;
 - un résultat au-dessus du 95e centile du hasard ;
 - au moins 2 marchés positifs sur 3.
+
+## Résultat (1020 04h35, t04.py → t04.log) : PERD
+**A. Stop suiveur à 8 %**, valeur choisie sur janvier-juin 2026, où elle limitait déjà la perte à −4 %.
+- 2024-2025 : somme −155 % (SOL −92 %).
+- Juillet-octobre 2026 : +24 %.
+
+La stratégie ne tient pas sur les deux périodes.
+
+**B. Turtles, cassure de Donchian 20 + stop chandelier 3 × ATR**
+
+| Bougies | 2024-2025 | 2026 |
+|---|---|---|
+| 1h | −313 % | +80 % |
+| 4h | +156 % | −104 % |
+
+Aucune case ne dépasse le p95 du hasard. Des entrées au hasard, avec le même stop suiveur, ont un p95 très haut (de +131 à +318 %) : c'est le stop suiveur qui produit les gros gains occasionnels, pas le signal d'entrée. Le résultat change de signe d'une période à l'autre et d'une unité de temps à l'autre.
