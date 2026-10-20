@@ -28,3 +28,5 @@ Statut au 1020 à 22h36 : le connecteur Gmail demande une nouvelle connexion (`/
   - 1 vol à venir à surveiller.
 - Abonnements : aucun doublon trouvé.
 - Plafond si tout est confirmé : environ 1 270 €. Somme réellement versée : 0 € pour l'instant (mesure prévue le 1119).
+
+- 1020 23h30 : la piste du double débit est fermée, c'était le même mail reçu 2 fois (1 fausse alerte sur 4, précision en cours : 0 confirmée, 1 fausse). Plafond restant : environ 1 200 €.
