@@ -205,7 +205,10 @@ def main():
             log({"from": "tony", "text": m["text"]})
             tg("sendChatAction", chat_id=CHAT_ID, action="typing")
             try:
-                if m["text"].strip().lower().startswith("/vend"):
+                if m["text"].strip().lower().startswith("/sur"):
+                    import sur_tg
+                    reply = sur_tg.sceller(m["text"].strip()[4:].strip())
+                elif m["text"].strip().lower().startswith("/vend"):
                     import vend_tg
                     reply = vend_tg.proposer(m["text"].strip()[5:].strip(), API)
                 elif m["text"].strip().lower().startswith("/banc"):

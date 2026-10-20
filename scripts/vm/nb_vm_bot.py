@@ -69,10 +69,23 @@ def q_paris():
 
 
 QUICK = {"/compte": q_compte, "/todo": q_todo, "/paris": q_paris,
-         "/duel": lambda: run("duel/duel.py", "board"),
+         "/duel": lambda: run("duel/duel.py", "board"), "/certitudes": q_certitudes,
          "/nuit": lambda: run("morning_digest.py", "--dry"),
          "/ping": lambda: "VM : toujours là. Cerveau Claude : " + ("réveillé" if time.time() - brain_seen() < 120 else "endormi (PC en veille ou éteint)"),
-         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping /preuve N. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, /banc <stratégie en français> pour la tester honnêtement (puis /banc ok), une photo d'objet (+ légende) pour une annonce de vente, et tout message libre."}
+         "/aide": lambda: "Instantané (sans IA) : /compte /duel /pari N /paris /todo /nuit /ping /preuve N. Avec NB (Claude, sur le PC) : /verif <texte d'une autre IA> pour un second avis, /banc <stratégie en français> pour la tester honnêtement (puis /banc ok), une photo d'objet (+ légende) pour une annonce de vente, /sur <ta certitude en %> (puis /certitudes, sans IA), et tout message libre."}
+def q_certitudes():
+    P = json.load(open(os.path.join(NB, "calibration", "predictions.json"))); T = [x for x in P if x.get("family") == "tony"]
+    R = [x for x in T if x.get("outcome") is not None]; A = [x for x in T if x.get("outcome") is None]
+    L = [f"🎯 Carnet des certitudes de Tony : {len(R)} tranchée(s), {len(A)} en attente"]
+    if R:
+        b = sum((x["p"] - float(x["outcome"])) ** 2 for x in R) / len(R); L.append(f"Score de Brier : {b:.3f} (0 = parfait, 0,25 = pile ou face)")
+        for lo, hi, nom in ((0.9, 1.01, "≥ 90 %"), (0.6, 0.9, "60-90 %"), (0, 0.6, "< 60 %")):
+            g = [x for x in R if lo <= x["p"] < hi]
+            if g: L.append(f"Quand tu dis {nom} : vrai {sum(bool(x['outcome']) for x in g)}/{len(g)}")
+    for x in A[:6]: L.append(f"⏳ {x['p']:.0%} · {x['claim'][:80]}")
+    return "\n".join(L)
+
+
 def with_receipt(f, cid):
     """La réponse porte un reçu : sortie figée maintenant, rejouable avec /preuve N."""
     def g():
