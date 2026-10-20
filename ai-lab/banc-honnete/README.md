@@ -26,6 +26,7 @@ Si personne ne demande rien, on arrête, et on le note comme pour exchange-truth
 | 6 | RSI-2 de Connors, 21 cryptos | PERD de peu : gagne sur toutes les périodes, mais 60e-82e centile du hasard seulement |
 | 7 | 6 tracés classiques (avalement, marteau, inside bar, NR7, 3 soldats, rejet SMA200) | PERD : le meilleur de 2024-25 fait la médiane du hasard en 2026 |
 | 8 | Tournoi de 4 experts IA (quant, scalper, suiveur de tendance, quant volatilité), 15 stratégies avec filtres de régime | PERD : le meilleur (tendance en volatilité croissante) fait +130 % en 2026, mais au 81e centile du hasard ; le scalping à 30 trades par jour est impossible avec les frais |
+| 9 | 840 combinaisons (10 signaux × 7 filtres × 6 sorties × 2 unités de temps) | PERD : Spearman 2024-25 → 2026 = +0,04 ; le top 20 de 2024-25 n’est pas plus souvent positif en 2026 (45 %) que l’ensemble (45 %) |
 
 Page du rapport (privée tant que Tony ne la partage pas) : https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ
 

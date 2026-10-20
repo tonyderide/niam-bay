@@ -33,3 +33,13 @@ Grille complète = 10 signaux × 7 filtres × 6 sorties × 2 unités de temps = 
 1. **Sélection** : la meilleure somme sur 2024-2025, avec au moins 100 trades et au moins 60 % des marchés positifs. On ne regarde pas 2026 à cette étape.
 2. **Jugement UNIQUE** de cette stratégie sur 2026, avec `banc.py` (500 tirages au hasard). Elle GAGNE si la somme est > 0, si au moins 60 % des marchés sont positifs, si elle dépasse le p95 du hasard et si elle compte au moins 30 trades.
 3. **Contrôle global** (informatif, mais il servira à interpréter le résultat) : corrélation de rang de Spearman entre la somme 2024-2025 et la somme 2026 sur les 840 stratégies. On compare aussi la part de stratégies positives en 2026 dans le top 20, dans les 840 et dans le bottom 20. Si le classement de 2024-2025 ne prédit rien (corrélation de 0,1 ou moins), un éventuel gagnant sera traité comme de la chance.
+
+## Résultat (1021 vers 01h10, t09.log, grille complète dans t09-grille.json) : ÉCHEC
+- 840 stratégies, dont 237 éligibles.
+- Stratégie sélectionnée : **1d, 3 bougies jouées à l'envers, longs seulement, tenue de 10 jours**. Résultat : +1 548 % en 2024-2025.
+- **Jugement sur 2026 : +6,8 %, 56e centile du hasard, 11 marchés positifs sur 21.** ÉCHEC.
+
+**Contrôle global, la vraie réponse :**
+- Corrélation de Spearman entre 2024-2025 et 2026 : **+0,042**, soit pratiquement zéro.
+- Part de stratégies positives en 2026 : 45 % dans le top 20 de 2024-2025, **45 % sur les 840**, 50 % dans le bottom 20.
+- **Le classement de 2024-2025 ne dit RIEN de 2026.** Avoir bien marché hier ne prédit pas demain. Sur ces 840 combinaisons d'indicateurs classiques, ce qui « marche » sur une période relève du hasard.

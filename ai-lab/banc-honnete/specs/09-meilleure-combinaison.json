@@ -1,0 +1,1 @@
+{"nom": "1d|fade_3bougies|long_seul|H10", "tf": "1d", "marches": ["BTC", "ETH", "SOL", "XRP", "DOGE", "ADA", "LINK", "AVAX", "DOT", "LTC", "BCH", "UNI", "ATOM", "NEAR", "FIL", "AAVE", "APT", "OP", "TRX", "XLM", "ETC"], "long": "((close < open) & (shift(close) < shift(open)) & (shift(close, 2) < shift(open, 2)))", "short": null, "sortie": {"max_bougies": 10}}
