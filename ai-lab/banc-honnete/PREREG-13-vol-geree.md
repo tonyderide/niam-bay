@@ -1,5 +1,5 @@
 # Pré-enregistrement 13 : BTC « géré par la volatilité » (Moreira & Muir, 2017)
-Écrit et commité le 22/10/2026 vers 00h05, avant tout calcul.
+Écrit et commité le 22/10/2026 à 00h03, avant tout calcul.
 
 ## Idée
 On garde du BTC en permanence, mais la taille de la position suit w = cible / volatilité prévue (plafonnée à 1, donc jamais de levier). Quand l'agitation prévue monte, on réduit ; quand elle baisse, on remonte.
