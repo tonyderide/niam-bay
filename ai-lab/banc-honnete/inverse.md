@@ -1,4 +1,4 @@
-# « Et si tu fais l'inverse ? » (22/10, 00h10)
+# « Et si tu fais l'inverse ? » (21/10, 23h59)
 Les 840 combinaisons de la famille 9, inversées (long ↔ short). Une stratégie inversée paie les mêmes frais : gain inverse ≈ −gain − 0,2 % × trades (approximation : exacte pour les sorties sur signal opposé, approchée pour les stops/objectifs).
 - Inverses positives : 309/840 en 2024-25, 354/840 en 2026 (originales : 381/840 en 2026).
 - Spearman 2024-25 → 2026 des inverses : **+0,03** (le classement du passé ne dit rien de l'avenir, dans un sens comme dans l'autre).

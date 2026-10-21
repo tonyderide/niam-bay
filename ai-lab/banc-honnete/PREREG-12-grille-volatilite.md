@@ -1,5 +1,5 @@
 # Pré-enregistrement 12 : une grille (façon Martin) allumée seulement quand la volatilité prévue est haute
-Écrit et commité le 22/10/2026 ~00h10, avant tout calcul de grille.
+Écrit et commité le 21/10/2026 à 23h56 (heure du commit), avant tout calcul de grille.
 
 ## Idée
 La volatilité se prévoit (corr +0,34 en 1 h sur 2026, voir volatilite-vs-direction.md), la direction non. Une grille gagne sur les allers-retours, sans parier sur le sens. Question : l'allumer seulement quand l'agitation prévue est haute bat-il (a) la grille toujours allumée et (b) la même grille allumée à des moments décalés au hasard ?

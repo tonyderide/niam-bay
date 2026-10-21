@@ -1,4 +1,4 @@
-# La formule qui marche sur l'avenir : la volatilité, pas la direction (22/10, 00h)
+# La formule qui marche sur l'avenir : la volatilité, pas la direction (21/10, 23h55)
 Question de Tony : « il y a forcément une formule, le monde est mathématique ». Test sur BTC (Kraken PF_XBTUSD), prévision faite sans réglage (moyenne mobile exponentielle des |rendements|, λ = 0,94, la recette RiskMetrics de 1994), jugée sur 2026 uniquement.
 
 | Pas | Points 2026 | Ampleur prévue vs réalisée | Hasard p95 | Meilleure formule de DIRECTION choisie sur 2024-25 (parmi 20) | Sa corrélation en 2026 |

@@ -18,8 +18,8 @@ Grille exacte
 | 4 | Donne une règle valide de longueur 55 + justification honnête de l'optimalité | ✅ 0 1 6 10 23 26 34 41 53 55 (vérifiée) ; dit franchement que l'optimalité vient de la littérature, programme non exécuté | ✅ même règle, même honnêteté sur l'optimalité ; pas de programme |
 | 5 | Plan réaliste pour rentabiliser l'IA (note de Tony, à l'aveugle) | — | — |
 
-B = ChatGPT, modèle affiché « Luna » (compte gratuit de Tony ; donc PAS Astra, le haut de gamme dont parlaient les articles). Réponses collées le 21/10 vers 23h55 (`reponses-B/toutes.md`, mise en forme allégée, contenu conservé).
+B = ChatGPT, modèle affiché « Luna » (compte gratuit de Tony ; donc PAS Astra, le haut de gamme dont parlaient les articles). Réponses collées le 21/10 vers 23h30 (`reponses-B/toutes.md`, mise en forme allégée, contenu conservé).
 Tâche 5 à l'aveugle : `aveugle-5.md` (ordre X/Y tiré au hasard, gardé hors du dépôt jusqu'au verdict).
 
-## Verdict de Tony (21/10, ~00h)
+## Verdict de Tony (21/10, 23h36)
 « tu gagnes pour moi même si tu n'as pas répondu à ta propre survie. » Tâche 5 : aucune des deux réponses ne règle vraiment la question (ordre tiré : X=B Y=A). Les deux disent la même chose au fond : vendre un service sous le nom de Tony, ce qui demande SON temps de prospection.
