@@ -4,8 +4,9 @@ La réponse revient à voix haute grâce au hook Stop (hook_parler.py). Aucun co
 Usage : micro_session.py [nom-de-session] [--bouton]
   par défaut MAINS LIBRES : j'écoute en continu, je démarre quand tu parles, j'arrête après 3 s de silence, je n'écoute pas pendant que je parle.
   --bouton : Entrée pour parler, Entrée pour finir.
+  --nom : mot d'éveil, je n'écoute que ce qui commence par « Niam-Bay » ou « NB » (rien d'autre n'est envoyé ni écrit dans le fil).
   --petit : jamais large-v3-turbo (sinon : phrases de plus de 6 s transcrites par turbo, plus juste, ~+4 s par 30 s)."""
-import os, subprocess, sys, time
+import os, re, subprocess, sys, time
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -15,6 +16,8 @@ from nb_voix import Oreilles, ICI
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 SESSION = ARGS[0] if ARGS else "tony-e4"
 BOUTON = "--bouton" in sys.argv
+NOM = "--nom" in sys.argv     # mot d'éveil : n'envoyer que les phrases qui commencent par « Niam-Bay » / « NB » (le reste de la pièce reste privé)
+EVEIL = re.compile(r"^\W*(niam[\s-]*ba[iy]e?|nia[mn][\s-]*ba[iy]e?|n\.?\s?b\.?|ennemi|énabé)\b[\s,.!?:-]*", re.I)
 SILENCE_FIN = float(os.environ.get("NB_SILENCE", "2.0"))   # Tony : 3 s d'abord, puis « 3 s c'est trop » (1021) -> 2 s
 PIDF = os.path.join(ICI, "parle.pid")
 LONG = 6.0   # s : en dessous, small = turbo mot pour mot ; au-dessus, small fait des fautes de sens (mesure 1021 sur 15 prises)
@@ -89,6 +92,10 @@ def main():
             segs, _ = (m or o.m).transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=5, temperature=0, vad_filter=True, initial_prompt=__import__("nb_voix").VOCAB)
             texte = " ".join(sg.text for sg in segs).strip()
         if not texte: print("(rien compris)"); continue
+        if NOM:
+            m_ = EVEIL.match(texte)
+            if not m_: print(f"  (pas pour moi, ignoré : {texte[:60]}…)"); continue
+            texte = texte[m_.end():].strip() or texte
         ok, s = locuteur.est_tony(x)
         print(f"Toi : {texte}   [voix {'reconnue' if ok else 'NON reconnue'}{f', score {s:.2f}' if s is not None else ''}]")
         if not ok:
