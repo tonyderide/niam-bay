@@ -1,0 +1,12 @@
+n= 2  longueur   1  [0 1]
+n= 3  longueur   3  [0 1 3]  juge OK  0.0 s  3 noeuds
+n= 4  longueur   6  [0 1 4 6]  juge OK  0.0 s  13 noeuds
+n= 5  longueur  11  [0 1 4 9 11]  juge OK  0.0 s  97 noeuds
+n= 6  longueur  17  [0 1 4 10 12 17]  juge OK  0.0 s  624 noeuds
+n= 7  longueur  25  [0 1 4 10 18 23 25]  juge OK  0.0 s  6028 noeuds
+n= 8  longueur  34  [0 1 4 9 15 22 32 34]  juge OK  0.0 s  46828 noeuds
+n= 9  longueur  44  [0 1 5 12 25 27 35 41 44]  juge OK  0.0 s  336784 noeuds
+n=10  longueur  55  [0 1 6 10 23 26 34 41 53 55]  juge OK  0.2 s  2212516 noeuds
+n=11  longueur  72  [0 1 4 13 28 33 47 54 64 70 72]  juge OK  4.5 s  55213101 noeuds
+n=12  longueur  85  [0 2 6 24 29 40 43 55 68 75 76 85]  juge OK  24.5 s  260724605 noeuds
+n=13  longueur 106  [0 2 5 25 37 43 59 70 85 89 98 99 106]  juge OK  716.5 s  6631327601 noeuds
