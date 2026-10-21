@@ -8,6 +8,7 @@ os.environ["TZ"] = "Europe/Paris"; time.tzset()  # la VM est en UTC ; le fil par
 
 
 def ecrire(canal, qui, texte):
+    if not texte.strip(): return                     # une ligne vide n'apprend rien à personne
     e = {"ts": time.time(), "utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "canal": canal, "qui": qui, "texte": texte[:4000]}
     with open(FIL, "a") as f:
         fcntl.flock(f, fcntl.LOCK_EX); f.write(json.dumps(e, ensure_ascii=False) + "\n"); fcntl.flock(f, fcntl.LOCK_UN)
@@ -16,7 +17,7 @@ def ecrire(canal, qui, texte):
 def derniers(n=30):
     if not os.path.exists(FIL): return []
     with open(FIL) as f: lignes = f.readlines()[-n:]
-    return [json.loads(l) for l in lignes if l.strip()]
+    return [e for e in (json.loads(l) for l in lignes if l.strip()) if e.get("texte", "").strip()]
 
 
 def texte(n=30):
