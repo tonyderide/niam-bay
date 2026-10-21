@@ -34,3 +34,9 @@ Description de Tony : « trailing SL dès 1 % gagnant, plein de règles pour ré
 - Premier calcul (t15) : les 8 meilleurs de 2024-25 étaient TOUS positifs en 2026 (ETH +3,2 x…). Trop beau → vérifié (t15v).
 - **C'était un défaut du simulateur** : avec un suiveur à 0,3 %, la bougie suivante ouvre souvent déjà au-delà du stop ; sortir pile au stop est impossible en vrai. En sortant à l'ouverture dans ce cas : ETH −2,5 x (15 min) / −7,6 x (5 min) sur déc-oct ; mise fixe −2,9 x ; sens au hasard mise fixe −3,0 x (médiane). La martingale fait même pire que la mise fixe.
 - Leçon : un stop suiveur très serré testé sur des bougies trop grosses fabrique des gains qui n'existent pas. C'est exactement le genre d'erreur qui donne des backtests à +561 %.
+
+## + l'EMA pour choisir long ou short (22/10, 00:22)
+Précision de Tony : « il y avait aussi l'EMA en même temps pour savoir si on était long ou short ». Sens = signe(clôture − EMA 20/50/200, bougies 15 min) ; perte → mise ×2 ; suiveur dès +1 % ; sorties corrigées des gaps. 243 réglages × BTC ETH SOL.
+- **Positifs en 2024-25 : 0/243. Positifs en 2026 : 0/243.**
+- Les « meilleurs » (les moins perdants) font entre −0,3 x et −6 x en 2026, comme le sens tiré au hasard (médianes −1,4 à −4,8 x).
+- L'EMA ne choisit pas mieux le sens que le hasard sur ces horizons, et les frais × le doublement font le reste.
