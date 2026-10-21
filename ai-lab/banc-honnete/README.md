@@ -31,6 +31,7 @@ Si personne ne demande rien, on arrête, et on le note comme pour exchange-truth
 | 11 | Carnet d'ordres (déséquilibre des 5 meilleurs niveaux, ordres limites) | EN COURS : enregistrement de la nuit du 21-22/10, jugement le 22/10 matin |
 | 12 | Grille 0,6 % × 5 niveaux (façon Martin) allumée quand la volatilité prévue est haute | PERD : −2,2 % en 2026, mieux que toujours allumée (−6,1 %) mais au 41e centile des décalages au hasard ; en 2024-25 toute grille perd 44 à 59 % (sorties de grille en tendance) |
 | 13 | BTC géré par la volatilité (Moreira-Muir : position = cible / vol. prévue, sans levier) | ÉCHEC de justesse : Sharpe +0,20 contre +0,04 en garder-acheter, rendement +0,4 % contre −6,2 %, pire perte 33,5 % contre 39,5 %, mais 90e centile des poids mélangés (seuil p95). Et en 2024-25 (info, pas verdict) il fait PIRE : Sharpe 0,79 contre 1,01, 17e centile → le mieux de 2026 ressemble à de la chance |
+| 14 | Scalp honnête (120 : 4 signaux × 5 couples TP/SL × 3 marchés × 15 min/1 h, mise fixe, sans levier, gaps) | ÉCHEC au seuil corrigé, mais le plus proche à ce jour : la seule positive de 2024-25 (SOL 1 h, croisement EMA 9/21, TP 2 % / SL 1 %, +7,9 %) fait **+22,6 % en 2026 sur 213 trades**, 98,2e centile des jumeaux (seuil Bonferroni 99,96). Revue des traders demandée |
 
 Page du rapport (privée tant que Tony ne la partage pas) : https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ
 
