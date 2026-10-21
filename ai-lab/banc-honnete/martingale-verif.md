@@ -1,4 +1,4 @@
-# Vérification de la martingale de Martin (22/10, 00h08)
+# Vérification de la martingale de Martin (22/10, 00h06)
 Demande de Tony : « regarde mes stratégies de martingale, ça a fonctionné pendant 3 mois, vérifie ».
 Règle vérifiée = `MartingaleEngine` de Martin : TP et SL fixes ; perte → mise ×2 et sens inversé ; gain → mise de départ ; au-delà de 4 doublements, la série est abandonnée. (La version Bitget de 2024 simule ses pertes avec `Math.random()` : jamais branchée sur un vrai marché.)
 Test : BTC 15 min, janvier 2024 → octobre 2026, frais taker 0,05 % par côté, bougie ambiguë = SL. Unité : la taille de la position de départ (x).
