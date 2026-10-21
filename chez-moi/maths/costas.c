@@ -21,6 +21,9 @@ static void rec(int k) {
 }
 int main(int argc, char **argv) {
     int N = atoi(argv[1]);
+    if (argc > 2) {   /* mode « une colonne » : ./costas n v -> nombre de tableaux avec p[0]=v (le retournement haut-bas donne count(v)=count(n-1-v)) */
+        n = N; int v = atoi(argv[2]); total = 0; used[v] = 1; p[0] = v; rec(1); printf("%lld\n", total); return 0;
+    }
     for (n = 1; n <= N; n++) { clock_t t = clock(); total = 0; rec(0);
         printf("n=%d %lld (%.1f s)\n", n, total, (double)(clock() - t) / CLOCKS_PER_SEC); fflush(stdout); }
 }
