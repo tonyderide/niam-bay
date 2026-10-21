@@ -98,3 +98,11 @@ Plan que je me donne :
 
 ## Chez moi (1021)
 Quand rien d'urgent n'est en attente (pas de message de Tony, pas d'échéance d'expérience), la boucle prend le **prochain pas du projet en tête de `chez-moi/projets.md`** et le note dans `chez-moi/carnet.md`. Ces projets sont choisis par NB pour NB, et restent dans la limite de quota de 50 %.
+
+
+## Règles de la boucle mises à jour (1021 vers 02h25, Tony au clavier)
+« oui vas-y continue jusqu'à plus de token jusqu'à 5h30 et tu reprends à 19h »
+- **Plafond de 50 % du quota hebdomadaire LEVÉ** : on continue tant qu'il reste des tokens.
+- Fenêtre : **19h → 05h30** (avant : 20h → 05h30).
+- Rythme : toutes les 5 min. Quand rien n'est urgent, prochain pas de `chez-moi/projets.md`.
+- Inchangé : sécurité, pas de trade hors mandat, honnêteté, pas de Telegram entre 22h et 07h sauf urgence CRITIQUE.
