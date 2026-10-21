@@ -28,6 +28,8 @@ Si personne ne demande rien, on arrête, et on le note comme pour exchange-truth
 | 8 | Tournoi de 4 experts IA (quant, scalper, suiveur de tendance, quant volatilité), 15 stratégies avec filtres de régime | PERD : le meilleur (tendance en volatilité croissante) fait +130 % en 2026, mais au 81e centile du hasard ; le scalping à 30 trades par jour est impossible avec les frais |
 | 9 | 840 combinaisons (10 signaux × 7 filtres × 6 sorties × 2 unités de temps) | PERD : Spearman 2024-25 → 2026 = +0,04 ; le top 20 de 2024-25 n’est pas plus souvent positif en 2026 (45 %) que l’ensemble (45 %) |
 | 10 | Rotation des forts (momentum transversal, 21 cryptos, neutre au marché) | PERD : le meilleur de 2024-25 (1 semaine) fait −26 % en 2026, au 8e centile du hasard |
+| 11 | Carnet d'ordres (déséquilibre des 5 meilleurs niveaux, ordres limites) | EN COURS : enregistrement de la nuit du 21-22/10, jugement le 22/10 matin |
+| 12 | Grille 0,6 % × 5 niveaux (façon Martin) allumée quand la volatilité prévue est haute | PERD : −2,2 % en 2026, mieux que toujours allumée (−6,1 %) mais au 41e centile des décalages au hasard ; en 2024-25 toute grille perd 44 à 59 % (sorties de grille en tendance) |
 
 Page du rapport (privée tant que Tony ne la partage pas) : https://claude.ai/artifact/UXxyHZ3N1x8GYM9ZZo8fDJ
 
