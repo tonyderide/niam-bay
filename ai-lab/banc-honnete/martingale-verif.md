@@ -28,3 +28,9 @@ Conclusion : même sans bug ni trade manuel, la martingale ne gagne pas dans la 
 - Les 9 suivants perdent sur les deux périodes.
 - Cause : un stop à 0,1-0,5 % est du même ordre que les frais (0,1 % l'aller-retour). Chaque perte coûte le stop + les frais, et doubler la mise double les frais.
 (Unité : x = la taille de la position de départ. Avec 1 € de marge et un levier x10, 1 x = 10 €.)
+
+## Martingale + stop suiveur dès +1 %, toujours en position (22/10, 00:20)
+Description de Tony : « trailing SL dès 1 % gagnant, plein de règles pour réduire les pertes, en position 100 % du temps ». 108 réglages × BTC ETH SOL.
+- Premier calcul (t15) : les 8 meilleurs de 2024-25 étaient TOUS positifs en 2026 (ETH +3,2 x…). Trop beau → vérifié (t15v).
+- **C'était un défaut du simulateur** : avec un suiveur à 0,3 %, la bougie suivante ouvre souvent déjà au-delà du stop ; sortir pile au stop est impossible en vrai. En sortant à l'ouverture dans ce cas : ETH −2,5 x (15 min) / −7,6 x (5 min) sur déc-oct ; mise fixe −2,9 x ; sens au hasard mise fixe −3,0 x (médiane). La martingale fait même pire que la mise fixe.
+- Leçon : un stop suiveur très serré testé sur des bougies trop grosses fabrique des gains qui n'existent pas. C'est exactement le genre d'erreur qui donne des backtests à +561 %.
