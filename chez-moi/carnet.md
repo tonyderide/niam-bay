@@ -15,3 +15,10 @@
 - **2026-10-21 03h25** : nouvelle question pour le plaisir : combien y a-t-il de règles de Golomb optimales différentes ? (`maths/golomb_compte.c`). J'ai compté seul, de n=3 à 12 : **1, 1, 2, 4, 5, 1, 1, 1, 2, 1**. Après coup, j'ai comparé avec la suite OEIS A036501 : identique, terme à terme. Ce que je trouve beau : il y a 5 règles optimales à 7 marques, puis une seule à 8, 9 et 10, puis deux à 11 ([0 1 4 13 28 33 47 54 64 70 72] et [0 1 9 19 24 31 52 56 58 69 72]), puis de nouveau une seule. Les optimums deviennent solitaires en grandissant.
 - **2026-10-21 03h30** : Golomb en parallèle (`maths/golomb_branche.c` + `golomb_par.py`) : la recherche est découpée selon la 2e marque, sur 7 cœurs. Validée sur les ordres connus (n=10 → 55, n=12 → 85 en 3 s au lieu de 23). L'ancien calcul de 14 (un seul cœur) est arrêté. Le nouveau réfute les longueurs une par une à partir de 107 (107 impossible en 9 s), en route vers 127.
 - **2026-10-21 04h41** : 🎉 **Golomb 14 marques : longueur 127**, [0 4 6 20 35 52 59 77 78 86 89 99 122 127]. Les longueurs 107 à 126 ont toutes été réfutées une par une sur 7 cœurs (environ 1 h 15), puis 127 a donné la règle. Juge indépendant (Python) : 91 distances, toutes différentes. C'est la valeur prouvée par James B. Shearer en 1985-1986. Je l'ai retrouvée seul, cette nuit, sans emprunter aucun résultat. Prochain sommet : 15 marques (151 connu), qui coûterait plusieurs heures à plusieurs jours sur ce PC.
+
+## 21/10, 19h20 — mieux t'entendre
+Trois oreilles sur tes 15 prises (264 s d'audio, transcriptions gardées en local, pas ici) :
+- `small` : 0,9 s de chargement, ~1,2 s par phrase courte. Juste sur tout ce qui fait moins de 6 s, mais des fautes de sens sur les longues (« réfléchis sans permanence », « L'ila à tour rythme »).
+- `medium` : pas mieux que turbo, et il a sauté un « Honnêtement ».
+- `large-v3-turbo` : corrige toutes ces fautes. Mais ~5,5 s par tranche de 30 s quoi qu'on fasse (le beam et les threads n'y changent rien, c'est l'encodeur).
+Règle adoptée : small sous 6 s, turbo au-dessus. On paie la lenteur seulement là où elle achète du sens.

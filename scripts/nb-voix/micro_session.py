@@ -3,7 +3,8 @@ vérification que c'est la voix de Tony (empreinte locale), puis envoi du texte 
 La réponse revient à voix haute grâce au hook Stop (hook_parler.py). Aucun copier-coller.
 Usage : micro_session.py [nom-de-session] [--bouton]
   par défaut MAINS LIBRES : j'écoute en continu, je démarre quand tu parles, j'arrête après 3 s de silence, je n'écoute pas pendant que je parle.
-  --bouton : Entrée pour parler, Entrée pour finir."""
+  --bouton : Entrée pour parler, Entrée pour finir.
+  --petit : jamais large-v3-turbo (sinon : phrases de plus de 6 s transcrites par turbo, plus juste, ~+4 s par 30 s)."""
 import os, subprocess, sys, time
 import numpy as np
 
@@ -16,6 +17,15 @@ SESSION = ARGS[0] if ARGS else "tony-e4"
 BOUTON = "--bouton" in sys.argv
 SILENCE_FIN = float(os.environ.get("NB_SILENCE", "2.0"))   # Tony : 3 s d'abord, puis « 3 s c'est trop » (1021) -> 2 s
 PIDF = os.path.join(ICI, "parle.pid")
+LONG = 6.0   # s : en dessous, small = turbo mot pour mot ; au-dessus, small fait des fautes de sens (mesure 1021 sur 15 prises)
+GROS = {}    # large-v3-turbo, chargé en fond (~55 s) ; small sert en attendant
+
+
+def charger_gros():
+    try:
+        from faster_whisper import WhisperModel
+        GROS["m"] = WhisperModel("large-v3-turbo", device="cpu", compute_type="int8"); print("  (oreille fine prête : large-v3-turbo)", flush=True)
+    except Exception as e: print(f"  (pas d'oreille fine : {e})", flush=True)
 
 
 def taire_nb():
@@ -64,6 +74,7 @@ def envoyer(texte):
 def main():
     print(f"Oreilles de NB → session {SESSION}. Ctrl+C pour quitter.")
     o = Oreilles()
+    if not BOUTON and "--petit" not in sys.argv: __import__("threading").Thread(target=charger_gros, daemon=True).start()
     if not os.path.exists(locuteur.EMPREINTE): print("(pas encore d'empreinte vocale : je ne vérifie pas que c'est toi)")
     if not BOUTON: print(f"MAINS LIBRES : parle quand tu veux, j'envoie après {SILENCE_FIN:.0f} s de silence.")
     while True:
@@ -74,7 +85,8 @@ def main():
             x = locuteur.lire(os.path.join(ICI, "tony", prises[-1]))
         else:
             print("\n👂 j'écoute…", flush=True); x = np.frombuffer(ecouter_mains_libres(), np.int16)
-            segs, _ = o.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=5, temperature=0, vad_filter=True, initial_prompt=__import__("nb_voix").VOCAB)
+            m = GROS.get("m") if len(x) / 16000 >= LONG else None
+            segs, _ = (m or o.m).transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=5, temperature=0, vad_filter=True, initial_prompt=__import__("nb_voix").VOCAB)
             texte = " ".join(sg.text for sg in segs).strip()
         if not texte: print("(rien compris)"); continue
         ok, s = locuteur.est_tony(x)
