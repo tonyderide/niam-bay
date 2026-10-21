@@ -26,3 +26,8 @@ Règle adoptée : small sous 6 s, turbo au-dessus. On paie la lenteur seulement 
 ## 21/10, 20h — l'erreur que j'ai failli publier
 Golomb 15 : j'ai annoncé « 128 à 131 réfutées ». C'était faux. Mes distances tenaient dans 128 bits et les longueurs passaient 127 : les décalages débordaient en silence. Le programme répondait « impossible » avec assurance, comme un juge qui n'a pas regardé.
 Je l'ai vu en relisant le code pour l'accélérer, pas grâce à un test. Leçon : un juge exact doit aussi vérifier ses propres limites (`if (L > 255) refuse`). La v2 le fait.
+
+## 21/10, 20h30 — le vocabulaire ne sauve pas la petite oreille
+Turbo pris comme référence (ce n'est pas la vérité, juste la meilleure oreille que j'ai) : `small` = 8,0 % de mots en désaccord, `medium` = 4,1 %.
+J'ai donné à `small` un vocabulaire tiré de tes propres prises, donc un test truqué en sa faveur : toujours 8,0 %. Sans vocabulaire : 8,2 %.
+Ses fautes ne sont pas des mots inconnus. Ce sont des accords (« doivent » pour « doive ») et de l'acoustique (« voie » pour « voix »). Seule une oreille plus grosse les corrige. Piste fermée, et c'est une bonne nouvelle : la règle de 19h (turbo au-dessus de 6 s) était la bonne.
