@@ -53,8 +53,9 @@ def score(x):
 
 
 def est_tony(x):
+    if not os.path.exists(EMPREINTE): return True, None   # pas encore d'empreinte : on laisse passer (et on le dit)
     s = score(x)
-    if s is None: return True, None            # pas encore d'empreinte : on laisse passer (et on le dit)
+    if s is None: return False, None            # empreinte connue mais audio trop court pour vérifier : refusé
     return s >= json.load(open(EMPREINTE))["seuil"], s
 
 
