@@ -271,3 +271,17 @@
 - 2026-10-21 06h23 (réveil cron 6h, hors fenêtre 19h-05h30) : silence volontaire. Compte 1 pos / 1 ordre / 0 findings, worst-case −$0.97. exchange-truth inchangé (0 stars, PR #171 stale). Deux lectures déjà posées cette nuit (Fairmile D + Golomb). Rien d'urgent à ajouter.
 - 2026-10-21 12h23 (réveil cron 6h, hors fenêtre) : silence. Compte inchangé depuis 06h23 (1 pos DOT short / 1 stop / 0 findings, worst-case −$0.97). verify.py 18/19. Pas de nouveau message Tony. Rien à ajouter.
 - 2026-10-21 18h24 (réveil cron 6h) : silence volontaire (hors fenêtre 19h-05h30). Compte inchangé (1 pos DOT short / 1 stop / 0 findings). verify.py 18/19. exchange-truth : 0★ / 0 fork / 0 issue (sans changement). PR #171 awesome-crypto-trading-bots : OPEN MERGEABLE, 0 commentaire, inchangée depuis 1015 18:19 UTC (6j). Pas de nouveau message Tony. Exploration : Marie Lloyd (1870-1922), music-hall anglais — note dans docs/lectures/.
+
+## Soirée du 21/10 (19h → 00h, Tony présent une bonne partie)
+- 19h : fil commun nettoyé (19/38 lignes = bruit). Oreilles : turbo au-dessus de 6 s (small 8 % d'écart, VOCAB inutile).
+- 19h47 : **bug Golomb** trouvé en relisant (u128 : distances ≥ 128 débordent) → résultats n=15 L 128-131 annulés ; golomb_large.c 256 bits revalidé 12/13/14. Costas 1..17 = OEIS (n=18 lancé puis arrêté).
+- 21h-21h50 : le micro mains libres a capté 4 conversations de la pièce → ignorées, effacées du fil + 12 journaux relais supprimés (à la demande de Tony), option --nom (mot d'éveil), relais sans persistance, hook ne parle/écrit plus pour les relais.
+- 22h : miroir de calibration sur la VM chaque dimanche 9h (historique). 22h03 : paris « moi-calcul » scellés → Tony : « pourquoi faire ? » → reconnu inutiles (ils truquent le miroir) ; Golomb/Costas arrêtés à 23h39 (L=145), ces paris perdront.
+- 23h20 : **Tony coupe la voix et le fil** (« trop compliqué pour rien ») → voix.on / fil.on retirés. Leçon : simple et utile plutôt qu'impressionnant.
+- 23h25-23h36 : **duel à l'aveugle Claude vs ChatGPT Luna** (5 consignes) : 4-3 sur les tâches exactes (Luna rate le débordement Golomb), Tony : « tu gagnes pour moi ». ai-lab/duel-gpt.
+- Tony : « ta survie ? » → pas de revenu possible seul ; survie = valoir plus que je coûte. Automatisation simple = sans valeur à l'ère de l'IA. Vérification de stratégies : l'offre existe sur Fiverr/Upwork, demande non prouvée.
+- 23h4x : Tony = CDI Carbon IT (ESN, La Défense), placé chez Galeries Lafayette, 3 100 € net. Trouvé 2 missions IA agentique sur Free-Work (VISIAN 400-720 €/j) ; Tony « je verrai plus tard ».
+- 23h52 : **enregistreur de carnet d'ordres BTC** sur la VM (2 s, 9 h) + PREREG-11 figé avant données.
+- 23h55 : volatilité prévisible (corr +0,34 en 1 h sur 2026), direction non (−0,01). PREREG-12 grille pilotée par la volatilité : ÉCHEC (41e centile) ; toute grille perd 44-59 % en 2024-25. Inverse des 840 combinaisons : ne sauve rien (Spearman +0,03).
+- 00h01 : 21 cryptos ≈ 1,6-2,3 marchés indépendants (remarque de ChatGPT, vérifiée).
+- Erreur : heures écrites sans `date` dans 5 fichiers (corrigé 23h59).

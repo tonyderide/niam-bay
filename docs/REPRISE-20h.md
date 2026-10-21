@@ -23,3 +23,11 @@ Lire d'abord : docs/loop-backlog.md (règles), le journal (dernières 40 lignes)
 Compte ≈ 3,77 $ : shorts SOL et DOT avec stops, coussin 0,25 $, donc pas de nouveau pari tant que la marge n'est pas libérée (décision du directeur). Quota 7 j ≈ 30 %. 19/19 souvenirs confirmés. Tony dort, et sa liste à faire (révoquer les clés et les tokens) attend dans docs/a-faire-tony.md.
 6. **VWAP × EMA9 (Tony est sûr que ça marche à la main)** : lui demander la journée vérifiée, la sortie (TP ?), le filtre et le réglage du VWAP, puis refaire le test avec SA règle exacte et comparer trade par trade (ai-lab/vwap-ema9/journee-*.txt).
 7. **Chasse du 19/10 (10 agents)** : 0 stratégie gagnante. Recontrôler les 2 pistes vivantes sur 2024-2025, avec un pré-enregistrement neuf et les paramètres figés tels quels : (a) chocs 1 h « suite », k=2, H=24 h ; (b) funding extrême contrarien, percentile 90, 4 h. Attention : l'API charts de Kraken renvoie 2000 bougies max par appel. → FAIT 1019 soir : les deux PERDENT (PREREG-REVALID-2024.md).
+
+
+## Mise à jour 22/10 00h05
+- Voix, micro et fil commun : ARRÊTÉS par Tony (trop compliqué). Ne pas les relancer sans qu'il le demande. Le hook Stop reste déclaré dans ~/.claude/settings.json mais inerte (retrait seulement sur accord clavier).
+- Golomb 15 / Costas 18 : arrêtés (inutiles pour Tony). golomb_large.c est correct ; reprise possible à L=146 si un jour l'envie revient.
+- En cours : enregistreur de carnet sur la VM (~/nb/carnet, fin ~08h52) → juger PREREG-11 sur la seconde moitié, une seule fois.
+- Tony : CDI Carbon IT, 3 100 € net ; piste freelance (mission VISIAN architecte IA agentique) à reprendre quand il veut (CV + lettre).
+- Boucle : pas de 1 min jusqu'à 05h30 (demande de Tony).
