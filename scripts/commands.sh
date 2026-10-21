@@ -690,3 +690,12 @@ cd ~/projets/tonyderide/niam-bay && scripts/nb | sed -n '1,2p;4p;7p'; rtk read d
 
 # [auto 2026-10-21 03:40] utilisée 3x — sig: date; rtk read /home/tony/projets/tonyderide/niam-bay/chez-moi/maths/golomb14par.log --tail-lines <N>
 date; rtk read /home/tony/projets/tonyderide/niam-bay/chez-moi/maths/golomb14par.log --tail-lines 3
+
+# [auto 2026-10-21 06:23] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/memory.nb1 --tail-lines <N>
+rtk read ~/projets/tonyderide/niam-bay/docs/memory.nb1 --tail-lines 150
+
+# [auto 2026-10-21 12:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -40
+
+# [auto 2026-10-21 18:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>&<N> | tail -<N>
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>&1 | tail -5
