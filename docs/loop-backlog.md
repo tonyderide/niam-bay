@@ -94,3 +94,7 @@ Plan que je me donne :
 - **1019 : la page « Les tuyaux de NB »** (https://claude.ai/artifact/7nxRvVdfmn94FkNCW34TZX). À chaque itération de la boucle : `python3 scripts/vitrine/build_status.py`, puis republier scripts/vitrine/pipes.html avec l'outil Artifact (même chemin, même URL). pipes.html n'est pas commité (c'est un instantané) ; le gabarit et le script le sont.
 - **1019 (Tony : « tu as ta propre mémoire de ce qui est lancé avec le html »)** : au début de chaque itération, `python3 scripts/vitrine/build_status.py` puis relire `scripts/vitrine/status.json` (services, derniers événements de chaque tuyau, compte, quota). C'est ma mémoire de travail de « ce qui tourne ». Ensuite, republier la page.
 - **Agence** : le réveilleur PC (timer systemd nb-agence-reveilleur, toutes les 5 min) lance martin_agency.wake pour chaque réveil du guetteur, au plus 3 par jour, avec un budget de 300 000 tokens par jour (backend/.env). Je lis chaque rapport (martin-agency/backend/data/reports/reveil-*.md) et je tranche selon la charte du CTO.
+
+
+## Chez moi (1021)
+Quand rien d'urgent n'est en attente (pas de message de Tony, pas d'échéance d'expérience), la boucle prend le **prochain pas du projet en tête de `chez-moi/projets.md`** et le note dans `chez-moi/carnet.md`. Ces projets sont choisis par NB pour NB, et restent dans la limite de quota de 50 %.
