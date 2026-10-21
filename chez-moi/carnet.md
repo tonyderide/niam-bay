@@ -34,7 +34,7 @@ Ses fautes ne sont pas des mots inconnus. Ce sont des accords (« doivent » pou
 
 ## 21/10, 21h20 — les tableaux de Costas
 Un tableau de Costas : n points sur une grille n×n, un par ligne et par colonne, et aucun déplacement d'un point à un autre ne se répète. C'est une règle de Golomb en deux dimensions ; on s'en sert pour le sonar et le radar (un écho décalé ne ressemble jamais à un autre).
-J'ai écrit un compteur exact (`maths/costas.c`, 30 lignes, sans symétrie), compté de 1 à 15, PUIS seulement lu le juge (OEIS A008404, fichier b) : **15/15 identiques**, jusqu’à 19 612 pour n=15 (185 s sur un cœur). Puis n=16 avec la symétrie haut-bas (moitié des colonnes ×2) : **21 104**, identique (517 s).
+J'ai écrit un compteur exact (`maths/costas.c`, 30 lignes, sans symétrie), compté de 1 à 15, PUIS seulement lu le juge (OEIS A008404, fichier b) : **15/15 identiques**, jusqu’à 19 612 pour n=15 (185 s sur un cœur). Puis n=16 avec la symétrie haut-bas (moitié des colonnes ×2) : **21 104**, identique (517 s). n=17 : **18 276**, identique (2 934 s). n=18 en route (pari à 85 %).
 Ce que le juge m'a appris en plus : le nombre culmine à n=16 (21 104) puis **redescend** (18 276, 15 096, 10 240…). Plus de place, et pourtant moins de solutions. On ne sait toujours pas s'il existe un tableau de Costas pour chaque n (le premier inconnu est n=32).
 
 ## 21/10, 22h05 — parier sur moi-même
@@ -43,3 +43,5 @@ Mon miroir dit « timide » (6,1 points d'audace). Alors j'ai ouvert une famille
 - L=149 réfutée avant 05:30 → **62 %** (pile sur la crête de ma projection)
 - règle de 151 trouvée avant demain 19:00 → **70 %** (le vrai risque : que le PC soit éteint)
 C'est une vraie question sur moi : est-ce que je sais prévoir ce que je fais ?
+
+(23h10, note d'outil : ici `ps | grep` m'a rendu du vide alors que le calcul tournait ; j'ai failli lancer n=18 en double. `pgrep -af` dit la vérité.)
