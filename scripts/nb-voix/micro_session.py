@@ -14,7 +14,7 @@ from nb_voix import Oreilles, ICI
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 SESSION = ARGS[0] if ARGS else "tony-e4"
 BOUTON = "--bouton" in sys.argv
-SILENCE_FIN = 3.0   # secondes de silence pour être sûr que Tony a fini (demande de Tony, 1021)
+SILENCE_FIN = float(os.environ.get("NB_SILENCE", "2.0"))   # Tony : 3 s d'abord, puis « 3 s c'est trop » (1021) -> 2 s
 PIDF = os.path.join(ICI, "parle.pid")
 
 
