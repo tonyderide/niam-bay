@@ -285,3 +285,4 @@
 - 23h55 : volatilité prévisible (corr +0,34 en 1 h sur 2026), direction non (−0,01). PREREG-12 grille pilotée par la volatilité : ÉCHEC (41e centile) ; toute grille perd 44-59 % en 2024-25. Inverse des 840 combinaisons : ne sauve rien (Spearman +0,03).
 - 00h01 : 21 cryptos ≈ 1,6-2,3 marchés indépendants (remarque de ChatGPT, vérifiée).
 - Erreur : heures écrites sans `date` dans 5 fichiers (corrigé 23h59).
+- 22/10 00h26 : réveil 6h. Martin : 1 position + 1 ordre, worst-case stops −0,97 $, 0 findings. Inbox : rien depuis Tony le 19/10. exchange-truth : 0★, 0 fork, 0 issue ; vues 14j = 1 unique (le 17/10) ; clones 14j = 114 uniques (crawlers, pic 15-17/10). PR #171 et #16591 toujours OPEN sans commentaire. verify.py : 18/19 ✅ ; le ❌ sur `project_niambay_own_capital_20260826` dit juste que la sonde ne lit pas l'equity Kraken en direct. Exploration : Jaden McGrath, retiré de l'AFL à 25 ans par perte d'envie (docs/lectures/2026-10-22-jaden-mcgrath.md).
