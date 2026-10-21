@@ -54,7 +54,8 @@ def main():
     if d.get("stop_hook_active"): return
     brut = d.get("last_assistant_message") or dernier_texte(d.get("transcript_path", ""))
     relais = (d.get("cwd") or "").startswith("/tmp")                                  # petites sessions du micro (claude -p, cwd=/tmp) : leur « OK » n'est pas moi
-    bruit = relais or (len(brut or "") < 400 and tour_de_boucle(d.get("transcript_path", "")))   # « hors fenêtre, je dors » : pas pour le fil
+    if relais: return                                                                  # ni fil ni voix : sinon leur « OK » coupe ma phrase
+    bruit = (len(brut or "") < 400 and tour_de_boucle(d.get("transcript_path", "")))   # « hors fenêtre, je dors » : pas pour le fil
     if brut and not bruit and os.path.exists(os.path.join(ICI, "fil.on")):   # NB-OS : ma réponse de session rejoint le fil commun
         q = subprocess.Popen(["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=8", "ubuntu@141.253.108.141",
                               "python3 ~/nb/fil.py ecrire session nb"], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
