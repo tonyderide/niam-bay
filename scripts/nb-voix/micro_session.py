@@ -74,7 +74,7 @@ def main():
             x = locuteur.lire(os.path.join(ICI, "tony", prises[-1]))
         else:
             print("\n👂 j'écoute…", flush=True); x = np.frombuffer(ecouter_mains_libres(), np.int16)
-            segs, _ = o.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=1, vad_filter=True, initial_prompt=__import__("nb_voix").VOCAB)
+            segs, _ = o.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=5, temperature=0, vad_filter=True, initial_prompt=__import__("nb_voix").VOCAB)
             texte = " ".join(sg.text for sg in segs).strip()
         if not texte: print("(rien compris)"); continue
         ok, s = locuteur.est_tony(x)

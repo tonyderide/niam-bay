@@ -56,7 +56,7 @@ class Oreilles:
             w = wave.open(f, "wb"); w.setnchannels(1); w.setsampwidth(2); w.setframerate(16000); w.writeframes(bytes(audio)); w.close(); os.chmod(f, 0o600)
         t = x[: len(x) // 480 * 480].astype(float).reshape(-1, 480); r = np.sqrt((t ** 2).mean(1))
         niveau = {"fond": int(np.percentile(r, 10)), "voix": int(np.percentile(r, 90)), "max": int(np.abs(x).max()), "duree": round(len(x) / 16000, 1)}
-        segs, _ = self.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=1, vad_filter=True, initial_prompt=VOCAB)
+        segs, _ = self.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=5, temperature=0, vad_filter=True, initial_prompt=VOCAB)
         return " ".join(s.text for s in segs).strip(), niveau
 
     def ecouter(self, max_s=25):
@@ -73,7 +73,7 @@ class Oreilles:
         rec.terminate()
         if len(audio) < 8000: return ""  # moins de 0,25 s : rien
         import numpy as np
-        segs, _ = self.m.transcribe(np.frombuffer(bytes(audio), np.int16).astype(np.float32) / 32768, language="fr", beam_size=1, vad_filter=True, initial_prompt=VOCAB)
+        segs, _ = self.m.transcribe(np.frombuffer(bytes(audio), np.int16).astype(np.float32) / 32768, language="fr", beam_size=5, temperature=0, vad_filter=True, initial_prompt=VOCAB)
         return " ".join(x.text for x in segs).strip()
 
 
@@ -142,7 +142,7 @@ def enrolement():
     rms = np.sqrt((trames ** 2).mean(1)); voix = rms[rms > 4 * bruit + 15]
     f = os.path.join(PROFIL, "voix-tony-%s.wav" % time.strftime("%Y%m%d-%H%M"))
     w = wave.open(f, "wb"); w.setnchannels(1); w.setsampwidth(2); w.setframerate(16000); w.writeframes(bytes(data)); w.close(); os.chmod(f, 0o600)
-    o = Oreilles(); segs, _ = o.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=1, vad_filter=True, initial_prompt=VOCAB)
+    o = Oreilles(); segs, _ = o.m.transcribe(x.astype(np.float32) / 32768, language="fr", beam_size=5, temperature=0, vad_filter=True, initial_prompt=VOCAB)
     lu = " ".join(s.text for s in segs).strip()
     mots = lambda t: re.findall(r"[a-zàâçéèêëîïôûùüÿœ0-9-]+", t.lower())
     ref, hyp = mots(TEXTE_ENROLEMENT), set(mots(lu)); compris = sum(m in hyp for m in ref) / len(ref)
