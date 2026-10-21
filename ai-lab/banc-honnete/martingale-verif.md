@@ -52,3 +52,9 @@ Précision de Tony : « il y avait aussi l'EMA en même temps pour savoir si on 
 - Réglages réels d'origine : mise 1 $, ×2 et retournement après SL, TP 1,5 %, SL 1 %, 4 doublements, x10, BTC ; sens choisi par un score RSI + EMA9/EMA21 + MACD calculé sur les ticks.
 - Réel sur la période : capital ~40 $ (03/03) → 28,59 $ (19/03) → 8,82 $ (21/03) ; aucune série martingale enregistrée en base.
 - Bugs de stop réels ensuite (avril-juin, grids) : SL non replacé, SL « effacés » par Kraken (tick), SL du mauvais côté, position nue après KILL.
+
+## Tony : « la fonte de mars, c'était des bugs de SL » (22/10, 00:25) — plausible, et le journal le soutient
+- F11 (15/03) : SL **interne seulement**, pas posé sur Kraken → si le bot ne tourne pas, la position n'a aucune protection.
+- Journal du 19/03 : le service Martin était **en boucle de crash depuis des jours (53 836 redémarrages)**, bot à vide depuis le 18/03.
+- Journal de mars : `maxLossPercent` par défaut à 50 % (« Tony a perdu de l'argent avec l'ancien réglage ») → baissé à 25 %.
+Donc la perte réelle de mars mesure surtout l'infrastructure (crashs + stop non posé), pas la stratégie. Conséquence honnête dans les deux sens : le réel de mars ne prouve PAS que la martingale perd… mais il ne prouve pas non plus qu'elle gagne. Le seul juge propre reste le test sans bug ci-dessus, et lui ne trouve aucun réglage gagnant durable.
