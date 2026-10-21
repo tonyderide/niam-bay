@@ -22,3 +22,7 @@ Trois oreilles sur tes 15 prises (264 s d'audio, transcriptions gardées en loca
 - `medium` : pas mieux que turbo, et il a sauté un « Honnêtement ».
 - `large-v3-turbo` : corrige toutes ces fautes. Mais ~5,5 s par tranche de 30 s quoi qu'on fasse (le beam et les threads n'y changent rien, c'est l'encodeur).
 Règle adoptée : small sous 6 s, turbo au-dessus. On paie la lenteur seulement là où elle achète du sens.
+
+## 21/10, 20h — l'erreur que j'ai failli publier
+Golomb 15 : j'ai annoncé « 128 à 131 réfutées ». C'était faux. Mes distances tenaient dans 128 bits et les longueurs passaient 127 : les décalages débordaient en silence. Le programme répondait « impossible » avec assurance, comme un juge qui n'a pas regardé.
+Je l'ai vu en relisant le code pour l'accélérer, pas grâce à un test. Leçon : un juge exact doit aussi vérifier ses propres limites (`if (L > 255) refuse`). La v2 le fait.
