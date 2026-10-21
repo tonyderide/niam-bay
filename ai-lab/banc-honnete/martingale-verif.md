@@ -14,3 +14,10 @@ Lecture :
 - « Ça a marché 3 mois » est vrai et attendu : avec les réglages du code, **une période de 3 mois sur trois environ (29 %) finit positive**. Puis une série de 5 pertes arrive et efface tout.
 - Sans frais, la martingale ne gagne presque rien (+2,4 x en 2,8 ans) : doubler la mise ne crée aucun avantage, ça change seulement la forme des pertes (beaucoup de petits gains, de rares grosses pertes).
 - Avec les frais, elle perd : doubler la mise double aussi les frais payés au pire moment.
+
+## Tous les réglages (22/10, 00:14) — Tony : « les pertes, c'était le manuel et des bugs de SL »
+Juste : l'historique réel du compte mélange trades manuels (RIVER −48 $ le 08/08) et bugs de stop (avril-mai). D'où ce test qui isole la stratégie : stop parfait, aucun manuel, aucun bug. 144 réglages (TP 0,5-2 %, SL 0,5-2 %, 3 à 5 doublements) × BTC, ETH, SOL.
+- Gagnants sur 2024-25 : **7/144**. Gagnants sur 2026 : 8/144.
+- Les 7 gagnants de 2024-25, jugés sur 2026 : **aucun ne gagne** (le meilleur : +7,1 x → **−4,4 x** ; les autres entre −0,0 et −2,3 x).
+- Le classement est stable (Spearman +0,84), mais seulement pour une raison : les petits TP/SL font plus de trades, donc plus de frais, donc perdent toujours plus. Être « moins perdant » se prolonge ; être gagnant, non.
+Conclusion : même sans bug ni trade manuel, la martingale ne gagne pas dans la durée. Ses 3 mois gagnants sont réels, mais ils ne disent rien des 3 mois suivants.
