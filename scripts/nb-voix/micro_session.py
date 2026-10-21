@@ -70,7 +70,7 @@ def envoyer(texte):
     """Une petite session Claude sans écran fait un SendMessage vers la session de Tony (le seul chemin officiel trouvé)."""
     consigne = (f"Utilise l'outil SendMessage (charge-le avec ToolSearch 'select:SendMessage' si besoin) pour envoyer EXACTEMENT ce message "
                 f"à la session {SESSION}, sans rien changer ni ajouter :\n[voix de Tony] {texte}\nRéponds ensuite seulement OK ou l'erreur.")
-    r = subprocess.run(["claude", "-p", consigne, "--model", "claude-haiku-5-5"], cwd="/tmp", capture_output=True, text=True, timeout=120)
+    r = subprocess.run(["claude", "-p", consigne, "--model", "claude-haiku-5-5", "--no-session-persistence"], cwd="/tmp", capture_output=True, text=True, timeout=120)
     return "OK" in r.stdout, r.stdout.strip()[-200:]
 
 
