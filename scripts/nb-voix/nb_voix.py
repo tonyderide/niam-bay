@@ -77,6 +77,19 @@ class Oreilles:
         return " ".join(x.text for x in segs).strip()
 
 
+VM = ["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=5", "ubuntu@141.253.108.141"]
+
+
+def fil_lire(n=15):
+    try: return subprocess.run(VM + [f"python3 ~/nb/fil.py derniers {n}"], capture_output=True, text=True, timeout=8, stdin=subprocess.DEVNULL).stdout.strip()
+    except Exception: return ""
+
+
+def fil_ecrire(canal, qui, texte):
+    try: subprocess.Popen(VM + [f"python3 ~/nb/fil.py ecrire {canal} {qui}"], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).communicate(texte.encode(), timeout=10)
+    except Exception: pass
+
+
 class Bouche:
     """Synthèse + lecture dans un fil à part : on peut parler la phrase 1 pendant que Claude écrit la phrase 2."""
     def __init__(self):
@@ -109,6 +122,9 @@ class Cerveau:
                                   env={**os.environ, "NB_FACTCHECK_CHILD": "1"})
 
     def demander(self, texte, sur_phrase):
+        fil = fil_lire()   # NB-OS pas 2 : ce que Tony a dit ailleurs (Telegram, session) depuis la dernière fois
+        if fil and fil != getattr(self, "_fil_vu", None):
+            texte = f"(Fil commun récent, tous canaux :\n{fil}\n)\n\nTony te dit à voix haute : {texte}"; self._fil_vu = fil
         self.p.stdin.write(json.dumps({"type": "user", "message": {"role": "user", "content": texte}}) + "\n"); self.p.stdin.flush()
         tampon = ""
         for ligne in self.p.stdout:
@@ -175,6 +191,7 @@ def main():
     for q in questions:
         t0 = time.time(); bouche.premier = None; phrases = []
         cerveau.demander(q, lambda ph: (phrases.append((time.time() - t0, ph)), bouche.dire(ph)))
+        threading.Thread(target=lambda: (fil_ecrire("voix", "tony", q), fil_ecrire("voix", "nb", " ".join(ph for _, ph in phrases))), daemon=True).start()
         bouche.q.join()
         print(f"[1re phrase écrite à {phrases[0][0]:.1f} s · 1er son à {(bouche.premier or t0) - t0:.1f} s · {len(phrases)} phrases]", file=sys.stderr)
         for t, ph in phrases: print(f"  {t:4.1f} s  {ph}")
