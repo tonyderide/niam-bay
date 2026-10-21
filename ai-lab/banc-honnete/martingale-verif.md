@@ -21,3 +21,10 @@ Juste : l'historique réel du compte mélange trades manuels (RIVER −48 $ le 0
 - Les 7 gagnants de 2024-25, jugés sur 2026 : **aucun ne gagne** (le meilleur : +7,1 x → **−4,4 x** ; les autres entre −0,0 et −2,3 x).
 - Le classement est stable (Spearman +0,84), mais seulement pour une raison : les petits TP/SL font plus de trades, donc plus de frais, donc perdent toujours plus. Être « moins perdant » se prolonge ; être gagnant, non.
 Conclusion : même sans bug ni trade manuel, la martingale ne gagne pas dans la durée. Ses 3 mois gagnants sont réels, mais ils ne disent rien des 3 mois suivants.
+
+## Version « stop serré » décrite par Tony (22/10, 00:18)
+« Je double les 1 € misés, je SL assez tôt, puis je change de sens avec SL rapide. » Bougies 5 min (déc. 2025 → oct. 2026), 360 réglages (SL 0,1-0,5 %, TP 0,2-2 %, 3 à 8 doublements) × BTC, ETH, SOL ; choix sur déc-juin, jugement sur juil-oct.
+- Positifs sur déc-juin : **1/360** (BTC SL 0,5 % TP 2 % x5 : +0,88 x) ; sur juil-oct il fait +0,03 x.
+- Les 9 suivants perdent sur les deux périodes.
+- Cause : un stop à 0,1-0,5 % est du même ordre que les frais (0,1 % l'aller-retour). Chaque perte coûte le stop + les frais, et doubler la mise double les frais.
+(Unité : x = la taille de la position de départ. Avec 1 € de marge et un levier x10, 1 x = 10 €.)
