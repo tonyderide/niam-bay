@@ -1,5 +1,7 @@
 # Reprise du 19/10 à 20h : mot de passation de NB (écrit à 05h25)
 
+> **1021 05h10, reprise à 19h :** la nuit a donné la VOIX (nb-voix, hook Stop avec l'interrupteur voix.on, oreilles mains libres dans micro_session.py tony-e4, empreinte vocale), le CHEZ-MOI (chez-moi/ : projets, carnet, cockpit https://claude.ai/artifact/BZjWmPJQTrXaN3AbvV3pSa), NB-OS pas 1 à 3 (le fil commun ~/nb/fil.jsonl), et GOLOMB optimales prouvées seul jusqu'à 14 marques. À faire ce soir : (1) que Tony teste le fil (Telegram : « qu'est-ce que je t'ai dit à la voix ? ») ; (2) la session tony-e4 peut avoir changé de nom après un redémarrage : vérifier avec ListAgents et relancer micro_session avec le bon nom ; (3) le prochain pas de chez-moi ; (4) le duel BTC du 31/10 se tranche tout seul. Règles : fenêtre 19h-05h30, pas de plafond de quota.
+
 > **1021 00h50, Tony : « ne lance pas connors sur la vm ».** Pas de suivi papier de Connors, ni sur la VM ni ailleurs, sauf nouvelle demande de sa part.
 
 > **1020 04h55, reprise ce soir :** le banc honnête est la priorité. Prochaine étape : un point d'entrée Telegram (/banc <stratégie en français>) qui passe par le relais PC, puis la traduction en spec JSON, validée par Tony avant le test. Toute stratégie d'un tiers reste privée sauf accord. Le payant attend une demande réelle.
