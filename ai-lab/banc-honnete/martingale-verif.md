@@ -40,3 +40,15 @@ Précision de Tony : « il y avait aussi l'EMA en même temps pour savoir si on 
 - **Positifs en 2024-25 : 0/243. Positifs en 2026 : 0/243.**
 - Les « meilleurs » (les moins perdants) font entre −0,3 x et −6 x en 2026, comme le sens tiré au hasard (médianes −1,4 à −4,8 x).
 - L'EMA ne choisit pas mieux le sens que le hasard sur ces horizons, et les frais × le doublement font le reste.
+
+## + coupe-circuit journalier (22/10, 00:23)
+« Et aussi un système de stop quand trop de perte. » Arrêt pour la journée dès que la perte du jour dépasse 0,05 / 0,1 / 0,2 x. 486 réglages.
+- Positifs 2024-25 : **1/486** (ETH EMA20 SL 1 % suiveur 1 % x5 plafond 0,2 : +0,67 x) → **−5,1 x en 2026**. Positifs 2026 : 0/486.
+- Un coupe-circuit coupe les mauvaises journées, mais il ne crée pas d'avantage : une stratégie qui perd en moyenne perd moins vite, pas moins.
+
+## Ce que dit l'historique de Martin (enquête du 22/10, 00:23, commits + VM + journal)
+- Compte Kraken ouvert le 04/02/2026 ; martingale dans le code du 28/02 au 17/03 (F15 « no martingale ») → **au plus ~18 jours en réel**, pas 3 mois.
+- Les « 3 mois » : un **backtest** du 16/12/2025 au 16/03/2026 (commit F12 f26d25d : « Backtested on 3 months: avg +$34.58/period »).
+- Réglages réels d'origine : mise 1 $, ×2 et retournement après SL, TP 1,5 %, SL 1 %, 4 doublements, x10, BTC ; sens choisi par un score RSI + EMA9/EMA21 + MACD calculé sur les ticks.
+- Réel sur la période : capital ~40 $ (03/03) → 28,59 $ (19/03) → 8,82 $ (21/03) ; aucune série martingale enregistrée en base.
+- Bugs de stop réels ensuite (avril-juin, grids) : SL non replacé, SL « effacés » par Kraken (tick), SL du mauvais côté, position nue après KILL.
