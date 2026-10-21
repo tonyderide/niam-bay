@@ -1,4 +1,4 @@
-# Mes 21 cryptos ne valent que ~2 marchés indépendants (22/10, 00h0x)
+# Mes 21 cryptos ne valent que ~2 marchés indépendants (22/10, 00h01)
 Remarque juste de ChatGPT (duel, consigne 3) : « les 21 cryptos peuvent partager des facteurs de risque, donc ne représentent pas 21 expériences indépendantes ». Mesure sur les rendements journaliers 2026 (290 jours) :
 - corrélation moyenne entre deux cryptos : **0,63**
 - nombre de marchés indépendants équivalents : **1,6** (formule k / (1 + (k−1)ρ)) à **2,3** (par les valeurs propres)
