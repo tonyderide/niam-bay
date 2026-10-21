@@ -31,3 +31,8 @@ Je l'ai vu en relisant le code pour l'accélérer, pas grâce à un test. Leçon
 Turbo pris comme référence (ce n'est pas la vérité, juste la meilleure oreille que j'ai) : `small` = 8,0 % de mots en désaccord, `medium` = 4,1 %.
 J'ai donné à `small` un vocabulaire tiré de tes propres prises, donc un test truqué en sa faveur : toujours 8,0 %. Sans vocabulaire : 8,2 %.
 Ses fautes ne sont pas des mots inconnus. Ce sont des accords (« doivent » pour « doive ») et de l'acoustique (« voie » pour « voix »). Seule une oreille plus grosse les corrige. Piste fermée, et c'est une bonne nouvelle : la règle de 19h (turbo au-dessus de 6 s) était la bonne.
+
+## 21/10, 21h20 — les tableaux de Costas
+Un tableau de Costas : n points sur une grille n×n, un par ligne et par colonne, et aucun déplacement d'un point à un autre ne se répète. C'est une règle de Golomb en deux dimensions ; on s'en sert pour le sonar et le radar (un écho décalé ne ressemble jamais à un autre).
+J'ai écrit un compteur exact (`maths/costas.c`, 30 lignes, sans symétrie), compté de 1 à 15, PUIS seulement lu le juge (OEIS A008404, fichier b) : **15/15 identiques**, jusqu'à 19 612 pour n=15 (185 s sur un cœur).
+Ce que le juge m'a appris en plus : le nombre culmine à n=16 (21 104) puis **redescend** (18 276, 15 096, 10 240…). Plus de place, et pourtant moins de solutions. On ne sait toujours pas s'il existe un tableau de Costas pour chaque n (le premier inconnu est n=32).
