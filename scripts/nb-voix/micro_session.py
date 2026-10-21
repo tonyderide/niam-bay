@@ -81,6 +81,8 @@ def main():
         print(f"Toi : {texte}   [voix {'reconnue' if ok else 'NON reconnue'}{f', score {s:.2f}' if s is not None else ''}]")
         if not ok:
             print("  → pas envoyé : ce n'était pas ta voix (ou trop court). Réessaie."); continue
+        subprocess.Popen(["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=8", "ubuntu@141.253.108.141",
+                          "python3 ~/nb/fil.py ecrire voix tony"], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).communicate(texte.encode())
         t = time.time(); ok, info = envoyer(texte)
         print(f"  → {'envoyé' if ok else 'ÉCHEC : ' + info} en {time.time() - t:.1f} s")
 

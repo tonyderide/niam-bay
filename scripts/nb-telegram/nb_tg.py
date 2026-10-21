@@ -116,9 +116,26 @@ def live_state():
     return _live["v"]
 
 
+def fil_lire(n=30):
+    """NB-OS : la mémoire courte commune à tous les canaux (voix, session, Telegram), sur la VM."""
+    try:
+        return subprocess.run(VM + [f"python3 ~/nb/fil.py derniers {n}"], capture_output=True, text=True, timeout=20).stdout.strip()
+    except Exception:
+        return ""
+
+
+def fil_ecrire(canal, qui, texte):
+    try:
+        subprocess.run(VM + [f"python3 ~/nb/fil.py ecrire {canal} {qui}"], input=texte, capture_output=True, text=True, timeout=20)
+    except Exception:
+        pass
+
+
 def answer(text):
+    fil = fil_lire()
     return BRAIN.ask(f"État live du compte Kraken (exchange-truth, heure UTC) :\n{live_state()}\n\n"
-                     f"Nouveau message de Tony ({time.strftime('%F %H:%M')}, heure de Paris) :\n{text}")
+                     + (f"Fil commun de NB (ce qui s'est dit récemment sur TOUS les canaux : voix, session Claude Code, Telegram) :\n{fil}\n\n" if fil else "")
+                     + f"Nouveau message de Tony ({time.strftime('%F %H:%M')}, heure de Paris) :\n{text}")
 
 
 def fact_check(reply):
@@ -235,6 +252,7 @@ def main():
                 except Exception:
                     reply += "\n(⚠️ non prouvé : reçu indisponible)"
             send(reply); log({"from": "nb", "text": reply})
+            fil_ecrire("telegram", "tony", m["text"]); fil_ecrire("telegram", "nb", reply)
             subprocess.run(VM + [f"echo '{json.dumps({'ts': m['ts']})}' >> ~/nb/answered.jsonl"], timeout=30)
             warn = fact_check(reply)
             if warn:

@@ -38,8 +38,14 @@ def oral(t):
 
 def main():
     d = json.load(sys.stdin)
-    if not os.path.exists(INTER) or d.get("stop_hook_active"): return
-    texte = oral(d.get("last_assistant_message") or dernier_texte(d.get("transcript_path", "")))
+    if d.get("stop_hook_active"): return
+    brut = d.get("last_assistant_message") or dernier_texte(d.get("transcript_path", ""))
+    if brut and os.path.exists(os.path.join(ICI, "fil.on")):   # NB-OS : ma réponse de session rejoint le fil commun
+        q = subprocess.Popen(["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=8", "ubuntu@141.253.108.141",
+                              "python3 ~/nb/fil.py ecrire session nb"], stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+        q.stdin.write(oral(brut).encode()); q.stdin.close()
+    if not os.path.exists(INTER): return
+    texte = oral(brut)
     if not texte: return
     try: os.kill(int(open(PIDF).read()), 15)                            # coupe la phrase précédente
     except Exception: pass
