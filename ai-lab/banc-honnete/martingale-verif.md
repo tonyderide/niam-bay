@@ -58,3 +58,11 @@ Précision de Tony : « il y avait aussi l'EMA en même temps pour savoir si on 
 - Journal du 19/03 : le service Martin était **en boucle de crash depuis des jours (53 836 redémarrages)**, bot à vide depuis le 18/03.
 - Journal de mars : `maxLossPercent` par défaut à 50 % (« Tony a perdu de l'argent avec l'ancien réglage ») → baissé à 25 %.
 Donc la perte réelle de mars mesure surtout l'infrastructure (crashs + stop non posé), pas la stratégie. Conséquence honnête dans les deux sens : le réel de mars ne prouve PAS que la martingale perd… mais il ne prouve pas non plus qu'elle gagne. Le seul juge propre reste le test sans bug ci-dessus, et lui ne trouve aucun réglage gagnant durable.
+
+## Avec l'appli de Tony : Darwin, mode « martingale + retournement » (22/10, 00:27)
+Même procédure que son serveur (`run_evolution`) : 20 agents, 25 générations d'évolution sur le 1er quart, puis test du meilleur sur les 3 quarts suivants (jamais vus). BTC/ETH/SOL 1 h, juillet 2025 → octobre 2026 (4 quarts d'~3,7 mois), frais 0,05 %, 3 graines chacun. Script : darwin-sans-interface.py.
+| | Entraînement (Q1) | Test Q2 | Test Q3 | Test Q4 |
+|---|---|---|---|---|
+| 9 runs | **+6 à +45 % (9/9 positifs)** | **−10 à −40 % (0/9)** | 2/9 positifs | 6/9 positifs |
+Somme des 3 quarts de test : positive pour 1 run sur 9 (BTC graine 2 : +4,8 %) ; les 8 autres entre −6 et −45 %.
+Lecture : Darwin trouve TOUJOURS une martingale gagnante sur la période où il évolue, puis elle perd dès le trimestre suivant. C'est la même histoire que les « 3 mois » : l'évolution apprend le passé par cœur. (Note : le plan de hardening de Darwin du 20/04 signale aussi un indicateur qui regarde sa propre bougie, bb_squeeze, ce qui gonfle l'entraînement.)
