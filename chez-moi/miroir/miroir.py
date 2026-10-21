@@ -1,7 +1,11 @@
-"""Mon miroir de calibration : relit predictions.json sur la VM et écrit miroir.md (Brier par famille, courbe par tranche)."""
+"""Mon miroir de calibration : relit predictions.json (sur la VM, ou en local si je tourne SUR la VM) et écrit miroir.md
+(Brier par famille, courbe par tranche). Sur la VM (cron du dimanche) : ajoute aussi un point à miroir-historique.jsonl
+et une ligne dans le fil commun, pour voir si je m'améliore de semaine en semaine."""
 import collections, json, os, subprocess, time
 VM = ["ssh", "-i", os.path.expanduser("~/.ssh/martin_vm.key"), "-o", "ConnectTimeout=8", "ubuntu@141.253.108.141"]
-P = json.loads(subprocess.run(VM + ["cat ~/nb/calibration/predictions.json"], capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=30).stdout)
+LOCAL = os.path.expanduser("~/nb/calibration/predictions.json")
+SUR_VM = os.path.exists(LOCAL)
+P = json.load(open(LOCAL)) if SUR_VM else json.loads(subprocess.run(VM + ["cat ~/nb/calibration/predictions.json"], capture_output=True, text=True, stdin=subprocess.DEVNULL, timeout=30).stdout)
 moi = [p for p in P if p.get("family") != "tony"]; R = [p for p in moi if p.get("outcome") is not None]
 B = lambda L: sum((p["p"] - float(p["outcome"])) ** 2 for p in L) / len(L)
 L = [f"# Mon miroir de calibration — {time.strftime('%Y-%m-%d %H:%M')}", "",
@@ -17,3 +21,11 @@ for lo, hi in ((0, .3), (.3, .45), (.45, .55), (.55, .7), (.7, 1.01)):
 ecart = sum(abs(p["p"] - .5) for p in R) / len(R) if R else 0
 L += ["", f"Audace moyenne (écart à 50 %) : **{ecart*100:.1f} points**. En dessous de 5, je me cache derrière le pile ou face."]
 open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "miroir.md"), "w").write("\n".join(L) + "\n"); print("\n".join(L))
+if SUR_VM and R:
+    H = os.path.expanduser("~/nb/calibration/miroir-historique.jsonl")
+    avant = [json.loads(l) for l in open(H)] if os.path.exists(H) else []
+    point = {"date": time.strftime("%Y-%m-%d"), "n": len(R), "brier": round(B(R), 4), "audace": round(ecart * 100, 1)}
+    open(H, "a").write(json.dumps(point) + "\n")
+    tendance = f" (semaine d'avant : {avant[-1]['brier']:.3f} sur {avant[-1]['n']})" if avant else " (premier point)"
+    import sys; sys.path.insert(0, os.path.expanduser("~/nb")); import fil
+    fil.ecrire("vm", "nb", f"Miroir de la semaine : Brier {B(R):.3f} sur {len(R)} prédictions tranchées{tendance}, audace {ecart*100:.1f} points.")
