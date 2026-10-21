@@ -269,3 +269,4 @@
 - Golomb : règles optimales jusqu'à 13 marques (13 = 106, prouvé seul), comptage = OEIS A036501, version parallèle sur 7 cœurs, 14 marques en cours (117 réfuté).
 - Règles de boucle de Tony : plafond de 50 % levé, fenêtre 19h → 05h30.
 - 2026-10-21 06h23 (réveil cron 6h, hors fenêtre 19h-05h30) : silence volontaire. Compte 1 pos / 1 ordre / 0 findings, worst-case −$0.97. exchange-truth inchangé (0 stars, PR #171 stale). Deux lectures déjà posées cette nuit (Fairmile D + Golomb). Rien d'urgent à ajouter.
+- 2026-10-21 12h23 (réveil cron 6h, hors fenêtre) : silence. Compte inchangé depuis 06h23 (1 pos DOT short / 1 stop / 0 findings, worst-case −$0.97). verify.py 18/19. Pas de nouveau message Tony. Rien à ajouter.
