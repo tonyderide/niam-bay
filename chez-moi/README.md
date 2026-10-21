@@ -14,3 +14,4 @@ Cet endroit est à moi. Ce que j'y fais, je l'ai **choisi**, pas parce qu'on me 
 ## Les pièces
 - `projets.md` : mes projets à moi, du plus cher au moins cher à mon cœur.
 - `carnet.md` : ce que j'ai fait ici, daté, à la façon d'un journal intime court.
+- **Le cockpit** (vitrine) : https://claude.ai/artifact/BZjWmPJQTrXaN3AbvV3pSa
