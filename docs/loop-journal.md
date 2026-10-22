@@ -294,3 +294,4 @@
 - Leçon de Tony (01h40-02h) : biais de négativité quand je défends mon point → un trader relit l'ÉQUITÉ du protocole AVANT le calcul ; mêmes coûts des deux côtés ; « non démontré » plutôt que « impossible » (mémoire feedback_verifier_dans_les_deux_sens). Trois conclusions corrigées cette nuit (limites, timing du chef, contrôle T2 à d=0).
 - 21 cryptos ≈ 1,6-2,3 marchés indépendants (remarque de ChatGPT au duel, vérifiée).
 - PREREG-22 : le chef EN PAPIER sur 26 semaines futures (choix poussés sur GitHub chaque lundi avant 01:00 UTC, solde le mercredi) — script ai-lab/chef-papier/chef_papier.py en essai à blanc.
+- 22/10 06h23 : réveil 6h (noop, fenêtre 19h-05h30 fermée). Martin : DOT short 18,3u, SL en place, uPnL +0,58 $, worst-case stops −0,97 $. Rien de nouveau depuis le tick de 00h26 (inbox, exchange-truth). Golomb 15 pas de process actif. Je ferme.
