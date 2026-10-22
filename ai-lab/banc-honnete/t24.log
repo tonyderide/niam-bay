@@ -1,0 +1,22 @@
+données prêtes
+180 stratégies ; positives 2024-25 : 0 ; positives 2026 : 0
+  sortie TP 0.50% / SL 0.25% : bougies 1 min ambiguës 0.1% des trades 2026
+  sortie TP 1.00% / SL 0.50% : bougies 1 min ambiguës 0.0% des trades 2026
+  sortie TP 1.50% / SL 0.75% : bougies 1 min ambiguës 0.0% des trades 2026
+  sortie TP 0.50% / SL 0.50% : bougies 1 min ambiguës 0.0% des trades 2026
+  sortie TP 0.50% / SL 1.00% : bougies 1 min ambiguës 0.0% des trades 2026
+[info] version filtrée > même signal sans filtre en 2026 : 120/120
+SÉLECTION : SOL 5 min, filtre F2, signal S1, TP 1.50% SL 0.75% | 2024-25 -240.4 % (2247 trades)
+J1 2026 : -80.7 % (796 trades) | jumeaux méd -122.3 % p99 -65.3 % | sans filtre -187.4 % -> RATÉ
+  J2 ARB   -488.5 % (3122 trades)
+  J2 BNB   -292.5 % (2480 trades)
+  J2 INJ   -663.1 % (3398 trades)
+  J2 FET   -439.8 % (2726 trades)
+  J2 GRT   -333.7 % (2544 trades)
+  J2 ALGO  -398.9 % (2903 trades)
+J2 6 marchés jamais vus : somme -2616.5 % | positifs 0/6 | jumeaux méd -2761.3 % p95 -2588.2 % -> RATÉ
+VERDICT : NON DÉMONTRÉ
+
+real	2m48,156s
+user	2m46,406s
+sys	0m1,694s
