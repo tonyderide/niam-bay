@@ -1,0 +1,15 @@
+G1 ARB/BNB/INJ     chef  -167.1 % | T1 méd  -149.2 % | T2 méd  -126.6 % | trades chef 14646 / T1 14758 (OK) | élargis 0%
+G2 FET/GRT/ALGO    chef   +98.2 % | T1 méd   -90.6 % | T2 méd    -6.0 % | trades chef 23340 / T1 21814 (OK) | élargis 0%
+G3 CRV/LDO/IMX     chef  +116.2 % | T1 méd   -67.8 % | T2 méd   +12.5 % | trades chef 23773 / T1 22362 (OK) | élargis 0%
+G4 RUNE/EGLD/SAND  chef    +9.0 % | T1 méd   -52.7 % | T2 méd   -17.7 % | trades chef 19049 / T1 18306 (OK) | élargis 0%
+G5 MANA/AXS/APE    chef   -18.7 % | T1 méd   -76.3 % | T2 méd   -60.0 % | trades chef 18986 / T1 18345 (OK) | élargis 0%
+G6 DYDX/GALA/COMP  chef   +64.1 % | T1 méd   -86.7 % | T2 méd   +25.8 % | trades chef 20066 / T1 19201 (OK) | élargis 0%
+
+SOMME : chef +101.7 % | T1 méd -523.5 % p95 -449.5 % | T2 méd -173.3 % p95 -78.5 % | groupes > méd T1 : 5/6
+Effet chef − T1 : +625.8 points, IC 95 % (blocs de 4 sem.) [+432.6 ; +834.7]
+VERDICT TIMING : CONFIRMÉ
+Rentabilité (info) : positive
+
+real	9m28,903s
+user	3m40,734s
+sys	0m1,267s
