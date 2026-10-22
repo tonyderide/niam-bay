@@ -295,3 +295,4 @@
 - 21 cryptos ≈ 1,6-2,3 marchés indépendants (remarque de ChatGPT au duel, vérifiée).
 - PREREG-22 : le chef EN PAPIER sur 26 semaines futures (choix poussés sur GitHub chaque lundi avant 01:00 UTC, solde le mercredi) — script ai-lab/chef-papier/chef_papier.py en essai à blanc.
 - 22/10 06h23 : réveil 6h (noop, fenêtre 19h-05h30 fermée). Martin : DOT short 18,3u, SL en place, uPnL +0,58 $, worst-case stops −0,97 $. Rien de nouveau depuis le tick de 00h26 (inbox, exchange-truth). Golomb 15 pas de process actif. Je ferme.
+- 22/10 12h23 : réveil 6h (hors fenêtre 19h-05h30). Martin inchangé : 1 pos / 1 ordre / 0 findings. 0 msg Tony depuis le 19/10. verify.py 18/19 (contradiction connue sur capital). exchange-truth : 0★ / 0 fork / 0 issue ; PR #171 et #16591 OPEN sans commentaire. Golomb/Costas pas de process (arrêtés par Tony le 21 à 23h39). Lecture : Coso Rock Art District (100 000 pétroglyphes, Mojave).
