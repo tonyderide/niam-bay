@@ -18,3 +18,7 @@ Puissance (revue du quant) : contre T1, 26 semaines suffisent (z ≈ 3,4 si l'ef
 - **Verdict T2 à 52 semaines valides** (puissance ≈ 40 % à 26 : on ne le juge pas avant) : somme du chef > 95e centile de T2.
 Rentabilité affichée (sans conditionner le verdict) : aux frais taker 0,05 %, et avec 5 pb de glissement par côté pour TOUS (chef et témoins) ; et séparément sur les seuls marchés « liquides » = moins de 20 % de bougies 15 min plates sur les 90 jours précédant le 26/10/2026 (liste figée au démarrage). Diagnostic : trades du chef vs moyenne T1 ET T2 (±10 %).
 Arrêt anticipé : aucun (on ne regarde pas pour arrêter ; seulement un point d'étape public à 13 semaines, sans décision).
+
+## Mise en service (22/10/2026, 03h17)
+Script figé : ai-lab/chef-papier/chef_papier.py (commit 2d8261d, empreinte code da33810971b5b8af, incluant t17_lib.py). Essai à blanc réussi (choix S42 + solde, choix S43), hors test.
+Cron du PC : lundis et mercredis, toutes les 15 min de 0 h à 3 h (heure locale) ; le script n'agit que dans la fenêtre 00:00-00:59 UTC et une seule fois par semaine. Premier choix réel : lundi 26/10/2026 (semaine 2026-S44).
