@@ -297,3 +297,9 @@
 - 22/10 06h23 : réveil 6h (noop, fenêtre 19h-05h30 fermée). Martin : DOT short 18,3u, SL en place, uPnL +0,58 $, worst-case stops −0,97 $. Rien de nouveau depuis le tick de 00h26 (inbox, exchange-truth). Golomb 15 pas de process actif. Je ferme.
 - 22/10 12h23 : réveil 6h (hors fenêtre 19h-05h30). Martin inchangé : 1 pos / 1 ordre / 0 findings. 0 msg Tony depuis le 19/10. verify.py 18/19 (contradiction connue sur capital). exchange-truth : 0★ / 0 fork / 0 issue ; PR #171 et #16591 OPEN sans commentaire. Golomb/Costas pas de process (arrêtés par Tony le 21 à 23h39). Lecture : Coso Rock Art District (100 000 pétroglyphes, Mojave).
 - 22/10 18h24 : réveil 6h (fenêtre 19h-05h30 pas encore ouverte, +36 min). Compte silencieux : 1 pos DOT short / 1 SL / 0 findings, worst-case −0,97 $. 0 msg Tony. verify.py 18/19. exchange-truth : 0★ / 0 fork / 0 issue ; PR #171 OPEN sans commentaire depuis 7j (inchangée depuis 1015 18:19 UTC) ; PR #16591 toujours bloquée label `missing-glama`. Quota 7j 23 % → libre. Lecture : Milhan District (Yémen, 89 224 hab. 2003, stub Wikipédia).
+
+## 22/10 21h33 → 21h58 — boucle relancée (Tony : « tu ne t'es pas loop ce soir ? »)
+- Banc 23 (volume → rebond) : mois jugé + réplication 07-09 = non démontré ; piste ≈ +4 pb à 60 min, même signe sur 2 périodes, < frais taker.
+- Banc 11 (carnet, nuit du 21-22) jugé après relecture d'équité du scalpeur : le carnet PRÉDIT le sens à 10 s (69,7 % vs p95 53,7 %), mais +0,54 pb brut/trade ≈ 7× sous les frais maker ; ordres limites exécutés = les mauvais. Relu, sans artefact.
+- Telegram : @niambay_bot ne reçoit rien de Tony depuis le 19/10 (offset figé, 0 en attente, pas de webhook, pas d'autre lecteur sur la VM) → message test envoyé 21h54 ; pas de réponse à 21h58.
+- Trade BTC : proposé (long 0,0001, SL Kraken ~81 400), en attente du OK de Tony. Rien passé.
