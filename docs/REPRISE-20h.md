@@ -37,3 +37,4 @@ Compte ≈ 3,77 $ : shorts SOL et DOT avec stops, coussin 0,25 $, donc pas de no
 - Seul résultat positif vérifié du banc : 20 (timing du chef sur marchés neufs). Suite = test PAPIER PREREG-22 (cron PC lundi/mercredi 00:xx UTC, chef_papier.py), premier choix le lundi 26/10/2026.
 - Carnet d'ordres : enregistreur VM jusqu'à ~08h52 → juger PREREG-11 sur la seconde moitié, une seule fois, protocole relu avant par un trader si possible.
 - Règle de Tony : relecture d'équité AVANT le calcul, coûts égaux, « non démontré » plutôt que « impossible ».
+- 22/10 03h17 : test papier PREREG-22 EN SERVICE (cron PC lundi + mercredi, chef_papier.py figé 2d8261d). Premier choix réel lundi 26/10 ~01h00 heure de Paris. Vérifier ai-lab/chef-papier/cron.log et ALERTE.txt chaque mardi/jeudi ; verdict T1 à 26 semaines valides, T2 à 52.
