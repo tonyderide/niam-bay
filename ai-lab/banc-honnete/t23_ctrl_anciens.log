@@ -1,0 +1,11 @@
+G1 XRP/DOGE/ADA    chef  -111.0 % | T1 méd  -113.8 % | T2 méd  -115.6 % | trades chef 10533 / T1 10966 (OK) | élargis 0%
+G2 LINK/AVAX/DOT   chef   -99.5 % | T1 méd  -124.2 % | T2 méd  -123.1 % | trades chef 12444 / T1 12348 (OK) | élargis 0%
+G3 LTC/BCH/UNI     chef  -140.2 % | T1 méd  -119.7 % | T2 méd  -132.8 % | trades chef 13689 / T1 13032 (OK) | élargis 0%
+G4 ATOM/NEAR/FIL   chef  -142.0 % | T1 méd  -146.2 % | T2 méd  -118.6 % | trades chef 15308 / T1 15284 (OK) | élargis 0%
+G5 AAVE/APT/OP     chef   -89.3 % | T1 méd  -125.8 % | T2 méd  -112.4 % | trades chef 16036 / T1 15617 (OK) | élargis 0%
+G6 TRX/XLM/ETC     chef   -58.5 % | T1 méd   -91.9 % | T2 méd   -80.4 % | trades chef 13520 / T1 12998 (OK) | élargis 0%
+
+SOMME : chef -640.6 % | T1 méd -722.0 % p95 -663.6 % | T2 méd -680.8 % p95 -601.1 % | groupes > méd T1 : 5/6
+Effet chef − T1 : +81.3 points, IC 95 % (blocs de 4 sem.) [-60.6 ; +200.3]
+VERDICT TIMING : NON DÉMONTRÉ
+Rentabilité (info) : négative
