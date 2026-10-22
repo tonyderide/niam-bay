@@ -31,3 +31,9 @@ Compte ≈ 3,77 $ : shorts SOL et DOT avec stops, coussin 0,25 $, donc pas de no
 - En cours : enregistreur de carnet sur la VM (~/nb/carnet, fin ~08h52) → juger PREREG-11 sur la seconde moitié, une seule fois.
 - Tony : CDI Carbon IT, 3 100 € net ; piste freelance (mission VISIAN architecte IA agentique) à reprendre quand il veut (CV + lettre).
 - Boucle : pas de 1 min jusqu'à 05h30 (demande de Tony).
+
+## Mise à jour 22/10 03h
+- Darwin honnête FINI sur la branche nb/honnete (tonyderide/darwin, worktree .worktrees/honnete) : 220 tests + 7/7 pièges vérifiés ; NE PAS fusionner ni pousser sans l'accord de Tony.
+- Seul résultat positif vérifié du banc : 20 (timing du chef sur marchés neufs). Suite = test PAPIER PREREG-22 (cron PC lundi/mercredi 00:xx UTC, chef_papier.py), premier choix le lundi 26/10/2026.
+- Carnet d'ordres : enregistreur VM jusqu'à ~08h52 → juger PREREG-11 sur la seconde moitié, une seule fois, protocole relu avant par un trader si possible.
+- Règle de Tony : relecture d'équité AVANT le calcul, coûts égaux, « non démontré » plutôt que « impossible ».
