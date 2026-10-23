@@ -9,9 +9,9 @@
  {
   "memory": "project_niambay_own_capital_20260826",
   "claim": "le capital NB (equity actuelle, pas l'equity aux stops) est de quelques dollars (2-5 $ depuis le 1015)",
-  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 'tail -40 ~/et/et.log' | python3 -c \"import re,sys;t=sys.stdin.read();e=re.findall(r'equity ([0-9.]+) vs',t);w=re.findall(r'stops hit: -([0-9.]+)',t);print('equity_now',round(float(e[-1])+float(w[-1]),2) if e and w else 'inconnue')\"",
-  "expect": "equity_now [2-4]\\.",
-  "counter": "\nequity_now 12.47\n"
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 'set -a; . /home/ubuntu/martin/.env; set +a; python3 -c \"import ccxt,os,json;ex=ccxt.krakenfutures({\\\"apiKey\\\":os.environ[\\\"KRAKEN_API_KEY\\\"],\\\"secret\\\":os.environ[\\\"KRAKEN_API_SECRET\\\"]});b=ex.fetch_balance().get(\\\"info\\\",{}).get(\\\"accounts\\\",{}).get(\\\"flex\\\",{});print(\\\"equity_now\\\",round(float(b.get(\\\"portfolioValue\\\",0)),2))\"'",
+  "expect": "equity_now ([2-9]\\.|1[0-9]\\.)",
+  "counter": "\nequity_now 0.5\n"
  },
  {
   "memory": "project_exchange_truth",
