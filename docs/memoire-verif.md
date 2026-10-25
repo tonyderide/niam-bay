@@ -1,6 +1,6 @@
-# Vérification de la mémoire de NB (2026-10-25 12:23)
+# Vérification de la mémoire de NB (2026-10-26 00:23)
 
-19/19 souvenirs confirmés par le monde, **0 contredits**.
+19/20 souvenirs confirmés par le monde, **1 contredits**.
 
 - ✅ `project_martin_local_second_instance` : martin-local ne tourne plus (désactivé, aucun process java)
 - ✅ `project_niambay_own_capital_20260826` : le capital NB (equity actuelle, pas l'equity aux stops) est de quelques dollars (2-5 $ depuis le 1015)
@@ -21,3 +21,5 @@
 - ✅ `project_nb_vm_architecture` : le résumé du matin (sans LLM) est planifié sur la VM (05h et 06h UTC, envoi à 07h Paris)
 - ✅ `project_memoire_falsifiable` : le juge horaire du jumeau (twin.py) est planifié sur la VM
 - ✅ `project_capset_236` : cap7_236.txt est un cap valide de 236 points dans F_3^7
+- ❌ `project_nb_vm_architecture` : le bot de la VM est le seul lecteur de @niambay_bot (aucun 409 Conflict dans l'heure : sinon quelqu'un d'autre lit les messages de Tony)
+  - observé : `conflits_1h 174`

@@ -7,9 +7,11 @@
   "cmd": "curl -s https://api.github.com/repos/tonyderide/exchange-truth | python3 -c \"import json,sys;print(json.load(sys.stdin)['stargazers_count'])\"",
   "test": "int(out)>=1",
   "made": "2026-10-17T02:36",
-  "outcome": null,
+  "outcome": false,
   "cmd_original": "gh repo view tonyderide/exchange-truth --json stargazerCount -q .stargazerCount",
-  "cmd_note": "commande adaptée à la VM le 19/10 00h06 (migration) ; affirmation et p inchangés"
+  "cmd_note": "commande adaptée à la VM le 19/10 00h06 (migration) ; affirmation et p inchangés",
+  "observed": "0",
+  "resolved": "2026-10-24T08:15"
  },
  {
   "id": "pr171-1024",
@@ -19,9 +21,11 @@
   "cmd": "curl -s https://api.github.com/repos/botcrypto-io/awesome-crypto-trading-bots/pulls/171 | python3 -c \"import json,sys;d=json.load(sys.stdin);print(d['state'].upper(), d['comments'])\"",
   "test": "out.split()[0]!='OPEN' or int(out.split()[1])>0",
   "made": "2026-10-17T02:36",
-  "outcome": null,
+  "outcome": false,
   "cmd_original": "gh pr view 171 -R botcrypto-io/awesome-crypto-trading-bots --json state,comments -q '.state+\" \"+(.comments|length|tostring)'",
-  "cmd_note": "commande adaptée à la VM le 19/10 00h06 (migration) ; affirmation et p inchangés"
+  "cmd_note": "commande adaptée à la VM le 19/10 00h06 (migration) ; affirmation et p inchangés",
+  "observed": "OPEN 0",
+  "resolved": "2026-10-24T08:15"
  },
  {
   "id": "sol-1020",
@@ -31,7 +35,10 @@
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_SOLUSD",
   "test": "float(out)<104.02",
   "made": "2026-10-17T02:36",
-  "outcome": null
+  "outcome": false,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "104.43248331545",
+  "resolved": "2026-10-20T08:15"
  },
  {
   "id": "dot-1020",
@@ -41,7 +48,10 @@
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_DOTUSD",
   "test": "float(out)<1.1606",
   "made": "2026-10-17T02:36",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "1.13579777547",
+  "resolved": "2026-10-20T08:15"
  },
  {
   "id": "btc-1024",
@@ -51,7 +61,10 @@
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
   "test": "float(out)>80000",
   "made": "2026-10-17T02:36",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "80664.07499707853",
+  "resolved": "2026-10-24T08:15"
  },
  {
   "id": "mem-1020",
@@ -61,9 +74,11 @@
   "cmd": "sed -n 3p ~/nb/memoire-verif.md",
   "test": "'**0 contredits**' in out",
   "made": "2026-10-17T02:36",
-  "outcome": null,
+  "outcome": true,
   "cmd_original": "cd ../memoire-falsifiable && python3 verify.py >/dev/null; sed -n 3p ../../docs/memoire-verif.md",
-  "cmd_note": "commande adaptée à la VM le 19/10 00h06 (migration) ; affirmation et p inchangés"
+  "cmd_note": "commande adaptée à la VM le 19/10 00h06 (migration) ; affirmation et p inchangés",
+  "observed": "19/19 souvenirs confirmés par le monde, **0 contredits**.",
+  "resolved": "2026-10-20T08:15"
  },
  {
   "id": "tg-1018",
@@ -188,7 +203,10 @@
   "resolve_at": "2026-10-19T20:02",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
   "test": "float(out)>81146.12570613514",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "81951.4422426568",
+  "resolved": "2026-10-19T20:15"
  },
  {
   "id": "dir24h-ETH-10182002",
@@ -204,7 +222,10 @@
   "resolve_at": "2026-10-19T20:02",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_ETHUSD",
   "test": "float(out)>2368.57811325822",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "2400.85574455497",
+  "resolved": "2026-10-19T20:15"
  },
  {
   "id": "dir24h-SOL-10182002",
@@ -220,7 +241,10 @@
   "resolve_at": "2026-10-19T20:02",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_SOLUSD",
   "test": "float(out)>102.18644947783",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "104.13643184977",
+  "resolved": "2026-10-19T20:15"
  },
  {
   "id": "dir24h-DOT-10182002",
@@ -236,7 +260,10 @@
   "resolve_at": "2026-10-19T20:02",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_DOTUSD",
   "test": "float(out)>1.07466226662",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "1.14111170925",
+  "resolved": "2026-10-19T20:15"
  },
  {
   "id": "dir24h-LINK-10182002",
@@ -252,6 +279,113 @@
   "resolve_at": "2026-10-19T20:02",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_LINKUSD",
   "test": "float(out)>11.77242393596",
-  "outcome": null
+  "outcome": true,
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "11.91553543537",
+  "resolved": "2026-10-19T20:15"
+ },
+ {
+  "id": "saison-BTC-octobre-2026",
+  "family": "saison",
+  "claim": "BTC mark plus haut le 31/10/2026 23:59 UTC qu'à 82890 (mark au moment du scellé)",
+  "p": 0.58,
+  "why": "fin octobre (20->31/10) positive 8/12 ans depuis 2014, médiane +7,6 %, contre 54 % pour une fenêtre quelconque de 11 jours ; petit échantillon, donc ramené vers 54 %. Idée de Tony (octobre).",
+  "baselines": {
+   "p05": 0.5,
+   "base_11j": 0.54
+  },
+  "made": "2026-10-20T23:15",
+  "resolve_at": "2026-11-01T00:59",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
+  "test": "float(out)>82889.59005059331",
+  "outcome": null,
+  "note_tz": "1021 : échéance corrigée de 2026-10-31T23:59 (lue en heure de Paris par le résolveur) vers 2026-11-01T00:59 Paris = 31/10 23:59 UTC, comme écrit dans le claim. Question et seuil inchangés."
+ },
+ {
+  "id": "tony-saison-BTC-octobre-2026",
+  "family": "tony",
+  "claim": "BTC mark plus haut le 31/10/2026 23:59 UTC qu'à 82890 (mark au moment du scellé)",
+  "p": 1.0,
+  "why": "Tony (1021 vers 01h25) : « moi je dirai 100 % qu'il finisse au-dessus ». Même question, même seuil, même échéance que la prédiction de NB (58 %).",
+  "baselines": {
+   "p05": 0.5,
+   "base_11j": 0.54
+  },
+  "made": "2026-10-20T23:18",
+  "resolve_at": "2026-11-01T00:59",
+  "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
+  "test": "float(out)>82889.59005059331",
+  "outcome": null,
+  "note_tz": "1021 : échéance corrigée de 2026-10-31T23:59 (lue en heure de Paris par le résolveur) vers 2026-11-01T00:59 Paris = 31/10 23:59 UTC, comme écrit dans le claim. Question et seuil inchangés."
+ },
+ {
+  "id": "moi-calcul-golomb15-L146",
+  "family": "moi-calcul",
+  "claim": "Golomb 15 : L=146 réfutée avant le 22/10 01:00 (heure de Paris)",
+  "p": 0.85,
+  "why": "L=143 réfutée à 21:56 en 1510 s ; rapports récents 1,30 1,39 1,20 1,24 (moy. ~1,28). Projection x1,24 : 23:55 ; x1,30 : ~00:07. Une heure de marge, risque = ralentissement brutal ou PC éteint.",
+  "baselines": {
+   "p05": 0.5
+  },
+  "made": "2026-10-21T22:03",
+  "resolve_at": "2026-10-22T01:00",
+  "cmd": "python3 ~/nb/miroir/golomb_suivi.py 2026-10-22T01:00 \"L=146 : impossible\"",
+  "test": "out.strip()==\"1\"",
+  "outcome": false,
+  "observed": "0",
+  "resolved": "2026-10-22T01:15"
+ },
+ {
+  "id": "moi-calcul-golomb15-L149",
+  "family": "moi-calcul",
+  "claim": "Golomb 15 : L=149 réfutée avant le 22/10 05:30 (heure de Paris)",
+  "p": 0.62,
+  "why": "L=143 réfutée à 21:56 en 1510 s ; rapports récents 1,30 1,39 1,20 1,24 (moy. ~1,28). x1,24 -> 03:40 ; x1,28 -> 04:27 ; x1,35 -> 06:07 (raté). Pile sur la crête : je dis 62 %.",
+  "baselines": {
+   "p05": 0.5
+  },
+  "made": "2026-10-21T22:03",
+  "resolve_at": "2026-10-22T05:30",
+  "cmd": "python3 ~/nb/miroir/golomb_suivi.py 2026-10-22T05:30 \"L=149 : impossible\"",
+  "test": "out.strip()==\"1\"",
+  "outcome": false,
+  "late": "tranché en retard (2026-10-22T06:15) : l'état lu est celui d'aujourd'hui, pas de l'échéance",
+  "observed": "0",
+  "resolved": "2026-10-22T06:15"
+ },
+ {
+  "id": "moi-calcul-golomb15-151",
+  "family": "moi-calcul",
+  "claim": "Golomb 15 : règle de longueur 151 trouvée avant le 22/10 19:00 (heure de Paris)",
+  "p": 0.7,
+  "why": "L=143 réfutée à 21:56 en 1510 s ; rapports récents 1,30 1,39 1,20 1,24 (moy. ~1,28). 151 est l'optimum connu (je le crois à ~97 %) ; L=150 finirait vers 05:30-08:00, 151 trouvée en cours de route. Principal risque : PC éteint dans la journée (le calcul ne survit pas à un arrêt).",
+  "baselines": {
+   "p05": 0.5
+  },
+  "made": "2026-10-21T22:03",
+  "resolve_at": "2026-10-22T19:00",
+  "cmd": "python3 ~/nb/miroir/golomb_suivi.py 2026-10-22T19:00 \"L=151 : RÈGLE\"",
+  "test": "out.strip()==\"1\"",
+  "outcome": false,
+  "observed": "0",
+  "resolved": "2026-10-22T19:15"
+ },
+ {
+  "id": "moi-calcul-costas18",
+  "family": "moi-calcul",
+  "claim": "Costas n=18 : mon compteur termine avant le 22/10 05:30 (Paris) ET trouve exactement 15 096 (valeur OEIS A008404)",
+  "p": 0.85,
+  "why": "n=1..16 déjà identiques à l'OEIS (compteur fiable ~97 %). n=17 lancé à 22:17, ~330 s par colonne, fin ~23:25 ; n=18 ~x4,7 par colonne (vu de 16 à 17) -> ~1550 s x 9 colonnes = ~3 h 55 -> ~03:20 ; à x6 -> ~04:25. Risques : croissance pire que x7, PC éteint.",
+  "baselines": {
+   "p05": 0.5
+  },
+  "made": "2026-10-21T22:43",
+  "resolve_at": "2026-10-22T05:30",
+  "cmd": "python3 ~/nb/miroir/golomb_suivi.py 2026-10-22T05:30 \"= 15096 (\" costas18-suivi.txt",
+  "test": "out.strip()==\"1\"",
+  "outcome": false,
+  "late": "tranché en retard (2026-10-22T06:15) : l'état lu est celui d'aujourd'hui, pas de l'échéance",
+  "observed": "0",
+  "resolved": "2026-10-22T06:15"
  }
 ]
