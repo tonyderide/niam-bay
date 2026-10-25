@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 
 E = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/"
 # mots qui signalent un financeur ou un lien industriel (on montre la phrase, on ne conclut pas)
-INDUSTRIE = ["dairy", "milk board", "milk council", "cniel", "farm fresh", "nestl", "danone", "lactalis", "arla", "fonterra",
+INDUSTRIE = ["dairy council", "dairy farmers", "dairy research", "dairy management", "dairy uk", "dairy australia", "build dairy", "global dairy", "milk board", "milk council", "cniel", "farm fresh", "nestl", "danone", "lactalis", "arla", "fonterra",
              "friesland", "abbott", "mead johnson", "yili", "mengniu", "unilever", "pepsico", "coca-cola", "mars inc",
              "industry", "consultant", "honorari", "speaker", "advisory board"]
 AUCUN = re.compile(r"(no|none|not any|nothing)\s+(conflict|competing|relevant)|declare[sd]? (that they have )?no|"
