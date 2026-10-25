@@ -78,6 +78,22 @@ def verdict(a):
         print("VERDICT : NON DÉMONTRÉ (ça ne veut pas dire que ça ne marche pas : l'effet est peut-être trop petit pour ce nombre de séances).")
 
 
+def puissance(a):
+    """Combien de séances pour voir un effet de taille donnée, quand la mesure varie de ±bruit d'une séance à l'autre ?"""
+    rnd = random.Random(3)
+    print(f"effet cherché {a.effet:g}, bruit séance à séance ±{a.bruit:g} (écart-type) :")
+    for seances in (8, 12, 16, 24, 32, 48):
+        vus = 0
+        for _ in range(300):
+            xa = [a.effet + rnd.gauss(0, a.bruit) for _ in range(seances // 2)]
+            xb = [rnd.gauss(0, a.bruit) for _ in range(seances // 2)]
+            e = sum(xa) / len(xa) - sum(xb) / len(xb); tous = xa + xb; n = len(xa); plus = 0
+            for _ in range(400):
+                rnd.shuffle(tous); plus += sum(tous[:n]) / n - sum(tous[n:]) / n >= e
+            vus += (plus + 1) / 401 < 0.05
+        print(f"  {seances:2d} séances → effet vu {vus / 3:.0f} % du temps" + ("  ← assez (≥ 80 %)" if vus >= 240 else ""))
+
+
 def main():
     ap = argparse.ArgumentParser(); s = ap.add_subparsers(dest="cmd", required=True)
     n = s.add_parser("nouveau"); n.add_argument("nom"); n.add_argument("a"); n.add_argument("b")
@@ -85,7 +101,8 @@ def main():
     n.add_argument("--plus-bas-mieux", action="store_true")
     o = s.add_parser("noter"); o.add_argument("nom"); o.add_argument("valeur", type=float)
     d = s.add_parser("verdict"); d.add_argument("nom")
-    a = ap.parse_args(); {"nouveau": nouveau, "noter": noter, "verdict": verdict}[a.cmd](a)
+    p = s.add_parser("puissance"); p.add_argument("effet", type=float); p.add_argument("bruit", type=float)
+    a = ap.parse_args(); {"nouveau": nouveau, "noter": noter, "verdict": verdict, "puissance": puissance}[a.cmd](a)
 
 
 if __name__ == "__main__":
