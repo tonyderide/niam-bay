@@ -18,9 +18,13 @@ FINANCEMENT = re.compile(r"[^.]*\b(fund|grant|support|sponsor|conflict|competing
 def collecte():
     r = ET.fromstring(Q.get("esearch.fcgi", db="pubmed", term=REQUETE, retmax=int(os.environ.get("N_ETUDE", "80")), sort="pub_date"))
     ids = [i.text for i in r.findall(".//Id")]
-    x = ET.fromstring(Q.get("efetch.fcgi", db="pubmed", id=",".join(ids), retmode="xml"))
-    resumes = {a.findtext(".//PMID"): " ".join(Q.texte(t) for t in a.findall(".//Abstract/AbstractText")) for a in x.findall(".//PubmedArticle")}
-    arts = [a for a in Q.pubmed(ids) if not EXCLUS.search(a["titre"]) and resumes.get(a["pmid"])]
+    resumes, tous = {}, []
+    for k in range(0, len(ids), 100):  # par lots de 100 (limite d'URL de NCBI)
+        lot = ids[k:k + 100]
+        x = ET.fromstring(Q.get("efetch.fcgi", db="pubmed", id=",".join(lot), retmode="xml"))
+        resumes.update({a.findtext(".//PMID"): " ".join(Q.texte(t) for t in a.findall(".//Abstract/AbstractText")) for a in x.findall(".//PubmedArticle")})
+        tous += Q.pubmed(lot); time.sleep(0.4)
+    arts = [a for a in tous if not EXCLUS.search(a["titre"]) and resumes.get(a["pmid"])]
     for a in arts:
         try:
             Q.pmc_details(a)
