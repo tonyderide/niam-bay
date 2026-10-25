@@ -131,5 +131,12 @@
   "cmd": "cd ~/projets/tonyderide/niam-bay/ai-lab/capset && python3 -c \"import itertools;C=[tuple(map(int,l.strip())) for l in open('cap7_236.txt')];S=set(C);n=lambda v:tuple((-x)%3 for x in v);b=sum(1 for x,y in itertools.combinations(C,2) if (z:=n(tuple((a+c)%3 for a,c in zip(x,y)))) in S and z!=x and z!=y);print(len(S),b)\"",
   "expect": "^236 0$",
   "counter": "236 14"
+ },
+ {
+  "memory": "project_nb_vm_architecture",
+  "claim": "le bot de la VM est le seul lecteur de @niambay_bot (aucun 409 Conflict dans l'heure : sinon quelqu'un d'autre lit les messages de Tony)",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 \"TZ=Europe/Paris python3 -c \\\"import time;Y=time.strftime('%Y');n=sum(1 for l in open('/home/ubuntu/nb/bot_err.log') if ' 409 ' in l and time.time()-time.mktime(time.strptime(Y+'/'+l[:14],'%Y/%d/%m %H:%M:%S'))<3600);print('conflits_1h',n)\\\"\" < /dev/null",
+  "expect": "^conflits_1h 0$",
+  "counter": "conflits_1h 270"
  }
 ]
