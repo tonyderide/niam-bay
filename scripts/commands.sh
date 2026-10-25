@@ -699,3 +699,51 @@ python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -40
 
 # [auto 2026-10-21 18:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>&<N> | tail -<N>
 ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>&1 | tail -5
+
+# [auto 2026-10-22 02:08] utilisée 3x — sig: date +%H:%M; rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/banc-honnete/t2<N>.log
+date +%H:%M; rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/banc-honnete/t21.log
+
+# [auto 2026-10-22 06:23] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines <N> <N>>&<N>
+rtk read ~/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 30 2>&1
+
+# [auto 2026-10-22 06:24] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines <N>
+rtk read ~/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 3
+
+# [auto 2026-10-22 12:23] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/recent.nb1
+rtk read ~/projets/tonyderide/niam-bay/docs/recent.nb1
+
+# [auto 2026-10-22 12:23] utilisée 3x — sig: sed -n '<N>,240p' ~/projets/tonyderide/niam-bay/docs/memory.nb1
+sed -n '1,240p' ~/projets/tonyderide/niam-bay/docs/memory.nb1
+
+# [auto 2026-10-23 05:06] utilisée 3x — sig: date; rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=<N> ubuntu@<N>.<N> 'cat ~/nb/tg_offset; echo; wc -l < ~/nb/inbox.jsonl; pgrep -f "python3.*nb_vm_bot"'
+date; rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no -o ConnectTimeout=15 ubuntu@141.253.108.141 'cat ~/nb/tg_offset; echo; wc -l < ~/nb/inbox.jsonl; pgrep -f "python3.*nb_vm_bot"'
+
+# [auto 2026-10-23 06:23] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/inbox.jsonl --tail-lines <N> <N>>/dev/null
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/inbox.jsonl --tail-lines 20 2>/dev/null
+
+# [auto 2026-10-23 06:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 30" < /dev/null 2>&1 | tail -40
+
+# [auto 2026-10-23 06:24] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines <N>
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 3
+
+# [auto 2026-10-23 12:24] utilisée 3x — sig: rtk ls ~/projets/tonyderide/niam-bay/docs/lectures/ <N>>&<N> | tail -<N>
+rtk ls ~/projets/tonyderide/niam-bay/docs/lectures/ 2>&1 | tail -5
+
+# [auto 2026-10-24 06:23] utilisée 3x — sig: date && python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+date && python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -40
+
+# [auto 2026-10-24 12:23] utilisée 3x — sig: rtk ssh -o ConnectTimeout=<N> -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
+rtk ssh -o ConnectTimeout=10 -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 30" < /dev/null 2>&1 | tail -40
+
+# [auto 2026-10-24 18:23] utilisée 3x — sig: rtk read ~/projets/tonyderide/niam-bay/docs/loop-backlog.md <N>>/dev/null | head -<N>
+rtk read ~/projets/tonyderide/niam-bay/docs/loop-backlog.md 2>/dev/null | head -80
+
+# [auto 2026-10-25 06:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=<N> ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
+rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 30" < /dev/null 2>&1 | tail -40
+
+# [auto 2026-10-25 06:23] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines <N> <N>>/dev/null
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 30 2>/dev/null
+
+# [auto 2026-10-25 12:23] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+cd ~/projets/tonyderide/niam-bay && python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -30
