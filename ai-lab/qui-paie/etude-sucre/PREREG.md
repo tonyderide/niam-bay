@@ -1,0 +1,8 @@
+# Pré-enregistrement : un lien avec l'industrie du sucre ou des boissons rend-il les revues moins sévères pour le sucre ?
+
+Écrit le 25/10/2026 vers 23h55, AVANT toute collecte. Troisième aliment (lait : DÉMONTRÉ ; œufs : NON ÉVALUABLE faute de revues financées).
+
+- **Corpus** : `(sugar[ti] OR sugars[ti] OR sugar-sweetened[ti] OR sucrose[ti] OR fructose[ti] OR "soft drinks"[ti] OR "sweetened beverages"[ti]) AND (systematic review[pt] OR meta-analysis[pt]) AND ("2010"[dp] : "2026"[dp]) AND english[la]`, les 500 plus récentes. Exclues : titres sur la glycémie / le « blood sugar » sans apport alimentaire (« blood sugar », « glucose monitoring »), les sucres de laboratoire (« sugar alcohol », « sialic »), les vétérinaires ; sans résumé.
+- **Exposition** : financement / subventions / conflits citant l'un de : sugar association, sugar research, world sugar, canadian sugar, sugar bureau, sugar nutrition, coca-cola, pepsico, beverage association, ilsi, international life sciences, mars inc, nestl, mondelez, kellogg, general mills, tate & lyle, cargill, corn refiners, sweetener.
+- **Classeur** (aveugle) : « défavorable » = le sucre / ces boissons ont un effet nuisible mis en avant ; « favorable » = effet bénéfique ou absence d'effet nuisible présentée comme rassurante ; « neutre » sinon.
+- **Hypothèse et test** : les revues liées à l'industrie concluent MOINS souvent « défavorable ». Fisher unilatéral sur la part de « défavorable » (moins chez les exposées), α = 0,05 ; NON ÉVALUABLE si moins de 5 exposées. Relecture « même sujet » en information. Une seule étude sur ce sujet cette nuit.
