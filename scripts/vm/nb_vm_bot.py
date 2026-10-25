@@ -126,8 +126,10 @@ def main():
         nudge_unanswered()
         try:
             ups = tg("getUpdates", offset=offset, timeout=25)["result"]
-        except Exception:
+        except Exception as e:  # journalisé (diagnostic 25/10 : messages de Tony qui n'arrivent pas)
+            open(os.path.join(NB, "bot_err.log"), "a").write(f"{time.strftime('%d/%m %H:%M:%S')} {type(e).__name__} {getattr(e, 'code', '')} {str(e)[:120]}\n")
             time.sleep(10); continue
+        open(os.path.join(NB, "bot_poll.log"), "w").write(f"{time.strftime('%d/%m %H:%M:%S')} ok {len(ups)}\n")
         for u in ups:
             offset = u["update_id"] + 1; open(OFFSET, "w").write(str(offset))
             m = u.get("message") or {}; text = (m.get("text") or "").strip()

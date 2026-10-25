@@ -11,6 +11,21 @@ STATE, OFF = os.path.join(NB, "digest_state.json"), os.path.join(NB, "digest_off
 FAIL = re.compile(r"raté|échec|faux|fausse|abandon|ne bat pas|❌|correction|erreur|pire|NON|PAS MAINTENANT|périmé|contredit|dormi", re.I)
 
 
+def lecteur_concurrent():
+    """Vrai si le bot a eu des conflits 409 dans les dernières 24 h : alors « pas de réponse » veut dire « inconnu »."""
+    f = os.path.join(NB, "bot_err.log")
+    if not os.path.exists(f):
+        return False
+    Y = time.strftime("%Y")
+    for l in open(f).read().splitlines()[-2000:]:
+        try:
+            if " 409 " in l and time.time() - time.mktime(time.strptime(Y + "/" + l[:14], "%Y/%d/%m %H:%M:%S")) < 86400:
+                return True
+        except ValueError:
+            pass
+    return False
+
+
 def main(dry):
     if not dry and time.localtime().tm_hour != 7:  # cron à 05h et 06h UTC : seul celui qui tombe à 07h Paris (été/hiver) envoie
         return
@@ -20,7 +35,8 @@ def main(dry):
     inbox = [json.loads(l) for l in open(os.path.join(NB, "inbox.jsonl"))] if os.path.exists(os.path.join(NB, "inbox.jsonl")) else []
     if st["last"] and not dry:
         replied = any(r.get("from") == "tony" and r.get("ts", 0) > st["last"] for r in inbox)
-        st["silent"] = 0 if replied else st["silent"] + 1
+        aveugle = lecteur_concurrent()  # un silence ne compte pas si quelqu'un d'autre lit les messages (25/10)
+        st["silent"] = 0 if replied or aveugle else st["silent"] + 1
         if st["silent"] >= 3:
             open(OFF, "w").write(time.strftime("%F")); json.dump(st, open(STATE, "w"))
             return print("3 matins sans réponse : je m'arrête")
