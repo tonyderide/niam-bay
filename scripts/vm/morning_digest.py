@@ -26,6 +26,19 @@ def lecteur_concurrent():
     return False
 
 
+def capteurs():
+    """Dit si chaque source du résumé est vivante, pour qu'un « rien de nouveau » ne passe pas pour une nouvelle."""
+    def age(chemin):
+        if not os.path.exists(chemin):
+            return None
+        return (time.time() - os.path.getmtime(chemin)) / 3600
+    out = ["Telegram ✗ quelqu'un d'autre lit tes messages au bot" if lecteur_concurrent() else "Telegram ✓"]
+    for nom, chemin, max_h in (("compte", os.path.expanduser("~/et/et.log"), 3), ("journal", os.path.join(NB, "loop-journal.md"), 12)):
+        h = age(chemin)
+        out.append(f"{nom} ✗ absent" if h is None else f"{nom} ✓" if h <= max_h else f"{nom} ✗ muet depuis {h:.0f} h")
+    return " · ".join(out)
+
+
 def main(dry):
     if not dry and time.localtime().tm_hour != 7:  # cron à 05h et 06h UTC : seul celui qui tombe à 07h Paris (été/hiver) envoie
         return
@@ -66,6 +79,7 @@ def main(dry):
             msg.append("💡 " + (t if "http" in t else t[:200]))  # ne jamais couper un lien
         if not dry:
             os.remove(Q)
+    msg.append("🩺 capteurs : " + capteurs())  # un silence n'est une info que si le capteur marche (25/10)
     msg.append("💰 " + acct)
     todo = [l[6:].split(".")[0][:110] for l in open(os.path.join(NB, "a-faire-tony.md")).read().splitlines() if l.startswith("- [ ] ")] if os.path.exists(os.path.join(NB, "a-faire-tony.md")) else []
     msg += ["📌 pour toi : " + t for t in todo[:2]]
