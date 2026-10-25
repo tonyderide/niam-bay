@@ -35,3 +35,6 @@ docs/inbox.jsonl
 docs/inbox-vm.jsonl
 scripts/vitrine/pipes.html
 scripts/vitrine/status.json
+
+# Base vectorielle locale : jamais dans le dépôt public (fuite de la clé Telegram, 25/10/2026)
+memory/vectordb/
