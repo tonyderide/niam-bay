@@ -32,3 +32,7 @@ Effectifs ; part de revues sans aucune déclaration ; mêmes chiffres en comptan
 
 ## Limites connues
 Les déclarations peuvent mentir ou manquer ; un résumé peut être plus positif que l'article ; un seul classeur automatique ; un corpus = une requête.
+
+## Addendum 1 (25/10/2026 23h10, AVANT la collecte de l'étude 2)
+Étude 1 (80 plus récentes) : 49 gardées, 3 avec lien laitier → **NON ÉVALUABLE**, consigné tel quel.
+**Étude 2**, règles identiques (exclusions, exposition, classeur, test, seuil) ; seul le corpus change : les **500** plus récentes de la même requête. Étude 1 incluse dans l'étude 2 (pas un échantillon indépendant). Toujours « non évaluable » si < 5 exposées. Pas d'étude 3 sur ce sujet cette nuit, quel que soit le résultat.
