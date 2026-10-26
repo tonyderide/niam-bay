@@ -16,6 +16,7 @@ Test exact de Fisher unilatéral : p = 0.001.
 - **Même sujet** : le groupe sans lien contient des revues hors santé (contamination, transformation, élevage), naturellement « neutres » ou « défavorables ». Restreint aux 132 revues santé/consommation (filtre de titre) : **9/13 (69 %) favorables avec lien laitier contre 36/119 (30 %) sans, p = 0,007.** L'écart tient.
 - **Ce que ça ne dit pas** : le sens de la causalité. La filière peut financer les questions où un bénéfice est probable, ou les auteurs déjà convaincus ; ou le financement peut orienter la lecture des résultats. Les trois donnent le même tableau. Ça ne dit pas non plus que ces revues sont fausses.
 - Fidélité du classeur : 14/15 identiques au second passage.
+- **Second classeur indépendant** (Claude sonnet, même consigne, à l'aveugle, 26/10 01h37) : accord avec le premier sur 282/325 résumés (87 %). Avec ses classes : 10/20 (50 %) favorables avec lien laitier contre 57/305 (19 %) sans, p = 0,002 ; à sujet égal (santé) 8/13 (62 %) contre 37/119 (31 %), p = 0,03. Le résultat ne dépend pas du modèle qui classe.
 
 ## En une phrase pour Tony
 Sur 325 revues récentes, celles qui déclarent un lien avec l'industrie laitière concluent environ deux fois plus souvent que le lait fait du bien (69 % contre 30 % à sujet égal). Ton intuition se vérifie sur le lien argent → conclusion ; elle ne prouve pas que le lait est inutile.
