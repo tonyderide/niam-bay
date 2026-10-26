@@ -28,3 +28,13 @@
 - « Toujours short » sans filtre, et le rendement sans frais.
 - Variante journalière (EMA200 sur bougies 1 jour), présentée comme exploratoire.
 - Le pire repli (drawdown).
+
+## Addendum 1 (26/10 vers 18h12 CET) : demande de Tony, ajoutée après le téléchargement et AVANT tout calcul
+Tony : « vérifier qu'au moins 3 des cryptos sont gagnantes et que le global des gains est supérieur au prix payé pour les frais ».
+- Chaque altcoin est aussi évalué seul (même règle, même signal BTC, mêmes coûts, pour 1 $ engagé).
+- Le verdict **DÉMONTRÉ** exige maintenant les 4 conditions à la fois :
+  1. p < 0,05 au test des décalages (inchangé) ;
+  2. rendement net total > 0 (inchangé) ;
+  3. **au moins 3 des 10 altcoins gagnants** une fois les frais et le financement comptés ;
+  4. **gains bruts (avant frais) > frais payés**, sur le portefeuille global. Le financement est compté à part et affiché.
+- Si une seule condition manque : NON DÉMONTRÉ, avec la condition qui manque.
