@@ -18,6 +18,9 @@ Test exact de Fisher unilatéral : p = 0.001.
 - Fidélité du classeur : 14/15 identiques au second passage.
 - **Second classeur indépendant** (Claude sonnet, même consigne, à l'aveugle, 26/10 01h37) : accord avec le premier sur 282/325 résumés (87 %). Avec ses classes : 10/20 (50 %) favorables avec lien laitier contre 57/305 (19 %) sans, p = 0,002 ; à sujet égal (santé) 8/13 (62 %) contre 37/119 (31 %), p = 0,03. Le résultat ne dépend pas du modèle qui classe.
 
+## Comparaison avec la littérature
+Lesser et al., *PLoS Medicine* 2007 (206 articles sur sodas, jus et lait ; [PMC1764435](https://pmc.ncbi.nlm.nih.gov/articles/PMC1764435)) : rapport de cotes d'une conclusion favorable, financement entièrement industriel contre aucun, **4,37 brut**, 7,61 ajusté. Ici, sur 325 revues de 2015-2026 : rapport de cotes (favorable contre le reste) **≈ 4,8 brut**. Même ordre de grandeur, 19 ans plus tard, avec une autre méthode (revues seulement, classement automatique à l'aveugle, liens déclarés au lieu du financement).
+
 ## En une phrase pour Tony
 Sur 325 revues récentes, celles qui déclarent un lien avec l'industrie laitière concluent environ deux fois plus souvent que le lait fait du bien (69 % contre 30 % à sujet égal). Ton intuition se vérifie sur le lien argent → conclusion ; elle ne prouve pas que le lait est inutile.
 
