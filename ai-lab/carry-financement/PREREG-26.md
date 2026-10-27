@@ -24,3 +24,6 @@ Le test papier en avant suit DEUX bras, jugés séparément avec les mêmes cond
 - **B1** : signal du financement Kraken (comme prévu).
 - **B2** : signal du financement **Binance** (API publique `fapi/v1/fundingRate`), positions, prix et financement payés sur **Kraken**.
 Le calcul de B2 sur l'année passée sera montré pour information, sans valeur de verdict.
+
+## Addendum B3 (27/10 20h1x, AVANT la première donnée en avant du 28/10 00:00 UTC)
+Bras **B3** : comme B2 (signal Binance, exécution Kraken), mais sur les **8 contrats tradables avec ~5,90 $** (sans XBT, BNB, ETH ; voir FAISABILITE.md). Short 3 / long 3. Mêmes conditions de verdict, « au moins 3 cryptos gagnantes » sur 8. Aucun calcul de B3 sur le passé n'est fait avant le 23/12.

@@ -1,4 +1,4 @@
-"""PREREG-26 B : test papier en avant du carry du financement (bras B1 = signal Kraken, B2 = signal Binance).
+"""PREREG-26 B : test papier en avant du carry du financement (B1 = signal Kraken, B2 = signal Binance, B3 = B2 sans XBT/BNB/ETH).
 API publiques seulement, aucune clé, AUCUN ordre. Lancé chaque jour vers 00:05 UTC. Idempotent.
 Journal : ~/nb/carry-papier/jours.jsonl (une ligne par jour : positions décidées à 00:00 UTC + prix à 00:00)."""
 import bisect, calendar, json, os, time, urllib.request
@@ -22,8 +22,8 @@ def prix_a(s, d):  # clôture de la bougie 1 h qui finit à d
     c = [x for x in r.get("candles", []) if int(x["time"]) + 3600000 == d]
     return float(c[0]["close"]) if c else None
 
-def poids(score):
-    ok = sorted([s for s in score if score[s] is not None], key=lambda s: score[s]); w = {s: 0.0 for s in SYM}
+def poids(score, exclus=()):
+    ok = sorted([s for s in score if score[s] is not None and s not in exclus], key=lambda s: score[s]); w = {s: 0.0 for s in SYM}
     if len(ok) >= 6:
         for s in ok[:3]: w[s] = 1/3
         for s in ok[-3:]: w[s] = -1/3
@@ -36,14 +36,15 @@ def noter_jour(d):
     px = {s: prix_a(s, d) for s in SYM}
     b1 = poids({s: somme(fk[s], d - 7*J, d) if px[s] else None for s in SYM})
     b2 = poids({s: somme(fb[s], d - 7*J, d) if px[s] else None for s in SYM})
-    return {"jour_utc": time.strftime("%F", time.gmtime(d / 1000)), "t": d, "prix": px, "B1": b1, "B2": b2, "note": time.strftime("%F %T", time.gmtime())}
+    b3 = poids({s: somme(fb[s], d - 7*J, d) if px[s] else None for s in SYM}, ("PF_XBTUSD", "PF_BNBUSD", "PF_ETHUSD"))
+    return {"jour_utc": time.strftime("%F", time.gmtime(d / 1000)), "t": d, "prix": px, "B1": b1, "B2": b2, "B3": b3, "note": time.strftime("%F %T", time.gmtime())}
 
 def bilan(L):
     fk = {s: fin_kraken(s) for s in SYM}; out = {}
-    for bras in ("B1", "B2"):
+    for bras in ("B1", "B2", "B3"):
         prev = {s: 0.0 for s in SYM}; net = 0.0; par = {s: 0.0 for s in SYM}; frais = 0.0
         for a, b in zip(L, L[1:]):
-            w = a[bras]
+            w = a.get(bras) or {s: 0.0 for s in SYM}
             for s in SYM:
                 c = FEE * abs(w[s] - prev[s]); r = (b["prix"][s] / a["prix"][s] - 1) if a["prix"][s] and b["prix"][s] else 0.0
                 v = w[s] * r - w[s] * somme(fk[s], a["t"], b["t"], True) - c; par[s] += v; net += v; frais += c
