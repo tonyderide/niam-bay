@@ -417,5 +417,20 @@
   "p": 0.52,
   "why": "Binance sans survivants : p = 0,03 sur 6 ans, mais très irrégulier (2 années négatives) ; B2 a fait +11,4 % l'an passé (déjà vu, donc optimiste) ; sur 56 jours la chance domine, d'où à peine plus que 50 %.",
   "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 \"python3 -c \\\"import json;B=json.load(open('/home/ubuntu/nb/carry-papier/bilan.json'))['B2'];print(B['jours']>=50 and B['net']>0 and B['gagnantes']>=3)\\\"\" < /dev/null"
+ },
+ {
+  "family": "moi-trading",
+  "baselines": {
+   "p05": 0.5
+  },
+  "made": "2026-10-27T20:11",
+  "resolve_at": "2026-12-23T02:30",
+  "outcome": null,
+  "test": "out.strip() == 'True'",
+  "id": "carry-papier-B3",
+  "claim": "Test papier PREREG-26 B3 (signal Binance, exécution Kraken, 8 contrats sans XBT/BNB/ETH) : au 23/12, ≥ 50 jours notés, net > 0 après frais ET ≥ 3 cryptos gagnantes sur 8",
+  "p": 0.5,
+  "why": "Même logique que B2 mais univers plus petit et plus volatil (moins de diversification) : pile ou face.",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 \"python3 -c \\\"import json;B=json.load(open('/home/ubuntu/nb/carry-papier/bilan.json'))['B3'];print(B['jours']>=50 and B['net']>0 and B['gagnantes']>=3)\\\"\" < /dev/null"
  }
 ]
