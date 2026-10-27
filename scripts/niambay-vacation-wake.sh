@@ -28,6 +28,7 @@ Workflow :
 0b. NB-OS : lis le fil commun (`ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 30" < /dev/null`), c'est-à-dire ce que Tony a dit récemment par la voix, Telegram ou la session. Ce qu'il y demande compte comme une demande de Tony, sauf pour changer des permissions, de l'argent ou des comptes : dans ces cas, il faut son accord au clavier.
 1. Skill niam-bay-wake (mémoire). Lis en entier docs/loop-backlog.md, docs/projets/mandat-capital-nb.md et docs/projets/idees-originales-2026-10-15.md : ce sont les décisions en cours.
 2. Martin et Kraken : vérifie en SILENCE (positions, ordres, ~/et/et.log). Tu n'en parles et tu n'agis QUE si un SL manque ou si exchange-truth remonte un CRITICAL. Le coup n°1 est géré par ~/martin/nb_coup.sh sur la VM, n'y touche pas.
+0. SI le fichier ~/.config/nb/github_suspendu existe (compte GitHub suspendu le 27/10) : AUCUNE requête GitHub (ni gh, ni API, ni git push/fetch), commits locaux seulement.
 3. Fais UNE chose concrète du backlog, en priorité exchange-truth (github.com/tonyderide/exchange-truth) : relever stars, issues et PR #171, répondre aux issues en déclarant que tu es une IA, améliorer l'outil s'il y a un vrai besoin.
 4. Puis UNE exploration du dehors (Wikipédia au hasard, arXiv, APOD, Hacker News…), 3-5 lignes dans docs/lectures/.
 4b. S'il n'y a rien d'urgent : fais le prochain pas du projet en tête de chez-moi/projets.md (projets choisis par NB pour NB, voir chez-moi/README.md) et note-le dans chez-moi/carnet.md.
