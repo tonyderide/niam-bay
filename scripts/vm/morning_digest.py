@@ -81,6 +81,9 @@ def main(dry):
             os.remove(Q)
     msg.append("🩺 capteurs : " + capteurs())  # un silence n'est une info que si le capteur marche (25/10)
     msg.append("💰 " + acct)
+    B = os.path.join(NB, "carry-papier", "bilan.json")  # test papier PREREG-26 B, aucun ordre (27/10)
+    if os.path.exists(B):
+        b = json.load(open(B)); msg.append("📄 carry papier : " + " · ".join(f"{k} {v['jours']} j {100*v['net']:+.1f} %" for k, v in b.items()) + " (verdict le 23/12)")
     todo = [l[6:].split(".")[0][:110] for l in open(os.path.join(NB, "a-faire-tony.md")).read().splitlines() if l.startswith("- [ ] ")] if os.path.exists(os.path.join(NB, "a-faire-tony.md")) else []
     msg += ["📌 pour toi : " + t for t in todo[:2]]
     msg.append("❓ Qu'est-ce qui manquait ou était faux ? (une réponse, même « rien », me dit que tu l'as lu)")
