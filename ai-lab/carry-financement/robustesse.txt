@@ -1,0 +1,9 @@
+règle (7 j)                net  +476.2 %  (prix +434.2, fin +102.2, frais 60.3)
+signal retardé d'1 jour    net  +414.2 %  (prix +379.8, fin +94.6, frais 60.2)
+signal retardé de 3 jours  net  +233.7 %  (prix +213.2, fin +80.7, frais 60.2)
+fenêtre 3 j                net  +564.8 %  (prix +565.1, fin +101.9, frais 102.2)
+fenêtre 14 j               net  +403.2 %  (prix +340.3, fin +97.0, frais 34.1)
+sans SOL                   net  +362.8 %  (prix +337.7, fin +80.8, frais 55.7)
+sans SOL, DOGE, BNB        net  +109.3 %  (prix +104.0, fin +56.6, frais 51.2)
+sans 2021                  net  +118.4 %
+depuis 2023                net  +173.3 %
