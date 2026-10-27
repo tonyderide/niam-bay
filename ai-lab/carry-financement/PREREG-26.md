@@ -15,3 +15,12 @@
 - Chaque jour vers 00:05 UTC, un script sur la VM (API publique, aucune clé, aucun ordre) note les positions papier du jour et le résultat de la veille.
 - Verdict le 23/12 : net papier > 0 après frais, ET au moins 3 cryptos gagnantes. (Sur 56 jours, aucun test de p : trop court pour être concluant. Un net négatif voudra dire « pas confirmé », pas « faux ».)
 - Aucun argent réel n'est engagé sans le OK explicite de Tony, quel que soit le résultat.
+
+## Résultat A (27/10 19h05) : NON DÉMONTRÉ sur Kraken
+Net −21,9 % sur 369 jours (p = 0,47 ; bruts −9,9 % contre 12,0 % de frais). Sur les mêmes dates, la règle Binance fait +13,6 %. Les deux bourses ne choisissent les mêmes cryptos que 46 % du temps. Voir RESULTAT-26A.md.
+
+## Addendum B2 (27/10 19h06, AVANT toute donnée en avant et AVANT de calculer ce bras sur le passé)
+Le test papier en avant suit DEUX bras, jugés séparément avec les mêmes conditions que B :
+- **B1** : signal du financement Kraken (comme prévu).
+- **B2** : signal du financement **Binance** (API publique `fapi/v1/fundingRate`), positions, prix et financement payés sur **Kraken**.
+Le calcul de B2 sur l'année passée sera montré pour information, sans valeur de verdict.

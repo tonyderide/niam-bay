@@ -45,3 +45,5 @@ Financement seul (sans risque de prix, mêmes frais) : +42.0 %
 - **Biais du survivant** : les 11 cryptos ont été choisies en 2026, donc parmi celles qui ont survécu. LUNA, FTT et les autres cryptos mortes sont absentes. Impossible de savoir d'ici dans quel sens ça joue.
 - Prix et financement Binance, pas Kraken (Tony trade sur Kraken, où le financement est calculé autrement).
 - Un backtest, pas de l'argent : à confirmer par un test papier en avant (données futures, jamais vues).
+
+**Erratum (27/10 19h0x)** : l'horodatage de fin utilisé (1793055600000 / 1793059200000) correspond au 26/10/2026 23:00 UTC / 27/10 00:00 UTC, pas au 25/10 comme écrit dans le pré-enregistrement. Les données couvrent donc un jour de plus qu'annoncé. Aucune règle n'a changé ; l'effet sur les totaux est d'un jour sur plus de 2 000.
