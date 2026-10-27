@@ -37,3 +37,23 @@ def collecte():
 
 if __name__ == "__main__":
     {"collecte": collecte, "classer": E.classer, "juger": E.juger}[sys.argv[1]]()
+
+
+NEG = re.compile(r"\b(no|not|none|nor|neither|without|never|nothing|any)\b", re.I)
+
+
+def recalculer():
+    """addendum 4 : exposition par phrase, sans négation ; garde les phrases pour vérification"""
+    import json
+    A = json.load(open(E.CORPUS)); motif = re.compile(r"\b(" + "|".join(re.escape(m) for m in E.LAITIER) + r")\b", re.I)
+    for a in A:
+        tout = " ".join([a["financement"], a["coi"], " ".join(a["financeurs"])])
+        phrases = [p.strip() for p in re.split(r"(?<=[.;])\s+", tout) if motif.search(p) and not NEG.search(p)]
+        a["phrases"] = phrases
+        a["laitier"] = sorted({m.group(1).lower() for p in phrases for m in motif.finditer(p)}); a["expo"] = bool(a["laitier"])
+    json.dump(A, open(E.CORPUS, "w"), ensure_ascii=False, indent=1)
+    print("exposées (phrases sans négation) :", sum(a["expo"] for a in A), "sur", len(A))
+
+
+if __name__ == "__main__" and sys.argv[1] == "recalculer":
+    recalculer()
