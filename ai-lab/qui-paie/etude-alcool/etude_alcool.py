@@ -35,7 +35,7 @@ def collecte():
     print("exposées (mots entiers) :", sum(a["expo"] for a in A))
 
 
-if __name__ == "__main__" and sys.argv[1] != "recalculer":
+if __name__ == "__main__" and sys.argv[1] not in ("recalculer", "classer6"):
     {"collecte": collecte, "classer": E.classer, "juger": E.juger}[sys.argv[1]]()
 
 
@@ -57,3 +57,28 @@ def recalculer():
 
 if __name__ == "__main__" and sys.argv[1] == "recalculer":
     recalculer()
+
+
+def classer_parallele(n=6):
+    """même classeur (E.claude, même consigne, même modèle) que l'étude lait, en 6 fils pour tenir dans la nuit"""
+    import json, random, threading
+    from concurrent.futures import ThreadPoolExecutor
+    A = json.load(open(E.CORPUS)); verrou = threading.Lock()
+    def un(a, cle="classe"):
+        for essai in range(3):
+            try:
+                c = E.claude(E.CONSIGNE.replace("{titre}", a["titre"]).replace("{resume}", a["resume"][:6000])); break
+            except Exception:
+                c = None
+        with verrou:
+            a[cle] = c
+            json.dump(A, open(E.CORPUS, "w"), ensure_ascii=False, indent=1); print(a["pmid"], cle, c, flush=True)
+    with ThreadPoolExecutor(n) as ex:
+        list(ex.map(un, [a for a in A if not a.get("classe")]))
+    refaits = random.Random(22).sample(A, min(15, len(A)))
+    with ThreadPoolExecutor(n) as ex:
+        list(ex.map(lambda a: un(a, "classe2"), refaits))
+
+
+if __name__ == "__main__" and sys.argv[1] == "classer6":
+    classer_parallele()
