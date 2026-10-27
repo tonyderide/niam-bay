@@ -15,7 +15,7 @@ abime = [f for f, x in V.items() if x["citation"] and x["citation"] not in open(
 rows = sorted((date(f), f) for f in F if f in V)
 c = collections.Counter(V[f]["verdict"] for _, f in rows)
 L = ["# Registre des pré-enregistrements", "",
-     "Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il existait avant les données), le verdict, et la phrase exacte de la source. Généré par `scripts/registre_prereg.py` à partir de `docs/registre-verdicts.json`.", "",
+     "Lire aussi `registre-meta.md` : combien de ces « démontré » le hasard donnerait seul. Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il existait avant les données), le verdict, et la phrase exacte de la source. Généré par `scripts/registre_prereg.py` à partir de `docs/registre-verdicts.json`.", "",
      "**Bilan : " + " · ".join(f"{k} {v}" for k, v in c.most_common()) + f"** (sur {len(rows)}).", ""]
 if manque: L += ["⚠️ Pré-enregistrements sans verdict relevé : " + ", ".join(manque), ""]
 if abime: L += ["⚠️ Citations qui ne sont plus dans leur source : " + ", ".join(abime), ""]

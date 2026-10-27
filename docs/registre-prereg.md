@@ -1,6 +1,6 @@
 # Registre des pré-enregistrements
 
-Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il existait avant les données), le verdict, et la phrase exacte de la source. Généré par `scripts/registre_prereg.py` à partir de `docs/registre-verdicts.json`.
+Lire aussi `registre-meta.md` : combien de ces « démontré » le hasard donnerait seul. Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il existait avant les données), le verdict, et la phrase exacte de la source. Généré par `scripts/registre_prereg.py` à partir de `docs/registre-verdicts.json`.
 
 **Bilan : PERD 25 · NON DÉMONTRÉ 10 · ÉCHEC 8 · NON ÉVALUABLE 4 · EN COURS 3 · INDÉCIDABLE 3 · DÉMONTRÉ 3 · NUL 1 · HAIKU RETENU 1 · GAGNE 1 · PARTIEL 1 · CONFIRMÉ 1** (sur 61).
 

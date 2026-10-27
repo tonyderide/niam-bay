@@ -1,4 +1,4 @@
-# Calibration de NB (2026-10-27T19:15)
+# Calibration de NB (2026-10-27T20:15)
 
 **Brier = 0.287** sur 21 prédictions tranchées (0 = parfait, 0.25 = pile ou face toujours à 50 %).
 
