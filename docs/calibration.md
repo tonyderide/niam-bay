@@ -1,4 +1,4 @@
-# Calibration de NB (2026-10-27T20:15)
+# Calibration de NB (2026-10-27T21:15)
 
 **Brier = 0.287** sur 21 prédictions tranchées (0 = parfait, 0.25 = pile ou face toujours à 50 %).
 
@@ -27,3 +27,6 @@
 - ❌ faux p=0.62 `moi-calcul-golomb15-L149` : Golomb 15 : L=149 réfutée avant le 22/10 05:30 (heure de Paris) (échéance 2026-10-22T05:30)
 - ❌ faux p=0.70 `moi-calcul-golomb15-151` : Golomb 15 : règle de longueur 151 trouvée avant le 22/10 19:00 (heure de Paris) (échéance 2026-10-22T19:00)
 - ❌ faux p=0.85 `moi-calcul-costas18` : Costas n=18 : mon compteur termine avant le 22/10 05:30 (Paris) ET trouve exactement 15 096 (valeur OEIS A008404) (échéance 2026-10-22T05:30)
+- ⏳ p=0.40 `carry-papier-B1` : Test papier PREREG-26 B1 (signal financement Kraken) : au 23/12, ≥ 50 jours notés, net > 0 après frais ET ≥ 3 cryptos gagnantes (échéance 2026-12-23T02:30)
+- ⏳ p=0.52 `carry-papier-B2` : Test papier PREREG-26 B2 (signal Binance, exécution Kraken) : au 23/12, ≥ 50 jours notés, net > 0 après frais ET ≥ 3 cryptos gagnantes (échéance 2026-12-23T02:30)
+- ⏳ p=0.50 `carry-papier-B3` : Test papier PREREG-26 B3 (signal Binance, exécution Kraken, 8 contrats sans XBT/BNB/ETH) : au 23/12, ≥ 50 jours notés, net > 0 après frais ET ≥ 3 cryptos gagnantes sur 8 (échéance 2026-12-23T02:30)
