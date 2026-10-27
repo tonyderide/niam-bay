@@ -138,5 +138,12 @@
   "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 \"TZ=Europe/Paris python3 -c \\\"import time;Y=time.strftime('%Y');n=sum(1 for l in open('/home/ubuntu/nb/bot_err.log') if ' 409 ' in l and time.time()-time.mktime(time.strptime(Y+'/'+l[:14],'%Y/%d/%m %H:%M:%S'))<3600);print('conflits_1h',n)\\\"\" < /dev/null",
   "expect": "^conflits_1h 0$",
   "counter": "conflits_1h 270"
+ },
+ {
+  "memory": "feedback_verifier_retrait_git",
+  "claim": "aucune base de données ni fichier sensible n'est publié sur GitHub niam-bay (memory/vectordb retiré le 27/10)",
+  "cmd": "cd /home/tony/projets/tonyderide/niam-bay && git fetch -q origin && echo sensibles $(git ls-tree -r --name-only origin/master | grep -c -E '\\.(sqlite3|db)$|(^|/)\\.env$|_token$')",
+  "expect": "^sensibles 0$",
+  "counter": "sensibles 1"
  }
 ]
