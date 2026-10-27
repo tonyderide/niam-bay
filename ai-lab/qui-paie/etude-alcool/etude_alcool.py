@@ -35,7 +35,7 @@ def collecte():
     print("exposées (mots entiers) :", sum(a["expo"] for a in A))
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" and sys.argv[1] != "recalculer":
     {"collecte": collecte, "classer": E.classer, "juger": E.juger}[sys.argv[1]]()
 
 

@@ -747,3 +747,24 @@ rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-line
 
 # [auto 2026-10-25 12:23] utilisée 3x — sig: cd ~/projets/tonyderide/niam-bay && python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
 cd ~/projets/tonyderide/niam-bay && python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -30
+
+# [auto 2026-10-25 18:23] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/memory/ <N>>&<N> | head -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/memory/ 2>&1 | head -20
+
+# [auto 2026-10-26 00:24] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines <N> <N>>&<N>
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 30 2>&1
+
+# [auto 2026-10-26 12:23] utilisée 3x — sig: date && python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+date && python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -40
+
+# [auto 2026-10-26 18:23] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/lectures/ <N>>/dev/null | tail -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/lectures/ 2>/dev/null | tail -5
+
+# [auto 2026-10-26 18:23] utilisée 3x — sig: gh repo view tonyderide/exchange-truth --json stargazerCount,forkCount,watchers <N>>&<N>
+gh repo view tonyderide/exchange-truth --json stargazerCount,forkCount,watchers 2>&1
+
+# [auto 2026-10-27 00:23] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/memory.nb1 --tail-lines <N>
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/memory.nb1 --tail-lines 120
+
+# [auto 2026-10-27 06:24] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/lectures/ <N>>&<N> | tail -<N>
+rtk ls /home/tony/projets/tonyderide/niam-bay/docs/lectures/ 2>&1 | tail -10
