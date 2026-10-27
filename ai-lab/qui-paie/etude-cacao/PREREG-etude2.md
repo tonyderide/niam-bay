@@ -1,0 +1,2 @@
+# Pré-enregistrement étude cacao n°2 (27/10/2026, heure du commit, avant collecte)
+Étude 1 NON ÉVALUABLE (75 revues, 2 exposées). Étude 2 = mêmes règles, un seul changement : les termes sont cherchés dans le **titre ou le résumé** (`[tiab]`) au lieu du titre seul. Les exclusions s'appliquent toujours au titre. Le sous-groupe « cacao dans le titre » est montré en information. C'est la dernière étude sur ce sujet, quel que soit le résultat.
