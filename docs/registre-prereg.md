@@ -2,7 +2,7 @@
 
 Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il existait avant les données), le verdict, et la phrase exacte de la source. Généré par `scripts/registre_prereg.py` à partir de `docs/registre-verdicts.json`.
 
-**Bilan : PERD 25 · NON DÉMONTRÉ 10 · ÉCHEC 8 · NON ÉVALUABLE 4 · EN COURS 3 · DÉMONTRÉ 3 · INDÉCIDABLE 2 · NUL 1 · HAIKU RETENU 1 · INTROUVABLE 1 · GAGNE 1 · PARTIEL 1 · CONFIRMÉ 1** (sur 61).
+**Bilan : PERD 25 · NON DÉMONTRÉ 10 · ÉCHEC 8 · NON ÉVALUABLE 4 · EN COURS 3 · INDÉCIDABLE 3 · DÉMONTRÉ 3 · NUL 1 · HAIKU RETENU 1 · GAGNE 1 · PARTIEL 1 · CONFIRMÉ 1** (sur 61).
 
 | Date | Pré-enregistrement | Verdict | En bref |
 |---|---|---|---|
@@ -11,7 +11,7 @@ Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il
 | 2026-10-17 | [Test du Juge : pré-enregistrement (écrit et commité AVANT de générer ou de noter quoi que ce so](../ai-lab/test-du-juge/PREREGISTRATION.md) | **PERD** | Haiku à l'aveugle : graphe 1,10 contre hasard 0,90 (écart +0,20, p=0,198) ; le Discovery Engine ne bat pas le hasard. ([source](../ai-lab/test-du-juge/RESULTATS.md)) |
 | 2026-10-18 | [Banc du bot Telegram : pré-enregistrement (2026-10-18, avant toute réponse de modèle)](../ai-lab/bench-bot/PREREGISTRATION.md) | **HAIKU RETENU** | Haiku 13/15, Sonnet 13/15, Opus 14/15 ; la règle pré-enregistrée (moins cher dans 1 point du meilleur) retient Haiku. ([source](../ai-lab/bench-bot/PREREGISTRATION.md)) |
 | 2026-10-18 | [Qui copie qui sur Hyperliquid : pré-enregistrement (2026-10-18 ~22h05, avant toute donnée)](../ai-lab/qui-copie/PREREGISTRATION.md) | **NON DÉMONTRÉ** | 30 comptes robustes, 1000 paires orientées : aucune candidate, la meilleure paire fait 3 contre 2, bruit symétrique. ([source](../ai-lab/qui-copie/RESULTATS.md)) |
-| 2026-10-18 | [Suiveurs cachés d'un gros compte : pré-enregistrement (2026-10-18 ~22h15, avant la collecte)](../ai-lab/suiveurs/PREREGISTRATION.md) | **INTROUVABLE** | Collecte de 48 h et analyse prévues vers le 20/10 ; aucun fichier de résultat trouvé dans le dossier. ([source](../ai-lab/suiveurs/PREREGISTRATION.md)) |
+| 2026-10-18 | [Suiveurs cachés d'un gros compte : pré-enregistrement (2026-10-18 ~22h15, avant la collecte)](../ai-lab/suiveurs/PREREGISTRATION.md) | **INDÉCIDABLE** | Le meneur désigné n'a fait aucun trade BTC pendant les 48 h de collecte : pré-vol échoué. ([source](../ai-lab/suiveurs/PREREGISTRATION.md)) |
 | 2026-10-18 | [Test de Turing inversé des traders : pré-enregistrement (2026-10-18, avant toute donnée de test](../ai-lab/turing-inverse/PREREGISTRATION.md) | **INDÉCIDABLE** | Passage 2 : 2 comptes sur 5 « pas mécaniques » (skill +0,002), 3 indécidables faute d'ouvertures dans le test. ([source](../ai-lab/turing-inverse/RESULTATS.md)) |
 | 2026-10-19 | [Blocs de baleine : pré-enregistrement (2026-10-19 ~05h30, avant toute analyse)](../ai-lab/blocs-baleine/PREREGISTRATION.md) | **PERD** | 1 186 blocs : le sens vu en découverte s'inverse en confirmation (+0,139 %, P = 0,997), sous le seuil des frais. ([source](../ai-lab/blocs-baleine/PREREGISTRATION.md)) |
 | 2026-10-19 | [Pré-enregistrement : revalidation des 2 pistes vivantes sur 2024-2025](../ai-lab/chasse-1019/PREREG-REVALID-2024.md) | **PERD** | Revalidation 2024-2025 des 2 pistes : chocs 1h somme -101 %, funding contrarien -404 % ; les deux perdent. ([source](../ai-lab/chasse-1019/PREREG-REVALID-2024.md)) |

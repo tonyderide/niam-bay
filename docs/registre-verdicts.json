@@ -393,10 +393,10 @@
  },
  {
   "fichier": "ai-lab/suiveurs/PREREGISTRATION.md",
-  "verdict": "INTROUVABLE",
-  "resume": "Collecte de 48 h et analyse prévues vers le 20/10 ; aucun fichier de résultat trouvé dans le dossier.",
+  "verdict": "INDÉCIDABLE",
+  "resume": "Le meneur désigné n'a fait aucun trade BTC pendant les 48 h de collecte : pré-vol échoué.",
   "source": "ai-lab/suiveurs/PREREGISTRATION.md",
-  "citation": ""
+  "citation": "**VERDICT : INDÉCIDABLE** (pré-vol)."
  },
  {
   "fichier": "ai-lab/test-du-juge/PREREGISTRATION.md",

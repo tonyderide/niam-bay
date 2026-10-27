@@ -14,3 +14,7 @@ Nouveau meneur, désigné par une règle mécanique : parmi les 30 comptes robus
 
 ## Amendement n°2 (2026-10-18 22:34, toujours AVANT toute analyse)
 L'amendement n°1 était faux : mon calcul divisait par une durée quasi nulle, et il avait désigné un compte qui n'a fait qu'**une seule** rafale (0x0b7879…). Règle corrigée : au moins 15 rafales, et une durée d'au moins 1 jour au dénominateur. Meneur : **0xe76fd4b0280512cce263595ef0d7fcbd101941d5**, avec 10,9 rafales d'achat BTC par jour (21 rafales sur 1,9 jour).
+
+## Verdict (27/10/2026 20h4x, 7 jours en retard)
+Pré-vol sur les 48 h prévues (à partir du premier trade collecté, 18/10 ~20:31 UTC) : le meneur 0xe76fd4… n'apparaît dans **aucun** trade BTC (0 rafale d'achat sur 0-24 h comme sur 24-48 h ; le seuil était 15 par 24 h).
+**VERDICT : INDÉCIDABLE** (pré-vol). Comme pour le jumeau, un meneur choisi sur son passé peut s'arrêter juste au moment du test. La collecte de trades a servi ailleurs (blocs de baleine).
