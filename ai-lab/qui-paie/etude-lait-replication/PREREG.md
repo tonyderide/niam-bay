@@ -7,3 +7,4 @@
 - **Réplication réussie** si DÉMONTRÉ (p < 0,05) dans le même sens. Sinon : « non répliqué sur 2000-2014 » (avec la puissance annoncée : nombre d'exposées).
 - Information seulement : variante d'exposition « noms d'organismes seulement » (sans le mot nu « dairy », qui avait donné 2 faux positifs sur 20 dans l'étude 2) ; sous-groupe santé avec le même filtre de titre que l'étude 2.
 - Attendu : moins de textes complets dans PMC avant 2014, donc moins de déclarations lisibles ; le risque « non évaluable » est réel et sera publié tel quel.
+- Filtre santé (information) : celui de l'étude 2, recopié tel quel dans `replication.py` (SANTE / HORS). Variante « organismes seulement » = liste d'exposition sans le mot nu « dairy ».
