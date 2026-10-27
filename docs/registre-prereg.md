@@ -2,12 +2,12 @@
 
 Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il existait avant les données), le verdict, et la phrase exacte de la source. Généré par `scripts/registre_prereg.py` à partir de `docs/registre-verdicts.json`.
 
-**Bilan : PERD 24 · NON DÉMONTRÉ 10 · ÉCHEC 8 · NON ÉVALUABLE 4 · EN COURS 3 · INTROUVABLE 3 · DÉMONTRÉ 3 · INDÉCIDABLE 2 · HAIKU RETENU 1 · GAGNE 1 · PARTIEL 1 · CONFIRMÉ 1** (sur 61).
+**Bilan : PERD 24 · NON DÉMONTRÉ 10 · ÉCHEC 8 · NON ÉVALUABLE 4 · EN COURS 3 · DÉMONTRÉ 3 · INTROUVABLE 2 · INDÉCIDABLE 2 · NUL 1 · HAIKU RETENU 1 · GAGNE 1 · PARTIEL 1 · CONFIRMÉ 1** (sur 61).
 
 | Date | Pré-enregistrement | Verdict | En bref |
 |---|---|---|---|
 | 2026-10-17 | [Calibration directionnelle à 24 h : pré-enregistrement (2026-10-17, avant la 1re prédiction)](../ai-lab/calibration/PREREG-24H.md) | **EN COURS** | 70 prédictions directionnelles à 24 h, évaluation prévue le 2026-10-31 ; pas encore tranché. ([source](../ai-lab/calibration/PREREG-24H.md)) |
-| 2026-10-17 | [Jumeau différentiel de 0x777d…0111 (Hyperliquid) : pré-enregistrement (2026-10-17, avant d'écri](../ai-lab/jumeau/PREREGISTRATION.md) | **INTROUVABLE** | Journal du juge horaire présent, mais aucun verdict écrit après les 168 h ; le journal prévoyait probablement indécidable. ([source](../ai-lab/jumeau/PREREGISTRATION.md)) |
+| 2026-10-17 | [Jumeau différentiel de 0x777d…0111 (Hyperliquid) : pré-enregistrement (2026-10-17, avant d'écri](../ai-lab/jumeau/PREREGISTRATION.md) | **NUL** | La cible n'a ouvert aucun long BTC en 216 h jugées : inactive plus de 24 h, donc test nul selon l'amendement n°1. ([source](../ai-lab/jumeau/PREREGISTRATION.md)) |
 | 2026-10-17 | [Test du Juge : pré-enregistrement (écrit et commité AVANT de générer ou de noter quoi que ce so](../ai-lab/test-du-juge/PREREGISTRATION.md) | **PERD** | Haiku à l'aveugle : graphe 1,10 contre hasard 0,90 (écart +0,20, p=0,198) ; le Discovery Engine ne bat pas le hasard. ([source](../ai-lab/test-du-juge/RESULTATS.md)) |
 | 2026-10-18 | [Banc du bot Telegram : pré-enregistrement (2026-10-18, avant toute réponse de modèle)](../ai-lab/bench-bot/PREREGISTRATION.md) | **HAIKU RETENU** | Haiku 13/15, Sonnet 13/15, Opus 14/15 ; la règle pré-enregistrée (moins cher dans 1 point du meilleur) retient Haiku. ([source](../ai-lab/bench-bot/PREREGISTRATION.md)) |
 | 2026-10-18 | [Qui copie qui sur Hyperliquid : pré-enregistrement (2026-10-18 ~22h05, avant toute donnée)](../ai-lab/qui-copie/PREREGISTRATION.md) | **NON DÉMONTRÉ** | 30 comptes robustes, 1000 paires orientées : aucune candidate, la meilleure paire fait 3 contre 2, bruit symétrique. ([source](../ai-lab/qui-copie/RESULTATS.md)) |

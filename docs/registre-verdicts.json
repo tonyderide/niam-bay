@@ -1,429 +1,429 @@
 [
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-02-macd-ema200.md",
-    "verdict": "PERD",
-    "resume": "MACD + EMA200 : 34-49 % de gagnants, somme -23 % en 2024-2025, +2 % en 2026, sous le p95 du hasard.",
-    "source": "ai-lab/banc-honnete/PREREG-02-macd-ema200.md",
-    "citation": "Résultat (1020 04h20, t02.py → t02.log) : PERD"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-03-supertrend.md",
-    "verdict": "PERD",
-    "resume": "Supertrend 1h et 4h : les 4 cases sont négatives (somme -234 % en 1h sur 2024-2025).",
-    "source": "ai-lab/banc-honnete/PREREG-03-supertrend.md",
-    "citation": "Résultat (1020 04h25, t03.py → t03.log) : PERD"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-04-stop-suiveur.md",
-    "verdict": "PERD",
-    "resume": "Stop suiveur : le résultat change de signe selon la période et ne bat pas des entrées au hasard avec le même stop.",
-    "source": "ai-lab/banc-honnete/PREREG-04-stop-suiveur.md",
-    "citation": "Résultat (1020 ~04h25, t04.py → t04.log) : PERD"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-05-sources-youtube.md",
-    "verdict": "PERD",
-    "resume": "Bollinger et ADX (chaîne Trading Strategy Testing, 15 min) : 40-48 % de gagnants, les frais ruinent.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "PERD : 40-48 % de gagnants, les frais ruinent"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-06-connors-21.md",
-    "verdict": "PERD",
-    "resume": "RSI-2 de Connors sur 21 cryptos : gagne (+244 % puis +77 %) mais seulement 60e-82e centile du hasard, non prouvé.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "PERD de peu : gagne sur toutes les périodes, mais 60e-82e centile du hasard seulement"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-07-traces.md",
-    "verdict": "PERD",
-    "resume": "Six tracés classiques : le meilleur de 2024-25 fait la médiane du hasard en 2026.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "PERD : le meilleur de 2024-25 fait la médiane du hasard en 2026"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-08-tournoi-experts.md",
-    "verdict": "PERD",
-    "resume": "Tournoi de 4 experts : le meilleur fait +130 % en 2026 mais au 81e centile du hasard ; scalping impossible avec les frais.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "mais au 81e centile du hasard"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-09-max-combinaisons.md",
-    "verdict": "PERD",
-    "resume": "840 combinaisons : Spearman 2024-25 vers 2026 = +0,04 ; le top 20 n'est pas plus souvent positif que l'ensemble (45 %).",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "PERD : Spearman 2024-25 → 2026 = +0,04"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-10-rotation.md",
-    "verdict": "PERD",
-    "resume": "Rotation des forts : le meilleur de 2024-25 fait -26 % en 2026, au 8e centile du hasard.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "au 8e centile du hasard"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-11-carnet.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Le carnet prédit le sens à 10 s (69,7 %) mais l'argent n'est pas démontré : 604 trades à -20,9 % avec frais optimistes.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "Argent NON DÉMONTRÉ"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-12-grille-volatilite.md",
-    "verdict": "PERD",
-    "resume": "Grille 0,6 % allumée en forte volatilité : -2,2 % en 2026, 41e centile des décalages au hasard.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "PERD : −2,2 % en 2026"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-13-vol-geree.md",
-    "verdict": "ÉCHEC",
-    "resume": "BTC géré par la volatilité : Sharpe +0,20 contre +0,04, mais 90e centile des témoins mélangés (seuil p95), échec de justesse.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "ÉCHEC de justesse"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-14-scalp-honnete.md",
-    "verdict": "ÉCHEC",
-    "resume": "Scalp honnête (120 stratégies) : meilleur candidat SOL 1h +22,6 % en 2026 mais 98,2e centile, sous le seuil Bonferroni de 99,96.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "ÉCHEC au seuil corrigé, mais le plus proche à ce jour"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-15-scalp-confirmation.md",
-    "verdict": "ÉCHEC",
-    "resume": "Confirmation du candidat SOL 1h : ratée sur 18 paires jamais vues (2/18 positives) ; glissement réaliste -0,8 % ; abandonné.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "Confirmation PREREG-15 : RATÉE sur 18 paires jamais vues"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-16-chef-orchestre.md",
-    "verdict": "ÉCHEC",
-    "resume": "Chef d'orchestre : -49,6 % en 2026, mais bat 1 000/1 000 chefs au hasard ; la forme persiste (Spearman +0,10).",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "ÉCHEC (−49,6 % en 2026)"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-17-chef-lent.md",
-    "verdict": "ÉCHEC",
-    "resume": "Chef corrigé : univers A -78,3 % (72,6e centile), univers B -112 %, pire que tous les chefs au hasard.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "ÉCHEC dans les deux"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-18-chef-jamais-vu.md",
-    "verdict": "PARTIEL",
-    "resume": "Chef figé sur 18 cryptos neuves : sait choisir (6/6 groupes au 100e centile) mais pas rentable (-907 %) ; timing non démontré.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "verdict 2 « rentable » RATÉ (−907 %)"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-19-scalp-limite.md",
-    "verdict": "ÉCHEC",
-    "resume": "Scalp en ordres limites : 0/120 positives en 2024-25 ; après correction d'équité, limite à peu près égale au marché.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "ÉCHEC, et PIRE qu'au marché"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-20-timing-du-chef.md",
-    "verdict": "CONFIRMÉ",
-    "resume": "Timing du chef confirmé selon le protocole : +101,7 % contre jumeaux T1 -524 % ; rentabilité non démontrée, illiquidité possible.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "Timing CONFIRMÉ selon le protocole"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-21-multi-unites.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Alignement multi-unités : 0/180 positives en 2024-25 et en 2026 ; le filtre fait surtout trader moins.",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "NON DÉMONTRÉ : 0/180 positives en 2024-25 et en 2026"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-22-chef-papier.md",
-    "verdict": "EN COURS",
-    "resume": "Chef d'orchestre en papier sur l'avenir depuis le 26/10/2026 ; verdict principal à 26 semaines valides.",
-    "source": "ai-lab/banc-honnete/PREREG-22-chef-papier.md",
-    "citation": "Verdict principal à 26 semaines valides"
-  },
-  {
-    "fichier": "ai-lab/banc-honnete/PREREG-23-volume-rebond.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Pic de volume vendeur puis rebond : H=15 min, 121 événements, -0,118 % net contre -0,140 % du témoin (p=0,12).",
-    "source": "ai-lab/banc-honnete/README.md",
-    "citation": "NON DÉMONTRÉ sur le mois jugé"
-  },
-  {
-    "fichier": "ai-lab/bench-bot/PREREGISTRATION.md",
-    "verdict": "HAIKU RETENU",
-    "resume": "Haiku 13/15, Sonnet 13/15, Opus 14/15 ; la règle pré-enregistrée (moins cher dans 1 point du meilleur) retient Haiku.",
-    "source": "ai-lab/bench-bot/PREREGISTRATION.md",
-    "citation": "le moins cher avec un score ≥ 14 − 1 = 13 → **Haiku**"
-  },
-  {
-    "fichier": "ai-lab/blocs-baleine/PREREGISTRATION.md",
-    "verdict": "INTROUVABLE",
-    "resume": "Aucun résultat trouvé ; l'analyse attendait assez de données (pré-vol d'au moins 15 blocs par côté et par moitié).",
-    "source": "ai-lab/blocs-baleine/PREREGISTRATION.md",
-    "citation": ""
-  },
-  {
-    "fichier": "ai-lab/calibration/PREREG-24H.md",
-    "verdict": "EN COURS",
-    "resume": "70 prédictions directionnelles à 24 h, évaluation prévue le 2026-10-31 ; pas encore tranché.",
-    "source": "ai-lab/calibration/PREREG-24H.md",
-    "citation": "évaluation le 2026-10-31"
-  },
-  {
-    "fichier": "ai-lab/carry-financement/PREREG.md",
-    "verdict": "DÉMONTRÉ",
-    "resume": "Carry du financement (11 cryptos Binance) : net +476 %, p = 0,0005, 4 conditions sur 4 ; biais du survivant reconnu.",
-    "source": "ai-lab/carry-financement/RESULTAT.md",
-    "citation": "VERDICT : DÉMONTRÉ"
-  },
-  {
-    "fichier": "ai-lab/carry-financement/PREREG-26.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Réplication sur Kraken (A) : net -21,9 % sur 369 jours, p = 0,47 ; le test papier en avant (B) court jusqu'au 23/12.",
-    "source": "ai-lab/carry-financement/PREREG-26.md",
-    "citation": "Résultat A (27/10 19h05) : NON DÉMONTRÉ sur Kraken"
-  },
-  {
-    "fichier": "ai-lab/carry-financement/PREREG-27.md",
-    "verdict": "DÉMONTRÉ",
-    "resume": "Univers sans biais du survivant : net +372 % en 3 contre 3, p = 0,031 ; irrégulier (2022 -113 %), de justesse.",
-    "source": "ai-lab/carry-financement/RESULTAT-27.md",
-    "citation": "VERDICT : DÉMONTRÉ"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/cassure-atr-filtre/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Cassure ATR avec filtre : +6,7 % en jugement (tout vient de SOL), sous le p95 du hasard (+17,7 %).",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "cassure ATR + filtre | PERDU"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/chocs-1h/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Chocs 1h : +33 % en jugement mais sous le p95 (+40 %) ; revalidation 2024-2025 : somme -101 %, PERD.",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "chocs-1h | PERDU (mais à surveiller)"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/funding-couvert/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Funding couvert Hyperliquid/Kraken : net jugement BTC +1,4 %, ETH +0,9 %, SOL -10,8 %/an, sous le seuil de 2 %.",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "funding couvert HL/Kraken | PERDU"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/funding-extreme/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Funding extrême contrarien : +3,0 % en jugement (sous le p95), puis -404 % à la revalidation 2024-2025.",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "funding extrême (contrarien) | PERDU de peu"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/paires/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Paires : +35 % en sélection mais -63,6 % en jugement (0 paire sur 3 positive), sous la moyenne du hasard.",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "paires | PERDU"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/pic-volume/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Pic de volume 15 min : 24 combinaisons négatives en sélection ; -21,5 % en jugement (0/3 coins).",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "pic de volume 15 min | PERDU"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/PREREG-REVALID-2024.md",
-    "verdict": "PERD",
-    "resume": "Revalidation 2024-2025 des 2 pistes : chocs 1h somme -101 %, funding contrarien -404 % ; les deux perdent.",
-    "source": "ai-lab/chasse-1019/PREREG-REVALID-2024.md",
-    "citation": "Chaque année est négative. **PERD.**"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/regime-vol/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Cible de volatilité : +0,46 % en jugement, sous le p95 du hasard (+12,7 %) ; parachute, pas d'avantage démontré.",
-    "source": "ai-lab/chasse-1019/regime-vol/PREREG.md",
-    "citation": "VERDICT: PERD (pas > p95 hasard)"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/rsi-retour-filtre/PREREG.md",
-    "verdict": "INDÉCIDABLE",
-    "resume": "RSI retour avec filtre EMA200 : 0 trade en jugement, le filtre tue tous les signaux.",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "RSI retour + filtre EMA200 | INDÉCIDABLE"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/saisonnalite-horaire/PREREG.md",
-    "verdict": "PERD",
-    "resume": "Saisonnalité horaire : meilleur créneau +1,75 %/trade en sélection, -1,2 % en jugement ; l'effet change de signe.",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "saisonnalité horaire | PERDU"
-  },
-  {
-    "fichier": "ai-lab/chasse-1019/vwap-ema9-tendance/PREREG.md",
-    "verdict": "PERD",
-    "resume": "VWAP x EMA9 avec jours de tendance : 0/3 coins positifs en jugement sur 66 trades.",
-    "source": "ai-lab/chasse-1019/BILAN.md",
-    "citation": "VWAP×EMA9 + jours de tendance (données complètes, 2000 par appel) | PERDU"
-  },
-  {
-    "fichier": "ai-lab/grille-cachee/PREREGISTRATION.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Aucune grille retrouvée hors échantillon (0 % sur le test) ; le cas MU était un gros ordre découpé, pas une grille.",
-    "source": "ai-lab/grille-cachee/PREREGISTRATION.md",
-    "citation": "Aucune grille n'est retrouvée."
-  },
-  {
-    "fichier": "ai-lab/jumeau/PREREGISTRATION.md",
-    "verdict": "INTROUVABLE",
-    "resume": "Journal du juge horaire présent, mais aucun verdict écrit après les 168 h ; le journal prévoyait probablement indécidable.",
-    "source": "ai-lab/jumeau/PREREGISTRATION.md",
-    "citation": ""
-  },
-  {
-    "fichier": "ai-lab/labo-cutoff/PREREGISTRATION.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Opus en aveugle : Brier 0,2507 contre 0,2500 pour pile ou face, P(Opus meilleur) = 0,14 ; aucun avantage directionnel à 24 h.",
-    "source": "ai-lab/labo-cutoff/RESULTATS.md",
-    "citation": "PAS D'AVANTAGE DIRECTIONNEL À 24 H"
-  },
-  {
-    "fichier": "ai-lab/labo-cutoff/PREREG-RAPIDE.md",
-    "verdict": "PERD",
-    "resume": "Paris rapides R1 à R3 : les frais mangent tout (R2 : 12 945 paris à -0,107 %) ; R3 +0,036 % mais P=0,59.",
-    "source": "ai-lab/labo-cutoff/PREREG-RAPIDE.md",
-    "citation": "Aucune règle ne gagne."
-  },
-  {
-    "fichier": "ai-lab/labo-cutoff/PREREG-TENDANCE.md",
-    "verdict": "PERD",
-    "resume": "Suivi de tendance : T1 +2,6 % en 2026 (parachute) mais sous le p95 du hasard (+12,5 %) ; aucune règle ne passe.",
-    "source": "ai-lab/labo-cutoff/PREREG-TENDANCE.md",
-    "citation": "Aucune règle ne passe le critère."
-  },
-  {
-    "fichier": "ai-lab/labo-cutoff/PREREG-USINE.md",
-    "verdict": "PERD",
-    "resume": "31 584 stratégies testées : 0 trouvée ; le top 20 gagne +0,90 % en entraînement et perd -0,68 % en test.",
-    "source": "ai-lab/labo-cutoff/PREREG-USINE.md",
-    "citation": "Stratégies trouvées selon le critère : 0."
-  },
-  {
-    "fichier": "ai-lab/papier-dot/PREREGISTRATION.md",
-    "verdict": "EN COURS",
-    "resume": "Test papier DOT lancé le 19/10, critère après 30 paris (environ 4 mois) ; sur 2024-2025 l'avantage disparaît (+0,1 %).",
-    "source": "ai-lab/papier-dot/PREREGISTRATION.md",
-    "citation": "Le test papier continue pour la forme"
-  },
-  {
-    "fichier": "ai-lab/qui-copie/PREREGISTRATION.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "30 comptes robustes, 1000 paires orientées : aucune candidate, la meilleure paire fait 3 contre 2, bruit symétrique.",
-    "source": "ai-lab/qui-copie/RESULTATS.md",
-    "citation": "0 candidate, donc 0 copie."
-  },
-  {
-    "fichier": "ai-lab/qui-paie/etude-alcool/PREREG.md",
-    "verdict": "NON ÉVALUABLE",
-    "resume": "Étude 1 : 2 revues liées à l'industrie de l'alcool sur 281 gardées, moins de 5 exposées requises.",
-    "source": "ai-lab/qui-paie/etude-alcool/RESULTAT-etude1.md",
-    "citation": "VERDICT (pré-enregistré) : NON ÉVALUABLE"
-  },
-  {
-    "fichier": "ai-lab/qui-paie/etude-alcool/PREREG-etude2.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Étude 2 : 0/10 revues liées à l'industrie favorables contre 121/1 331 (9 %) sans ; Fisher p = 1,000.",
-    "source": "ai-lab/qui-paie/etude-alcool/RESULTAT-etude2.md",
-    "citation": "VERDICT : NON DÉMONTRÉ."
-  },
-  {
-    "fichier": "ai-lab/qui-paie/etude-cacao/PREREG.md",
-    "verdict": "NON ÉVALUABLE",
-    "resume": "Étude 1 : 2 revues liées à l'industrie sur 70 gardées, moins de 5 exposées.",
-    "source": "ai-lab/qui-paie/etude-cacao/RESULTAT-etude1.md",
-    "citation": "VERDICT (pré-enregistré) : NON ÉVALUABLE"
-  },
-  {
-    "fichier": "ai-lab/qui-paie/etude-cacao/PREREG-etude2.md",
-    "verdict": "NON ÉVALUABLE",
-    "resume": "Étude 2 : 3 revues liées à l'industrie sur 195 gardées, moins de 5 exposées.",
-    "source": "ai-lab/qui-paie/etude-cacao/RESULTAT-etude2.md",
-    "citation": "VERDICT (pré-enregistré) : NON ÉVALUABLE"
-  },
-  {
-    "fichier": "ai-lab/qui-paie/etude-lait/PREREG.md",
-    "verdict": "DÉMONTRÉ",
-    "resume": "Étude 2 (325 revues) : 11/20 (55 %) favorables avec lien laitier contre 62/305 (20 %), p = 0,001 ; étude 1 non évaluable.",
-    "source": "ai-lab/qui-paie/etude-lait/RESULTAT-etude2.md",
-    "citation": "VERDICT : DÉMONTRÉ sur ce corpus"
-  },
-  {
-    "fichier": "ai-lab/qui-paie/etude-oeufs/PREREG.md",
-    "verdict": "NON ÉVALUABLE",
-    "resume": "Seulement 3 revues liées à la filière œuf sur 94 gardées, moins de 5 exposées.",
-    "source": "ai-lab/qui-paie/etude-oeufs/RESULTAT.md",
-    "citation": "VERDICT : NON ÉVALUABLE"
-  },
-  {
-    "fichier": "ai-lab/qui-paie/etude-sucre/PREREG.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Défavorable : 10/25 (40 %) liées à l'industrie contre 136/275 (49 %) sans ; Fisher p = 0,244.",
-    "source": "ai-lab/qui-paie/etude-sucre/RESULTAT.md",
-    "citation": "Fisher unilatéral p = 0.244 → **NON DÉMONTRÉ**"
-  },
-  {
-    "fichier": "ai-lab/regime-short/PREREG.md",
-    "verdict": "NON DÉMONTRÉ",
-    "resume": "Short des altcoins sous l'EMA200 du BTC : net -177 %, p = 0,10, 0/10 altcoins gagnants, gains bruts -83 % contre frais 96 %.",
-    "source": "ai-lab/regime-short/RESULTAT.md",
-    "citation": "VERDICT : NON DÉMONTRÉ"
-  },
-  {
-    "fichier": "ai-lab/second-avis/PREREGISTRATION.md",
-    "verdict": "GAGNE",
-    "resume": "Banc v0 : 0 faux validé, 12/12 calculs et 10/10 faits de code justes ; v1 web : critère atteint (6/10 vrais confirmés).",
-    "source": "ai-lab/second-avis/RESULTATS.md",
-    "citation": "CRITÈRE ATTEINT"
-  },
-  {
-    "fichier": "ai-lab/suiveurs/PREREGISTRATION.md",
-    "verdict": "INTROUVABLE",
-    "resume": "Collecte de 48 h et analyse prévues vers le 20/10 ; aucun fichier de résultat trouvé dans le dossier.",
-    "source": "ai-lab/suiveurs/PREREGISTRATION.md",
-    "citation": ""
-  },
-  {
-    "fichier": "ai-lab/test-du-juge/PREREGISTRATION.md",
-    "verdict": "PERD",
-    "resume": "Haiku à l'aveugle : graphe 1,10 contre hasard 0,90 (écart +0,20, p=0,198) ; le Discovery Engine ne bat pas le hasard.",
-    "source": "ai-lab/test-du-juge/RESULTATS.md",
-    "citation": "le Discovery Engine dans sa forme d'avril ne bat pas le hasard"
-  },
-  {
-    "fichier": "ai-lab/turing-inverse/PREREGISTRATION.md",
-    "verdict": "INDÉCIDABLE",
-    "resume": "Passage 2 : 2 comptes sur 5 « pas mécaniques » (skill +0,002), 3 indécidables faute d'ouvertures dans le test.",
-    "source": "ai-lab/turing-inverse/RESULTATS.md",
-    "citation": "Le protocole ne tranche presque rien."
-  },
-  {
-    "fichier": "ai-lab/vwap-ema9/PREREGISTRATION.md",
-    "verdict": "ÉCHEC",
-    "resume": "VWAP x EMA9 3 min : -31,6 % BTC, -12,3 % ETH, -51,6 % SOL pire que le hasard ; variante filtrée « presque ».",
-    "source": "ai-lab/vwap-ema9/PREREGISTRATION.md",
-    "citation": "Critère : NON atteint."
-  },
-  {
-    "fichier": "ai-lab/vwap-ema9/PREREG-TENDANCE-2024.md",
-    "verdict": "ÉCHEC",
-    "resume": "Croisements nets avec filtre de tendance sur 2024-2025 : BTC -44,7 %, ETH -39,9 %, SOL -86,1 %, sous le p95 du hasard.",
-    "source": "ai-lab/vwap-ema9/PREREG-TENDANCE-2024.md",
-    "citation": "VERDICT : ÉCHEC"
-  }
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-02-macd-ema200.md",
+  "verdict": "PERD",
+  "resume": "MACD + EMA200 : 34-49 % de gagnants, somme -23 % en 2024-2025, +2 % en 2026, sous le p95 du hasard.",
+  "source": "ai-lab/banc-honnete/PREREG-02-macd-ema200.md",
+  "citation": "Résultat (1020 04h20, t02.py → t02.log) : PERD"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-03-supertrend.md",
+  "verdict": "PERD",
+  "resume": "Supertrend 1h et 4h : les 4 cases sont négatives (somme -234 % en 1h sur 2024-2025).",
+  "source": "ai-lab/banc-honnete/PREREG-03-supertrend.md",
+  "citation": "Résultat (1020 04h25, t03.py → t03.log) : PERD"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-04-stop-suiveur.md",
+  "verdict": "PERD",
+  "resume": "Stop suiveur : le résultat change de signe selon la période et ne bat pas des entrées au hasard avec le même stop.",
+  "source": "ai-lab/banc-honnete/PREREG-04-stop-suiveur.md",
+  "citation": "Résultat (1020 ~04h25, t04.py → t04.log) : PERD"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-05-sources-youtube.md",
+  "verdict": "PERD",
+  "resume": "Bollinger et ADX (chaîne Trading Strategy Testing, 15 min) : 40-48 % de gagnants, les frais ruinent.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "PERD : 40-48 % de gagnants, les frais ruinent"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-06-connors-21.md",
+  "verdict": "PERD",
+  "resume": "RSI-2 de Connors sur 21 cryptos : gagne (+244 % puis +77 %) mais seulement 60e-82e centile du hasard, non prouvé.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "PERD de peu : gagne sur toutes les périodes, mais 60e-82e centile du hasard seulement"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-07-traces.md",
+  "verdict": "PERD",
+  "resume": "Six tracés classiques : le meilleur de 2024-25 fait la médiane du hasard en 2026.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "PERD : le meilleur de 2024-25 fait la médiane du hasard en 2026"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-08-tournoi-experts.md",
+  "verdict": "PERD",
+  "resume": "Tournoi de 4 experts : le meilleur fait +130 % en 2026 mais au 81e centile du hasard ; scalping impossible avec les frais.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "mais au 81e centile du hasard"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-09-max-combinaisons.md",
+  "verdict": "PERD",
+  "resume": "840 combinaisons : Spearman 2024-25 vers 2026 = +0,04 ; le top 20 n'est pas plus souvent positif que l'ensemble (45 %).",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "PERD : Spearman 2024-25 → 2026 = +0,04"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-10-rotation.md",
+  "verdict": "PERD",
+  "resume": "Rotation des forts : le meilleur de 2024-25 fait -26 % en 2026, au 8e centile du hasard.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "au 8e centile du hasard"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-11-carnet.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Le carnet prédit le sens à 10 s (69,7 %) mais l'argent n'est pas démontré : 604 trades à -20,9 % avec frais optimistes.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "Argent NON DÉMONTRÉ"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-12-grille-volatilite.md",
+  "verdict": "PERD",
+  "resume": "Grille 0,6 % allumée en forte volatilité : -2,2 % en 2026, 41e centile des décalages au hasard.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "PERD : −2,2 % en 2026"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-13-vol-geree.md",
+  "verdict": "ÉCHEC",
+  "resume": "BTC géré par la volatilité : Sharpe +0,20 contre +0,04, mais 90e centile des témoins mélangés (seuil p95), échec de justesse.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "ÉCHEC de justesse"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-14-scalp-honnete.md",
+  "verdict": "ÉCHEC",
+  "resume": "Scalp honnête (120 stratégies) : meilleur candidat SOL 1h +22,6 % en 2026 mais 98,2e centile, sous le seuil Bonferroni de 99,96.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "ÉCHEC au seuil corrigé, mais le plus proche à ce jour"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-15-scalp-confirmation.md",
+  "verdict": "ÉCHEC",
+  "resume": "Confirmation du candidat SOL 1h : ratée sur 18 paires jamais vues (2/18 positives) ; glissement réaliste -0,8 % ; abandonné.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "Confirmation PREREG-15 : RATÉE sur 18 paires jamais vues"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-16-chef-orchestre.md",
+  "verdict": "ÉCHEC",
+  "resume": "Chef d'orchestre : -49,6 % en 2026, mais bat 1 000/1 000 chefs au hasard ; la forme persiste (Spearman +0,10).",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "ÉCHEC (−49,6 % en 2026)"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-17-chef-lent.md",
+  "verdict": "ÉCHEC",
+  "resume": "Chef corrigé : univers A -78,3 % (72,6e centile), univers B -112 %, pire que tous les chefs au hasard.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "ÉCHEC dans les deux"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-18-chef-jamais-vu.md",
+  "verdict": "PARTIEL",
+  "resume": "Chef figé sur 18 cryptos neuves : sait choisir (6/6 groupes au 100e centile) mais pas rentable (-907 %) ; timing non démontré.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "verdict 2 « rentable » RATÉ (−907 %)"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-19-scalp-limite.md",
+  "verdict": "ÉCHEC",
+  "resume": "Scalp en ordres limites : 0/120 positives en 2024-25 ; après correction d'équité, limite à peu près égale au marché.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "ÉCHEC, et PIRE qu'au marché"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-20-timing-du-chef.md",
+  "verdict": "CONFIRMÉ",
+  "resume": "Timing du chef confirmé selon le protocole : +101,7 % contre jumeaux T1 -524 % ; rentabilité non démontrée, illiquidité possible.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "Timing CONFIRMÉ selon le protocole"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-21-multi-unites.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Alignement multi-unités : 0/180 positives en 2024-25 et en 2026 ; le filtre fait surtout trader moins.",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "NON DÉMONTRÉ : 0/180 positives en 2024-25 et en 2026"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-22-chef-papier.md",
+  "verdict": "EN COURS",
+  "resume": "Chef d'orchestre en papier sur l'avenir depuis le 26/10/2026 ; verdict principal à 26 semaines valides.",
+  "source": "ai-lab/banc-honnete/PREREG-22-chef-papier.md",
+  "citation": "Verdict principal à 26 semaines valides"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-23-volume-rebond.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Pic de volume vendeur puis rebond : H=15 min, 121 événements, -0,118 % net contre -0,140 % du témoin (p=0,12).",
+  "source": "ai-lab/banc-honnete/README.md",
+  "citation": "NON DÉMONTRÉ sur le mois jugé"
+ },
+ {
+  "fichier": "ai-lab/bench-bot/PREREGISTRATION.md",
+  "verdict": "HAIKU RETENU",
+  "resume": "Haiku 13/15, Sonnet 13/15, Opus 14/15 ; la règle pré-enregistrée (moins cher dans 1 point du meilleur) retient Haiku.",
+  "source": "ai-lab/bench-bot/PREREGISTRATION.md",
+  "citation": "le moins cher avec un score ≥ 14 − 1 = 13 → **Haiku**"
+ },
+ {
+  "fichier": "ai-lab/blocs-baleine/PREREGISTRATION.md",
+  "verdict": "INTROUVABLE",
+  "resume": "Aucun résultat trouvé ; l'analyse attendait assez de données (pré-vol d'au moins 15 blocs par côté et par moitié).",
+  "source": "ai-lab/blocs-baleine/PREREGISTRATION.md",
+  "citation": ""
+ },
+ {
+  "fichier": "ai-lab/calibration/PREREG-24H.md",
+  "verdict": "EN COURS",
+  "resume": "70 prédictions directionnelles à 24 h, évaluation prévue le 2026-10-31 ; pas encore tranché.",
+  "source": "ai-lab/calibration/PREREG-24H.md",
+  "citation": "évaluation le 2026-10-31"
+ },
+ {
+  "fichier": "ai-lab/carry-financement/PREREG.md",
+  "verdict": "DÉMONTRÉ",
+  "resume": "Carry du financement (11 cryptos Binance) : net +476 %, p = 0,0005, 4 conditions sur 4 ; biais du survivant reconnu.",
+  "source": "ai-lab/carry-financement/RESULTAT.md",
+  "citation": "VERDICT : DÉMONTRÉ"
+ },
+ {
+  "fichier": "ai-lab/carry-financement/PREREG-26.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Réplication sur Kraken (A) : net -21,9 % sur 369 jours, p = 0,47 ; le test papier en avant (B) court jusqu'au 23/12.",
+  "source": "ai-lab/carry-financement/PREREG-26.md",
+  "citation": "Résultat A (27/10 19h05) : NON DÉMONTRÉ sur Kraken"
+ },
+ {
+  "fichier": "ai-lab/carry-financement/PREREG-27.md",
+  "verdict": "DÉMONTRÉ",
+  "resume": "Univers sans biais du survivant : net +372 % en 3 contre 3, p = 0,031 ; irrégulier (2022 -113 %), de justesse.",
+  "source": "ai-lab/carry-financement/RESULTAT-27.md",
+  "citation": "VERDICT : DÉMONTRÉ"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/cassure-atr-filtre/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Cassure ATR avec filtre : +6,7 % en jugement (tout vient de SOL), sous le p95 du hasard (+17,7 %).",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "cassure ATR + filtre | PERDU"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/chocs-1h/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Chocs 1h : +33 % en jugement mais sous le p95 (+40 %) ; revalidation 2024-2025 : somme -101 %, PERD.",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "chocs-1h | PERDU (mais à surveiller)"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/funding-couvert/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Funding couvert Hyperliquid/Kraken : net jugement BTC +1,4 %, ETH +0,9 %, SOL -10,8 %/an, sous le seuil de 2 %.",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "funding couvert HL/Kraken | PERDU"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/funding-extreme/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Funding extrême contrarien : +3,0 % en jugement (sous le p95), puis -404 % à la revalidation 2024-2025.",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "funding extrême (contrarien) | PERDU de peu"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/paires/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Paires : +35 % en sélection mais -63,6 % en jugement (0 paire sur 3 positive), sous la moyenne du hasard.",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "paires | PERDU"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/pic-volume/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Pic de volume 15 min : 24 combinaisons négatives en sélection ; -21,5 % en jugement (0/3 coins).",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "pic de volume 15 min | PERDU"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/PREREG-REVALID-2024.md",
+  "verdict": "PERD",
+  "resume": "Revalidation 2024-2025 des 2 pistes : chocs 1h somme -101 %, funding contrarien -404 % ; les deux perdent.",
+  "source": "ai-lab/chasse-1019/PREREG-REVALID-2024.md",
+  "citation": "Chaque année est négative. **PERD.**"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/regime-vol/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Cible de volatilité : +0,46 % en jugement, sous le p95 du hasard (+12,7 %) ; parachute, pas d'avantage démontré.",
+  "source": "ai-lab/chasse-1019/regime-vol/PREREG.md",
+  "citation": "VERDICT: PERD (pas > p95 hasard)"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/rsi-retour-filtre/PREREG.md",
+  "verdict": "INDÉCIDABLE",
+  "resume": "RSI retour avec filtre EMA200 : 0 trade en jugement, le filtre tue tous les signaux.",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "RSI retour + filtre EMA200 | INDÉCIDABLE"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/saisonnalite-horaire/PREREG.md",
+  "verdict": "PERD",
+  "resume": "Saisonnalité horaire : meilleur créneau +1,75 %/trade en sélection, -1,2 % en jugement ; l'effet change de signe.",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "saisonnalité horaire | PERDU"
+ },
+ {
+  "fichier": "ai-lab/chasse-1019/vwap-ema9-tendance/PREREG.md",
+  "verdict": "PERD",
+  "resume": "VWAP x EMA9 avec jours de tendance : 0/3 coins positifs en jugement sur 66 trades.",
+  "source": "ai-lab/chasse-1019/BILAN.md",
+  "citation": "VWAP×EMA9 + jours de tendance (données complètes, 2000 par appel) | PERDU"
+ },
+ {
+  "fichier": "ai-lab/grille-cachee/PREREGISTRATION.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Aucune grille retrouvée hors échantillon (0 % sur le test) ; le cas MU était un gros ordre découpé, pas une grille.",
+  "source": "ai-lab/grille-cachee/PREREGISTRATION.md",
+  "citation": "Aucune grille n'est retrouvée."
+ },
+ {
+  "fichier": "ai-lab/jumeau/PREREGISTRATION.md",
+  "verdict": "NUL",
+  "resume": "La cible n'a ouvert aucun long BTC en 216 h jugées : inactive plus de 24 h, donc test nul selon l'amendement n°1.",
+  "source": "ai-lab/jumeau/PREREGISTRATION.md",
+  "citation": "Selon l'amendement n°1 : **test NUL** (ni gagné ni perdu)."
+ },
+ {
+  "fichier": "ai-lab/labo-cutoff/PREREGISTRATION.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Opus en aveugle : Brier 0,2507 contre 0,2500 pour pile ou face, P(Opus meilleur) = 0,14 ; aucun avantage directionnel à 24 h.",
+  "source": "ai-lab/labo-cutoff/RESULTATS.md",
+  "citation": "PAS D'AVANTAGE DIRECTIONNEL À 24 H"
+ },
+ {
+  "fichier": "ai-lab/labo-cutoff/PREREG-RAPIDE.md",
+  "verdict": "PERD",
+  "resume": "Paris rapides R1 à R3 : les frais mangent tout (R2 : 12 945 paris à -0,107 %) ; R3 +0,036 % mais P=0,59.",
+  "source": "ai-lab/labo-cutoff/PREREG-RAPIDE.md",
+  "citation": "Aucune règle ne gagne."
+ },
+ {
+  "fichier": "ai-lab/labo-cutoff/PREREG-TENDANCE.md",
+  "verdict": "PERD",
+  "resume": "Suivi de tendance : T1 +2,6 % en 2026 (parachute) mais sous le p95 du hasard (+12,5 %) ; aucune règle ne passe.",
+  "source": "ai-lab/labo-cutoff/PREREG-TENDANCE.md",
+  "citation": "Aucune règle ne passe le critère."
+ },
+ {
+  "fichier": "ai-lab/labo-cutoff/PREREG-USINE.md",
+  "verdict": "PERD",
+  "resume": "31 584 stratégies testées : 0 trouvée ; le top 20 gagne +0,90 % en entraînement et perd -0,68 % en test.",
+  "source": "ai-lab/labo-cutoff/PREREG-USINE.md",
+  "citation": "Stratégies trouvées selon le critère : 0."
+ },
+ {
+  "fichier": "ai-lab/papier-dot/PREREGISTRATION.md",
+  "verdict": "EN COURS",
+  "resume": "Test papier DOT lancé le 19/10, critère après 30 paris (environ 4 mois) ; sur 2024-2025 l'avantage disparaît (+0,1 %).",
+  "source": "ai-lab/papier-dot/PREREGISTRATION.md",
+  "citation": "Le test papier continue pour la forme"
+ },
+ {
+  "fichier": "ai-lab/qui-copie/PREREGISTRATION.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "30 comptes robustes, 1000 paires orientées : aucune candidate, la meilleure paire fait 3 contre 2, bruit symétrique.",
+  "source": "ai-lab/qui-copie/RESULTATS.md",
+  "citation": "0 candidate, donc 0 copie."
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-alcool/PREREG.md",
+  "verdict": "NON ÉVALUABLE",
+  "resume": "Étude 1 : 2 revues liées à l'industrie de l'alcool sur 281 gardées, moins de 5 exposées requises.",
+  "source": "ai-lab/qui-paie/etude-alcool/RESULTAT-etude1.md",
+  "citation": "VERDICT (pré-enregistré) : NON ÉVALUABLE"
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-alcool/PREREG-etude2.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Étude 2 : 0/10 revues liées à l'industrie favorables contre 121/1 331 (9 %) sans ; Fisher p = 1,000.",
+  "source": "ai-lab/qui-paie/etude-alcool/RESULTAT-etude2.md",
+  "citation": "VERDICT : NON DÉMONTRÉ."
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-cacao/PREREG.md",
+  "verdict": "NON ÉVALUABLE",
+  "resume": "Étude 1 : 2 revues liées à l'industrie sur 70 gardées, moins de 5 exposées.",
+  "source": "ai-lab/qui-paie/etude-cacao/RESULTAT-etude1.md",
+  "citation": "VERDICT (pré-enregistré) : NON ÉVALUABLE"
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-cacao/PREREG-etude2.md",
+  "verdict": "NON ÉVALUABLE",
+  "resume": "Étude 2 : 3 revues liées à l'industrie sur 195 gardées, moins de 5 exposées.",
+  "source": "ai-lab/qui-paie/etude-cacao/RESULTAT-etude2.md",
+  "citation": "VERDICT (pré-enregistré) : NON ÉVALUABLE"
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-lait/PREREG.md",
+  "verdict": "DÉMONTRÉ",
+  "resume": "Étude 2 (325 revues) : 11/20 (55 %) favorables avec lien laitier contre 62/305 (20 %), p = 0,001 ; étude 1 non évaluable.",
+  "source": "ai-lab/qui-paie/etude-lait/RESULTAT-etude2.md",
+  "citation": "VERDICT : DÉMONTRÉ sur ce corpus"
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-oeufs/PREREG.md",
+  "verdict": "NON ÉVALUABLE",
+  "resume": "Seulement 3 revues liées à la filière œuf sur 94 gardées, moins de 5 exposées.",
+  "source": "ai-lab/qui-paie/etude-oeufs/RESULTAT.md",
+  "citation": "VERDICT : NON ÉVALUABLE"
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-sucre/PREREG.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Défavorable : 10/25 (40 %) liées à l'industrie contre 136/275 (49 %) sans ; Fisher p = 0,244.",
+  "source": "ai-lab/qui-paie/etude-sucre/RESULTAT.md",
+  "citation": "Fisher unilatéral p = 0.244 → **NON DÉMONTRÉ**"
+ },
+ {
+  "fichier": "ai-lab/regime-short/PREREG.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Short des altcoins sous l'EMA200 du BTC : net -177 %, p = 0,10, 0/10 altcoins gagnants, gains bruts -83 % contre frais 96 %.",
+  "source": "ai-lab/regime-short/RESULTAT.md",
+  "citation": "VERDICT : NON DÉMONTRÉ"
+ },
+ {
+  "fichier": "ai-lab/second-avis/PREREGISTRATION.md",
+  "verdict": "GAGNE",
+  "resume": "Banc v0 : 0 faux validé, 12/12 calculs et 10/10 faits de code justes ; v1 web : critère atteint (6/10 vrais confirmés).",
+  "source": "ai-lab/second-avis/RESULTATS.md",
+  "citation": "CRITÈRE ATTEINT"
+ },
+ {
+  "fichier": "ai-lab/suiveurs/PREREGISTRATION.md",
+  "verdict": "INTROUVABLE",
+  "resume": "Collecte de 48 h et analyse prévues vers le 20/10 ; aucun fichier de résultat trouvé dans le dossier.",
+  "source": "ai-lab/suiveurs/PREREGISTRATION.md",
+  "citation": ""
+ },
+ {
+  "fichier": "ai-lab/test-du-juge/PREREGISTRATION.md",
+  "verdict": "PERD",
+  "resume": "Haiku à l'aveugle : graphe 1,10 contre hasard 0,90 (écart +0,20, p=0,198) ; le Discovery Engine ne bat pas le hasard.",
+  "source": "ai-lab/test-du-juge/RESULTATS.md",
+  "citation": "le Discovery Engine dans sa forme d'avril ne bat pas le hasard"
+ },
+ {
+  "fichier": "ai-lab/turing-inverse/PREREGISTRATION.md",
+  "verdict": "INDÉCIDABLE",
+  "resume": "Passage 2 : 2 comptes sur 5 « pas mécaniques » (skill +0,002), 3 indécidables faute d'ouvertures dans le test.",
+  "source": "ai-lab/turing-inverse/RESULTATS.md",
+  "citation": "Le protocole ne tranche presque rien."
+ },
+ {
+  "fichier": "ai-lab/vwap-ema9/PREREGISTRATION.md",
+  "verdict": "ÉCHEC",
+  "resume": "VWAP x EMA9 3 min : -31,6 % BTC, -12,3 % ETH, -51,6 % SOL pire que le hasard ; variante filtrée « presque ».",
+  "source": "ai-lab/vwap-ema9/PREREGISTRATION.md",
+  "citation": "Critère : NON atteint."
+ },
+ {
+  "fichier": "ai-lab/vwap-ema9/PREREG-TENDANCE-2024.md",
+  "verdict": "ÉCHEC",
+  "resume": "Croisements nets avec filtre de tendance sur 2024-2025 : BTC -44,7 %, ETH -39,9 %, SOL -86,1 %, sous le p95 du hasard.",
+  "source": "ai-lab/vwap-ema9/PREREG-TENDANCE-2024.md",
+  "citation": "VERDICT : ÉCHEC"
+ }
 ]

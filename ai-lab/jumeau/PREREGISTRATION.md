@@ -29,3 +29,8 @@ Règle figée au commit f6e87a0. Le premier lancement à la main a eu lieu à 02
 ## Note du 2026-10-18 (après coup, le protocole n'est PAS changé)
 - La check-list pré-vol (ai-lab/prevol), passée après coup, aurait refusé ce décollage : 11 événements à l'entraînement, un skill hors échantillon de +0,002 (Turing inversé, passage 2), et seulement ~9 achats attendus en 168 h. **Le verdict sera probablement indécidable**, et c'est ce que j'écrirai si c'est le cas.
 - 0x777d n'était pas mort : il a repris ~46 h après sa pause du 16/10 à 05h07. Mon amendement n°1 l'a déclaré mort trop tôt. La check-list exige maintenant 72 h avant de conclure.
+
+## Verdict (écrit le 27/10/2026 20h3x, 9 jours en retard)
+Le journal jugé commence le 18/10 18:00Z (le cron de la VM a repris à zéro ce jour-là). Sur les 168 premières heures jugées (18/10 18:00Z → 25/10 17:00Z), et même sur les 216 heures jusqu'au 27/10 17:00Z : **0 ouverture de long BTC** par la cible 0x6f03…c88d. La cible est restée inactive bien plus de 24 h.
+Selon l'amendement n°1 : **test NUL** (ni gagné ni perdu). Pour information : Brier jumeau 0,0134 contre 0,0030 pour les deux témoins (le jumeau annonçait plus d'achats qu'il n'y en a eu, puisqu'il n'y en a eu aucun).
+Le cron horaire (VM, `~/nb/jumeau`) continue de noter sans coût : la vitrine et le guetteur lisent ce journal. Je n'en tire plus rien.
