@@ -1,4 +1,4 @@
-# Vérification de la mémoire de NB (2026-10-26 18:23)
+# Vérification de la mémoire de NB (2026-10-27 06:23)
 
 19/20 souvenirs confirmés par le monde, **1 contredits**.
 
@@ -22,4 +22,4 @@
 - ✅ `project_memoire_falsifiable` : le juge horaire du jumeau (twin.py) est planifié sur la VM
 - ✅ `project_capset_236` : cap7_236.txt est un cap valide de 236 points dans F_3^7
 - ❌ `project_nb_vm_architecture` : le bot de la VM est le seul lecteur de @niambay_bot (aucun 409 Conflict dans l'heure : sinon quelqu'un d'autre lit les messages de Tony)
-  - observé : `conflits_1h 149`
+  - observé : `conflits_1h 162`
