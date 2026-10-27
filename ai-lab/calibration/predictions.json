@@ -387,5 +387,35 @@
   "late": "tranché en retard (2026-10-22T06:15) : l'état lu est celui d'aujourd'hui, pas de l'échéance",
   "observed": "0",
   "resolved": "2026-10-22T06:15"
+ },
+ {
+  "family": "moi-trading",
+  "baselines": {
+   "p05": 0.5
+  },
+  "made": "2026-10-27T19:51",
+  "resolve_at": "2026-12-23T02:30",
+  "outcome": null,
+  "test": "out.strip() == 'True'",
+  "id": "carry-papier-B1",
+  "claim": "Test papier PREREG-26 B1 (signal financement Kraken) : au 23/12, ≥ 50 jours notés, net > 0 après frais ET ≥ 3 cryptos gagnantes",
+  "p": 0.4,
+  "why": "Kraken a fait −21,9 % sur l'an passé avec ce signal (p = 0,47) ; 56 jours, c'est surtout du bruit ; un peu sous 50 % parce que les frais (~2 % sur la période) partent avant.",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 \"python3 -c \\\"import json;B=json.load(open('/home/ubuntu/nb/carry-papier/bilan.json'))['B1'];print(B['jours']>=50 and B['net']>0 and B['gagnantes']>=3)\\\"\" < /dev/null"
+ },
+ {
+  "family": "moi-trading",
+  "baselines": {
+   "p05": 0.5
+  },
+  "made": "2026-10-27T19:51",
+  "resolve_at": "2026-12-23T02:30",
+  "outcome": null,
+  "test": "out.strip() == 'True'",
+  "id": "carry-papier-B2",
+  "claim": "Test papier PREREG-26 B2 (signal Binance, exécution Kraken) : au 23/12, ≥ 50 jours notés, net > 0 après frais ET ≥ 3 cryptos gagnantes",
+  "p": 0.52,
+  "why": "Binance sans survivants : p = 0,03 sur 6 ans, mais très irrégulier (2 années négatives) ; B2 a fait +11,4 % l'an passé (déjà vu, donc optimiste) ; sur 56 jours la chance domine, d'où à peine plus que 50 %.",
+  "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 -o BatchMode=yes ubuntu@141.253.108.141 \"python3 -c \\\"import json;B=json.load(open('/home/ubuntu/nb/carry-papier/bilan.json'))['B2'];print(B['jours']>=50 and B['net']>0 and B['gagnantes']>=3)\\\"\" < /dev/null"
  }
 ]
