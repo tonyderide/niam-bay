@@ -4,12 +4,12 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 import etude as E  # noqa: E402
 
 ICI = os.path.dirname(os.path.abspath(__file__))
-E.CORPUS = os.path.join(ICI, "corpus.json"); os.environ.setdefault("RESULTAT", "../etude-alcool/RESULTAT.md"); os.environ.setdefault("N_ETUDE", "500")
+E.CORPUS = os.path.join(ICI, os.environ.get("CORPUS", "corpus2.json")); os.environ.setdefault("RESULTAT", "../etude-alcool/RESULTAT-etude2.md"); os.environ.setdefault("N_ETUDE", "2200")
 E.REQUETE = ('(alcohol[ti] OR "alcohol consumption"[ti] OR "alcohol intake"[ti] OR drinking[ti] OR wine[ti] OR beer[ti] OR spirits[ti]) '
              'AND (systematic review[pt] OR meta-analysis[pt]) AND ("2010"[dp] : "2026"[dp]) AND english[la]')
 E.EXCLUS = re.compile(r"non-?alcoholic|nafld|mafld|alcohol use disorder|dependence|withdrawal|treatment|intervention|pharmacotherap|"
                       r"drinking water|water intake|sanitiz|hand rub|alcohol-based|ethanol extract", re.I)
-E.LAITIER = ["ab inbev", "anheuser", "diageo", "heineken", "carlsberg", "pernod", "brown-forman", "bacardi", "molson", "asahi", "kirin",
+E.LAITIER = ["ab inbev", "anheuser", "diageo", "heineken", "carlsberg", "pernod", "brown-forman", "bacardi", "molson",
              "beer institute", "brewers association", "brewing", "distilled spirits", "spirits europe", "wine institute", "wine australia",
              "iard", "international alliance for responsible drinking", "icap", "international center for alcohol policies", "erab",
              "european foundation for alcohol research", "abmrf", "alcoholic beverage medical research", "foundation for alcohol research",
