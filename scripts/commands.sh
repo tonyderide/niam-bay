@@ -768,3 +768,6 @@ rtk read /home/tony/projets/tonyderide/niam-bay/docs/memory.nb1 --tail-lines 120
 
 # [auto 2026-10-27 06:24] utilisée 3x — sig: rtk ls /home/tony/projets/tonyderide/niam-bay/docs/lectures/ <N>>&<N> | tail -<N>
 rtk ls /home/tony/projets/tonyderide/niam-bay/docs/lectures/ 2>&1 | tail -10
+
+# [auto 2026-10-27 18:23] utilisée 3x — sig: python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -30
