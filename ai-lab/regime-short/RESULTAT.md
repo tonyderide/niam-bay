@@ -36,3 +36,5 @@ Par année (net) : 2020 -9.7 % · 2021 -134.9 % · 2022 +27.4 % · 2023 -43.2 % 
 Moitiés : 1re -132.0 % · 2e -45.1 %
 Toujours short sans filtre : net -427.4 % (brut -456.9, financement +29.5), pire repli -512.4 %
 Variante journalière (EMA200 jours) : net +0.1 % (brut +5.6, frais 3.4, financement -2.1), en position 40 % du temps, pire repli -124.6 %
+
+**Erratum (27/10 19h0x)** : l'horodatage de fin utilisé (1793055600000 / 1793059200000) correspond au 26/10/2026 23:00 UTC / 27/10 00:00 UTC, pas au 25/10 comme écrit dans le pré-enregistrement. Les données couvrent donc un jour de plus qu'annoncé. Aucune règle n'a changé ; l'effet sur les totaux est d'un jour sur plus de 2 000.
