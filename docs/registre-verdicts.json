@@ -425,5 +425,12 @@
   "resume": "Croisements nets avec filtre de tendance sur 2024-2025 : BTC -44,7 %, ETH -39,9 %, SOL -86,1 %, sous le p95 du hasard.",
   "source": "ai-lab/vwap-ema9/PREREG-TENDANCE-2024.md",
   "citation": "VERDICT : ÉCHEC"
+ },
+ {
+  "fichier": "ai-lab/qui-paie/etude-lait-replication/PREREG.md",
+  "verdict": "NON ÉVALUABLE",
+  "resume": "Revues lait 2000-2014 : 14 déclarations lisibles sur 159, 0 liée à l'industrie ; la réplication ne peut pas être faite ainsi.",
+  "source": "ai-lab/qui-paie/etude-lait-replication/RESULTAT.md",
+  "citation": "**VERDICT (pré-enregistré) : NON ÉVALUABLE.**"
  }
 ]

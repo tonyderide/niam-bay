@@ -2,7 +2,7 @@
 
 Lire aussi `registre-meta.md` : combien de ces « démontré » le hasard donnerait seul. Chaque ligne : la date du premier commit du pré-enregistrement (la preuve qu'il existait avant les données), le verdict, et la phrase exacte de la source. Généré par `scripts/registre_prereg.py` à partir de `docs/registre-verdicts.json`.
 
-**Bilan : PERD 25 · NON DÉMONTRÉ 10 · ÉCHEC 8 · NON ÉVALUABLE 4 · EN COURS 3 · INDÉCIDABLE 3 · DÉMONTRÉ 3 · NUL 1 · HAIKU RETENU 1 · GAGNE 1 · PARTIEL 1 · CONFIRMÉ 1** (sur 61).
+**Bilan : PERD 25 · NON DÉMONTRÉ 10 · ÉCHEC 8 · NON ÉVALUABLE 5 · EN COURS 3 · INDÉCIDABLE 3 · DÉMONTRÉ 3 · NUL 1 · HAIKU RETENU 1 · GAGNE 1 · PARTIEL 1 · CONFIRMÉ 1** (sur 62).
 
 | Date | Pré-enregistrement | Verdict | En bref |
 |---|---|---|---|
@@ -67,3 +67,4 @@ Lire aussi `registre-meta.md` : combien de ces « démontré » le hasard donner
 | 2026-10-27 | [Pré-enregistrement : un lien avec l'industrie de l'alcool rend-il les revues plus favorables à ](../ai-lab/qui-paie/etude-alcool/PREREG.md) | **NON ÉVALUABLE** | Étude 1 : 2 revues liées à l'industrie de l'alcool sur 281 gardées, moins de 5 exposées requises. ([source](../ai-lab/qui-paie/etude-alcool/RESULTAT-etude1.md)) |
 | 2026-10-27 | [Pré-enregistrement étude cacao n°2 (27/10/2026, heure du commit, avant collecte)](../ai-lab/qui-paie/etude-cacao/PREREG-etude2.md) | **NON ÉVALUABLE** | Étude 2 : 3 revues liées à l'industrie sur 195 gardées, moins de 5 exposées. ([source](../ai-lab/qui-paie/etude-cacao/RESULTAT-etude2.md)) |
 | 2026-10-27 | [Pré-enregistrement : un lien avec l'industrie du chocolat rend-il les revues plus favorables au](../ai-lab/qui-paie/etude-cacao/PREREG.md) | **NON ÉVALUABLE** | Étude 1 : 2 revues liées à l'industrie sur 70 gardées, moins de 5 exposées. ([source](../ai-lab/qui-paie/etude-cacao/RESULTAT-etude1.md)) |
+| 2026-10-27 | [Pré-enregistrement : réplication de l'étude lait sur une autre époque (2000-2014)](../ai-lab/qui-paie/etude-lait-replication/PREREG.md) | **NON ÉVALUABLE** | Revues lait 2000-2014 : 14 déclarations lisibles sur 159, 0 liée à l'industrie ; la réplication ne peut pas être faite ainsi. ([source](../ai-lab/qui-paie/etude-lait-replication/RESULTAT.md)) |
