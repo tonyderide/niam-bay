@@ -162,10 +162,10 @@
  },
  {
   "fichier": "ai-lab/blocs-baleine/PREREGISTRATION.md",
-  "verdict": "INTROUVABLE",
-  "resume": "Aucun résultat trouvé ; l'analyse attendait assez de données (pré-vol d'au moins 15 blocs par côté et par moitié).",
+  "verdict": "PERD",
+  "resume": "1 186 blocs : le sens vu en découverte s'inverse en confirmation (+0,139 %, P = 0,997), sous le seuil des frais.",
   "source": "ai-lab/blocs-baleine/PREREGISTRATION.md",
-  "citation": ""
+  "citation": "**VERDICT : les blocs de baleine n'annoncent rien d'exploitable.**"
  },
  {
   "fichier": "ai-lab/calibration/PREREG-24H.md",

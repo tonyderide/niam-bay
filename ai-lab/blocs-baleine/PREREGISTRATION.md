@@ -16,3 +16,9 @@ Né de la découverte du faux grid de MU : des centaines de fills au même prix 
 - Prix : dernier prix échangé à chaque minute. Rendement 4 h = prix(fin + 4 h) / prix(fin) − 1. Volatilité de l'heure précédente = écart-type des rendements minute des 60 minutes avant ; quartiles sur toutes les minutes de la période.
 - Moitiés : découpage du temps en deux moitiés égales. Témoin : pour chaque bloc, un instant tiré au hasard dans la même moitié et le même quartile de volatilité (graine 19), en excluant les 4 dernières heures de données.
 - Bootstrap : 10 000 tirages de la différence de moyennes (blocs − témoins), P = part des tirages dans le sens opposé à celui de la découverte.
+
+## Verdict (27/10/2026 20h3x, calcul sur la VM, données jusqu'au 27/10 19:32 UTC)
+1 186 blocs détectés. Pré-vol réussi : achats 358 (découverte) / 210 (confirmation), ventes 382 / 206.
+- **ACHAT** : la découverte donne un sens négatif (après un bloc, BTC fait moins bien que le témoin) ; en confirmation l'écart est **+0,139 %**, dans l'autre sens, P = 0,997.
+- **VENTE** : même chose, sens négatif en découverte, **+0,139 %** en confirmation, P = 0,997. (Les deux écarts tombent sur la même valeur au dix-millième près par coïncidence : moyennes 0,125 % − (−0,014 %) et 0,096 % − (−0,043 %), vérifié.)
+**VERDICT : les blocs de baleine n'annoncent rien d'exploitable.** Le sens ne se confirme pas d'une moitié à l'autre, et l'écart reste sous les 0,15 % des frais.
