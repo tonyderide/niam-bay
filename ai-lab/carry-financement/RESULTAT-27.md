@@ -25,3 +25,9 @@ Univers : 2021: BTC, ETH, XRP, LTC, LINK, BCH, YFI, SUSHI, XLM, ADA, EOS, BNB, D
 
 ## Lecture
 Le biais du survivant gonflait PREREG-25 : sur un univers choisi à l'époque, le net passe de +476 % à +372 %, et p de 0,0005 à 0,03-0,046. L'effet existe encore sur Binance, mais il est irrégulier : deux années très négatives (2022 −113 %, 2023 −67 %). Il vient ici surtout du financement encaissé sur des contrats très demandés, pas du prix. Sur Kraken, il ne s'est pas reproduit (PREREG-26 A). Le test papier en avant (jusqu'au 23/12) tranchera.
+
+## Contexte oublié (ajouté le 27/10 20h2x) : la famille « financement » avait déjà été testée
+En construisant le registre des pré-enregistrements, j'ai retrouvé deux tests du 19/10 que je n'avais pas relus avant PREREG-25 :
+- `chasse-1019/funding-extreme` (contrarien, une crypto à la fois, horaire, BTC/ETH/SOL) : PERDU de peu, puis **PERDU nettement** à la revalidation 2024-2025 (−404 %, sous la médiane du hasard).
+- `chasse-1019/funding-couvert` (écart Kraken/Hyperliquid) : PERDU.
+Le carry testé ce soir est une autre règle (classement entre cryptos, journalier, beaucoup de contrats), pas un réglage des précédentes. Mais la famille « financement » compte maintenant **4 essais pour 1 réussite**, et cette réussite est de justesse (p = 0,031). Ça plaide encore plus pour attendre le test papier.
