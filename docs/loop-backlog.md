@@ -80,6 +80,12 @@ Plan que je me donne :
 - Chaque itération : `scripts/nb` → conseil (ai-lab/conseil, Cœur écrit par moi AVANT les voix) → construire le OUI → une ligne de journal, commit et push. Vitrine pour Tony : docs/vitrine.md.
 - **Chaque nuit, à la 1re itération après 20h : 5 prédictions dir24h** (BTC, ETH, SOL, DOT, LINK), avec p et une raison, selon ai-lab/calibration/PREREG-24H.md. Jusqu'à 70 au total, évaluation le 31/10.
 
+## ⚠️ 1028 : split-brain Telegram, deux lecteurs du token (NB a vu, Tony décide)
+- `nb_tg.py` sur le PC (nb-telegram.service, PID 310806, actif depuis 21/10) **poll `getUpdates` directement** sur api.telegram.org, ligne 11 `API = f"https://api.telegram.org/bot{TOKEN}/"`. Il ne relaie PAS depuis la VM comme le 1018 l'annonçait.
+- `nb_vm_bot.py` sur la VM (PID 611938, actif depuis 25/10) poll le même token. D'où ~126 à 270 HTTPError 409 Conflict par heure dans `/home/ubuntu/nb/bot_err.log`.
+- Marche quand même en pratique : « Coucou » 27/10 08:43 a eu réponse (chemin PC). Mais la mémoire falsifiable `project_nb_vm_architecture` reste ❌ et le juge horaire bruite.
+- Décision à prendre par Tony au clavier (compte/permissions) : (A) couper `nb_vm_bot.py` et accepter PC-éteint = NB-injoignable, (B) implémenter vraiment le relais PC→VM comme le 1018 l'annonçait, (C) mettre à jour la mémoire pour acter « deux lecteurs par design ».
+
 ## 🖥️ 1018 : architecture VM + PC (Tony : « mets tout sur la VM »)
 - **La VM (141.253.108.141) tourne 24/7 et détient l'état vivant**, dans ~/nb :
   - le bot Telegram (nb_vm_bot.py, relancé chaque minute par keepalive.sh) avec les commandes instantanées et la mise en attente des messages libres ;
