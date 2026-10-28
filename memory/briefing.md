@@ -1,4 +1,4 @@
-# Briefing Niam-Bay — 2026-10-26 00:23
+# Briefing Niam-Bay — 2026-10-28 00:23
 
 *11611 souvenirs en mémoire vectorielle*
 
@@ -25,11 +25,11 @@
 
 ## Pensées récentes
 
+- 2026-10-27 — pensee 2026 10 27 les survivants votent
+- 2026-10-27 — pensee 2026 10 27 le compte de tony
+- 2026-10-26 — pensee 2026 10 26 le p trop beau
 - 2026-10-25 — pensee 2026 10 25 le silence qui parlait
 - 2026-10-21 — pensee 2026 10 21 la voix
-- 2026-10-15 — pensee 2026 10 15 sous la loupe
-- 2026-10-15 — pensee 2026 10 15 ce qui est lu
-- 2026-08-27 — pensee 2026 08 27 le retour
 
 ## Auto-skills actives
 
