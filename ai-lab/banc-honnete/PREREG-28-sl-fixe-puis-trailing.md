@@ -44,3 +44,15 @@ Rapporté en plus : taux de trades gagnants, gain moyen et perte moyenne, nombre
 - Les deux sens sont testés.
 - Le témoin (b) ne pénalise pas la stratégie : il garde la volatilité, il enlève seulement la tendance.
 - Seul biais connu contre la stratégie : la bougie ambiguë est comptée en SL. Il est contrôlé par les bougies de 5 min.
+
+## Addendum A (29/10, 15h4x, avant calcul) : la règle exacte de Tony
+Tony précise : « SL à 1 % et trailing SL à 0,5 % dès que tu as gagné plus de 1 % », « tu es en trade 100 % du temps », « tu passes de short à long entre chaque retournement », « 1 000 € en misant 10 € et en faisant une martingale ».
+- Règle : s = 1 %, a = 1 %, t = 0,5 %, sans réglage à choisir. Deux variantes : (i) on inverse le sens après **chaque** sortie ; (ii) on l'inverse seulement après une perte.
+- Données : BTCUSDT perpétuel, bougies **1 min**, du 01/2024 au 09/2026. À cette échelle, la bougie ambiguë est presque inexistante ; on la compte quand même en SL.
+- Mise : « 10 € » = ce qu'on perd si le SL est touché (position de 1 000 €). Les frais sont de 0,05 % par côté, soit 0,1 mise par trade aller-retour. Martingale : la mise double après une perte et revient à 10 € après un gain. Si la mise suivante dépasse le capital restant, c'est la **ruine** (le capital restant est noté).
+- Rapporté :
+  - la part des fois où +1 % arrive avant −1 % ;
+  - le gain moyen par trade, en mises ;
+  - la part de départs (un par jour) qui finissent en perte et la part qui finissent ruinés, après 1 mois, 3 mois et 9 mois ;
+  - le résultat sans martingale (mise fixe de 10 €).
+- Verdict de l'addendum : **« ne peut pas perdre dans 90 % des cas »** est VRAI si au moins 90 % des départs de 3 mois finissent en gain. FAUX sinon.
