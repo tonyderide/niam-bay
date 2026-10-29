@@ -1,0 +1,387 @@
+{
+ "doublement classique": {
+  "fige": [
+   1,
+   0.08,
+   0.5,
+   0,
+   0.0,
+   8,
+   1.0
+  ],
+  "texte": "doublement : SL 8.0% TP 4.00%, long, base 1 €, récupération exacte, plafond 8 pertes",
+  "aucun_candidat_moyenne_positive": false,
+  "candidats": 307,
+  "reglages": 1920,
+  "part_mois_pos_24_25": 0.9583333333333334,
+  "moyenne_24_25": 0.6657767590259169,
+  "top5": [
+   [
+    "doublement : SL 8.0% TP 4.00%, long, base 1 €, récupération exacte, plafond 8 pertes",
+    0.9583333333333334,
+    0.67,
+    0.8518518518518519,
+    2.58
+   ],
+   [
+    "doublement : SL 8.0% TP 4.00%, long, base 1 €, récupération exacte, plafond ∞ pertes",
+    0.9583333333333334,
+    0.67,
+    0.8518518518518519,
+    2.58
+   ],
+   [
+    "doublement : SL 8.0% TP 4.00%, long, base 5 €, récupération exacte, plafond 5 pertes",
+    0.9444444444444444,
+    3.98,
+    0.8518518518518519,
+    12.84
+   ],
+   [
+    "doublement : SL 8.0% TP 4.00%, long, base 5 €, récupération exacte, plafond 8 pertes",
+    0.9444444444444444,
+    2.38,
+    0.8518518518518519,
+    12.84
+   ],
+   [
+    "doublement : SL 8.0% TP 4.00%, long, base 5 €, récupération exacte, plafond ∞ pertes",
+    0.9444444444444444,
+    2.38,
+    0.8518518518518519,
+    12.84
+   ]
+  ],
+  "meilleure_part_24_25_tous_reglages": 0.9583333333333334
+ },
+ "d'Alembert": {
+  "fige": [
+   2,
+   0.05,
+   1.0,
+   0,
+   10,
+   0,
+   20.0
+  ],
+  "texte": "d'Alembert : SL 5.0% TP 5.00%, long, base 20 €, u max 10",
+  "aucun_candidat_moyenne_positive": false,
+  "candidats": 54,
+  "reglages": 480,
+  "part_mois_pos_24_25": 0.75,
+  "moyenne_24_25": 40.73141224987559,
+  "top5": [
+   [
+    "d'Alembert : SL 5.0% TP 5.00%, long, base 20 €, u max 10",
+    0.75,
+    40.73,
+    0.5925925925925926,
+    -8.98
+   ],
+   [
+    "d'Alembert : SL 5.0% TP 5.00%, long, base 20 €, u max ∞",
+    0.75,
+    36.07,
+    0.5925925925925926,
+    -8.98
+   ],
+   [
+    "d'Alembert : SL 5.0% TP 5.00%, long, base 10 €, u max ∞",
+    0.75,
+    29.73,
+    0.6296296296296297,
+    -1.2
+   ],
+   [
+    "d'Alembert : SL 5.0% TP 5.00%, long, base 10 €, u max 10",
+    0.75,
+    19.67,
+    0.6296296296296297,
+    -1.2
+   ],
+   [
+    "d'Alembert : SL 5.0% TP 5.00%, long, base 5 €, u max ∞",
+    0.75,
+    14.86,
+    0.6296296296296297,
+    -0.6
+   ]
+  ],
+  "meilleure_part_24_25_tous_reglages": 0.75
+ },
+ "Fibonacci": {
+  "fige": [
+   3,
+   0.03,
+   1.0,
+   0,
+   10,
+   0,
+   2.0
+  ],
+  "texte": "Fibonacci : SL 3.0% TP 3.00%, long, base 2 €, j max 10",
+  "aucun_candidat_moyenne_positive": false,
+  "candidats": 100,
+  "reglages": 720,
+  "part_mois_pos_24_25": 0.875,
+  "moyenne_24_25": 5.981078361592243,
+  "top5": [
+   [
+    "Fibonacci : SL 3.0% TP 3.00%, long, base 2 €, j max 10",
+    0.875,
+    5.98,
+    0.7777777777777778,
+    -10.72
+   ],
+   [
+    "Fibonacci : SL 3.0% TP 3.00%, long, base 5 €, j max 10",
+    0.875,
+    5.78,
+    0.7777777777777778,
+    -15.41
+   ],
+   [
+    "Fibonacci : SL 3.0% TP 3.00%, long, base 1 €, j max 10",
+    0.875,
+    2.99,
+    0.7777777777777778,
+    -5.36
+   ],
+   [
+    "Fibonacci : SL 3.0% TP 3.00%, long, base 5 €, j max ∞",
+    0.875,
+    2.06,
+    0.7777777777777778,
+    -11.62
+   ],
+   [
+    "Fibonacci : SL 3.0% TP 3.00%, long, base 10 €, j max 10",
+    0.8194444444444444,
+    12.21,
+    0.7407407407407407,
+    -16.31
+   ]
+  ],
+  "meilleure_part_24_25_tous_reglages": 0.875
+ },
+ "Labouchère": {
+  "fige": [
+   4,
+   0.03,
+   1.0,
+   0,
+   0,
+   20,
+   1.0
+  ],
+  "texte": "Labouchère : SL 3.0% TP 3.00%, long, base 1 €, liste 1-2-3, longueur max 20",
+  "aucun_candidat_moyenne_positive": false,
+  "candidats": 144,
+  "reglages": 1440,
+  "part_mois_pos_24_25": 0.8611111111111112,
+  "moyenne_24_25": 14.079071526608718,
+  "top5": [
+   [
+    "Labouchère : SL 3.0% TP 3.00%, long, base 1 €, liste 1-2-3, longueur max 20",
+    0.8611111111111112,
+    14.08,
+    0.7407407407407407,
+    5.82
+   ],
+   [
+    "Labouchère : SL 3.0% TP 3.00%, long, base 1 €, liste 1-2-3, longueur max ∞",
+    0.8611111111111112,
+    14.08,
+    0.7407407407407407,
+    5.82
+   ],
+   [
+    "Labouchère : SL 3.0% TP 3.00%, long, base 2 €, liste 1-2-3, longueur max 20",
+    0.8472222222222222,
+    24.98,
+    0.7407407407407407,
+    11.64
+   ],
+   [
+    "Labouchère : SL 3.0% TP 3.00%, long, base 2 €, liste 1-2-3, longueur max ∞",
+    0.8472222222222222,
+    24.98,
+    0.7407407407407407,
+    11.64
+   ],
+   [
+    "Labouchère : SL 3.0% TP 3.00%, long, base 1 €, liste 1-2-3, longueur max 10",
+    0.8194444444444444,
+    9.12,
+    0.7037037037037037,
+    3.72
+   ]
+  ],
+  "meilleure_part_24_25_tous_reglages": 0.8611111111111112
+ },
+ "anti-martingale (Paroli)": {
+  "fige": [
+   5,
+   0.08,
+   1.0,
+   0,
+   2,
+   0,
+   20.0
+  ],
+  "texte": "Paroli : SL 8.0% TP 8.00%, long, base 20 €, retour à la base après 2 gains",
+  "aucun_candidat_moyenne_positive": false,
+  "candidats": 70,
+  "reglages": 720,
+  "part_mois_pos_24_25": 0.5972222222222222,
+  "moyenne_24_25": 11.929231586839668,
+  "top5": [
+   [
+    "Paroli : SL 8.0% TP 8.00%, long, base 20 €, retour à la base après 2 gains",
+    0.5972222222222222,
+    11.93,
+    0.4444444444444444,
+    3.44
+   ],
+   [
+    "Paroli : SL 8.0% TP 8.00%, long, base 10 €, retour à la base après 2 gains",
+    0.5972222222222222,
+    5.96,
+    0.4444444444444444,
+    1.72
+   ],
+   [
+    "Paroli : SL 8.0% TP 8.00%, long, base 5 €, retour à la base après 2 gains",
+    0.5972222222222222,
+    2.98,
+    0.4444444444444444,
+    0.86
+   ],
+   [
+    "Paroli : SL 8.0% TP 8.00%, long, base 2 €, retour à la base après 2 gains",
+    0.5972222222222222,
+    1.19,
+    0.4444444444444444,
+    0.34
+   ],
+   [
+    "Paroli : SL 8.0% TP 8.00%, long, base 1 €, retour à la base après 2 gains",
+    0.5972222222222222,
+    0.6,
+    0.4444444444444444,
+    0.17
+   ]
+  ],
+  "meilleure_part_24_25_tous_reglages": 0.5972222222222222
+ },
+ "grille DCA": {
+  "fige": [
+   6,
+   0.03,
+   0.025,
+   0.005,
+   5,
+   0.08,
+   0
+  ],
+  "texte": "grille DCA : 1er OS à −3%, TP +2.5%, trailing 0.5%, 5 OS, SL 8% sous le dernier OS",
+  "aucun_candidat_moyenne_positive": false,
+  "candidats": 45,
+  "reglages": 72,
+  "part_mois_pos_24_25": 0.8472222222222222,
+  "moyenne_24_25": 12.510869946922943,
+  "top5": [
+   [
+    "grille DCA : 1er OS à −3%, TP +2.5%, trailing 0.5%, 5 OS, SL 8% sous le dernier OS",
+    0.8472222222222222,
+    12.51,
+    0.7037037037037037,
+    2.1
+   ],
+   [
+    "grille DCA : 1er OS à −3%, TP +2.5%, trailing 1.0%, 5 OS, SL 8% sous le dernier OS",
+    0.8333333333333334,
+    11.78,
+    0.7037037037037037,
+    1.2
+   ],
+   [
+    "grille DCA : 1er OS à −2%, TP +1.0%, trailing 0.5%, 5 OS, SL 3% sous le dernier OS",
+    0.8333333333333334,
+    8.45,
+    0.8148148148148148,
+    2.53
+   ],
+   [
+    "grille DCA : 1er OS à −3%, TP +1.0%, trailing 1.0%, 5 OS, SL 3% sous le dernier OS",
+    0.8333333333333334,
+    8.39,
+    0.8148148148148148,
+    3.35
+   ],
+   [
+    "grille DCA : 1er OS à −3%, TP +1.0%, trailing 1.0%, 5 OS, SL 8% sous le dernier OS",
+    0.8333333333333334,
+    8.39,
+    0.8148148148148148,
+    3.35
+   ]
+  ],
+  "meilleure_part_24_25_tous_reglages": 0.8472222222222222
+ },
+ "règle de Tony": {
+  "fige": [
+   7,
+   0.03,
+   0.02,
+   0.01,
+   3.0,
+   6,
+   2.0
+  ],
+  "texte": "Tony : SL 3.0%, trailing 1.0% dès +2.0%, inversion après perte, ×3.0 après perte, plafond 6, base 2 €",
+  "aucun_candidat_moyenne_positive": false,
+  "candidats": 22,
+  "reglages": 780,
+  "part_mois_pos_24_25": 0.8333333333333334,
+  "moyenne_24_25": 22.539826200101622,
+  "top5": [
+   [
+    "Tony : SL 3.0%, trailing 1.0% dès +2.0%, inversion après perte, ×3.0 après perte, plafond 6, base 2 €",
+    0.8333333333333334,
+    22.54,
+    0.7407407407407407,
+    2.33
+   ],
+   [
+    "Tony : SL 3.0%, trailing 1.0% dès +2.0%, inversion après perte, ×3.0 après perte, plafond ∞, base 2 €",
+    0.8333333333333334,
+    16.16,
+    0.7407407407407407,
+    4.65
+   ],
+   [
+    "Tony : SL 2.0%, trailing 0.5% dès +2.0%, inversion après perte, ×2.0 après perte, plafond ∞, base 2 €",
+    0.7777777777777778,
+    6.64,
+    0.6666666666666666,
+    -57.68
+   ],
+   [
+    "Tony : SL 3.0%, trailing 0.5% dès +2.0%, inversion après perte, ×3.0 après perte, plafond 6, base 2 €",
+    0.7777777777777778,
+    6.5,
+    0.8148148148148148,
+    8.08
+   ],
+   [
+    "Tony : SL 3.0%, trailing 1.0% dès +2.0%, inversion après perte, ×3.0 après perte, plafond 6, base 5 €",
+    0.7638888888888888,
+    31.3,
+    0.7037037037037037,
+    4.7
+   ]
+  ],
+  "meilleure_part_24_25_tous_reglages": 0.8333333333333334
+ }
+}

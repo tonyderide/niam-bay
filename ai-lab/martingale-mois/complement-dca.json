@@ -1,0 +1,20 @@
+{
+ "mois_pieces": 6650,
+ "vrai_moyenne_e": 3.84,
+ "vrai_part_positifs": 0.7174,
+ "hasard_moyenne_e": 5.99,
+ "hasard_part_positifs": 0.7239,
+ "hasard_moyennes_par_melange": [
+  5.42,
+  6.41,
+  5.9,
+  6.75,
+  6.35,
+  6.02,
+  4.98,
+  5.7,
+  6.15,
+  6.19
+ ],
+ "p": 1.0
+}

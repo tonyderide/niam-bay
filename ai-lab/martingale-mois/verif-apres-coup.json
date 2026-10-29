@@ -1,0 +1,22 @@
+{
+ "doublement : SL 8.0% TP 4.00%, inversé après perte, base 1 €, récupération exacte, plafond ∞ pertes": {
+  "mois_pieces": 6650,
+  "part_positifs": 0.9053,
+  "moyenne_e": 1.33,
+  "mediane_e": 8.8,
+  "pire_mois_e": -987.0,
+  "meilleur_mois_e": 81.3,
+  "cumul_e": 8823.1,
+  "ruines": 9
+ },
+ "doublement : SL 8.0% TP 4.00%, inversé après perte, base 5 €, récupération exacte, plafond ∞ pertes": {
+  "mois_pieces": 6650,
+  "part_positifs": 0.8785,
+  "moyenne_e": 5.34,
+  "mediane_e": 42.39,
+  "pire_mois_e": -989.5,
+  "meilleur_mois_e": 406.4,
+  "cumul_e": 35486.8,
+  "ruines": 106
+ }
+}

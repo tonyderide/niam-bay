@@ -439,5 +439,12 @@
   "resume": "Martingale DCA + trailing + SL, 230 cryptos 2026 : 94 % de cycles gagnants mais −0,46 % ; 1/72 réglage positif sur 2024-2025.",
   "source": "ai-lab/dca-martingale/RESULTAT.md",
   "citation": "**VERDICT (pré-enregistré) : PERD.**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-29-martingale-mois-par-mois.md",
+  "verdict": "ÉCHEC",
+  "resume": "Martingale positive tous les mois ? 7 familles, 6 132 réglages : aucun à 100 % ; meilleur figé (doublement SL 8 % TP 4 %) 96 % des mois en 2024-25, 85 % en 2026, 89 % sur 250 autres pièces, autant que sur prix mélangés (85 %) ; pire mois −987 €, moyenne −4,9 €/mois hors choix.",
+  "source": "ai-lab/martingale-mois/RESULTAT.md",
+  "citation": "**« gagnante à tous les coups » = FAUX**"
  }
 ]
