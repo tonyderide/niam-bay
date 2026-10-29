@@ -1,35 +1,35 @@
 {
  "inverse_a_chaque_sortie": {
-  "trades": 2123,
-  "trades_gagnants": 0.5021,
-  "gain_moyen_mises": 0.874,
-  "perte_moyenne_mises": -1.097,
-  "esperance_par_trade_mises": -0.1073,
-  "pire_serie_de_pertes": 8,
-  "total_sans_martingale_10e": -2277.7,
+  "trades": 5592,
+  "trades_gagnants": 0.495,
+  "gain_moyen_mises": 0.88,
+  "perte_moyenne_mises": -1.098,
+  "esperance_par_trade_mises": -0.1188,
+  "pire_serie_de_pertes": 9,
+  "total_sans_martingale_10e": -6641.6,
   "1_mois": {
-   "departs": 271,
-   "martingale_part_en_gain": 0.225,
-   "martingale_part_ruinee": 0.668,
-   "martingale_resultat_median_e": -579.0,
-   "mise_fixe_part_en_gain": 0.077,
-   "mise_fixe_resultat_median_e": -209.3
+   "departs": 974,
+   "martingale_part_en_gain": 0.258,
+   "martingale_part_ruinee": 0.687,
+   "martingale_resultat_median_e": -561.4,
+   "mise_fixe_part_en_gain": 0.07,
+   "mise_fixe_resultat_median_e": -181.5
   },
   "3_mois": {
-   "departs": 212,
-   "martingale_part_en_gain": 0.156,
-   "martingale_part_ruinee": 0.849,
-   "martingale_resultat_median_e": -634.9,
+   "departs": 914,
+   "martingale_part_en_gain": 0.075,
+   "martingale_part_ruinee": 0.926,
+   "martingale_resultat_median_e": -619.7,
    "mise_fixe_part_en_gain": 0.0,
-   "mise_fixe_resultat_median_e": -742.0
+   "mise_fixe_resultat_median_e": -630.5
   },
   "9_mois": {
-   "departs": 32,
-   "martingale_part_en_gain": 0.0,
-   "martingale_part_ruinee": 1.0,
-   "martingale_resultat_median_e": -628.9,
+   "departs": 734,
+   "martingale_part_en_gain": 0.048,
+   "martingale_part_ruinee": 0.959,
+   "martingale_resultat_median_e": -613.3,
    "mise_fixe_part_en_gain": 0.0,
-   "mise_fixe_resultat_median_e": -2115.5
+   "mise_fixe_resultat_median_e": -1816.9
   }
  },
  "journal_btc_200_premiers": [
@@ -1435,37 +1435,37 @@
   ]
  ],
  "inverse_apres_perte": {
-  "trades": 2107,
-  "trades_gagnants": 0.5059,
-  "gain_moyen_mises": 0.881,
-  "perte_moyenne_mises": -1.096,
-  "esperance_par_trade_mises": -0.0959,
+  "trades": 5634,
+  "trades_gagnants": 0.5075,
+  "gain_moyen_mises": 0.872,
+  "perte_moyenne_mises": -1.098,
+  "esperance_par_trade_mises": -0.0987,
   "pire_serie_de_pertes": 10,
-  "total_sans_martingale_10e": -2020.4,
+  "total_sans_martingale_10e": -5558.4,
   "1_mois": {
-   "departs": 272,
-   "martingale_part_en_gain": 0.32,
-   "martingale_part_ruinee": 0.673,
-   "martingale_resultat_median_e": -477.9,
-   "mise_fixe_part_en_gain": 0.085,
-   "mise_fixe_resultat_median_e": -172.7
+   "departs": 974,
+   "martingale_part_en_gain": 0.356,
+   "martingale_part_ruinee": 0.565,
+   "martingale_resultat_median_e": -424.1,
+   "mise_fixe_part_en_gain": 0.064,
+   "mise_fixe_resultat_median_e": -139.2
   },
   "3_mois": {
-   "departs": 212,
-   "martingale_part_en_gain": 0.259,
-   "martingale_part_ruinee": 0.759,
-   "martingale_resultat_median_e": -545.4,
+   "departs": 914,
+   "martingale_part_en_gain": 0.151,
+   "martingale_part_ruinee": 0.856,
+   "martingale_resultat_median_e": -557.7,
    "mise_fixe_part_en_gain": 0.0,
-   "mise_fixe_resultat_median_e": -536.6
+   "mise_fixe_resultat_median_e": -468.2
   },
   "9_mois": {
-   "departs": 32,
-   "martingale_part_en_gain": 0.0,
-   "martingale_part_ruinee": 1.0,
-   "martingale_resultat_median_e": -989.1,
+   "departs": 734,
+   "martingale_part_en_gain": 0.098,
+   "martingale_part_ruinee": 0.928,
+   "martingale_resultat_median_e": -544.3,
    "mise_fixe_part_en_gain": 0.0,
-   "mise_fixe_resultat_median_e": -1821.1
+   "mise_fixe_resultat_median_e": -1467.6
   }
  },
- "part_plus1_avant_moins1": 0.474
+ "part_plus1_avant_moins1": 0.505
 }

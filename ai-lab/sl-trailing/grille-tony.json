@@ -1,0 +1,2555 @@
+{
+ "reglages": 156,
+ "fige": [
+  0.03,
+  0.05,
+  0.01
+ ],
+ "fige_2024_2025": {
+  "trades": 308,
+  "gagnants": 0.419,
+  "esperance_mises": 0.0726,
+  "total_10e": 223.7,
+  "brut_pct": 97.9,
+  "frais_pct": 30.8
+ },
+ "fige_2026": {
+  "trades": 94,
+  "gagnants": 0.394,
+  "esperance_mises": 0.0156,
+  "total_10e": 14.7,
+  "brut_pct": 13.8,
+  "frais_pct": 9.4
+ },
+ "hasard_2026": [
+  -0.0353,
+  0.136
+ ],
+ "p": 0.32,
+ "verdict": "NON D\u00c9MONTR\u00c9",
+ "martingale": {
+  "1_mois": {
+   "departs": 967,
+   "en_gain": 0.77,
+   "ruines": 0.057,
+   "median_e": 110.4
+  },
+  "3_mois": {
+   "departs": 914,
+   "en_gain": 0.721,
+   "ruines": 0.26,
+   "median_e": 326.1
+  },
+  "9_mois": {
+   "departs": 714,
+   "en_gain": 0.284,
+   "ruines": 0.776,
+   "median_e": -461.2
+  }
+ },
+ "positifs_2024_2025": 28,
+ "positifs_2026": 39,
+ "positifs_bruts_avant_frais_2026": 74,
+ "tous": {
+  "2024_2025": {
+   "(0.005, 0.005, 0.0025)": {
+    "trades": 15883,
+    "gagnants": 0.498,
+    "esperance_mises": -0.1947,
+    "total_10e": -30928.0,
+    "brut_pct": 41.9,
+    "frais_pct": 1588.3
+   },
+   "(0.005, 0.005, 0.005)": {
+    "trades": 12313,
+    "gagnants": 0.417,
+    "esperance_mises": -0.1941,
+    "total_10e": -23900.2,
+    "brut_pct": 36.3,
+    "frais_pct": 1231.3
+   },
+   "(0.005, 0.01, 0.0025)": {
+    "trades": 9024,
+    "gagnants": 0.336,
+    "esperance_mises": -0.1944,
+    "total_10e": -17541.0,
+    "brut_pct": 25.3,
+    "frais_pct": 902.4
+   },
+   "(0.005, 0.01, 0.005)": {
+    "trades": 8215,
+    "gagnants": 0.334,
+    "esperance_mises": -0.206,
+    "total_10e": -16921.7,
+    "brut_pct": -24.6,
+    "frais_pct": 821.5
+   },
+   "(0.005, 0.01, 0.01)": {
+    "trades": 5796,
+    "gagnants": 0.311,
+    "esperance_mises": -0.1839,
+    "total_10e": -10659.6,
+    "brut_pct": 46.6,
+    "frais_pct": 579.6
+   },
+   "(0.005, 0.015, 0.0025)": {
+    "trades": 6180,
+    "gagnants": 0.255,
+    "esperance_mises": -0.1838,
+    "total_10e": -11360.7,
+    "brut_pct": 50.0,
+    "frais_pct": 618.0
+   },
+   "(0.005, 0.015, 0.005)": {
+    "trades": 5911,
+    "gagnants": 0.253,
+    "esperance_mises": -0.2025,
+    "total_10e": -11968.3,
+    "brut_pct": -7.3,
+    "frais_pct": 591.1
+   },
+   "(0.005, 0.015, 0.01)": {
+    "trades": 4822,
+    "gagnants": 0.259,
+    "esperance_mises": -0.1722,
+    "total_10e": -8301.5,
+    "brut_pct": 67.1,
+    "frais_pct": 482.2
+   },
+   "(0.005, 0.015, 0.015)": {
+    "trades": 3615,
+    "gagnants": 0.249,
+    "esperance_mises": -0.1389,
+    "total_10e": -5021.1,
+    "brut_pct": 110.4,
+    "frais_pct": 361.5
+   },
+   "(0.005, 0.02, 0.0025)": {
+    "trades": 4644,
+    "gagnants": 0.205,
+    "esperance_mises": -0.1813,
+    "total_10e": -8417.4,
+    "brut_pct": 43.5,
+    "frais_pct": 464.4
+   },
+   "(0.005, 0.02, 0.005)": {
+    "trades": 4613,
+    "gagnants": 0.207,
+    "esperance_mises": -0.182,
+    "total_10e": -8394.3,
+    "brut_pct": 41.6,
+    "frais_pct": 461.3
+   },
+   "(0.005, 0.02, 0.01)": {
+    "trades": 3998,
+    "gagnants": 0.209,
+    "esperance_mises": -0.1659,
+    "total_10e": -6632.3,
+    "brut_pct": 68.2,
+    "frais_pct": 399.8
+   },
+   "(0.005, 0.02, 0.015)": {
+    "trades": 3318,
+    "gagnants": 0.216,
+    "esperance_mises": -0.1431,
+    "total_10e": -4747.0,
+    "brut_pct": 94.4,
+    "frais_pct": 331.8
+   },
+   "(0.005, 0.02, 0.02)": {
+    "trades": 2553,
+    "gagnants": 0.212,
+    "esperance_mises": -0.0902,
+    "total_10e": -2302.2,
+    "brut_pct": 140.2,
+    "frais_pct": 255.3
+   },
+   "(0.005, 0.03, 0.0025)": {
+    "trades": 3304,
+    "gagnants": 0.145,
+    "esperance_mises": -0.1975,
+    "total_10e": -6525.8,
+    "brut_pct": 4.1,
+    "frais_pct": 330.4
+   },
+   "(0.005, 0.03, 0.005)": {
+    "trades": 3212,
+    "gagnants": 0.15,
+    "esperance_mises": -0.1718,
+    "total_10e": -5518.1,
+    "brut_pct": 45.3,
+    "frais_pct": 321.2
+   },
+   "(0.005, 0.03, 0.01)": {
+    "trades": 3065,
+    "gagnants": 0.156,
+    "esperance_mises": -0.1452,
+    "total_10e": -4451.8,
+    "brut_pct": 83.9,
+    "frais_pct": 306.5
+   },
+   "(0.005, 0.03, 0.015)": {
+    "trades": 2607,
+    "gagnants": 0.154,
+    "esperance_mises": -0.1318,
+    "total_10e": -3436.7,
+    "brut_pct": 88.9,
+    "frais_pct": 260.7
+   },
+   "(0.005, 0.03, 0.02)": {
+    "trades": 2250,
+    "gagnants": 0.152,
+    "esperance_mises": -0.1132,
+    "total_10e": -2547.7,
+    "brut_pct": 97.6,
+    "frais_pct": 225.0
+   },
+   "(0.005, 0.03, 0.03)": {
+    "trades": 1747,
+    "gagnants": 0.152,
+    "esperance_mises": -0.1033,
+    "total_10e": -1804.5,
+    "brut_pct": 84.5,
+    "frais_pct": 174.7
+   },
+   "(0.005, 0.05, 0.0025)": {
+    "trades": 1940,
+    "gagnants": 0.096,
+    "esperance_mises": -0.1547,
+    "total_10e": -3001.6,
+    "brut_pct": 43.9,
+    "frais_pct": 194.0
+   },
+   "(0.005, 0.05, 0.005)": {
+    "trades": 2114,
+    "gagnants": 0.088,
+    "esperance_mises": -0.2405,
+    "total_10e": -5083.9,
+    "brut_pct": -42.8,
+    "frais_pct": 211.4
+   },
+   "(0.005, 0.05, 0.01)": {
+    "trades": 1970,
+    "gagnants": 0.092,
+    "esperance_mises": -0.2047,
+    "total_10e": -4031.6,
+    "brut_pct": -4.6,
+    "frais_pct": 197.0
+   },
+   "(0.005, 0.05, 0.015)": {
+    "trades": 1741,
+    "gagnants": 0.104,
+    "esperance_mises": -0.0776,
+    "total_10e": -1350.3,
+    "brut_pct": 106.6,
+    "frais_pct": 174.1
+   },
+   "(0.005, 0.05, 0.02)": {
+    "trades": 1654,
+    "gagnants": 0.102,
+    "esperance_mises": -0.0738,
+    "total_10e": -1221.4,
+    "brut_pct": 104.3,
+    "frais_pct": 165.4
+   },
+   "(0.005, 0.05, 0.03)": {
+    "trades": 1499,
+    "gagnants": 0.098,
+    "esperance_mises": -0.1109,
+    "total_10e": -1661.7,
+    "brut_pct": 66.8,
+    "frais_pct": 149.9
+   },
+   "(0.01, 0.005, 0.0025)": {
+    "trades": 8488,
+    "gagnants": 0.665,
+    "esperance_mises": -0.089,
+    "total_10e": -7558.2,
+    "brut_pct": 93.0,
+    "frais_pct": 848.8
+   },
+   "(0.01, 0.005, 0.005)": {
+    "trades": 7074,
+    "gagnants": 0.558,
+    "esperance_mises": -0.0974,
+    "total_10e": -6892.2,
+    "brut_pct": 18.2,
+    "frais_pct": 707.4
+   },
+   "(0.01, 0.01, 0.0025)": {
+    "trades": 4675,
+    "gagnants": 0.503,
+    "esperance_mises": -0.0981,
+    "total_10e": -4585.3,
+    "brut_pct": 9.0,
+    "frais_pct": 467.5
+   },
+   "(0.01, 0.01, 0.005)": {
+    "trades": 4334,
+    "gagnants": 0.507,
+    "esperance_mises": -0.0984,
+    "total_10e": -4266.4,
+    "brut_pct": 6.8,
+    "frais_pct": 433.4
+   },
+   "(0.01, 0.01, 0.01)": {
+    "trades": 3237,
+    "gagnants": 0.475,
+    "esperance_mises": -0.0705,
+    "total_10e": -2280.8,
+    "brut_pct": 95.6,
+    "frais_pct": 323.7
+   },
+   "(0.01, 0.015, 0.0025)": {
+    "trades": 3206,
+    "gagnants": 0.405,
+    "esperance_mises": -0.0933,
+    "total_10e": -2991.7,
+    "brut_pct": 21.4,
+    "frais_pct": 320.6
+   },
+   "(0.01, 0.015, 0.005)": {
+    "trades": 3046,
+    "gagnants": 0.406,
+    "esperance_mises": -0.0943,
+    "total_10e": -2873.8,
+    "brut_pct": 17.2,
+    "frais_pct": 304.6
+   },
+   "(0.01, 0.015, 0.01)": {
+    "trades": 2555,
+    "gagnants": 0.417,
+    "esperance_mises": -0.0645,
+    "total_10e": -1647.8,
+    "brut_pct": 90.7,
+    "frais_pct": 255.5
+   },
+   "(0.01, 0.015, 0.015)": {
+    "trades": 2071,
+    "gagnants": 0.389,
+    "esperance_mises": -0.0772,
+    "total_10e": -1599.1,
+    "brut_pct": 47.2,
+    "frais_pct": 207.1
+   },
+   "(0.01, 0.02, 0.0025)": {
+    "trades": 2382,
+    "gagnants": 0.342,
+    "esperance_mises": -0.078,
+    "total_10e": -1858.9,
+    "brut_pct": 52.3,
+    "frais_pct": 238.2
+   },
+   "(0.01, 0.02, 0.005)": {
+    "trades": 2375,
+    "gagnants": 0.344,
+    "esperance_mises": -0.0838,
+    "total_10e": -1990.1,
+    "brut_pct": 38.5,
+    "frais_pct": 237.5
+   },
+   "(0.01, 0.02, 0.01)": {
+    "trades": 2090,
+    "gagnants": 0.343,
+    "esperance_mises": -0.0756,
+    "total_10e": -1580.6,
+    "brut_pct": 50.9,
+    "frais_pct": 209.0
+   },
+   "(0.01, 0.02, 0.015)": {
+    "trades": 1849,
+    "gagnants": 0.343,
+    "esperance_mises": -0.0892,
+    "total_10e": -1648.5,
+    "brut_pct": 20.0,
+    "frais_pct": 184.9
+   },
+   "(0.01, 0.02, 0.02)": {
+    "trades": 1494,
+    "gagnants": 0.319,
+    "esperance_mises": -0.0735,
+    "total_10e": -1097.8,
+    "brut_pct": 39.6,
+    "frais_pct": 149.4
+   },
+   "(0.01, 0.03, 0.0025)": {
+    "trades": 1695,
+    "gagnants": 0.25,
+    "esperance_mises": -0.1137,
+    "total_10e": -1927.1,
+    "brut_pct": -23.2,
+    "frais_pct": 169.5
+   },
+   "(0.01, 0.03, 0.005)": {
+    "trades": 1680,
+    "gagnants": 0.249,
+    "esperance_mises": -0.1119,
+    "total_10e": -1879.6,
+    "brut_pct": -20.0,
+    "frais_pct": 168.0
+   },
+   "(0.01, 0.03, 0.01)": {
+    "trades": 1504,
+    "gagnants": 0.267,
+    "esperance_mises": -0.0443,
+    "total_10e": -666.1,
+    "brut_pct": 83.8,
+    "frais_pct": 150.4
+   },
+   "(0.01, 0.03, 0.015)": {
+    "trades": 1407,
+    "gagnants": 0.256,
+    "esperance_mises": -0.0716,
+    "total_10e": -1007.5,
+    "brut_pct": 39.9,
+    "frais_pct": 140.7
+   },
+   "(0.01, 0.03, 0.02)": {
+    "trades": 1293,
+    "gagnants": 0.249,
+    "esperance_mises": -0.0919,
+    "total_10e": -1188.8,
+    "brut_pct": 10.4,
+    "frais_pct": 129.3
+   },
+   "(0.01, 0.03, 0.03)": {
+    "trades": 980,
+    "gagnants": 0.25,
+    "esperance_mises": -0.067,
+    "total_10e": -656.2,
+    "brut_pct": 32.4,
+    "frais_pct": 98.0
+   },
+   "(0.01, 0.05, 0.0025)": {
+    "trades": 941,
+    "gagnants": 0.185,
+    "esperance_mises": -0.0135,
+    "total_10e": -127.1,
+    "brut_pct": 81.4,
+    "frais_pct": 94.1
+   },
+   "(0.01, 0.05, 0.005)": {
+    "trades": 995,
+    "gagnants": 0.178,
+    "esperance_mises": -0.0474,
+    "total_10e": -471.1,
+    "brut_pct": 52.4,
+    "frais_pct": 99.5
+   },
+   "(0.01, 0.05, 0.01)": {
+    "trades": 989,
+    "gagnants": 0.184,
+    "esperance_mises": -0.0069,
+    "total_10e": -67.8,
+    "brut_pct": 92.1,
+    "frais_pct": 98.9
+   },
+   "(0.01, 0.05, 0.015)": {
+    "trades": 977,
+    "gagnants": 0.175,
+    "esperance_mises": -0.0806,
+    "total_10e": -787.5,
+    "brut_pct": 19.0,
+    "frais_pct": 97.7
+   },
+   "(0.01, 0.05, 0.02)": {
+    "trades": 912,
+    "gagnants": 0.167,
+    "esperance_mises": -0.0763,
+    "total_10e": -695.6,
+    "brut_pct": 21.6,
+    "frais_pct": 91.2
+   },
+   "(0.01, 0.05, 0.03)": {
+    "trades": 837,
+    "gagnants": 0.165,
+    "esperance_mises": -0.1112,
+    "total_10e": -931.1,
+    "brut_pct": -9.4,
+    "frais_pct": 83.7
+   },
+   "(0.015, 0.005, 0.0025)": {
+    "trades": 5906,
+    "gagnants": 0.744,
+    "esperance_mises": -0.0618,
+    "total_10e": -3647.0,
+    "brut_pct": 43.6,
+    "frais_pct": 590.6
+   },
+   "(0.015, 0.005, 0.005)": {
+    "trades": 5132,
+    "gagnants": 0.629,
+    "esperance_mises": -0.0605,
+    "total_10e": -3102.4,
+    "brut_pct": 47.8,
+    "frais_pct": 513.2
+   },
+   "(0.015, 0.01, 0.0025)": {
+    "trades": 3177,
+    "gagnants": 0.608,
+    "esperance_mises": -0.0572,
+    "total_10e": -1815.8,
+    "brut_pct": 45.3,
+    "frais_pct": 317.7
+   },
+   "(0.015, 0.01, 0.005)": {
+    "trades": 3011,
+    "gagnants": 0.613,
+    "esperance_mises": -0.057,
+    "total_10e": -1717.5,
+    "brut_pct": 43.5,
+    "frais_pct": 301.1
+   },
+   "(0.015, 0.01, 0.01)": {
+    "trades": 2363,
+    "gagnants": 0.56,
+    "esperance_mises": -0.0489,
+    "total_10e": -1155.0,
+    "brut_pct": 63.1,
+    "frais_pct": 236.3
+   },
+   "(0.015, 0.015, 0.0025)": {
+    "trades": 2122,
+    "gagnants": 0.508,
+    "esperance_mises": -0.0523,
+    "total_10e": -1110.8,
+    "brut_pct": 45.6,
+    "frais_pct": 212.2
+   },
+   "(0.015, 0.015, 0.005)": {
+    "trades": 2080,
+    "gagnants": 0.51,
+    "esperance_mises": -0.0559,
+    "total_10e": -1163.4,
+    "brut_pct": 33.5,
+    "frais_pct": 208.0
+   },
+   "(0.015, 0.015, 0.01)": {
+    "trades": 1825,
+    "gagnants": 0.518,
+    "esperance_mises": -0.042,
+    "total_10e": -767.2,
+    "brut_pct": 67.4,
+    "frais_pct": 182.5
+   },
+   "(0.015, 0.015, 0.015)": {
+    "trades": 1503,
+    "gagnants": 0.484,
+    "esperance_mises": -0.0521,
+    "total_10e": -783.0,
+    "brut_pct": 32.9,
+    "frais_pct": 150.3
+   },
+   "(0.015, 0.02, 0.0025)": {
+    "trades": 1599,
+    "gagnants": 0.443,
+    "esperance_mises": -0.0358,
+    "total_10e": -572.4,
+    "brut_pct": 74.0,
+    "frais_pct": 159.9
+   },
+   "(0.015, 0.02, 0.005)": {
+    "trades": 1579,
+    "gagnants": 0.445,
+    "esperance_mises": -0.038,
+    "total_10e": -599.7,
+    "brut_pct": 67.9,
+    "frais_pct": 157.9
+   },
+   "(0.015, 0.02, 0.01)": {
+    "trades": 1448,
+    "gagnants": 0.448,
+    "esperance_mises": -0.026,
+    "total_10e": -376.3,
+    "brut_pct": 88.4,
+    "frais_pct": 144.8
+   },
+   "(0.015, 0.02, 0.015)": {
+    "trades": 1284,
+    "gagnants": 0.439,
+    "esperance_mises": -0.0514,
+    "total_10e": -659.4,
+    "brut_pct": 29.5,
+    "frais_pct": 128.4
+   },
+   "(0.015, 0.02, 0.02)": {
+    "trades": 1034,
+    "gagnants": 0.424,
+    "esperance_mises": -0.0166,
+    "total_10e": -171.6,
+    "brut_pct": 77.7,
+    "frais_pct": 103.4
+   },
+   "(0.015, 0.03, 0.0025)": {
+    "trades": 1071,
+    "gagnants": 0.349,
+    "esperance_mises": -0.0367,
+    "total_10e": -392.6,
+    "brut_pct": 48.2,
+    "frais_pct": 107.1
+   },
+   "(0.015, 0.03, 0.005)": {
+    "trades": 1098,
+    "gagnants": 0.345,
+    "esperance_mises": -0.0434,
+    "total_10e": -476.5,
+    "brut_pct": 38.3,
+    "frais_pct": 109.8
+   },
+   "(0.015, 0.03, 0.01)": {
+    "trades": 1023,
+    "gagnants": 0.366,
+    "esperance_mises": 0.0055,
+    "total_10e": 56.5,
+    "brut_pct": 110.8,
+    "frais_pct": 102.3
+   },
+   "(0.015, 0.03, 0.015)": {
+    "trades": 977,
+    "gagnants": 0.339,
+    "esperance_mises": -0.048,
+    "total_10e": -469.0,
+    "brut_pct": 27.3,
+    "frais_pct": 97.7
+   },
+   "(0.015, 0.03, 0.02)": {
+    "trades": 886,
+    "gagnants": 0.339,
+    "esperance_mises": -0.0476,
+    "total_10e": -421.8,
+    "brut_pct": 25.3,
+    "frais_pct": 88.6
+   },
+   "(0.015, 0.03, 0.03)": {
+    "trades": 709,
+    "gagnants": 0.322,
+    "esperance_mises": -0.0625,
+    "total_10e": -442.8,
+    "brut_pct": 4.5,
+    "frais_pct": 70.9
+   },
+   "(0.015, 0.05, 0.0025)": {
+    "trades": 686,
+    "gagnants": 0.241,
+    "esperance_mises": -0.027,
+    "total_10e": -185.3,
+    "brut_pct": 40.8,
+    "frais_pct": 68.6
+   },
+   "(0.015, 0.05, 0.005)": {
+    "trades": 707,
+    "gagnants": 0.229,
+    "esperance_mises": -0.0839,
+    "total_10e": -593.1,
+    "brut_pct": -18.3,
+    "frais_pct": 70.7
+   },
+   "(0.015, 0.05, 0.01)": {
+    "trades": 603,
+    "gagnants": 0.267,
+    "esperance_mises": 0.0632,
+    "total_10e": 381.2,
+    "brut_pct": 117.5,
+    "frais_pct": 60.3
+   },
+   "(0.015, 0.05, 0.015)": {
+    "trades": 646,
+    "gagnants": 0.251,
+    "esperance_mises": -0.0086,
+    "total_10e": -55.8,
+    "brut_pct": 56.2,
+    "frais_pct": 64.6
+   },
+   "(0.015, 0.05, 0.02)": {
+    "trades": 609,
+    "gagnants": 0.24,
+    "esperance_mises": -0.0265,
+    "total_10e": -161.2,
+    "brut_pct": 36.7,
+    "frais_pct": 60.9
+   },
+   "(0.015, 0.05, 0.03)": {
+    "trades": 551,
+    "gagnants": 0.229,
+    "esperance_mises": -0.057,
+    "total_10e": -314.0,
+    "brut_pct": 8.0,
+    "frais_pct": 55.1
+   },
+   "(0.02, 0.005, 0.0025)": {
+    "trades": 4589,
+    "gagnants": 0.797,
+    "esperance_mises": -0.0399,
+    "total_10e": -1832.9,
+    "brut_pct": 92.3,
+    "frais_pct": 458.9
+   },
+   "(0.02, 0.005, 0.005)": {
+    "trades": 4109,
+    "gagnants": 0.68,
+    "esperance_mises": -0.0355,
+    "total_10e": -1460.1,
+    "brut_pct": 118.9,
+    "frais_pct": 410.9
+   },
+   "(0.02, 0.01, 0.0025)": {
+    "trades": 2402,
+    "gagnants": 0.684,
+    "esperance_mises": -0.0269,
+    "total_10e": -646.0,
+    "brut_pct": 111.0,
+    "frais_pct": 240.2
+   },
+   "(0.02, 0.01, 0.005)": {
+    "trades": 2305,
+    "gagnants": 0.685,
+    "esperance_mises": -0.0311,
+    "total_10e": -716.5,
+    "brut_pct": 87.2,
+    "frais_pct": 230.5
+   },
+   "(0.02, 0.01, 0.01)": {
+    "trades": 1903,
+    "gagnants": 0.622,
+    "esperance_mises": -0.0319,
+    "total_10e": -607.7,
+    "brut_pct": 68.8,
+    "frais_pct": 190.3
+   },
+   "(0.02, 0.015, 0.0025)": {
+    "trades": 1650,
+    "gagnants": 0.582,
+    "esperance_mises": -0.0329,
+    "total_10e": -543.1,
+    "brut_pct": 56.4,
+    "frais_pct": 165.0
+   },
+   "(0.02, 0.015, 0.005)": {
+    "trades": 1583,
+    "gagnants": 0.591,
+    "esperance_mises": -0.0207,
+    "total_10e": -327.5,
+    "brut_pct": 92.8,
+    "frais_pct": 158.3
+   },
+   "(0.02, 0.015, 0.01)": {
+    "trades": 1425,
+    "gagnants": 0.589,
+    "esperance_mises": -0.0287,
+    "total_10e": -409.0,
+    "brut_pct": 60.7,
+    "frais_pct": 142.5
+   },
+   "(0.02, 0.015, 0.015)": {
+    "trades": 1184,
+    "gagnants": 0.549,
+    "esperance_mises": -0.0411,
+    "total_10e": -486.7,
+    "brut_pct": 21.1,
+    "frais_pct": 118.4
+   },
+   "(0.02, 0.02, 0.0025)": {
+    "trades": 1258,
+    "gagnants": 0.515,
+    "esperance_mises": -0.0275,
+    "total_10e": -345.6,
+    "brut_pct": 56.7,
+    "frais_pct": 125.8
+   },
+   "(0.02, 0.02, 0.005)": {
+    "trades": 1200,
+    "gagnants": 0.525,
+    "esperance_mises": -0.0031,
+    "total_10e": -36.9,
+    "brut_pct": 112.6,
+    "frais_pct": 120.0
+   },
+   "(0.02, 0.02, 0.01)": {
+    "trades": 1094,
+    "gagnants": 0.52,
+    "esperance_mises": -0.012,
+    "total_10e": -130.9,
+    "brut_pct": 83.2,
+    "frais_pct": 109.4
+   },
+   "(0.02, 0.02, 0.015)": {
+    "trades": 977,
+    "gagnants": 0.515,
+    "esperance_mises": -0.0206,
+    "total_10e": -201.1,
+    "brut_pct": 57.5,
+    "frais_pct": 97.7
+   },
+   "(0.02, 0.02, 0.02)": {
+    "trades": 825,
+    "gagnants": 0.473,
+    "esperance_mises": -0.0256,
+    "total_10e": -211.0,
+    "brut_pct": 40.3,
+    "frais_pct": 82.5
+   },
+   "(0.02, 0.03, 0.0025)": {
+    "trades": 821,
+    "gagnants": 0.425,
+    "esperance_mises": 0.0008,
+    "total_10e": 6.7,
+    "brut_pct": 83.4,
+    "frais_pct": 82.1
+   },
+   "(0.02, 0.03, 0.005)": {
+    "trades": 810,
+    "gagnants": 0.426,
+    "esperance_mises": 0.0045,
+    "total_10e": 36.7,
+    "brut_pct": 88.3,
+    "frais_pct": 81.0
+   },
+   "(0.02, 0.03, 0.01)": {
+    "trades": 797,
+    "gagnants": 0.422,
+    "esperance_mises": -0.0139,
+    "total_10e": -110.6,
+    "brut_pct": 57.6,
+    "frais_pct": 79.7
+   },
+   "(0.02, 0.03, 0.015)": {
+    "trades": 745,
+    "gagnants": 0.413,
+    "esperance_mises": -0.0231,
+    "total_10e": -172.0,
+    "brut_pct": 40.1,
+    "frais_pct": 74.5
+   },
+   "(0.02, 0.03, 0.02)": {
+    "trades": 689,
+    "gagnants": 0.406,
+    "esperance_mises": -0.0394,
+    "total_10e": -271.5,
+    "brut_pct": 14.6,
+    "frais_pct": 68.9
+   },
+   "(0.02, 0.03, 0.03)": {
+    "trades": 544,
+    "gagnants": 0.403,
+    "esperance_mises": -0.0271,
+    "total_10e": -147.4,
+    "brut_pct": 24.9,
+    "frais_pct": 54.4
+   },
+   "(0.02, 0.05, 0.0025)": {
+    "trades": 480,
+    "gagnants": 0.315,
+    "esperance_mises": 0.041,
+    "total_10e": 196.9,
+    "brut_pct": 87.4,
+    "frais_pct": 48.0
+   },
+   "(0.02, 0.05, 0.005)": {
+    "trades": 514,
+    "gagnants": 0.286,
+    "esperance_mises": -0.0592,
+    "total_10e": -304.5,
+    "brut_pct": -9.5,
+    "frais_pct": 51.4
+   },
+   "(0.02, 0.05, 0.01)": {
+    "trades": 481,
+    "gagnants": 0.301,
+    "esperance_mises": -0.009,
+    "total_10e": -43.4,
+    "brut_pct": 39.4,
+    "frais_pct": 48.1
+   },
+   "(0.02, 0.05, 0.015)": {
+    "trades": 468,
+    "gagnants": 0.312,
+    "esperance_mises": 0.0271,
+    "total_10e": 127.0,
+    "brut_pct": 72.2,
+    "frais_pct": 46.8
+   },
+   "(0.02, 0.05, 0.02)": {
+    "trades": 435,
+    "gagnants": 0.317,
+    "esperance_mises": 0.0565,
+    "total_10e": 245.9,
+    "brut_pct": 92.7,
+    "frais_pct": 43.5
+   },
+   "(0.02, 0.05, 0.03)": {
+    "trades": 404,
+    "gagnants": 0.297,
+    "esperance_mises": 0.0057,
+    "total_10e": 23.2,
+    "brut_pct": 45.0,
+    "frais_pct": 40.4
+   },
+   "(0.03, 0.005, 0.0025)": {
+    "trades": 3150,
+    "gagnants": 0.846,
+    "esperance_mises": -0.0297,
+    "total_10e": -934.5,
+    "brut_pct": 34.7,
+    "frais_pct": 315.0
+   },
+   "(0.03, 0.005, 0.005)": {
+    "trades": 2833,
+    "gagnants": 0.731,
+    "esperance_mises": -0.0226,
+    "total_10e": -640.6,
+    "brut_pct": 91.1,
+    "frais_pct": 283.3
+   },
+   "(0.03, 0.01, 0.0025)": {
+    "trades": 1624,
+    "gagnants": 0.765,
+    "esperance_mises": -0.0133,
+    "total_10e": -216.2,
+    "brut_pct": 97.6,
+    "frais_pct": 162.4
+   },
+   "(0.03, 0.01, 0.005)": {
+    "trades": 1607,
+    "gagnants": 0.77,
+    "esperance_mises": -0.0145,
+    "total_10e": -233.5,
+    "brut_pct": 90.6,
+    "frais_pct": 160.7
+   },
+   "(0.03, 0.01, 0.01)": {
+    "trades": 1376,
+    "gagnants": 0.692,
+    "esperance_mises": -0.0291,
+    "total_10e": -401.1,
+    "brut_pct": 17.3,
+    "frais_pct": 137.6
+   },
+   "(0.03, 0.015, 0.0025)": {
+    "trades": 1088,
+    "gagnants": 0.675,
+    "esperance_mises": -0.022,
+    "total_10e": -239.0,
+    "brut_pct": 37.1,
+    "frais_pct": 108.8
+   },
+   "(0.03, 0.015, 0.005)": {
+    "trades": 1071,
+    "gagnants": 0.681,
+    "esperance_mises": -0.0124,
+    "total_10e": -133.2,
+    "brut_pct": 67.1,
+    "frais_pct": 107.1
+   },
+   "(0.03, 0.015, 0.01)": {
+    "trades": 976,
+    "gagnants": 0.676,
+    "esperance_mises": -0.0187,
+    "total_10e": -182.1,
+    "brut_pct": 43.0,
+    "frais_pct": 97.6
+   },
+   "(0.03, 0.015, 0.015)": {
+    "trades": 850,
+    "gagnants": 0.629,
+    "esperance_mises": -0.036,
+    "total_10e": -306.0,
+    "brut_pct": -6.8,
+    "frais_pct": 85.0
+   },
+   "(0.03, 0.02, 0.0025)": {
+    "trades": 830,
+    "gagnants": 0.617,
+    "esperance_mises": -0.0038,
+    "total_10e": -31.5,
+    "brut_pct": 73.6,
+    "frais_pct": 83.0
+   },
+   "(0.03, 0.02, 0.005)": {
+    "trades": 812,
+    "gagnants": 0.623,
+    "esperance_mises": 0.0013,
+    "total_10e": 10.5,
+    "brut_pct": 84.3,
+    "frais_pct": 81.2
+   },
+   "(0.03, 0.02, 0.01)": {
+    "trades": 754,
+    "gagnants": 0.623,
+    "esperance_mises": 0.0085,
+    "total_10e": 64.5,
+    "brut_pct": 94.7,
+    "frais_pct": 75.4
+   },
+   "(0.03, 0.02, 0.015)": {
+    "trades": 702,
+    "gagnants": 0.617,
+    "esperance_mises": -0.0096,
+    "total_10e": -67.1,
+    "brut_pct": 50.1,
+    "frais_pct": 70.2
+   },
+   "(0.03, 0.02, 0.02)": {
+    "trades": 601,
+    "gagnants": 0.569,
+    "esperance_mises": -0.0254,
+    "total_10e": -152.8,
+    "brut_pct": 14.3,
+    "frais_pct": 60.1
+   },
+   "(0.03, 0.03, 0.0025)": {
+    "trades": 569,
+    "gagnants": 0.533,
+    "esperance_mises": 0.0256,
+    "total_10e": 145.5,
+    "brut_pct": 100.6,
+    "frais_pct": 56.9
+   },
+   "(0.03, 0.03, 0.005)": {
+    "trades": 564,
+    "gagnants": 0.527,
+    "esperance_mises": 0.0048,
+    "total_10e": 27.0,
+    "brut_pct": 64.5,
+    "frais_pct": 56.4
+   },
+   "(0.03, 0.03, 0.01)": {
+    "trades": 547,
+    "gagnants": 0.517,
+    "esperance_mises": -0.0134,
+    "total_10e": -73.3,
+    "brut_pct": 32.7,
+    "frais_pct": 54.7
+   },
+   "(0.03, 0.03, 0.015)": {
+    "trades": 528,
+    "gagnants": 0.517,
+    "esperance_mises": -0.0144,
+    "total_10e": -75.9,
+    "brut_pct": 30.0,
+    "frais_pct": 52.8
+   },
+   "(0.03, 0.03, 0.02)": {
+    "trades": 469,
+    "gagnants": 0.516,
+    "esperance_mises": -0.0034,
+    "total_10e": -16.1,
+    "brut_pct": 42.1,
+    "frais_pct": 46.9
+   },
+   "(0.03, 0.03, 0.03)": {
+    "trades": 373,
+    "gagnants": 0.504,
+    "esperance_mises": 0.0138,
+    "total_10e": 51.4,
+    "brut_pct": 52.7,
+    "frais_pct": 37.3
+   },
+   "(0.03, 0.05, 0.0025)": {
+    "trades": 328,
+    "gagnants": 0.378,
+    "esperance_mises": -0.0252,
+    "total_10e": -82.5,
+    "brut_pct": 8.1,
+    "frais_pct": 32.8
+   },
+   "(0.03, 0.05, 0.005)": {
+    "trades": 323,
+    "gagnants": 0.393,
+    "esperance_mises": 0.0061,
+    "total_10e": 19.5,
+    "brut_pct": 38.2,
+    "frais_pct": 32.3
+   },
+   "(0.03, 0.05, 0.01)": {
+    "trades": 308,
+    "gagnants": 0.419,
+    "esperance_mises": 0.0726,
+    "total_10e": 223.7,
+    "brut_pct": 97.9,
+    "frais_pct": 30.8
+   },
+   "(0.03, 0.05, 0.015)": {
+    "trades": 313,
+    "gagnants": 0.396,
+    "esperance_mises": 0.0104,
+    "total_10e": 32.7,
+    "brut_pct": 41.1,
+    "frais_pct": 31.3
+   },
+   "(0.03, 0.05, 0.02)": {
+    "trades": 323,
+    "gagnants": 0.378,
+    "esperance_mises": -0.0272,
+    "total_10e": -88.0,
+    "brut_pct": 5.9,
+    "frais_pct": 32.3
+   },
+   "(0.03, 0.05, 0.03)": {
+    "trades": 288,
+    "gagnants": 0.372,
+    "esperance_mises": -0.0386,
+    "total_10e": -111.3,
+    "brut_pct": -4.6,
+    "frais_pct": 28.8
+   },
+   "(0.05, 0.005, 0.0025)": {
+    "trades": 1970,
+    "gagnants": 0.9,
+    "esperance_mises": -0.0116,
+    "total_10e": -229.4,
+    "brut_pct": 82.3,
+    "frais_pct": 197.0
+   },
+   "(0.05, 0.005, 0.005)": {
+    "trades": 1912,
+    "gagnants": 0.771,
+    "esperance_mises": -0.0034,
+    "total_10e": -64.8,
+    "brut_pct": 158.8,
+    "frais_pct": 191.2
+   },
+   "(0.05, 0.01, 0.0025)": {
+    "trades": 1039,
+    "gagnants": 0.853,
+    "esperance_mises": 0.0054,
+    "total_10e": 56.3,
+    "brut_pct": 132.0,
+    "frais_pct": 103.9
+   },
+   "(0.05, 0.01, 0.005)": {
+    "trades": 1039,
+    "gagnants": 0.857,
+    "esperance_mises": 0.0037,
+    "total_10e": 38.9,
+    "brut_pct": 123.3,
+    "frais_pct": 103.9
+   },
+   "(0.05, 0.01, 0.01)": {
+    "trades": 888,
+    "gagnants": 0.789,
+    "esperance_mises": 0.0152,
+    "total_10e": 135.1,
+    "brut_pct": 156.4,
+    "frais_pct": 88.8
+   },
+   "(0.05, 0.015, 0.0025)": {
+    "trades": 693,
+    "gagnants": 0.782,
+    "esperance_mises": 0.0011,
+    "total_10e": 7.7,
+    "brut_pct": 73.2,
+    "frais_pct": 69.3
+   },
+   "(0.05, 0.015, 0.005)": {
+    "trades": 671,
+    "gagnants": 0.778,
+    "esperance_mises": -0.0082,
+    "total_10e": -54.9,
+    "brut_pct": 39.7,
+    "frais_pct": 67.1
+   },
+   "(0.05, 0.015, 0.01)": {
+    "trades": 627,
+    "gagnants": 0.788,
+    "esperance_mises": 0.0034,
+    "total_10e": 21.2,
+    "brut_pct": 73.3,
+    "frais_pct": 62.7
+   },
+   "(0.05, 0.015, 0.015)": {
+    "trades": 563,
+    "gagnants": 0.718,
+    "esperance_mises": -0.0264,
+    "total_10e": -148.7,
+    "brut_pct": -18.1,
+    "frais_pct": 56.3
+   },
+   "(0.05, 0.02, 0.0025)": {
+    "trades": 516,
+    "gagnants": 0.731,
+    "esperance_mises": 0.0034,
+    "total_10e": 17.7,
+    "brut_pct": 60.4,
+    "frais_pct": 51.6
+   },
+   "(0.05, 0.02, 0.005)": {
+    "trades": 503,
+    "gagnants": 0.724,
+    "esperance_mises": -0.0042,
+    "total_10e": -21.0,
+    "brut_pct": 39.8,
+    "frais_pct": 50.3
+   },
+   "(0.05, 0.02, 0.01)": {
+    "trades": 484,
+    "gagnants": 0.738,
+    "esperance_mises": 0.0109,
+    "total_10e": 52.9,
+    "brut_pct": 74.8,
+    "frais_pct": 48.4
+   },
+   "(0.05, 0.02, 0.015)": {
+    "trades": 463,
+    "gagnants": 0.73,
+    "esperance_mises": -0.007,
+    "total_10e": -32.5,
+    "brut_pct": 30.1,
+    "frais_pct": 46.3
+   },
+   "(0.05, 0.02, 0.02)": {
+    "trades": 408,
+    "gagnants": 0.659,
+    "esperance_mises": -0.0429,
+    "total_10e": -175.1,
+    "brut_pct": -46.8,
+    "frais_pct": 40.8
+   },
+   "(0.05, 0.03, 0.0025)": {
+    "trades": 357,
+    "gagnants": 0.65,
+    "esperance_mises": 0.0119,
+    "total_10e": 42.3,
+    "brut_pct": 56.9,
+    "frais_pct": 35.7
+   },
+   "(0.05, 0.03, 0.005)": {
+    "trades": 346,
+    "gagnants": 0.65,
+    "esperance_mises": 0.01,
+    "total_10e": 34.5,
+    "brut_pct": 51.8,
+    "frais_pct": 34.6
+   },
+   "(0.05, 0.03, 0.01)": {
+    "trades": 326,
+    "gagnants": 0.666,
+    "esperance_mises": 0.0356,
+    "total_10e": 115.9,
+    "brut_pct": 90.6,
+    "frais_pct": 32.6
+   },
+   "(0.05, 0.03, 0.015)": {
+    "trades": 318,
+    "gagnants": 0.651,
+    "esperance_mises": 0.0154,
+    "total_10e": 49.1,
+    "brut_pct": 56.3,
+    "frais_pct": 31.8
+   },
+   "(0.05, 0.03, 0.02)": {
+    "trades": 307,
+    "gagnants": 0.619,
+    "esperance_mises": -0.0297,
+    "total_10e": -91.3,
+    "brut_pct": -14.9,
+    "frais_pct": 30.7
+   },
+   "(0.05, 0.03, 0.03)": {
+    "trades": 269,
+    "gagnants": 0.584,
+    "esperance_mises": -0.0647,
+    "total_10e": -174.1,
+    "brut_pct": -60.1,
+    "frais_pct": 26.9
+   },
+   "(0.05, 0.05, 0.0025)": {
+    "trades": 216,
+    "gagnants": 0.481,
+    "esperance_mises": -0.06,
+    "total_10e": -129.5,
+    "brut_pct": -43.2,
+    "frais_pct": 21.6
+   },
+   "(0.05, 0.05, 0.005)": {
+    "trades": 206,
+    "gagnants": 0.515,
+    "esperance_mises": -0.0014,
+    "total_10e": -2.8,
+    "brut_pct": 19.2,
+    "frais_pct": 20.6
+   },
+   "(0.05, 0.05, 0.01)": {
+    "trades": 201,
+    "gagnants": 0.532,
+    "esperance_mises": 0.042,
+    "total_10e": 84.3,
+    "brut_pct": 62.3,
+    "frais_pct": 20.1
+   },
+   "(0.05, 0.05, 0.015)": {
+    "trades": 195,
+    "gagnants": 0.487,
+    "esperance_mises": -0.0329,
+    "total_10e": -64.2,
+    "brut_pct": -12.6,
+    "frais_pct": 19.5
+   },
+   "(0.05, 0.05, 0.02)": {
+    "trades": 188,
+    "gagnants": 0.489,
+    "esperance_mises": -0.0202,
+    "total_10e": -37.9,
+    "brut_pct": -0.2,
+    "frais_pct": 18.8
+   },
+   "(0.05, 0.05, 0.03)": {
+    "trades": 187,
+    "gagnants": 0.46,
+    "esperance_mises": -0.0863,
+    "total_10e": -161.3,
+    "brut_pct": -62.0,
+    "frais_pct": 18.7
+   }
+  },
+  "2026": {
+   "(0.005, 0.005, 0.0025)": {
+    "trades": 4874,
+    "gagnants": 0.505,
+    "esperance_mises": -0.1893,
+    "total_10e": -9226.4,
+    "brut_pct": 26.1,
+    "frais_pct": 487.4
+   },
+   "(0.005, 0.005, 0.005)": {
+    "trades": 3705,
+    "gagnants": 0.423,
+    "esperance_mises": -0.1918,
+    "total_10e": -7107.5,
+    "brut_pct": 15.1,
+    "frais_pct": 370.5
+   },
+   "(0.005, 0.01, 0.0025)": {
+    "trades": 2659,
+    "gagnants": 0.337,
+    "esperance_mises": -0.1915,
+    "total_10e": -5092.3,
+    "brut_pct": 11.3,
+    "frais_pct": 265.9
+   },
+   "(0.005, 0.01, 0.005)": {
+    "trades": 2383,
+    "gagnants": 0.346,
+    "esperance_mises": -0.1782,
+    "total_10e": -4245.4,
+    "brut_pct": 26.0,
+    "frais_pct": 238.3
+   },
+   "(0.005, 0.01, 0.01)": {
+    "trades": 1727,
+    "gagnants": 0.316,
+    "esperance_mises": -0.1798,
+    "total_10e": -3105.2,
+    "brut_pct": 17.4,
+    "frais_pct": 172.7
+   },
+   "(0.005, 0.015, 0.0025)": {
+    "trades": 1814,
+    "gagnants": 0.259,
+    "esperance_mises": -0.1677,
+    "total_10e": -3041.7,
+    "brut_pct": 29.3,
+    "frais_pct": 181.4
+   },
+   "(0.005, 0.015, 0.005)": {
+    "trades": 1729,
+    "gagnants": 0.27,
+    "esperance_mises": -0.1482,
+    "total_10e": -2562.4,
+    "brut_pct": 44.8,
+    "frais_pct": 172.9
+   },
+   "(0.005, 0.015, 0.01)": {
+    "trades": 1428,
+    "gagnants": 0.254,
+    "esperance_mises": -0.1887,
+    "total_10e": -2694.9,
+    "brut_pct": 8.1,
+    "frais_pct": 142.8
+   },
+   "(0.005, 0.015, 0.015)": {
+    "trades": 1119,
+    "gagnants": 0.245,
+    "esperance_mises": -0.2087,
+    "total_10e": -2335.3,
+    "brut_pct": -4.9,
+    "frais_pct": 111.9
+   },
+   "(0.005, 0.02, 0.0025)": {
+    "trades": 1416,
+    "gagnants": 0.203,
+    "esperance_mises": -0.1883,
+    "total_10e": -2666.8,
+    "brut_pct": 8.3,
+    "frais_pct": 141.6
+   },
+   "(0.005, 0.02, 0.005)": {
+    "trades": 1376,
+    "gagnants": 0.201,
+    "esperance_mises": -0.2057,
+    "total_10e": -2830.8,
+    "brut_pct": -3.9,
+    "frais_pct": 137.6
+   },
+   "(0.005, 0.02, 0.01)": {
+    "trades": 1253,
+    "gagnants": 0.192,
+    "esperance_mises": -0.2466,
+    "total_10e": -3090.0,
+    "brut_pct": -29.2,
+    "frais_pct": 125.3
+   },
+   "(0.005, 0.02, 0.015)": {
+    "trades": 999,
+    "gagnants": 0.196,
+    "esperance_mises": -0.211,
+    "total_10e": -2108.2,
+    "brut_pct": -5.5,
+    "frais_pct": 99.9
+   },
+   "(0.005, 0.02, 0.02)": {
+    "trades": 852,
+    "gagnants": 0.165,
+    "esperance_mises": -0.2897,
+    "total_10e": -2468.7,
+    "brut_pct": -38.2,
+    "frais_pct": 85.2
+   },
+   "(0.005, 0.03, 0.0025)": {
+    "trades": 976,
+    "gagnants": 0.125,
+    "esperance_mises": -0.3303,
+    "total_10e": -3224.2,
+    "brut_pct": -63.6,
+    "frais_pct": 97.6
+   },
+   "(0.005, 0.03, 0.005)": {
+    "trades": 943,
+    "gagnants": 0.145,
+    "esperance_mises": -0.194,
+    "total_10e": -1829.7,
+    "brut_pct": 2.8,
+    "frais_pct": 94.3
+   },
+   "(0.005, 0.03, 0.01)": {
+    "trades": 897,
+    "gagnants": 0.143,
+    "esperance_mises": -0.2109,
+    "total_10e": -1891.5,
+    "brut_pct": -4.9,
+    "frais_pct": 89.7
+   },
+   "(0.005, 0.03, 0.015)": {
+    "trades": 852,
+    "gagnants": 0.13,
+    "esperance_mises": -0.2892,
+    "total_10e": -2463.9,
+    "brut_pct": -38.0,
+    "frais_pct": 85.2
+   },
+   "(0.005, 0.03, 0.02)": {
+    "trades": 767,
+    "gagnants": 0.123,
+    "esperance_mises": -0.3027,
+    "total_10e": -2322.0,
+    "brut_pct": -39.4,
+    "frais_pct": 76.7
+   },
+   "(0.005, 0.03, 0.03)": {
+    "trades": 575,
+    "gagnants": 0.129,
+    "esperance_mises": -0.296,
+    "total_10e": -1702.3,
+    "brut_pct": -27.6,
+    "frais_pct": 57.5
+   },
+   "(0.005, 0.05, 0.0025)": {
+    "trades": 613,
+    "gagnants": 0.088,
+    "esperance_mises": -0.2497,
+    "total_10e": -1530.8,
+    "brut_pct": -15.2,
+    "frais_pct": 61.3
+   },
+   "(0.005, 0.05, 0.005)": {
+    "trades": 537,
+    "gagnants": 0.086,
+    "esperance_mises": -0.2549,
+    "total_10e": -1368.6,
+    "brut_pct": -14.7,
+    "frais_pct": 53.7
+   },
+   "(0.005, 0.05, 0.01)": {
+    "trades": 562,
+    "gagnants": 0.08,
+    "esperance_mises": -0.3409,
+    "total_10e": -1916.1,
+    "brut_pct": -39.6,
+    "frais_pct": 56.2
+   },
+   "(0.005, 0.05, 0.015)": {
+    "trades": 617,
+    "gagnants": 0.081,
+    "esperance_mises": -0.3395,
+    "total_10e": -2094.8,
+    "brut_pct": -43.0,
+    "frais_pct": 61.7
+   },
+   "(0.005, 0.05, 0.02)": {
+    "trades": 574,
+    "gagnants": 0.082,
+    "esperance_mises": -0.3267,
+    "total_10e": -1875.5,
+    "brut_pct": -36.4,
+    "frais_pct": 57.4
+   },
+   "(0.005, 0.05, 0.03)": {
+    "trades": 494,
+    "gagnants": 0.087,
+    "esperance_mises": -0.2898,
+    "total_10e": -1431.6,
+    "brut_pct": -22.2,
+    "frais_pct": 49.4
+   },
+   "(0.01, 0.005, 0.0025)": {
+    "trades": 2610,
+    "gagnants": 0.643,
+    "esperance_mises": -0.13,
+    "total_10e": -3393.8,
+    "brut_pct": -78.4,
+    "frais_pct": 261.0
+   },
+   "(0.01, 0.005, 0.005)": {
+    "trades": 2182,
+    "gagnants": 0.557,
+    "esperance_mises": -0.1142,
+    "total_10e": -2491.7,
+    "brut_pct": -31.0,
+    "frais_pct": 218.2
+   },
+   "(0.01, 0.01, 0.0025)": {
+    "trades": 1394,
+    "gagnants": 0.491,
+    "esperance_mises": -0.1166,
+    "total_10e": -1625.1,
+    "brut_pct": -23.1,
+    "frais_pct": 139.4
+   },
+   "(0.01, 0.01, 0.005)": {
+    "trades": 1301,
+    "gagnants": 0.509,
+    "esperance_mises": -0.0976,
+    "total_10e": -1270.3,
+    "brut_pct": 3.1,
+    "frais_pct": 130.1
+   },
+   "(0.01, 0.01, 0.01)": {
+    "trades": 933,
+    "gagnants": 0.491,
+    "esperance_mises": -0.0396,
+    "total_10e": -369.1,
+    "brut_pct": 56.4,
+    "frais_pct": 93.3
+   },
+   "(0.01, 0.015, 0.0025)": {
+    "trades": 959,
+    "gagnants": 0.394,
+    "esperance_mises": -0.1173,
+    "total_10e": -1124.4,
+    "brut_pct": -16.5,
+    "frais_pct": 95.9
+   },
+   "(0.01, 0.015, 0.005)": {
+    "trades": 908,
+    "gagnants": 0.404,
+    "esperance_mises": -0.0999,
+    "total_10e": -907.4,
+    "brut_pct": 0.1,
+    "frais_pct": 90.8
+   },
+   "(0.01, 0.015, 0.01)": {
+    "trades": 731,
+    "gagnants": 0.41,
+    "esperance_mises": -0.0604,
+    "total_10e": -441.4,
+    "brut_pct": 29.0,
+    "frais_pct": 73.1
+   },
+   "(0.01, 0.015, 0.015)": {
+    "trades": 638,
+    "gagnants": 0.359,
+    "esperance_mises": -0.153,
+    "total_10e": -975.9,
+    "brut_pct": -33.8,
+    "frais_pct": 63.8
+   },
+   "(0.01, 0.02, 0.0025)": {
+    "trades": 729,
+    "gagnants": 0.326,
+    "esperance_mises": -0.1239,
+    "total_10e": -903.4,
+    "brut_pct": -17.4,
+    "frais_pct": 72.9
+   },
+   "(0.01, 0.02, 0.005)": {
+    "trades": 731,
+    "gagnants": 0.328,
+    "esperance_mises": -0.1251,
+    "total_10e": -914.6,
+    "brut_pct": -18.4,
+    "frais_pct": 73.1
+   },
+   "(0.01, 0.02, 0.01)": {
+    "trades": 605,
+    "gagnants": 0.334,
+    "esperance_mises": -0.0997,
+    "total_10e": -603.4,
+    "brut_pct": 0.2,
+    "frais_pct": 60.5
+   },
+   "(0.01, 0.02, 0.015)": {
+    "trades": 547,
+    "gagnants": 0.311,
+    "esperance_mises": -0.1568,
+    "total_10e": -857.9,
+    "brut_pct": -31.1,
+    "frais_pct": 54.7
+   },
+   "(0.01, 0.02, 0.02)": {
+    "trades": 459,
+    "gagnants": 0.283,
+    "esperance_mises": -0.1868,
+    "total_10e": -857.2,
+    "brut_pct": -39.8,
+    "frais_pct": 45.9
+   },
+   "(0.01, 0.03, 0.0025)": {
+    "trades": 491,
+    "gagnants": 0.265,
+    "esperance_mises": -0.0438,
+    "total_10e": -214.9,
+    "brut_pct": 27.6,
+    "frais_pct": 49.1
+   },
+   "(0.01, 0.03, 0.005)": {
+    "trades": 481,
+    "gagnants": 0.245,
+    "esperance_mises": -0.1085,
+    "total_10e": -522.0,
+    "brut_pct": -4.1,
+    "frais_pct": 48.1
+   },
+   "(0.01, 0.03, 0.01)": {
+    "trades": 422,
+    "gagnants": 0.268,
+    "esperance_mises": -0.0192,
+    "total_10e": -80.9,
+    "brut_pct": 34.1,
+    "frais_pct": 42.2
+   },
+   "(0.01, 0.03, 0.015)": {
+    "trades": 424,
+    "gagnants": 0.229,
+    "esperance_mises": -0.1691,
+    "total_10e": -716.9,
+    "brut_pct": -29.3,
+    "frais_pct": 42.4
+   },
+   "(0.01, 0.03, 0.02)": {
+    "trades": 399,
+    "gagnants": 0.216,
+    "esperance_mises": -0.2063,
+    "total_10e": -823.1,
+    "brut_pct": -42.4,
+    "frais_pct": 39.9
+   },
+   "(0.01, 0.03, 0.03)": {
+    "trades": 280,
+    "gagnants": 0.254,
+    "esperance_mises": -0.1022,
+    "total_10e": -286.2,
+    "brut_pct": -0.6,
+    "frais_pct": 28.0
+   },
+   "(0.01, 0.05, 0.0025)": {
+    "trades": 308,
+    "gagnants": 0.153,
+    "esperance_mises": -0.1902,
+    "total_10e": -585.8,
+    "brut_pct": -27.8,
+    "frais_pct": 30.8
+   },
+   "(0.01, 0.05, 0.005)": {
+    "trades": 267,
+    "gagnants": 0.157,
+    "esperance_mises": -0.1528,
+    "total_10e": -408.0,
+    "brut_pct": -14.1,
+    "frais_pct": 26.7
+   },
+   "(0.01, 0.05, 0.01)": {
+    "trades": 285,
+    "gagnants": 0.147,
+    "esperance_mises": -0.2213,
+    "total_10e": -630.7,
+    "brut_pct": -34.6,
+    "frais_pct": 28.5
+   },
+   "(0.01, 0.05, 0.015)": {
+    "trades": 294,
+    "gagnants": 0.16,
+    "esperance_mises": -0.1647,
+    "total_10e": -484.2,
+    "brut_pct": -19.0,
+    "frais_pct": 29.4
+   },
+   "(0.01, 0.05, 0.02)": {
+    "trades": 281,
+    "gagnants": 0.149,
+    "esperance_mises": -0.1981,
+    "total_10e": -556.6,
+    "brut_pct": -27.6,
+    "frais_pct": 28.1
+   },
+   "(0.01, 0.05, 0.03)": {
+    "trades": 231,
+    "gagnants": 0.182,
+    "esperance_mises": -0.0909,
+    "total_10e": -210.0,
+    "brut_pct": 2.1,
+    "frais_pct": 23.1
+   },
+   "(0.015, 0.005, 0.0025)": {
+    "trades": 1778,
+    "gagnants": 0.749,
+    "esperance_mises": -0.0648,
+    "total_10e": -1151.4,
+    "brut_pct": 5.1,
+    "frais_pct": 177.8
+   },
+   "(0.015, 0.005, 0.005)": {
+    "trades": 1537,
+    "gagnants": 0.621,
+    "esperance_mises": -0.0847,
+    "total_10e": -1301.6,
+    "brut_pct": -41.5,
+    "frais_pct": 153.7
+   },
+   "(0.015, 0.01, 0.0025)": {
+    "trades": 937,
+    "gagnants": 0.594,
+    "esperance_mises": -0.0752,
+    "total_10e": -704.4,
+    "brut_pct": -12.0,
+    "frais_pct": 93.7
+   },
+   "(0.015, 0.01, 0.005)": {
+    "trades": 904,
+    "gagnants": 0.612,
+    "esperance_mises": -0.0661,
+    "total_10e": -597.2,
+    "brut_pct": 0.8,
+    "frais_pct": 90.4
+   },
+   "(0.015, 0.01, 0.01)": {
+    "trades": 694,
+    "gagnants": 0.556,
+    "esperance_mises": -0.0759,
+    "total_10e": -526.7,
+    "brut_pct": -9.6,
+    "frais_pct": 69.4
+   },
+   "(0.015, 0.015, 0.0025)": {
+    "trades": 642,
+    "gagnants": 0.494,
+    "esperance_mises": -0.0865,
+    "total_10e": -555.6,
+    "brut_pct": -19.1,
+    "frais_pct": 64.2
+   },
+   "(0.015, 0.015, 0.005)": {
+    "trades": 626,
+    "gagnants": 0.5,
+    "esperance_mises": -0.0746,
+    "total_10e": -467.0,
+    "brut_pct": -7.5,
+    "frais_pct": 62.6
+   },
+   "(0.015, 0.015, 0.01)": {
+    "trades": 525,
+    "gagnants": 0.491,
+    "esperance_mises": -0.0833,
+    "total_10e": -437.4,
+    "brut_pct": -13.1,
+    "frais_pct": 52.5
+   },
+   "(0.015, 0.015, 0.015)": {
+    "trades": 433,
+    "gagnants": 0.471,
+    "esperance_mises": -0.0673,
+    "total_10e": -291.3,
+    "brut_pct": -0.4,
+    "frais_pct": 43.3
+   },
+   "(0.015, 0.02, 0.0025)": {
+    "trades": 483,
+    "gagnants": 0.422,
+    "esperance_mises": -0.0852,
+    "total_10e": -411.5,
+    "brut_pct": -13.4,
+    "frais_pct": 48.3
+   },
+   "(0.015, 0.02, 0.005)": {
+    "trades": 477,
+    "gagnants": 0.432,
+    "esperance_mises": -0.0723,
+    "total_10e": -344.9,
+    "brut_pct": -4.0,
+    "frais_pct": 47.7
+   },
+   "(0.015, 0.02, 0.01)": {
+    "trades": 431,
+    "gagnants": 0.429,
+    "esperance_mises": -0.0722,
+    "total_10e": -311.2,
+    "brut_pct": -3.6,
+    "frais_pct": 43.1
+   },
+   "(0.015, 0.02, 0.015)": {
+    "trades": 372,
+    "gagnants": 0.411,
+    "esperance_mises": -0.1128,
+    "total_10e": -419.7,
+    "brut_pct": -25.8,
+    "frais_pct": 37.2
+   },
+   "(0.015, 0.02, 0.02)": {
+    "trades": 320,
+    "gagnants": 0.366,
+    "esperance_mises": -0.1624,
+    "total_10e": -519.8,
+    "brut_pct": -46.0,
+    "frais_pct": 32.0
+   },
+   "(0.015, 0.03, 0.0025)": {
+    "trades": 306,
+    "gagnants": 0.363,
+    "esperance_mises": 0.0072,
+    "total_10e": 22.0,
+    "brut_pct": 33.9,
+    "frais_pct": 30.6
+   },
+   "(0.015, 0.03, 0.005)": {
+    "trades": 314,
+    "gagnants": 0.328,
+    "esperance_mises": -0.0865,
+    "total_10e": -271.7,
+    "brut_pct": -9.4,
+    "frais_pct": 31.4
+   },
+   "(0.015, 0.03, 0.01)": {
+    "trades": 293,
+    "gagnants": 0.324,
+    "esperance_mises": -0.0758,
+    "total_10e": -222.2,
+    "brut_pct": -4.0,
+    "frais_pct": 29.3
+   },
+   "(0.015, 0.03, 0.015)": {
+    "trades": 280,
+    "gagnants": 0.311,
+    "esperance_mises": -0.1233,
+    "total_10e": -345.4,
+    "brut_pct": -23.8,
+    "frais_pct": 28.0
+   },
+   "(0.015, 0.03, 0.02)": {
+    "trades": 256,
+    "gagnants": 0.293,
+    "esperance_mises": -0.1424,
+    "total_10e": -364.4,
+    "brut_pct": -29.1,
+    "frais_pct": 25.6
+   },
+   "(0.015, 0.03, 0.03)": {
+    "trades": 218,
+    "gagnants": 0.326,
+    "esperance_mises": -0.1272,
+    "total_10e": -277.2,
+    "brut_pct": -19.8,
+    "frais_pct": 21.8
+   },
+   "(0.015, 0.05, 0.0025)": {
+    "trades": 187,
+    "gagnants": 0.214,
+    "esperance_mises": -0.1438,
+    "total_10e": -268.8,
+    "brut_pct": -21.6,
+    "frais_pct": 18.7
+   },
+   "(0.015, 0.05, 0.005)": {
+    "trades": 193,
+    "gagnants": 0.228,
+    "esperance_mises": -0.0863,
+    "total_10e": -166.5,
+    "brut_pct": -5.7,
+    "frais_pct": 19.3
+   },
+   "(0.015, 0.05, 0.01)": {
+    "trades": 201,
+    "gagnants": 0.219,
+    "esperance_mises": -0.1261,
+    "total_10e": -253.4,
+    "brut_pct": -17.9,
+    "frais_pct": 20.1
+   },
+   "(0.015, 0.05, 0.015)": {
+    "trades": 183,
+    "gagnants": 0.262,
+    "esperance_mises": 0.0411,
+    "total_10e": 75.2,
+    "brut_pct": 29.6,
+    "frais_pct": 18.3
+   },
+   "(0.015, 0.05, 0.02)": {
+    "trades": 168,
+    "gagnants": 0.256,
+    "esperance_mises": 0.0568,
+    "total_10e": 95.5,
+    "brut_pct": 31.1,
+    "frais_pct": 16.8
+   },
+   "(0.015, 0.05, 0.03)": {
+    "trades": 176,
+    "gagnants": 0.233,
+    "esperance_mises": -0.125,
+    "total_10e": -220.0,
+    "brut_pct": -15.4,
+    "frais_pct": 17.6
+   },
+   "(0.02, 0.005, 0.0025)": {
+    "trades": 1348,
+    "gagnants": 0.795,
+    "esperance_mises": -0.0459,
+    "total_10e": -619.2,
+    "brut_pct": 11.0,
+    "frais_pct": 134.8
+   },
+   "(0.02, 0.005, 0.005)": {
+    "trades": 1240,
+    "gagnants": 0.685,
+    "esperance_mises": -0.0356,
+    "total_10e": -441.9,
+    "brut_pct": 35.6,
+    "frais_pct": 124.0
+   },
+   "(0.02, 0.01, 0.0025)": {
+    "trades": 692,
+    "gagnants": 0.684,
+    "esperance_mises": -0.0266,
+    "total_10e": -184.0,
+    "brut_pct": 32.4,
+    "frais_pct": 69.2
+   },
+   "(0.02, 0.01, 0.005)": {
+    "trades": 689,
+    "gagnants": 0.687,
+    "esperance_mises": -0.0292,
+    "total_10e": -200.9,
+    "brut_pct": 28.7,
+    "frais_pct": 68.9
+   },
+   "(0.02, 0.01, 0.01)": {
+    "trades": 545,
+    "gagnants": 0.628,
+    "esperance_mises": -0.0415,
+    "total_10e": -226.2,
+    "brut_pct": 9.3,
+    "frais_pct": 54.5
+   },
+   "(0.02, 0.015, 0.0025)": {
+    "trades": 457,
+    "gagnants": 0.573,
+    "esperance_mises": -0.0487,
+    "total_10e": -222.7,
+    "brut_pct": 1.2,
+    "frais_pct": 45.7
+   },
+   "(0.02, 0.015, 0.005)": {
+    "trades": 467,
+    "gagnants": 0.567,
+    "esperance_mises": -0.0645,
+    "total_10e": -301.1,
+    "brut_pct": -13.5,
+    "frais_pct": 46.7
+   },
+   "(0.02, 0.015, 0.01)": {
+    "trades": 407,
+    "gagnants": 0.541,
+    "esperance_mises": -0.0973,
+    "total_10e": -396.2,
+    "brut_pct": -38.5,
+    "frais_pct": 40.7
+   },
+   "(0.02, 0.015, 0.015)": {
+    "trades": 355,
+    "gagnants": 0.518,
+    "esperance_mises": -0.1008,
+    "total_10e": -358.0,
+    "brut_pct": -36.1,
+    "frais_pct": 35.5
+   },
+   "(0.02, 0.02, 0.0025)": {
+    "trades": 364,
+    "gagnants": 0.505,
+    "esperance_mises": -0.0318,
+    "total_10e": -115.6,
+    "brut_pct": 13.3,
+    "frais_pct": 36.4
+   },
+   "(0.02, 0.02, 0.005)": {
+    "trades": 357,
+    "gagnants": 0.501,
+    "esperance_mises": -0.0566,
+    "total_10e": -202.1,
+    "brut_pct": -4.7,
+    "frais_pct": 35.7
+   },
+   "(0.02, 0.02, 0.01)": {
+    "trades": 327,
+    "gagnants": 0.477,
+    "esperance_mises": -0.0942,
+    "total_10e": -307.9,
+    "brut_pct": -28.9,
+    "frais_pct": 32.7
+   },
+   "(0.02, 0.02, 0.015)": {
+    "trades": 298,
+    "gagnants": 0.473,
+    "esperance_mises": -0.1195,
+    "total_10e": -356.2,
+    "brut_pct": -41.4,
+    "frais_pct": 29.8
+   },
+   "(0.02, 0.02, 0.02)": {
+    "trades": 228,
+    "gagnants": 0.478,
+    "esperance_mises": -0.0157,
+    "total_10e": -35.7,
+    "brut_pct": 15.7,
+    "frais_pct": 22.8
+   },
+   "(0.02, 0.03, 0.0025)": {
+    "trades": 234,
+    "gagnants": 0.397,
+    "esperance_mises": -0.0607,
+    "total_10e": -142.0,
+    "brut_pct": -5.0,
+    "frais_pct": 23.4
+   },
+   "(0.02, 0.03, 0.005)": {
+    "trades": 233,
+    "gagnants": 0.386,
+    "esperance_mises": -0.0911,
+    "total_10e": -212.4,
+    "brut_pct": -19.2,
+    "frais_pct": 23.3
+   },
+   "(0.02, 0.03, 0.01)": {
+    "trades": 223,
+    "gagnants": 0.395,
+    "esperance_mises": -0.0553,
+    "total_10e": -123.3,
+    "brut_pct": -2.4,
+    "frais_pct": 22.3
+   },
+   "(0.02, 0.03, 0.015)": {
+    "trades": 212,
+    "gagnants": 0.363,
+    "esperance_mises": -0.1289,
+    "total_10e": -273.4,
+    "brut_pct": -33.5,
+    "frais_pct": 21.2
+   },
+   "(0.02, 0.03, 0.02)": {
+    "trades": 186,
+    "gagnants": 0.403,
+    "esperance_mises": -0.0221,
+    "total_10e": -41.0,
+    "brut_pct": 10.4,
+    "frais_pct": 18.6
+   },
+   "(0.02, 0.03, 0.03)": {
+    "trades": 164,
+    "gagnants": 0.396,
+    "esperance_mises": -0.075,
+    "total_10e": -123.0,
+    "brut_pct": -8.2,
+    "frais_pct": 16.4
+   },
+   "(0.02, 0.05, 0.0025)": {
+    "trades": 149,
+    "gagnants": 0.282,
+    "esperance_mises": -0.0534,
+    "total_10e": -79.6,
+    "brut_pct": -1.0,
+    "frais_pct": 14.9
+   },
+   "(0.02, 0.05, 0.005)": {
+    "trades": 137,
+    "gagnants": 0.328,
+    "esperance_mises": 0.0974,
+    "total_10e": 133.4,
+    "brut_pct": 40.4,
+    "frais_pct": 13.7
+   },
+   "(0.02, 0.05, 0.01)": {
+    "trades": 144,
+    "gagnants": 0.326,
+    "esperance_mises": 0.0651,
+    "total_10e": 93.8,
+    "brut_pct": 33.2,
+    "frais_pct": 14.4
+   },
+   "(0.02, 0.05, 0.015)": {
+    "trades": 139,
+    "gagnants": 0.317,
+    "esperance_mises": 0.0535,
+    "total_10e": 74.4,
+    "brut_pct": 28.8,
+    "frais_pct": 13.9
+   },
+   "(0.02, 0.05, 0.02)": {
+    "trades": 136,
+    "gagnants": 0.301,
+    "esperance_mises": 0.0072,
+    "total_10e": 9.8,
+    "brut_pct": 15.6,
+    "frais_pct": 13.6
+   },
+   "(0.02, 0.05, 0.03)": {
+    "trades": 131,
+    "gagnants": 0.305,
+    "esperance_mises": -0.0488,
+    "total_10e": -64.0,
+    "brut_pct": 0.3,
+    "frais_pct": 13.1
+   },
+   "(0.03, 0.005, 0.0025)": {
+    "trades": 905,
+    "gagnants": 0.838,
+    "esperance_mises": -0.043,
+    "total_10e": -388.7,
+    "brut_pct": -26.1,
+    "frais_pct": 90.5
+   },
+   "(0.03, 0.005, 0.005)": {
+    "trades": 896,
+    "gagnants": 0.729,
+    "esperance_mises": -0.0282,
+    "total_10e": -253.1,
+    "brut_pct": 13.7,
+    "frais_pct": 89.6
+   },
+   "(0.03, 0.01, 0.0025)": {
+    "trades": 472,
+    "gagnants": 0.756,
+    "esperance_mises": -0.0276,
+    "total_10e": -130.2,
+    "brut_pct": 8.1,
+    "frais_pct": 47.2
+   },
+   "(0.03, 0.01, 0.005)": {
+    "trades": 473,
+    "gagnants": 0.742,
+    "esperance_mises": -0.0482,
+    "total_10e": -227.8,
+    "brut_pct": -21.0,
+    "frais_pct": 47.3
+   },
+   "(0.03, 0.01, 0.01)": {
+    "trades": 395,
+    "gagnants": 0.673,
+    "esperance_mises": -0.0586,
+    "total_10e": -231.5,
+    "brut_pct": -29.9,
+    "frais_pct": 39.5
+   },
+   "(0.03, 0.015, 0.0025)": {
+    "trades": 317,
+    "gagnants": 0.647,
+    "esperance_mises": -0.0567,
+    "total_10e": -179.8,
+    "brut_pct": -22.2,
+    "frais_pct": 31.7
+   },
+   "(0.03, 0.015, 0.005)": {
+    "trades": 319,
+    "gagnants": 0.636,
+    "esperance_mises": -0.0744,
+    "total_10e": -237.4,
+    "brut_pct": -39.3,
+    "frais_pct": 31.9
+   },
+   "(0.03, 0.015, 0.01)": {
+    "trades": 285,
+    "gagnants": 0.614,
+    "esperance_mises": -0.0994,
+    "total_10e": -283.2,
+    "brut_pct": -56.5,
+    "frais_pct": 28.5
+   },
+   "(0.03, 0.015, 0.015)": {
+    "trades": 245,
+    "gagnants": 0.584,
+    "esperance_mises": -0.097,
+    "total_10e": -237.7,
+    "brut_pct": -46.8,
+    "frais_pct": 24.5
+   },
+   "(0.03, 0.02, 0.0025)": {
+    "trades": 247,
+    "gagnants": 0.583,
+    "esperance_mises": -0.0691,
+    "total_10e": -170.6,
+    "brut_pct": -26.5,
+    "frais_pct": 24.7
+   },
+   "(0.03, 0.02, 0.005)": {
+    "trades": 253,
+    "gagnants": 0.569,
+    "esperance_mises": -0.1032,
+    "total_10e": -261.0,
+    "brut_pct": -53.0,
+    "frais_pct": 25.3
+   },
+   "(0.03, 0.02, 0.01)": {
+    "trades": 230,
+    "gagnants": 0.561,
+    "esperance_mises": -0.1014,
+    "total_10e": -233.2,
+    "brut_pct": -47.0,
+    "frais_pct": 23.0
+   },
+   "(0.03, 0.02, 0.015)": {
+    "trades": 201,
+    "gagnants": 0.572,
+    "esperance_mises": -0.0657,
+    "total_10e": -132.0,
+    "brut_pct": -19.5,
+    "frais_pct": 20.1
+   },
+   "(0.03, 0.02, 0.02)": {
+    "trades": 166,
+    "gagnants": 0.566,
+    "esperance_mises": -0.0115,
+    "total_10e": -19.1,
+    "brut_pct": 10.9,
+    "frais_pct": 16.6
+   },
+   "(0.03, 0.03, 0.0025)": {
+    "trades": 172,
+    "gagnants": 0.465,
+    "esperance_mises": -0.0953,
+    "total_10e": -163.9,
+    "brut_pct": -32.0,
+    "frais_pct": 17.2
+   },
+   "(0.03, 0.03, 0.005)": {
+    "trades": 177,
+    "gagnants": 0.458,
+    "esperance_mises": -0.1198,
+    "total_10e": -212.1,
+    "brut_pct": -45.9,
+    "frais_pct": 17.7
+   },
+   "(0.03, 0.03, 0.01)": {
+    "trades": 146,
+    "gagnants": 0.527,
+    "esperance_mises": 0.0104,
+    "total_10e": 15.2,
+    "brut_pct": 19.2,
+    "frais_pct": 14.6
+   },
+   "(0.03, 0.03, 0.015)": {
+    "trades": 148,
+    "gagnants": 0.473,
+    "esperance_mises": -0.0658,
+    "total_10e": -97.4,
+    "brut_pct": -14.4,
+    "frais_pct": 14.8
+   },
+   "(0.03, 0.03, 0.02)": {
+    "trades": 127,
+    "gagnants": 0.528,
+    "esperance_mises": 0.0458,
+    "total_10e": 58.1,
+    "brut_pct": 30.1,
+    "frais_pct": 12.7
+   },
+   "(0.03, 0.03, 0.03)": {
+    "trades": 102,
+    "gagnants": 0.598,
+    "esperance_mises": 0.1454,
+    "total_10e": 148.3,
+    "brut_pct": 54.7,
+    "frais_pct": 10.2
+   },
+   "(0.03, 0.05, 0.0025)": {
+    "trades": 107,
+    "gagnants": 0.374,
+    "esperance_mises": -0.0239,
+    "total_10e": -25.6,
+    "brut_pct": 3.0,
+    "frais_pct": 10.7
+   },
+   "(0.03, 0.05, 0.005)": {
+    "trades": 97,
+    "gagnants": 0.392,
+    "esperance_mises": 0.0141,
+    "total_10e": 13.7,
+    "brut_pct": 13.8,
+    "frais_pct": 9.7
+   },
+   "(0.03, 0.05, 0.01)": {
+    "trades": 94,
+    "gagnants": 0.394,
+    "esperance_mises": 0.0156,
+    "total_10e": 14.7,
+    "brut_pct": 13.8,
+    "frais_pct": 9.4
+   },
+   "(0.03, 0.05, 0.015)": {
+    "trades": 98,
+    "gagnants": 0.408,
+    "esperance_mises": 0.0702,
+    "total_10e": 68.8,
+    "brut_pct": 30.4,
+    "frais_pct": 9.8
+   },
+   "(0.03, 0.05, 0.02)": {
+    "trades": 85,
+    "gagnants": 0.459,
+    "esperance_mises": 0.1879,
+    "total_10e": 159.7,
+    "brut_pct": 56.4,
+    "frais_pct": 8.5
+   },
+   "(0.03, 0.05, 0.03)": {
+    "trades": 79,
+    "gagnants": 0.456,
+    "esperance_mises": 0.1331,
+    "total_10e": 105.1,
+    "brut_pct": 39.4,
+    "frais_pct": 7.9
+   },
+   "(0.05, 0.005, 0.0025)": {
+    "trades": 530,
+    "gagnants": 0.883,
+    "esperance_mises": -0.022,
+    "total_10e": -116.6,
+    "brut_pct": -5.3,
+    "frais_pct": 53.0
+   },
+   "(0.05, 0.005, 0.005)": {
+    "trades": 557,
+    "gagnants": 0.794,
+    "esperance_mises": -0.0017,
+    "total_10e": -9.3,
+    "brut_pct": 51.1,
+    "frais_pct": 55.7
+   },
+   "(0.05, 0.01, 0.0025)": {
+    "trades": 279,
+    "gagnants": 0.853,
+    "esperance_mises": 0.0102,
+    "total_10e": 28.4,
+    "brut_pct": 42.1,
+    "frais_pct": 27.9
+   },
+   "(0.05, 0.01, 0.005)": {
+    "trades": 283,
+    "gagnants": 0.873,
+    "esperance_mises": 0.029,
+    "total_10e": 82.2,
+    "brut_pct": 69.4,
+    "frais_pct": 28.3
+   },
+   "(0.05, 0.01, 0.01)": {
+    "trades": 247,
+    "gagnants": 0.826,
+    "esperance_mises": 0.0406,
+    "total_10e": 100.3,
+    "brut_pct": 74.9,
+    "frais_pct": 24.7
+   },
+   "(0.05, 0.015, 0.0025)": {
+    "trades": 197,
+    "gagnants": 0.797,
+    "esperance_mises": 0.0222,
+    "total_10e": 43.7,
+    "brut_pct": 41.5,
+    "frais_pct": 19.7
+   },
+   "(0.05, 0.015, 0.005)": {
+    "trades": 202,
+    "gagnants": 0.802,
+    "esperance_mises": 0.0115,
+    "total_10e": 23.3,
+    "brut_pct": 31.9,
+    "frais_pct": 20.2
+   },
+   "(0.05, 0.015, 0.01)": {
+    "trades": 168,
+    "gagnants": 0.839,
+    "esperance_mises": 0.0771,
+    "total_10e": 129.6,
+    "brut_pct": 81.6,
+    "frais_pct": 16.8
+   },
+   "(0.05, 0.015, 0.015)": {
+    "trades": 157,
+    "gagnants": 0.777,
+    "esperance_mises": 0.0516,
+    "total_10e": 81.1,
+    "brut_pct": 56.2,
+    "frais_pct": 15.7
+   },
+   "(0.05, 0.02, 0.0025)": {
+    "trades": 143,
+    "gagnants": 0.783,
+    "esperance_mises": 0.0744,
+    "total_10e": 106.4,
+    "brut_pct": 67.5,
+    "frais_pct": 14.3
+   },
+   "(0.05, 0.02, 0.005)": {
+    "trades": 141,
+    "gagnants": 0.794,
+    "esperance_mises": 0.0859,
+    "total_10e": 121.2,
+    "brut_pct": 74.7,
+    "frais_pct": 14.1
+   },
+   "(0.05, 0.02, 0.01)": {
+    "trades": 132,
+    "gagnants": 0.795,
+    "esperance_mises": 0.0918,
+    "total_10e": 121.2,
+    "brut_pct": 73.8,
+    "frais_pct": 13.2
+   },
+   "(0.05, 0.02, 0.015)": {
+    "trades": 123,
+    "gagnants": 0.78,
+    "esperance_mises": 0.08,
+    "total_10e": 98.4,
+    "brut_pct": 61.5,
+    "frais_pct": 12.3
+   },
+   "(0.05, 0.02, 0.02)": {
+    "trades": 101,
+    "gagnants": 0.772,
+    "esperance_mises": 0.1176,
+    "total_10e": 118.8,
+    "brut_pct": 69.5,
+    "frais_pct": 10.1
+   },
+   "(0.05, 0.03, 0.0025)": {
+    "trades": 93,
+    "gagnants": 0.71,
+    "esperance_mises": 0.1174,
+    "total_10e": 109.1,
+    "brut_pct": 63.9,
+    "frais_pct": 9.3
+   },
+   "(0.05, 0.03, 0.005)": {
+    "trades": 96,
+    "gagnants": 0.677,
+    "esperance_mises": 0.0669,
+    "total_10e": 64.2,
+    "brut_pct": 41.7,
+    "frais_pct": 9.6
+   },
+   "(0.05, 0.03, 0.01)": {
+    "trades": 87,
+    "gagnants": 0.69,
+    "esperance_mises": 0.09,
+    "total_10e": 78.3,
+    "brut_pct": 47.8,
+    "frais_pct": 8.7
+   },
+   "(0.05, 0.03, 0.015)": {
+    "trades": 81,
+    "gagnants": 0.716,
+    "esperance_mises": 0.1413,
+    "total_10e": 114.5,
+    "brut_pct": 65.3,
+    "frais_pct": 8.1
+   },
+   "(0.05, 0.03, 0.02)": {
+    "trades": 79,
+    "gagnants": 0.734,
+    "esperance_mises": 0.1642,
+    "total_10e": 129.7,
+    "brut_pct": 72.8,
+    "frais_pct": 7.9
+   },
+   "(0.05, 0.03, 0.03)": {
+    "trades": 71,
+    "gagnants": 0.676,
+    "esperance_mises": 0.0785,
+    "total_10e": 55.7,
+    "brut_pct": 35.0,
+    "frais_pct": 7.1
+   },
+   "(0.05, 0.05, 0.0025)": {
+    "trades": 57,
+    "gagnants": 0.596,
+    "esperance_mises": 0.1748,
+    "total_10e": 99.6,
+    "brut_pct": 55.5,
+    "frais_pct": 5.7
+   },
+   "(0.05, 0.05, 0.005)": {
+    "trades": 51,
+    "gagnants": 0.588,
+    "esperance_mises": 0.1945,
+    "total_10e": 99.2,
+    "brut_pct": 54.7,
+    "frais_pct": 5.1
+   },
+   "(0.05, 0.05, 0.01)": {
+    "trades": 50,
+    "gagnants": 0.62,
+    "esperance_mises": 0.2443,
+    "total_10e": 122.1,
+    "brut_pct": 66.1,
+    "frais_pct": 5.0
+   },
+   "(0.05, 0.05, 0.015)": {
+    "trades": 53,
+    "gagnants": 0.604,
+    "esperance_mises": 0.1699,
+    "total_10e": 90.0,
+    "brut_pct": 50.3,
+    "frais_pct": 5.3
+   },
+   "(0.05, 0.05, 0.02)": {
+    "trades": 55,
+    "gagnants": 0.618,
+    "esperance_mises": 0.1926,
+    "total_10e": 105.9,
+    "brut_pct": 58.5,
+    "frais_pct": 5.5
+   },
+   "(0.05, 0.05, 0.03)": {
+    "trades": 46,
+    "gagnants": 0.587,
+    "esperance_mises": 0.1748,
+    "total_10e": 80.4,
+    "brut_pct": 44.8,
+    "frais_pct": 4.6
+   }
+  }
+ }
+}

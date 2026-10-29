@@ -27,7 +27,7 @@ def chaine(o, h, l, c, s, t, a, inv_toujours, out):
             i += 1
         i += 1
     return m
-a = couper(np.load("../dca-martingale/refait/donnees/BTCUSDT-1m.npy")); T = len(a)
+a = couper(np.load("../dca-martingale/refait/donnees/BTCUSDT-1m.npy"), 2880); T = len(a)  # 2880 = 48 h en minutes (48 minutes figées = simple maintenance : erreur corrigée le 29/10)
 S, A, TR = 0.01, 0.01, 0.005
 
 
