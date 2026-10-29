@@ -45,7 +45,7 @@ Rapporté en plus : taux de trades gagnants, gain moyen et perte moyenne, nombre
 - Le témoin (b) ne pénalise pas la stratégie : il garde la volatilité, il enlève seulement la tendance.
 - Seul biais connu contre la stratégie : la bougie ambiguë est comptée en SL. Il est contrôlé par les bougies de 5 min.
 
-## Addendum A (29/10, 15h4x, avant calcul) : la règle exacte de Tony
+## Addendum A (29/10, 15h3x, avant calcul) : la règle exacte de Tony
 Tony précise : « SL à 1 % et trailing SL à 0,5 % dès que tu as gagné plus de 1 % », « tu es en trade 100 % du temps », « tu passes de short à long entre chaque retournement », « 1 000 € en misant 10 € et en faisant une martingale ».
 - Règle : s = 1 %, a = 1 %, t = 0,5 %, sans réglage à choisir. Deux variantes : (i) on inverse le sens après **chaque** sortie ; (ii) on l'inverse seulement après une perte.
 - Données : BTCUSDT perpétuel, bougies **1 min**, du 01/2024 au 09/2026. À cette échelle, la bougie ambiguë est presque inexistante ; on la compte quand même en SL.
