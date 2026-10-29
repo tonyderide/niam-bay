@@ -1,0 +1,63 @@
+{
+ "reglages": 468,
+ "positifs_2024_2025_btc": 19,
+ "fige": {
+  "N": 50,
+  "s": 0.05,
+  "a": 0.03,
+  "t": 0.01
+ },
+ "choix_esperance": 0.0353,
+ "BTC_2026": {
+  "trades": 88,
+  "longs": 0.398,
+  "gagnants": 0.648,
+  "esperance_mises": 0.0421,
+  "total_mise_fixe_e": 37.1,
+  "brut_pct": 27.3,
+  "frais_pct": 8.8,
+  "mois_positifs_fixe": "6/9",
+  "pire_mois_fixe": -43.9,
+  "mois_positifs_martingale3": "6/9",
+  "pire_mois_martingale3": -16.5,
+  "hasard_moyen": -0.0064,
+  "p": 0.275
+ },
+ "ETH_2024_2026": {
+  "trades": 806,
+  "longs": 0.423,
+  "gagnants": 0.648,
+  "esperance_mises": 0.0199,
+  "total_mise_fixe_e": 160.6,
+  "brut_pct": 160.9,
+  "frais_pct": 80.6,
+  "mois_positifs_fixe": "16/33",
+  "pire_mois_fixe": -81.3,
+  "mois_positifs_martingale3": "21/33",
+  "pire_mois_martingale3": -307.5,
+  "hasard_moyen": -0.0324,
+  "p": 0.04
+ },
+ "SOL_2024_2026": {
+  "trades": 1284,
+  "longs": 0.435,
+  "gagnants": 0.624,
+  "esperance_mises": -0.0291,
+  "total_mise_fixe_e": -373.5,
+  "brut_pct": -58.4,
+  "frais_pct": 128.4,
+  "mois_positifs_fixe": "14/33",
+  "pire_mois_fixe": -92.4,
+  "mois_positifs_martingale3": "15/33",
+  "pire_mois_martingale3": -256.6,
+  "hasard_moyen": -0.0293,
+  "p": 0.54
+ },
+ "verdict": "NON D\u00c9MONTR\u00c9",
+ "krach_sol_10_10_2025": {
+  "trades": 21,
+  "longs": 0,
+  "capital_final_martingale3": 913.1,
+  "total_mise_fixe_e": 23.3
+ }
+}
