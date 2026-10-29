@@ -1,4 +1,4 @@
-# Résultat PREREG-30 : règle de Tony, sens donné par l'EMA (29/10/2026, 21h5x)
+# Résultat PREREG-30 : règle de Tony, sens donné par l'EMA (29/10/2026, 21h4x)
 Pré-enregistrement : ../banc-honnete/PREREG-30-ema-sens.md (commit 1660701 à 21h47, avant calcul). Code : etude.py ; chiffres : resultats.json.
 
 **Réglage figé sur BTC 2024-2025 :** EMA 50 horaire, SL 5 %, trailing activé à +3 %, trailing 1 %. C'est le meilleur des 468 réglages, et seuls 19 sur 468 étaient positifs.
