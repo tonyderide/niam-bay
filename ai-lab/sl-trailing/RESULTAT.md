@@ -44,3 +44,30 @@ Aucun des 50 réglages n'est positif, ni en 2024-2025, ni en 2026, dans aucun se
 - **Long 2026 :** −32,5 % en moyenne, 39 pièces gagnantes sur 188, 36,8 % de trades gagnants. Gains bruts −26,6 contre 34,5 de frais. Contre le hasard : −36,9 % ± 1,4, p = 0,00. Il y a donc un peu de tendance réelle, mais elle est bien trop faible pour payer les frais.
 - **Short 2026 :** −32,4 %, p = 0,165.
 - **VERDICT : PERD** dans les deux sens.
+
+## C. Le réglage qui a le moins de chances de perdre (addendum C, BTC 1 min)
+6 084 combinaisons explorées :
+- SL, activation, trailing ;
+- ×1 / ×1,5 / ×2 / ×3 après une perte ;
+- plafond de 2 / 4 / 6 / ∞ pertes ;
+- mise de base de 2 / 5 / 10 €.
+
+Choisie sur 2024-2025 : **SL 5 %, activation +1 %, trailing 1 %, ×3 après une perte, retour à la base après 4 pertes, mise de 10 €.**
+- **2024-2025 :** perte à 3 mois dans 0,6 % des départs, résultat médian +80 €.
+- **2026 (jugement) :** perte dans **0 %** des 184 départs de 3 mois, résultat médian +70 €, le 5 % le pire à +50 €. Verdict C pré-enregistré : VRAI.
+
+Mais :
+- **Les départs de 2026 se chevauchent :** ils valent environ 3 trimestres indépendants.
+- **Sur le BTC mélangé** (même volatilité, sans tendance), le même réglage perd dans 40 % des départs, entre 13 et 61 % selon le mélange.
+- **Le mécanisme :** 80 % des trades gagnent un peu (médiane +0,5 % du prix), 1 trade sur 7 perd 5 %. L'espérance par trade est de +0,10 %, ce qui est statistiquement faible (t ≈ 1,6 avant même de tenir compte des 6 084 essais).
+
+## D. Hors échantillon : ETH et SOL, sans rien changer (addendum D) → NE TIENT PAS
+| | BTC (où il a été choisi) | ETH | SOL |
+|---|---|---|---|
+| Perte à 3 mois | 1,7 % | **44,9 %** | **61,5 %** |
+| Résultat médian à 3 mois | +76 € | +17 € | −94 € |
+| Pire résultat à 3 mois | −30 € | −585 € | −972 € |
+| Espérance par trade | +0,10 % | −0,08 % | −0,10 % |
+| Parcours continu de 33 mois, départ à 1 000 € | 2 125 € | **417 €** (pire baisse −92 %) | **33 €** (−97 %) |
+
+La réussite sur le BTC vient du choix du meilleur réglage parmi 6 084 sur une seule pièce, pas d'un avantage réel. Le chiffre honnête à retenir pour « la chance de perdre en 3 mois » avec ce type de règle est celui des pièces qui n'ont pas servi au choix : **45 à 62 %**.

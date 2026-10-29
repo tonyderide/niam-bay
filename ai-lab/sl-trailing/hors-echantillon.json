@@ -1,0 +1,42 @@
+{
+ "BTCUSDT": {
+  "minutes": 1445760,
+  "trades": 1132,
+  "esperance_par_trade_pct": 0.104,
+  "p_perte_3_mois": 0.017,
+  "median_3_mois_e": 76.2,
+  "pire_3_mois_e": -30.2,
+  "ruines": 0.0,
+  "parcours_33_mois_capital_final": 2125.2,
+  "pire_baisse_depuis_sommet": -0.066,
+  "pire_serie_pertes": 3,
+  "pire_trade_e": -91.8
+ },
+ "ETHUSDT": {
+  "minutes": 1445760,
+  "trades": 2116,
+  "esperance_par_trade_pct": -0.077,
+  "p_perte_3_mois": 0.449,
+  "median_3_mois_e": 17.1,
+  "pire_3_mois_e": -584.6,
+  "ruines": 0.0,
+  "parcours_33_mois_capital_final": 416.8,
+  "pire_baisse_depuis_sommet": -0.922,
+  "pire_serie_pertes": 5,
+  "pire_trade_e": -275.5
+ },
+ "SOLUSDT": {
+  "minutes": 1445760,
+  "trades": 3406,
+  "esperance_par_trade_pct": -0.095,
+  "p_perte_3_mois": 0.615,
+  "median_3_mois_e": -94.4,
+  "pire_3_mois_e": -971.7,
+  "ruines": 0.016,
+  "parcours_33_mois_capital_final": 33.4,
+  "pire_baisse_depuis_sommet": -0.968,
+  "pire_serie_pertes": 4,
+  "pire_trade_e": -275.5
+ },
+ "verdict_D": "ne tient pas"
+}
