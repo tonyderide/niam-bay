@@ -432,5 +432,12 @@
   "resume": "Revues lait 2000-2014 : 14 déclarations lisibles sur 159, 0 liée à l'industrie ; la réplication ne peut pas être faite ainsi.",
   "source": "ai-lab/qui-paie/etude-lait-replication/RESULTAT.md",
   "citation": "**VERDICT (pré-enregistré) : NON ÉVALUABLE.**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-24-dca-martingale.md",
+  "verdict": "PERD",
+  "resume": "Martingale DCA + trailing + SL, 230 cryptos 2026 : 94 % de cycles gagnants mais −0,46 % ; 1/72 réglage positif sur 2024-2025.",
+  "source": "ai-lab/dca-martingale/RESULTAT.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD.**"
  }
 ]
