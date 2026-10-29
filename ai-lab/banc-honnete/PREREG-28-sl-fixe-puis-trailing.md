@@ -93,3 +93,10 @@ Tony : « le pourcentage de chance que cela plante : vérifie plusieurs possibil
   - on la juge une seule fois sur les départs de 2026 (fenêtres de 3 mois finies au plus tard le 30/09/2026).
 - **Mise en garde écrite d'avance :** les départs de 2026 se chevauchent. Ils ne valent qu'environ 3 fenêtres indépendantes de 3 mois, donc le chiffre de 2026 sera peu précis.
 - **Verdict C :** « moins de 10 % de chances de perdre » est VRAI si P(perte) en 2026 est ≤ 10 % **et** si le 5 % le pire ne dépasse pas −20 %. Sinon FAUX.
+
+## Addendum D (29/10, avant calcul) : la combinaison choisie en C, testée sur d'autres pièces
+- **Combinaison figée par C :** SL 5 %, activation +1 %, trailing 1 %, ×3 après une perte, retour à la base après 4 pertes, mise de 10 €.
+- **Test :** sans rien changer, sur ETHUSDT et SOLUSDT en bougies 1 min, du 01/2024 au 09/2026 (archives vérifiées SHA-256).
+- **Mesure :** même P(perte à 3 mois) sur des départs quotidiens.
+- **Rapporté en plus :** la pire série de pertes, le pire résultat à 3 mois et la pire baisse depuis un sommet sur un parcours continu.
+- **Verdict D :** la combinaison « tient » si P(perte à 3 mois) ≤ 10 % sur ETH **et** sur SOL. Sinon, la réussite sur le BTC est attribuée à la chance du choix parmi 6 084 combinaisons.
