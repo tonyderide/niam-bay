@@ -73,3 +73,23 @@ Tony : « test après une perte changement de sens et essaie plusieurs pourcenta
   - **NON DÉMONTRÉ** si l'espérance est > 0 sans le reste.
   - **PERD** sinon.
   - « Ne peut pas perdre dans 90 % des cas » est VRAI si au moins 90 % des départs de 3 mois finissent en gain avec la martingale.
+
+## Addendum C (29/10, écrit avant calcul) : chercher le réglage qui a le moins de chances de perdre
+Tony : « le pourcentage de chance que cela plante : vérifie plusieurs possibilités afin d'avoir le pourcentage de chance le plus faible possible de perdre ».
+- **Règle :** celle de l'addendum B, sens inversé après une perte, sur BTC 1 min.
+- **Paramètres explorés :**
+  - les 156 réglages (s, a, t) de l'addendum B ;
+  - multiplicateur après une perte m ∈ {1 (pas de martingale), 1,5, 2, 3} ;
+  - plafond k ∈ {2, 4, 6, ∞} : après k pertes d'affilée, on encaisse et la mise revient à la base ;
+  - mise de base ∈ {2, 5, 10} € de risque sur 1 000 €.
+  - Cela fait 7 488 combinaisons.
+- **Contraintes :**
+  - une position ne peut pas dépasser 10 × le capital du moment, sinon la mise est ramenée à ce maximum ;
+  - si le capital tombe sous 50 €, c'est la ruine et on s'arrête.
+- **Mesure :** P(perte) = part des départs quotidiens dont le capital, au bout de **3 mois**, est sous 1 000 €. Également rapportés : le résultat médian, le 5 % le pire et la part de ruines.
+- **Choix et jugement :**
+  - on choisit sur les départs de 2024-2025 (fenêtres finies avant le 01/01/2026) la combinaison de P(perte) minimale ;
+  - en cas d'égalité, on prend le meilleur résultat médian, et seules les combinaisons avec un résultat médian > 0 sont candidates (sinon « ne jamais perdre » se réduirait à presque ne rien miser) ;
+  - on la juge une seule fois sur les départs de 2026 (fenêtres de 3 mois finies au plus tard le 30/09/2026).
+- **Mise en garde écrite d'avance :** les départs de 2026 se chevauchent. Ils ne valent qu'environ 3 fenêtres indépendantes de 3 mois, donc le chiffre de 2026 sera peu précis.
+- **Verdict C :** « moins de 10 % de chances de perdre » est VRAI si P(perte) en 2026 est ≤ 10 % **et** si le 5 % le pire ne dépasse pas −20 %. Sinon FAUX.
