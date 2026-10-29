@@ -771,3 +771,6 @@ rtk ls /home/tony/projets/tonyderide/niam-bay/docs/lectures/ 2>&1 | tail -10
 
 # [auto 2026-10-27 18:23] utilisée 3x — sig: python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
 python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -30
+
+# [auto 2026-10-28 18:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=<N> ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
+rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 30" < /dev/null 2>&1 | tail -40

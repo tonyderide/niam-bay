@@ -1,4 +1,4 @@
-# Résultat PREREG-24 : martingale DCA (ordres de sécurité ×2) + trailing stop + SL (29/10/2026, 09h3x)
+# Résultat PREREG-24 : martingale DCA (ordres de sécurité ×2) + trailing stop + SL (29/10/2026, 09h2x)
 Pré-enregistrement : ../banc-honnete/PREREG-24-dca-martingale.md (commit a0a253c, 09h14, avant données). Code : etude.py, collecte.py. Données : Binance USDT-M 1 h, 245 perpétuels cotés au 01/01/2024, morts compris ; 230 encore cotés en 2026.
 
 **VERDICT (pré-enregistré) : PERD.**
