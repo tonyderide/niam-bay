@@ -56,3 +56,20 @@ Tony précise : « SL à 1 % et trailing SL à 0,5 % dès que tu as gagné plus 
   - la part de départs (un par jour) qui finissent en perte et la part qui finissent ruinés, après 1 mois, 3 mois et 9 mois ;
   - le résultat sans martingale (mise fixe de 10 €).
 - Verdict de l'addendum : **« ne peut pas perdre dans 90 % des cas »** est VRAI si au moins 90 % des départs de 3 mois finissent en gain. FAUX sinon.
+
+## Addendum B (29/10, écrit avant calcul) : changement de sens après une perte, plusieurs pourcentages
+Tony : « test après une perte changement de sens et essaie plusieurs pourcentages ».
+- **Règle :** celle de l'addendum A, variante (ii). On garde le sens après un gain et on l'inverse après une perte.
+- **Réglages :**
+  - SL s ∈ {0,5, 1, 1,5, 2, 3, 5} % ;
+  - activation a ∈ {0,5, 1, 1,5, 2, 3, 5} % ;
+  - trailing t ∈ {0,25, 0,5, 1, 1,5, 2, 3} % avec t ≤ a.
+  - Tous les réglages sont rapportés.
+- **Données :** BTC 1 min. Le réglage est choisi sur 2024-2025 (meilleure espérance par trade, en mises), figé, puis jugé une seule fois sur 01/01 → 30/09/2026. Choisir le meilleur sur 2026 directement serait le piège des « 3 mois qui marchent ».
+- **Témoin hasard :** 200 mélanges des minutes de 2026, qui gardent la volatilité et retirent la tendance. p = part des mélanges qui font aussi bien ou mieux.
+- **Martingale du réglage figé :** 10 € / 1 000 €, départs quotidiens de 1, 3 et 9 mois, sur toute la période (comme dans l'addendum A).
+- **Verdict B :**
+  - **GAGNE** si, en 2026, l'espérance est > 0, les gains bruts sont > aux frais et p < 0,05.
+  - **NON DÉMONTRÉ** si l'espérance est > 0 sans le reste.
+  - **PERD** sinon.
+  - « Ne peut pas perdre dans 90 % des cas » est VRAI si au moins 90 % des départs de 3 mois finissent en gain avec la martingale.
