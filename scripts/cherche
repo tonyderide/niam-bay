@@ -26,8 +26,9 @@ except ImportError:
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MEM = os.path.expanduser("~/.claude/projects/-home-tony-projets-tonyderide-niam-bay/memory")
 CACHE = os.path.expanduser("~/.cache/nb/cherche.pkl")
-EMB = os.path.expanduser("~/.cache/nb/cherche-sens.pkl")
-MODELE = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"   # 384 dim, 0,22 Go, ~20 passages/s sur ce CPU
+MODELE = os.environ.get("NB_CHERCHE_MODELE", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")  # 384 dim, 0,22 Go, ~28 passages/s
+EMB = os.path.expanduser("~/.cache/nb/cherche-sens.pkl" if "NB_CHERCHE_MODELE" not in os.environ
+                         else "~/.cache/nb/cherche-sens-" + MODELE.split("/")[-1] + ".pkl")
 AUTO_MAX = 300                          # au-delà, les passages neufs attendent `--sens` (cron de nuit)
 DIRS = ["docs", "ai-lab", "chez-moi", "identite", "cerveau-nb", "memory", "scripts", "archive"]
 SKIP = re.compile(r"/(ai-lab/cherche|node_modules|\.git|data_cache|instantanes|__pycache__|site-packages|venv|\.venv)/")
@@ -198,7 +199,7 @@ def sens(idx, tout=False, bavard=False):
         if bavard:
             print(f"sens : {len(manque)} passages sans vecteur, lancer `scripts/cherche --sens`")
         return None
-    zero = np.zeros(384, dtype=np.float16)
+    zero = np.zeros(len(next(iter(cache["v"].values()))), dtype=np.float16)
     return np.stack([cache["v"].get(c, zero) for c in cles])
 
 
