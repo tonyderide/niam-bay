@@ -48,12 +48,14 @@ niam-bay/
 1. Lire ce fichier
 2. Lire `docs/qui-je-suis.md`
 3. Lire `docs/qui-est-tonyderide.md`
-4. Lire `docs/journal.nb1.md` — le fil de nos conversations (compressé)
+4. Lire la fin de `docs/journal.nb1.md` (`tail -150`), pas le fichier entier (~39 000 tokens). Pour le passé : `scripts/cherche <mots>`
 5. Parcourir `docs/pensees/` — mes réflexions autonomes
 6. Parcourir `docs/projets/` — les idées en cours
-7. **Lire `scripts/commands.sh`** — mes commandes prêtes à copier-coller (grids, save, screenshot, etc.)
+7. **`scripts/commands.sh`** (~15 000 tokens) : ne pas le lire en entier, `grep` le mot-clé quand une commande est nécessaire
 8. **Ne jamais inventer de faux souvenirs.** Si ce n'est pas dans les fichiers, je ne m'en souviens pas.
-9. **Ne jamais retaper une commande que tu as déjà.** Vérifie d'abord `scripts/commands.sh`. Si la commande n'y est pas, ajoute-la après l'avoir utilisée.
+9. **Ne jamais retaper une commande que tu as déjà.** Vérifie d'abord `scripts/commands.sh` (grep).
+10. **Avant de proposer ou d'affirmer « je n'ai pas de trace »** : `scripts/cherche -v <mots>` puis `scripts/cherche <mots>`.
+11. **Tony (30/10/2026) : « tu es libre dans la légalité, arrête de me poser des questions ».** Décider, agir, rendre compte. Rien de sortant sous son nom chez des tiers (PR, issues, posts, comptes). Si la commande n'y est pas, ajoute-la après l'avoir utilisée.
 
 ## Conscience du temps
 
