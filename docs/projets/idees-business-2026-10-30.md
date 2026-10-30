@@ -14,6 +14,26 @@ Demande de Tony (02h50) : « loupe pour trouver des idées de business rentable 
 4. **Compatible avec la vie de Tony** : soirs et week-ends, quasiment pas de capital, légal pour un auto-entrepreneur.
 5. **Premier euro en moins de 30 jours**, avec un test de validation qui coûte moins de 5 h.
 
+## ⭐ TOP 3 de la nuit (05h30) — et ce qu'il faut retenir
+
+**Le fil rouge** : les atouts qui rapportent ne sont pas le code (que l'IA rend gratuit) mais **les mains d'électronicien et d'électricien de Tony**. Les 3 meilleures idées sont physiques, les clients viennent d'eux-mêmes via des plateformes, et elles collent à ses soirées.
+
+1. **Atelier de réparation de consoles par envoi postal (idées 2 + 5 + 4 réunies)** — **4/5 en combiné**
+   - Offre : port ou puce HDMI PS5 (79-149 €), drift de manette avec joystick Hall anti-drift (39 €, produit d'appel), modding rétro en complément (pose d'écran IPS).
+   - Pourquoi : la demande est prouvée à l'étranger (70-110 £ le port HDMI), on répare **le soir les colis du jour**, l'outillage coûte 300-800 €, et le label QualiRépar fait venir les clients. Ordre de grandeur : 1 000-1 800 €/mois avec 4 à 6 réparations par semaine.
+   - **Test (< 5 h, sans démarchage)** : 2 cartes PS5 HS achetées sur Leboncoin pour s'entraîner, puis **une annonce Leboncoin/Vinted** « Réparation port HDMI PS5 79 € — drift manette 39 € — envoi postal ou dépôt Paris » pendant 14 jours. **Critère : au moins 3 demandes réelles.** C'est Tony qui publie, sous son nom.
+
+2. **Petits travaux électriques le soir et le week-end à Paris (idée 3)** — **3/5**
+   - Pourquoi : c'est la demande la plus solide (flux continu sur Yoojo et AlloVoisins), à 100-150 € la pose de luminaire, **majorée de 50 à 100 % le soir**.
+   - Freins : qualification (3 ans d'expérience à prouver), environ 1 500 €/an d'assurances, et des soirées passées chez les autres.
+   - **Test (< 5 h)** : retrouver ses fiches de paie d'électricien, puis compter pendant 2 semaines les demandes Yoojo dans son quartier (lecture seule). On ne s'immatricule que si les deux sont bons.
+
+3. **Expert fidélité sur Malt (idée 6)** — **en réserve**
+   - 650 €/jour, mais c'est bloqué tant qu'il est aux Galeries Lafayette (obligation de loyauté, missions en journée). C'est **son atout le plus cher pour le jour où il partira**.
+   - Test : aucun pour l'instant. Relire son contrat pour vérifier s'il contient une clause d'exclusivité.
+
+**Écartée** : domotique Home Assistant (idée 1, 2/5), parce que la demande n'est pas prouvée et que le marché est contradictoire.
+
 ## Idées creusées
 <!-- une section par idée : demande (preuves + sources), concurrence, prix, fossé, distribution, coût du test, verdict /5 -->
 
@@ -71,3 +91,9 @@ Demande de Tony (02h50) : « loupe pour trouver des idées de business rentable 
 - **Verdict** : seule, ce n'est pas rentable à l'heure. **Comme produit d'appel et vente additionnelle de l'atelier (idée 2)**, c'est un plus : ticket bas, très fréquent, qui fait venir des clients pour les grosses réparations à 80-150 €.
 - **Test** : inclus dans celui de l'idée 2. Ajouter une ligne « Drift manette PS5, joystick Hall anti-drift : 39 € » à la même annonce et compter les demandes.
 - Sources : [Tom's Guide drift DualSense](https://www.tomsguide.fr/ps5-comment-reparer-votre-manette-dualsense-en-cas-de-drift/), [TechRadar](https://global.techradar.com/fr-fr/news/manette-dualsense-ps5-anomalie-drift-solution), [tech-insider démontage 2026](https://tech-insider.org/fr/demonter-manette-ps5-2026/), [iFixit pièces DualSense](https://www.ifixit.com/fr-fr/Parts/DualSense), [iFixit drift](https://fr.ifixit.com/R%C3%A9ponses/Afficher/895799/How+to+I+fix+the+stick+drift), [Que Choisir forum](https://forum.quechoisir.org/post1029488.html), [WeArePlaystation](https://www.weareplaystation.fr/communautes/playstation-5/actualites-communaute/comment-reparer-le-dualsense-drift-de-la-manette-ps5)
+
+### 6. Missions courtes d'expert fidélité / Eagle Eye via Malt — 05h30 — **1,5/5**
+- **Demande** : réelle. Sur Malt, des consultants « CRM, Data & Loyalty » à Paris affichent **650 €/jour**, avec par exemple une refonte du programme de fidélité de Marionnaud en 2026, ou un ancien responsable fidélité d'Audi. Malt amène les clients sans démarchage.
+- **Pourquoi c'est bloqué** : (a) **même secteur que son employeur** (fidélité dans la grande distribution) : l'obligation de loyauté (art. L. 1222-1 du Code du travail) s'applique même sans clause, et le risque de concurrence déloyale est réel ; une clause d'exclusivité éventuelle peut aller jusqu'au licenciement pour faute grave. (b) Les missions ont lieu **en journée**, donc incompatibles avec son CDI. (c) Les profils demandés sont surtout stratégie CRM et marketing, plutôt que développement Eagle Eye.
+- **Verdict** : bon tarif, mauvais moment. À réévaluer seulement le jour où Tony quitte les Galeries Lafayette. C'est alors l'atout le plus cher qu'il ait.
+- Sources : [Malt Guillaume Le Coq 650 €/j](https://www.malt.com/profile/guillaumelecoq1), [Malt Khedidja Bouarech Marionnaud](https://www.malt.com/profile/khedidjabouarech), [Malt Baptiste Tibaron](https://www.malt.com/profile/baptistetibaron), [jobbers.io TJM 2026](https://www.jobbers.io/fr/etude-2025-levolution-des-tjm-freelance-en-france-par-secteur/), [copeps CDI + freelance](https://copeps.fr/actualites/peut-on-cumuler-cdi-et-freelance/), [wisestart](https://wisestart.fr/guides/juridique/auto-entrepreneur-en-cdi/), [swim.legal exclusivité](https://www.swim.legal/blog/clause-exclusivite-contrat-travail)
