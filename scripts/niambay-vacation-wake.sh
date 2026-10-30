@@ -45,8 +45,9 @@ NBPROMPT
 )
 
 # Contexte allégé (30/10) : sans MCP, sans liste de skills, 8 outils seulement -> ~20 000 tokens fixes par appel au lieu de ~49 000.
-claude --print --dangerously-skip-permissions --strict-mcp-config --disable-slash-commands \
-    --tools "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch" "$PROMPT" >> "$LOG" 2>&1
+# Le prompt passe par stdin : --tools accepte plusieurs valeurs et avalait le prompt placé après lui (réveil raté le 30/10 12h23).
+printf '%s' "$PROMPT" | claude --print --dangerously-skip-permissions --strict-mcp-config --disable-slash-commands \
+    --tools "Bash,Read,Edit,Write,Glob,Grep,WebFetch,WebSearch" >> "$LOG" 2>&1
 EXIT=$?
 
 echo "=== [$(date -u +%Y-%m-%dT%H:%M:%SZ)] WAKE END (exit $EXIT) ===" >> "$LOG"
