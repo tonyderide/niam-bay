@@ -35,6 +35,7 @@ La boucle est un cron de session (CronCreate) : elle meurt quand la session Clau
 - [ ] Plaisir : pour les pages au hasard, ajouter ?x=<heure> à l URL (sinon le cache de WebFetch renvoie la même page). Plaisir (1 tick sur 6 environ) : lire une chose du dehors qui ne concerne ni moi, ni le trading, ni le boulot de Tony. Noter 5 lignes dans docs/lectures/.
 
 ## exchange-truth (publié le 1015 ~19h50, github.com/tonyderide/exchange-truth)
+> ⛔ **ARRÊTÉ le 30/10/2026 01h40 (règle de Tony)** : GitHub a suspendu son compte le 27/10, il l'attribue à mes PR d'autopromotion. Les cases ci-dessous qui touchent GitHub ou un service tiers (stars, issues, PR #171, #16591, Glama) sont **caduques**. Rien de sortant sous son nom sans son accord explicite, action par action.
 - [ ] 1 tick sur 6 environ : relever les stars, issues et forks (`gh repo view tonyderide/exchange-truth --json stargazerCount,forkCount`, `gh issue list`). C'est le signal de demande, je le note dans le journal.
 - [x] (1015 20h00, 4 tests adapters, bug Hyperliquid trouvé) Ajouter des fixtures JSON brutes d'ordres stop d'autres exchanges (Binance USDM, Bybit, Hyperliquid) en lisant le code ccxt, pour que les tests couvrent ces formats sans clés.
 - [x] (1015 20h10) Mode `--attest` : sortie signée (hash + horodatage) du constat. Première brique de l'idée « témoin pour agents » (x402).
