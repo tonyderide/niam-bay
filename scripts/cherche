@@ -1,0 +1,276 @@
+#!/usr/bin/env python3
+"""`scripts/cherche` : « ai-je déjà fait / testé / décidé ça ? » en une commande, au lieu de relire des fichiers.
+Moteur BM25 en Python pur, index en cache reconstruit seul quand un fichier change. Si le venv
+~/.local/share/nb/venv-cherche existe (numpy + fastembed), fusion avec des embeddings multilingues (paraphrases).
+
+  scripts/cherche martingale tous les mois        # les 8 meilleurs passages
+  scripts/cherche -v rsi connors                  # verdicts seulement (registre + PREREG + leçons)
+  scripts/cherche -n 20 grille neutre             # plus de résultats
+  scripts/cherche --reindex                       # forcer la reconstruction
+  scripts/cherche --sens                          # calculer les vecteurs manquants (cron de nuit)
+  scripts/cherche --mots grille neutre            # BM25 seul
+
+Corpus : docs/, ai-lab/, chez-moi/, identite/, cerveau-nb/, memory/, scripts/*.md, archive/ (.md),
+la mémoire Claude (~/.claude/projects/…/memory) et docs/registre-verdicts.json (une entrée = un document)."""
+import hashlib, json, math, os, pickle, re, sys, time, unicodedata
+from collections import Counter, defaultdict
+
+VENV = os.path.expanduser("~/.local/share/nb/venv-cherche/bin/python")
+try:                                   # couche sens (embeddings) : seulement si numpy/fastembed sont là
+    import numpy as np
+except ImportError:
+    np = None
+    if __name__ == "__main__" and os.path.exists(VENV) and not os.environ.get("NB_CHERCHE_PUR"):
+        os.environ["NB_CHERCHE_PUR"] = "1"; os.execv(VENV, [VENV, os.path.abspath(__file__)] + sys.argv[1:])
+
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+MEM = os.path.expanduser("~/.claude/projects/-home-tony-projets-tonyderide-niam-bay/memory")
+CACHE = os.path.expanduser("~/.cache/nb/cherche.pkl")
+EMB = os.path.expanduser("~/.cache/nb/cherche-sens.pkl")
+MODELE = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"   # 384 dim, 0,22 Go, ~20 passages/s sur ce CPU
+AUTO_MAX = 300                          # au-delà, les passages neufs attendent `--sens` (cron de nuit)
+DIRS = ["docs", "ai-lab", "chez-moi", "identite", "cerveau-nb", "memory", "scripts", "archive"]
+SKIP = re.compile(r"/(ai-lab/cherche|node_modules|\.git|data_cache|instantanes|__pycache__|site-packages|venv|\.venv)/")
+MAXF = 3_000_000                       # fichiers plus gros ignorés (logs générés)
+K1, B = 1.4, 0.6
+
+STOP = set("""le la les l un une des du de d et ou a au aux en dans sur sous par pour avec sans ce cet cette ces se sa son ses
+il elle ils elles on je j tu nous vous me m te t lui leur leurs y ne n pas plus que qu qui quoi dont est sont etait ete etre
+avoir ai as avons ont fait faire c s mais si tout tous toute toutes tres bien comme donc car aussi meme deja encore alors
+the of and to in is it for on with that this be are was as at by an or from not but have has""".split())
+
+# Équivalences du domaine : chaque mot est ramené à une forme commune (après normalisation).
+SYN = {"grid": "grille", "grids": "grille", "grilles": "grille", "sl": "stop", "stoploss": "stop", "stops": "stop",
+       "tp": "takeprofit", "prereg": "prereg", "preregistration": "prereg", "preenregistrement": "prereg",
+       "martingales": "martingale", "dca": "martingale", "loss": "perte", "pertes": "perte", "win": "gagne",
+       "gagnant": "gagne", "gagnants": "gagne", "gagner": "gagne", "gagnante": "gagne", "perd": "perte", "perdu": "perte",
+       "backtest": "test", "backtests": "test", "bt": "test", "tests": "test", "teste": "test", "short": "short",
+       "shorts": "short", "longs": "long", "funding": "funding", "levier": "levier", "leverage": "levier", "x10": "levier",
+       "suspendu": "suspension", "suspended": "suspension", "suspendue": "suspension", "neutral": "neutre",
+       "crash": "krach", "krachs": "krach", "tendance": "trend", "trends": "trend", "ema200": "ema", "emas": "ema",
+       "journal": "journal", "moyenne": "ema", "edge": "avantage", "alpha": "avantage", "hasard": "hasard",
+       "random": "hasard", "aleatoire": "hasard"}
+
+
+def norm(w):
+    w = unicodedata.normalize("NFKD", w.lower()).encode("ascii", "ignore").decode()
+    w = SYN.get(w, w)
+    if len(w) > 4 and w not in SYN.values():
+        for suf in ("ements", "ement", "ations", "ation", "euses", "euse", "eux", "ees", "ee", "es", "s", "x", "e"):
+            if w.endswith(suf) and len(w) - len(suf) >= 4:
+                w = w[: -len(suf)]; break
+    return w
+
+
+def toks(text):
+    return [n for w in re.findall(r"[^\W_]+(?:[’'][^\W_]+)*", text) for n in [norm(w.split("’")[-1].split("'")[-1])] if len(n) > 1 and n not in STOP]
+
+
+def fichiers():
+    for d in DIRS:
+        for root, _, fs in os.walk(os.path.join(REPO, d)):
+            if SKIP.search(root + "/"):
+                continue
+            for f in fs:
+                p = os.path.join(root, f)
+                if (f.endswith(".md") or f.endswith(".py") or f.endswith(".sh") or "." not in f and d == "scripts") \
+                        and os.path.isfile(p) and os.path.getsize(p) <= MAXF:
+                    yield p
+    if os.path.isdir(MEM):
+        for f in os.listdir(MEM):
+            if f.endswith(".md") and f != "MEMORY.md":
+                yield os.path.join(MEM, f)
+
+
+def morceaux(path):
+    """Découpe un fichier markdown en passages : titres, puis puces/paragraphes, ~1500 caractères max."""
+    try:
+        lines = open(path, encoding="utf-8", errors="replace").read().splitlines()
+    except OSError:
+        return
+    if not path.endswith(".md"):                  # script : seul l'en-tête (docstring, commentaires) dit à quoi il sert
+        tete = [l for l in lines[:40] if l.strip()]
+        yield 1, "SCRIPT " + os.path.basename(path), "\n".join(tete)[:1500]
+        return
+    titre, buf, start = "", [], 1
+    def flush():
+        if buf and "".join(buf).strip():
+            yield start, titre, "\n".join(buf)
+    for i, l in enumerate(lines, 1):
+        coupe = l.startswith("#") or (l.startswith("- ") and sum(map(len, buf)) > 300) or sum(map(len, buf)) > 1500 \
+            or (not l.strip() and sum(map(len, buf)) > 600)
+        if coupe:
+            yield from flush(); buf, start = [], i
+            if l.startswith("#"):
+                titre = l.lstrip("# ").strip()
+        buf.append(l)
+    yield from flush()
+
+
+def construire():
+    docs, sig = [], {}
+    for p in fichiers():
+        sig[p] = os.path.getmtime(p)
+        rel = os.path.relpath(p, REPO) if p.startswith(REPO) else "~mem/" + os.path.basename(p)
+        poids = 1.6 if p.startswith(MEM) or "/PREREG" in p or "lesson" in p or "registre" in p else 1.0
+        for ln, titre, txt in morceaux(p):
+            docs.append({"src": rel, "ln": ln, "titre": titre, "txt": txt, "poids": poids})
+    rv = os.path.join(REPO, "docs/registre-verdicts.json")
+    if os.path.exists(rv):
+        sig[rv] = os.path.getmtime(rv)
+        for e in json.load(open(rv)):
+            docs.append({"src": e.get("fichier", "?"), "ln": 1, "titre": "VERDICT " + e.get("verdict", "?"),
+                         "txt": f"{e.get('verdict')} — {e.get('resume', '')}  [{e.get('citation', '')}]", "poids": 2.2,
+                         "verdict": e.get("verdict")})
+    tf, df = [], Counter()
+    for d in docs:
+        c = Counter(toks(d["titre"] + " " + d["titre"] + " " + os.path.basename(d["src"]) + " " + d["txt"]))
+        tf.append(c); df.update(c.keys())
+    inv = defaultdict(list)
+    for i, c in enumerate(tf):
+        for t, n in c.items():
+            inv[t].append((i, n))
+    lens = [sum(c.values()) for c in tf]
+    idx = {"docs": docs, "inv": dict(inv), "df": df, "lens": lens, "avg": sum(lens) / max(1, len(lens)), "sig": sig}
+    os.makedirs(os.path.dirname(CACHE), exist_ok=True)
+    pickle.dump(idx, open(CACHE, "wb"))
+    return idx
+
+
+def charger(force=False):
+    if not force and os.path.exists(CACHE):
+        idx = pickle.load(open(CACHE, "rb"))
+        cur = {p: os.path.getmtime(p) for p in fichiers()}
+        rv = os.path.join(REPO, "docs/registre-verdicts.json")
+        if os.path.exists(rv):
+            cur[rv] = os.path.getmtime(rv)
+        if cur == idx["sig"]:
+            return idx
+    return construire()
+
+
+def _cle(d):
+    return hashlib.sha1((d["titre"] + "\x00" + d["txt"]).encode()).hexdigest()[:16]
+
+
+def _texte(d):
+    return (d["titre"] + " — " + d["txt"])[:1000]
+
+
+_modele = None
+def modele():
+    global _modele
+    if _modele is None:
+        os.environ.setdefault("HF_HUB_OFFLINE", "1") if os.path.exists(EMB) else None
+        from fastembed import TextEmbedding
+        _modele = TextEmbedding(MODELE)
+    return _modele
+
+
+def sens(idx, tout=False, bavard=False):
+    """Vecteurs alignés sur idx['docs'] (None si indisponible). Recalcule seulement les passages neufs ou modifiés."""
+    if np is None:
+        return None
+    try:
+        cache = pickle.load(open(EMB, "rb")) if os.path.exists(EMB) else {"modele": MODELE, "v": {}}
+    except Exception:
+        cache = {"modele": MODELE, "v": {}}
+    if cache.get("modele") != MODELE:
+        cache = {"modele": MODELE, "v": {}}
+    cles = [_cle(d) for d in idx["docs"]]
+    manque = [k for k, c in enumerate(cles) if c not in cache["v"]]
+    if manque and (tout or len(manque) <= AUTO_MAX):
+        t0 = time.time()
+        def sauver():
+            os.makedirs(os.path.dirname(EMB), exist_ok=True); pickle.dump(cache, open(EMB + ".tmp", "wb")); os.replace(EMB + ".tmp", EMB)
+        for n_, (j, v) in enumerate(zip(manque, modele().embed([_texte(idx["docs"][k]) for k in manque], batch_size=64)), 1):
+            cache["v"][cles[j]] = (v / (np.linalg.norm(v) + 1e-9)).astype(np.float16)
+            if n_ % 1000 == 0:                     # point de sauvegarde : un calcul interrompu reprend où il en était
+                sauver()
+                if bavard:
+                    print(f"sens : {n_}/{len(manque)} ({time.time() - t0:.0f} s)", flush=True)
+        vivants = set(cles); cache["v"] = {c: v for c, v in cache["v"].items() if c in vivants}
+        sauver()
+        if bavard:
+            print(f"sens : {len(manque)} passages calculés en {time.time() - t0:.0f} s")
+        manque = []
+    if len(manque) > 0.2 * len(cles):
+        if bavard:
+            print(f"sens : {len(manque)} passages sans vecteur, lancer `scripts/cherche --sens`")
+        return None
+    zero = np.zeros(384, dtype=np.float16)
+    return np.stack([cache["v"].get(c, zero) for c in cles])
+
+
+def chercher(idx, q, n=8, verdicts=False, M=None):
+    qt = toks(q); N = len(idx["docs"]); sc = Counter()
+    for t in set(qt):
+        post = idx["inv"].get(t)
+        if not post:
+            continue
+        idf = math.log(1 + (N - len(post) + 0.5) / (len(post) + 0.5))
+        for i, f in post:
+            sc[i] += idf * f * (K1 + 1) / (f + K1 * (1 - B + B * idx["lens"][i] / idx["avg"]))
+    ordre = sorted(sc.items(), key=lambda x: -x[1] * idx["docs"][x[0]]["poids"])
+    if M is not None:                      # fusion par rangs (RRF) : BM25 attrape les mots exacts, le sens les paraphrases
+        qv = next(iter(modele().embed([q]))); qv = qv / (np.linalg.norm(qv) + 1e-9)
+        cos = M.astype(np.float32) @ qv.astype(np.float32)
+        poids = np.array([d["poids"] for d in idx["docs"]], dtype=np.float32)
+        top_s = np.argsort(-(cos * np.sqrt(poids)))[:300]
+        rrf = Counter()
+        for r, (i, _) in enumerate(ordre[:300]):
+            rrf[i] += 1 / (60 + r)
+        for r, i in enumerate(top_s):
+            rrf[int(i)] += 1 / (60 + r)
+        ordre = [(i, 100 * v) for i, v in rrf.most_common()]
+    out, vus = [], Counter()
+    for i, s in ordre:
+        d = idx["docs"][i]
+        if verdicts and not (d.get("verdict") or "/PREREG" in d["src"] or "lesson" in d["src"] or "registre" in d["src"]):
+            continue
+        if vus[d["src"]] >= 2:                     # pas plus de 2 passages par fichier
+            continue
+        vus[d["src"]] += 1
+        out.append((s if M is not None else s * d["poids"], d))
+        if len(out) >= n:
+            break
+    return out, qt
+
+
+def extrait(txt, qt, w=260):
+    flat = re.sub(r"\s+", " ", txt)
+    low = [norm(m.group()) for m in re.finditer(r"[^\W_]+", flat)]
+    pos = [m.start() for m in re.finditer(r"[^\W_]+", flat)]
+    hits = [pos[k] for k, t in enumerate(low) if t in qt]
+    a = max(0, (hits[0] if hits else 0) - 60)
+    return ("…" if a else "") + flat[a:a + w] + ("…" if a + w < len(flat) else "")
+
+
+def main(argv):
+    n, verdicts, force, q, mots, tout = 8, False, False, [], False, False
+    it = iter(argv)
+    for a in it:
+        if a == "-n": n = int(next(it))
+        elif a in ("-v", "--verdicts"): verdicts = True
+        elif a == "--reindex": force = True
+        elif a == "--mots": mots = True           # BM25 seul, sans la couche sens
+        elif a == "--sens": tout = True           # calculer tous les vecteurs manquants (long la 1re fois : ~15 min)
+        elif a in ("-h", "--help"): print(__doc__); return
+        else: q.append(a)
+    t0 = time.time(); idx = charger(force)
+    M = None if mots or np is None else sens(idx, tout, bavard=tout or not q)
+    if not q:
+        print(f"index : {len(idx['docs'])} passages, {len(idx['sig'])} fichiers, sens {'oui' if M is not None else 'non'} "
+              f"({time.time() - t0:.1f} s)"); return
+    res, qt = chercher(idx, " ".join(q), n, verdicts, M)
+    if not res:
+        print("rien trouvé pour :", " ".join(q)); return
+    for s, d in res:
+        v = f" [{d['verdict']}]" if d.get("verdict") else ""
+        print(f"{s:5.1f}  {d['src']}:{d['ln']}{v}  — {d['titre'][:70]}")
+        print("       " + extrait(d["txt"], set(qt)))
+    print(f"({len(idx['docs'])} passages, {'mots+sens' if M is not None else 'mots'}, {time.time() - t0:.2f} s)")
+
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
