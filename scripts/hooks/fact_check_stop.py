@@ -34,7 +34,9 @@ def judge(reply, state):
               "Note : « TELEGRAM n nouveau(x) » compte seulement les messages depuis le dernier tick.\n"
               "Réponds UNIQUEMENT en JSON : {\"claims\": [{\"text\": \"...\", \"verdict\": \"absent|compatible|contredit\", \"why\": \"...\"}]}\n\n"
               f"RÉPONSE :\n{reply[-6000:]}\n\nÉTAT RÉEL :\n{state}")
-    r = subprocess.run(["claude", "-p", prompt, "--model", MODEL, "--tools", ""],
+    # Contexte minimal (30/10) : sans MCP, skills, CLAUDE.md ni réglages, l'appel passe de ~60 000 à ~600 tokens fixes.
+    r = subprocess.run(["claude", "-p", prompt, "--model", MODEL, "--tools", "", "--strict-mcp-config", "--disable-slash-commands",
+                        "--setting-sources", "", "--system-prompt", "Tu es un vérificateur de faits. Tu réponds uniquement en JSON."],
                        capture_output=True, text=True, timeout=120, env={**os.environ, "NB_FACTCHECK_CHILD": "1"})
     m = re.search(r"\{.*\}", r.stdout, re.S)
     if not m:
