@@ -436,7 +436,7 @@
  {
   "fichier": "ai-lab/banc-honnete/PREREG-24-dca-martingale.md",
   "verdict": "PERD",
-  "resume": "Martingale DCA + trailing + SL, 230 cryptos 2026 : 94 % de cycles gagnants mais −0,46 % ; 1/72 réglage positif sur 2024-2025.",
+  "resume": "230 cryptos en 2026 : 94 % de cycles gagnants mais −0,46 % du capital ; 1 réglage sur 72 positif en 2024-2025. Refait à neuf (univers, données, code) : −0,57 % sur 188 pièces, gains bruts 0,30 contre frais 1,37. (autre source, [refait](../ai-lab/dca-martingale/refait/RESULTAT-REFAIT.md))",
   "source": "ai-lab/dca-martingale/RESULTAT.md",
   "citation": "**VERDICT (pré-enregistré) : PERD.**"
  },
@@ -467,5 +467,33 @@
   "resume": "Carry PREREG-27 sur Hyperliquid (top 30 volume, morts compris, taker 0,045 %) : réglage 2023-10 → 2025-04 −59,4 %, jugement 2026 +42,4 % par côté (+25,5 %/an du capital) mais p = 0,13 contre pièces au hasard ; gain 2026 surtout du prix (+39 %), pas du financement (+13 %) ; tout l'historique −36 %.",
   "source": "ai-lab/carry-financement/PREREG-33-hyperliquid.md",
   "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-35-papier-inversion.md",
+  "verdict": "EN COURS",
+  "resume": "Règle d'inversion journalière de PREREG-32 (SL 15 % / +5 % / 3 %) en papier EN AVANT sur 10 grands perpétuels Binance, 01/11/2026 → 30/04/2027 ; jugement unique le 01/05/2027 contre 1 000 sens au hasard.",
+  "source": "ai-lab/banc-honnete/PREREG-35-papier-inversion.md",
+  "citation": "## Jugement (UNIQUE, le 01/05/2027 ou après"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-28-sl-fixe-puis-trailing.md",
+  "verdict": "PERD",
+  "resume": "0/50 réglages positifs ; règle de Tony sur BTC 1 min (33 mois, corrigé) : 50 % de trades gagnants, −0,12 mise par trade, martingale ruinée dans 93 % des départs de 3 mois ; inversion après perte, 156 réglages : figé SL 3 % / +5 % / 1 % = +0,016 mise en 2026, p = 0,32, NON DÉMONTRÉ. C (min. P(perte), 6 084 combinaisons) : 0 % de perte à 3 mois sur BTC 2026, mais D hors échantillon : 45 % (ETH) et 62 % (SOL) → ne tient pas.",
+  "source": "ai-lab/sl-trailing/RESULTAT.md",
+  "citation": "- **Contre le hasard :** −0,035 ± 0,136 ; **p = 0,32**. Le résultat est indiscernable du hasard → **VERDICT B : NON DÉMO"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-30-ema-sens.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "EMA50 h, SL 5 %, trailing 1 % dès +3 % : BTC 2026 +37 € (p = 0,28), ETH +161 € (p = 0,04), SOL −374 € ; krach SOL survécu (+23 €).",
+  "source": "ai-lab/ema-sens/RESULTAT.md",
+  "citation": "**VERDICT : NON DÉMONTRÉ.**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-32-journalier.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Règle de Tony en journalier (panier 243/187 perpétuels, SL/trailing larges, 36 réglages choisis sur 2024-25, tous négatifs) : inversion après perte −29,2 % (2024-25) / +8,6 % (2026), p = 0,007 contre sens au hasard ; sens EMA50 j −6,5 % / +5,6 %, p = 0,17 ; 30 à 70 trades/pièce/an, frais ~30 % du brut en 2026. Acheter-garder : BTC +107 % / −4,7 %, panier −40 % / −14 %. Avantage de l'inversion sur le hasard en 2026 seulement (en 1 h c'était 2024-25 seulement).",
+  "source": "ai-lab/banc-honnete/PREREG-32-journalier.md",
+  "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ** pour les deux variantes : net > 0 en 2026, mais négatif en 2024-25 (conditio"
  }
 ]
