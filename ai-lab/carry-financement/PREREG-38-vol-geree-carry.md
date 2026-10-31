@@ -28,3 +28,24 @@ Par période : net, Sharpe, pire baisse, pire mois, multiplicateur moyen, frais 
 - Aucun paramètre ajusté : 30 jours, médiane expansive et plafond 2 sont des choix standards fixés ici.
 - Le témoin a le même levier moyen et paie ses frais : il ne retire que l'information de volatilité.
 - Aucune action sur Martin ni Kraken : calcul seulement.
+
+## Résultat (31/10/2026, 20h4x — t38.py → t38.log, chiffres dans t38.json)
+Lancé une seule fois après le commit fe5a02a, `nice -n 10`. Rendements en % de 1 $ par côté, additionnés (comme PREREG-27). Contrôle : le carry de base reproduit exactement PREREG-27 (2026 : +94,3 %).
+
+| | Brut 2021-25 | Géré 2021-25 | Brut **2026** | Géré **2026** |
+|---|---|---|---|---|
+| Net | +277 % | +256 % | +94,3 % | **+34,8 %** |
+| Sharpe | 0,71 | 0,64 | 0,79 | **0,51** |
+| Pire baisse | 294 pts | 306 pts | 149 pts | 72 pts |
+| Pire mois | −75 % | −82 % | −47 % | −26 % |
+| Multiplicateur moyen | 1 | 1,10 | 1 | 0,62 |
+
+Par année (Sharpe brut → géré) : 2021 2,92 → 3,23 ; 2022 −1,55 → −1,40 ; 2023 −1,09 → −1,28 ; 2024 0,92 → 0,89 ; 2025 1,65 → 1,52 ; 2026 0,79 → 0,51. Frais totaux : 65,8 % → 73,6 %.
+Témoin (multiplicateurs mélangés dans le temps) en 2026 : Sharpe 0,66 ± 0,40 ; **p = 0,65**.
+
+**VERDICT (pré-enregistré) : PERD** — la gestion par la volatilité baisse le Sharpe en 2021-25 (0,71 → 0,64) et en 2026 (0,79 → 0,51), et ne bat pas des multiplicateurs mélangés au hasard.
+
+**Ce que ça montre :**
+- Elle réduit bien le risque en 2026 (pire baisse divisée par 2, pire mois −26 % contre −47 %), mais en coupant l'exposition (×0,62 en moyenne) au moment où le carry rapportait : le rendement baisse plus que le risque.
+- Les pertes du carry (2022, 2023) ne viennent pas après une hausse de sa volatilité : elles sont lentes, pas des krachs. La vol récente ne les annonce pas, donc la gérer ne protège pas.
+- Le redimensionnement coûte ~8 points de frais en plus. Deuxième échec de la vol gérée au labo (après PREREG-13 sur BTC) : on la retire des pistes.

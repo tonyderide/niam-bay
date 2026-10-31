@@ -509,5 +509,12 @@
   "resume": "Prime de variance (swap de variance synthétique 30 j, K = (DVOL − 2)², BTC/ETH 2021-2026) : 2026 g moyen −0,14 (BTC) et −0,03 (ETH), p 0,83 / 0,61 ; BTC 2021-25 +0,135 (p < 0,001) mais ETH −0,017 ; deux mois 2026 effacent l'année ; RISQUE DE QUEUE (ETH pire mois −2,68).",
   "source": "ai-lab/banc-honnete/PREREG-37-prime-variance.md",
   "citation": "**VERDICT (pré-enregistré) : PERD — avec mention RISQUE DE QUEUE**"
+ },
+ {
+  "fichier": "ai-lab/carry-financement/PREREG-38-vol-geree-carry.md",
+  "verdict": "PERD",
+  "resume": "Vol gérée sur le carry PREREG-27 (σ 30 j, cible médiane expansive, plafond 2) : Sharpe 2021-25 0,71 → 0,64, 2026 0,79 → 0,51 (net +94 % → +35 %) ; témoin multiplicateurs mélangés p = 0,65 ; risque réduit (pire baisse ÷2) mais rendement réduit davantage.",
+  "source": "ai-lab/carry-financement/PREREG-38-vol-geree-carry.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — la gestion par la volatilité baisse le Sharpe"
  }
 ]
