@@ -523,5 +523,12 @@
   "resume": "Momentum de séries temporelles hebdo (243 perpétuels Binance morts compris, taille 1/vol) : L = 4 sem. choisi sur 2024-25 (+64,9 %, p < 0,001), jugement 2026 −10,8 %, p = 0,77 contre sens au hasard ; classement des L inversé d'une période à l'autre.",
   "source": "ai-lab/banc-honnete/PREREG-39-momentum-series-hebdo.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — net 2026 négatif"
+ },
+ {
+  "fichier": "ai-lab/carry-financement/PREREG-40-ecart-plateformes.md",
+  "verdict": "PERD",
+  "resume": "Écart de financement Binance/Hyperliquid couvert en prix (45 pièces, seuil 10 %/an) : historique +7,5 %/an, 2026 −7,5 %/an (financement +7,1 % < frais 13,2 %) ; écart qui se referme d'année en année (2023 +26 %, 2024 +11 %, 2025 ~0).",
+  "source": "ai-lab/carry-financement/PREREG-40-ecart-plateformes.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — net 2026 négatif"
  }
 ]

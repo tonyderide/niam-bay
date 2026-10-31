@@ -31,3 +31,24 @@ Financement net, prix (écart entre plateformes), frais, net ; annualisé ; jour
 - Le témoin garde les mêmes pièces et le même calendrier : il ne retire que le sens donné par l'écart passé.
 - Écart de prix mesuré à 00:00 UTC sur les deux plateformes (bougies journalières) : l'heure exacte peut différer de quelques secondes, bruit noté.
 - Aucune action sur Martin ni Kraken ; aucun compte, aucune clé.
+
+## Résultat (01/11/2026, 01h1x — t40.py → t40.log, chiffres dans t40.json)
+Lancé une seule fois après le commit 243db80, `nice -n 10`. 45 pièces communes, 1 122 jours. Montants cumulés en % du capital d'une paire (moyenne par jour sur les paires en position), annualisés à part.
+
+| | Historique (01/10/2023 → 31/12/2025, 822 j) | **2026 (299 j)** |
+|---|---|---|
+| Financement net encaissé | +39,6 % | +7,1 % |
+| Prix (écart entre plateformes) | −0,7 % | −0,0 % |
+| Frais | 22,3 % | 13,2 % |
+| **Net annualisé** | **+7,5 %/an** | **−7,5 %/an** |
+| Jours avec position / paires en moyenne | 99,8 % / 12,3 | 96 % / 6,2 |
+| Pire mois | −0,96 % (2025-03) | −2,07 % (2026-08) |
+
+Par année : 2023 (T4) +25,9 %/an · 2024 +11,0 %/an · 2025 −0,7 %/an · 2026 −7,5 %/an. Témoin sens au hasard en 2026 : −42,8 %/an en moyenne, p < 0,001 — **témoin mal conçu** (un sens tiré chaque jour se retourne un jour sur deux et paie des frais énormes) ; il ne change rien ici puisque le net est négatif.
+
+**VERDICT (pré-enregistré) : PERD** — net 2026 négatif (−7,5 %/an).
+
+**Ce que ça montre :**
+- Le mécanisme est bien là : l'écart de financement passé prédit le sens de l'écart futur (le financement encaissé est positif sur chaque période) et la couverture en prix tient (écart de prix ≈ 0).
+- Mais l'écart **se referme d'année en année** : +26 %/an fin 2023, +11 % en 2024, ~0 en 2025, négatif en 2026. En 2026 il y a moitié moins de paires au-dessus de 10 %/an, et ce qu'elles paient (7 %) ne couvre plus les frais des 4 jambes (13 %). Le capital d'arbitrage est arrivé, comme pour le basis (PREREG-36) et la prime de variance (PREREG-37).
+- Leçon de méthode : un témoin « sens au hasard chaque jour » n'est pas équitable pour une règle à faible rotation ; il faudra tirer le sens par épisode de position.
