@@ -495,5 +495,12 @@
   "resume": "Règle de Tony en journalier (panier 243/187 perpétuels, SL/trailing larges, 36 réglages choisis sur 2024-25, tous négatifs) : inversion après perte −29,2 % (2024-25) / +8,6 % (2026), p = 0,007 contre sens au hasard ; sens EMA50 j −6,5 % / +5,6 %, p = 0,17 ; 30 à 70 trades/pièce/an, frais ~30 % du brut en 2026. Acheter-garder : BTC +107 % / −4,7 %, panier −40 % / −14 %. Avantage de l'inversion sur le hasard en 2026 seulement (en 1 h c'était 2024-25 seulement).",
   "source": "ai-lab/banc-honnete/PREREG-32-journalier.md",
   "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ** pour les deux variantes : net > 0 en 2026, mais négatif en 2024-25 (conditio"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-36-basis-trimestriel.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Basis trimestriel BTC/ETH Binance tenu jusqu'à livraison (46 contrats 2021-2026, levier 2 sur le short) : 2026 +0,9 %/an contre un seuil de 4 %, 5/6 contrats positifs ; historique −7,6 %/an, 18/46 sorties forcées par la marge ; basis d'entrée 2026 de 1,3 à 4,7 %/an seulement.",
+  "source": "ai-lab/banc-honnete/PREREG-36-basis-trimestriel.md",
+  "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — rendement 2026 > 0"
  }
 ]

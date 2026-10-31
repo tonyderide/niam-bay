@@ -32,3 +32,29 @@ Par contrat : basis d'entrée (annualisé), rendement net, jours, plus forte hau
 - Frais taker de base (pas de remise) : prudent. Marge 50 % : prudente pour BTC/ETH sur un trimestre, et le risque est mesuré (sorties forcées comptées).
 - Non compté : risque de plateforme (faillite d'exchange), qui est le vrai prix de cette prime ; il sera rappelé dans le verdict.
 - Aucune action sur Martin ni Kraken ; aucun compte, aucune clé : lecture de prix publics seulement.
+
+## Résultat (31/10/2026, 18h3x — t36.py → t36.log, détail par contrat dans t36.json)
+Lancé une seule fois après le commit 3f42529 (pré-enregistrement seul), `nice -n 10`. 46 contrats livrés (23 BTC, 23 ETH, mars 2021 → septembre 2026), aucun absent.
+
+| Année de livraison | Rendement net de l'année (capital moitié BTC / moitié ETH) |
+|---|---|
+| 2021 | −7,1 % |
+| 2022 | +1,0 % |
+| 2023 | +0,9 % |
+| 2024 | +5,1 % |
+| 2025 | +2,4 % |
+| **2026** (3 trimestres) | **+0,8 %** |
+
+- **Jugement 2026** (6 contrats) : annualisé moyen **+0,9 %/an** (seuil 4 %), **5/6** positifs (ETHUSDT_260925 : sortie forcée, −2,9 %/an).
+- Historique complet : annualisé moyen **−7,6 %/an** (tiré par 2021 : 7 sorties forcées sur 8 contrats).
+- **Sorties forcées : 18/46** (39 %) : le short du future à levier 2 est racheté après une hausse de 45 %, avant que le basis ne se ferme. Sur un trimestre, BTC ou ETH monte de plus de 45 % bien plus souvent qu'on ne le croit (2021, fin 2022, fin 2023, fin 2024, ETH mi-2025 et 2026).
+- Basis d'entrée en 2026 : **1,3 % à 4,7 %/an** seulement (contre 10-30 %/an en 2021 et début 2024). Contrats 2026 non forcés : ≈ +1,7 %/an net.
+- Témoin (jour d'entrée au hasard, info) : moyenne −0,2 %/an, p = 0,37 : le moment d'entrée ne compte pas.
+- Erreur de mesure du règlement (dernière clôture du future contre comptant à 08:00) : en général < 0,5 %, jusqu'à 1,4 % (BTC juin 2026).
+
+**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — rendement 2026 > 0, mais +0,9 %/an contre un seuil de 4 %, un contrat 2026 négatif, historique complet négatif.
+
+**Ce que ça montre :**
+- La prime existe (le basis se ferme comme prévu à chaque livraison non forcée) mais elle s'est **comprimée sous le taux sans risque** : en 2025-2026 le contango trimestriel paie 1-5 %/an brut, moins que des bons du Trésor. Explication économique plausible : beaucoup de capital d'arbitrage est entré (fonds de basis, ETF au comptant), la prime a été arbitrée.
+- Le vrai risque n'est pas le sens, c'est **la marge** : à levier 2 sur la jambe courte, 39 % des trimestres finissent en sortie forcée. Sans levier (marge 100 %), le rendement sur capital serait encore plus bas. Une prime de 1-5 %/an ne paie pas ce risque, plus celui de plateforme (non compté).
+- Pour Martin : rien à en tirer en l'état. À rejouer seulement si le basis d'entrée remonte nettement au-dessus du taux sans risque (lisible à l'entrée, sans prévision).
