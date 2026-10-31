@@ -516,5 +516,12 @@
   "resume": "Vol gérée sur le carry PREREG-27 (σ 30 j, cible médiane expansive, plafond 2) : Sharpe 2021-25 0,71 → 0,64, 2026 0,79 → 0,51 (net +94 % → +35 %) ; témoin multiplicateurs mélangés p = 0,65 ; risque réduit (pire baisse ÷2) mais rendement réduit davantage.",
   "source": "ai-lab/carry-financement/PREREG-38-vol-geree-carry.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — la gestion par la volatilité baisse le Sharpe"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-39-momentum-series-hebdo.md",
+  "verdict": "PERD",
+  "resume": "Momentum de séries temporelles hebdo (243 perpétuels Binance morts compris, taille 1/vol) : L = 4 sem. choisi sur 2024-25 (+64,9 %, p < 0,001), jugement 2026 −10,8 %, p = 0,77 contre sens au hasard ; classement des L inversé d'une période à l'autre.",
+  "source": "ai-lab/banc-honnete/PREREG-39-momentum-series-hebdo.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — net 2026 négatif"
  }
 ]

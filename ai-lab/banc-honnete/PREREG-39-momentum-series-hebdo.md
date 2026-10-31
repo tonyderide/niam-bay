@@ -27,3 +27,29 @@ Les 4 L sur les deux périodes (info : 2026 de tous), net brut/frais, semaines p
 - Le choix de L sur 2024-25 favorise la règle ; corrigé par le jugement 2026 unique.
 - Morts compris (pas de biais du survivant). Le témoin garde tailles, frais et part de longs ; il ne retire que l'information de sens.
 - Aucune action sur Martin ni Kraken.
+
+## Résultat (31/10/2026, 21h2x — t39.py → t39.log, chiffres dans t39.json)
+Lancé une seule fois après le commit 9e5466c, `nice -n 10`. 243 pièces exploitables, 143 semaines. Net = somme des rendements hebdomadaires du panier (taille 1/vol, plafond 2), en %.
+
+Grille (2024-25 → 2026) : L 2 : +46,2 % → +6,5 % ; **L 4 : +64,9 % → −10,8 %** ; L 8 : +5,8 % → +8,1 % ; L 12 : −17,6 % → −8,9 %. **L figé = 4 semaines.**
+
+| | 2024-25 (choix) | **2026 (jugement)** |
+|---|---|---|
+| Net | +64,9 % | **−10,8 %** |
+| Brut / frais | +67,1 / 2,2 | −9,6 / 1,3 |
+| Semaines positives | 49 % | 55 % |
+| Pire semaine | −24,4 % | −25,7 % |
+| Pire baisse | 62,9 pts | 41,6 pts |
+| Part de longs | 38 % | 40 % |
+| Pièces en jeu (moyenne) | 202 | 179 |
+| Témoin sens au hasard | −11,4 ± 9,0 % | −4,7 ± 8,2 % |
+| p | < 0,001 (info) | **0,77** |
+
+Repères : acheter-garder panier égal −35,5 % (2024-25) / −20,7 % (2026) ; BTC +116 % / −7,7 %. Variante long-ou-rien (info) : +25,8 % / −30,2 %.
+
+**VERDICT (pré-enregistré) : PERD** — net 2026 négatif (−10,8 %), sous la moyenne du hasard (p = 0,77).
+
+**Ce que ça montre :**
+- Encore le même schéma : très fort sur la période de choix (p < 0,001 en 2024-25, sur 200 pièces), rien sur la période jugée. Le classement des 4 L s'inverse presque entre les deux périodes (le meilleur de 2024-25 est l'un des pires de 2026) : l'autocorrélation hebdomadaire des cryptos dépend du régime, elle ne se transporte pas.
+- Les frais ne sont pas en cause (1-2 % par an) : c'est le brut qui change de signe.
+- Avec PREREG-10 (transversal), PREREG-TENDANCE et PREREG-32, le momentum crypto sur jours et semaines compte maintenant 4 essais propres sans jugement réussi.
