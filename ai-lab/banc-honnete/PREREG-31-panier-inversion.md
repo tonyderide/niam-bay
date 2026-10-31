@@ -49,3 +49,30 @@ La diversification réduit la **dispersion** (pire mois, pire baisse), pas l'**e
 - Bougie ambiguë en SL : biais contre la règle **et** contre le témoin, à égalité.
 - Morts compris : pas de biais du survivant.
 - Aucune action sur Martin ni Kraken : calcul seulement.
+
+## Résultat (31/10/2026, 03h3x — t31.py → t31.log, chiffres complets dans t31.json)
+Lancé une seule fois après le commit b9bebc2 (pré-enregistrement seul). Univers : 243 pièces exploitables sur les 253 (10 vides après la coupe au retrait), toutes vivantes au 01/01/2024 ; **188 vivantes au 01/01/2026** pour le jugement. Rendements en % de la mise par pièce, mise constante non composée (une pièce peut donc perdre plus de 100 % de sa mise sur une période : la mise est remise à chaque trade).
+
+| | (i) inversion après perte — 2024-25 | (i) — **2026** | (ii) sens EMA50 — 2024-25 | (ii) — **2026** |
+|---|---|---|---|---|
+| Net du panier | −55,0 % | **−47,8 %** | −147,8 % | **−55,8 %** |
+| Pièces positives | 29 % | 23 % | 11 % | 18 % |
+| Trades (par pièce) | 264 643 (1 089) | 60 462 (322) | 247 952 (1 020) | 57 279 (305) |
+| Trades gagnants | 38 % | 37 % | 60 % | 60 % |
+| Brut / frais | +53,9 / 108,9 | −15,7 / 32,2 | −45,7 / 102,0 | −25,3 / 30,5 |
+| Pire mois | −20,9 % (2025-11) | −12,6 % (2026-04) | −18,3 % (2025-02) | −15,9 % (2026-03) |
+| Mois positifs | 11/24 | 2/9 | 4/24 | 2/9 |
+| Pire baisse | 69,5 pts | 61,0 pts | 153,3 pts | 69,4 pts |
+| Témoin sens au hasard (moy. ± é.-t., 1 000 tirages) | −132,7 ± 8,2 % | −47,3 ± 5,2 % | −133,6 ± 8,0 % | −44,4 ± 5,1 % |
+| p contre le témoin | < 0,001 (info) | **0,54** | 0,96 (info) | **0,99** |
+
+Le témoin fait presque le même nombre de trades (265 616 / 60 397 / 252 069 / 58 320).
+
+**VERDICT (pré-enregistré) : PERD**, pour les deux variantes : net du panier négatif en 2024-25 et en 2026.
+
+**Ce que ça montre :**
+- La diversification a fait ce que la théorie annonçait : elle lisse (pire mois −13 à −16 % en 2026), mais elle ne crée pas d'espérance. La moyenne de 188 pièces qui perdent chacune un peu est un panier qui perd sûrement.
+- Le vrai coût, ce sont les frais : avec ces réglages en bougies 1 h, une altcoin fait ~500 trades par an, soit ~50 % de la mise par an en frais taker. Même un brut positif (+54 % en 2024-25 pour l'inversion) est mangé deux fois.
+- Seule trace intéressante, notée honnêtement : en 2024-25, l'inversion après perte a fait **beaucoup mieux que le hasard** (−55 % contre −133 %, aucun des 1 000 tirages aussi bien) — garder le sens après un gain a capté de la tendance sur les altcoins. En 2026, l'écart a **disparu** (−47,8 % contre −47,3 %, p = 0,54). Un avantage qui existe une période et pas la suivante n'est pas utilisable.
+- L'EMA en panier fait pire que le hasard sur les deux périodes (p = 0,96 et 0,99) : le petit + de PREREG-30 sur BTC/ETH ne se généralise pas aux autres pièces.
+- Limites : réglages hérités de BTC 1 min (non réoptimisés, par construction) ; bougie ambiguë comptée en SL à 1 h (pèse sur la règle et sur le témoin à égalité) ; funding non compté (comme PREREG-28/30).

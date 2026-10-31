@@ -446,5 +446,12 @@
   "resume": "Martingale positive tous les mois ? 7 familles, 6 132 réglages : aucun à 100 % ; meilleur figé (doublement SL 8 % TP 4 %) 96 % des mois en 2024-25, 85 % en 2026, 89 % sur 250 autres pièces, autant que sur prix mélangés (85 %) ; pire mois −987 €, moyenne −4,9 €/mois hors choix.",
   "source": "ai-lab/martingale-mois/RESULTAT.md",
   "citation": "**« gagnante à tous les coups » = FAUX**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-31-panier-inversion.md",
+  "verdict": "PERD",
+  "resume": "Règle de Tony en panier (188 à 243 perpétuels Binance 1 h, morts compris, mise égale) : inversion après perte −55 % (2024-25) / −47,8 % (2026), p = 0,54 contre sens au hasard ; sens EMA50 −148 % / −55,8 %, p = 0,99 ; frais ≈ 2× le brut. L'inversion battait le hasard en 2024-25 (p < 0,001), plus en 2026.",
+  "source": "ai-lab/banc-honnete/PREREG-31-panier-inversion.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD**"
  }
 ]
