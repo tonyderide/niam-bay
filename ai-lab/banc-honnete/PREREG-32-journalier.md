@@ -54,3 +54,35 @@ Agrandir les stops et l'échelle de temps divise le nombre de trades (donc les f
 - Jour ambigu compté en SL : contre la règle **et** le témoin à égalité ; mesuré par le contrôle 1 h.
 - Morts compris : pas de biais du survivant. Funding partiel : dit, et calculé seulement là où il existe.
 - Aucune action sur Martin ni Kraken : calcul seulement.
+
+## Résultat (31/10/2026, 15h0x — t32.py → t32.log, chiffres complets dans t32.json)
+Lancé une seule fois après le commit f09036c (pré-enregistrement seul), `nice -n 10`. 243 pièces exploitables, 243 vivantes au 01/01/2024, **187 au 01/01/2026**. Rendements en % de la mise par pièce, mise constante non composée, sans funding.
+
+**Réglages figés sur 2024-25** : (i) SL 15 % / activation +5 % / trailing 3 % ; (ii) SL 20 % / +10 % / 3 %. Les **36 réglages sont tous négatifs en 2024-25** pour les deux variantes (i : de −75 % à −29 % ; ii : de −42 % à −6,5 %) : le « meilleur » est le moins mauvais.
+
+| | (i) inversion — 2024-25 | (i) — **2026** | (ii) EMA50 j — 2024-25 | (ii) — **2026** |
+|---|---|---|---|---|
+| Net du panier | −29,2 % | **+8,6 %** | −6,5 % | **+5,6 %** |
+| Pièces positives | 40 % | 55 % | 48 % | 55 % |
+| Trades par pièce et par an | 73 | 60 | 37 | 31 |
+| Trades gagnants | 65 % | 67 % | 64 % | 64 % |
+| Brut / frais (part des frais) | −14,5 / 14,7 (brut ≤ 0) | +13,1 / 4,5 (34 %) | +0,8 / 7,3 (×9) | +7,9 / 2,3 (29 %) |
+| Pire mois | −15,5 % (2024-10) | −7,3 % (2026-03) | −11,5 % (2024-10) | −12,5 % (2026-01) |
+| Mois positifs | 9/24 | 5/9 | 11/23 | 3/9 |
+| Pire baisse | 39,7 pts | 23,6 pts | 63,5 pts | 22,7 pts |
+| Témoin sens au hasard (1 000 tirages) | −20,4 ± 7,5 % | −3,3 ± 4,6 % | −3,7 ± 7,8 % | +1,0 ± 4,9 % |
+| p contre le témoin | 0,88 (info) | **0,007** | 0,63 (info) | **0,17** |
+| Funding, sous-panier couvert (sans → avec) | −31,1 → −34,0 % (69) | +12,0 → +12,1 % (61) | +20,4 → +15,7 % (69) | +9,6 → +8,3 % (61) |
+
+**(iii) Acheter-garder** (frais compris, sans funding) : BTC **+106,9 %** (2024-25) et **−4,7 %** (2026) ; panier égal **−40,0 %** (2024-25, 15 % de pièces positives) et **−14,0 %** (2026, 23 %).
+
+Informations après figement : en 2026, 27/36 réglages de (i) et 29/36 de (ii) sont positifs (médianes +6,4 % et +4,4 %). Contrôle du jour ambigu (sorties sur bougies 1 h, 2026, réglage figé) : (i) +22,6 %, (ii) +7,3 % — le comptage « SL d'abord » pénalise surtout (i).
+
+**VERDICT (pré-enregistré) : NON DÉMONTRÉ** pour les deux variantes : net > 0 en 2026, mais négatif en 2024-25 (condition 1 manquée). Pour (i), p = 0,007 en 2026 (sous le seuil Bonferroni 0,025) ; pour (ii), p = 0,17.
+
+**Ce que ça montre :**
+- Le journalier a fait ce qu'on attendait des frais : de ~500 à 30-70 trades par pièce et par an, frais divisés par ~7. Ce n'est plus les frais qui tuent ; c'est le brut, qui change de signe d'une période à l'autre.
+- L'inversion après perte bat nettement le hasard en 2026 (+8,6 % contre −3,3 %, p = 0,007) mais faisait **pire** que le hasard en 2024-25 (p = 0,88), alors même que son réglage avait été choisi sur 2024-25. En 1 h (PREREG-31), c'était l'inverse : avantage en 2024-25, disparu en 2026. Un avantage qui change de période selon l'échelle ressemble à du bruit de régime, pas à une propriété stable.
+- 2026 est une année baissière pour les altcoins (acheter-garder panier −14 %) : une règle qui peut être short y profite. Contre l'acheter-garder du panier, les deux variantes gagnent sur les deux périodes ; contre BTC acheter-garder en 2024-25 (+107 %), rien ne tient.
+- Funding (partiel, 69 puis 61 pièces) : coût faible pour (i), quelques points pour (ii) qui est plus souvent long en 2024-25. Il ne change aucun signe.
+- Limites : mise non composée ; jour ambigu en SL (mesuré : le vrai résultat est probablement meilleur pour (i)) ; funding seulement sur les pièces encore cotées ; un seul jugement de 9 mois.
