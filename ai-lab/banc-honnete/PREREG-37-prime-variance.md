@@ -32,3 +32,28 @@ Par pièce et période : moyenne et médiane de g, part de swaps gagnants, pire 
 - Approximation reconnue : DVOL ≈ racine du prix d'un swap de variance à 30 jours (formule de type VIX) ; la réalisée Binance comptant ≠ l'indice Deribit exactement (écart faible). Les 2 points jouent contre la vente.
 - Un vendeur réel aurait besoin de marge ; le gain normalisé ne dit pas le levier. La mention de queue est là pour ça.
 - Aucune action sur Martin ni Kraken.
+
+## Résultat (31/10/2026, 19h3x — t37.py → t37.log, chiffres complets dans t37.json)
+Lancé une seule fois après le commit bd0e880, `nice -n 10`. DVOL disponible depuis le 24/03/2021 pour les deux pièces. g = part de la variance vendue qu'on garde (1 = toute ; −1 = la réalisée a été le double de la vendue).
+
+| | BTC historique | **BTC 2026** | ETH historique | **ETH 2026** |
+|---|---|---|---|---|
+| Swaps journaliers | 1 744 | 273 | 1 744 | 273 |
+| g moyen | **+0,135** | **−0,144** | **−0,017** | **−0,034** |
+| g médian | +0,27 | +0,04 | +0,13 | +0,14 |
+| Swaps gagnants | 72 % | 53 % | 62 % | 62 % |
+| Pire swap | −2,0 | −2,1 | −3,6 | −1,6 |
+| CVaR 5 % (journaliers) | −1,05 | −1,80 | −1,66 | −1,49 |
+| p (bootstrap par blocs) | < 0,001 | 0,83 | 0,61 | 0,61 |
+| DVOL moyen / réalisée moyenne | 62,4 / 53,4 | 43,0 / 41,9 | 76,1 / 70,6 | 59,4 / 55,6 |
+| Swap de vol (info), g_v moyen | +0,096 | −0,038 | +0,026 | +0,015 |
+
+Mensuels sans chevauchement : BTC historique +0,145 par mois (pire −0,87) ; ETH historique −0,021 (pire **−2,68**, avril 2021). Pires mois toutes périodes : BTC −1,99 (entré le 27/01/2026), −1,34 (27/05/2026) ; ETH −2,68 (23/04/2021), −1,58 (01/02/2025), −1,56 (27/01/2026).
+
+**VERDICT (pré-enregistré) : PERD — avec mention RISQUE DE QUEUE** (ETH : pire mois −2,68 contre un gain mensuel moyen négatif). La moyenne 2026 est négative pour BTC et pour ETH.
+
+**Ce que ça montre :**
+- La prime existe **en médiane** (la plupart des mois, l'implicite dépasse la réalisée de quelques points) et sur BTC 2021-2025 elle était nette et significative (+13,5 % de la variance vendue, p < 0,001).
+- Mais après 2 points de frictions, elle est **trop mince pour payer la queue** : 2026 a eu deux mois où la réalisée a dépassé ~1,7× l'implicite (janvier et mai), et ils effacent l'année. Sur ETH, elle n'a jamais été positive en moyenne après frictions.
+- En 2026 l'implicite (43 sur BTC) ne dépassait la réalisée (42) que d'un point : moins que les frictions. La prime s'est comprimée, comme le basis (PREREG-36).
+- C'est le profil classique « ramasser des pièces devant un rouleau compresseur » : 53-72 % de mois gagnants, des pertes de 1,5 à 3,6 fois la prime. Rien à en faire pour Martin.
