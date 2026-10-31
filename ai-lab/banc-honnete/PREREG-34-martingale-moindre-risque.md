@@ -55,3 +55,34 @@ Sur 4 terrains : BTC, ETH, SOL (1 min) et le panier (1 h, pièces vivantes au 01
 - Choix le plus favorable possible : la meilleure queue parmi 2 028 réglages, sur 2024-25 — ce qui rend la queue de 2024-25 optimiste ; seul 2026 et les pièces hors choix (ETH, SOL pour A) comptent.
 - Biais connus : bougie ambiguë = SL (rare en 1 min, plus fréquent en 1 h, touche règle et témoin à égalité) ; capital suivi aux clôtures (une perte latente dans un trade n'est pas vue, mais elle est bornée par le SL sauf gap) ; départs qui se chevauchent (2026 ≈ 3 trimestres indépendants par pièce, chiffres BTC/ETH/SOL peu précis) ; panier en départs hebdomadaires.
 - Aucune action sur Martin ni Kraken : calcul seulement. Fichiers nommés 34 uniquement.
+
+## Résultat (31/10/2026, 15h1x — t34.py → t34.log, chiffres complets et tableaux des 2 028 réglages dans t34.json)
+Lancé une seule fois après le commit 9b53175 (pré-enregistrement seul). Panier : 243 pièces en 2024-25, 188 vivantes au 01/01/2026. Montants en € pour un compte de 1 000 €, mise de base 10 €, fenêtres de 3 mois.
+
+**Choix sur 2024-25 (518 candidats à espérance > 0 sur BTC, 63 sur le panier) :**
+- **A (BTC 1 min) : SL 5 %, activation +1 %, trailing 1 %, ×3 après une perte, retour à la base après 4 pertes** — c'est exactement la combinaison de PREREG-28 C. 2024-25 : espérance +101,6 €, CVaR 5 % **+9,0 €**, P(perte) 0,8 %, ruine 0, pire baisse 102,6 €.
+- **B (panier 1 h) : SL 5 %, activation +5 %, trailing 3 %, ×1,5, retour après 6 pertes.** 2024-25 : espérance +2,9 €, CVaR −449,8 €, P(perte) 45 %, ruine 2,2 %, pire baisse (95e centile des pièces) 1 091 €.
+- **La prédiction écrite d'avance (« le choix tombera sur ×1 ») est FAUSSE sur 2024-25** : à mise de base fixée, le meilleur ×1 sur BTC a une CVaR de −46 € contre +9 € pour ×3. Sur 2024-25 BTC, la martingale ×3 plafonnée à 4 a *réduit* la queue — sur l'échantillon où elle a été choisie.
+- Réglage « pire baisse seule » (BTC) : même triplet, ×2, plafond 4 (pire baisse 71,8 €, CVaR −23,1 €).
+- A appliqué hors choix en 2024-25 : ETH espérance −43 €, CVaR −481 €, ruine 7 % ; SOL −226 €, CVaR −936 €, ruine 32 % ; panier −223 €, CVaR −968 €, ruine 42 %.
+
+**Jugement 2026 (01/01 → 30/09), réglages figés :**
+
+| | A : BTC | A : ETH | A : SOL | A : panier | B : BTC | B : ETH | B : SOL | B : panier |
+|---|---|---|---|---|---|---|---|---|
+| Espérance à 3 mois | **+83,6 €** | +52,2 € | **−162,3 €** | **−171,3 €** | +29,2 € | +40,3 € | +47,0 € | **−68,8 €** |
+| CVaR 5 % | +45,7 € | −72,0 € | −552,0 € | −963,7 € | −13,0 € | −73,5 € | −70,8 € | −494,9 € |
+| P(perte à 3 mois) | 0 % | 23 % | 54 % | 64 % | 12 % | 32 % | 18 % | 62 % |
+| Ruine (capital ≤ 500 €) | 0 | 0 | **16 %** | **29 %** | 0 | 0 | 0 | **3,2 %** |
+| Pire baisse | 41 € | 126 € | **646 €** | **1 363 €** (95e c.) | 83 € | 146 € | 131 € | **839 €** (95e c.) |
+| Témoin sens au hasard : espérance (é.-t.) | −8,8 (88) | −18,8 (126) | −106,8 (138) | −139,9 (19) | −19,2 (46) | −30,9 (62) | −36,0 (78) | −48,0 (8) |
+| **p contre le témoin** (1 000 tirages) | 0,10 | 0,31 | 0,69 | 0,95 | 0,12 | 0,11 | 0,14 | 0,99 |
+| Prix mélangés : espérance / part aussi bien | −16,9 / 0,09 | −53,8 / 0,19 | −94,0 / 0,66 | −155,4 / 0,85 | −13,4 / 0,18 | −29,8 / 0,20 | −30,0 / 0,24 | −48,9 / 1,00 |
+
+**VERDICT (pré-enregistré) : A « risque non maîtrisé », B « risque non maîtrisé ».** Aucun des deux n'a pire baisse < 200 € et ruine = 0 sur les 4 terrains ; aucun p < 0,05.
+
+**Ce que ça montre :**
+- Minimiser la queue sur BTC 2024-25 ramène exactement le réglage de PREREG-28 C : la « queue la plus fine » de BTC est un artefact du même choix sur une seule pièce. Hors de BTC, il s'effondre (SOL : ruine dans 16 % des départs 2026, pire baisse 646 € ; panier : 29 % de ruines, CVaR −964 €). Sa queue sur le panier est **pire que celle du témoin au hasard** (p = 0,95).
+- Choisi sur le panier (B), le réglage le moins risqué mise moins (×1,5, SL et activation larges, ~1 trade tous les 2-3 jours) : il tient sur BTC/ETH/SOL 2026 (aucune ruine, pire baisse 83-146 €) mais pas sur le panier (3 % de ruines, pire baisse 839 € pour 1 pièce sur 20, espérance −69 €, pire que le hasard p = 0,99).
+- Même là où l'espérance est positive (A sur BTC/ETH, B sur BTC/ETH/SOL), aucun résultat n'est distinguable d'un sens tiré au hasard (p 0,10 à 0,31) : la martingale n'a pas créé d'avantage, elle a redistribué. La mise en garde théorique tient ; la prédiction « ×1 » ne tient pas en échantillon, mais la règle générale — moins on multiplie, moins la queue est grosse hors échantillon — se lit dans B contre A.
+- Limites : départs qui se chevauchent (2026 ≈ 3 trimestres indépendants par pièce) ; capital suivi aux clôtures ; bougie ambiguë en SL (1 h pour le panier) ; pas de funding.

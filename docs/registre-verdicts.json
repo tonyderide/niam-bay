@@ -453,5 +453,12 @@
   "resume": "Règle de Tony en panier (188 à 243 perpétuels Binance 1 h, morts compris, mise égale) : inversion après perte −55 % (2024-25) / −47,8 % (2026), p = 0,54 contre sens au hasard ; sens EMA50 −148 % / −55,8 %, p = 0,99 ; frais ≈ 2× le brut. L'inversion battait le hasard en 2024-25 (p < 0,001), plus en 2026.",
   "source": "ai-lab/banc-honnete/PREREG-31-panier-inversion.md",
   "citation": "**VERDICT (pré-enregistré) : PERD**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-34-martingale-moindre-risque.md",
+  "verdict": "RISQUE NON MAÎTRISÉ",
+  "resume": "Martingale avec inversion, réglage à la queue la plus fine (CVaR 5 % à 3 mois, 2 028 réglages, 10 €/1 000 €) : choisi sur BTC 2024-25 = SL 5 % / +1 % / 1 %, ×3, retour après 4 pertes (= PREREG-28 C) ; 2026 BTC +84 €, 0 ruine, mais SOL −162 € (16 % de ruines) et panier −171 € (29 % de ruines), p = 0,10 à 0,95 contre sens au hasard. Choisi sur le panier (×1,5, SL 5 % / +5 % / 3 %) : tient sur BTC/ETH/SOL, panier −69 €, 3 % de ruines, p = 0,99.",
+  "source": "ai-lab/banc-honnete/PREREG-34-martingale-moindre-risque.md",
+  "citation": "**VERDICT (pré-enregistré) : A « risque non maîtrisé », B « risque non maîtrisé ».**"
  }
 ]
