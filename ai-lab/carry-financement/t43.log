@@ -1,0 +1,65 @@
+{
+ "2021-25": {
+  "jours_signal": 25,
+  "jours": 1826,
+  "net": 0.23771714338792924,
+  "prix": 0.20486379353735445,
+  "fin": 0.036853349850574715,
+  "frais": 0.004,
+  "panier_moy_jours_signal": -0.00819455174149418,
+  "panier_moy_autres": 0.0010004461566110487,
+  "short_permanent": {
+   "net": -1.0724571419329374,
+   "prix": -1.596939734519143,
+   "fin": 0.5268825925862078,
+   "frais": 0.0024000000000000002
+  }
+ },
+ "2026": {
+  "jours_signal": 0,
+  "jours": 299,
+  "net": 0.0,
+  "prix": 0.0,
+  "fin": 0.0,
+  "frais": 0.0,
+  "panier_moy_jours_signal": null,
+  "panier_moy_autres": 0.000470380121422263,
+  "short_permanent": {
+   "net": -0.2184096313052566,
+   "prix": -0.14064365630525655,
+   "fin": -0.077265975,
+   "frais": 0.0005
+  }
+ },
+ "par_an": {
+  "2021": {
+   "jours_signal": 0,
+   "net": 0.0
+  },
+  "2022": {
+   "jours_signal": 0,
+   "net": 0.0
+  },
+  "2023": {
+   "jours_signal": 2,
+   "net": 0.013537656199942738
+  },
+  "2024": {
+   "jours_signal": 23,
+   "net": 0.2246794871879865
+  },
+  "2025": {
+   "jours_signal": 0,
+   "net": 0.0
+  },
+  "2026": {
+   "jours_signal": 0,
+   "net": 0.0
+  }
+ },
+ "temoin_2026": {
+  "moy": 0.0,
+  "p": 1.0
+ },
+ "verdict": "NON \u00c9VALUABLE"
+}

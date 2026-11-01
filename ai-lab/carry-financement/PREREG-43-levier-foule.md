@@ -25,3 +25,17 @@ Jours de signal par période, net, prix, financement, frais, pire épisode, rend
 - 90e centile, 7 jours, 180 jours de chauffe fixés ici ; aucune grille.
 - Le témoin garde la structure en épisodes (décalage, pas de mélange jour par jour) et les frais : il ne retire que le moment.
 - Aucune action sur Martin ni Kraken.
+
+## Résultat (01/11/2026, 07h0x — t43.py → t43.log, chiffres dans t43.json)
+Lancé une seule fois après le commit e475b88, `nice -n 10`.
+
+- **Aucun jour de signal en 2026** (0/299). Historique 2021-2025 : **25 jours de signal sur 1 826** (2 en 2023, 23 en 2024 — mars 2024), 0 en 2021, 2022 et 2025.
+- Historique, pour information seulement : net **+23,8 %** sur ces 25 jours (prix +20,5 %, financement reçu +3,7 %, frais 0,4 %) ; le panier a fait en moyenne **−0,82 %/jour** les jours de signal contre +0,10 %/jour les autres jours.
+- Repère, short permanent du panier : 2021-25 −107 % ; 2026 −21,8 %, dont **−7,7 % de financement** (en 2026 le financement moyen du marché a été négatif : les shorts ont payé).
+
+**VERDICT (pré-enregistré) : NON ÉVALUABLE** — aucun jour de signal dans la période jugée.
+
+**Ce que ça montre :**
+- Le seuil « 90e centile de tout le passé » est resté ancré sur les extrêmes du premier semestre 2021 (financement record) : il n'a presque plus jamais été franchi ensuite. C'est une faiblesse de la règle fixée d'avance, pas un résultat sur l'idée.
+- Les 25 jours de 2024 vont dans le sens de l'hypothèse (le marché baisse quand toute la foule paie pour être longue), mais 25 jours groupés en un ou deux épisodes ne prouvent rien.
+- 2026 est une année sans foule à levier long (financement moyen négatif) : l'hypothèse n'avait rien à mesurer. À reprendre seulement **en avant**, avec un seuil glissant (par exemple 365 jours) fixé avant de regarder.

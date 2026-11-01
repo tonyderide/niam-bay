@@ -544,5 +544,12 @@
   "resume": "Carry PREREG-27 révisé le lundi avec hystérésis : frais 65,8 → 20,1 %, mais prix +95,8 → −83,5 % ; net 2026 +24,9 % (base +94,3 %), test des décalages p = 0,29. Une partie du carry quotidien est un effet de prix à un jour, pas une prime de portage.",
   "source": "ai-lab/carry-financement/PREREG-42-carry-rotation-lente.md",
   "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — net 2026 > 0, mais p = 0,29"
+ },
+ {
+  "fichier": "ai-lab/carry-financement/PREREG-43-levier-foule.md",
+  "verdict": "NON ÉVALUABLE",
+  "resume": "Financement agrégé > 90e centile passé → short du panier : 0 jour de signal en 2026, 25 en 2021-25 (mars 2024, +23,8 %, info) ; seuil expansif ancré sur les extrêmes de 2021 ; financement moyen négatif en 2026.",
+  "source": "ai-lab/carry-financement/PREREG-43-levier-foule.md",
+  "citation": "**VERDICT (pré-enregistré) : NON ÉVALUABLE**"
  }
 ]
