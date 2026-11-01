@@ -565,5 +565,12 @@
   "resume": "Réversion transversale à 1 jour (long les perdantes de la veille, short les gagnantes, 50 perpétuels figés) en papier EN AVANT, 03/11/2026 → 02/05/2027 ; jugement unique le 03/05/2027 contre paniers au hasard à rotation égale.",
   "source": "ai-lab/banc-honnete/PREREG-45-papier-reversion.md",
   "citation": "## Jugement (UNIQUE, le 03/05/2027 ou après"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-46-short-nouvelles-cotations.md",
+  "verdict": "GAGNE",
+  "resume": "Short des nouvelles cotations Binance dès le 2e jour, tenu 90 j (choisi sur 2021-25 : +24,2 %/trade), financement compris : 2026 +8,0 %/trade sur 191 trades, p < 0,001 contre short de pièces anciennes même date ; crypto seulement (actions retirées, info) +18,5 % sur 46 trades, p = 0,002 ; 3 % de trades au plancher ; test en avant à suivre.",
+  "source": "ai-lab/banc-honnete/PREREG-46-short-nouvelles-cotations.md",
+  "citation": "**VERDICT (pré-enregistré) : GAGNE**"
  }
 ]

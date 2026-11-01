@@ -30,3 +30,31 @@ Les 4 N sur les deux périodes, nombre de trades, médiane, part gagnante, finan
 - Le financement compte contre le short quand il est négatif (fréquent sur les jetons neufs).
 - Le plancher à −100 % est favorable au short (un compte réel serait liquidé plus tôt avec levier) ; la mention de queue mesure ce risque.
 - Aucune action sur Martin ni Kraken ; aucun compte, aucune clé.
+
+## Résultat (01/11/2026, après-midi — t46_financement.py (891/891 contrats), puis t46.py → t46.log, chiffres dans t46.json)
+Lancé une seule fois après le commit d8f3361, `nice -n 10`. Rendement moyen par trade (mise égale, short 1×, plancher −100 %, financement réel compris).
+
+| N (jours) | Choix 2021-25 : trades / moyenne / médiane / gagnants | 2026 : trades / moyenne / médiane / gagnants |
+|---|---|---|
+| 14 | 551 / +6,7 % / +13,2 % / 68 % | 261 / +4,1 % / +3,9 % / 63 % |
+| 30 | 551 / +11,0 % / +19,3 % / 70 % | 249 / +3,3 % / +2,9 % / 58 % |
+| 60 | 551 / +18,1 % / +28,4 % / 74 % | 221 / +8,5 % / +7,8 % / 63 % |
+| **90** | 551 / **+24,2 %** / +36,8 % / 76 % | **191 / +8,0 % / +11,6 % / 64 %** |
+
+- **N figé = 90 jours.** Par année d'entrée (choix) : 2021 +26,9 % · 2022 +39,0 % · 2023 +10,6 % · 2024 +25,8 % · 2025 +26,7 %.
+- Financement moyen payé par le short : −1 à −2 % par trade (compté).
+- Trades au plancher (−100 %) : 41/551 en 2021-25, **6/191 en 2026 (3,1 %)** → pas de mention RISQUE DE QUEUE (seuil 5 %).
+- **Témoin 2026** (short d'une pièce cotée depuis plus d'un an, même date, même N) : −1,0 ± 2,1 % ; **p < 0,001** (0/1 000).
+
+**VERDICT (pré-enregistré) : GAGNE** — rendement moyen > 0 sur 2021-25 (+24,2 %) et en 2026 (+8,0 %), p < 0,001 contre le témoin.
+
+## Vérifications après le verdict (information ; elles ne changent pas le verdict)
+- **Calcul vérifié** sur un trade tiré au milieu (ASMLUSDT) : prix d'entrée, de sortie et rendement brut identiques à une lecture neuve de l'API Binance (`t46_verif.py`).
+- **Contamination trouvée** : en 2026 Binance cote aussi des perpétuels sur **actions et matières premières** (INTC, MU, SNDK, ASML…, 216 contrats non-crypto au 01/11/2026 d'après `underlyingType`, fichier listings/exchangeInfo-20261101.json). Le pré-enregistrement disait « tous les perpétuels USDT-M », donc ils sont dans le verdict ; mais l'hypothèse parle de jetons neufs. Parmi les 6 trades au plancher de 2026, 4 sont des actions (INTC, MU, SNDK, et le 5e pire BTW est crypto).
+- **Crypto seulement** (`t46_crypto_seul.py` → t46_crypto_seul.log, contrats non-COIN retirés de la règle ET du témoin) : choix 2021-25 inchangé (548 trades, +24,3 %) ; **2026 : 46 trades, +18,5 % par trade, témoin +7,1 %, p = 0,002**. L'effet est plus net sans les actions.
+- **Fragilités** : 2026 crypto = 46 trades, 4 mois sur 7 positifs (février −14 %, juin −12 %) ; sans les 10 meilleurs trades (panier complet), la moyenne 2026 tombe de +8,0 % à +4,2 %. Les shorts se chevauchent (≈ 14 à 57 ouverts en même temps) : une manie sur les nouveaux jetons les ferait perdre ensemble, risque que le témoin (pièces anciennes) ne mesure pas. Les contrats retirés sans historique chez Binance manquent (plutôt défavorable au short : ce sont souvent des effondrements).
+- **Ce que ça ne dit pas encore** : on ne sait pas si l'effet tient sur des cotations **à venir**. Prochaine étape pré-enregistrée : test papier EN AVANT des nouvelles cotations crypto (PREREG-47).
+
+**Ce que ça montre :**
+- Premier GAGNE de la série, et il colle à la théorie : les jetons neufs (faible flottant, déblocages à venir, attention maximale) perdent en moyenne de leur valeur sur leurs 3 premiers mois, chaque année de 2021 à 2026, même après le financement négatif payé par le short.
+- Le gain vient d'une **asymétrie structurelle** (offre future connue, demande de loterie), pas d'une règle de sortie : c'est exactement le type d'avantage que les maths permettent.

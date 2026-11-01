@@ -1,0 +1,9 @@
+14 choix {'n': 551, 'moy': 0.0671, 'med': 0.1317, 'gagnants': 0.6751, 'fin_moy': -0.0123, 'pire': -1.0, 'plancher': 25}
+14 2026 {'n': 261, 'moy': 0.0411, 'med': 0.0389, 'gagnants': 0.6322, 'fin_moy': -0.0063, 'pire': -1.0, 'plancher': 1}
+30 choix {'n': 551, 'moy': 0.1099, 'med': 0.1929, 'gagnants': 0.7042, 'fin_moy': -0.0125, 'pire': -1.0, 'plancher': 31}
+30 2026 {'n': 249, 'moy': 0.0326, 'med': 0.0293, 'gagnants': 0.5823, 'fin_moy': -0.0084, 'pire': -1.0, 'plancher': 2}
+60 choix {'n': 551, 'moy': 0.181, 'med': 0.2841, 'gagnants': 0.7387, 'fin_moy': -0.0155, 'pire': -1.0, 'plancher': 39}
+60 2026 {'n': 221, 'moy': 0.0848, 'med': 0.0778, 'gagnants': 0.6335, 'fin_moy': -0.0109, 'pire': -1.0, 'plancher': 6}
+90 choix {'n': 551, 'moy': 0.242, 'med': 0.368, 'gagnants': 0.7568, 'fin_moy': -0.0219, 'pire': -1.0, 'plancher': 41}
+90 2026 {'n': 191, 'moy': 0.0797, 'med': 0.1158, 'gagnants': 0.6387, 'fin_moy': -0.0096, 'pire': -1.0, 'plancher': 6}
+N 90 témoin {'moy': -0.010200543253236183, 'et': 0.021095764304792274, 'p': 0.0} queue False VERDICT GAGNE
