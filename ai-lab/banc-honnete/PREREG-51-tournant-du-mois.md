@@ -23,3 +23,21 @@ Moyenne, médiane, part positive, par année ; p historique (info) ; acheter-gar
 
 ## Relecture d'équité
 Fenêtre −2/+3 fixée ici (la plus courante dans la littérature, sans essai d'autres). Aucune action sur Martin ni Kraken.
+
+## Résultat (02/11/2026, 00h5x — t51.py → t51.log, chiffres dans t51.json, prix dans t51_btc.json)
+Lancé une seule fois après le commit b7e3e7f, `nice -n 10`. 109 fenêtres (10/2017 → 10/2026).
+
+| | Historique (99 fenêtres, 10/2017 → 12/2025) | **2026 (10 fenêtres)** |
+|---|---|---|
+| Rendement net moyen par fenêtre | +1,42 % | **−0,60 %** |
+| Médiane / fenêtres positives | +0,35 % / 55 % | +1,27 % / 70 % |
+| Témoin (fenêtre au hasard, même mois) | +0,50 % | +0,12 % |
+| p | 0,115 (info) | **0,67** |
+
+Par année : 2018 +0,1 % · 2019 +3,5 % · 2020 +2,5 % · 2021 +5,3 % · 2022 −0,9 % · 2023 −0,8 % · 2024 −1,7 % · 2025 +1,2 % · 2026 −0,6 %. Fenêtres 2026 : deux fortes pertes (février −10,7 %, juin −12,9 %) effacent sept petits gains.
+
+**VERDICT (pré-enregistré) : PERD** — moyenne 2026 négative ; même l'historique ne bat pas le hasard (p = 0,115).
+
+**Ce que ça montre :**
+- L'effet a peut-être existé en 2019-2021 (années haussières, beaucoup de flux particuliers), mais il ne bat pas des fenêtres au hasard sur l'historique, et il est négatif ou nul en 2022-2024 et 2026.
+- Avec 12 fenêtres par an, un ou deux mouvements violents décident de l'année : un effet de calendrier de quelques dixièmes de point ne peut pas se voir sur BTC.

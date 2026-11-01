@@ -600,5 +600,12 @@
   "resume": "Effet MAX (PREREG-49) en papier EN AVANT sur 150 perpétuels figés, 25 semaines du 09/11/2026 au 26/04/2027 ; jugement unique le 03/05/2027 contre paniers au hasard à rotation égale.",
   "source": "ai-lab/banc-honnete/PREREG-50-papier-max.md",
   "citation": "## Jugement (UNIQUE, le 03/05/2027 ou après"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-51-tournant-du-mois.md",
+  "verdict": "PERD",
+  "resume": "Tournant du mois sur BTC (long de l'avant-dernier jour au 3e jour, 2017-2026) : historique +1,42 %/fenêtre mais p = 0,115 contre fenêtres au hasard ; 2026 −0,60 %/fenêtre (10 fenêtres), p = 0,67 ; négatif ou nul depuis 2022.",
+  "source": "ai-lab/banc-honnete/PREREG-51-tournant-du-mois.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — moyenne 2026 négative"
  }
 ]
