@@ -1,0 +1,4 @@
+243 pièces, 143 semaines
+hist {'net': -0.0237, 'brut': 0.0079, 'frais': 0.0316, 'jambe_longue': -0.3158, 'jambe_courte': 0.3237, 'beta_realise': 0.4731, 'levier_long': 1.1456, 'sem_pos': 0.4375, 'pire_baisse': 0.562, 'conservation': 0.8451, 'temoin_moy': 0.0343, 'temoin_et': 0.1878, 'p': 0.619}
+2026 {'net': -0.0502, 'brut': -0.0302, 'frais': 0.02, 'jambe_longue': 0.031, 'jambe_courte': -0.0611, 'beta_realise': 0.6416, 'levier_long': 1.5411, 'sem_pos': 0.4474, 'pire_baisse': 0.4773, 'conservation': 0.8015, 'temoin_moy': -0.0676, 'temoin_et': 0.1882, 'p': 0.469}
+VERDICT PERD

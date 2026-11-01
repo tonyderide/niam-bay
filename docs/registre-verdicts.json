@@ -579,5 +579,12 @@
   "resume": "Short des nouvelles cotations crypto Binance (2e jour, 90 j, financement compris) en papier EN AVANT : cotations du 02/11/2026 au 28/02/2027, jugement unique le 01/06/2027 contre short de pièces anciennes même date.",
   "source": "ai-lab/banc-honnete/PREREG-47-papier-cotations.md",
   "citation": "## Jugement (UNIQUE, le 01/06/2027 ou après"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-48-pari-contre-beta.md",
+  "verdict": "PERD",
+  "resume": "Pari contre le bêta (243 perpétuels Binance, bêta 60 j contre BTC, quintiles, pondéré à bêta neutre) : historique −2,4 %, 2026 −5,0 %, p = 0,47 ; bêta réalisé 0,5-0,6 au lieu de 0 (bêtas instables).",
+  "source": "ai-lab/banc-honnete/PREREG-48-pari-contre-beta.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — net négatif sur les deux périodes"
  }
 ]

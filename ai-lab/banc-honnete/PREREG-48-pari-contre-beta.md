@@ -22,3 +22,23 @@ Net, brut, frais, jambes, bêta réalisé du portefeuille (régression des rende
 
 ## Relecture d'équité
 60 jours, quintiles, plafond 3, seuil 0,1 fixés ici. Le témoin garde la pondération par bêta et les frais ; il ne retire que le classement. Aucune action sur Martin ni Kraken.
+
+## Résultat (01/11/2026, 19h — t48.py → t48.log, chiffres dans t48.json)
+Lancé une seule fois après le commit 93962e4, `nice -n 10`. 243 pièces.
+
+| | Historique (03/2024 → 12/2025) | **2026** |
+|---|---|---|
+| Net | −2,4 % | **−5,0 %** |
+| Brut / frais | +0,8 / 3,2 | −3,0 / 2,0 |
+| Jambe longue (faible bêta) / courte (fort bêta) | −31,6 / +32,4 | +3,1 / −6,1 |
+| Bêta réalisé du portefeuille (hebdo, contre BTC) | **0,47** | **0,64** |
+| Levier moyen du côté long | 1,15 | 1,54 |
+| Semaines positives / pire baisse | 44 % / 56 pts | 45 % / 48 pts |
+| Témoin à rotation égale | +3,4 ± 18,8 % | −6,8 ± 18,8 % |
+| p | 0,62 | **0,47** |
+
+**VERDICT (pré-enregistré) : PERD** — net négatif sur les deux périodes, au milieu du hasard.
+
+**Ce que ça montre :**
+- Pas de prime « contre le bêta » sur les perpétuels : comme prévu, quand le levier est facile, la contrainte qui la crée n'existe pas.
+- Le portefeuille « à bêta nul » avait en fait un bêta de 0,5 à 0,6 : les bêtas sur 60 jours des altcoins ne se prolongent pas d'une semaine à l'autre (les faibles bêtas deviennent forts dans les mouvements violents). Une couverture par bêta estimé est donc peu fiable sur ce marché — utile à savoir pour toute stratégie « neutre au marché ».
