@@ -19,9 +19,10 @@ Interdit (déjà enterré, ne pas refaire sous un autre nom) : SL/trailing/inver
 | H7 | **Carry PREREG-27 à rotation lente** (révision hebdomadaire au lieu de quotidienne, avec bande d'hystérésis fixée d'avance) | Même prime que PREREG-27 ; on ne cherche pas un nouvel avantage, on réduit les frais qui le mangent (rotation lente + ordres maker comptés exécutés seulement si le prix traverse, comme PREREG-19). Une seule variante pré-enregistrée (pas de grille). | carry-financement/data-univers | **NON DÉMONTRÉ** (PREREG-42 : frais ÷3 mais prix +96 → −84 % ; 2026 +25 % < base) |
 | H8 | **Levier de la foule** (funding moyen du marché dans son décile haut → panier sous-performe la semaine suivante) | Positions longues à levier entassées = carburant de liquidations en cascade. Agrégé sur le marché, pas mono-pièce (≠ funding extrême enterré). | funding Binance 69 pièces + Hyperliquid | **NON ÉVALUABLE** (PREREG-43 : 0 jour de signal en 2026 ; à reprendre en avant, seuil glissant 365 j) |
 | H9 | **Facteur taille** (petites contre grandes capitalisations, révision hebdo) | Prime d'illiquidité (Liu, Tsyvinski & Wu 2022). Fragile : les coûts réels des petites pièces sont élevés ; frais + glissement explicites. | dca-martingale/refait/donnees (volume comme proxy) | **PERD** (PREREG-44 : 2026 −3,1 %, p 0,56) |
-| H10 | **Réversion transversale à 1 jour** (acheter les plus forts perdants de la veille, vendre les plus forts gagnants) | Prime de fourniture de liquidité aux vendeurs pressés. Fragile : beaucoup de rotation ; à ne garder que si l'avantage brut dépasse 2× les frais en 2024-25. | dca-martingale/refait/donnees | À FAIRE — **jugement en avant seulement** (2026 vu par PREREG-41 : renversement hebdo) |
+| H10 | **Réversion transversale à 1 jour** (acheter les plus forts perdants de la veille, vendre les plus forts gagnants) | Prime de fourniture de liquidité aux vendeurs pressés. Fragile : beaucoup de rotation ; à ne garder que si l'avantage brut dépasse 2× les frais en 2024-25. | dca-martingale/refait/donnees | **EN COURS en avant** (PREREG-45, papier 03/11/2026 → 02/05/2027) |
 
 ## En cours hors file
+- **PREREG-45** (réversion à 1 jour, papier en avant) : journal quotidien par cron 03h27, jugement unique le 03/05/2027.
 - **PREREG-35** (test papier en avant de l'inversion journalière de PREREG-32) : journal quotidien par cron, jugement unique le 01/05/2027.
 - **PREREG-26 B** (carry sur Kraken en papier) : court jusqu'au 23/12/2026 (voir carry-financement).
 
@@ -47,3 +48,4 @@ Interdit (déjà enterré, ne pas refaire sous un autre nom) : SL/trailing/inver
 | 2026-11-01 07h05 | H8 | Calcul + verdict PREREG-43 : NON ÉVALUABLE (seuil expansif ancré sur 2021, 25 jours de signal en 5 ans, 0 en 2026) | (ce commit) |
 | 2026-11-01 09h | H9 | PREREG-44 pré-enregistré (taille = volume 30 j, quintiles, glissement 0,10 % sur les petites, témoin rotation égale) | (ce commit) |
 | 2026-11-01 09h30 | H9 | Volumes téléchargés (8 199 archives vérifiées) + calcul + verdict PREREG-44 : PERD (aucune prime de taille, même avant coûts) | (ce commit) |
+| 2026-11-01 10h | H10 | PREREG-45 pré-enregistré en test papier en avant (univers top 50 figé, cron 03h27) | (ce commit) |

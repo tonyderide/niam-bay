@@ -558,5 +558,12 @@
   "resume": "Facteur taille (243 perpétuels Binance morts compris, volume 30 j, long petites / short grandes, glissement 0,10 % sur les petites) : historique −0,1 %, 2026 −3,1 %, p = 0,56 ; jambe des petites négative même avant coûts.",
   "source": "ai-lab/banc-honnete/PREREG-44-facteur-taille.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — net négatif sur les deux périodes"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-45-papier-reversion.md",
+  "verdict": "EN COURS",
+  "resume": "Réversion transversale à 1 jour (long les perdantes de la veille, short les gagnantes, 50 perpétuels figés) en papier EN AVANT, 03/11/2026 → 02/05/2027 ; jugement unique le 03/05/2027 contre paniers au hasard à rotation égale.",
+  "source": "ai-lab/banc-honnete/PREREG-45-papier-reversion.md",
+  "citation": "## Jugement (UNIQUE, le 03/05/2027 ou après"
  }
 ]
