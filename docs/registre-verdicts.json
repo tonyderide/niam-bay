@@ -551,5 +551,12 @@
   "resume": "Financement agrégé > 90e centile passé → short du panier : 0 jour de signal en 2026, 25 en 2021-25 (mars 2024, +23,8 %, info) ; seuil expansif ancré sur les extrêmes de 2021 ; financement moyen négatif en 2026.",
   "source": "ai-lab/carry-financement/PREREG-43-levier-foule.md",
   "citation": "**VERDICT (pré-enregistré) : NON ÉVALUABLE**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-44-facteur-taille.md",
+  "verdict": "PERD",
+  "resume": "Facteur taille (243 perpétuels Binance morts compris, volume 30 j, long petites / short grandes, glissement 0,10 % sur les petites) : historique −0,1 %, 2026 −3,1 %, p = 0,56 ; jambe des petites négative même avant coûts.",
+  "source": "ai-lab/banc-honnete/PREREG-44-facteur-taille.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — net négatif sur les deux périodes"
  }
 ]

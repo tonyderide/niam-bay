@@ -25,3 +25,23 @@ Net, brut, coûts, jambes séparées, semaines positives, pire semaine, pire bai
 - Quintiles, 30 jours, 0,10 % de glissement fixés ici.
 - Morts compris : une petite qui meurt garde sa perte (dernier prix).
 - Aucune action sur Martin ni Kraken.
+
+## Résultat (01/11/2026, 09h2x — t44_volumes.py puis t44.py → t44.log, chiffres dans t44.json)
+Volumes : 253 symboles, 8 199 archives mensuelles vérifiées (403 absentes : pièces pas encore ou plus cotées). Calcul lancé une seule fois après le commit c0b6e9a, `nice -n 10`. Quintiles de ~42 (historique) et ~36 (2026) pièces par côté ; les classements de taille bougent peu (≈ 90 % des noms gardés d'une semaine à l'autre).
+
+| | Historique (02/2024 → 12/2025) | **2026** |
+|---|---|---|
+| Net | −0,1 % | **−3,1 %** |
+| Brut / coûts | +2,0 / 2,1 | −2,1 / 0,9 |
+| Jambe petites (long) / jambe grandes (short) | −1,3 / +3,3 | −4,7 / +2,6 |
+| Sans glissement (info) | +1,1 % | −2,5 % |
+| Semaines positives | 46 % | 53 % |
+| Pire baisse | 11,6 pts | 9,1 pts |
+| Témoin à rotation égale | +1,5 ± 12,4 % | −2,1 ± 8,4 % |
+| p | 0,57 | **0,56** |
+
+**VERDICT (pré-enregistré) : PERD** — net négatif sur les deux périodes, indiscernable du hasard.
+
+**Ce que ça montre :**
+- Pas de prime de taille sur les perpétuels Binance de 2024-2026 : les petites pièces n'ont pas fait mieux que les grosses, même **avant** coûts (jambe des petites négative sur les deux périodes).
+- L'écart de rendement tient en quelques points sur près de trois ans, à côté d'un hasard de ±8 à 12 points : il n'y a rien à mesurer. La prime académique (2014-2018, marché au comptant, beaucoup de micro-pièces) ne se retrouve pas ici.
