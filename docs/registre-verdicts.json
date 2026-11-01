@@ -586,5 +586,12 @@
   "resume": "Pari contre le bêta (243 perpétuels Binance, bêta 60 j contre BTC, quintiles, pondéré à bêta neutre) : historique −2,4 %, 2026 −5,0 %, p = 0,47 ; bêta réalisé 0,5-0,6 au lieu de 0 (bêtas instables).",
   "source": "ai-lab/banc-honnete/PREREG-48-pari-contre-beta.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — net négatif sur les deux périodes"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-49-effet-max.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Effet MAX (243 perpétuels Binance, short le plus gros jour de hausse du mois, long les plus calmes, hebdo) : 2024-25 +26,8 %, p = 0,008 ; 2026 +2,5 %, p = 0,35 ; bêta ≈ 0, pire baisse 7-11 pts ; candidat pour un test en avant.",
+  "source": "ai-lab/banc-honnete/PREREG-49-effet-max.md",
+  "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — positif sur les deux périodes"
  }
 ]

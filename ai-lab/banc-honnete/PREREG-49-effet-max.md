@@ -18,3 +18,23 @@ Celles de PREREG-39/41/44/48 (253 perpétuels Binance cotés au 01/01/2024, mort
 
 ## Relecture d'équité
 30 jours, 25 rendements minimum, quintiles fixés ici ; biais 2026 déclaré ci-dessus. Aucune action sur Martin ni Kraken.
+
+## Résultat (01/11/2026, 21h1x — t49.py → t49.log, chiffres dans t49.json)
+Lancé une seule fois après le commit 2addd9e, `nice -n 10`. 243 pièces.
+
+| | Historique (02/2024 → 12/2025) | **2026** |
+|---|---|---|
+| Net | **+26,8 %** | **+2,5 %** |
+| Brut / frais | +29,5 / 2,7 | +3,5 / 1,0 |
+| Jambe longue (MAX faible) / courte (MAX fort) | +11,7 / +17,8 | −0,6 / +4,1 |
+| Bêta réalisé contre BTC | −0,11 | −0,05 |
+| Semaines positives / pire baisse | 53 % / 11,4 pts | 50 % / 6,9 pts |
+| Témoin à rotation égale | −0,9 ± 12,4 % | −0,8 ± 9,0 % |
+| p | **0,008** | **0,35** |
+
+**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — positif sur les deux périodes, net au-dessus du hasard en 2024-25 (p = 0,008), mais trop faible en 2026 (+2,5 %, p = 0,35).
+
+**Ce que ça montre :**
+- C'est le signal entre pièces le plus propre trouvé à ce jour : positif sur les deux périodes, les deux jambes gagnantes en 2024-25, bêta presque nul, pire baisse de 7 à 11 points, peu de frais (rotation modérée, 73-75 % des noms gardés).
+- Mais en 2026 l'effet a fondu (+2,5 % en 9 mois), malgré le biais déclaré en sa faveur (renversement hebdo de 2026). On ne peut pas le distinguer du hasard sur cette période.
+- Candidat sérieux pour un **test en avant** (comme PREREG-35/45/47) : signal fixé, aucun réglage, raison économique (loterie), et il n'a jamais été négatif. À pré-enregistrer dans un prochain tick.
