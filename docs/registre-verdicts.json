@@ -537,5 +537,12 @@
   "resume": "Momentum transversal hebdo (243 perpétuels Binance morts compris, quintiles) : L = 1 sem. choisi sur 2024-25 (+13,5 %), jugement 2026 −57,6 %, p = 1,00 contre paniers au hasard à rotation égale ; 4 horizons sur 4 négatifs en 2026 (renversement, pas momentum).",
   "source": "ai-lab/banc-honnete/PREREG-41-momentum-transversal-large.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — −57,6 % en 2026"
+ },
+ {
+  "fichier": "ai-lab/carry-financement/PREREG-42-carry-rotation-lente.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Carry PREREG-27 révisé le lundi avec hystérésis : frais 65,8 → 20,1 %, mais prix +95,8 → −83,5 % ; net 2026 +24,9 % (base +94,3 %), test des décalages p = 0,29. Une partie du carry quotidien est un effet de prix à un jour, pas une prime de portage.",
+  "source": "ai-lab/carry-financement/PREREG-42-carry-rotation-lente.md",
+  "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — net 2026 > 0, mais p = 0,29"
  }
 ]
