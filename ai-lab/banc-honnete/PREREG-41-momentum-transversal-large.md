@@ -26,3 +26,26 @@ Les 4 L sur les deux périodes, brut/frais, semaines positives, pire semaine, pi
 - Choix de L favorable à la règle sur 2024-25, corrigé par le jugement 2026 unique.
 - Le témoin a la même rotation, donc les mêmes frais en moyenne : il ne retire que l'information du classement.
 - Aucune action sur Martin ni Kraken.
+
+## Résultat (01/11/2026, 01h5x — t41.py → t41.log, chiffres dans t41.json)
+Lancé une seule fois après le commit df88b26, `nice -n 10`. 243 pièces, 143 semaines, quintiles de ~40 pièces par côté.
+
+Grille (2024-25 → 2026) : **L 1 : +13,5 % → −57,6 %** ; L 2 : −13,6 % → −35,5 % ; L 3 : −6,2 % → −29,1 % ; L 4 : −15,2 % → −25,0 %. **L figé = 1 semaine** (seul positif en 2024-25).
+
+| | 2024-25 (choix) | **2026 (jugement)** |
+|---|---|---|
+| Net | +13,5 % | **−57,6 %** |
+| Brut / frais | +21,4 / 7,9 | −54,5 / 3,0 |
+| Jambe longue / jambe courte | +1,1 / +20,4 | −25,8 / −28,7 |
+| Semaines positives | 50 % | 29 % |
+| Pire semaine / pire baisse | −8,7 % / 19,0 pts | −12,2 % / 57,6 pts |
+| Conservation des noms d'une semaine à l'autre | 23 % | 21 % |
+| Témoin à rotation égale | −6,6 ± 12,3 % | −2,5 ± 9,3 % |
+| p | 0,052 (info) | **1,00** |
+
+**VERDICT (pré-enregistré) : PERD** — −57,6 % en 2026, pire que les 1 000 paniers au hasard.
+
+**Ce que ça montre :**
+- Les 4 horizons sont négatifs en 2026, et 3 sur 4 l'étaient déjà en 2024-25. Le « meilleur » de 2024-25 ne tenait qu'à la jambe courte (shorter les perdantes dans un marché d'altcoins baissier).
+- En 2026 c'est le **contraire du momentum** qui a régné : les gagnantes de la semaine ont sous-performé les perdantes la semaine suivante (p = 1,00 contre le hasard). C'est cohérent avec PREREG-10 (21 pièces, −25,8 % en 2026) : le résultat de Liu-Tsyvinski-Wu (données 2014-2018) ne se transporte pas aux perpétuels de 2024-2026.
+- **Attention, observation après coup** : ce renversement hebdomadaire de 2026 n'est PAS un résultat. Il touche H10 (réversion transversale à 1 jour) : 2026 est désormais vu pour ce type de signal ; H10 devra être jugée sur des données neuves (test papier en avant) et non sur 2026.

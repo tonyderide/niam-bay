@@ -530,5 +530,12 @@
   "resume": "Écart de financement Binance/Hyperliquid couvert en prix (45 pièces, seuil 10 %/an) : historique +7,5 %/an, 2026 −7,5 %/an (financement +7,1 % < frais 13,2 %) ; écart qui se referme d'année en année (2023 +26 %, 2024 +11 %, 2025 ~0).",
   "source": "ai-lab/carry-financement/PREREG-40-ecart-plateformes.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — net 2026 négatif"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-41-momentum-transversal-large.md",
+  "verdict": "PERD",
+  "resume": "Momentum transversal hebdo (243 perpétuels Binance morts compris, quintiles) : L = 1 sem. choisi sur 2024-25 (+13,5 %), jugement 2026 −57,6 %, p = 1,00 contre paniers au hasard à rotation égale ; 4 horizons sur 4 négatifs en 2026 (renversement, pas momentum).",
+  "source": "ai-lab/banc-honnete/PREREG-41-momentum-transversal-large.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — −57,6 % en 2026"
  }
 ]
