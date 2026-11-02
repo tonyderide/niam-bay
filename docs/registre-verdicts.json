@@ -642,5 +642,12 @@
   "resume": "Réplication de PREREG-46 sur Hyperliquid (morts compris, sans financement) : 157 trades 06/2023-07/2026, +12,7 %/trade contre −1,7 % pour le témoin, p < 0,001 ; queue lourde : 13 % des trades à −100 %, cohorte 2023 −36,9 %.",
   "source": "ai-lab/banc-honnete/PREREG-56-cotations-hyperliquid.md",
   "citation": "**VERDICT (pré-enregistré) : RÉPLIQUÉ**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-57-profil-risque-cotations.md",
+  "verdict": "RISQUE NON MAÎTRISÉ",
+  "resume": "Portefeuille couvert short des nouvelles cotations / long des anciennes, poids égaux rééquilibrés chaque jour (2021-2026) : −32,8 %/an, Sharpe −0,25, pire baisse 93 %, pire mois −63 % ; diagnostic : le rééquilibrage quotidien d'un short très volatil détruit l'effet (short tenu +23,3 %/trade contre rééquilibré −1,0 %).",
+  "source": "ai-lab/banc-honnete/PREREG-57-profil-risque-cotations.md",
+  "citation": "**VERDICT (pré-enregistré) : RISQUE NON MAÎTRISÉ**"
  }
 ]

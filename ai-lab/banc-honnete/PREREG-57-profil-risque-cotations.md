@@ -17,3 +17,22 @@ Rendement annualisé, Sharpe (moyenne/écart-type quotidiens × √365), pire ba
 
 ## Relecture d'équité
 Règles reprises de PREREG-46 ; poids égaux et couverture 1:1 fixés ici, sans essai d'autres. Limites : bêta non ajusté (les jetons neufs bougent plus que le panier), exécution au prix d'ouverture, liquidité des jetons neufs non modélisée (petites tailles seulement). Aucun ordre, aucun compte, aucune clé, aucune action sur Martin ni Kraken.
+
+## Résultat (02/11/2026, 17h — t57.py → t57.log, chiffres dans t57.json ; diagnostic t57_diag.py → t57_diag.log)
+Lancé une seule fois après le commit 2e6b255, `nice -n 10`. 632 nouvelles cotations crypto shortées, ~25 shorts ouverts en moyenne, jambe courte présente tous les jours.
+
+| | 2021-2026 | 2021 | 2022 | 2023 | 2024 | 2025 | 2026 |
+|---|---|---|---|---|---|---|---|
+| Rendement annualisé | **−32,8 %** | −91,6 % | +70,8 % | +27,4 % | +8,2 % | −46,0 % | −8,1 % |
+| Sharpe | **−0,25** | −1,58 | 1,18 | 0,75 | 0,41 | −0,94 | 0,10 |
+| Pire baisse | **93 %** | 92 % | 48 % | 32 % | 32 % | 69 % | 43 % |
+| Pire mois | **−63 % (2021-01)** | | −33 % | −13 % | −15 % | −31 % | −23 % |
+
+Mois négatifs : 35/70. Témoin (shorts de pièces anciennes aux mêmes fenêtres) : Sharpe −0,03 ± 0,39 ; p = 0,71.
+
+**VERDICT (pré-enregistré) : RISQUE NON MAÎTRISÉ** — Sharpe négatif, pire baisse de 93 %, pire mois de −63 %, 2026 négatif.
+
+## Diagnostic après le verdict (information) : la construction a tué l'effet
+- `t57_diag.py`, sur les mêmes 632 trades, sans couverture ni financement : **short tenu** (quantité fixée à l'entrée, comme PREREG-46) **+23,3 % par trade** (médiane +38,3 %) ; **short remis chaque jour au même poids** (ce que fait le portefeuille pré-enregistré) **−1,0 %** (médiane −15 %).
+- Raison : un short rééquilibré chaque jour à poids fixe subit un frottement de volatilité d'environ σ² par jour (comme un produit inverse à levier −1). Les jetons neufs ont une volatilité de l'ordre de 8 %/jour : sur 90 jours, ce frottement (≈ 0,0064 × 90 ≈ 58 %) dépasse largement la baisse moyenne. Le short tenu, lui, profite de la même volatilité (la position rétrécit quand le prix monte… et quand il baisse, elle garde sa quantité).
+- Donc ce verdict dit : « porté en poids égaux rééquilibrés chaque jour, l'effet est détruit et le risque n'est pas maîtrisé ». Il ne dit pas ce que donne un portefeuille de shorts **tenus**. C'est une autre construction, à pré-enregistrer avant de la calculer (H22).
