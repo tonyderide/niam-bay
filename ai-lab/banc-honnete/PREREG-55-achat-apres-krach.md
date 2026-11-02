@@ -22,3 +22,21 @@ Nombre de krachs par année, rendement moyen et médian, part positive, pire fen
 
 ## Relecture d'équité
 Seuil −7 %, 3 jours fixés ici (ordre de grandeur d'un jour de liquidations sur BTC), pas ajustés. Aucune action sur Martin ni Kraken.
+
+## Résultat (02/11/2026, 13h3x — t55.py → t55.log, chiffres dans t55.json ; t55_panier.py → t55_panier.log)
+Lancé une seule fois après le commit 39ca256, `nice -n 10`. 66 krachs (jours < −7 %) sans chevauchement.
+
+| | Krachs | Moyenne (J+1 → J+3, frais compris) | Médiane | Positifs | Pire | Témoin (3 jours au hasard) | p |
+|---|---|---|---|---|---|---|---|
+| A : 2017-2023 | 60 | **−0,39 %** | −1,57 % | 47 % | −23,1 % | +1,03 % | 0,97 |
+| B : 2024 → 10/2026 | 6 | +5,60 % | +3,45 % | 83 % | −0,8 % | +0,06 % | 0,001 |
+| A + B | 66 | +0,16 % | −0,19 % | 50 % | −23,1 % | +0,71 % | 0,80 |
+
+Par année : 2018 (16 krachs) surtout négatif, 2021 (13) surtout positif, 2022 (10) surtout négatif — le rebond suit l'année, pas le krach. Information, panier égal des 253 perpétuels 2024-2026, seuil −10 % : 12 krachs, moyenne +1,6 % sur 3 jours (7 négatifs sur 12).
+
+**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — la moyenne sur A + B est positive (+0,16 %) mais ni A (−0,39 %, p = 0,97) ni l'ensemble (p = 0,80) ne battent le hasard.
+
+**Ce que ça montre :**
+- Sur 2017-2023, acheter le lendemain d'un krach fait **moins bien** que trois jours pris au hasard : les krachs de BTC viennent en grappes, la baisse continue aussi souvent qu'elle rebondit.
+- Les 6 krachs de 2024-2026 ont tous rebondi (p = 0,001), mais 6 cas après 60 qui disaient le contraire ne font pas une règle : c'est l'exemple même d'un résultat à ne pas croire sans test en avant.
+- Le verdict NON DÉMONTRÉ (et pas PERD) vient de la règle écrite (moyenne A + B > 0) ; sur le fond, il n'y a pas d'avantage.
