@@ -635,5 +635,12 @@
   "resume": "Achat BTC le lendemain d'un jour < −7 % (3 jours, 2017-2026) : 2017-23 −0,39 % sur 60 krachs, p = 0,97 contre le hasard ; 2024-26 +5,6 % sur 6 (p = 0,001) ; ensemble +0,16 %, p = 0,80 — pas d'avantage, les krachs viennent en grappes.",
   "source": "ai-lab/banc-honnete/PREREG-55-achat-apres-krach.md",
   "citation": "**VERDICT (pré-enregistré) : NON DÉMONTRÉ** — la moyenne sur A + B est positive"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-56-cotations-hyperliquid.md",
+  "verdict": "RÉPLIQUÉ",
+  "resume": "Réplication de PREREG-46 sur Hyperliquid (morts compris, sans financement) : 157 trades 06/2023-07/2026, +12,7 %/trade contre −1,7 % pour le témoin, p < 0,001 ; queue lourde : 13 % des trades à −100 %, cohorte 2023 −36,9 %.",
+  "source": "ai-lab/banc-honnete/PREREG-56-cotations-hyperliquid.md",
+  "citation": "**VERDICT (pré-enregistré) : RÉPLIQUÉ**"
  }
 ]

@@ -19,3 +19,19 @@ Short à l'ouverture de la 2e bougie, 90 jours (ou jusqu'à la dernière bougie 
 
 ## Relecture d'équité
 N, frais, date plancher et témoin fixés ici. Aucun compte, aucune clé, aucune action sur Martin ni Kraken.
+
+## Résultat (02/11/2026, 15h3x — t56.py → t56.log, chiffres dans t56.json)
+Lancé une seule fois après le commit 34f42d7, `nice -n 10`. 235 contrats (56 retirés), tous avec bougies ; 157 trades, dont **45 sur des contrats retirés depuis** (morts compris).
+
+| | Trades | Moyenne | Médiane | Positifs | Au plancher | Témoin (anciens, même date) | p |
+|---|---|---|---|---|---|---|---|
+| **Toutes entrées 06/2023 → 07/2026** | 157 | **+12,7 %** | +29,2 % | 64 % | **20 (13 %)** | −1,7 % | **< 0,001** |
+| Info : pièces absentes de Binance avant | 134 | +16,0 % | +36,0 % | 66 % | 16 | +2,6 % | < 0,001 |
+
+Par année : **2023 −36,9 % (42 trades)** · 2024 +23,1 % (59) · 2025 +39,3 % (51) · 2026 +36,4 % (5). Sans financement.
+
+**VERDICT (pré-enregistré) : RÉPLIQUÉ** — rendement moyen > 0, p < 0,001 contre le témoin, morts compris.
+
+**Ce que ça montre :**
+- Quatrième population, et la première où les morts sont dans les deux camps : l'effet tient (+12,7 % par trade contre −1,7 % pour le short d'un contrat ancien).
+- Mais la **queue est lourde** : 13 % des trades perdent toute la mise (×2 ou plus en 90 jours), et toute la cohorte du second semestre 2023 (42 trades, reprise du marché) perd −37 % en moyenne. Le même schéma qu'OKX 2023 : dans une reprise forte, les jetons neufs s'envolent et le short est ruiné. C'est le risque à mesurer avant toute idée d'exploitation (prochain tick : H20).
