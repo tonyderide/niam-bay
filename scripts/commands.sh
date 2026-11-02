@@ -774,3 +774,33 @@ python3 /home/tony/projets/tonyderide/niam-bay/ai-lab/memoire-falsifiable/verify
 
 # [auto 2026-10-28 18:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=<N> ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
 rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 30" < /dev/null 2>&1 | tail -40
+
+# [auto 2026-10-29 12:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -40
+
+# [auto 2026-10-29 12:23] utilisée 3x — sig: ~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py <N>>&<N> | tail -<N>
+~/projets/tonyderide/niam-bay/.venv/bin/python ~/projets/tonyderide/niam-bay/memory/wake_briefing.py 2>&1 | tail -5
+
+# [auto 2026-10-31 03:18] utilisée 3x — sig: bash ~/projets/experiments/nb-weekend/tools/veille.sh
+bash ~/projets/experiments/nb-weekend/tools/veille.sh
+
+# [auto 2026-10-31 12:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=<N> ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
+rtk ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 30" < /dev/null 2>&1 | tail -40
+
+# [auto 2026-10-31 14:54] utilisée 3x — sig: bash ~/projets/experiments/nb-weekend/tools/veille.sh
+bash ~/projets/experiments/nb-weekend/tools/veille.sh
+
+# [auto 2026-10-31 15:00] utilisée 3x — sig: until grep -q "début" /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log; do sleep <N>; done; rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log --tail-lines <N>
+until grep -q "début" /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log; do sleep 15; done; rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log --tail-lines 4
+
+# [auto 2026-10-31 15:11] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log --tail-lines <N>
+rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log --tail-lines 5
+
+# [auto 2026-10-31 15:11] utilisée 3x — sig: until grep -q "financement ok" /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log; do sleep <N>; done; rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log --tail-lines <N>
+until grep -q "financement ok" /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log; do sleep 30; done; rtk read /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log --tail-lines 3
+
+# [auto 2026-10-31 15:51] utilisée 3x — sig: until grep -q "financement ok" /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log; do sleep <N>; done; echo fini
+until grep -q "financement ok" /home/tony/projets/tonyderide/niam-bay/ai-lab/carry-financement/data_hl/collecte.log; do sleep 60; done; echo fini
+
+# [auto 2026-11-02 12:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -20

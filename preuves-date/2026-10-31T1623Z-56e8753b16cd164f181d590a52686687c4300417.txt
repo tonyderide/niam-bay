@@ -1,0 +1,2 @@
+commit 56e8753b16cd164f181d590a52686687c4300417
+date du commit 2026-10-31 17:22:12 +0100 | PREREG-36 résultat : NON DÉMONTRÉ (basis trimestriel 2026 +0,9 %/an < 4 %, 18/46 sorties forcées)

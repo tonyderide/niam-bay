@@ -1,0 +1,2 @@
+commit 3e477f63619fcbe955797c4bee74a23d076facee
+date du commit 2026-11-02 06:58:34 +0100 | PREREG-53 résultat : RÉPLIQUÉ (nouvelles cotations au comptant : 2018-20 +7,0 %, 2021-26 +25,4 % par trade, p < 0,001)

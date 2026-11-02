@@ -1,0 +1,2 @@
+commit d1d06c0bbbd29b8c8418f661184f16e99cba79b7
+date du commit 2026-10-28 06:25:40 +0100 | reveil : 1028 06h25, compte vide, lecture R. T. Gaston

@@ -1,0 +1,2 @@
+commit 040eeced63ce77fcde99c353ec212d95a6e66664
+date du commit 2026-11-01 15:39:18 +0100 | PREREG-46 : correction d'une phrase sur les trades au plancher (3 actions sur les 5 pires, pas 4)

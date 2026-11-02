@@ -1,0 +1,2 @@
+commit ea6dea08f0a49a815a3cb16d7eccb2fad4fbabf1
+date du commit 2026-10-28 12:27:47 +0100 | reveil : 1028 12h25, split-brain Telegram localise, Orlandini

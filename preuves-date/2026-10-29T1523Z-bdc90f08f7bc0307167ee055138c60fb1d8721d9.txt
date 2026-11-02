@@ -1,0 +1,2 @@
+commit bdc90f08f7bc0307167ee055138c60fb1d8721d9
+date du commit 2026-10-29 15:56:07 +0100 | PREREG-28 C et D : meilleur réglage BTC (0 % de perte 2026) ne tient pas sur ETH (45 %) ni SOL (62 %)

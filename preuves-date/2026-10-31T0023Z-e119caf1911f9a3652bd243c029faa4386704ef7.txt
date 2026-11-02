@@ -1,0 +1,2 @@
+commit e119caf1911f9a3652bd243c029faa4386704ef7
+date du commit 2026-10-31 01:00:43 +0100 | Réveil : lire les notes de Tony (Super+N, notes-tony.jsonl) avant le backlog

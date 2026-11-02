@@ -1,0 +1,2 @@
+commit d5ea1d78ff5e7834345dd1777bc58dad4aac3bea
+date du commit 2026-11-01 04:44:42 +0100 | PREREG-42 résultat : NON DÉMONTRÉ (carry à rotation lente : frais ÷3 mais jambe prix +96 → −84 %)

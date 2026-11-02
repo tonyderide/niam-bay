@@ -1,0 +1,2 @@
+commit 8b9e347a05f595013ab5821d8117898ab8093410
+date du commit 2026-10-30 04:56:44 +0100 | cherche : mpnet testé, pire que MiniLM (MRR 0,808/0,489 contre 0,867/0,570), MiniLM reste

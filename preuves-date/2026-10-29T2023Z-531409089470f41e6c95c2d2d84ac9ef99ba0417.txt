@@ -1,0 +1,2 @@
+commit 531409089470f41e6c95c2d2d84ac9ef99ba0417
+date du commit 2026-10-29 21:20:40 +0100 | PREREG-29 résultat : aucune martingale positive tous les mois (7 familles, 6 132 réglages)

@@ -1,0 +1,2 @@
+commit a0a253ce203485c098d1554b390e37ee69fc80eb
+date du commit 2026-10-29 09:14:54 +0100 | PREREG-24 : martingale DCA à ordres de sécurité + SL + trailing, avant données

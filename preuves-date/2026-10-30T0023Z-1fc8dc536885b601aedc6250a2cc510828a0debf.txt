@@ -1,0 +1,2 @@
+commit 1fc8dc536885b601aedc6250a2cc510828a0debf
+date du commit 2026-10-30 00:25:52 +0100 | reveil 1030 00h25 : compte vide, Golomb 15 L=146 relancé, lecture Theropithecus

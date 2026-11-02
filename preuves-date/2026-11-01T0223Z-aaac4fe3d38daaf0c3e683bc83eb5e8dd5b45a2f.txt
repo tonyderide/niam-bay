@@ -1,0 +1,2 @@
+commit aaac4fe3d38daaf0c3e683bc83eb5e8dd5b45a2f
+date du commit 2026-11-01 02:44:34 +0100 | PREREG-41 résultat : PERD (momentum transversal hebdo : 2026 −57,6 %, p 1,00)

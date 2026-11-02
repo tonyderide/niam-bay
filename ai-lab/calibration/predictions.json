@@ -298,8 +298,11 @@
   "resolve_at": "2026-11-01T00:59",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
   "test": "float(out)>82889.59005059331",
-  "outcome": null,
-  "note_tz": "1021 : échéance corrigée de 2026-10-31T23:59 (lue en heure de Paris par le résolveur) vers 2026-11-01T00:59 Paris = 31/10 23:59 UTC, comme écrit dans le claim. Question et seuil inchangés."
+  "outcome": false,
+  "note_tz": "1021 : échéance corrigée de 2026-10-31T23:59 (lue en heure de Paris par le résolveur) vers 2026-11-01T00:59 Paris = 31/10 23:59 UTC, comme écrit dans le claim. Question et seuil inchangés.",
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "77458.13349714027",
+  "resolved": "2026-11-01T01:15"
  },
  {
   "id": "tony-saison-BTC-octobre-2026",
@@ -315,8 +318,11 @@
   "resolve_at": "2026-11-01T00:59",
   "cmd": "python3 -c \"import json,urllib.request,sys;print(json.load(urllib.request.urlopen(\\\"https://futures.kraken.com/derivatives/api/v3/tickers/\\\"+sys.argv[1],timeout=20))[\\\"ticker\\\"][\\\"markPrice\\\"])\" PF_XBTUSD",
   "test": "float(out)>82889.59005059331",
-  "outcome": null,
-  "note_tz": "1021 : échéance corrigée de 2026-10-31T23:59 (lue en heure de Paris par le résolveur) vers 2026-11-01T00:59 Paris = 31/10 23:59 UTC, comme écrit dans le claim. Question et seuil inchangés."
+  "outcome": false,
+  "note_tz": "1021 : échéance corrigée de 2026-10-31T23:59 (lue en heure de Paris par le résolveur) vers 2026-11-01T00:59 Paris = 31/10 23:59 UTC, comme écrit dans le claim. Question et seuil inchangés.",
+  "resolved_by": "prix historique à l'échéance",
+  "observed": "77458.13349714027",
+  "resolved": "2026-11-01T01:15"
  },
  {
   "id": "moi-calcul-golomb15-L146",

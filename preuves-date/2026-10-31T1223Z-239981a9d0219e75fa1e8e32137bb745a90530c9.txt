@@ -1,0 +1,2 @@
+commit 239981a9d0219e75fa1e8e32137bb745a90530c9
+date du commit 2026-10-31 12:26:58 +0100 | reveil 1031 12h23 : compte vide, lecture Dmitri Guerassimov (latin comme langue-pont)

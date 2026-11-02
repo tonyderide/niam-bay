@@ -1,0 +1,2 @@
+commit bdf199f33066635dd910080624e400c2b0289398
+date du commit 2026-10-31 22:44:39 +0100 | PREREG-39 résultat : PERD (momentum de séries hebdo : 2026 −10,8 %, p 0,77)

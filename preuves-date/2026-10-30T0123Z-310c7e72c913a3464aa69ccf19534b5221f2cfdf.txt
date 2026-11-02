@@ -1,0 +1,2 @@
+commit 310c7e72c913a3464aa69ccf19534b5221f2cfdf
+date du commit 2026-10-30 02:19:04 +0100 | CLAUDE.md : démarrage allégé (~54 000 tokens de moins), cherche, liberté donnée par Tony

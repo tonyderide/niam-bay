@@ -1,0 +1,2 @@
+commit 6c6a3108cf79690870f4e5347ddf457901049f8a
+date du commit 2026-11-01 10:44:57 +0100 | PREREG-45 : réversion transversale à 1 jour en papier EN AVANT, 50 perpétuels figés (avant le premier jour)

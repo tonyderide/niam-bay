@@ -1,0 +1,2 @@
+commit 8f85ddfc5d7db1c6380a595cca2dbc4e78a0dce8
+date du commit 2026-11-01 20:44:10 +0100 | PREREG-49 résultat : NON DÉMONTRÉ (effet MAX : 2024-25 +26,8 % p 0,008 ; 2026 +2,5 % p 0,35)

@@ -1,0 +1,2 @@
+commit 754c27e74015ac0776cba74adbee48c942455bcd
+date du commit 2026-11-01 22:44:42 +0100 | PREREG-50 : effet MAX en papier EN AVANT, 150 perpétuels figés (avant la première semaine)

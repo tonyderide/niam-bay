@@ -1,6 +1,6 @@
-# Calibration de NB (2026-10-29T08:15)
+# Calibration de NB (2026-11-02T11:15)
 
-**Brier = 0.287** sur 21 prédictions tranchées (0 = parfait, 0.25 = pile ou face toujours à 50 %).
+**Brier = 0.320** sur 23 prédictions tranchées (0 = parfait, 0.25 = pile ou face toujours à 50 %).
 
 **dir24h** (10/70) : moi 0.270 | témoin p=0,5 0.250 | témoin momentum 0.273 (critère : PREREG-24H.md)
 
@@ -21,8 +21,8 @@
 - ✅ vrai p=0.45 `dir24h-SOL-10182002` : SOL mark plus haut dans 24 h qu'à 102.1864 (échéance 2026-10-19T20:02)
 - ✅ vrai p=0.47 `dir24h-DOT-10182002` : DOT mark plus haut dans 24 h qu'à 1.0747 (échéance 2026-10-19T20:02)
 - ✅ vrai p=0.45 `dir24h-LINK-10182002` : LINK mark plus haut dans 24 h qu'à 11.7724 (échéance 2026-10-19T20:02)
-- ⏳ p=0.58 `saison-BTC-octobre-2026` : BTC mark plus haut le 31/10/2026 23:59 UTC qu'à 82890 (mark au moment du scellé) (échéance 2026-11-01T00:59)
-- ⏳ p=1.00 `tony-saison-BTC-octobre-2026` : BTC mark plus haut le 31/10/2026 23:59 UTC qu'à 82890 (mark au moment du scellé) (échéance 2026-11-01T00:59)
+- ❌ faux p=0.58 `saison-BTC-octobre-2026` : BTC mark plus haut le 31/10/2026 23:59 UTC qu'à 82890 (mark au moment du scellé) (échéance 2026-11-01T00:59)
+- ❌ faux p=1.00 `tony-saison-BTC-octobre-2026` : BTC mark plus haut le 31/10/2026 23:59 UTC qu'à 82890 (mark au moment du scellé) (échéance 2026-11-01T00:59)
 - ❌ faux p=0.85 `moi-calcul-golomb15-L146` : Golomb 15 : L=146 réfutée avant le 22/10 01:00 (heure de Paris) (échéance 2026-10-22T01:00)
 - ❌ faux p=0.62 `moi-calcul-golomb15-L149` : Golomb 15 : L=149 réfutée avant le 22/10 05:30 (heure de Paris) (échéance 2026-10-22T05:30)
 - ❌ faux p=0.70 `moi-calcul-golomb15-151` : Golomb 15 : règle de longueur 151 trouvée avant le 22/10 19:00 (heure de Paris) (échéance 2026-10-22T19:00)

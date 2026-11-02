@@ -1,0 +1,2 @@
+commit 8336ceadef0d0fc54fd8c7e7f90a9296a075b97f
+date du commit 2026-10-31 03:38:11 +0100 | PREREG-24H : interrompu à 10/70 prédictions, NON ÉVALUABLE (l'étape nocturne n'a jamais été automatisée)

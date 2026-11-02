@@ -1,0 +1,2 @@
+commit 66084843ce0b5f4493fd64bf5e5005176c0df0e6
+date du commit 2026-10-30 05:26:22 +0100 | Journal : nuit du 30/10 avec Tony (cherche, sauvegarde, LLM local, tokens, popote, idées business)

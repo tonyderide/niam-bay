@@ -1,0 +1,2 @@
+commit 0bfcc2bca503e2cba52a2c1ba52a2c67757a7a00
+date du commit 2026-11-01 12:43:50 +0100 | Labo : file d'hypothèses regarnie (H11-H15 : nouvelles cotations, bêta, MAX, tournant du mois, lead-lag BTC)

@@ -1,0 +1,2 @@
+commit b9bebc20d13baf970266e80837872e222ff24a2f
+date du commit 2026-10-31 03:16:58 +0100 | PREREG-31 : règle de Tony en panier (avant calcul)

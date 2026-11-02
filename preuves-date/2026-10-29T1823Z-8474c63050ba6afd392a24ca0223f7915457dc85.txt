@@ -1,0 +1,2 @@
+commit 8474c63050ba6afd392a24ca0223f7915457dc85
+date du commit 2026-10-29 18:26:10 +0100 | reveil 1029 18h25 : compte vide, Golomb 15 état noté (L=145), lecture Turnus Herdonius

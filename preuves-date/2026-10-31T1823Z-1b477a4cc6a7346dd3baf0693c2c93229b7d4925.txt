@@ -1,0 +1,2 @@
+commit 1b477a4cc6a7346dd3baf0693c2c93229b7d4925
+date du commit 2026-10-31 18:45:44 +0100 | PREREG-37 résultat : PERD, risque de queue (prime de variance 2026 négative sur BTC et ETH)

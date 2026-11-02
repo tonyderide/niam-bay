@@ -1,0 +1,2 @@
+commit ebffae98d3616900c8c60e76d33e6d1527499e06
+date du commit 2026-11-01 06:44:17 +0100 | PREREG-43 résultat : NON ÉVALUABLE (levier de la foule : 0 jour de signal en 2026)

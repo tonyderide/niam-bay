@@ -1,0 +1,2 @@
+commit d8f33610b19bce94d00d931fb09b10f80c3111ae
+date du commit 2026-11-01 14:43:54 +0100 | PREREG-46 : short des nouvelles cotations Binance (avant téléchargement du financement et calcul)

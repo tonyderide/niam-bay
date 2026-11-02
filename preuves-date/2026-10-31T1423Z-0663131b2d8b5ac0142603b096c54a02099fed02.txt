@@ -1,0 +1,2 @@
+commit 0663131b2d8b5ac0142603b096c54a02099fed02
+date du commit 2026-10-31 14:54:12 +0100 | PREREG-34 résultat : risque non maîtrisé (queue la plus fine sur BTC = réglage de PREREG-28 C, ruine 16 % SOL / 29 % panier en 2026, p 0,10-0,95 contre sens au hasard)

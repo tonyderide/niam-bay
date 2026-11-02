@@ -1,0 +1,2 @@
+commit 4a9db781cac93a8b3c525bccc020f16e38be9556
+date du commit 2026-10-30 19:56:06 +0100 | cherche : modèle d'embeddings choisissable (NB_CHERCHE_MODELE), cache séparé par modèle

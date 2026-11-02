@@ -1,0 +1,2 @@
+commit e58c67f23dccf633b569142beb80936c5647c398
+date du commit 2026-11-01 18:44:45 +0100 | PREREG-48 résultat : PERD (pari contre le bêta : 2026 −5,0 %, p 0,47)

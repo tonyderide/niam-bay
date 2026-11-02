@@ -1,0 +1,2 @@
+commit 48b134c569567511310789115eb629e677d65add
+date du commit 2026-11-01 16:44:44 +0100 | PREREG-47 : short des nouvelles cotations crypto en papier EN AVANT (avant la première cotation)

@@ -1,0 +1,2 @@
+commit 58be3bc02047fa1a50a598788271317543e2e42c
+date du commit 2026-10-29 15:07:16 +0100 | PREREG-24 refait entièrement à neuf : univers, données (SHA-256), simulateur double ; défaut données figées après retrait corrigé ; PERD confirmé
