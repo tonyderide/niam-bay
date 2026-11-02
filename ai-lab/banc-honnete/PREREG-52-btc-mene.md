@@ -24,3 +24,21 @@ Les 3 τ (heures en position, brut, frais, net) sur les deux périodes ; rendeme
 
 ## Relecture d'équité
 Seuils fixés ici ; le panier inclut les morts ; le témoin garde les épisodes et les frais. Aucune action sur Martin ni Kraken.
+
+## Résultat (02/11/2026, 01h2x — t52.py → t52.log, chiffres dans t52.json)
+Lancé une seule fois après le commit a8fbffb, `nice -n 10`. Montants en % du panier, additionnés.
+
+| τ | 2024-25 : heures / brut / frais / net | 2026 : heures / brut / frais / net |
+|---|---|---|
+| 0,5 % | 3 502 / −103,6 / 291,4 / −395,0 | 1 097 / −5,1 / 92,7 / −97,8 |
+| 1 % | 979 / −4,0 / 88,0 / −92,0 | 283 / −0,6 / 25,4 / −26,0 |
+| **2 %** (choisi) | 167 / **+31,1** / 15,7 / +15,4 | 44 / −7,8 / 4,0 / −11,8 |
+
+- Corrélation entre le rendement horaire de BTC et celui du panier l'heure suivante : **−0,008** (2024-25) et **−0,016** (2026) — nulle, plutôt négative.
+- Garde-fou de la file : pour τ = 2 %, brut 31,1 contre 2 × frais = 31,4 → **non franchi** (de justesse).
+
+**VERDICT (pré-enregistré) : PERD** — garde-fou brut ≥ 2 × frais manqué sur la période de choix ; de toute façon net 2026 négatif (−11,8 %).
+
+**Ce que ça montre :**
+- À l'échelle de l'heure, les altcoins ne « suivent » pas BTC : l'ajustement est déjà fait dans l'heure (robots d'arbitrage). Le seul réglage positif en 2024-25 (τ = 2 %, 167 heures) ne tient qu'à quelques épisodes et s'inverse en 2026.
+- Les frais d'une stratégie horaire (291 % pour τ = 0,5 %) écrasent tout signal de cette taille, comme pour les scalps des PREREG-14 à 21.

@@ -607,5 +607,12 @@
   "resume": "Tournant du mois sur BTC (long de l'avant-dernier jour au 3e jour, 2017-2026) : historique +1,42 %/fenêtre mais p = 0,115 contre fenêtres au hasard ; 2026 −0,60 %/fenêtre (10 fenêtres), p = 0,67 ; négatif ou nul depuis 2022.",
   "source": "ai-lab/banc-honnete/PREREG-51-tournant-du-mois.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — moyenne 2026 négative"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-52-btc-mene.md",
+  "verdict": "PERD",
+  "resume": "BTC mène les altcoins à 1 h (panier de 242 altcoins dans le sens du mouvement horaire de BTC > τ) : corrélation h−1 → h nulle (−0,008 / −0,016) ; τ = 2 % choisi (+15,4 % net 2024-25) manque le garde-fou brut ≥ 2× frais (31,1 contre 31,4) ; 2026 −11,8 %.",
+  "source": "ai-lab/banc-honnete/PREREG-52-btc-mene.md",
+  "citation": "**VERDICT (pré-enregistré) : PERD** — garde-fou brut"
  }
 ]

@@ -1,0 +1,12 @@
+0.005 {'2024-25': {'brut': -1.0364, 'frais': 2.914, 'net': -3.9504, 'heures': 3502, 'gagnantes': 0.4469}, '2026': {'brut': -0.0508, 'frais': 0.927, 'net': -0.9778, 'heures': 1097, 'gagnantes': 0.4831}}
+0.01 {'2024-25': {'brut': -0.0397, 'frais': 0.88, 'net': -0.9197, 'heures': 979, 'gagnantes': 0.4525}, '2026': {'brut': -0.0057, 'frais': 0.254, 'net': -0.2597, 'heures': 283, 'gagnantes': 0.47}}
+0.02 {'2024-25': {'brut': 0.3109, 'frais': 0.157, 'net': 0.1539, 'heures': 167, 'gagnantes': 0.491}, '2026': {'brut': -0.0778, 'frais': 0.04, 'net': -0.1178, 'heures': 44, 'gagnantes': 0.4091}}
+{
+ "tau": 0.02,
+ "correlation_btc_h_1_panier_h": {
+  "2024-25": -0.0075073430807801435,
+  "2026": -0.016327608580531998
+ },
+ "garde_fou_brut_2x_frais": false,
+ "verdict": "PERD"
+}
