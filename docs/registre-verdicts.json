@@ -656,5 +656,12 @@
   "resume": "Portefeuille de shorts TENUS des nouvelles cotations (mise 1/30, couverture tenue, financement, liquidation en cours de route) : +25,5 %/an, Sharpe 0,48, pire baisse 34 %, p = 0,005 contre témoin ; 21 % des trades liquidés ; 2025 −44 %, 2026 −11 %.",
   "source": "ai-lab/banc-honnete/PREREG-58-shorts-tenus.md",
   "citation": "**VERDICT (pré-enregistré) : RISQUE NON MAÎTRISÉ**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-59-apres-90-jours.md",
+  "verdict": "PERSISTE",
+  "resume": "Vrais jetons neufs du comptant Binance, jours 91-180 : short +3,8 % contre −1,9 % pour les anciens, p < 0,001 (444 jetons) ; mais −3,4 % avec liquidation en cours de route, 2020 −52 % ; l'essentiel de l'écart est dans les 90 premiers jours (+26 %).",
+  "source": "ai-lab/banc-honnete/PREREG-59-apres-90-jours.md",
+  "citation": "**VERDICT (pré-enregistré) : PERSISTE**"
  }
 ]
