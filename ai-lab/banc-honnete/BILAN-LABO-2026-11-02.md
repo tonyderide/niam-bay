@@ -1,7 +1,7 @@
 # Bilan du labo en continu — 31/10/2026 18h → 02/11/2026 20h
-Demande de Tony (31/10) : « continue en arrière-plan de chercher la meilleure stratégie ». Méthode : file d'hypothèses à raison économique (FILE-HYPOTHESES.md), chaque test pré-enregistré et commité avant calcul, jugement unique, témoin au hasard. 24 pré-enregistrements (PREREG-35 à 59, sauf 47/50 qui sont en avant).
+Demande de Tony (31/10) : « continue en arrière-plan de chercher la meilleure stratégie ». Méthode : file d'hypothèses à raison économique (FILE-HYPOTHESES.md), chaque test pré-enregistré et commité avant calcul, jugement unique, témoin au hasard. 25 pré-enregistrements (PREREG-35 à 59) : 21 jugés, 4 en avant (35, 45, 47, 50).
 
-## Ce qui a été jugé (20)
+## Ce qui a été jugé (21)
 | Famille | Tests | Verdict |
 |---|---|---|
 | Primes structurelles connues | 36 basis trimestriel, 37 prime de variance, 40 écart de financement entre plateformes, 42 carry à rotation lente | toutes **arbitrées en 2025-2026** (NON DÉMONTRÉ / PERD) : la prime existe en médiane mais passe sous les frais ou le taux sans risque |
