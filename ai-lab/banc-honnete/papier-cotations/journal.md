@@ -3,3 +3,4 @@ Une ligne par passage quotidien de `cotations.py` (cron 03h37 Paris). Pour infor
 
 | Jour UTC | Cotations vues | Trades ouverts | Trades fermés | Moyenne fermés | Moyenne ouverts (latent) | Mis à jour (UTC) |
 |---|---|---|---|---|---|---|
+| 2026-11-01 | 0 | 0 | 0 | — | — | 2026-11-02T02:37:02+00:00 |
