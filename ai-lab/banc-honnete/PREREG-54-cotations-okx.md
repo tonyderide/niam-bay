@@ -19,3 +19,20 @@ Short à l'ouverture de la 2e bougie journalière suivant `listTime`, 90 jours (
 
 ## Relecture d'équité
 N, frais, période et témoin fixés ici. Aucun compte, aucune clé, aucune action sur Martin ni Kraken.
+
+## Résultat (02/11/2026, midi — t54.py → t54.log, chiffres dans t54.json)
+Lancé une seule fois après le commit dfb339b, `nice -n 10`. 289 perpétuels crypto USDT encore cotés, tous avec bougies.
+
+| | Trades | Moyenne | Médiane | Positifs | Au plancher | Témoin (anciennes, même date) | p |
+|---|---|---|---|---|---|---|---|
+| **Toutes entrées 2021 → 07/2026** | 230 | **+23,1 %** | +37,8 % | 72 % | 17 | +9,7 % | **< 0,001** |
+| 2026 seul (info) | 37 | +28,9 % | +51,0 % | 81 % | 3 | +6,7 % | < 0,001 |
+
+Par année : 2021 +18,2 % (22) · 2022 +37,6 % (8) · **2023 −11,9 % (28)** · 2024 +4,0 % (45) · 2025 +40,9 % (90) · 2026 +28,9 % (37). Sans financement (non disponible).
+
+**VERDICT (pré-enregistré) : RÉPLIQUÉ** — rendement moyen > 0 et p < 0,001 contre le témoin.
+
+**Ce que ça montre :**
+- Troisième population, même résultat : les jetons neufs cotés sur OKX perdent en moyenne bien plus que les pièces anciennes sur leurs 90 premiers jours (+23 % pour le short contre +10 % pour le short d'une pièce ancienne).
+- Pas tous les ans : 2023 est négative (−12 %, année de reprise où les jetons neufs ont monté) et 2024 faible. Un short systématique peut donc perdre une année entière.
+- Limites : survivants seulement (des deux côtés) et financement non compté (en PREREG-46 il coûtait 1 à 2 % par trade) : l'ordre de grandeur reste très au-dessus de ces coûts.

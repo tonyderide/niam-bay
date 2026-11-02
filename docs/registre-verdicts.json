@@ -621,5 +621,12 @@
   "resume": "Réplication de PREREG-46 au comptant Binance (90 j après la cotation, mesure de prix) : 2018-20 (jamais regardée) +7,0 %/trade sur 174, témoin −20,7 %, p < 0,001 ; 2021-26 +25,4 % sur 447, témoin +4,5 %, p < 0,001 ; vrais jetons neufs seulement (info) : +14,7 % et +25,9 %.",
   "source": "ai-lab/banc-honnete/PREREG-53-cotations-comptant.md",
   "citation": "**VERDICT (pré-enregistré) : RÉPLIQUÉ**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-54-cotations-okx.md",
+  "verdict": "RÉPLIQUÉ",
+  "resume": "Réplication de PREREG-46 sur OKX (perpétuels crypto, survivants, sans financement) : 230 trades 2021-2026, +23,1 %/trade contre +9,7 % pour le short de pièces anciennes, p < 0,001 ; 2023 négative (−11,9 %).",
+  "source": "ai-lab/banc-honnete/PREREG-54-cotations-okx.md",
+  "citation": "**VERDICT (pré-enregistré) : RÉPLIQUÉ**"
  }
 ]
