@@ -19,3 +19,22 @@ Miller (1977) : tant que la vente à découvert est impossible ou chère, le pri
 
 ## Relecture d'équité
 180 jours, 90 jours et mesure au comptant fixés ici. Aucune action sur Martin ni Kraken.
+
+## Résultat (03/11/2026, 01h — t60.py → t60.log, chiffres dans t60.json)
+Lancé une seule fois après le commit d7068ab, `nice -n 10`. 142 ouvertures de perpétuel sur des pièces cotées au comptant depuis au moins 180 jours.
+
+| | Événements | « Short » comptant sur 90 j | Médiane | Positifs | Avec liquidation (info) | Témoin (pièces anciennes) | p |
+|---|---|---|---|---|---|---|---|
+| **A + B** | 142 | **+13,6 %** | +23,8 % | 75 % | +6,6 % | −6,5 % | **< 0,001** |
+| A : 09/2020 → 2023 | 91 | +18,2 % | +33,8 % | 79 % | +12,1 % | −5,7 % | < 0,001 |
+| B : 2024 → 06/2026 | 51 | +5,3 % | +16,3 % | 67 % | −3,3 % | −8,1 % | 0,002 |
+
+Par année : 2020 −12,0 % (6) · 2021 +29,8 % (25) · 2022 +36,5 % (8) · 2023 +13,4 % (52) · 2024 +3,4 % (34) · 2025 +9,2 % (17).
+
+**VERDICT (pré-enregistré) : DÉMONTRÉ** — après l'ouverture d'un perpétuel, une pièce ancienne fait nettement moins bien que les autres pièces anciennes sur 90 jours, sur les deux périodes.
+
+## Vérification après le verdict (information) : Miller, ou retour après une envolée ?
+- `t60_avant.py` : sur les 30 jours **avant** l'ouverture, les pièces concernées avaient monté de **+68 % en médiane**, contre +4 % pour les pièces anciennes à la même date. Binance ouvre ses perpétuels sur des pièces qui viennent de s'envoler.
+- Sur la moitié des événements à la plus faible hausse préalable : +2,1 % contre −13,2 % pour le témoin (p < 0,001). L'écart reste, mais plus petit.
+- **On ne peut donc pas séparer l'explication de Miller (les vendeurs à découvert entrent) d'un simple retour après une envolée** : les deux vont dans le même sens. Le fait est démontré ; sa cause ne l'est pas.
+- Exploitation : en 2024-2026, avec une liquidation réaliste, le short devient négatif (−3,3 %) ; même constat que pour les jetons neufs (PREREG-58/59).

@@ -663,5 +663,12 @@
   "resume": "Vrais jetons neufs du comptant Binance, jours 91-180 : short +3,8 % contre −1,9 % pour les anciens, p < 0,001 (444 jetons) ; mais −3,4 % avec liquidation en cours de route, 2020 −52 % ; l'essentiel de l'écart est dans les 90 premiers jours (+26 %).",
   "source": "ai-lab/banc-honnete/PREREG-59-apres-90-jours.md",
   "citation": "**VERDICT (pré-enregistré) : PERSISTE**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-60-miller-perpetuel.md",
+  "verdict": "DÉMONTRÉ",
+  "resume": "Ouverture d'un perpétuel Binance sur une pièce comptant de plus de 180 j (142 cas, 2020-2026) : la pièce fait −13,6 % sur 90 j contre +6,5 % pour les pièces anciennes, p < 0,001, sur les deux périodes ; mais elle avait monté de +68 % (médiane) le mois d'avant : Miller et retour après envolée inséparables ; négatif avec liquidation en 2024-26.",
+  "source": "ai-lab/banc-honnete/PREREG-60-miller-perpetuel.md",
+  "citation": "**VERDICT (pré-enregistré) : DÉMONTRÉ**"
  }
 ]
