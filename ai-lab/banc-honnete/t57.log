@@ -3,12 +3,12 @@
  "jours_avec_shorts": 1.0,
  "shorts_ouverts_moy": 25.514823529411764,
  "tout": {
-  "rend_an": -0.32754607448734896,
-  "sharpe": -0.24740875226129075,
-  "pire_baisse": 0.9322443595294279,
-  "pire_mois": "2021-01",
-  "pire_mois_val": -0.6349701600785697,
-  "mois_negatifs": 35,
+  "rend_an": 0.008051194257946204,
+  "sharpe": 0.28920064374465054,
+  "pire_baisse": 0.7872331981657941,
+  "pire_mois": "2021-03",
+  "pire_mois_val": -0.35116549003765263,
+  "mois_negatifs": 33,
   "mois": 70
  }
 }
@@ -18,19 +18,19 @@ témoin 100
 témoin 150
 {
  "temoin": {
-  "sharpe_moy": -0.026320885123951688,
-  "sharpe_et": 0.38790939403740515,
-  "p": 0.705
+  "sharpe_moy": 0.0010812655297826436,
+  "sharpe_et": 0.3916038144936794,
+  "p": 0.205
  },
  "verdict": "RISQUE NON MA\u00ceTRIS\u00c9",
  "par_an": {
   "2021": {
-   "rend_an": -0.916,
-   "sharpe": -1.582,
-   "pire_baisse": 0.918,
-   "pire_mois": "2021-01",
-   "pire_mois_val": -0.635,
-   "mois_negatifs": 8,
+   "rend_an": -0.118,
+   "sharpe": 0.106,
+   "pire_baisse": 0.655,
+   "pire_mois": "2021-03",
+   "pire_mois_val": -0.351,
+   "mois_negatifs": 6,
    "mois": 12
   },
   "2022": {

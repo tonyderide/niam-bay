@@ -12,7 +12,8 @@ def fen(s, e):
     x = min(e + (N - 1) * J, FINS[s]); return (e, x)
 SHORTS = [(s,) + fen(s, DEB[s] + J) for s in C if DEB[s] > 1599004800000 and DEB[s] + J in C[s] and DEB[s] + J < D1]
 def fin(s, d): t = FT[s]; return sum(FR[s][bisect.bisect_left(t, d):bisect.bisect_left(t, d + J)])
-anciens = {d: [s for s in C if DEB[s] <= d - 365 * J and d in C[s]] for d in JOURS}
+DEBUT_DONNEES = min(DEB.values())   # correction du 02/11 : une pièce présente dès le début des données (01/09/2020) est cotée depuis avant → ancienne
+anciens = {d: [s for s in C if (DEB[s] <= d - 365 * J or DEB[s] <= DEBUT_DONNEES + J) and d in C[s]] for d in JOURS}
 def simule(shorts):
     prev = {}; serie = []
     ouverts = {d: [] for d in JOURS}

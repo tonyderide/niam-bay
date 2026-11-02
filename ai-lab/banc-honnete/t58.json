@@ -1,0 +1,87 @@
+{
+ "trades": 598,
+ "moy_trade": 0.11575997954980269,
+ "plancher": 125,
+ "levier_brut_moy": 1.7009882352941175,
+ "levier_brut_max": 5.333333333333333,
+ "couvert": {
+  "pnl_an": 0.25544733014280596,
+  "sharpe": 0.4824990608248324,
+  "pire_baisse": 0.34246217245318056,
+  "pire_mois": "2025-10",
+  "pire_mois_val": -0.09311337639777091,
+  "mois_negatifs": 25,
+  "mois": 70
+ },
+ "sans_couverture": {
+  "pnl_an": 0.39634401155035964,
+  "sharpe": 0.6560621057238506,
+  "pire_baisse": 0.32997757364958014,
+  "pire_mois": "2024-11",
+  "pire_mois_val": -0.18880827936687858,
+  "mois_negatifs": 25,
+  "mois": 70
+ },
+ "par_an": {
+  "2021": {
+   "pnl_an": 0.6247829726310845,
+   "sharpe": 0.8937395684303017,
+   "pire_baisse": 0.27892021513685733,
+   "pire_mois": "2021-02",
+   "pire_mois_val": -0.07725112843215798,
+   "mois_negatifs": 5,
+   "mois": 12
+  },
+  "2022": {
+   "pnl_an": 0.06955656276686785,
+   "sharpe": 0.6894147376871798,
+   "pire_baisse": 0.10682866662431653,
+   "pire_mois": "2022-04",
+   "pire_mois_val": -0.06705353629688279,
+   "mois_negatifs": 6,
+   "mois": 12
+  },
+  "2023": {
+   "pnl_an": 0.6976977436459126,
+   "sharpe": 2.8192864264840742,
+   "pire_baisse": 0.08184476713699762,
+   "pire_mois": "2023-01",
+   "pire_mois_val": 0.0005675817566713993,
+   "mois_negatifs": 0,
+   "mois": 12
+  },
+  "2024": {
+   "pnl_an": 0.62146659026358,
+   "sharpe": 1.0367815207235704,
+   "pire_baisse": 0.24392334317086653,
+   "pire_mois": "2024-01",
+   "pire_mois_val": -0.12889768697323237,
+   "mois_negatifs": 4,
+   "mois": 12
+  },
+  "2025": {
+   "pnl_an": -0.44095852282000436,
+   "sharpe": -0.5523229352607019,
+   "pire_baisse": 0.6841368221782789,
+   "pire_mois": "2025-10",
+   "pire_mois_val": -0.31536384170565496,
+   "mois_negatifs": 5,
+   "mois": 12
+  },
+  "2026": {
+   "pnl_an": -0.10627070737363406,
+   "sharpe": -0.3608708687886791,
+   "pire_baisse": 0.3747896561029113,
+   "pire_mois": "2026-02",
+   "pire_mois_val": -0.1398513550191213,
+   "mois_negatifs": 5,
+   "mois": 10
+  }
+ },
+ "temoin": {
+  "sharpe_moy": -0.020148298997213133,
+  "sharpe_et": 0.16543116677168723,
+  "p": 0.005
+ },
+ "verdict": "RISQUE NON MA\u00ceTRIS\u00c9"
+}

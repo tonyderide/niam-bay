@@ -646,8 +646,15 @@
  {
   "fichier": "ai-lab/banc-honnete/PREREG-57-profil-risque-cotations.md",
   "verdict": "RISQUE NON MAÎTRISÉ",
-  "resume": "Portefeuille couvert short des nouvelles cotations / long des anciennes, poids égaux rééquilibrés chaque jour (2021-2026) : −32,8 %/an, Sharpe −0,25, pire baisse 93 %, pire mois −63 % ; diagnostic : le rééquilibrage quotidien d'un short très volatil détruit l'effet (short tenu +23,3 %/trade contre rééquilibré −1,0 %).",
+  "resume": "Portefeuille couvert short des nouvelles cotations / long des anciennes, poids égaux rééquilibrés chaque jour (2021-2026), après correction d'un bug de panier : +0,8 %/an, Sharpe 0,29, pire baisse 79 %, pire mois −35 % ; le rééquilibrage quotidien d'un short très volatil détruit l'effet (short tenu +23,3 %/trade contre rééquilibré −1,0 %).",
   "source": "ai-lab/banc-honnete/PREREG-57-profil-risque-cotations.md",
+  "citation": "**VERDICT (pré-enregistré) : RISQUE NON MAÎTRISÉ**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-58-shorts-tenus.md",
+  "verdict": "RISQUE NON MAÎTRISÉ",
+  "resume": "Portefeuille de shorts TENUS des nouvelles cotations (mise 1/30, couverture tenue, financement, liquidation en cours de route) : +25,5 %/an, Sharpe 0,48, pire baisse 34 %, p = 0,005 contre témoin ; 21 % des trades liquidés ; 2025 −44 %, 2026 −11 %.",
+  "source": "ai-lab/banc-honnete/PREREG-58-shorts-tenus.md",
   "citation": "**VERDICT (pré-enregistré) : RISQUE NON MAÎTRISÉ**"
  }
 ]

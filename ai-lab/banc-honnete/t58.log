@@ -1,0 +1,93 @@
+{
+ "trades": 598,
+ "moy_trade": 0.11575997954980269,
+ "plancher": 125,
+ "levier_brut_moy": 1.7009882352941175,
+ "levier_brut_max": 5.333333333333333,
+ "couvert": {
+  "pnl_an": 0.25544733014280596,
+  "sharpe": 0.4824990608248324,
+  "pire_baisse": 0.34246217245318056,
+  "pire_mois": "2025-10",
+  "pire_mois_val": -0.09311337639777091,
+  "mois_negatifs": 25,
+  "mois": 70
+ },
+ "sans_couverture": {
+  "pnl_an": 0.39634401155035964,
+  "sharpe": 0.6560621057238506,
+  "pire_baisse": 0.32997757364958014,
+  "pire_mois": "2024-11",
+  "pire_mois_val": -0.18880827936687858,
+  "mois_negatifs": 25,
+  "mois": 70
+ }
+}
+témoin 0
+témoin 50
+témoin 100
+témoin 150
+{
+ "temoin": {
+  "sharpe_moy": -0.020148298997213133,
+  "sharpe_et": 0.16543116677168723,
+  "p": 0.005
+ },
+ "verdict": "RISQUE NON MA\u00ceTRIS\u00c9",
+ "par_an": {
+  "2021": {
+   "pnl_an": 0.625,
+   "sharpe": 0.894,
+   "pire_baisse": 0.279,
+   "pire_mois": "2021-02",
+   "pire_mois_val": -0.077,
+   "mois_negatifs": 5,
+   "mois": 12
+  },
+  "2022": {
+   "pnl_an": 0.07,
+   "sharpe": 0.689,
+   "pire_baisse": 0.107,
+   "pire_mois": "2022-04",
+   "pire_mois_val": -0.067,
+   "mois_negatifs": 6,
+   "mois": 12
+  },
+  "2023": {
+   "pnl_an": 0.698,
+   "sharpe": 2.819,
+   "pire_baisse": 0.082,
+   "pire_mois": "2023-01",
+   "pire_mois_val": 0.001,
+   "mois_negatifs": 0,
+   "mois": 12
+  },
+  "2024": {
+   "pnl_an": 0.621,
+   "sharpe": 1.037,
+   "pire_baisse": 0.244,
+   "pire_mois": "2024-01",
+   "pire_mois_val": -0.129,
+   "mois_negatifs": 4,
+   "mois": 12
+  },
+  "2025": {
+   "pnl_an": -0.441,
+   "sharpe": -0.552,
+   "pire_baisse": 0.684,
+   "pire_mois": "2025-10",
+   "pire_mois_val": -0.315,
+   "mois_negatifs": 5,
+   "mois": 12
+  },
+  "2026": {
+   "pnl_an": -0.106,
+   "sharpe": -0.361,
+   "pire_baisse": 0.375,
+   "pire_mois": "2026-02",
+   "pire_mois_val": -0.14,
+   "mois_negatifs": 5,
+   "mois": 10
+  }
+ }
+}
