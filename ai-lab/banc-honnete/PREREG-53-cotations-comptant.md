@@ -45,3 +45,6 @@ Par année : 2018 +53 % (2 trades) · 2019 +17,4 % (65) · 2020 −0,2 % (107) �
 **Ce que ça montre :**
 - La sous-performance des jetons neufs sur leurs 90 premiers jours n'est pas propre aux perpétuels 2021-2026 : elle existe au comptant depuis 2019, sur une période que PREREG-46 n'avait jamais regardée, et chaque année l'écart avec les pièces anciennes est large.
 - C'est une mesure de prix (le comptant ne se vend pas à découvert) ; la version exploitable reste le short du perpétuel, jugée en avant par PREREG-47.
+
+## Note (02/11/2026, 19h) — même défaut de début de données que PREREG-57
+Le témoin exige une pièce « cotée depuis plus de 365 jours » ; les archives commençant en 08/2017, aucune pièce ne l'était avant 08/2018, et les trades sans panier témoin ont été écartés. C'est pourquoi 2018 ne compte que 2 trades. Effet : des trades perdus (2018), pas un biais dans le sens du résultat ; le verdict RÉPLIQUÉ tient sur 2019-2026.

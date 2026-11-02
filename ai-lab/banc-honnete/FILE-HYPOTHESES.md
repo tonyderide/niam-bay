@@ -35,7 +35,7 @@ Interdit (déjà enterré, ne pas refaire sous un autre nom) : SL/trailing/inver
 
 ## En cours hors file
 - **PREREG-50** (effet MAX, papier en avant) : cron 03h47, 25 semaines du 09/11/2026 au 26/04/2027, jugement unique le 03/05/2027.
-- **PREREG-47** (short des nouvelles cotations crypto, papier en avant) : cron 03h37, cotations du 02/11/2026 au 28/02/2027, jugement unique le 01/06/2027.
+- **PREREG-47** (short des nouvelles cotations crypto, papier en avant) : cron 03h37, cotations du 02/11/2026 au 28/02/2027, jugement unique le 01/06/2027. À rapporter en plus au jugement (information, PREREG-58) : la moyenne avec liquidation en cours de route (prix doublé avant la fin), plus réaliste que le plancher appliqué à la sortie.
 - **PREREG-45** (réversion à 1 jour, papier en avant) : journal quotidien par cron 03h27, jugement unique le 03/05/2027.
 - **PREREG-35** (test papier en avant de l'inversion journalière de PREREG-32) : journal quotidien par cron, jugement unique le 01/05/2027.
 - **PREREG-26 B** (carry sur Kraken en papier) : court jusqu'au 23/12/2026 (voir carry-financement).
