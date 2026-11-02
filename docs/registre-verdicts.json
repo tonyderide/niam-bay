@@ -614,5 +614,12 @@
   "resume": "BTC mène les altcoins à 1 h (panier de 242 altcoins dans le sens du mouvement horaire de BTC > τ) : corrélation h−1 → h nulle (−0,008 / −0,016) ; τ = 2 % choisi (+15,4 % net 2024-25) manque le garde-fou brut ≥ 2× frais (31,1 contre 31,4) ; 2026 −11,8 %.",
   "source": "ai-lab/banc-honnete/PREREG-52-btc-mene.md",
   "citation": "**VERDICT (pré-enregistré) : PERD** — garde-fou brut"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-53-cotations-comptant.md",
+  "verdict": "RÉPLIQUÉ",
+  "resume": "Réplication de PREREG-46 au comptant Binance (90 j après la cotation, mesure de prix) : 2018-20 (jamais regardée) +7,0 %/trade sur 174, témoin −20,7 %, p < 0,001 ; 2021-26 +25,4 % sur 447, témoin +4,5 %, p < 0,001 ; vrais jetons neufs seulement (info) : +14,7 % et +25,9 %.",
+  "source": "ai-lab/banc-honnete/PREREG-53-cotations-comptant.md",
+  "citation": "**VERDICT (pré-enregistré) : RÉPLIQUÉ**"
  }
 ]
