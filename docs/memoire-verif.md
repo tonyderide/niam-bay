@@ -1,4 +1,4 @@
-# Vérification de la mémoire de NB (2026-11-02 12:23)
+# Vérification de la mémoire de NB (2026-11-03 12:23)
 
 18/21 souvenirs confirmés par le monde, **3 contredits**.
 
@@ -23,6 +23,6 @@
 - ✅ `project_memoire_falsifiable` : le juge horaire du jumeau (twin.py) est planifié sur la VM
 - ✅ `project_capset_236` : cap7_236.txt est un cap valide de 236 points dans F_3^7
 - ❌ `project_nb_vm_architecture` : le bot de la VM est le seul lecteur de @niambay_bot (aucun 409 Conflict dans l'heure : sinon quelqu'un d'autre lit les messages de Tony)
-  - observé : `conflits_1h 188`
+  - observé : `conflits_1h 238`
 - ❌ `feedback_verifier_retrait_git` : aucune base de données ni fichier sensible n'est publié sur GitHub niam-bay (memory/vectordb retiré le 27/10)
   - observé : `remote: Your account is suspended. Please visit https://support.github.com for more information. | fatal: impossible d'accéder à 'https://github.com/tonyderide/niam-bay.git/' : The requested URL retur`
