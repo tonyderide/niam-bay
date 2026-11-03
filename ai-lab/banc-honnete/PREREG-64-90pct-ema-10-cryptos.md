@@ -17,3 +17,12 @@ Les 10 pièces : XRP, DOGE, ADA, LINK, AVAX, LTC, BNB, DOT, BCH, ATOM. P1 = 01/0
 - **« AMÉLIORE SANS SUFFIRE »** si l'espérance dépasse celle de l'inversion après perte (même sortie) sur P1 et P2, sans le reste.
 - **« NON »** sinon.
 Rapportés : gagnants, baisse médiane, résultat de BTC/ETH/SOL 2026, résultat cumulé P1 × P2.
+
+## Résultat (03/11/2026, 21h2x — t64.py). N figé = 200
+| 10 pièces | Gagnants | Espérance | Portefeuille | Pièces positives | Baisse médiane | Témoin battu |
+|---|---|---|---|---|---|---|
+| P1 EMA | 88,6 % | −0,149 % | −94,1 % | 0/10 | −96,6 % | 15,5 % |
+| P1 inversion | 89,2 % | −0,056 % | −73,5 % | 0/10 | | |
+| P2 EMA | 90,5 % | −0,041 % | −17,3 % | 2/10 | −56,9 % | 96,5 % |
+| P2 inversion | 91,5 % | +0,079 % | +24,0 % | 6/10 | | |
+**VERDICT (pré-enregistré) : « NON ».** Sur cette sortie, l'EMA fait moins bien que l'inversion sur les deux périodes. Portefeuille EMA cumulé P1 × P2 : −95 %.
