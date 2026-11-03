@@ -17,3 +17,13 @@ Vol du jour UTC = écart-type des rendements log 1 min. **Une entrée n'est perm
 - **« AIDE SANS SUFFIRE »** si l'espérance dépasse celle sans filtre sur P1 et P2, sans le reste.
 - **« INUTILE »** sinon.
 Rapportés aussi : gagnants, trades, baisse médiane.
+
+## Résultat (03/11/2026, 21h2x — t63.py)
+| | Gagnants | Espérance | Composé médian | Pièces positives | Baisse médiane | Trades/pièce |
+|---|---|---|---|---|---|---|
+| P1 sans filtre | 89,3 % | −0,082 % | −70,5 % | 1/13 | −83,5 % | 1 214 |
+| P1 avec filtre | 89,5 % | −0,076 % | −45,3 % | 1/13 | −63,5 % | 565 |
+| P2 sans filtre | 91,6 % | +0,088 % | +19,5 % | 8/13 | −41,0 % | 330 |
+| P2 avec filtre | 91,5 % | +0,032 % | +1,6 % | 7/13 | −32,1 % | 139 |
+
+**VERDICT (pré-enregistré) : « INUTILE ».** L'espérance baisse sur P2. Le filtre réduit les baisses parce qu'il trade moins, sans relever le taux de gagnants. DOGE (+369 % sur l'ensemble) est un cas isolé, à ne pas retenir.
