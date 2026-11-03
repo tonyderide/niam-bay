@@ -17,15 +17,15 @@ ssh $K $V 'mkdir -p ~/sauvegardes/pc-claude ~/sauvegardes/pc-wip && chmod 700 ~/
 etape claude $RS "ssh $K" "$HOME/.claude/projects/" "$V:sauvegardes/pc-claude/"
 
 # 2. Travail non commité (fichiers modifiés + non suivis non ignorés) des projets actifs
-for r in niam-bay popote boussole journal-fidele martin martin-agency wiki-date-check; do
+for r in niam-bay popote boussole journal-fidele martin martin-agency wiki-date-check cockpit lunettes methode-ia; do
     [ -d "$P/$r/.git" ] || continue
     etape "wip-$r" $RS "ssh $K" --from0 --files-from=<(git -C "$P/$r" ls-files -mo --exclude-standard -z) \
         --ignore-missing-args "$P/$r/" "$V:sauvegardes/pc-wip/$r/"
 done
 
 # 3. Commits vers les dépôts nus de la VM (remote « vm »)
-for r in niam-bay martin popote boussole; do
-    git -C "$P/$r" remote | grep -qx vm && etape "push-$r" git -C "$P/$r" push -q vm --all
+for d in "$P"/{niam-bay,martin,popote,boussole,cockpit,journal-fidele,lunettes,methode-ia,methode-ia/demo/popote,gymquest,gymquest-app,telegram-vision-signals,pixel-coin-fr} "$HOME/projets/experiments/nb-weekend"; do
+    git -C "$d" remote | grep -qx vm && etape "push-${d#"$HOME"/projets/}" git -C "$d" push -q vm --all
 done
 
 # 4. État de la VM vers le PC
