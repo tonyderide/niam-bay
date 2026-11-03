@@ -1,13 +1,13 @@
 {
- "maj_utc": "2026-11-02T02:17:05+00:00",
- "dernier_jour": "2026-11-01",
- "jours": 1,
+ "maj_utc": "2026-11-03T02:17:04+00:00",
+ "dernier_jour": "2026-11-02",
+ "jours": 2,
  "pieces": {
   "BTCUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": 0.009191,
+   "latent": -0.010429,
    "position": {
     "sens": "long",
     "entree": 77522.6,
@@ -20,7 +20,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": 0.007747,
+   "latent": -0.001771,
    "position": {
     "sens": "long",
     "entree": 2254.54,
@@ -33,7 +33,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.010739,
+   "latent": -0.037549,
    "position": {
     "sens": "long",
     "entree": 95.44,
@@ -46,7 +46,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.001479,
+   "latent": -0.001959,
    "position": {
     "sens": "long",
     "entree": 1.2513,
@@ -59,7 +59,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": 0.011604,
+   "latent": -0.007373,
    "position": {
     "sens": "long",
     "entree": 704.18,
@@ -72,7 +72,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.002322,
+   "latent": -0.019382,
    "position": {
     "sens": "long",
     "entree": 0.07558,
@@ -85,7 +85,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": 3.7e-05,
+   "latent": -0.02381,
    "position": {
     "sens": "long",
     "entree": 0.1928,
@@ -98,7 +98,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.023215,
+   "latent": -0.046802,
    "position": {
     "sens": "long",
     "entree": 11.653,
@@ -108,23 +108,17 @@
    }
   },
   "AVAXUSDT": {
-   "trades": 0,
-   "gagnants": 0,
-   "net_ferme": 0,
-   "latent": 0.01417,
-   "position": {
-    "sens": "long",
-    "entree": 8.565,
-    "depuis": "2026-11-01",
-    "stop": 7.28025,
-    "trailing_actif": true
-   }
+   "trades": 1,
+   "gagnants": 1,
+   "net_ferme": 0.01417,
+   "latent": 0.0,
+   "position": null
   },
   "LTCUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.003331,
+   "latent": -0.03758,
    "position": {
     "sens": "long",
     "entree": 55.74,
@@ -134,7 +128,7 @@
    }
   }
  },
- "net_panier_ferme": 0.0,
- "net_panier_avec_latent": 0.000166,
- "acheter_garder_panier": 0.000166
+ "net_panier_ferme": 0.001417,
+ "net_panier_avec_latent": -0.017248,
+ "acheter_garder_panier": -0.020831
 }
