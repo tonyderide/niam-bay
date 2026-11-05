@@ -1,5 +1,6 @@
 # Pré-enregistrement 67 : trailing stop dans les deux sens en même temps
 Écrit et commité le 03/11/2026 au soir, avant tout calcul. Idée de Tony : « si je fais du trailing SL dans les deux sens ça devrait marcher ».
+
 **NON EXÉCUTÉ.** Annoncé par erreur : Tony a refusé ce test avant tout calcul (« Non martingale avec inversion », un trade à la fois, pas les deux sens en même temps). Aucun calcul, aucun résultat, aucun script (t67.py est celui de PREREG-67-martingale-inversion-gain-tard.md). Gardé pour un historique honnête ; ne compte pour aucun verdict. Annoté le 05/11/2026.
 
 Prédiction écrite d'avance : gagne quand le prix part fort et loin, perd quand il hésite (les deux stops sont touchés tour à tour), avec deux fois les frais. Le résultat dépendra donc surtout du régime. À vérifier.
