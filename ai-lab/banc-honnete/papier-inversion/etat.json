@@ -1,13 +1,13 @@
 {
- "maj_utc": "2026-11-04T02:17:04+00:00",
- "dernier_jour": "2026-11-03",
- "jours": 3,
+ "maj_utc": "2026-11-05T02:17:04+00:00",
+ "dernier_jour": "2026-11-04",
+ "jours": 4,
  "pieces": {
   "BTCUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.002043,
+   "latent": 0.036956,
    "position": {
     "sens": "long",
     "entree": 77522.6,
@@ -20,20 +20,20 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": 0.007561,
+   "latent": 0.073869,
    "position": {
     "sens": "long",
     "entree": 2254.54,
     "depuis": "2026-11-01",
     "stop": 1916.359,
-    "trailing_actif": false
+    "trailing_actif": true
    }
   },
   "SOLUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.028543,
+   "latent": 0.000152,
    "position": {
     "sens": "long",
     "entree": 95.44,
@@ -46,20 +46,20 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": 0.019528,
+   "latent": 0.042293,
    "position": {
     "sens": "long",
     "entree": 1.2513,
     "depuis": "2026-11-01",
     "stop": 1.063605,
-    "trailing_actif": false
+    "trailing_actif": true
    }
   },
   "BNBUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.008721,
+   "latent": 0.022065,
    "position": {
     "sens": "long",
     "entree": 704.18,
@@ -72,7 +72,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.006158,
+   "latent": 0.01844,
    "position": {
     "sens": "long",
     "entree": 0.07558,
@@ -85,7 +85,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.016034,
+   "latent": 0.022329,
    "position": {
     "sens": "long",
     "entree": 0.1928,
@@ -98,7 +98,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.054779,
+   "latent": -0.019012,
    "position": {
     "sens": "long",
     "entree": 11.653,
@@ -111,20 +111,20 @@
    "trades": 1,
    "gagnants": 1,
    "net_ferme": 0.01417,
-   "latent": 0.014133,
+   "latent": 0.040229,
    "position": {
     "sens": "long",
     "entree": 8.388,
     "depuis": "2026-11-03",
     "stop": 7.1298,
-    "trailing_actif": false
+    "trailing_actif": true
    }
   },
   "LTCUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.026642,
+   "latent": 0.008504,
    "position": {
     "sens": "long",
     "entree": 55.74,
@@ -135,6 +135,6 @@
   }
  },
  "net_panier_ferme": 0.001417,
- "net_panier_avec_latent": -0.008753,
- "acheter_garder_panier": -0.012267
+ "net_panier_avec_latent": 0.025999,
+ "acheter_garder_panier": 0.022432
 }
