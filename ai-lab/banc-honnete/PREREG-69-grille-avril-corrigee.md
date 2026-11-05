@@ -18,3 +18,14 @@ Bougies 1 min Binance. Un ordre limite n'est exécuté que si le prix le dépass
 **« TIENT »**, pour chaque version, si sur P1 ET P2 : résultat du portefeuille > 0, au moins 3 paires sur 4 positives, aucune paire liquidée ni arrêtée définitivement, baisse maximale du portefeuille moins forte que −30 %. **« NON »** sinon. Rapportés pour information : départs de 3 mois chaque mois (part en perte), gain avant frais, frais, avril 2026 seul.
 
 Prédiction d'avance : A est liquidée sur au moins une paire en P1 (tendances de 2024-25) ; B et C perdent peu mais perdent, les frais dépassant le gain des allers-retours, comme dans le compte réel et dans PREREG-12 (grille BTC 0,6 % : ÉCHEC).
+
+## Résultat (05/11/2026 — t69.py, t69.json). 1 000 € par paire, 4 paires
+| | P1 (02/2024 → 12/2025) | P2 (01 → 09/2026) | Avril 2026 seul |
+|---|---|---|---|
+| A, voulue | −4 000 € : les 4 paires liquidées (les 7 autres aussi) | −4 000 €, idem | **+3 612 €** |
+| B, corrigée | −1 934 € : les 4 paires arrêtées à 60 % après 4 stops | −1 933 €, idem | +1 705 € |
+| C, corrigée + régime | −297 €, 2/4 positives, LINK arrêtée, baisse −17,5 % | −754 €, 0/4 positives, baisse −24,5 % | +226 € |
+
+**VERDICT (pré-enregistré) : « NON » pour A, B et C.** Prédiction confirmée pour A ; B et C perdent plus que prévu. Gain avant frais négatif partout sur P1 et P2 : ce ne sont pas les frais qui tuent cette grille, ce sont les tendances. Avec un notionnel de 5 × le capital, 3 % de mouvement contre l'inventaire font 15 % de perte.
+Avril 2026 explique le souvenir : un mois en fourchette (DOT entre 1,14 et 1,36, environ 170 allers-retours) où la grille voulue double le capital. Le Martin réel n'a pas eu ce gain parce que ses ordres de reprise étaient sautés. Sur 3 mois pris au hasard, A est à −4 000 € en médiane.
+Contrôles avant calcul : dents de scie synthétiques (environ 12 € par aller-retour, frais 0,20 € par ordre exécuté) et baisse continue (A liquidée, B arrêtée après 4 stops). Une erreur trouvée après le premier calcul et corrigée avant ce tableau : le dernier jour de chaque période valait 0 dans la courbe, d'où une baisse de −100 % ; les verdicts n'en dépendaient pas.

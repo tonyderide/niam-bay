@@ -1,0 +1,261 @@
+{
+ "A_P1": {
+  "total": -4000.0,
+  "par_paire": {
+   "SOL": -1000.0,
+   "LINK": -1000.0,
+   "ADA": -1000.0,
+   "DOT": -1000.0
+  },
+  "positives": 0,
+  "baisse_port": -1.0,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -3885.6,
+  "frais": 114.4,
+  "exec": 572,
+  "stops": 0,
+  "critere_ok": false,
+  "autres7": {
+   "XRP": -1000.0,
+   "DOGE": -1000.0,
+   "AVAX": -1000.0,
+   "LTC": -1000.0,
+   "BNB": -1000.0,
+   "BCH": -1000.0,
+   "ATOM": -1000.0
+  },
+  "autres7_total": -7000.0,
+  "departs3m_en_perte": 0.76,
+  "departs3m_median": -4000.0
+ },
+ "A_P2": {
+  "total": -4000.0,
+  "par_paire": {
+   "SOL": -1000.0,
+   "LINK": -1000.0,
+   "ADA": -1000.0,
+   "DOT": -1000.0
+  },
+  "positives": 0,
+  "baisse_port": -1.0,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -3798.6,
+  "frais": 201.4,
+  "exec": 1007,
+  "stops": 0,
+  "critere_ok": false,
+  "autres7": {
+   "XRP": -1000.0,
+   "DOGE": -1000.0,
+   "AVAX": -1000.0,
+   "LTC": -1000.0,
+   "BNB": -1000.0,
+   "BCH": -1000.0,
+   "ATOM": -1000.0
+  },
+  "autres7_total": -7000.0,
+  "departs3m_en_perte": 0.71,
+  "departs3m_median": -4000.0
+ },
+ "A_avril26": {
+  "total": 3612.0,
+  "par_paire": {
+   "SOL": 706.4,
+   "LINK": 642.2,
+   "ADA": 1068.8,
+   "DOT": 1194.6
+  },
+  "positives": 4,
+  "baisse_port": -0.122,
+  "liquidees_ou_arretees": [],
+  "brut": 3829.4,
+  "frais": 217.4,
+  "exec": 1062,
+  "stops": 0,
+  "critere_ok": true,
+  "autres7": {},
+  "autres7_total": 0,
+  "departs3m_en_perte": null,
+  "departs3m_median": null
+ },
+ "B_P1": {
+  "total": -1933.8,
+  "par_paire": {
+   "SOL": -483.3,
+   "LINK": -483.6,
+   "ADA": -483.5,
+   "DOT": -483.4
+  },
+  "positives": 0,
+  "baisse_port": -0.628,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -1316.8,
+  "frais": 617.0,
+  "exec": 3706,
+  "stops": 16,
+  "critere_ok": false,
+  "autres7": {
+   "XRP": -483.4,
+   "DOGE": -483.4,
+   "AVAX": -483.3,
+   "LTC": -483.2,
+   "BNB": -483.4,
+   "BCH": -483.4,
+   "ATOM": -483.1
+  },
+  "autres7_total": -3383.2,
+  "departs3m_en_perte": 1.0,
+  "departs3m_median": -1933.5
+ },
+ "B_P2": {
+  "total": -1933.4,
+  "par_paire": {
+   "SOL": -483.5,
+   "LINK": -483.5,
+   "ADA": -483.3,
+   "DOT": -483.1
+  },
+  "positives": 0,
+  "baisse_port": -0.535,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -1672.9,
+  "frais": 260.5,
+  "exec": 1610,
+  "stops": 16,
+  "critere_ok": false,
+  "autres7": {
+   "XRP": -483.4,
+   "DOGE": -483.1,
+   "AVAX": -483.4,
+   "LTC": -483.2,
+   "BNB": -483.5,
+   "BCH": -483.5,
+   "ATOM": -483.2
+  },
+  "autres7_total": -3383.3,
+  "departs3m_en_perte": 0.57,
+  "departs3m_median": -1170.4
+ },
+ "B_avril26": {
+  "total": 1705.2,
+  "par_paire": {
+   "SOL": -126.3,
+   "LINK": 253.2,
+   "ADA": 807.0,
+   "DOT": 771.3
+  },
+  "positives": 3,
+  "baisse_port": -0.122,
+  "liquidees_ou_arretees": [],
+  "brut": 1894.7,
+  "frais": 189.5,
+  "exec": 944,
+  "stops": 2,
+  "critere_ok": true,
+  "autres7": {},
+  "autres7_total": 0,
+  "departs3m_en_perte": null,
+  "departs3m_median": null
+ },
+ "C_P1": {
+  "total": -296.5,
+  "par_paire": {
+   "SOL": 99.2,
+   "LINK": -437.7,
+   "ADA": -144.7,
+   "DOT": 186.7
+  },
+  "positives": 2,
+  "baisse_port": -0.175,
+  "liquidees_ou_arretees": [
+   "LINK"
+  ],
+  "brut": -204.1,
+  "frais": 92.4,
+  "exec": 551,
+  "stops": 8,
+  "critere_ok": false,
+  "autres7": {
+   "XRP": -455.8,
+   "DOGE": -47.5,
+   "AVAX": 323.0,
+   "LTC": 33.4,
+   "BNB": 18.1,
+   "BCH": 52.6,
+   "ATOM": -219.3
+  },
+  "autres7_total": -295.5,
+  "departs3m_en_perte": 0.57,
+  "departs3m_median": -131.4
+ },
+ "C_P2": {
+  "total": -754.3,
+  "par_paire": {
+   "SOL": -124.7,
+   "LINK": -388.5,
+   "ADA": -134.8,
+   "DOT": -106.3
+  },
+  "positives": 0,
+  "baisse_port": -0.245,
+  "liquidees_ou_arretees": [],
+  "brut": -737.0,
+  "frais": 17.2,
+  "exec": 60,
+  "stops": 6,
+  "critere_ok": false,
+  "autres7": {
+   "XRP": -480.8,
+   "DOGE": 29.5,
+   "AVAX": -32.5,
+   "LTC": -480.0,
+   "BNB": -68.1,
+   "BCH": 115.7,
+   "ATOM": 133.5
+  },
+  "autres7_total": -782.7,
+  "departs3m_en_perte": 0.43,
+  "departs3m_median": 93.4
+ },
+ "C_avril26": {
+  "total": 225.7,
+  "par_paire": {
+   "SOL": 168.3,
+   "LINK": 9.9,
+   "ADA": 38.5,
+   "DOT": 9.0
+  },
+  "positives": 4,
+  "baisse_port": -0.051,
+  "liquidees_ou_arretees": [],
+  "brut": 244.9,
+  "frais": 19.2,
+  "exec": 92,
+  "stops": 1,
+  "critere_ok": true,
+  "autres7": {},
+  "autres7_total": 0,
+  "departs3m_en_perte": null,
+  "departs3m_median": null
+ }
+}
