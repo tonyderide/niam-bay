@@ -1,0 +1,135 @@
+{
+ "temoin": {
+  "total": -4.95,
+  "par_paire": {
+   "SOL": 8.18,
+   "LINK": -4.53,
+   "ADA": -4.65,
+   "DOT": -3.95
+  },
+  "exec": {
+   "SOL": 188,
+   "LINK": 183,
+   "ADA": 227,
+   "DOT": 223
+  },
+  "reel": 21.91,
+  "ok": false
+ },
+ "R_P1": {
+  "total": -3271.6,
+  "par_paire": {
+   "SOL": -271.6,
+   "LINK": -1000.0,
+   "ADA": -1000.0,
+   "DOT": -1000.0
+  },
+  "positives": 0,
+  "baisse_port": -0.879,
+  "liquidees_ou_arretees": [
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": 1312.7,
+  "frais": 4584.3,
+  "exec": 18318,
+  "stops": 0,
+  "critere_ok": false
+ },
+ "R_P2": {
+  "total": -2401.4,
+  "par_paire": {
+   "SOL": -191.7,
+   "LINK": -209.7,
+   "ADA": -1000.0,
+   "DOT": -1000.0
+  },
+  "positives": 0,
+  "baisse_port": -0.647,
+  "liquidees_ou_arretees": [
+   "ADA",
+   "DOT"
+  ],
+  "brut": -231.3,
+  "frais": 2170.0,
+  "exec": 8526,
+  "stops": 0,
+  "critere_ok": false
+ },
+ "R_avril26": {
+  "total": -236.0,
+  "par_paire": {
+   "SOL": 88.5,
+   "LINK": -176.1,
+   "ADA": -108.7,
+   "DOT": -39.7
+  },
+  "positives": 1,
+  "baisse_port": -0.154,
+  "liquidees_ou_arretees": [],
+  "brut": -42.3,
+  "frais": 193.7,
+  "exec": 752,
+  "stops": 0,
+  "critere_ok": false
+ },
+ "R+_P1": {
+  "total": -1631.4,
+  "par_paire": {
+   "SOL": -153.7,
+   "LINK": -502.8,
+   "ADA": -558.0,
+   "DOT": -416.9
+  },
+  "positives": 0,
+  "baisse_port": -0.506,
+  "liquidees_ou_arretees": [
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": 1322.2,
+  "frais": 2953.6,
+  "exec": 11771,
+  "stops": 9,
+  "critere_ok": false
+ },
+ "R+_P2": {
+  "total": -1326.4,
+  "par_paire": {
+   "SOL": -232.1,
+   "LINK": -209.7,
+   "ADA": -401.1,
+   "DOT": -483.5
+  },
+  "positives": 0,
+  "baisse_port": -0.402,
+  "liquidees_ou_arretees": [
+   "ADA",
+   "DOT"
+  ],
+  "brut": 182.9,
+  "frais": 1509.3,
+  "exec": 5959,
+  "stops": 4,
+  "critere_ok": false
+ },
+ "R+_avril26": {
+  "total": -236.0,
+  "par_paire": {
+   "SOL": 88.5,
+   "LINK": -176.1,
+   "ADA": -108.7,
+   "DOT": -39.7
+  },
+  "positives": 1,
+  "baisse_port": -0.154,
+  "liquidees_ou_arretees": [],
+  "brut": -42.3,
+  "frais": 193.7,
+  "exec": 752,
+  "stops": 0,
+  "critere_ok": false
+ }
+}

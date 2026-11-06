@@ -49,3 +49,20 @@ R lancé sur le 25/03 → 21/04/2026 avec les vrais capitaux (35/29/29/25) doit 
 ## Conséquence écrite d'avance
 - **R+ TIENT et témoin OK :** je reconstruis cette version depuis `77d994d`, je retire le patch du 25/04 et j'ajoute les trois corrections de R+. Elle tourne en **papier**. L'argent réel reste la décision de Tony, et seulement après la révocation des clés Kraken exposées dans Git.
 - **R+ NON :** pas de déploiement, même en papier. Le gain d'avril est alors attribué au marché d'avril, pas à la version.
+
+## Résultat (06/11/2026 — t70.py, t70.json)
+**Témoin de fidélité ÉCHOUÉ : −4,95 $ simulés contre +21,9 $ réels sur le 25/03 → 21/04/2026. VERDICT : NON CONCLUANT pour R et R+.** Conformément à ce qui était écrit, aucun déploiement, même en papier.
+
+| Paire | Réel | Simulé (R) | Exécutions réelles | Exécutions simulées |
+|---|---|---|---|---|
+| SOL | +12,2 $ | +8,2 $ | 147 | 188 |
+| LINK | +1,1 $ | −4,5 $ | 105 | 183 |
+| ADA | +5,7 $ | −4,7 $ | 80 | 227 |
+| DOT | +3,6 $ | −4,0 $ | 183 | 223 |
+
+Causes probables, constatées après coup :
+- **Martin n'a pas tourné en continu.** Le journal de Niam-Bay note des grilles arrêtées le 27/03 et le service en plantage en boucle le 29/03. ADA n'a que 80 exécutions réelles, contre 227 simulées.
+- **La config a changé pendant la période.** Fin mars, l'écart était d'environ 1 % ; le 1,2 % ne vient qu'ensuite.
+- **Les reprises n'étaient pas toujours sautées.** 89 ordres limites réels s'exécutent au même prix qu'un ordre déjà exécuté, dont 66 sur DOT. Le programme de fin mars n'était donc pas exactement celui reconstruit le 25/04.
+
+Pour information seulement, puisque le modèle n'est pas validé : sur 1 000 € par paire, R fait −3 272 € sur P1 et −2 401 € sur P2, R+ fait −1 631 € et −1 326 €. Le gain avant frais est positif sur P1, mais les frais, environ 0,2 € par exécution sur 12 000 à 18 000 exécutions, l'effacent largement.
