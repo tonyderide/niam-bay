@@ -37,3 +37,21 @@ B > A sur P1 et P2, car il évite les achats en série pendant les chutes. Mais 
 - **TIENT** : je propose à Tony de passer B en réel.
 - **MIEUX SANS SUFFIRE** : je propose B en réel, en lui disant clairement que ça perd moins, pas que ça gagne.
 - **NON** : rien ne change.
+
+## Résultat (09/11/2026 — t71.py, t71.json ; 1 000 € par paire, 4 paires)
+**VERDICT (pré-enregistré) : NON.** B fait moins bien que A sur P1, à peine mieux sur P2, et les deux perdent lourdement.
+
+| | Total | Avant frais | Frais | Exécutions | Paires arrêtées définitivement (< 60 %) | Baisse max. du portefeuille |
+|---|---|---|---|---|---|---|
+| A P1 (en service) | −1 713 € | +623 € | 2 336 € | 9 343 | 4/4 | −46 % |
+| B P1 (filtre de sens) | −1 756 € | −390 € | 1 366 € | 5 429 | 4/4 | −50 % |
+| A P2 | −1 606 € | −460 € | 1 146 € | 4 501 | 3/4 | −44 % |
+| B P2 | −1 568 € | −708 € | 860 € | 3 304 | 3/4 | −44 % |
+
+Pour information, R+ **avec** la pause de régime (PREREG-70) : −1 631 € sur P1, −1 326 € sur P2.
+
+Lecture :
+- Le filtre réduit le nombre d'exécutions d'environ 40 %, donc les frais, mais il fait perdre plus avant frais. Dans ce simulateur, la grille gagne surtout sur les rebonds contre la tendance : les bloquer retire aussi les gains.
+- La grille en continu (A) perd plus que la grille avec pause sur P2 : −1 606 € contre −1 326 €.
+- Sur P1, A gagne +623 € avant frais. Les frais (≈ 0,25 € par exécution sur une position de 1 000 €) en font −1 713 €.
+- Rappel : le témoin de PREREG-70 a échoué. Ces chiffres disent que rien dans cette famille ne gagne dans le simulateur. Ils ne garantissent pas les montants réels.

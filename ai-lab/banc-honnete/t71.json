@@ -1,0 +1,89 @@
+{
+ "A_P1": {
+  "total": -1713.2,
+  "par_paire": {
+   "SOL": -438.9,
+   "LINK": -418.2,
+   "ADA": -438.6,
+   "DOT": -417.5
+  },
+  "positives": 0,
+  "baisse_port": -0.458,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": 623.1,
+  "frais": 2336.3,
+  "exec": 9343,
+  "stops": 31,
+  "critere_ok": false
+ },
+ "A_P2": {
+  "total": -1606.0,
+  "par_paire": {
+   "SOL": -235.6,
+   "LINK": -476.8,
+   "ADA": -489.5,
+   "DOT": -404.1
+  },
+  "positives": 0,
+  "baisse_port": -0.443,
+  "liquidees_ou_arretees": [
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -460.2,
+  "frais": 1145.9,
+  "exec": 4501,
+  "stops": 12,
+  "critere_ok": false
+ },
+ "B_P1": {
+  "total": -1755.7,
+  "par_paire": {
+   "SOL": -425.8,
+   "LINK": -478.2,
+   "ADA": -412.3,
+   "DOT": -439.4
+  },
+  "positives": 0,
+  "baisse_port": -0.497,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -390.2,
+  "frais": 1365.5,
+  "exec": 5429,
+  "stops": 21,
+  "critere_ok": false
+ },
+ "B_P2": {
+  "total": -1568.3,
+  "par_paire": {
+   "SOL": -153.7,
+   "LINK": -493.1,
+   "ADA": -501.8,
+   "DOT": -419.7
+  },
+  "positives": 0,
+  "baisse_port": -0.442,
+  "liquidees_ou_arretees": [
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -708.4,
+  "frais": 859.9,
+  "exec": 3304,
+  "stops": 15,
+  "critere_ok": false
+ },
+ "verdict": "NON"
+}
