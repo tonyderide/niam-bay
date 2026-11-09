@@ -1,0 +1,248 @@
+{
+ "A_P1": {
+  "total": -1713.2,
+  "par_paire": {
+   "SOL": -438.9,
+   "LINK": -418.2,
+   "ADA": -438.6,
+   "DOT": -417.5
+  },
+  "positives": 0,
+  "baisse_port": -0.458,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": 623.1,
+  "frais": 2336.3,
+  "exec": 9343,
+  "stops": 31,
+  "critere_ok": false
+ },
+ "A_P2": {
+  "total": -1606.0,
+  "par_paire": {
+   "SOL": -235.6,
+   "LINK": -476.8,
+   "ADA": -489.5,
+   "DOT": -404.1
+  },
+  "positives": 0,
+  "baisse_port": -0.443,
+  "liquidees_ou_arretees": [
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -460.2,
+  "frais": 1145.9,
+  "exec": 4501,
+  "stops": 12,
+  "critere_ok": false
+ },
+ "W2_P1": {
+  "total": -1292.6,
+  "par_paire": {
+   "SOL": -457.3,
+   "LINK": -450.1,
+   "ADA": -438.1,
+   "DOT": 52.9
+  },
+  "positives": 1,
+  "baisse_port": -0.435,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA"
+  ],
+  "brut": 1045.6,
+  "frais": 2338.3,
+  "exec": 8905,
+  "stops": 21,
+  "critere_ok": false
+ },
+ "W2_P2": {
+  "total": -911.4,
+  "par_paire": {
+   "SOL": -13.7,
+   "LINK": -25.7,
+   "ADA": -439.6,
+   "DOT": -432.4
+  },
+  "positives": 0,
+  "baisse_port": -0.315,
+  "liquidees_ou_arretees": [
+   "ADA",
+   "DOT"
+  ],
+  "brut": 163.8,
+  "frais": 1075.2,
+  "exec": 4042,
+  "stops": 9,
+  "critere_ok": false
+ },
+ "W3_P1": {
+  "total": -447.9,
+  "par_paire": {
+   "SOL": 264.6,
+   "LINK": -458.0,
+   "ADA": -425.4,
+   "DOT": 170.9
+  },
+  "positives": 2,
+  "baisse_port": -0.219,
+  "liquidees_ou_arretees": [
+   "LINK",
+   "ADA"
+  ],
+  "brut": 1329.7,
+  "frais": 1777.7,
+  "exec": 6561,
+  "stops": 13,
+  "critere_ok": false
+ },
+ "W3_P2": {
+  "total": -683.3,
+  "par_paire": {
+   "SOL": -155.2,
+   "LINK": -124.6,
+   "ADA": -252.3,
+   "DOT": -151.2
+  },
+  "positives": 0,
+  "baisse_port": -0.177,
+  "liquidees_ou_arretees": [],
+  "brut": -8.0,
+  "frais": 675.3,
+  "exec": 2437,
+  "stops": 7,
+  "critere_ok": false
+ },
+ "W5_P1": {
+  "total": 881.4,
+  "par_paire": {
+   "SOL": -39.1,
+   "LINK": 330.4,
+   "ADA": 297.4,
+   "DOT": 292.7
+  },
+  "positives": 3,
+  "baisse_port": -0.195,
+  "liquidees_ou_arretees": [],
+  "brut": 2302.2,
+  "frais": 1420.7,
+  "exec": 5148,
+  "stops": 6,
+  "critere_ok": true
+ },
+ "W5_P2": {
+  "total": -245.0,
+  "par_paire": {
+   "SOL": 172.5,
+   "LINK": -202.6,
+   "ADA": -152.6,
+   "DOT": -62.3
+  },
+  "positives": 1,
+  "baisse_port": -0.149,
+  "liquidees_ou_arretees": [],
+  "brut": 75.8,
+  "frais": 320.8,
+  "exec": 1131,
+  "stops": 3,
+  "critere_ok": false
+ },
+ "I1.2_P1": {
+  "total": -1872.1,
+  "par_paire": {
+   "SOL": -480.5,
+   "LINK": -454.8,
+   "ADA": -456.8,
+   "DOT": -480.0
+  },
+  "positives": 0,
+  "baisse_port": -0.464,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -818.0,
+  "frais": 1054.1,
+  "exec": 2393,
+  "stops": 16,
+  "critere_ok": false
+ },
+ "I1.2_P2": {
+  "total": -1768.5,
+  "par_paire": {
+   "SOL": -469.6,
+   "LINK": -443.7,
+   "ADA": -421.5,
+   "DOT": -433.7
+  },
+  "positives": 0,
+  "baisse_port": -0.483,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -359.9,
+  "frais": 1408.6,
+  "exec": 3245,
+  "stops": 15,
+  "critere_ok": false
+ },
+ "I3_P1": {
+  "total": -1986.1,
+  "par_paire": {
+   "SOL": -506.6,
+   "LINK": -462.4,
+   "ADA": -540.3,
+   "DOT": -476.8
+  },
+  "positives": 0,
+  "baisse_port": -0.499,
+  "liquidees_ou_arretees": [
+   "SOL",
+   "LINK",
+   "ADA",
+   "DOT"
+  ],
+  "brut": -1151.6,
+  "frais": 834.4,
+  "exec": 1970,
+  "stops": 13,
+  "critere_ok": false
+ },
+ "I3_P2": {
+  "total": -1403.5,
+  "par_paire": {
+   "SOL": -390.8,
+   "LINK": -282.3,
+   "ADA": -265.8,
+   "DOT": -464.6
+  },
+  "positives": 0,
+  "baisse_port": -0.383,
+  "liquidees_ou_arretees": [],
+  "brut": -323.0,
+  "frais": 1080.5,
+  "exec": 2582,
+  "stops": 3,
+  "critere_ok": false
+ },
+ "temoin_ok": true,
+ "verdicts": {
+  "W2": "MIEUX SANS SUFFIRE",
+  "W3": "MIEUX SANS SUFFIRE",
+  "W5": "MIEUX SANS SUFFIRE",
+  "I1.2": "NON",
+  "I3": "NON"
+ }
+}
