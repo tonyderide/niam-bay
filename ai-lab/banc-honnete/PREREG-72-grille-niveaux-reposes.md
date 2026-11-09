@@ -25,3 +25,15 @@ Plus d'allers-retours, donc plus de gains avant frais, mais aussi plus de frais.
 - **NON** : rien ne change, et je le dis à Tony.
 
 Même limite que PREREG-70 et 71 : le simulateur n'a pas reproduit avril. Il a en revanche retrouvé le signe de chaque paire le soir du 08/11 (−4,4 c simulés contre −2,3 c réels).
+
+## Résultat (09/11/2026 — t72.py, t72.json)
+**Témoin OK** : A redonne exactement −1 713,2 € sur P1 et −1 606,0 € sur P2. **VERDICT (pré-enregistré) : NON.** Reposer les niveaux fait perdre davantage sur les deux périodes.
+
+| | Total | Avant frais | Frais | Exécutions | Paires arrêtées définitivement | Baisse max. du portefeuille |
+|---|---|---|---|---|---|---|
+| A P1 (en service) | −1 713 € | +623 € | 2 336 € | 9 343 | 4/4 | −46 % |
+| C P1 (niveaux reposés) | −1 923 € | −575 € | 1 348 € | 4 046 | 4/4 | −48 % |
+| A P2 | −1 606 € | −460 € | 1 146 € | 4 501 | 3/4 | −44 % |
+| C P2 | −1 865 € | −104 € | 1 761 € | 5 273 | 4/4 | −48 % |
+
+Lecture : en reposant ses achats, C accumule plus vite pendant les baisses. Ses paires atteignent plus tôt l'arrêt définitif à 60 % : moins d'exécutions sur P1, parce qu'elles meurent avant. Sur P2, C trade plus et paie plus de frais. Dans les deux cas, C fait pire. La version d'avril, qui ne repose pas les niveaux, limite les dégâts.
