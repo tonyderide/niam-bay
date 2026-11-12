@@ -36,3 +36,25 @@ X\* = W10 ou W7 : la tendance de PREREG-73 continue sur P1. T1 échoue (2026 est
 
 ## Limites connues
 Le simulateur n'a pas reproduit avril (PREREG-70). Il a en revanche retrouvé le signe et l'ordre de grandeur des jours réels du 08 au 11/11 (bilans quotidiens). Les 6 paires neuves sont des données Binance, pas Kraken.
+
+## Résultat (12/11/2026 — t74.py, t74.json, t74.log) — témoin OK (W5 redonne +881,4 / −245,0)
+**VERDICT (pré-enregistré) : NON — W5 reste la meilleure sur P1.** Ma prédiction (X\* = W7 ou W10) était fausse.
+
+| Variante | P1, 4 paires | Paires arrêtées | Baisse max. |
+|---|---|---|---|
+| **W5 (en service)** | **+881 €** | 0 | −20 % |
+| W7 | −995 € | 1 (ADA) | −33 % |
+| W10 | +523 € | 0 | −14 % |
+| W5R (reposés) | −1 887 € | 4 | −46 % |
+| W7R | −1 962 € | 4 | −49 % |
+| W5P (pause) | −1 129 € | 2 | −39 % |
+| W7P | −1 062 € | 1 | −36 % |
+| W5F (filtre sens) | −91 € | 0 | −15 % |
+
+Contrôles (sur W5, puisqu'elle est choisie) : T1 4 paires P2 −245 € ✗ ; **T2 6 paires neuves P1 −1 120 €, 2/6 positives, 3 arrêtées (AVAX, BCH, LTC)** ✗ ; T3 6 paires neuves P2 −373 € ✗.
+
+Lecture :
+- **La découverte importante : W5 ne tient pas hors de ses 4 paires.** Sur 6 paires jamais vues, elle perd sur les deux périodes et 3 paires sur 6 sont arrêtées en 2024-2025. Le +881 € de PREREG-73 tient très probablement au choix de SOL/LINK/ADA/DOT, pas à la règle.
+- La suite des écarts n'est pas régulière (5 % : +881, 7 % : −995, 10 % : +523) : c'est le signe d'un résultat dominé par le hasard des parcours de prix, pas d'un réglage qui s'améliore.
+- Reposer les niveaux et remettre la pause sont nettement pires, comme à 1,2 %.
+- Conséquence prévue : on garde W5. Mais il faut dire à Tony que rien dans la famille « grille » ne montre d'avantage solide, W5 compris.

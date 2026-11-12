@@ -1,0 +1,209 @@
+{
+ "choix_P1": {
+  "W5": {
+   "total": 881.4,
+   "par_paire": {
+    "SOL": -39.1,
+    "LINK": 330.4,
+    "ADA": 297.4,
+    "DOT": 292.7
+   },
+   "positives": 3,
+   "arretees": [],
+   "baisse_port": -0.195,
+   "frais": 1420.7,
+   "exec": 5148
+  },
+  "W7": {
+   "total": -994.5,
+   "par_paire": {
+    "SOL": 58.3,
+    "LINK": -165.6,
+    "ADA": -521.8,
+    "DOT": -365.4
+   },
+   "positives": 1,
+   "arretees": [
+    "ADA"
+   ],
+   "baisse_port": -0.327,
+   "frais": 711.6,
+   "exec": 2492
+  },
+  "W10": {
+   "total": 522.8,
+   "par_paire": {
+    "SOL": 352.9,
+    "LINK": -494.1,
+    "ADA": 793.5,
+    "DOT": -129.5
+   },
+   "positives": 2,
+   "arretees": [],
+   "baisse_port": -0.139,
+   "frais": 489.2,
+   "exec": 1741
+  },
+  "W5R": {
+   "total": -1887.0,
+   "par_paire": {
+    "SOL": -481.2,
+    "LINK": -513.0,
+    "ADA": -467.8,
+    "DOT": -425.0
+   },
+   "positives": 0,
+   "arretees": [
+    "SOL",
+    "LINK",
+    "ADA",
+    "DOT"
+   ],
+   "baisse_port": -0.464,
+   "frais": 1316.2,
+   "exec": 3361
+  },
+  "W7R": {
+   "total": -1961.5,
+   "par_paire": {
+    "SOL": -480.7,
+    "LINK": -455.8,
+    "ADA": -504.6,
+    "DOT": -520.4
+   },
+   "positives": 0,
+   "arretees": [
+    "SOL",
+    "LINK",
+    "ADA",
+    "DOT"
+   ],
+   "baisse_port": -0.487,
+   "frais": 1079.5,
+   "exec": 2723
+  },
+  "W5P": {
+   "total": -1128.6,
+   "par_paire": {
+    "SOL": -162.6,
+    "LINK": -839.0,
+    "ADA": -561.6,
+    "DOT": 434.6
+   },
+   "positives": 1,
+   "arretees": [
+    "LINK",
+    "ADA"
+   ],
+   "baisse_port": -0.385,
+   "frais": 1408.8,
+   "exec": 5031
+  },
+  "W7P": {
+   "total": -1061.8,
+   "par_paire": {
+    "SOL": -335.8,
+    "LINK": -82.7,
+    "ADA": -234.5,
+    "DOT": -408.8
+   },
+   "positives": 0,
+   "arretees": [
+    "DOT"
+   ],
+   "baisse_port": -0.363,
+   "frais": 894.6,
+   "exec": 3148
+  },
+  "W5F": {
+   "total": -90.7,
+   "par_paire": {
+    "SOL": -65.4,
+    "LINK": 128.7,
+    "ADA": 71.0,
+    "DOT": -225.0
+   },
+   "positives": 2,
+   "arretees": [],
+   "baisse_port": -0.154,
+   "frais": 702.1,
+   "exec": 2543
+  }
+ },
+ "temoin_ok": true,
+ "X": "W5",
+ "controles": {
+  "T1_4p_P2": {
+   "total": -245.0,
+   "par_paire": {
+    "SOL": 172.5,
+    "LINK": -202.6,
+    "ADA": -152.6,
+    "DOT": -62.3
+   },
+   "positives": 1,
+   "arretees": [],
+   "baisse_port": -0.149,
+   "frais": 320.8,
+   "exec": 1131
+  },
+  "T2_6p_P1": {
+   "total": -1119.5,
+   "par_paire": {
+    "ATOM": 268.3,
+    "AVAX": -502.1,
+    "BCH": -425.1,
+    "BNB": 99.5,
+    "XRP": -110.5,
+    "LTC": -449.6
+   },
+   "positives": 2,
+   "arretees": [
+    "AVAX",
+    "BCH",
+    "LTC"
+   ],
+   "baisse_port": -0.272,
+   "frais": 1410.3,
+   "exec": 5028
+  },
+  "T3_6p_P2": {
+   "total": -372.6,
+   "par_paire": {
+    "ATOM": 9.0,
+    "AVAX": -297.1,
+    "BCH": 134.3,
+    "BNB": 21.5,
+    "XRP": -140.0,
+    "LTC": -100.3
+   },
+   "positives": 3,
+   "arretees": [],
+   "baisse_port": -0.116,
+   "frais": 397.4,
+   "exec": 1400
+  }
+ },
+ "info_W5": {
+  "4p_P2": {
+   "total": -245.0,
+   "par_paire": {
+    "SOL": 172.5,
+    "LINK": -202.6,
+    "ADA": -152.6,
+    "DOT": -62.3
+   },
+   "positives": 1,
+   "arretees": [],
+   "baisse_port": -0.149,
+   "frais": 320.8,
+   "exec": 1131
+  }
+ },
+ "T": {
+  "T1": false,
+  "T2": false,
+  "T3": false
+ },
+ "verdict": "NON (W5 reste la meilleure)"
+}
