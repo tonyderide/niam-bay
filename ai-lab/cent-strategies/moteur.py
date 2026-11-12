@@ -114,6 +114,7 @@ def simg(t, o, h, l, c, DG, FL, ESP, N, capref, esp, nl, capx, side, off, prot, 
             for k in range(nl):
                 pr[k] = P + (k - off) * s; sd[k] = 1.0 if pr[k] < P else -1.0; fr[k] = i + 1; ro[k] = co
                 al[k] = not (co and sd[k] > 0)
+        if q == 0.0 and cash < 0.6 * cap0: dead = True; tue = True       # arrêt aussi par érosion (règle R+ écrite)
         eq = cash + q * c[i]; eqd[i // bpd] = eq; pic = max(pic, eq); dd = min(dd, eq / pic - 1)
     if q != 0.0:
         f = abs(q) * c[n - 1] * FT; cash += q * c[n - 1] - f; frais += f; q = 0.0
@@ -124,7 +125,8 @@ def simg(t, o, h, l, c, DG, FL, ESP, N, capref, esp, nl, capx, side, off, prot, 
 # ----------------------------------------------------------------------------------------------- directionnel
 @njit
 def simd(o, h, l, c, TGT, ATR, L, slp, ta, tt, atrk, tpp, reentry, hold, mart, capref, stopf, bpd):
-    """TGT[k] = position voulue après la clôture de la bougie k (exécutée à l'ouverture de k+1).
+    """TGT[i] = position voulue CONNUE à l'ouverture de la bougie de base i (signal de la dernière heure close).
+    Amendement 1 : le sommet du trailing ne monte qu'avec les CLÔTURES des bougies de base (pas avec les mèches dans la bougie).
     slp : stop fixe (fraction) ; ta/tt : trailing activé à +ta, distance tt ; atrk : trailing à atrk*ATR (ATR[k] connu à l'ouverture de k) ;
     tpp : objectif (limite, maker) ; reentry=0 : après un stop, attendre que TGT change ; hold=1 : TGT lu seulement à plat ;
     mart=1 : mise x2 après une perte, au plus 3 doublements puis retour à la base."""
@@ -136,7 +138,7 @@ def simd(o, h, l, c, TGT, ATR, L, slp, ta, tt, atrk, tpp, reentry, hold, mart, c
     for i in range(1, n):
         if dead:
             eqd[i // bpd] = cash; continue
-        want = TGT[i - 1]
+        want = TGT[i]
         if blk:
             if want != bval: blk = False
             else: want = 0 if pos == 0 else pos
@@ -182,8 +184,6 @@ def simd(o, h, l, c, TGT, ATR, L, slp, ta, tt, atrk, tpp, reentry, hold, mart, c
                         if pos > 0 and x >= ent * (1 + tpp): ex = max(ent * (1 + tpp), pf); kind = 3
                         if pos < 0 and x <= ent * (1 - tpp): ex = min(ent * (1 - tpp), pf); kind = 3
                     fe = FM
-                    if ex == 0.0:
-                        peak = max(peak, x) if pos > 0 else min(peak, x)
                 if ex > 0.0:
                     cash += q * ex; f = abs(q) * ex * fe; cash -= f; frais += f; nf += 1
                     if mart:
@@ -194,11 +194,14 @@ def simd(o, h, l, c, TGT, ATR, L, slp, ta, tt, atrk, tpp, reentry, hold, mart, c
                         nst += 1; pause = i + bpd
                         if cash < 0.6 * capref: dead = True; tue = True
                     if not reentry:
-                        blk = True; bval = TGT[i - 1]
+                        blk = True; bval = TGT[i]
                     break
                 if cash + q * x <= 0:
                     dead = True; liq = True; cash = 0.0; q = 0.0; pos = 0; break
                 pf = x
+        if pos > 0: peak = max(peak, c[i])
+        elif pos < 0: peak = min(peak, c[i])
+        if pos == 0 and cash < 0.6 * capref: dead = True; tue = True
         eq = cash + q * c[i]; eqd[i // bpd] = eq; pic = max(pic, eq); dd = min(dd, eq / pic - 1)
     if q != 0.0:
         f = abs(q) * c[n - 1] * FT; cash += q * c[n - 1] - f; frais += f; q = 0.0

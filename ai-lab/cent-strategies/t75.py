@@ -184,11 +184,14 @@ class Terrain:
             return simg(self.t[w].copy(), self.o[w].copy(), self.h[w].copy(), self.l[w].copy(), self.c[w].copy(), DG,
                         self.FL(p["flt"])[w].copy(), ESP.copy(), CAP0 * p["npl"], CAP0, esp, nl, p["capx"], p["side"], off,
                         p["prot"], p["stopf"], self.bpd, self.chk)
-        p = s[4]; w = (self.T >= d) & (self.T < f)
-        if w.sum() < 48: return None
-        return simd(self.O[w].copy(), self.H[w].copy(), self.L[w].copy(), self.C[w].copy(), self.TGT(s[3])[w].copy(),
-                    np.nan_to_num(self.ATRd[w], nan=0.0), p["L"], p["slp"], p["ta"], p["tt"], p["atrk"], p["tpp"],
-                    p["reentry"], p["hold"], p["mart"], CAP0, 0.85, 24)
+        # amendement 1 : exécution et stops sur les bougies de base (1 min quand elles existent), signal = dernière heure close
+        p = s[4]; w = (self.t >= d) & (self.t < f)
+        if w.sum() < 2 * self.bpd: return None
+        tg = self.TGT(s[3]); hid = self.hid[w]
+        TG = np.where(hid >= 1, tg[np.maximum(hid - 1, 0)], 0).astype(np.int8)
+        AT = np.nan_to_num(self.ATRd[hid], nan=0.0)
+        return simd(self.o[w].copy(), self.h[w].copy(), self.l[w].copy(), self.c[w].copy(), TG, AT, p["L"], p["slp"], p["ta"],
+                    p["tt"], p["atrk"], p["tpp"], p["reentry"], p["hold"], p["mart"], CAP0, 0.85, self.bpd)
 
 
 def charge(c, quelle):

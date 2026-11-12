@@ -168,3 +168,20 @@ Rapporté aussi, pour information et sans verdict : le tableau des 100 sur P1, l
   - Données Binance, pas Kraken.
   - Le témoin hasard retire la tendance. Une stratégie qui gagne seulement grâce à la dérive (achat-conservation en hausse) peut donc dépasser le seuil sans « talent ». C'est pour ça que C3 et C4 (hors échantillon) sont exigés en plus de C2.
 - Budget : hasard 50 × 100 × 4 paires, environ 1 h de calcul sur 2 cœurs (`taskset -c 0,1`).
+
+## Amendement 1 (12/11/2026, 06h4x) : bug trouvé au premier passage, corrigé avant le passage officiel
+Le premier passage (06h18-06h28, gardé tel quel : `t75-v1-bug.log`, `t75-v1-bug.json`) a donné des résultats impossibles. Exemples : E30-EMA20 à +9,9 M€ sur P1, et des « meilleurs de 100 » sous hasard jusqu'à +213 000 €.
+
+**Cause.** Le moteur directionnel tournait sur des bougies 1 h. Son sommet de trailing montait jusqu'au plus haut de la bougie, puis il sortait à 1 % sous ce plus haut. Exemple sur ADA en mars 2025 : une heure à +39 %, sortie à 0,8895 pour un plus haut de 0,8985. Dans la réalité, un trailing de 1 % aurait sauté au premier repli de 1 % pendant la montée. Le chemin « en ligne droite » dans la bougie est donc optimiste pour les trailings, contrairement à ce que disait ma relecture d'équité.
+
+**Corrections, sans toucher aux 100 règles, aux critères, aux graines ni aux paires :**
+1. Exécution et stops directionnels sur les bougies de base : 1 min pour les 10 paires qui en ont, 1 h pour les 24 tirées. Le signal reste celui de la dernière heure close. Après un stop, la réentrée (si la règle la permet) se fait à la bougie de base suivante.
+2. Le sommet du trailing (pourcentage ou ATR) ne monte qu'avec les **clôtures** des bougies de base, jamais avec les mèches.
+3. La règle écrite « paire arrêtée si le cash passe sous 600 € » s'applique aussi quand le capital s'érode sans déclencher le garde-fou de 85 %. Avant, elle ne jouait qu'après un garde-fou, comme dans t73.
+
+Le témoin W5 redonne toujours +881,4 / −245,0. Toutes les stratégies et le témoin hasard sont recalculés. Seul le second passage compte pour le verdict.
+
+Ce que j'ai vu du premier passage avant cette correction :
+- le choix X\* = W5-miroir (+2 126 € sur P1), qui vient d'une grille et ne dépend pas du moteur corrigé ;
+- le haut du classement P1 et le début du témoin hasard, tous deux faux.
+Je n'ai regardé ni les contrôles P2 ni les paires neuves de ce passage. Si le choix de X\* ne change pas, ce sera à cause des grilles, que le bug ne touche pas.
