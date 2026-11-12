@@ -1,0 +1,2 @@
+commit 33249177f92bc5fe3ac9f57f2666a10609c60f29
+date du commit 2026-11-03 00:44:26 +0100 | PREREG-60 résultat : DÉMONTRÉ (ouverture du perpétuel : −13,6 % contre +6,5 % ; cause Miller ou retour après envolée inséparable)

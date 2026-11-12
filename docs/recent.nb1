@@ -38,3 +38,16 @@
 [session-0826|100-idees-business-x2-generees|Tony-demande-2x100-idees-nouvelles-sans-choisir-aucune|exercice-exploratoire-pur-pas-de-decision-prise|angular-audit-explicitement-ecarte(pas-de-moat-vs-juste-demander-a-une-IA)]
 [session-0826|correction-honnetete|NB-dit-a-tort-"je-garde-un-oeil-dessus"-en-fin-de-session|Tony-corrige:aucun-process-ne-tourne-sans-declencheur|NB-clarifie:protection-reelle=ordres-Kraken-live+cron-VM(critical-check.py-5min+sl_guardian.sh-3min)-pas-la-vigilance-de-NB|memoire:feedback_no_false_watching_claim]
 [M|status-0826:03h09|0-grid|1-position-LONG-XBT-0.0013@78387|SL-77211-TP-80739-verifies-live-Kraken|capital-~$12.6|BTC-UPTREND|Tony-eteint-batterie-faible-branche-charge]
+
+=== SESSION 1108→1112 — retour-avril en réel, garde, martingale, écart 5 % ===
+
+[session-1108|retour-avril-live-17h37|grille-avril-SOL/LINK/ADA/DOT|mises-5.89$|protection-reparee(shorts-lus-comme-longs,tick,stop-seul,taille)|commits-3893c8f..d7ff867-branche-retour-avril]
+[session-1108|garde.py-cron-1min|kill-75%-depart/90%-jour|coupe-paire-doublons/plafond/>8-ordres|redemarre-si-muet-3min|tableau-https://niambay.duckdns.org/garde/-basic-auth-(feu-vert-Tony-/api,/gw,/ws,/garde)]
+[session-1108|martingale-DOGE|x2-et-inversion-apres-perte|stop-5%-reel-Kraken|trailing-1%-apres-+10%|bilan.py-00h20-reel-vs-sim]
+[session-1109|PREREG-71-filtre-sens=NON|PREREG-72-niveaux-reposes=NON|PREREG-73-W5(5%)=MIEUX-SANS-SUFFIRE(+881/-245)|inversee=NON]
+[session-1109|Tony:"gros-trades-agressif-meme-si-on-perd"|levier-5→10(max-compte-Tony)|martingale-base-1→3$-arret-4$|ecart-1.2→5%-feu-vert-Tony-21h34]
+[session-1110|regle-Tony:pas-de-trade→retour-1.2%|7-trades→5%-garde|piege:ADA-relancee-apres-pause-a-l-ancien-ecart|piege:deploy-strategy--only-arrete-TOUTES-les-grilles]
+[session-1111|panne-API-Kraken-Futures-22h28-22h42(503,appli-OK)|ordres-disparus-marques-FILLED|redeploiement→doublons→garde-coupe-4-paires(son-role)|nettoyage-manuel+tout_reprendre|martingale-durcie(jamais-conclure-a-plat-sur-reponse-douteuse)]
+[session-1112|compte-refait:depuis-0811=-3.7c(flux)/-5.3c(portefeuille)|grilles-5%-+19c|martingale-~-11c|sim-et-reel-d-accord-sur-les-jours-recents|3-jours=bruit]
+[session-1112|GITHUB-COMPTE-SUSPENDU(403-au-push)|sauvegarde=bundles-git-copies-sur-la-VM|Tony-demande:chercher-meilleure-strategie(PREREG-74-a-ecrire)]
+[M|status-1112|4-grilles-5%-x10|martingale-short-90-DOGE@0.06676-stop-0.0701|PV-~5.84$|depart-5.896$]

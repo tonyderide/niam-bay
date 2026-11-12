@@ -1,0 +1,2 @@
+commit 076a960c69e360261f560630cfd9f70a1c559bec
+date du commit 2026-11-02 20:44:05 +0100 | PREREG-59 résultat : PERSISTE (jours 91-180 : +3,8 % contre −1,9 %, p < 0,001 ; négatif avec liquidation)

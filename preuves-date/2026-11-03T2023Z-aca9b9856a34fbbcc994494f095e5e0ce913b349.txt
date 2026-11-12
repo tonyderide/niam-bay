@@ -1,0 +1,2 @@
+commit aca9b9856a34fbbcc994494f095e5e0ce913b349
+date du commit 2026-11-03 21:15:44 +0100 | PREREG-63 résultat : INUTILE ; PREREG-64 avant calcul (EMA, 10 cryptos)

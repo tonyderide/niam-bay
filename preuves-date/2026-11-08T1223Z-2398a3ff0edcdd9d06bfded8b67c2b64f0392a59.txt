@@ -1,0 +1,2 @@
+commit 2398a3ff0edcdd9d06bfded8b67c2b64f0392a59
+date du commit 2026-11-08 12:24:21 +0100 | reveil 1108 12h25 : compte vide J+13, lecture Pedersen

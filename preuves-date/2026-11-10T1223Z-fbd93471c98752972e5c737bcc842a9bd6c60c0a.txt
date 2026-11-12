@@ -1,0 +1,2 @@
+commit fbd93471c98752972e5c737bcc842a9bd6c60c0a
+date du commit 2026-11-10 12:25:43 +0100 | reveil 1110 12h25 : Martin VM 1 pos DOGE SL OK, lecture Quintessence (cache-breaker coché)

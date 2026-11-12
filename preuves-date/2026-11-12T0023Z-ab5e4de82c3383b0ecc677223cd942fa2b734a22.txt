@@ -1,0 +1,2 @@
+commit ab5e4de82c3383b0ecc677223cd942fa2b734a22
+date du commit 2026-11-12 00:25:53 +0100 | reveil nb 1112 00h25 : journal + lecture Trifsorich de Toul

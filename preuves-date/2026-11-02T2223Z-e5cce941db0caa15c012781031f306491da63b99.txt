@@ -1,0 +1,2 @@
+commit e5cce941db0caa15c012781031f306491da63b99
+date du commit 2026-11-02 22:44:21 +0100 | Bilan : 21 jugements (et non 20), recompté depuis le registre

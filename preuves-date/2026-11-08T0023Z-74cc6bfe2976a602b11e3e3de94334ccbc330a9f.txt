@@ -1,0 +1,2 @@
+commit 74cc6bfe2976a602b11e3e3de94334ccbc330a9f
+date du commit 2026-11-08 00:24:12 +0100 | reveil 1108 00h28 : compte vide J+13, lecture CD92

@@ -1,0 +1,2 @@
+commit 0924f0732718766ea41a38f3617bd94fa524b9f1
+date du commit 2026-11-06 03:17:05 +0100 | PREREG-35 journal papier : 2026-11-05

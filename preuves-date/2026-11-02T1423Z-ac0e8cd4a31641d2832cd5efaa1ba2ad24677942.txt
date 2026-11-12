@@ -1,0 +1,2 @@
+commit ac0e8cd4a31641d2832cd5efaa1ba2ad24677942
+date du commit 2026-11-02 14:47:24 +0100 | PREREG-56 résultat : RÉPLIQUÉ (nouvelles cotations Hyperliquid, morts compris : +12,7 %/trade, p < 0,001 ; queue lourde)

@@ -1,0 +1,2 @@
+commit 4493f37ce69f1d6de65ebdb63eef6f3be28f6d3b
+date du commit 2026-11-07 00:24:56 +0100 | reveil 1107 00h25 : compte vide J+12, casse la série des 13 variants (auto-ref)

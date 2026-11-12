@@ -1,0 +1,2 @@
+commit 6bf904cdd2b8e92e1b098653667c04a451bc03e0
+date du commit 2026-11-05 12:24:55 +0100 | reveil nb 1105 12h25 : compte vide J+10, lecture Staindrop (11e variant fiche-qui-tient)

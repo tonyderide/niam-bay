@@ -1,0 +1,2 @@
+commit 40059b7788dee5279cdf79a6021124f0d0271f4f
+date du commit 2026-11-03 23:34:56 +0100 | PREREG-67 résultat : NON ; PREREG-68 et journal papier avant le premier jour (mise fixe, martingale)

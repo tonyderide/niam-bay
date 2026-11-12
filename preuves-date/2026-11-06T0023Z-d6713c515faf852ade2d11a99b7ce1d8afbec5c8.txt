@@ -1,0 +1,2 @@
+commit d6713c515faf852ade2d11a99b7ce1d8afbec5c8
+date du commit 2026-11-06 00:25:23 +0100 | reveil nb 1106 00h25 : compte vide J+11, lecture Landers (12e variant fiche-qui-tient)

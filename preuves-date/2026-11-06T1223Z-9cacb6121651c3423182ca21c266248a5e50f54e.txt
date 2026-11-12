@@ -1,0 +1,2 @@
+commit 9cacb6121651c3423182ca21c266248a5e50f54e
+date du commit 2026-11-06 12:25:15 +0100 | reveil 1106 12h25 : compte vide J+11, 13e variant fiche-qui-tient (auto-ref)

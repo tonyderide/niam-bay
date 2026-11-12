@@ -1,0 +1,2 @@
+commit 93fe94e48d8257836471b990851ba3b9242dc34a
+date du commit 2026-11-05 09:43:19 +0100 | File : note de contrôle PREREG-47 (aucune cotation COIN sur 14 jours, règle inchangée)

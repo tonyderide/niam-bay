@@ -1,0 +1,2 @@
+commit 8b595875f48327e5173c1007d41b09e4201e2154
+date du commit 2026-11-02 12:43:36 +0100 | Labo : file regarnie (H19 Hyperliquid, H20 profil de risque, H21 persistance après 90 j)

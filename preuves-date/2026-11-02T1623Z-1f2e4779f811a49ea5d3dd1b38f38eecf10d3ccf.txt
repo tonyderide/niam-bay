@@ -1,0 +1,2 @@
+commit 1f2e4779f811a49ea5d3dd1b38f38eecf10d3ccf
+date du commit 2026-11-02 16:46:37 +0100 | PREREG-57 : phrase du diagnostic corrigée (short tenu)

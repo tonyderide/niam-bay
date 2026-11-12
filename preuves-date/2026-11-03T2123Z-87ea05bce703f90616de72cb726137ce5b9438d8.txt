@@ -1,0 +1,2 @@
+commit 87ea05bce703f90616de72cb726137ce5b9438d8
+date du commit 2026-11-03 21:33:50 +0100 | PREREG-66 résultat : MIEUX SANS SUFFIRE ; PREREG-67 avant calcul (trailing dans les deux sens)

@@ -1,0 +1,2 @@
+commit 863787415f85c002a2932de95ba2bae3720a91ad
+date du commit 2026-11-03 09:43:55 +0100 | Journaux papier : cron.sh ne commite que les chemins existants (le commit de PREREG-47 échouait sans donnees/)

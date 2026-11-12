@@ -1,0 +1,2 @@
+commit 3ad9a2041db9888a549dcad0709b4875c927530f
+date du commit 2026-11-03 12:24:50 +0100 | reveil nb 03/11 12h25 : compte vide inchange, verify 18/21, rien d'utile

@@ -1,0 +1,2 @@
+commit f21a9444ab6dcd7f4419d5c5f93711f3de55ed01
+date du commit 2026-11-05 01:43:08 +0100 | PREREG-67 (deux sens) : mise en page de la mention non exécuté

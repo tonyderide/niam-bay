@@ -804,3 +804,88 @@ until grep -q "financement ok" /home/tony/projets/tonyderide/niam-bay/ai-lab/car
 
 # [auto 2026-11-02 12:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
 python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -20
+
+# [auto 2026-11-05 12:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -30
+
+# [auto 2026-11-06 01:23] utilisée 3x — sig: cd /tmp/claude-<N>/-home-tony-projets-tonyderide-martin/4e81611e-b9db-<N>-98b5-7975f809d2e0/scratchpad/mt && /home/tony/projets/tonyderide/journal-fidele/.venv/bin/python - <<'EOF' import json, collections, datetime as dt L={} for l in open("exec.jsonl"): x=json.loads(l)["event"]["execution"]["execution"]; L[x["uid"]]=x X=sorted(L.values(), key=lambda x:x["timestamp"]) lots=collections.defaultdict
+cd /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/mt && /home/tony/projets/tonyderide/journal-fidele/.venv/bin/python - <<'EOF'
+import json, collections, datetime as dt
+L={}
+for l in open("exec.jsonl"):
+    x=json.loads(l)["event"]["execution"]["execution"]; L[x["uid"]]=x
+X=sorted(L.values(), key=lambda x:x["timestamp"])
+lots=collections.defaultdict(collections.deque); day=collections.defaultdict(lambda:[0.0,0.0]); rk=collections.defaultdict(float)
+for x in X:
+    d=dt.datetime.fromtimestamp(x["timestamp"]/1000,dt.timezone.utc).strftime("%Y-%m-%d")
+    if d>="2026-07": break
+    k=x["order"]["tradeable"]; sg=1 if x["order"]["direction"]=="Buy" else -1; q=float(x["quantity"]); p=float(x["price"]); f=float(x["orderData"].get("fee") or 0)
+    r=0.0; D=lots[k]
+    while q>1e-12 and D and D[0][0]*sg<0:
+        lq,lp=D[0]; m=min(q,abs(lq)); r+=m*(p-lp)*(-sg); q-=m
+        if abs(lq)-m<1e-12: D.popleft()
+        else: D[0]=(lq+sg*m,lp)
+    if q>1e-12: D.append((sg*q,p))
+    day[d][0]+=r; day[d][1]+=f
+    if x["orderData"].get("realizedPnl") not in (None,""): rk[d[:7]]+=float(x["orderData"]["realizedPnl"])
+g=n=0; M=collections.defaultdict(lambda:[0.0,0.0])
+print("avril, cumul depuis le 1er : sans frais | avec frais")
+for d in sorted(day):
+    M[d[:7]][0]+=day[d][0]; M[d[:7]][1]+=day[d][1]
+    if d.startswith("2026-04"):
+        g+=day[d][0]; n+=day[d][0]-day[d][1]
+        if d[-2:] in ("05","10","15","20","25","30"): print(f"  {d}  {g:+7.2f} $ | {n:+7.2f} $")
+print("par mois : gain réalisé sans frais | frais | net")
+for m in sorted(M): print(f"  {m}  {M[m][0]:+7.2f} | {M[m][1]:6.2f} | {M[m][0]-M[m][1]:+7.2f}   (champ realizedPnl Kraken: {rk.get(m,0):+.2f})")
+EOF
+
+# [auto 2026-11-07 12:23] utilisée 3x — sig: rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines <N>
+rtk read /home/tony/projets/tonyderide/niam-bay/docs/loop-journal.md --tail-lines 40
+
+# [auto 2026-11-08 00:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -30
+
+# [auto 2026-11-09 00:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -20
+
+# [auto 2026-11-09 03:04] utilisée 3x — sig: /home/tony/projets/tonyderide/journal-fidele/.venv/bin/python t7<N>.py /tmp/claude-<N>/-home-tony-projets-tonyderide-martin/4e81611e-b9db-<N>-98b5-7975f809d2e0/scratchpad/m1 > t7<N>.log <N>>&<N>; tail -<N> t7<N>.log
+/home/tony/projets/tonyderide/journal-fidele/.venv/bin/python t71.py /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1 > t71.log 2>&1; tail -6 t71.log
+
+# [auto 2026-11-10 06:37] utilisée 3x — sig: date -u; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> 'python3 -c " import json;s=json.load(open(\"/home/ubuntu/martin/garde/snapshot.json\"));print(s.get(\"t\") or s.get(\"maj\"),\"pv\",s[\"portefeuille\"],\"kill\",s.get(\"kill\"))" tail -<N> ~/martin/garde/journal.jsonl | cut -c1-<N> curl -s -m <N> http://localhost:<N>/api/bot/positions; echo curl -s -m <N> http://localhost:<N>/api/bot/o
+date -u; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 'python3 -c "
+import json;s=json.load(open(\"/home/ubuntu/martin/garde/snapshot.json\"));print(s.get(\"t\") or s.get(\"maj\"),\"pv\",s[\"portefeuille\"],\"kill\",s.get(\"kill\"))"
+tail -3 ~/martin/garde/journal.jsonl | cut -c1-160
+curl -s -m 10 http://localhost:8081/api/bot/positions; echo
+curl -s -m 10 http://localhost:8081/api/bot/orders | python3 -c "
+import json,sys
+d=json.load(sys.stdin);o=d.get(\"orders\",d) if isinstance(d,dict) else d
+print([(x[\"symbol\"][3:-3],x[\"side\"][0],x[\"orderType\"],x.get(\"limitPrice\") or x.get(\"stopPrice\")) for x in o if x[\"orderType\"]!=\"lmt\" or x.get(\"reduceOnly\")])
+print(len(o),\"ordres\")"'
+
+# [auto 2026-11-10 09:43] utilisée 3x — sig: date; cd ~/projets/tonyderide/niam-bay/ai-lab/banc-honnete && for d in papier-inversion papier-reversion papier-cotations papier-max; do echo "== $d: $(tail -<N> $d/journal.md | cut -c1-<N>)"; done; echo "-- <N>: $(tail -<N> ~/.local/state/nb/papier-<N>.log)"; git -C ../.. log --oneline -<N> | cut -c1-<N>; grep -c "| À FAIRE" FILE-HYPOTHESES.md; python3 -c " import json,re,collections;V=json.load(
+date; cd ~/projets/tonyderide/niam-bay/ai-lab/banc-honnete && for d in papier-inversion papier-reversion papier-cotations papier-max; do echo "== $d: $(tail -1 $d/journal.md | cut -c1-160)"; done; echo "-- 50: $(tail -1 ~/.local/state/nb/papier-50.log)"; git -C ../.. log --oneline -4 | cut -c1-80; grep -c "| À FAIRE" FILE-HYPOTHESES.md; python3 -c "
+import json,re,collections;V=json.load(open('../../docs/registre-verdicts.json'));m=[x for x in V if re.search(r'PREREG-(3[5-9]|4\d|5\d|60)-',x['fichier'])];print(len(m),collections.Counter(x['verdict'] for x in m))"
+
+# [auto 2026-11-10 21:37] utilisée 3x — sig: date -u; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> 'python3 -c " import json;s=json.load(open(\"/home/ubuntu/martin/garde/snapshot.json\"));print(s.get(\"t\") or s.get(\"maj\"),\"pv\",s[\"portefeuille\"],\"kill\",s.get(\"kill\"))" tail -<N> ~/martin/garde/journal.jsonl | cut -c1-<N> curl -s -m <N> http://localhost:<N>/api/bot/positions; echo curl -s -m <N> http://localhost:<N>/api/grid/
+date -u; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 'python3 -c "
+import json;s=json.load(open(\"/home/ubuntu/martin/garde/snapshot.json\"));print(s.get(\"t\") or s.get(\"maj\"),\"pv\",s[\"portefeuille\"],\"kill\",s.get(\"kill\"))"
+tail -2 ~/martin/garde/journal.jsonl | cut -c1-200
+curl -s -m 10 http://localhost:8081/api/bot/positions; echo
+curl -s -m 10 http://localhost:8081/api/grid/active; echo
+curl -s -m 10 http://localhost:8081/api/bot/orders | python3 -c "
+import json,sys
+d=json.load(sys.stdin);o=d.get(\"orders\",d) if isinstance(d,dict) else d
+print([(x[\"symbol\"][3:-3],x[\"side\"][0],x[\"orderType\"],x.get(\"limitPrice\") or x.get(\"stopPrice\")) for x in o if x[\"orderType\"]!=\"lmt\" or x.get(\"reduceOnly\")])
+print(len(o),\"ordres\")"'
+
+# [auto 2026-11-11 06:37] utilisée 3x — sig: date -u; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> 'python3 -c " import json;s=json.load(open(\"/home/ubuntu/martin/garde/snapshot.json\"));print(s.get(\"t\") or s.get(\"maj\"),\"pv\",s[\"portefeuille\"],\"kill\",s.get(\"kill\"))" tail -<N> ~/martin/garde/journal.jsonl | cut -c1-<N> curl -s -m <N> http://localhost:<N>/api/bot/positions; echo curl -s -m <N> http://localhost:<N>/api/grid/
+date -u; rtk proxy ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 'python3 -c "
+import json;s=json.load(open(\"/home/ubuntu/martin/garde/snapshot.json\"));print(s.get(\"t\") or s.get(\"maj\"),\"pv\",s[\"portefeuille\"],\"kill\",s.get(\"kill\"))"
+tail -3 ~/martin/garde/journal.jsonl | cut -c1-200
+curl -s -m 10 http://localhost:8081/api/bot/positions; echo
+curl -s -m 10 http://localhost:8081/api/grid/active; echo
+curl -s -m 10 http://localhost:8081/api/bot/orders | python3 -c "
+import json,sys
+d=json.load(sys.stdin);o=d.get(\"orders\",d) if isinstance(d,dict) else d
+print([(x[\"symbol\"][3:-3],x[\"side\"][0],x[\"orderType\"],x.get(\"limitPrice\") or x.get(\"stopPrice\")) for x in o if x[\"orderType\"]!=\"lmt\" or x.get(\"reduceOnly\")])
+print(len(o),\"ordres\")"'

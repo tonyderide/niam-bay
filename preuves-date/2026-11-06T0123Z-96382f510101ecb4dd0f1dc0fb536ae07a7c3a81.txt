@@ -1,0 +1,2 @@
+commit 96382f510101ecb4dd0f1dc0fb536ae07a7c3a81
+date du commit 2026-11-06 01:41:42 +0100 | PREREG-70 résultat : témoin de fidélité échoué, non concluant
