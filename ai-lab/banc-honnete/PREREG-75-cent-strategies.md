@@ -185,3 +185,6 @@ Ce que j'ai vu du premier passage avant cette correction :
 - le choix X\* = W5-miroir (+2 126 € sur P1), qui vient d'une grille et ne dépend pas du moteur corrigé ;
 - le haut du classement P1 et le début du témoin hasard, tous deux faux.
 Je n'ai regardé ni les contrôles P2 ni les paires neuves de ce passage. Si le choix de X\* ne change pas, ce sera à cause des grilles, que le bug ne touche pas.
+
+## Résultat (12/11/2026, 06h49) — voir `ai-lab/cent-strategies/RESULTAT.md`
+**VERDICT : NON.** X\* = W5-miroir (+2 126 € sur P1) est sous le seuil du hasard (95e centile du meilleur de 100 : +55 317 € ; seuil doux sur les éligibles : +2 855 €). Elle perd sur P2 (−573 € contre −245 € pour W5) et sur les 30 paires neuves (−2 768 €, 9/30, contre −1 708 €, 13/30). Témoin W5 OK.
