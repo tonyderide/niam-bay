@@ -1,0 +1,2 @@
+commit b1f96d6a8cb3c68dc885208efa0a4a527dd10e38
+date du commit 2026-11-12 06:49:35 +0100 | PREREG-75 résultat : NON, aucune des 100 ne bat W5 de façon crédible (meilleure de P1 sous le seuil du hasard, perd hors échantillon)

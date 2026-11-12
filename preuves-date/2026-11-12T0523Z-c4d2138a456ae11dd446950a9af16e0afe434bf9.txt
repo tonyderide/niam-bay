@@ -1,0 +1,2 @@
+commit c4d2138a456ae11dd446950a9af16e0afe434bf9
+date du commit 2026-11-12 06:17:58 +0100 | PREREG-75 : 100 stratégies contre W5, écrit avant calcul (choix P1, contrôle P2 + 30 paires neuves, témoin hasard 50×)

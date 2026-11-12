@@ -889,3 +889,9 @@ import json,sys
 d=json.load(sys.stdin);o=d.get(\"orders\",d) if isinstance(d,dict) else d
 print([(x[\"symbol\"][3:-3],x[\"side\"][0],x[\"orderType\"],x.get(\"limitPrice\") or x.get(\"stopPrice\")) for x in o if x[\"orderType\"]!=\"lmt\" or x.get(\"reduceOnly\")])
 print(len(o),\"ordres\")"'
+
+# [auto 2026-11-12 06:38] utilisée 3x — sig: F=/home/tony/projets/tonyderide/niam-bay/ai-lab/cent-strategies/t7<N>.log; until grep -qE "VERDICT|Traceback" $F; do sleep <N>; done; rtk read $F --tail-lines <N> | cut -c1-<N>
+F=/home/tony/projets/tonyderide/niam-bay/ai-lab/cent-strategies/t75.log; until grep -qE "VERDICT|Traceback" $F; do sleep 15; done; rtk read $F --tail-lines 4 | cut -c1-600
+
+# [auto 2026-11-12 06:47] utilisée 3x — sig: F=/home/tony/projets/tonyderide/niam-bay/ai-lab/cent-strategies/t7<N>.log; for k in $(seq <N> <N>); do grep -qE "VERDICT|Traceback" $F && break; sleep <N>; done; tail -<N> $F | cut -c1-<N>
+F=/home/tony/projets/tonyderide/niam-bay/ai-lab/cent-strategies/t75.log; for k in $(seq 1 38); do grep -qE "VERDICT|Traceback" $F && break; sleep 15; done; tail -1 $F | cut -c1-120
