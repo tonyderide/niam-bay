@@ -1,0 +1,101 @@
+| 1 | W5 | grille en service (témoin) : écart 5 %, 5 niveaux, plafond 5× |
+| 2 | W3 | écart 3 % |
+| 3 | W4 | écart 4 % |
+| 4 | W6 | écart 6 % |
+| 5 | W8 | écart 8 % |
+| 6 | W12 | écart 12 % |
+| 7 | W15 | écart 15 % |
+| 8 | W5-N3 | 5 %, 3 niveaux, plafond 3× |
+| 9 | W5-N7 | 5 %, 7 niveaux, plafond 7× |
+| 10 | W5-N9 | 5 %, 9 niveaux, plafond 9× |
+| 11 | W3-N7 | 3 %, 7 niveaux, plafond 7× |
+| 12 | W5-x0.5 | 5 %, demi-taille par niveau (plafond 2,5×) |
+| 13 | W5-x2 | 5 %, double taille par niveau (plafond 10×) |
+| 14 | W5-cap2 | 5 %, plafond d'exposition 2× |
+| 15 | W5-cap3 | 5 %, plafond 3× |
+| 16 | W3-x2 | 3 %, double taille (plafond 10×) |
+| 17 | W5-L | 5 %, long seul |
+| 18 | W5-S | 5 %, short seul |
+| 19 | W3-L | 3 %, long seul |
+| 20 | W3-S | 3 %, short seul |
+| 21 | W8-L | 8 %, long seul |
+| 22 | W8-S | 8 %, short seul |
+| 23 | W3-F | 3 %, filtre de sens EMA50/200 1 h |
+| 24 | W8-F | 8 %, filtre EMA50/200 |
+| 25 | W5-F20 | 5 %, filtre de sens EMA20/100 1 h |
+| 26 | W5-F200 | 5 %, sens = clôture 1 h vs EMA200 |
+| 27 | W5-A20 | 5 %, entrées seulement si ADX14 1 h < 20 |
+| 28 | W5-A25 | 5 %, ADX < 25 |
+| 29 | W5-A30 | 5 %, ADX < 30 |
+| 30 | W3-A25 | 3 %, ADX < 25 |
+| 31 | W5-calme | 5 %, entrées seulement si vol. 24 h < médiane 30 j |
+| 32 | W5-agité | 5 %, entrées seulement si vol. 24 h > médiane 30 j |
+| 33 | W3-calme | 3 %, vol. calme |
+| 34 | W5-L-hausse | 5 %, long seul, entrées seulement si EMA50 > EMA200 |
+| 35 | W3-L-hausse | 3 %, long seul, EMA50 > EMA200 |
+| 36 | W-ATR1 | écart = 1 × ATR14 journalier |
+| 37 | W-ATR2 | écart = 2 × ATR journalier |
+| 38 | W-ATR3 | écart = 3 × ATR journalier |
+| 39 | W5-sansDJ | 5 %, sans disjoncteur RSI<25 |
+| 40 | W5-sansProt | 5 %, sans protection SL/TP 15 min |
+| 41 | W5-gf80 | 5 %, garde-fou à −20 % |
+| 42 | W5-gf90 | 5 %, garde-fou à −10 % |
+| 43 | W5-miroir | 5 %, 3 achats / 2 ventes |
+| 44 | W3-miroir | 3 %, 3 achats / 2 ventes |
+| 45 | W5-A25-F | 5 %, ADX < 25 + filtre EMA50/200 |
+| 46 | W8-N7 | 8 %, 7 niveaux, plafond 7× |
+| 47 | W5-S-baisse | 5 %, short seul, entrées seulement si EMA50 < EMA200 |
+| 48 | W12-x2 | 12 %, double taille (plafond 10×) |
+| 49 | W4-L | 4 %, long seul |
+| 50 | W6-A25 | 6 %, ADX < 25 |
+| 51 | X12/26 | croisement EMA 12/26 h, toujours en position |
+| 52 | X20/50 | croisement EMA 20/50 h |
+| 53 | X50/200 | croisement EMA 50/200 h |
+| 54 | X10/30 | croisement EMA 10/30 h |
+| 55 | X20/50-L | EMA 20/50, long seul |
+| 56 | X50/200-L | EMA 50/200, long seul |
+| 57 | X20/50-ATR | EMA 20/50 + stop suiveur 3 ATR jour |
+| 58 | X50/200-ATR | EMA 50/200 + stop suiveur 3 ATR jour |
+| 59 | X20/50-L5 | EMA 20/50, levier 5 |
+| 60 | X50/200-L1 | EMA 50/200, levier 1 |
+| 61 | DC24 | cassure Donchian 24 h, sortie canal 12 h |
+| 62 | DC72 | Donchian 72 h / 36 h |
+| 63 | DC168 | Donchian 168 h / 84 h |
+| 64 | DC480 | Donchian 480 h / 240 h |
+| 65 | DC168-ATR3 | Donchian 168 h + stop suiveur 3 ATR jour |
+| 66 | DC72-ATR2 | Donchian 72 h + stop suiveur 2 ATR jour |
+| 67 | DC168-L | Donchian 168 h, long seul |
+| 68 | DC480-L1 | Donchian 480 h, levier 1 |
+| 69 | DC480-L5 | Donchian 480 h, levier 5 |
+| 70 | DC168-SL5TP10 | Donchian 168 h, SL 5 %, TP 10 % |
+| 71 | ST2 | stop-and-reverse 2 ATR jour (supertrend) |
+| 72 | ST3 | supertrend 3 ATR jour |
+| 73 | TSM7 | momentum 7 jours (signe), revu chaque jour |
+| 74 | TSM30 | momentum 30 jours |
+| 75 | TSM7-L | momentum 7 jours, long seul |
+| 76 | MACD | MACD 48/104/36 h, toujours en position |
+| 77 | MACD-L200 | MACD, long seul au-dessus de l'EMA200 h |
+| 78 | VB3 | mouvement horaire > 3 ATR h : suivre 24 h, SL 3 % |
+| 79 | RSI30/70 | RSI14 h < 30 achat, > 70 vente, sortie à 50, SL 5 % |
+| 80 | RSI30-L | RSI14 h < 30 achat seul, SL 5 % |
+| 81 | RSI20/80 | RSI 20/80, SL 5 % |
+| 82 | RSI30/70-E200 | RSI 30/70 dans le sens de l'EMA200 h, SL 5 % |
+| 83 | RSI30/70-L5 | RSI 30/70, levier 5, SL 5 % |
+| 84 | BB20/2 | Bollinger 20 h 2σ : contre la sortie de bande, sortie à la moyenne, SL 5 % |
+| 85 | BB20/3 | Bollinger 20 h 3σ, SL 5 % |
+| 86 | BB20/2-L | Bollinger 20/2, long seul, SL 5 % |
+| 87 | BB20/2.5-E200 | Bollinger 20/2,5 dans le sens de l'EMA200 h, SL 5 % |
+| 88 | BB20/2-L5 | Bollinger 20/2, levier 5, SL 5 % |
+| 89 | BBX20/2 | Bollinger 20/2 en cassure (dans le sens), sortie à la moyenne |
+| 90 | BB480/2 | Bollinger lent 480 h 2σ, SL 8 % |
+| 91 | E30-L1 | PREREG-30 figé : EMA50 h, SL 5 %, trailing +3 %/1 %, levier 1 |
+| 92 | E30-L2 | PREREG-30 figé, levier 2 |
+| 93 | E30-L5 | PREREG-30 figé, levier 5 |
+| 94 | E30-EMA20 | PREREG-30, EMA20 |
+| 95 | E30-EMA200 | PREREG-30, EMA200 |
+| 96 | E30-3/2/1 | PREREG-30, SL 3 %, trailing +2 %/1 % |
+| 97 | E30-8/5/2 | PREREG-30, SL 8 %, trailing +5 %/2 % |
+| 98 | E30-mart | PREREG-30 + martingale ×2 plafonnée à 3 doublements (base levier 1) |
+| 99 | E30-ADX25 | PREREG-30, seulement si ADX14 h > 25 |
+| 100 | BH | achat-conservation, levier 1 (mêmes garde-fous) |
+paires neuves tirées : ['QNT', 'GMX', '1000SHIB', 'MKR', 'POWR', 'CAKE', 'CKB', 'CYBER', 'LIT', 'STMX', 'LQTY', 'BEL', 'ICP', 'PYTH', 'BAND', 'CELR', 'MATIC', 'RSR', 'KNC', 'BNX', 'GMT', 'ONE', 'LOOM', 'BLZ'] sur 235 candidates
