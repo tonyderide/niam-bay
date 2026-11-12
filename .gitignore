@@ -33,6 +33,7 @@ memory/vectordb/*.sqlite3
 memory/vectordb/*.bak-*
 docs/inbox.jsonl
 docs/inbox-vm.jsonl
+docs/controle-boite.jsonl
 scripts/vitrine/pipes.html
 scripts/vitrine/status.json
 

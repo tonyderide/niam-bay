@@ -18,4 +18,5 @@ for f in history.jsonl current.json; do scp -q $K $V:nb/duel/$f $R/ai-lab/duel/$
 ssh $K $V 'test -f ~/nb/duel/current.json' || rm -f $R/ai-lab/duel/current.json
 scp -q $K $V:nb/jumeau/test_log.jsonl $R/ai-lab/jumeau/test_log.jsonl 2>/dev/null || true
 scp -q $K $V:nb/inbox.jsonl $R/docs/inbox-vm.jsonl 2>/dev/null || true
+scp -q $K $V:nb/controle-boite.jsonl $R/docs/controle-boite.jsonl 2>/dev/null || true
 echo "sync ok $(date +%H:%M)"

@@ -1,0 +1,2 @@
+commit bc072518c03c88a2c0227901a7c64dc07042d1f7
+date du commit 2026-11-12 17:12:14 +0100 | Sauvegarde 12/11 : PREREG-75 v1, calibration, recent (fills Kraken, controle.py)
