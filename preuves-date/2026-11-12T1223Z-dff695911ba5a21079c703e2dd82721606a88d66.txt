@@ -1,0 +1,2 @@
+commit dff695911ba5a21079c703e2dd82721606a88d66
+date du commit 2026-11-12 12:25:07 +0100 | reveil 1112 12h25 : Martin VM 5 positions toutes protégées (25 ordres uPnL +$0,009), BTC DOWNTREND $73 288, 0 msg Tony J+16 ; lecture Pisaurina undulata

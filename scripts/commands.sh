@@ -895,3 +895,18 @@ F=/home/tony/projets/tonyderide/niam-bay/ai-lab/cent-strategies/t75.log; until g
 
 # [auto 2026-11-12 06:47] utilisée 3x — sig: F=/home/tony/projets/tonyderide/niam-bay/ai-lab/cent-strategies/t7<N>.log; for k in $(seq <N> <N>); do grep -qE "VERDICT|Traceback" $F && break; sleep <N>; done; tail -<N> $F | cut -c1-<N>
 F=/home/tony/projets/tonyderide/niam-bay/ai-lab/cent-strategies/t75.log; for k in $(seq 1 38); do grep -qE "VERDICT|Traceback" $F && break; sleep 15; done; tail -1 $F | cut -c1-120
+
+# [auto 2026-11-12 15:30] utilisée 3x — sig: date '+%H:%M'; rtk ssh -o ConnectTimeout=<N> nb-vm 'python3 - <<"EOF" import json, urllib.request, os g = lambda p: json.load(urllib.request.urlopen("http://localhost:<N>" + p, timeout=<N>)) pos = g("/api/bot/positions"); o = g("/api/bot/orders") stops = {x["symbol"] for x in o if x["orderType"] in ("stop", "stp")} nus = [p["symbol"] for p in pos if p["symbol"] not in stops] a = g("/api/bot/balanc
+date '+%H:%M'; rtk ssh -o ConnectTimeout=15 nb-vm 'python3 - <<"EOF"
+import json, urllib.request, os
+g = lambda p: json.load(urllib.request.urlopen("http://localhost:8081" + p, timeout=20))
+pos = g("/api/bot/positions"); o = g("/api/bot/orders")
+stops = {x["symbol"] for x in o if x["orderType"] in ("stop", "stp")}
+nus = [p["symbol"] for p in pos if p["symbol"] not in stops]
+a = g("/api/bot/balance")["accounts"]["flex"]
+print("positions", len(pos), "ordres", len(o), "sans stop", nus, "PV", round(a.get("portfolioValue", 0), 3))
+s = json.load(open(os.path.expanduser("~/martin/garde/snapshot.json")))
+print("snapshot", {k: s[k] for k in list(s)[:8]})
+lines = open(os.path.expanduser("~/martin/garde/journal.jsonl")).read().splitlines()[-3:]
+for l in lines: print(l[:200])
+EOF'

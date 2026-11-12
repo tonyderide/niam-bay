@@ -51,3 +51,4 @@
 [session-1112|compte-refait:depuis-0811=-3.7c(flux)/-5.3c(portefeuille)|grilles-5%-+19c|martingale-~-11c|sim-et-reel-d-accord-sur-les-jours-recents|3-jours=bruit]
 [session-1112|GITHUB-COMPTE-SUSPENDU(403-au-push)|sauvegarde=bundles-git-copies-sur-la-VM|Tony-demande:chercher-meilleure-strategie(PREREG-74-a-ecrire)]
 [M|status-1112|4-grilles-5%-x10|martingale-short-90-DOGE@0.06676-stop-0.0701|PV-~5.84$|depart-5.896$]
+#1112 soir | Kraken fills: les 4 longs SOL/LINK/ADA/DOT sortis au STOP (~-5c), pas en gain — PV montait grâce au short DOGE. J'avais déduit à tort. controle.py VM */5 (0 token, lecture seule, TG sur anomalie + chaque sortie), purge log trimestrielle, cron Claude 3h retiré. aide-mémoire: memory/reference_aide_memoire_martin.md
