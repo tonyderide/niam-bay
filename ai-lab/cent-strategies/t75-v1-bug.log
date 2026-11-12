@@ -1,0 +1,58 @@
+jeu. 12 nov. 2026 06:18:02 CET
+b7d983e2b1d88c3b2839f1e3f1840a9acad70913080cfdd170ec54e948b341b7  ../dca-martingale/refait/donnees/SOLUSDT-1m.npy
+5480f9f9213447c387da93219531ae400869297b839c593ea3fd336179cc6a2b  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/ADA.npy
+5a23e3140839c90f8edcc3b1cdbdd9def92c0dcff6e3e1385c742fac277368e3  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/ATOM.npy
+bea2d88420dd3fbb819d68150b6cecb033db61dd27fa571e72dfb259ccffb422  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/AVAX.npy
+0cd2c17e10e9a99f5eeecfe742f1d5e77540116edd1d4b778de0bdbe3e7a8b1d  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/BCH.npy
+b576b2c46cd22cc48cb7e497d0b128d4c61d176b863bab9a1a5d5a601bf91af0  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/BNB.npy
+723831971bea50795e101be018d5e3e40243cc58c7f992f7fb7ca869ea867826  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/DOGE.npy
+90b1d961e6a5d01cf42e6d4af7a8f2f3071752ff75428fab87fd9cae316a7655  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/DOT.npy
+b55b4038ab94115bc2d09b716c06d3172a485e18ec696976639bd2e3387b65c3  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/LINK.npy
+d7d413a4125f1ccb3d759bc594f67f4996b5d1249a85c7fe3553e9e6f50a1bfd  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/LTC.npy
+9dd7b505a37db5e6acb251349b7184a058518fe359907c977b68a98cc198a7f6  /tmp/claude-1000/-home-tony-projets-tonyderide-martin/4e81611e-b9db-4354-98b5-7975f809d2e0/scratchpad/m1/XRP.npy
+[     29s] 4 paires P1/P2 faits
+[     29s] témoin True W5 881.4 -245.0 CHOIX X* = W5-miroir 2125.9
+[     31s] diagnostic 1 h fait
+[     69s] 6 paires faites
+[     76s] 24 paires faites
+[     94s] hasard 0 max 3875.4 par BB480/2 max éligibles 2220.6 W5 -1369.6
+[    104s] hasard 1 max 7721.8 par ST2 max éligibles 3648.8 W5 -2101.1
+[    113s] hasard 2 max 10655.9 par DC168-SL5TP10 max éligibles 1116.4 W5 -1436.7
+[    123s] hasard 3 max 36271.9 par E30-EMA20 max éligibles 2688.8 W5 -1493.5
+[    133s] hasard 4 max 3739.2 par BB20/2 max éligibles 1978.4 W5 -1469.1
+[    143s] hasard 5 max 60543.4 par DC168-ATR3 max éligibles 4394.0 W5 -1777.2
+[    153s] hasard 6 max 15545.8 par TSM7 max éligibles 926.4 W5 -1322.5
+[    162s] hasard 7 max 213121.2 par E30-3/2/1 max éligibles 354.2 W5 -1825.5
+[    173s] hasard 8 max 29589.6 par E30-EMA200 max éligibles 545.3 W5 -1418.7
+[    183s] hasard 9 max 14961.3 par E30-3/2/1 max éligibles 2093.1 W5 -1847.7
+[    194s] hasard 10 max 19516.0 par DC168-L max éligibles 72.7 W5 -1635.5
+[    204s] hasard 11 max 3542.7 par BB20/2-L max éligibles 72.0 W5 -821.2
+[    213s] hasard 12 max 2010.7 par BB480/2 max éligibles 606.0 W5 -1811.9
+[    223s] hasard 13 max 1705.7 par RSI30-L max éligibles 171.7 W5 -1629.0
+[    234s] hasard 14 max 52931.9 par E30-EMA200 max éligibles 1318.0 W5 -1965.6
+[    246s] hasard 15 max 5941.1 par RSI30/70 max éligibles 4286.7 W5 -1779.8
+[    256s] hasard 16 max 13599.7 par E30-mart max éligibles 132.3 W5 -1238.7
+[    267s] hasard 17 max 2457.1 par RSI30-L max éligibles 1147.7 W5 -1746.4
+[    277s] hasard 18 max 862450.0 par E30-EMA200 max éligibles -134.8 W5 -1901.3
+[    288s] hasard 19 max 74026.2 par E30-ADX25 max éligibles 2731.2 W5 -1242.8
+[    302s] hasard 20 max 121058.0 par TSM30 max éligibles 3071.0 W5 -462.5
+[    313s] hasard 21 max 39309.8 par E30-EMA20 max éligibles -192.6 W5 -1784.0
+[    327s] hasard 22 max 12783.9 par BB20/2-L max éligibles 1256.5 W5 -1244.9
+[    337s] hasard 23 max 16624.6 par E30-3/2/1 max éligibles 2193.9 W5 -2341.6
+[    351s] hasard 24 max 234699.8 par E30-3/2/1 max éligibles 1132.9 W5 -1897.6
+[    361s] hasard 25 max 64481.9 par E30-mart max éligibles 1401.5 W5 -1797.2
+[    372s] hasard 26 max 84231.7 par TSM30 max éligibles 943.0 W5 -688.7
+[    387s] hasard 27 max 4254.8 par W5-sansProt max éligibles 420.5 W5 -1831.7
+[    397s] hasard 28 max 1569.7 par X50/200-ATR max éligibles 1158.5 W5 -2043.8
+[    413s] hasard 29 max 5687.8 par BB480/2 max éligibles -418.3 W5 -1418.3
+[    423s] hasard 30 max 11106.1 par X50/200-L max éligibles 1674.1 W5 -1928.4
+[    437s] hasard 31 max 30846.8 par X50/200-ATR max éligibles 1823.3 W5 -1040.6
+[    448s] hasard 32 max 5089.7 par DC168-SL5TP10 max éligibles 1491.4 W5 -1703.6
+[    462s] hasard 33 max 38676.4 par TSM30 max éligibles 726.1 W5 -1927.1
+[    473s] hasard 34 max 37100.7 par DC168 max éligibles 2880.1 W5 -1355.9
+[    490s] hasard 35 max 1153.6 par RSI30-L max éligibles 1081.0 W5 -1563.7
+[    501s] hasard 36 max 63015.8 par E30-3/2/1 max éligibles 8465.3 W5 -1905.7
+[    518s] hasard 37 max 44762.3 par ST3 max éligibles 2044.5 W5 -1431.4
+[    529s] hasard 38 max 8947.8 par E30-EMA20 max éligibles 2555.0 W5 -1970.3
+[    545s] hasard 39 max 8200.1 par ST3 max éligibles 1035.6 W5 -2056.9
+[    555s] hasard 40 max 4287.0 par MACD-L200 max éligibles 1165.9 W5 -1970.7

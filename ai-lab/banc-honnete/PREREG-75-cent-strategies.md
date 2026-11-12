@@ -169,7 +169,7 @@ Rapporté aussi, pour information et sans verdict : le tableau des 100 sur P1, l
   - Le témoin hasard retire la tendance. Une stratégie qui gagne seulement grâce à la dérive (achat-conservation en hausse) peut donc dépasser le seuil sans « talent ». C'est pour ça que C3 et C4 (hors échantillon) sont exigés en plus de C2.
 - Budget : hasard 50 × 100 × 4 paires, environ 1 h de calcul sur 2 cœurs (`taskset -c 0,1`).
 
-## Amendement 1 (12/11/2026, 06h4x) : bug trouvé au premier passage, corrigé avant le passage officiel
+## Amendement 1 (12/11/2026, 06h28) : bug trouvé au premier passage, corrigé avant le passage officiel
 Le premier passage (06h18-06h28, gardé tel quel : `t75-v1-bug.log`, `t75-v1-bug.json`) a donné des résultats impossibles. Exemples : E30-EMA20 à +9,9 M€ sur P1, et des « meilleurs de 100 » sous hasard jusqu'à +213 000 €.
 
 **Cause.** Le moteur directionnel tournait sur des bougies 1 h. Son sommet de trailing montait jusqu'au plus haut de la bougie, puis il sortait à 1 % sous ce plus haut. Exemple sur ADA en mars 2025 : une heure à +39 %, sortie à 0,8895 pour un plus haut de 0,8985. Dans la réalité, un trailing de 1 % aurait sauté au premier repli de 1 % pendant la montée. Le chemin « en ligne droite » dans la bougie est donc optimiste pour les trailings, contrairement à ce que disait ma relecture d'équité.
