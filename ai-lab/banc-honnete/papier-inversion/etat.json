@@ -1,13 +1,13 @@
 {
- "maj_utc": "2026-11-11T02:17:04+00:00",
- "dernier_jour": "2026-11-10",
- "jours": 10,
+ "maj_utc": "2026-11-12T02:17:04+00:00",
+ "dernier_jour": "2026-11-11",
+ "jours": 11,
  "pieces": {
   "BTCUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.049474,
+   "latent": -0.046675,
    "position": {
     "sens": "long",
     "entree": 77522.6,
@@ -20,7 +20,7 @@
    "trades": 1,
    "gagnants": 1,
    "net_ferme": 0.053047,
-   "latent": -0.083655,
+   "latent": -0.082248,
    "position": {
     "sens": "long",
     "entree": 2237.21,
@@ -33,7 +33,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.128137,
+   "latent": -0.128975,
    "position": {
     "sens": "long",
     "entree": 95.44,
@@ -46,7 +46,7 @@
    "trades": 1,
    "gagnants": 1,
    "net_ferme": 0.0396,
-   "latent": -0.125824,
+   "latent": -0.129385,
    "position": {
     "sens": "long",
     "entree": 1.2067,
@@ -59,7 +59,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.033915,
+   "latent": -0.035363,
    "position": {
     "sens": "long",
     "entree": 704.18,
@@ -72,7 +72,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.101109,
+   "latent": -0.108382,
    "position": {
     "sens": "long",
     "entree": 0.07558,
@@ -85,7 +85,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.09898,
+   "latent": -0.097425,
    "position": {
     "sens": "long",
     "entree": 0.1928,
@@ -98,7 +98,7 @@
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.117907,
+   "latent": -0.127256,
    "position": {
     "sens": "long",
     "entree": 11.653,
@@ -111,14 +111,20 @@
    "trades": 3,
    "gagnants": 3,
    "net_ferme": 0.112241,
-   "latent": 0.0,
-   "position": null
+   "latent": 0.015237,
+   "position": {
+    "sens": "long",
+    "entree": 8.372,
+    "depuis": "2026-11-11",
+    "stop": 7.1162,
+    "trailing_actif": false
+   }
   },
   "LTCUSDT": {
    "trades": 0,
    "gagnants": 0,
    "net_ferme": 0,
-   "latent": -0.091375,
+   "latent": -0.100161,
    "position": {
     "sens": "long",
     "entree": 55.74,
@@ -129,6 +135,6 @@
   }
  },
  "net_panier_ferme": 0.020489,
- "net_panier_avec_latent": -0.062549,
- "acheter_garder_panier": -0.089212
+ "net_panier_avec_latent": -0.063575,
+ "acheter_garder_panier": -0.090163
 }
