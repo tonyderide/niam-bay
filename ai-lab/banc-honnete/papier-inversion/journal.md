@@ -15,3 +15,4 @@ Une ligne par jour UTC terminé, écrite par `papier.py` (cron 03h17 Paris). Pou
 | 2026-11-10 | 10 | +2.05 % | -6.25 % | 5 | BTC:L ETH:L SOL:L XRP:L BNB:L DOGE:L ADA:L LINK:L AVAX:- LTC:L | -8.92 % | 2026-11-11T02:17:04+00:00 |
 | 2026-11-11 | 11 | +2.05 % | -6.36 % | 5 | BTC:L ETH:L SOL:L XRP:L BNB:L DOGE:L ADA:L LINK:L AVAX:L LTC:L | -9.02 % | 2026-11-12T02:17:04+00:00 |
 | 2026-11-12 | 12 | -2.48 % | -8.19 % | 8 | BTC:L ETH:L SOL:- XRP:- BNB:L DOGE:L ADA:L LINK:- AVAX:L LTC:L | -10.45 % | 2026-11-13T02:17:04+00:00 |
+| 2026-11-13 | 13 | -5.50 % | -9.38 % | 10 | BTC:L ETH:- SOL:S XRP:S BNB:L DOGE:- ADA:L LINK:S AVAX:L LTC:L | -13.32 % | 2026-11-14T02:17:04+00:00 |
