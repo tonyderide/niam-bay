@@ -910,3 +910,19 @@ print("snapshot", {k: s[k] for k in list(s)[:8]})
 lines = open(os.path.expanduser("~/martin/garde/journal.jsonl")).read().splitlines()[-3:]
 for l in lines: print(l[:200])
 EOF'
+
+# [auto 2026-11-13 00:23] utilisée 3x — sig: python3 ai-lab/memoire-falsifiable/verify.py <N>>&<N> | tail -<N>
+python3 ai-lab/memoire-falsifiable/verify.py 2>&1 | tail -30
+
+# [auto 2026-11-13 00:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
+rtk ssh -i ~/.ssh/martin_vm.key ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 20" < /dev/null 2>&1 | tail -30
+
+# [auto 2026-11-15 00:23] utilisée 3x — sig: rtk read memory/briefing.md <N>>/dev/null | head -<N>
+rtk read memory/briefing.md 2>/dev/null | head -80
+
+# [auto 2026-11-15 00:23] utilisée 3x — sig: rtk read docs/loop-journal.md --tail-lines <N> <N>>/dev/null
+rtk read docs/loop-journal.md --tail-lines 30 2>/dev/null
+
+# [auto 2026-11-15 09:43] utilisée 3x — sig: date; cd ~/projets/tonyderide/niam-bay/ai-lab/banc-honnete && for d in papier-inversion papier-reversion papier-cotations papier-max; do echo "== $d: $(tail -<N> $d/journal.md | cut -c1-<N>)"; done; git -C ../.. log --oneline --since='<N>-<N>-<N> <N>:<N>' -- ai-lab/banc-honnete/papier-inversion ai-lab/banc-honnete/papier-reversion ai-lab/banc-honnete/papier-cotations | cut -c1-<N>; grep -c "| À FA
+date; cd ~/projets/tonyderide/niam-bay/ai-lab/banc-honnete && for d in papier-inversion papier-reversion papier-cotations papier-max; do echo "== $d: $(tail -1 $d/journal.md | cut -c1-160)"; done; git -C ../.. log --oneline --since='2026-11-13 00:00' -- ai-lab/banc-honnete/papier-inversion ai-lab/banc-honnete/papier-reversion ai-lab/banc-honnete/papier-cotations | cut -c1-70; grep -c "| À FAIRE" FILE-HYPOTHESES.md; python3 -c "
+import json,re,collections;V=json.load(open('../../docs/registre-verdicts.json'));m=[x for x in V if re.search(r'PREREG-(3[5-9]|4\d|5\d|60)-',x['fichier'])];print(len(m),collections.Counter(x['verdict'] for x in m))"; python3 -c "import json;print(json.load(open('papier-cotations/registre.json'))['cotations'])"

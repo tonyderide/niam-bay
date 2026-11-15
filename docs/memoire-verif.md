@@ -1,12 +1,11 @@
-# Vérification de la mémoire de NB (2026-11-12 12:23)
+# Vérification de la mémoire de NB (2026-11-15 06:07)
 
-19/21 souvenirs confirmés par le monde, **2 contredits**.
+21/21 souvenirs confirmés par le monde, **0 contredits**.
 
 - ✅ `project_martin_local_second_instance` : martin-local ne tourne plus (désactivé, aucun process java)
 - ✅ `project_niambay_own_capital_20260826` : le capital NB (equity actuelle, pas l'equity aux stops) est de quelques dollars (2-5 $ depuis le 1015)
 - ✅ `project_exchange_truth` : ~/et/run.sh tourne en cron chaque minute sur la VM
-- ❌ `project_exchange_truth` : exchange-truth est public sur github
-  - observé : `HTTP 403: Sorry. Your account was suspended (https://api.github.com/graphql)`
+- ✅ `project_exchange_truth` : exchange-truth est public sur github
 - ✅ `project_nb_wake_cron` : cron local 23 0,12 lance niambay-vacation-wake.sh (2/jour depuis 30/10)
 - ✅ `reference_martin_repo` : la VM suit origin/master
 - ✅ `reference_martin_repo` : le clone local Martin existe dans ~/projets/tonyderide/martin
@@ -23,5 +22,4 @@
 - ✅ `project_memoire_falsifiable` : le juge horaire du jumeau (twin.py) est planifié sur la VM
 - ✅ `project_capset_236` : cap7_236.txt est un cap valide de 236 points dans F_3^7
 - ✅ `project_nb_vm_architecture` : le bot de la VM est le seul lecteur de @niambay_bot (aucun 409 Conflict dans l'heure : sinon quelqu'un d'autre lit les messages de Tony)
-- ❌ `feedback_verifier_retrait_git` : aucune base de données ni fichier sensible n'est publié sur GitHub niam-bay (memory/vectordb retiré le 27/10)
-  - observé : `remote: Your account is suspended. Please visit https://support.github.com for more information. | fatal: impossible d'accéder à 'https://github.com/tonyderide/niam-bay.git/' : The requested URL retur`
+- ✅ `feedback_verifier_retrait_git` : aucune base de données ni fichier sensible n'est publié sur GitHub niam-bay (memory/vectordb retiré le 27/10)
