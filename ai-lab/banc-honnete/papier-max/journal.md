@@ -3,3 +3,4 @@ Une ligne par semaine terminée (lundi → lundi), écrite par `max.py` (cron 03
 
 | Semaine (lundi UTC) | Semaines | Net de la semaine | Net cumulé | Frais cumulés | Positions |
 |---|---|---|---|---|---|
+| 2026-11-09 | 1 | -0.21 % | -0.21 % | 0.05 % | 60 |
