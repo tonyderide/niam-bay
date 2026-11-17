@@ -926,3 +926,46 @@ rtk read docs/loop-journal.md --tail-lines 30 2>/dev/null
 # [auto 2026-11-15 09:43] utilisée 3x — sig: date; cd ~/projets/tonyderide/niam-bay/ai-lab/banc-honnete && for d in papier-inversion papier-reversion papier-cotations papier-max; do echo "== $d: $(tail -<N> $d/journal.md | cut -c1-<N>)"; done; git -C ../.. log --oneline --since='<N>-<N>-<N> <N>:<N>' -- ai-lab/banc-honnete/papier-inversion ai-lab/banc-honnete/papier-reversion ai-lab/banc-honnete/papier-cotations | cut -c1-<N>; grep -c "| À FA
 date; cd ~/projets/tonyderide/niam-bay/ai-lab/banc-honnete && for d in papier-inversion papier-reversion papier-cotations papier-max; do echo "== $d: $(tail -1 $d/journal.md | cut -c1-160)"; done; git -C ../.. log --oneline --since='2026-11-13 00:00' -- ai-lab/banc-honnete/papier-inversion ai-lab/banc-honnete/papier-reversion ai-lab/banc-honnete/papier-cotations | cut -c1-70; grep -c "| À FAIRE" FILE-HYPOTHESES.md; python3 -c "
 import json,re,collections;V=json.load(open('../../docs/registre-verdicts.json'));m=[x for x in V if re.search(r'PREREG-(3[5-9]|4\d|5\d|60)-',x['fichier'])];print(len(m),collections.Counter(x['verdict'] for x in m))"; python3 -c "import json;print(json.load(open('papier-cotations/registre.json'))['cotations'])"
+
+# [auto 2026-11-15 12:23] utilisée 3x — sig: rtk ls ~/.claude/skills/ <N>>/dev/null | head -<N>
+rtk ls ~/.claude/skills/ 2>/dev/null | head -30
+
+# [auto 2026-11-15 12:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> " curl -s http://localhost:<N>/api/system/status echo '|||' curl -s http://localhost:<N>/api/bot/balance echo '|||' curl -s http://localhost:<N>/api/bot/positions echo '|||' curl -s http://localhost:<N>/api/bot/orders echo '|||' curl -s http://localhost:<N>/api/grid/active echo '|||' for p in <SYM> <SYM> <SYM> <SYM> <SYM> <
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "
+curl -s http://localhost:8081/api/system/status
+echo '|||'
+curl -s http://localhost:8081/api/bot/balance
+echo '|||'
+curl -s http://localhost:8081/api/bot/positions
+echo '|||'
+curl -s http://localhost:8081/api/bot/orders
+echo '|||'
+curl -s http://localhost:8081/api/grid/active
+echo '|||'
+for p in PF_LINKUSD PF_DOTUSD PF_SOLUSD PF_ADAUSD PF_XBTUSD PF_ETHUSD; do
+  curl -s http://localhost:8081/api/grid/status/\$p 2>/dev/null
+  echo '==='
+done
+echo '|||'
+curl -s 'http://localhost:8081/api/signal/ema_trend?instrument=PF_XBTUSD'" 2>&1 | head -200
+
+# [auto 2026-11-15 12:23] utilisée 3x — sig: rtk read docs/inbox.jsonl --tail-lines <N> <N>>/dev/null
+rtk read docs/inbox.jsonl --tail-lines 20 2>/dev/null
+
+# [auto 2026-11-15 12:25] utilisée 3x — sig: rtk wc -l docs/loop-journal.md
+rtk wc -l docs/loop-journal.md
+
+# [auto 2026-11-16 00:23] utilisée 3x — sig: rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@<N>.<N> "python3 ~/nb/fil.py derniers <N>" < /dev/null <N>>&<N> | tail -<N>
+rtk ssh -i ~/.ssh/martin_vm.key -o StrictHostKeyChecking=no ubuntu@141.253.108.141 "python3 ~/nb/fil.py derniers 25" < /dev/null 2>&1 | tail -80
+
+# [auto 2026-11-16 00:24] utilisée 3x — sig: rtk ls docs/lectures/ <N>>/dev/null | tail -<N>
+rtk ls docs/lectures/ 2>/dev/null | tail -5
+
+# [auto 2026-11-16 12:23] utilisée 3x — sig: rtk read docs/loop-journal.md --tail-lines <N> <N>>&<N>
+rtk read docs/loop-journal.md --tail-lines 40 2>&1
+
+# [auto 2026-11-17 00:24] utilisée 3x — sig: rtk read docs/recent.nb1 --tail-lines <N> <N>>/dev/null
+rtk read docs/recent.nb1 --tail-lines 80 2>/dev/null
+
+# [auto 2026-11-17 02:59] utilisée 3x — sig: cd /home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves; timeout <N> bash -c 'until grep -q FIN donnees7<N>.log; do sleep <N>; done'; rtk read donnees7<N>.log --tail-lines <N>
+cd /home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves; timeout 170 bash -c 'until grep -q FIN donnees77.log; do sleep 5; done'; rtk read donnees77.log --tail-lines 3

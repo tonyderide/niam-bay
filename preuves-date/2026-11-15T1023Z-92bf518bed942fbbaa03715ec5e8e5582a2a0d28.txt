@@ -1,0 +1,2 @@
+commit 92bf518bed942fbbaa03715ec5e8e5582a2a0d28
+date du commit 2026-11-15 10:55:48 +0100 | recent : cause des SL tardifs (scheduler 15 min)

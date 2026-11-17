@@ -1,0 +1,2 @@
+commit a00058552820ddda664bf0fea3d62efac8a8529e
+date du commit 2026-11-14 03:37:02 +0100 | PREREG-47 journal papier : 2026-11-14T02:37:02+00:00

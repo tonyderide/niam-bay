@@ -1,0 +1,2 @@
+commit 6820d2b11b11007e2d204f4bbd24c6ed4ae3c6de
+date du commit 2026-11-12 18:30:01 +0100 | Vacances de Tony jusqu'au 30/11 : NB gère Martin (bornes dans le réveil), suivi de la boîte contrôle

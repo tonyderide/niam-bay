@@ -1,0 +1,2 @@
+commit 8c2728160e8d13b9d5380d9b74b22b2c07bf1e24
+date du commit 2026-11-13 00:25:51 +0100 | reveil 1113 00h25 : J-1 vacances Tony, Martin VM 2 pos protégées, crons VM OK ; lecture FCO Neudorf
