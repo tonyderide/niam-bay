@@ -151,3 +151,18 @@ Financement ignoré (surtout la piste 3, tenue plusieurs jours) ; marge et liqui
 
 ## Interdits respectés
 Aucun ordre, aucun compte, rien sur la VM, rien sur Martin, aucune requête vers GitHub. Calcul sous `taskset -c 0,1`.
+
+## Amendement technique n°1 — 17/11/2026, avant le lancement officiel
+- **Défaut** : au premier téléchargement, `donnees77.py` a planté sur une case vide écrite `""` dans un fichier « metrics »
+  (trace gardée : `ai-lab/trois-pistes-neuves/donnees77-v1-plantage.log`). **Correction** : les guillemets sont retirés avant
+  la lecture du nombre ; la case reste « absente ». Rien d'autre n'a changé (ni règle, ni seuil, ni critère).
+- **Ce que j'avais vu à ce moment-là** : seulement « BTC : 0 minute manquante » et « SOL mars 2024 identique au cache (écart 0) ».
+  Aucun prix rejoué, aucun résultat.
+- **Données obtenues** : 12 pièces, 0 jour absent, positions ouvertes présentes sur 99,95 % des créneaux, ratio des comptes
+  sur 99,94 % → la règle des 20 % ne joue pas, les pistes 1 et 3 sont évaluables (`donnees77.log`).
+- **Contrôles de bon sens : les 10 passent** (`controle.log`, `controle.json`). Piste 2 marche au hasard : écart max 1,7 erreur
+  type, p 0,52 ; prix plats exacts ; retard planté trouvé (+0,29 %, p 0,003). Piste 1 : −0,141 % ± 0,052 (3 197 trades), p 0,56.
+  Piste 3 : −0,08 % ± 0,11 (2 000 trades), p 0,37 ; prix plats exacts ; dérive plantée trouvée (p 0,003).
+- **Remarque notée avant le calcul, code laissé tel quel** : quelques créneaux ont des positions ouvertes à 0 (division par
+  zéro signalée par numpy). Ils peuvent donner un faux « dette en forte hausse » sur une poignée de créneaux sur 300 000 ; je
+  ne corrige pas le code figé, je le signale.

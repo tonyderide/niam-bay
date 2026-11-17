@@ -1,0 +1,10 @@
+BTC 1 min : (1445760, 5) minutes manquantes bouchées : 0
+contrôle de source SOL 2024-03 : minutes 44640 écart max 0.0
+Traceback (most recent call last):
+  File "/home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves/donnees77.py", line 88, in <module>
+    m, ab = metrics(p); np.save(f"{CACHE}/metrics-77/{p}.npy", m)
+            ^^^^^^^^^^
+  File "/home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves/donnees77.py", line 74, in metrics
+    a[k] = [float(v) if v not in ("", "null") else np.nan for v in (x[2], x[3], x[4], x[5], x[6], x[7])]
+            ^^^^^^^^
+ValueError: could not convert string to float: '""'

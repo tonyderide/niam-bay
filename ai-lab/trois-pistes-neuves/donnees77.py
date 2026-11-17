@@ -71,7 +71,7 @@ def metrics(sym):
             t = int(dt.datetime.strptime(x[0][:19], "%Y-%m-%d %H:%M:%S").replace(tzinfo=dt.timezone.utc).timestamp())
             k = (t - T0M) // 300
             if 0 <= k < len(a):
-                a[k] = [float(v) if v not in ("", "null") else np.nan for v in (x[2], x[3], x[4], x[5], x[6], x[7])]
+                a[k] = [float(v.strip('"')) if v.strip('"') not in ("", "null") else np.nan for v in (x[2], x[3], x[4], x[5], x[6], x[7])]
     return a, absents
 
 

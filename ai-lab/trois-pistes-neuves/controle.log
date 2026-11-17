@@ -1,0 +1,15 @@
+OK   P2 marche au hasard : net = -cout sur les 12 réglages (écart max en erreurs types, seuil 3,5) {"ecart_max": 1.7162953536293075}
+OK   P2 marche au hasard : p du témoin ni extrême ni collé {"p": 0.5182724252491694, "n": 28084, "moy": -0.001399849130593175, "temoin": -0.0013999146087411455}
+OK   P2 prix plats : chaque trade = -cout exactement {"n": 7021}
+OK   P2 retard d'une minute planté : la règle le trouve (net > +0,10 % et p < 0,01) {"moy": 0.0028916140324426365, "p": 0.0033222591362126247, "n": 7021}
+/home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves/t77.py:38: RuntimeWarning: divide by zero encountered in divide
+  X = np.full(len(oi), np.nan); X[288:] = oi[288:] / oi[:-288] - 1          # hausse de la dette sur 24 h, par créneau
+/home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves/t77.py:38: RuntimeWarning: invalid value encountered in divide
+  X = np.full(len(oi), np.nan); X[288:] = oi[288:] / oi[:-288] - 1          # hausse de la dette sur 24 h, par créneau
+OK   P1 marche au hasard (vraie dette, faux prix) : net = -cout à 3 erreurs types + 0,02 % {"n": 3197, "moy": -0.001406401951408512, "se": 0.0005197854215929915, "somme": -4.496267038653013, "gagnants": 0.4885830466061933}
+OK   P1 marche au hasard : p du témoin ni extrême ni collé {"p": 0.5581395348837209, "temoin": -0.0013204375875323568}
+OK   P3 marche au hasard (vrais ratios, faux prix) : net = -cout à 3 erreurs types {"n": 2000, "moy": -0.000818074452701169, "se": 0.001069624313516102, "somme": -1.636148905402338, "gagnants": 0.484}
+OK   P3 marche au hasard : p du témoin ni extrême ni collé {"p": 0.37209302325581395, "temoin": -0.0011843755356397442}
+OK   P3 prix plats : chaque trade = -cout exactement {"n": 105}
+OK   P3 dérive plantée dans le sens du signal : la règle la trouve (net > 0 et p < 0,01) {"moy": 0.015652324873460785, "p": 0.0033222591362126247, "n": 105}
+CONTRÔLES : TOUS PASSÉS
