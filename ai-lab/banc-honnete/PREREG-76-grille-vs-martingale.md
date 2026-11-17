@@ -153,3 +153,10 @@ période officielle.
   - C : DOGE short 3 $ ouvert le 10/11 17h40Z, fermé le 14/11 17h23Z à +29,4 c (réel : fermé à 17h24Z, +57,8 c pour 6 $).
 - Le bras B a été rejoué sur les mêmes 5 jours par le même script (dans `fidelite.json`, clé `B_info`) ; je ne l'ai pas regardé.
   Cinq jours ne sont de toute façon pas une preuve.
+
+## Amendement technique du 17/11/2026, 02h35 — plantage d'écriture, aucune règle changée
+Le premier lancement officiel a planté après 12 secondes, à l'écriture du fichier de sortie (un nombre au format numpy que
+JSON refuse). Trace gardée : `ai-lab/grille-vs-martingale/t76-v1-plantage.log`. **J'ai donc vu une ligne de résultat avant de
+corriger** : totaux 4 paires A −4,91 $, B −4,11 $, C+ +32,60 $, C− +39,72 $, achat −3,52 $. Correctif : une fonction de
+conversion de types dans `sauve()` de `t76.py`, rien d'autre. Simulateurs, périodes, critères : inchangés. Le relancement doit
+redonner exactement ces cinq totaux, sinon le calcul est déclaré non concluant.

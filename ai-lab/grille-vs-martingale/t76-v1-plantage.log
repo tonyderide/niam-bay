@@ -1,0 +1,24 @@
+[    12s] 4 paires : {'A': -4.9072, 'B': -4.1094, 'C+': 32.6005, 'C-': 39.7179, 'C': 36.1592, 'achat': -3.5242}
+Traceback (most recent call last):
+  File "/home/tony/projets/tonyderide/niam-bay/ai-lab/grille-vs-martingale/t76.py", line 168, in <module>
+    OUT["quatre_paires"] = resume(T4, CAP, DEB, FIN); log("4 paires :", {b: OUT["quatre_paires"][b]["total"] for b in ("A", "B", "C+", "C-", "C", "achat")}); sauve()
+                                                                                                                                                              ^^^^^^^
+  File "/home/tony/projets/tonyderide/niam-bay/ai-lab/grille-vs-martingale/t76.py", line 166, in sauve
+    def sauve(): json.dump(OUT, open(os.path.join(ICI, "t76.json"), "w"), ensure_ascii=False, indent=1)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/__init__.py", line 179, in dump
+    for chunk in iterable:
+  File "/usr/lib/python3.12/json/encoder.py", line 432, in _iterencode
+    yield from _iterencode_dict(o, _current_indent_level)
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 406, in _iterencode_dict
+    yield from chunks
+  File "/usr/lib/python3.12/json/encoder.py", line 439, in _iterencode
+    o = _default(o)
+        ^^^^^^^^^^^
+  File "/usr/lib/python3.12/json/encoder.py", line 180, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type int64 is not JSON serializable

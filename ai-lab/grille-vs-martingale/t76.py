@@ -163,7 +163,10 @@ if __name__ == "__main__":
 
     # ---------------------------------------------------------------------------------------------- officiel
     OUT = {}
-    def sauve(): json.dump(OUT, open(os.path.join(ICI, "t76.json"), "w"), ensure_ascii=False, indent=1)
+    def _np(x):                                   # correctif technique du 17/11 : types numpy -> types Python pour l'écriture JSON (aucun calcul changé)
+        if isinstance(x, np.generic): return x.item()
+        raise TypeError(type(x))
+    def sauve(): json.dump(OUT, open(os.path.join(ICI, "t76.json"), "w"), ensure_ascii=False, indent=1, default=_np)
     brut = {c: charge(c) for c in C4}; T4 = {c: Terrain(brut[c]) for c in C4}
     OUT["quatre_paires"] = resume(T4, CAP, DEB, FIN); log("4 paires :", {b: OUT["quatre_paires"][b]["total"] for b in ("A", "B", "C+", "C-", "C", "achat")}); sauve()
     OUT["ruine_4"] = ruine(T4, CAP, DEB, FIN); log("ruine :", json.dumps(OUT["ruine_4"], ensure_ascii=False)); sauve()
