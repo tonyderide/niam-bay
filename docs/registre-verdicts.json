@@ -670,5 +670,26 @@
   "resume": "Ouverture d'un perpétuel Binance sur une pièce comptant de plus de 180 j (142 cas, 2020-2026) : la pièce fait −13,6 % sur 90 j contre +6,5 % pour les pièces anciennes, p < 0,001, sur les deux périodes ; mais elle avait monté de +68 % (médiane) le mois d'avant : Miller et retour après envolée inséparables ; négatif avec liquidation en 2024-26.",
   "source": "ai-lab/banc-honnete/PREREG-60-miller-perpetuel.md",
   "citation": "**VERDICT (pré-enregistré) : DÉMONTRÉ**"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-77-trois-pistes-neuves.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Piste 1 — dette qui gonfle (positions ouvertes > 90e centile sur 24 h) pendant que le prix dort, puis sortie de fourchette jouée 24 h : réglage +0,36 %/trade (374) ; 2026 sur 4 paires +0,00 % (101 trades, p = 0,56) ; 8 paires neuves +0,47 % (p = 0,001) mais −0,30 % sur 2024-25 : signe instable, piste pour papier en avant.",
+  "source": "ai-lab/trois-pistes-neuves/RESULTAT.md",
+  "citation": "Piste 1 (dette qui gonfle, prix calme) = NON DÉMONTRÉ"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-77-trois-pistes-neuves.md",
+  "verdict": "PERD",
+  "resume": "Piste 2 — altcoins en retard sur le BTC à la minute (BTC ≥ 0,6 % en 1 min, tenu 5 min, coût 0,14 %) : 11 réglages sur 12 négatifs ; le choisi (+0,02 %) fait −0,29 % en 2026 sur 4 paires et −0,28 % sur 7 neuves, pire que le hasard (p = 1,00) ; brut négatif.",
+  "source": "ai-lab/trois-pistes-neuves/RESULTAT.md",
+  "citation": "Piste 2 (retard des altcoins sur le BTC à la minute) = PERD"
+ },
+ {
+  "fichier": "ai-lab/banc-honnete/PREREG-77-trois-pistes-neuves.md",
+  "verdict": "NON DÉMONTRÉ",
+  "resume": "Piste 3 — foule d'un seul côté (rapport comptes acheteurs/vendeurs Binance aux 2,5 % extrêmes, à contre-pied, 3 jours mini) : 2026 sur 4 paires +1,08 %/trade (55 trades, p = 0,145), 8 paires neuves −0,07 % (p = 0,48). Remplace la piste « nouvelles cotations », déjà jugée 9 fois.",
+  "source": "ai-lab/trois-pistes-neuves/RESULTAT.md",
+  "citation": "Piste 3 (foule d'un seul côté) = NON DÉMONTRÉ"
  }
 ]

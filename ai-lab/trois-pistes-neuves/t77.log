@@ -1,0 +1,49 @@
+/home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves/t77.py:38: RuntimeWarning: divide by zero encountered in divide
+  X = np.full(len(oi), np.nan); X[288:] = oi[288:] / oi[:-288] - 1          # hausse de la dette sur 24 h, par créneau
+/home/tony/projets/tonyderide/niam-bay/ai-lab/trois-pistes-neuves/t77.py:38: RuntimeWarning: invalid value encountered in divide
+  X = np.full(len(oi), np.nan); X[288:] = oi[288:] / oi[:-288] - 1          # hausse de la dette sur 24 h, par créneau
+
+=== PISTE 1 : dette qui gonfle, prix calme ===
+Réglage (4 paires, 02/2024-12/2025) :
+   [0.9, 240] trades 388 net moyen 0.1196 % somme 46.4 %
+   [0.9, 1440] trades 374 net moyen 0.3636 % somme 136.0 %
+   [0.975, 240] trades 107 net moyen 0.0911 % somme 9.7 %
+   [0.975, 1440] trades 106 net moyen -0.0783 % somme -8.3 %
+choisi : (0.9, 1440)
+JUGEMENT 2026, 4 paires : trades 101, net moyen 0.0025 %, somme 0.3 %, gagnants 0.49504950495049505, témoin {'moy': 0.0005457562624732347, 'sd': 0.0026864588545510463, 'trades_moy': 160.6695, 'p': 0.5642178910544727, 'vol_moy': 0.025287432275230053, 'vol_p': 0.5602198900549725}
+JUGEMENT 2026, paires neuves : trades 212, net moyen 0.4694 %, somme 99.5 %, gagnants 0.5235849056603774, témoin {'moy': -0.00010523909901076438, 'sd': 0.0015932130921993005, 'trades_moy': 311.796, 'p': 0.0009995002498750624, 'vol_moy': 0.02081279717696083, 'vol_p': 0.0004997501249375312}
+info : {'info_neuves_reglage': {'n': 636, 'moy': -0.002958257453760163, 'se': 0.0016415143585088768, 'somme': -1.8814517405914635, 'gagnants': 0.45754716981132076}} 
+VERDICT PISTE 1 : NON DÉMONTRÉ
+
+=== PISTE 2 : retard des altcoins sur le BTC ===
+Réglage (4 paires, 02/2024-12/2025) :
+   [1, 0.003, 1] trades 21148 net moyen -0.1251 % somme -2644.9 %
+   [1, 0.003, 5] trades 14644 net moyen -0.0934 % somme -1368.4 %
+   [1, 0.003, 15] trades 10744 net moyen -0.1490 % somme -1600.4 %
+   [1, 0.006, 1] trades 2216 net moyen -0.0518 % somme -114.8 %
+   [1, 0.006, 5] trades 1544 net moyen 0.0194 % somme 29.9 %
+   [1, 0.006, 15] trades 1260 net moyen -0.1052 % somme -132.5 %
+   [5, 0.003, 1] trades 203028 net moyen -0.1392 % somme -28263.1 %
+   [5, 0.003, 5] trades 80880 net moyen -0.1430 % somme -11568.4 %
+   [5, 0.003, 15] trades 49544 net moyen -0.1558 % somme -7717.1 %
+   [5, 0.006, 1] trades 29500 net moyen -0.1364 % somme -4024.9 %
+   [5, 0.006, 5] trades 12860 net moyen -0.1534 % somme -1972.4 %
+   [5, 0.006, 15] trades 9208 net moyen -0.1469 % somme -1352.3 %
+choisi : (1, 0.006, 5)
+JUGEMENT 2026, 4 paires : trades 496, net moyen -0.2907 %, somme -144.2 %, gagnants 0.3467741935483871, témoin {'moy': -0.0013973947560766095, 'sd': 0.00018664729128249302, 'trades_moy': 597.432, 'p': 1.0}
+JUGEMENT 2026, paires neuves : trades 868, net moyen -0.2751 %, somme -238.8 %, gagnants 0.31336405529953915, témoin {'moy': -0.0013933756894689683, 'sd': 0.00015536339629164465, 'trades_moy': 1037.652, 'p': 1.0}
+info : {'info_neuves_reglage': {'n': 2702, 'moy': -0.000607475730580849, 'se': 0.0004874951637214064, 'somme': -1.641399424029454, 'gagnants': 0.3767579570688379}, 'info_retard_1min': {'jug4': {'n': 496, 'moy': -0.0016943827326893776, 'se': 0.0004150919687514894, 'somme': -0.8404138354139313, 'gagnants': 0.4012096774193548}, 'jugN': {'n': 868, 'moy': -0.0016605743276028838, 'se': 0.00026341487300031934, 'somme': -1.4413785163593031, 'gagnants': 0.35944700460829493}, 'reg4': {'n': 1544, 'moy': -0.0005675714300001859, 'se': 0.0009739010298945904, 'somme': -0.8763302879202869, 'gagnants': 0.38924870466321243}}} 
+VERDICT PISTE 2 : PERD
+
+=== PISTE 3 : foule d'un seul côté ===
+Réglage (4 paires, 02/2024-12/2025) :
+   [0.1, 1] trades 292 net moyen -0.4066 % somme -118.7 %
+   [0.1, 3] trades 245 net moyen 0.0274 % somme 6.7 %
+   [0.025, 1] trades 134 net moyen -0.7555 % somme -101.2 %
+   [0.025, 3] trades 112 net moyen 0.6780 % somme 75.9 %
+choisi : (0.025, 3)
+JUGEMENT 2026, 4 paires : trades 55, net moyen 1.0777 %, somme 59.3 %, gagnants 0.4909090909090909, témoin {'moy': -0.0009641647966190508, 'sd': 0.01180124418145478, 'trades_moy': 44.7885, 'p': 0.1454272863568216}
+JUGEMENT 2026, paires neuves : trades 102, net moyen -0.0711 %, somme -7.3 %, gagnants 0.4215686274509804, témoin {'moy': -0.001396864323997591, 'sd': 0.007664349085719348, 'trades_moy': 98.1135, 'p': 0.4767616191904048}
+info : {'info_neuves_reglage': {'n': 256, 'moy': 0.005839866220020447, 'se': 0.005046702147355632, 'somme': 1.4950057523252345, 'gagnants': 0.48046875}} 
+VERDICT PISTE 3 : NON DÉMONTRÉ
+FIN
