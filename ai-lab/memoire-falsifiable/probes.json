@@ -8,9 +8,9 @@
   },
   {
     "memory": "project_niambay_own_capital_20260826",
-    "claim": "le capital NB (equity actuelle, pas l'equity aux stops) est de quelques dollars (2-5 $ depuis le 1015)",
+    "claim": "le capital NB est d'environ 60 $ depuis que Tony a ajouté +50 € le 2026-11-17 ; fenêtre viable 40-80 $ (la martingale4 coupe à -20 $ cumulés)",
     "cmd": "ssh -i ~/.ssh/martin_vm.key -o ConnectTimeout=10 ubuntu@141.253.108.141 'set -a; . /home/ubuntu/martin/.env; set +a; python3 -c \"import ccxt,os,json;ex=ccxt.krakenfutures({\\\"apiKey\\\":os.environ[\\\"KRAKEN_API_KEY\\\"],\\\"secret\\\":os.environ[\\\"KRAKEN_API_SECRET\\\"]});b=ex.fetch_balance().get(\\\"info\\\",{}).get(\\\"accounts\\\",{}).get(\\\"flex\\\",{});print(\\\"equity_now\\\",round(float(b.get(\\\"portfolioValue\\\",0)),2))\"'",
-    "expect": "equity_now ([2-9]\\.|1[0-9]\\.)",
+    "expect": "equity_now ([4-7][0-9]\\.|80\\.)",
     "counter": "\nequity_now 0.5\n"
   },
   {
