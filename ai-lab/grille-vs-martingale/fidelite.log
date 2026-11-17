@@ -1,0 +1,31 @@
+BRAS A rejoué du 2026-11-11 22:45Z au 2026-11-17 00:00Z (Kraken 1 min, lots réels, passage à la minute 2)
+   2026-11-12 05:42 LINK  -1.24 c STOP gagne
+   2026-11-12 06:53 ADA  -1.22 c STOP gagne
+   2026-11-12 11:52 SOL  -0.90 c STOP gagne
+   2026-11-12 13:06 DOT  -1.12 c STOP gagne
+   2026-11-12 21:41 LINK  +6.55 c OBJECTIF gagne
+   2026-11-13 00:53 ADA  -1.02 c STOP gagne
+   2026-11-13 03:13 SOL  -0.76 c STOP gagne
+   2026-11-13 06:24 LINK  +0.31 c OBJECTIF perd
+   2026-11-13 13:32 DOT  -1.05 c STOP gagne
+   2026-11-13 13:50 LINK  +0.33 c OBJECTIF perd
+   2026-11-13 13:52 SOL  +0.39 c OBJECTIF perd
+   2026-11-13 22:18 ADA  +0.37 c OBJECTIF perd
+   2026-11-13 23:53 SOL  +0.50 c OBJECTIF perd
+   2026-11-14 02:33 ADA  +0.37 c OBJECTIF perd
+   2026-11-14 02:38 LINK  +0.31 c OBJECTIF perd
+   2026-11-14 14:01 DOT  -6.15 c STOP perd
+   2026-11-14 15:20 SOL  -1.17 c STOP gagne
+   2026-11-14 16:12 ADA  -7.36 c STOP perd
+   2026-11-14 16:12 LINK  -8.63 c STOP perd
+   2026-11-15 09:35 SOL  +0.46 c OBJECTIF perd
+   2026-11-15 09:55 ADA  +0.37 c OBJECTIF perd
+   2026-11-15 18:28 SOL  -1.29 c STOP gagne
+   2026-11-16 06:14 SOL  +7.17 c OBJECTIF gagne
+   2026-11-16 08:18 LINK  +0.63 c STOP gagne
+   2026-11-16 12:26 ADA  -1.47 c STOP gagne
+   2026-11-16 14:33 DOT  +5.33 c OBJECTIF gagne
+positions fermées : 26 | net (c) : -10.3 | par jour 11(fin)..16 (c) : {11: 8.57, 12: -6.01, 13: -1.43, 14: -22.63, 15: -0.67, 16: 11.87}
+gains de 4 à 8 c : 3 | pertes de 5 à 10 c : 3 | branche gagne : 8.44 c sur 14 | branche perd : -18.73 c sur 12
+BRAS C DOGE départ short 3 $ : [{'t': '2026-11-14 17:23', 'c': np.float64(29.43), 'niveau': 0, 'sens': -1}, {'t': '2026-11-17 01:00', 'c': np.float64(7.95), 'niveau': 0, 'sens': -1}]
+FIDÈLE A : True | FIDÈLE C : True

@@ -142,3 +142,14 @@ période officielle.
   « B MIEUX SANS PREUVE », probabilité 50 % ; « B BAT A » 20 % ; « NON DÉMONTRÉ » 30 %.
 - A et B : total négatif tous les deux (70 %).
 - C : « NON DÉMONTRÉ » (90 %) ; total moyen négatif (65 %) ; fréquence de ruine au-dessus de 5 % (75 %).
+
+## Note du 17/11/2026, 02h30 (heure de Paris) — avant le calcul officiel
+- Correction d'horloge : ce fichier a été commité à 02h25 (commit `934b074a`), pas « vers 02h45 ».
+- **Contrôle de fidélité passé du premier coup, simulateur inchangé, aucun amendement** (`ai-lab/grille-vs-martingale/fidelite.log`, `fidelite.json`) :
+  - A : 26 positions fermées (réel 28), net −10,3 c (réel ≈ −10 c), pire jour le 14/11 à −22,6 c (réel −25,1 c) avec trois stops
+    de −6,2 / −7,4 / −8,6 c (réel : 3 pertes de 6–9 c), 3 gains de 5,3 à 7,2 c (réel : 4 de 5–7 c). Branche « perd » : −18,7 c sur
+    12 (réel −21 c sur 8) ; branche « gagne » : +8,4 c sur 14 (réel +11 c sur 20). Jour par jour, l'accord est moins bon
+    (13/11 : −1,4 c simulé contre +16,8 c réel ; 16/11 : +11,9 c contre −0,5 c) : les gros gains ne tombent pas les mêmes jours.
+  - C : DOGE short 3 $ ouvert le 10/11 17h40Z, fermé le 14/11 17h23Z à +29,4 c (réel : fermé à 17h24Z, +57,8 c pour 6 $).
+- Le bras B a été rejoué sur les mêmes 5 jours par le même script (dans `fidelite.json`, clé `B_info`) ; je ne l'ai pas regardé.
+  Cinq jours ne sont de toute façon pas une preuve.
