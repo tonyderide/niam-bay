@@ -1,0 +1,11 @@
+{
+ "nom": "Acheter un indice après 3 séances de baisse, revendre 5 séances plus tard",
+ "texte_tony": null,
+ "tf": "1d",
+ "marches": ["QQQ", "SPY", "IWM", "DIA", "EFA", "EEM"],
+ "long": "baisse_suite(3)",
+ "short": null,
+ "sortie": {"max_bougies": 5},
+ "notes": "Première idée du bureau : c'est l'exemple donné par NB à Tony (« acheter le Nasdaq quand il a baissé 3 jours de suite »), pas une idée de Tony. La phrase ne dit pas quand revendre : j'ai choisi 5 séances, avant tout calcul. Le Nasdaq seul ne suffit pas pour juger, donc l'idée est testée sur six fonds indiciels (Nasdaq 100, S&P 500, petites valeurs US, Dow Jones, pays développés hors US, pays émergents). Une seule position à la fois par marché.",
+ "equite": "Pour l'idée : les six marchés montent et baissent souvent ensemble, donc « 4 marchés positifs sur 6 » est plus facile à obtenir qu'avec des marchés indépendants. Contre l'idée : frais de 0,05 % par côté, un peu élevés pour ces fonds très liquides. Neutre : la hausse de fond des actions profite aussi au témoin, qui achète au hasard et garde aussi longtemps."
+}

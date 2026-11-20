@@ -1,0 +1,4 @@
+#!/bin/bash
+# Lance le bureau avec le Python du dépôt (yfinance y est installé).
+D="$(cd "$(dirname "$0")" && pwd)"
+exec "$D/../../.venv/bin/python" "$D/bureau.py" "$@"
