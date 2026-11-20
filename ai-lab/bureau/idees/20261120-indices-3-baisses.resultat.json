@@ -1,0 +1,101 @@
+{
+ "verdict": "NON DÉMONTRÉ",
+ "raisons": [
+  "2005-2015 : pas au-dessus du hasard (84e centile, 95e requis)",
+  "2016-2026 : pas au-dessus du hasard (56e centile, 95e requis)"
+ ],
+ "periodes": [
+  {
+   "periode": "2005-2015",
+   "somme": 2.2974987780777756,
+   "trades": 762,
+   "marches": 6,
+   "positifs": 5,
+   "besoin": 4,
+   "mediane": 0.6777422352891342,
+   "p95": 3.5267687633679174,
+   "rang": 84.2,
+   "pire_trade": -0.10904983929499723,
+   "achat_conservation": 1.0826013778316133,
+   "temps_investi": 0.2751895991332611,
+   "par_marche": {
+    "QQQ": {
+     "trades": 130,
+     "somme": 0.9078890065869416,
+     "gagnants": 0.5769230769230769
+    },
+    "SPY": {
+     "trades": 124,
+     "somme": 0.25942765823619957,
+     "gagnants": 0.5403225806451613
+    },
+    "IWM": {
+     "trades": 137,
+     "somme": 0.8669965491403789,
+     "gagnants": 0.5912408759124088
+    },
+    "DIA": {
+     "trades": 118,
+     "somme": 0.0948930762328534,
+     "gagnants": 0.5169491525423728
+    },
+    "EFA": {
+     "trades": 124,
+     "somme": -0.03553862505108816,
+     "gagnants": 0.5241935483870968
+    },
+    "EEM": {
+     "trades": 129,
+     "somme": 0.20383111293248993,
+     "gagnants": 0.49612403100775193
+    }
+   }
+  },
+  {
+   "periode": "2016-2026",
+   "somme": 1.6153493896334248,
+   "trades": 728,
+   "marches": 6,
+   "positifs": 6,
+   "besoin": 4,
+   "mediane": 1.383268861760468,
+   "p95": 3.7775698250901835,
+   "rang": 55.6,
+   "pire_trade": -0.22184484904977064,
+   "achat_conservation": 2.801801510120503,
+   "temps_investi": 0.2673521850899743,
+   "par_marche": {
+    "QQQ": {
+     "trades": 109,
+     "somme": 0.16496223130134904,
+     "gagnants": 0.5412844036697247
+    },
+    "SPY": {
+     "trades": 121,
+     "somme": 0.27524834513535784,
+     "gagnants": 0.5867768595041323
+    },
+    "IWM": {
+     "trades": 125,
+     "somme": 0.39712076957902753,
+     "gagnants": 0.552
+    },
+    "DIA": {
+     "trades": 124,
+     "somme": 0.2781463494762914,
+     "gagnants": 0.5645161290322581
+    },
+    "EFA": {
+     "trades": 122,
+     "somme": 0.2377398457077289,
+     "gagnants": 0.5819672131147541
+    },
+    "EEM": {
+     "trades": 127,
+     "somme": 0.2621318484336701,
+     "gagnants": 0.48031496062992124
+    }
+   }
+  }
+ ]
+}

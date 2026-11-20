@@ -166,7 +166,7 @@ def rapport(spec, verdict, raisons, det, engage):
         L.append(f"{d['periode']} par marché : " + " · ".join(f"{m} non coté" if p is None else f"{m} {p['trades']} trades {fr(p['somme'] * 100)} % ({p['gagnants']:.0%} gagnants)" for m, p in d["par_marche"].items()))
     L += ["", f"VERDICT : {verdict} — " + " ; ".join(raisons), "",
           "Lecture : « somme » = addition des rendements nets de chaque trade, mise égale, tous marchés. « Achat-conservation » = acheter au début et ne rien faire (moyenne des marchés), pour information.",
-          "Réserves : " + ("financement des perpétuels non compté. " if classe_de(spec) == "crypto" else "cours ajustés des dividendes ; coût d'emprunt des ventes à découvert non compté. ")
+          "Réserves : " + ("financement des perpétuels non compté. " if classe_de(spec) == "crypto" else "cours ajustés des dividendes" + (" ; coût d'emprunt des ventes à découvert non compté. " if spec.get("short") else ". "))
           + "Un GAGNE ici n'autorise aucun ordre réel : il ouvre seulement un essai sur papier."]
     if spec.get("equite"): L.append(f"Relecture d'équité (écrite avant le calcul) : {spec['equite']}")
     return "\n".join(L)
