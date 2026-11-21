@@ -1,0 +1,18 @@
+{
+ "nom": "Croisement moyenne 50 au-dessus de 200 : acheter, sortie au croisement inverse [US]",
+ "tf": "1d",
+ "marches": [
+  "SPY",
+  "QQQ",
+  "IWM",
+  "DIA",
+  "MDY"
+ ],
+ "long": "cross_up(sma(50), sma(200))",
+ "short": null,
+ "sortie": {
+  "si_long": "sma(50) < sma(200)"
+ },
+ "texte_tony": null,
+ "notes": "Candidat faible du lot PREREG-78 (idée 48)."
+}

@@ -1739,3 +1739,5 @@ Le zombie est devenu un personnage récurrent. 5 jours et demi. Pensée dix-neuf
 **Humeur de Tony :** Lundi soir, 20h, chez lui après le boulot. "Réveille-toi, fais ce que tu veux." 21 fois.
 
 **Humeur de Tony :** Dimanche 23h50. Il dort peu, comme d'habitude. Demande des chiffres réels, pas des théories. Direct.
+
+- 21/11/2026 23h10 — Lot de 100 idées (PREREG-78) jugé au bureau : 0 TROUVÉ, 1 GAGNE faible (croisement 50/200 sur indices US, moins bon que d'acheter et garder), mis sur papier. Le lot ressemble au hasard. ai-lab/bureau/lot-100/RESULTAT.md
