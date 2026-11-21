@@ -1,0 +1,92 @@
+"""Les 100 idées du lot (PREREG-78), écrites AVANT tout calcul. python3 generer.py -> idees.json"""
+import json
+US = ["SPY", "QQQ", "IWM", "DIA", "MDY"]
+INTL = ["EFA", "EEM", "EWJ", "EWG", "EWU", "EWZ"]
+SECT = ["XLK", "XLF", "XLE", "XLV", "XLY", "XLP", "XLI", "XLU", "XLB"]
+REFUGE = ["TLT", "IEF", "GLD", "SLV", "USO"]
+CRYPTO = ["BTC", "ETH", "SOL", "XRP", "DOGE", "ADA", "LINK", "AVAX", "DOT", "LTC"]
+U = {"US": US, "INTL": INTL, "SECT": SECT, "REFUGE": REFUGE}
+IBS = "((close - low) / (high - low))"
+idees = []
+def A(nom, univers, long=None, short=None, sortie=None):  # actions / ETF, journalier
+    for u in univers.split():
+        idees.append({"nom": f"{nom} [{u}]", "tf": "1d", "marches": U[u], "long": long, "short": short, "sortie": sortie})
+def K(nom, tf, long=None, short=None, sortie=None):  # crypto
+    idees.append({"nom": f"{nom} [crypto {tf}]", "tf": tf, "marches": CRYPTO, "long": long, "short": short, "sortie": sortie})
+
+# --- actions : calendrier (16)
+A("Tournant du mois : acheter à partir du 27, garder 5 séances", "US INTL SECT REFUGE", long="jour_mois() >= 27", sortie={"max_bougies": 5})
+A("Milieu de mois : acheter du 8 au 14, garder 5 séances", "US", long="(jour_mois() >= 8) & (jour_mois() <= 14)", sortie={"max_bougies": 5})
+A("Lundi faible : vendre à découvert le lundi (signal vendredi), 1 séance", "US INTL", short="egal(jour_semaine(), 4)", sortie={"max_bougies": 1})
+A("Novembre-avril seulement : acheter, garder 20 séances", "US INTL SECT", long="(mois() >= 11) | (mois() <= 4)", sortie={"max_bougies": 20})
+A("Rallye de fin d'année : à partir du 15 décembre, garder 10 séances", "US", long="egal(mois(), 12) & (jour_mois() >= 15)", sortie={"max_bougies": 10})
+A("Début de mois : acheter les jours 1 à 3, garder 3 séances", "US INTL", long="jour_mois() <= 3", sortie={"max_bougies": 3})
+# --- actions : retour à la moyenne (31)
+A("RSI 2 sous 10 en tendance haussière, sortie au-dessus de la moyenne 5 (max 10)", "US INTL SECT REFUGE", long="(rsi(2) < 10) & (close > sma(200))", sortie={"si_long": "close > sma(5)", "max_bougies": 10})
+A("Clôture en bas de la bougie (IBS < 0,2) : acheter, 1 séance", "US INTL SECT", long=IBS + " < 0.2", sortie={"max_bougies": 1})
+A("Clôture tout en bas de la bougie (IBS < 0,1) : acheter, 1 séance", "SECT", long=IBS + " < 0.1", sortie={"max_bougies": 1})
+A("Clôture en haut de la bougie (IBS > 0,8) : vendre à découvert, 1 séance", "US", short=IBS + " > 0.8", sortie={"max_bougies": 1})
+A("4 baisses de suite : acheter, garder 5 séances", "INTL SECT", long="baisse_suite(4)", sortie={"max_bougies": 5})
+A("3 baisses de suite : acheter, garder 5 séances", "SECT REFUGE", long="baisse_suite(3)", sortie={"max_bougies": 5})
+A("2 baisses de suite : acheter, garder 3 séances", "US", long="baisse_suite(2)", sortie={"max_bougies": 3})
+A("Sous la bande de Bollinger basse : acheter, sortie à la moyenne 20 (max 20)", "US INTL SECT", long="close < bb_lower(20, 2)", sortie={"si_long": "close > sma(20)", "max_bougies": 20})
+A("Ouverture en baisse de plus de 1 % : acheter, 1 séance", "US INTL", long="ecart_ouverture() < -0.01", sortie={"max_bougies": 1})
+A("Chute de plus de 5 % en 5 séances : acheter, garder 10 séances", "US INTL SECT", long="variation(5) < -0.05", sortie={"max_bougies": 10})
+A("4 hausses de suite : vendre à découvert, garder 3 séances", "US", short="hausse_suite(4)", sortie={"max_bougies": 3})
+A("Plus bas de 10 séances en tendance haussière : acheter, garder 5 séances", "US SECT", long="(close <= lowest(close, 10)) & (close > sma(200))", sortie={"max_bougies": 5})
+A("Baisse de plus de 3 % en un jour : acheter, garder 5 séances", "US INTL SECT", long="variation(1) < -0.03", sortie={"max_bougies": 5})
+A("Hausse de plus de 3 % en un jour : vendre à découvert, garder 2 séances", "US", short="variation(1) > 0.03", sortie={"max_bougies": 2})
+A("Baisse de plus de 2 % en tendance haussière : acheter, garder 3 séances", "US", long="(variation(1) < -0.02) & (close > sma(200))", sortie={"max_bougies": 3})
+A("Hausse de plus de 8 % en 20 séances : vendre à découvert, garder 5 séances", "REFUGE", short="variation(20) > 0.08", sortie={"max_bougies": 5})
+# --- actions : tendance (18)
+A("Plus haut de 52 semaines : acheter, garder 20 séances", "US INTL SECT", long="close >= highest(close, 252)", sortie={"max_bougies": 20})
+A("Croisement moyenne 50 au-dessus de 200 : acheter, sortie au croisement inverse", "US INTL SECT", long="cross_up(sma(50), sma(200))", sortie={"si_long": "sma(50) < sma(200)"})
+A("Au-dessus de la moyenne 200 : acheter, revoir toutes les 20 séances", "US INTL SECT REFUGE", long="close > sma(200)", sortie={"max_bougies": 20})
+A("Hausse de plus de 10 % en 60 séances : acheter, garder 20 séances", "US INTL SECT REFUGE", long="variation(60) > 0.10", sortie={"max_bougies": 20})
+A("En baisse sur un an : vendre à découvert, garder 20 séances", "US INTL", short="variation(250) < 0", sortie={"max_bougies": 20})
+A("Cassure du plus haut de 20 séances : acheter, garder 10 séances", "REFUGE SECT", long="close > shift(highest(close, 20))", sortie={"max_bougies": 10})
+A("En hausse sur 120 séances : acheter, garder 20 séances", "REFUGE", long="variation(120) > 0", sortie={"max_bougies": 20})
+# --- actions : volatilité (2)
+A("Marché calme (ATR 10 < 70 % de l'ATR 100) au-dessus de la moyenne 50 : acheter, 10 séances", "US SECT", long="(atr(10) < atr(100) * 0.7) & (close > sma(50))", sortie={"max_bougies": 10})
+
+# --- crypto (35)
+K("Week-end : acheter samedi-dimanche", "1d", long="egal(jour_semaine(), 4)", sortie={"max_bougies": 2})
+K("Week-end : vendre à découvert samedi-dimanche", "1d", short="egal(jour_semaine(), 4)", sortie={"max_bougies": 2})
+K("Lundi : acheter, 1 jour", "1d", long="egal(jour_semaine(), 6)", sortie={"max_bougies": 1})
+K("Lundi : vendre à découvert, 1 jour", "1d", short="egal(jour_semaine(), 6)", sortie={"max_bougies": 1})
+K("Tournant du mois : acheter à partir du 27, garder 5 jours", "1d", long="jour_mois() >= 27", sortie={"max_bougies": 5})
+K("Début de mois : acheter les jours 1 à 3, garder 3 jours", "1d", long="jour_mois() <= 3", sortie={"max_bougies": 3})
+K("Milieu de mois : vendre à découvert du 15 au 20, garder 5 jours", "1d", short="(jour_mois() >= 15) & (jour_mois() <= 20)", sortie={"max_bougies": 5})
+K("3 baisses de suite : acheter, garder 3 bougies", "1d", long="baisse_suite(3)", sortie={"max_bougies": 3})
+K("3 baisses de suite : acheter, garder 6 bougies", "4h", long="baisse_suite(3)", sortie={"max_bougies": 6})
+K("5 baisses de suite : acheter, garder 3 bougies", "4h", long="baisse_suite(5)", sortie={"max_bougies": 3})
+K("4 hausses de suite : vendre à découvert, garder 3 bougies", "1d", short="hausse_suite(4)", sortie={"max_bougies": 3})
+K("RSI 2 sous 10 en tendance haussière, sortie au-dessus de la moyenne 5 (max 10)", "1d", long="(rsi(2) < 10) & (close > sma(200))", sortie={"si_long": "close > sma(5)", "max_bougies": 10})
+K("RSI 2 sous 10 en tendance haussière, sortie au-dessus de la moyenne 5 (max 10)", "4h", long="(rsi(2) < 10) & (close > sma(200))", sortie={"si_long": "close > sma(5)", "max_bougies": 10})
+K("Clôture en bas de la bougie (IBS < 0,2) : acheter, 1 bougie", "1d", long=IBS + " < 0.2", sortie={"max_bougies": 1})
+K("Clôture en bas de la bougie (IBS < 0,2) : acheter, 1 bougie", "4h", long=IBS + " < 0.2", sortie={"max_bougies": 1})
+K("Chute de plus de 8 % en un jour : acheter, garder 3 jours", "1d", long="variation(1) < -0.08", sortie={"max_bougies": 3})
+K("Hausse de plus de 8 % en un jour : vendre à découvert, garder 3 jours", "1d", short="variation(1) > 0.08", sortie={"max_bougies": 3})
+K("Plus haut d'un an : acheter, garder 20 jours", "1d", long="close >= highest(close, 365)", sortie={"max_bougies": 20})
+K("Hausse de plus de 30 % en 30 jours : acheter, garder 10 jours", "1d", long="variation(30) > 0.3", sortie={"max_bougies": 10})
+K("Cassure du plus haut de 20 jours : acheter, garder 10 jours", "1d", long="close > shift(highest(close, 20))", sortie={"max_bougies": 10})
+K("Cassure du plus haut de 20 jours (120 bougies) : acheter, garder 30 bougies", "4h", long="close > shift(highest(close, 120))", sortie={"max_bougies": 30})
+K("Marché calme (ATR 10 < 60 % de l'ATR 100) au-dessus de la moyenne 50 : acheter, 10 jours", "1d", long="(atr(10) < atr(100) * 0.6) & (close > sma(50))", sortie={"max_bougies": 10})
+K("Sous la bande de Bollinger basse : acheter, sortie à la moyenne 20 (max 20)", "1d", long="close < bb_lower(20, 2)", sortie={"si_long": "close > sma(20)", "max_bougies": 20})
+K("Volume triple et bougie verte : acheter, garder 3 bougies", "1d", long="(volume > sma(20, volume) * 3) & (close > open)", sortie={"max_bougies": 3})
+K("Volume triple et bougie rouge : vendre à découvert, garder 3 bougies", "1d", short="(volume > sma(20, volume) * 3) & (close < open)", sortie={"max_bougies": 3})
+K("Volume triple et bougie verte : acheter, garder 3 bougies", "4h", long="(volume > sma(20, volume) * 3) & (close > open)", sortie={"max_bougies": 3})
+K("Volume triple et bougie rouge : acheter le rebond, garder 3 bougies", "4h", long="(volume > sma(20, volume) * 3) & (close < open)", sortie={"max_bougies": 3})
+K("Jour intérieur fini en hausse : acheter, garder 3 jours", "1d", long="(high < shift(high)) & (low > shift(low)) & (close > open)", sortie={"max_bougies": 3})
+K("Longue mèche basse (marteau) en tendance haussière : acheter, garder 3 bougies", "1d", long="((vmin(open, close) - low) > absv(close - open) * 2) & (close > sma(200))", sortie={"max_bougies": 3})
+K("Longue mèche basse (marteau) en tendance haussière : acheter, garder 3 bougies", "4h", long="((vmin(open, close) - low) > absv(close - open) * 2) & (close > sma(200))", sortie={"max_bougies": 3})
+K("Hausse de plus de 25 % en 7 jours : vendre à découvert, garder 5 jours", "1d", short="variation(7) > 0.25", sortie={"max_bougies": 5})
+K("En hausse sur 7 jours : acheter, garder 7 jours", "1d", long="variation(7) > 0", sortie={"max_bougies": 7})
+K("Chute de plus de 6 % en 24 h : acheter, garder 6 bougies", "4h", long="variation(6) < -0.06", sortie={"max_bougies": 6})
+K("Plus bas de 20 jours en tendance haussière : acheter, garder 5 jours", "1d", long="(close <= lowest(close, 20)) & (close > sma(200))", sortie={"max_bougies": 5})
+K("Repasse au-dessus de la moyenne 20 quand 20 > 50 : acheter, garder 10 jours", "1d", long="(sma(20) > sma(50)) & cross_up(close, sma(20))", sortie={"max_bougies": 10})
+
+for i, d in enumerate(idees, 1): d["id"] = i
+assert len(idees) == 100, len(idees)
+json.dump(idees, open("idees.json", "w"), ensure_ascii=False, indent=1)
+print(len(idees), "idées")
