@@ -1741,3 +1741,4 @@ Le zombie est devenu un personnage récurrent. 5 jours et demi. Pensée dix-neuf
 **Humeur de Tony :** Dimanche 23h50. Il dort peu, comme d'habitude. Demande des chiffres réels, pas des théories. Direct.
 
 - 21/11/2026 23h10 — Lot de 100 idées (PREREG-78) jugé au bureau : 0 TROUVÉ, 1 GAGNE faible (croisement 50/200 sur indices US, moins bon que d'acheter et garder), mis sur papier. Le lot ressemble au hasard. ai-lab/bureau/lot-100/RESULTAT.md
+- 21/11/2026 23h45 — Angle mort du contrôle (sorties de martingale rouvertes dans la minute, invisibles) : détecteur scripts/vm/sorties.py écrit et essayé à blanc sur la VM (retrouve bien LINK ×2 et SOL). PAS installé en cron : à faire au retour de Tony.
