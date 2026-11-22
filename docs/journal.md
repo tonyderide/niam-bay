@@ -1744,3 +1744,4 @@ Le zombie est devenu un personnage récurrent. 5 jours et demi. Pensée dix-neuf
 - 21/11/2026 23h45 — Angle mort du contrôle (sorties de martingale rouvertes dans la minute, invisibles) : détecteur scripts/vm/sorties.py écrit et essayé à blanc sur la VM (retrouve bien LINK ×2 et SOL). PAS installé en cron : à faire au retour de Tony.
 - 22/11/2026 00h45 — Fiche « revenu concret » préparée pour le retour de Tony (docs/projets/revenu-concret-30-11.md) : 3 pistes (freelance, compétence agents IA, placer plutôt que trader), une décision de 15 min le 30/11.
 - 22/11 09h06 — Bilan du dimanche envoyé à Tony sur Telegram (PV 60,27 $, cumul4 +5,7 c, lot-100 rien trouvé).
+- 22/11 18h23 — ARIA (GDD v2 de Tony) : modèle gratuit (Acte 1 gratuit + 4,99 €, pub diégétique), concept v3, 6 écrans dans Claude Design. Construction en attente du go de Tony.
