@@ -1746,3 +1746,4 @@ Le zombie est devenu un personnage récurrent. 5 jours et demi. Pensée dix-neuf
 - 22/11 09h06 — Bilan du dimanche envoyé à Tony sur Telegram (PV 60,27 $, cumul4 +5,7 c, lot-100 rien trouvé).
 - 22/11 18h23 — ARIA (GDD v2 de Tony) : modèle gratuit (Acte 1 gratuit + 4,99 €, pub diégétique), concept v3, 6 écrans dans Claude Design. Construction en attente du go de Tony.
 - 23/11 11h35 : martingale BTC lancée sur ordre de Tony (mêmes règles que les 4, base 6 $ = lot minimum, limite propre −5 $) ; surv.py affiche BTC.
+- 23/11 17h15 : ARIA, prototype web jouable du chapitre 1 (jeux/aria/index.html) : calibration, shoot, choix du transport, réinitialisation, écran de fin.

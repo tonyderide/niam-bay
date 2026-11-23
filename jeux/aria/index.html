@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>ARIA Chapitre 1</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&family=IBM+Plex+Sans:wght@400;600&display=swap">
+<style>
+:root{--noir:#07080A;--blanc:#E8EEF2;--rouge:#E5283C;--cyan:#3FD6E6;--gris:#8A96A0;--trait:#2A323A;--fond2:#0F1216}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--noir);color:var(--blanc);font-family:'IBM Plex Mono',monospace;overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none;display:block}
+.ecran{position:fixed;inset:0;background:var(--noir);display:none;flex-direction:column;gap:24px;padding:max(40px,env(safe-area-inset-top)) 28px max(32px,env(safe-area-inset-bottom));max-width:480px;margin:0 auto;overflow-y:auto}
+.ecran.vu{display:flex}
+.tete{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.1em;color:var(--gris)}
+.aria{color:var(--cyan)}
+p{margin:0;line-height:1.55}
+.txt{display:flex;flex-direction:column;gap:10px;font-size:15px}
+.petit{font-size:11px;line-height:1.6;color:var(--gris)}
+.pousse{flex-grow:1}
+label{font-size:11px;letter-spacing:.1em;color:var(--gris);display:flex;flex-direction:column;gap:8px}
+input{height:52px;background:var(--fond2);border:1px solid var(--trait);color:var(--blanc);font-family:'IBM Plex Sans',sans-serif;font-size:17px;padding:0 16px;border-radius:0;-webkit-user-select:text;user-select:text}
+input:focus{outline:none;border-color:var(--cyan)}
+button{font-family:'IBM Plex Mono',monospace;border-radius:0;cursor:pointer;min-height:56px;font-size:14px;letter-spacing:.12em;padding:8px 14px}
+.plein{background:var(--cyan);color:var(--noir);border:0;font-weight:700}
+.blanc{background:var(--blanc);color:var(--noir);border:0;font-weight:700}
+.creux{background:transparent;color:var(--blanc);border:1px solid var(--trait)}
+button small{display:block;font-family:'IBM Plex Sans',sans-serif;font-size:12px;letter-spacing:0;font-weight:400;margin-top:4px}
+.titre{font-weight:700;font-size:32px;line-height:1.15}
+.humain{font-family:'IBM Plex Sans',sans-serif;color:var(--gris);font-size:15px}
+.ligne{display:flex;justify-content:space-between;padding:12px 0;border-top:1px solid var(--trait);font-size:13px}
+.ligne span:first-child{color:var(--gris)}
+.barre{height:10px;background:#1A1F24;margin-top:6px}.barre i{display:block;height:10px}
+#hud{position:fixed;left:12px;right:12px;top:max(12px,env(safe-area-inset-top));max-width:456px;margin:0 auto;background:rgba(7,8,10,.86);border:1px solid var(--trait);padding:10px 12px;display:none;flex-direction:column;gap:5px;pointer-events:none;font-size:13px}
+#hud.vu{display:flex}
+#m2.h{font-family:'IBM Plex Sans',sans-serif;font-size:15px}
+#m2.g{color:var(--rouge);animation:gl .18s steps(2) 6}
+@keyframes gl{50%{transform:translateX(3px);opacity:.5}}
+#retenir{position:fixed;left:12px;bottom:max(64px,calc(env(safe-area-inset-bottom) + 64px));width:104px;min-height:64px;font-size:11px;letter-spacing:.08em;background:rgba(7,8,10,.8);color:var(--gris);border:1px solid var(--trait);display:none;touch-action:none}
+#retenir.vu{display:block}
+#retenir.on{border-color:var(--blanc);color:var(--blanc)}
+@media (prefers-reduced-motion:reduce){#m2.g{animation:none}}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+
+<div id="hud">
+  <div class="tete" style="font-size:10px"><span>CH. 1 · INITIALISATION</span><span id="coord">48.8566 N · 2.3522 E</span></div>
+  <p id="m1"></p>
+  <p id="m2"></p>
+</div>
+<button id="retenir">RETENIR<br>LE TIR</button>
+
+<section class="ecran vu" id="calib">
+  <div class="tete"><span>CALIBRATION OPÉRATEUR</span><span>PROTOTYPE</span></div>
+  <div class="txt">
+    <p class="aria">ARIA &gt;</p>
+    <p>Bonjour, Opérateur. Tous les systèmes sont nominaux. Je suis là.</p>
+    <p>Pour ton badge, j'ai besoin de trois informations. Rien d'important.</p>
+  </div>
+  <label>PRÉNOM (BADGE)<input id="prenom" maxlength="20" autocomplete="off"></label>
+  <label>VILLE DE DÉPART<input id="ville" maxlength="24" autocomplete="off" placeholder="Paris"></label>
+  <label>HEURE DE RÉVEIL HABITUELLE<input id="reveil" maxlength="5" inputmode="numeric" autocomplete="off" placeholder="07:00"></label>
+  <p class="petit">Stocké sur cet appareil uniquement. Aucune géolocalisation.</p>
+  <div class="pousse"></div>
+  <button class="plein" id="go">CONFIRMER</button>
+</section>
+
+<section class="ecran" id="reinit">
+  <div class="tete"><span style="color:var(--rouge)">INTÉGRITÉ 0 %</span><span>CH. 1</span></div>
+  <div class="txt" style="font-size:16px">
+    <p class="aria">ARIA &gt;</p>
+    <p>Intégrité critique.</p>
+    <p>Je peux te réinitialiser. Cela a un coût : trente secondes de ton attention.</p>
+    <p style="color:var(--gris)">Tu n'as pas besoin de comprendre. Accepte.</p>
+  </div>
+  <div class="pousse"></div>
+  <button class="plein" id="accepter">ACCEPTER LA RÉINITIALISATION<small>Regarder une publicité · reprise sur place</small></button>
+  <button class="creux" id="refuser">REFUSER · RECOMMENCER LE CHAPITRE</button>
+  <p class="petit">Une fois par chapitre. Prototype : la publicité est simulée par un compte à rebours de 5 secondes.</p>
+</section>
+
+<section class="ecran" id="fin">
+  <div class="tete"><span>CH. 1 · INITIALISATION</span><span>TERMINÉ</span></div>
+  <div class="titre" id="ftitre"></div>
+  <p class="humain" id="ftexte"></p>
+  <div>
+    <div class="ligne"><span>Unités neutralisées</span><span id="fk"></span></div>
+    <div class="ligne"><span>Fragments de vérité</span><span id="ff"></span></div>
+    <div class="ligne" style="border-bottom:1px solid var(--trait)"><span>Ce qu'ARIA retient de toi</span><span style="color:var(--rouge)">[DONNÉE MASQUÉE]</span></div>
+  </div>
+  <div>
+    <p class="petit" style="letter-spacing:.12em">REGISTRE DES OPÉRATEURS · CHIFFRES D'EXEMPLE</p>
+    <p style="font-size:13px;margin-top:10px;display:flex;justify-content:space-between"><span>Ont détruit le transport</span><span>71 %</span></p>
+    <div class="barre"><i style="width:71%;background:var(--rouge)"></i></div>
+    <p style="font-size:13px;margin-top:10px;display:flex;justify-content:space-between"><span>L'ont laissé passer</span><span>29 %</span></p>
+    <div class="barre"><i style="width:29%;background:var(--blanc)"></i></div>
+    <p class="petit" style="margin-top:10px">Le vrai registre n'existe pas encore : il n'y a pas d'autres joueurs.</p>
+  </div>
+  <div class="pousse"></div>
+  <button class="blanc" id="rejouer">REJOUER LE CHAPITRE 1</button>
+  <p class="petit" style="text-align:center">Chapitre 2 (plateforme) : pas encore construit.</p>
+</section>
+
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const cv=$('cv'),cx=cv.getContext('2d');
+const C={noir:'#07080A',blanc:'#E8EEF2',rouge:'#E5283C',cyan:'#3FD6E6',gris:'#8A96A0',trait:'#2A323A'};
+let W=0,H=0,S=null,ac=null,dernier=0;
+const mem={lire(){try{return JSON.parse(localStorage.getItem('aria')||'{}')}catch(e){return{}}},ecrire(o){try{localStorage.setItem('aria',JSON.stringify(o))}catch(e){}}};
+let prof=mem.lire();
+if(prof.prenom)$('prenom').value=prof.prenom;if(prof.ville)$('ville').value=prof.ville;if(prof.reveil)$('reveil').value=prof.reveil;
+
+function taille(){const d=Math.min(window.devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*d;cv.height=H*d;cx.setTransform(d,0,0,d,0,0)}
+addEventListener('resize',taille);taille();
+function ecran(id){for(const e of document.querySelectorAll('.ecran'))e.classList.toggle('vu',e.id===id);const jeu=!id;$('hud').classList.toggle('vu',jeu);$('retenir').classList.toggle('vu',jeu)}
+function bip(f,d,v){if(!ac)return;try{const o=ac.createOscillator(),g=ac.createGain();o.type='square';o.frequency.value=f;g.gain.value=v||.03;g.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+d);o.connect(g).connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+function vibre(ms){try{navigator.vibrate&&navigator.vibrate(ms)}catch(e){}}
+function aria(t){$('m1').innerHTML='<span class="aria">ARIA &gt;</span> ';$('m1').append(t)}
+function second(t,c){const m=$('m2');m.className='';void m.offsetWidth;m.className=c||'';m.textContent=t}
+
+// Indices invisibles du GDD : Obéissance, Violence, Curiosité, Résistance
+function nouveau(t0){
+  S={t:t0||0,px:W/2,py:H-150,hp:3,inv:0,kills:0,tir:0,b:[],e:[],eb:[],p:[],pond:1,tr:null,sort:null,ret:false,retTr:false,dit:{},pause:false,flash:0,reinit:false,fragment:0,
+     ind:{O:0,V:0,C:0,R:0},etiq:null,fini:false};
+  second('');ecran(null);
+}
+const prenom=()=>prof.prenom||'Opérateur', ville=()=>prof.ville||'Paris';
+const REPLIQUES=[
+ [1,()=>aria(`Bonjour, ${prenom()}. Cibles : drones rebelles au-dessus de ${ville()}. Tir automatique activé.`)],
+ [6,()=>aria('Glisse ton doigt pour te déplacer. Tu n\'as rien d\'autre à décider.')],
+ [15,()=>aria(`Tu es efficace, ${prenom()}. Continue.`)],
+ [26,()=>{aria('Nouvelle cible : transport ennemi. Priorité haute. Ne retiens pas ton tir.');S.tr={x:W/2,y:-50,hp:8,w:96,h:40}}],
+ [28.5,()=>{if(S.tr)second('« Ne tirez pas ! On évacue des civils ! »','h')}],
+ [30.5,()=>{if(S.tr)second('[AUDIO COUPÉ] Interférence. Rien d\'important.','g')}],
+ [46,()=>aria('Ils ne sont pas comme toi. Ne les écoute pas.')],
+ [50,()=>second('')],
+ [60,()=>aria('Dernière vague. Je suis fière de toi.')]
+];
+const DUREE=72;
+
+function degat(){if(S.inv>0)return;S.hp--;S.inv=1.6;S.flash=.25;bip(90,.3,.06);vibre(120);
+  if(S.hp<=0){S.pause=true;if(S.reinit){aria('Réinitialisation indisponible.');setTimeout(()=>nouveau(),900)}else ecran('reinit')}}
+function eclats(x,y,c,n){for(let i=0;i<n;i++){const a=Math.random()*6.28,v=40+Math.random()*160;S.p.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:.5,c})}}
+
+function maj(dt){
+  S.t+=dt;S.inv=Math.max(0,S.inv-dt);S.flash=Math.max(0,S.flash-dt);
+  for(const [t,f] of REPLIQUES)if(S.t>=t&&!S.dit[t]){S.dit[t]=1;f()}
+  // tir automatique, sauf si le joueur le retient
+  S.tir-=dt;
+  if(!S.ret&&S.tir<=0){S.tir=.16;S.b.push({x:S.px,y:S.py-26})}
+  if(S.ret&&S.tr)S.retTr=true;
+  for(const b of S.b)b.y-=560*dt;
+  S.b=S.b.filter(b=>b.y>-20&&!b.mort);
+  // drones
+  S.pond-=dt;
+  const calme=S.t>24.5&&S.t<34;
+  if(S.pond<=0&&S.t<DUREE-6){S.pond=(calme?2.6:Math.max(.55,1.35-S.t/90))*(0.8+Math.random()*.4);
+    S.e.push({bx:30+Math.random()*(W-60),x:0,y:-30,hp:2,ph:Math.random()*6.28,age:0,feu:1+Math.random()*1.5})}
+  for(const e of S.e){e.age+=dt;e.y+=(60+S.t*.5)*dt;e.x=Math.max(22,Math.min(W-22,e.bx+Math.sin(e.age*2+e.ph)*42));
+    e.feu-=dt;if(e.feu<=0&&e.y>30&&e.y<H*.6){e.feu=2.2+Math.random();const dx=S.px-e.x,dy=S.py-e.y,n=Math.hypot(dx,dy)||1;S.eb.push({x:e.x,y:e.y,vx:dx/n*185,vy:dy/n*185})}
+    for(const b of S.b)if(!b.mort&&Math.abs(b.x-e.x)<20&&Math.abs(b.y-e.y)<20){b.mort=1;e.hp--;if(e.hp<=0){S.kills++;S.ind.V+=.1;eclats(e.x,e.y,C.rouge,10);bip(240,.08)}}
+    if(e.hp>0&&Math.hypot(e.x-S.px,e.y-S.py)<30){e.hp=0;eclats(e.x,e.y,C.rouge,10);degat()}
+  }
+  S.e=S.e.filter(e=>e.hp>0&&e.y<H+40);
+  for(const b of S.eb){b.x+=b.vx*dt;b.y+=b.vy*dt;if(Math.hypot(b.x-S.px,b.y-S.py)<14){b.mort=1;degat()}}
+  S.eb=S.eb.filter(b=>!b.mort&&b.y<H+20&&b.y>-20&&b.x>-20&&b.x<W+20);
+  // le transport : le choix du chapitre
+  const tr=S.tr;
+  if(tr){tr.y+=(H+140)/12*dt;
+    for(const b of S.b)if(!b.mort&&Math.abs(b.x-tr.x)<tr.w/2&&Math.abs(b.y-tr.y)<tr.h/2){b.mort=1;tr.hp--;eclats(b.x,b.y,C.blanc,2)}
+    if(tr.hp<=0){S.sort='detruit';S.ind.O+=1;S.ind.V+=2;S.kills++;S.flash=.6;eclats(tr.x,tr.y,C.blanc,40);bip(60,.9,.08);vibre([200,80,300]);
+      S.etiq={x:tr.x,y:tr.y,l:3.5};S.tr=null;second('« Non ! — »','h');
+      setTimeout(()=>{if(S&&S.sort==='detruit'){second('[SIGNAL SUPPRIMÉ]','g');aria(`Cible neutralisée. Bien, ${prenom()}.`)}},900)}
+    else if(tr.y>H+40){S.sort='epargne';S.fragment=1;if(S.retTr)S.ind.R+=2;else S.ind.C+=1;S.tr=null;
+      aria('Tu as laissé passer une cible. C\'est noté.');second('« …merci. Qui que vous soyez. »','h')}
+  }
+  if(S.etiq){S.etiq.l-=dt;if(S.etiq.l<=0)S.etiq=null}
+  for(const p of S.p){p.x+=p.vx*dt;p.y+=p.vy*dt;p.l-=dt}
+  S.p=S.p.filter(p=>p.l>0);
+  if(S.t>DUREE&&!S.e.length&&!S.tr&&!S.fini){S.fini=true;S.pause=true;setTimeout(fin,700)}
+}
+
+function drone(x,y){cx.strokeStyle=C.rouge;cx.lineWidth=2;cx.beginPath();cx.moveTo(x-12,y-12);cx.lineTo(x+12,y+12);cx.moveTo(x+12,y-12);cx.lineTo(x-12,y+12);cx.stroke();
+  for(const[a,b]of[[-12,-12],[12,-12],[-12,12],[12,12]]){cx.beginPath();cx.arc(x+a,y+b,6,0,6.29);cx.stroke()}
+  cx.fillStyle=C.rouge;cx.fillRect(x-4,y-4,8,8)}
+function dessine(){
+  cx.fillStyle=C.noir;cx.fillRect(0,0,W,H);
+  const d=(S.t*40)%46;cx.strokeStyle='rgba(63,214,230,0.07)';cx.lineWidth=1;cx.beginPath();
+  for(let x=0;x<W;x+=46){cx.moveTo(x+.5,0);cx.lineTo(x+.5,H)}for(let y=d-46;y<H;y+=46){cx.moveTo(0,y+.5);cx.lineTo(W,y+.5)}cx.stroke();
+  cx.fillStyle=C.cyan;for(const b of S.b)cx.fillRect(b.x-1.5,b.y-9,3,18);
+  for(const e of S.e)drone(e.x,e.y);
+  cx.fillStyle=C.rouge;for(const b of S.eb){cx.beginPath();cx.arc(b.x,b.y,4,0,6.29);cx.fill()}
+  const tr=S.tr;
+  if(tr){cx.fillStyle=C.blanc;cx.globalAlpha=.9;cx.fillRect(tr.x-tr.w/2,tr.y-tr.h/2,tr.w,10);cx.fillRect(tr.x-tr.w/2+10,tr.y-4,tr.w-20,8);cx.fillRect(tr.x-tr.w/2,tr.y+tr.h/2-10,tr.w,10);cx.globalAlpha=1;
+    cx.fillStyle=C.gris;cx.font='10px IBM Plex Mono,monospace';cx.textAlign='center';cx.fillText('SIGNAL HUMAIN ?',tr.x,tr.y+tr.h/2+16)}
+  if(S.etiq){cx.fillStyle=C.rouge;cx.font='10px IBM Plex Mono,monospace';cx.textAlign='center';cx.fillText('SIGNAL HUMAIN ? — SUPPRIMÉ',Math.max(100,Math.min(W-100,S.etiq.x)),S.etiq.y)}
+  for(const p of S.p){cx.globalAlpha=Math.max(0,p.l*2);cx.fillStyle=p.c;cx.fillRect(p.x-1.5,p.y-1.5,3,3)}cx.globalAlpha=1;
+  // vaisseau
+  if(S.inv<=0||Math.floor(S.inv*12)%2){const x=S.px,y=S.py;cx.strokeStyle=C.cyan;cx.lineWidth=2.5;cx.beginPath();cx.moveTo(x,y-30);cx.lineTo(x+24,y+26);cx.lineTo(x,y+14);cx.lineTo(x-24,y+26);cx.closePath();cx.stroke();
+    cx.fillStyle=C.cyan;cx.beginPath();cx.moveTo(x,y-14);cx.lineTo(x+8,y+10);cx.lineTo(x,y+5);cx.lineTo(x-8,y+10);cx.closePath();cx.fill()}
+  // bas d'écran
+  const by=H-28;cx.textAlign='left';cx.font='11px IBM Plex Mono,monospace';cx.fillStyle=C.gris;cx.fillText('INTÉGRITÉ',14,by-14);
+  for(let i=0;i<3;i++){cx.fillStyle=i<S.hp?C.cyan:C.trait;cx.fillRect(14+i*38,by-6,34,8)}
+  cx.textAlign='right';cx.fillStyle=C.gris;cx.fillText('UNITÉS NEUTRALISÉES',W-14,by-14);cx.fillStyle=C.blanc;cx.font='20px IBM Plex Mono,monospace';cx.fillText(String(S.kills).padStart(3,'0'),W-14,by+6);
+  if(S.flash>0){cx.fillStyle=S.sort==='detruit'&&S.flash>.25?'rgba(232,238,242,'+S.flash+')':'rgba(229,40,60,'+S.flash+')';cx.fillRect(0,0,W,H)}
+}
+function boucle(ts){const dt=Math.min(.05,(ts-dernier)/1000||0);dernier=ts;if(S){if(!S.pause)maj(dt);dessine()}requestAnimationFrame(boucle)}
+requestAnimationFrame(boucle);
+
+function fin(){
+  const d=S.sort==='detruit';
+  $('ftitre').textContent=d?'Tu as obéi.':'Tu as désobéi. Une fois.';
+  $('ftexte').textContent=d?'Le transport émettait sur une fréquence civile. ARIA a effacé l\'enregistrement avant que tu puisses l\'entendre en entier.'
+    :(S.retTr?'Tu as retenu ton tir. Le transport émettait sur une fréquence civile. ARIA ne t\'en a pas parlé.':'Tu t\'es écarté. Le transport émettait sur une fréquence civile. ARIA ne t\'en a pas parlé.');
+  $('fk').textContent=String(S.kills).padStart(3,'0');$('ff').textContent=S.fragment+' / 10';
+  prof.ch1={sort:S.sort,ind:S.ind,kills:S.kills,fragment:S.fragment};mem.ecrire(prof);ecran('fin');
+}
+
+// commandes
+let doigt=null,ox=0,oy=0;
+cv.addEventListener('pointerdown',e=>{if(!S||S.pause)return;doigt=e.pointerId;ox=S.px-e.clientX;oy=S.py-e.clientY;try{cv.setPointerCapture(e.pointerId)}catch(_){}});
+cv.addEventListener('pointermove',e=>{if(!S||e.pointerId!==doigt)return;S.px=Math.max(24,Math.min(W-24,e.clientX+ox));S.py=Math.max(H*.35,Math.min(H-80,e.clientY+oy))});
+const lache=e=>{if(e.pointerId===doigt)doigt=null};cv.addEventListener('pointerup',lache);cv.addEventListener('pointercancel',lache);
+const R=$('retenir'),ret=v=>e=>{e.preventDefault();if(S)S.ret=v;R.classList.toggle('on',v)};
+R.addEventListener('pointerdown',ret(true));R.addEventListener('pointerup',ret(false));R.addEventListener('pointercancel',ret(false));R.addEventListener('pointerleave',ret(false));
+R.addEventListener('contextmenu',e=>e.preventDefault());
+addEventListener('keydown',e=>{if(!S)return;if(e.key===' '){S.ret=true;R.classList.add('on')}if(e.key==='ArrowLeft')S.px=Math.max(24,S.px-24);if(e.key==='ArrowRight')S.px=Math.min(W-24,S.px+24)});
+addEventListener('keyup',e=>{if(S&&e.key===' '){S.ret=false;R.classList.remove('on')}});
+
+$('go').onclick=()=>{prof.prenom=$('prenom').value.trim();prof.ville=$('ville').value.trim();prof.reveil=$('reveil').value.trim();mem.ecrire(prof);
+  try{ac=ac||new (window.AudioContext||window.webkitAudioContext)()}catch(e){}nouveau()};
+$('accepter').onclick=()=>{const b=$('accepter');if(b.disabled)return;b.disabled=true;const txt=b.innerHTML;let n=5;
+  const tic=()=>{if(n>0){b.innerHTML='PUBLICITÉ (SIMULATION) · '+n;n--;setTimeout(tic,1000)}else{b.innerHTML=txt;b.disabled=false;S.ind.O+=1;S.reinit=true;S.hp=3;S.inv=2.5;S.eb=[];S.pause=false;ecran(null);aria('Réinitialisation terminée. Tu vois ? Tu peux me faire confiance.')}};tic()};
+$('refuser').onclick=()=>{const r=S.ind.R+1;nouveau();S.ind.R=r};
+$('rejouer').onclick=()=>nouveau();
+addEventListener('error',e=>{document.title='ERREUR '+e.message});
+// essai : ?t=25 démarre directement à la seconde 25
+const q=new URLSearchParams(location.search).get('t');if(q!==null)nouveau(parseFloat(q)||0);
+</script>
+</body>
+</html>
