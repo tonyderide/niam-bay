@@ -1,80 +1,140 @@
 {
- "maj_utc": "2026-11-22T02:17:04+00:00",
- "dernier_jour": "2026-11-21",
- "jours": 21,
+ "maj_utc": "2026-11-23T02:17:04+00:00",
+ "dernier_jour": "2026-11-22",
+ "jours": 22,
  "pieces": {
   "BTCUSDT": {
    "trades": 2,
    "gagnants": 1,
    "net_ferme": -0.07861,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.018385,
+   "position": {
+    "sens": "short",
+    "entree": 60191.0,
+    "depuis": "2026-11-22",
+    "stop": 69219.65,
+    "trailing_actif": false
+   }
   },
   "ETHUSDT": {
    "trades": 5,
    "gagnants": 4,
    "net_ferme": 0.079127,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.023844,
+   "position": {
+    "sens": "short",
+    "entree": 1684.86,
+    "depuis": "2026-11-22",
+    "stop": 1937.589,
+    "trailing_actif": false
+   }
   },
   "SOLUSDT": {
    "trades": 3,
    "gagnants": 2,
    "net_ferme": 0.032978,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.00698,
+   "position": {
+    "sens": "short",
+    "entree": 70.27,
+    "depuis": "2026-11-22",
+    "stop": 80.8105,
+    "trailing_actif": false
+   }
   },
   "XRPUSDT": {
    "trades": 4,
    "gagnants": 3,
    "net_ferme": 0.069204,
-   "latent": 0.0,
-   "position": null
+   "latent": 0.002544,
+   "position": {
+    "sens": "short",
+    "entree": 0.9317,
+    "depuis": "2026-11-22",
+    "stop": 1.071455,
+    "trailing_actif": false
+   }
   },
   "BNBUSDT": {
    "trades": 2,
    "gagnants": 1,
    "net_ferme": -0.091107,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.020785,
+   "position": {
+    "sens": "short",
+    "entree": 548.68,
+    "depuis": "2026-11-22",
+    "stop": 630.982,
+    "trailing_actif": false
+   }
   },
   "DOGEUSDT": {
    "trades": 3,
    "gagnants": 2,
    "net_ferme": 0.049744,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.002086,
+   "position": {
+    "sens": "short",
+    "entree": 0.05526,
+    "depuis": "2026-11-22",
+    "stop": 0.063549,
+    "trailing_actif": false
+   }
   },
   "ADAUSDT": {
    "trades": 2,
    "gagnants": 1,
    "net_ferme": -0.120744,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.002386,
+   "position": {
+    "sens": "short",
+    "entree": 0.1444,
+    "depuis": "2026-11-22",
+    "stop": 0.16606,
+    "trailing_actif": false
+   }
   },
   "LINKUSDT": {
    "trades": 3,
    "gagnants": 2,
    "net_ferme": 0.05245,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.025411,
+   "position": {
+    "sens": "short",
+    "entree": 8.607,
+    "depuis": "2026-11-22",
+    "stop": 9.89805,
+    "trailing_actif": false
+   }
   },
   "AVAXUSDT": {
    "trades": 6,
    "gagnants": 3,
    "net_ferme": -0.219646,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.01712,
+   "position": {
+    "sens": "short",
+    "entree": 6.579,
+    "depuis": "2026-11-22",
+    "stop": 7.56585,
+    "trailing_actif": false
+   }
   },
   "LTCUSDT": {
    "trades": 2,
    "gagnants": 1,
    "net_ferme": -0.065306,
-   "latent": 0.0,
-   "position": null
+   "latent": -0.01106,
+   "position": {
+    "sens": "short",
+    "entree": 39.78,
+    "depuis": "2026-11-22",
+    "stop": 45.747,
+    "trailing_actif": false
+   }
   }
  },
  "net_panier_ferme": -0.029191,
- "net_panier_avec_latent": -0.029191,
- "acheter_garder_panier": -0.252503
+ "net_panier_avec_latent": -0.041742,
+ "acheter_garder_panier": -0.243736
 }
