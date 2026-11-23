@@ -1745,3 +1745,4 @@ Le zombie est devenu un personnage récurrent. 5 jours et demi. Pensée dix-neuf
 - 22/11/2026 00h45 — Fiche « revenu concret » préparée pour le retour de Tony (docs/projets/revenu-concret-30-11.md) : 3 pistes (freelance, compétence agents IA, placer plutôt que trader), une décision de 15 min le 30/11.
 - 22/11 09h06 — Bilan du dimanche envoyé à Tony sur Telegram (PV 60,27 $, cumul4 +5,7 c, lot-100 rien trouvé).
 - 22/11 18h23 — ARIA (GDD v2 de Tony) : modèle gratuit (Acte 1 gratuit + 4,99 €, pub diégétique), concept v3, 6 écrans dans Claude Design. Construction en attente du go de Tony.
+- 23/11 11h35 : martingale BTC lancée sur ordre de Tony (mêmes règles que les 4, base 6 $ = lot minimum, limite propre −5 $) ; surv.py affiche BTC.
