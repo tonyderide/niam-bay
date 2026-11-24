@@ -35,7 +35,9 @@ const PROPS={
   tele(T,x,y,r){T.box(x,y-20,46,20,6,2,1.5,'#4a3e30');T.box(x+4,y-50,38,28,8,1.5,1.5,'#1a1c20');T.plat(x+6,y-48,34,24,8,'#0a0c10');T.trait(x+10,y-46,x+30,y-30,.2);T.pix(x+38,y-23,'#ff3030',.9)},
   serveur(T,x,y,r){T.box(x,y-88,30,88,6,2,2,'#1e242c');for(let q=0;q<10;q++){const sy=y-84+q*8.4;T.box(x+3,sy,24,6.6,8,.8,.8,'#2c343e');for(let p=0;p<4;p++)T.trait(x+12+p*3.4,sy+1.4,x+12+p*3.4,sy+5,.4)}T.teinte(x+3,y-88,24,1.4,'#3FD6E6',.8)},
   rack(T,x,y,r){T.box(x,y-70,42,70,5,1.5,1.5,'#3a424c');for(let q=0;q<5;q++){T.plat(x+3,y-66+q*13.4,36,11,3,'#12161c');for(let p=0;p<7;p++)if(r()<.8)T.box(x+4+p*5,y-65+q*13.4,4,9.4,3,2.2,.8,['#c8c0a8','#b8b098','#8a8f98','#a09880'][(r()*4)|0])}},
-  cellule(T,x,y,r){T.box(x-4,y-80,80,80,4,1.5,2,'#4a525c');T.plat(x,y-76,72,76,-2,'#161a20');for(let px=x+5;px<x+72;px+=9)cyl(T,px,y-76,3,76,5,2,'#8a929c');T.box(x-4,y-44,80,4,7,1.5,1.2,'#6a727c');T.box(x+60,y-52,10,16,8,2,2,'#3a424c');T.pix(x+65,y-44,'#E5283C',.9)},
+  cellule(T,x,y,r,occ){T.box(x-4,y-80,80,80,4,1.5,2,'#4a525c');T.plat(x,y-76,72,76,-2,'#161a20');T.box(x+4,y-18,40,3,-1,1,1,'#3a424c');T.box(x+52,y-14,12,14,-1,2,2,'#aab2bc');
+    if(occ===1){T.cap(x+20,y-20,x+22,y-36,5,5,-1,3,'#b85a1c');T.ell(x+23,y-44,5,5.4,-1,3,'#b08a68');T.cap(x+20,y-19,x+31,y-17,3.6,3.2,-1,3,'#b85a1c');T.cap(x+31,y-17,x+32,y-3,3,2.6,-1,3,'#b85a1c')}
+    if(occ===2){T.box(x+6,y-22,18,4,-1,2,2,'#c8c0b0',1);T.ell(x+50,y-4,5,2.4,-1,1.4,'#c03060')}for(let px=x+5;px<x+72;px+=9)cyl(T,px,y-76,3,76,5,2,'#8a929c');T.box(x-4,y-44,80,4,7,1.5,1.2,'#6a727c');T.box(x+60,y-52,10,16,8,2,2,'#3a424c');T.pix(x+65,y-44,'#E5283C',.9)},
   camera(T,x,y,r){T.box(x,y,4,10,5,1.4,1,'#3a424c');T.box(x-8,y+8,16,7,7,2.5,2,'#c8ccd2');T.ell(x-8,y+11.5,2.6,2.6,8,1.6,'#14181e');T.pix(x+5,y+10,'#E5283C',1)},
   banc(T,x,y,r){T.box(x,y-12,40,3,7,1.2,1,'#5a626c');for(const px of[x+3,x+34])T.box(px,y-9,3,9,6,1.2,1,'#3e444c')}};
 // ---------------------------------------------------------------- thèmes de murs
@@ -54,8 +56,8 @@ const THEMES={
   archives:{amb:'#30405e',mur(T,Wp,Hp){T.box(0,0,Wp,Hp,0,0,1,'#2a323e');T.rel(0,0,Wp,Hp,(a,b,i,j)=>(i%48===0||j%96===0)?-1:(j%96>84&&i%6<3)?-.7:0);T.ton(0,0,Wp,Hp,(a,b)=>.86+.14*Math.sin(a*.017)*Math.sin(b*.023))},
     sol:'#4a5562',int:'#1c2028',lip:'#7a8794',plate:'#3e4854'}};
 // ---------------------------------------------------------------- fabrication d'un niveau : N = {G, theme, fenetres, lampes, props, tags, peint(T), fond}
-async function fabNiveau(N,etape){const G=N.G,Wp=G.c*TU,Hp=G.r*TU,Th=THEMES[N.theme];N.Wp=Wp;N.Hp=Hp;N.Th=Th;const r=hasard(N.graine||3);
-  N.decor=await forgeBandes(Wp,Hp,T=>{
+async function fabNiveau(N,etape){const G=N.G,Wp=G.c*TU,Hp=G.r*TU,Th=THEMES[N.theme];N.Wp=Wp;N.Hp=Hp;N.Th=Th;
+  N.decor=await forgeBandes(Wp,Hp,T=>{const r=hasard(N.graine||3);
     Th.mur(T,Wp,Hp);
     if(N.piliers)for(let x=N.piliers;x<G.c;x+=N.piliers){T.box(x*TU-6,0,12,Hp,2.5,1.2,2,N.theme==='usine'?'#6a6a72':'#4a5460');for(let y=30;y<Hp;y+=60){T.pix(x*TU-3,y,'#3a3a40',0);T.pix(x*TU+3,y,'#3a3a40',0)}}
     for(const[fx,fy,fw,fh,st]of N.fenetres||[]){const px=fx*TU,py=fy*TU,pw=fw*TU,ph=fh*TU;T.box(px-5,py-5,pw+10,ph+10,3,1.6,2,'#3a3e46');T.vide(px,py,pw,ph);
@@ -63,7 +65,7 @@ async function fabNiveau(N,etape){const G=N.G,Wp=G.c*TU,Hp=G.r*TU,Th=THEMES[N.th
         for(let i=12;i<pw;i+=12)T.box(px+i-1,py,2,ph,3,1,1,'#2e3238');for(let j=16;j<ph;j+=16)T.box(px,py+j-1,pw,2,3,1,1,'#2e3238')}
       T.box(px-7,py+ph+4,pw+14,4,4,1.4,1.4,'#55585f');T.ton(px,py+ph+8,pw,40,(a,b,i,j)=>.78+.22*Math.min(1,(j-(py+ph+8))/40)+(i%9<2?-.08:0))}
     if(N.peintFond)N.peintFond(T,r);
-    for(const p of N.props||[])PROPS[p[0]](T,p[1]*TU+(p[3]||0),p[2]*TU,r);
+    for(const p of N.props||[])PROPS[p[0]](T,p[1]*TU+(p[3]||0),p[2]*TU,r,p[4]);
     // tuiles pleines
     for(let y=0;y<G.r;y++)for(let x=0;x<G.c;x++){const ch=G.g[y][x],px=x*TU,py=y*TU;
       if(ch==='#'){const up=!plein(G.get(x,y-1))||G.get(x,y-1)==='c'||G.get(x,y-1)==='D',dn=!plein(G.get(x,y+1)),lf=!plein(G.get(x-1,y)),rt=!plein(G.get(x+1,y)),ins=!up&&!dn&&!lf&&!rt&&plein(G.get(x-1,y-1))&&plein(G.get(x+1,y-1))&&plein(G.get(x-1,y+1))&&plein(G.get(x+1,y+1));
@@ -79,9 +81,9 @@ async function fabNiveau(N,etape){const G=N.G,Wp=G.c*TU,Hp=G.r*TU,Th=THEMES[N.th
   for(const t of N.tags||[])tag(N.decor,...t);
   N.fondLoin=fondLoin(N.fond||'nuit')}
 // inscription à la bombe sur le décor déjà rendu
-function tag(D,txt,x,y,px,col,rot,al){const w=txt.length*px*.75+20,h=px*1.8,t=toile(R(w),R(h)),g=t.getContext('2d');g.font='bold '+px+'px Impact,"Arial Narrow",sans-serif';g.textBaseline='middle';g.translate(8,h/2);g.rotate(rot||0);g.fillStyle=col;g.fillText(txt,0,0);g.setTransform(1,0,0,1,0,0);
-  const d=g.getImageData(0,0,t.width,t.height),p=d.data,rr=hasard(txt.length*7+px);for(let i=3;i<p.length;i+=4)p[i]=p[i]>120&&rr()>.08?255:0;g.putImageData(d,0,0);
-  for(let i=0;i<txt.length*.8;i++){g.fillStyle=col;const xx=10+rr()*(w-24);g.fillRect(xx|0,h/2,1,(px*.3+rr()*px*.5)|0)}
+function tag(D,txt,x,y,px,col,rot,al,net){const w=txt.length*px*.75+20,h=px*1.8,t=toile(R(w),R(h)),g=t.getContext('2d');g.font='bold '+px+'px '+(net?'"IBM Plex Mono",monospace':'Impact,"Arial Narrow",sans-serif');g.textBaseline='middle';g.translate(8,h/2);g.rotate(rot||0);g.fillStyle=col;g.fillText(txt,0,0);g.setTransform(1,0,0,1,0,0);
+  const d=g.getImageData(0,0,t.width,t.height),p=d.data,rr=hasard(txt.length*7+px);for(let i=3;i<p.length;i+=4)p[i]=p[i]>(net?90:120)&&(net||rr()>.08)?255:0;g.putImageData(d,0,0);
+  if(!net)for(let i=0;i<txt.length*.8;i++){g.fillStyle=col;const xx=10+rr()*(w-24);g.fillRect(xx|0,h/2,1,(px*.3+rr()*px*.5)|0)}
   for(let i=0;i<D.bandes.length;i++){const bx=i*D.larg;if(x+w<bx||x>bx+D.larg)continue;const q=D.bandes[i].getContext('2d');q.globalAlpha=al||.82;q.drawImage(t,R(x-bx),R(y));q.globalAlpha=1}}
 // arrière-plans lointains (visibles par les fenêtres et les brèches)
 function fondLoin(k){const w=W+240,c=toile(w,H),g=c.getContext('2d'),r=hasard(k.length*13+5);const gr=g.createLinearGradient(0,0,0,H);

@@ -133,6 +133,7 @@ function tue(e){const d=DEF[e.k];S.tues++;S.chaine++;S.chaineT=1.8;S.maxChaine=M
     for(let i=0;i<18;i++)plus(i*.14,()=>boum(e.x+(rnd()-.5)*130,e.y+(rnd()-.5)*90,.5+rnd()*.7));
     plus(1.2,()=>{S.glitch=.4;sfx.gl();second('SIGNAL HUMAIN ? — SUPPRIMÉ','g')});plus(2.2,()=>aria(`Émetteur détruit. Tous les systèmes sont nominaux. Bien, ${prenom()}.`));plus(5,fin1)}}
 function degat(){if(S.inv>0||AUTO)return;S.vies--;S.inv=2.6;S.flash=.35;S.flashC='229,40,60';S.secousse=.4;S.chaine=0;boum(S.px,S.py,.8);sfx.touche();vibre(150);S.eb=[];S.niv=Math.max(1,S.niv-1);S.purges=2;
+  if(S.vies<=0&&S.mortPerso){S.mortPerso();return}
   if(S.vies<=0){S.pause=true;if(S.reinit){aria('Réinitialisation indisponible. Reprise au point de contrôle.');setTimeout(reprise1,1100)}else reinitPage(()=>{S.reinit=true;S.vies=3;S.inv=3;S.eb=[];S.pause=false;aria('Réinitialisation terminée. Tu vois ? Tu peux me faire confiance.')},reprise1)}}
 function reprise1(){const g={niv:Math.max(S.boss||S.t>=234?3:2,S.niv),score:0,tues:S.tues,maxChaine:S.maxChaine,reinit:S.reinit};const t=S.boss||S.t>=234?233:S.t>=150?150:S.t>=76?76:0;nouveau1(t,t?g:null)}
 function purge(){if(!S||S.pause||S.purges<=0||S.purgeT>0)return;S.purges--;S.purgeT=.9;S.inv=Math.max(S.inv,1.4);S.flash=.4;S.flashC='63,214,230';S.secousse=.3;sfx.purge();annule();
@@ -227,7 +228,7 @@ function dessine1(){
   for(const b of S.pb)im(SP.tir,b.x,b.y);
   if(vis){const f=4+((S.t*30|0)%3)*2;cx.globalCompositeOperation='lighter';im(SP.h[3],S.px,S.py+18);if((S.t*20|0)%2)im(SP.h[3],S.px,S.py-16);cx.globalCompositeOperation='source-over';
     rc('#3FD6E6',S.px-4,S.py+14,2.7,f);rc('#3FD6E6',S.px+1.3,S.py+14,2.7,f);rc('#eaffff',S.px-3.3,S.py+14,1.3,f-2);rc('#eaffff',S.px+2,S.py+14,1.3,f-2);
-    im(SP.joueur,S.px,S.py);rc(Math.floor(S.t*10)%2?'#fff':'#E5283C',S.px-1,S.py-1,2,2)}
+    if(S.bugSprite){const f=SPC.op.course;poseSprite(f[Math.floor(S.t*12)%8],S.px*K,S.py*K+26,1)}else{im(SP.joueur,S.px,S.py);rc(Math.floor(S.t*10)%2?'#fff':'#E5283C',S.px-1,S.py-1,2,2)}}
   for(const x of S.ex){if(x.t<0)continue;const q=x.t/x.d;if(q<.5){cx.globalCompositeOperation='lighter';cx.globalAlpha=1-q*2;im(SP.h[4],x.x,x.y,x.r*1.5*2.2*2/64);cx.globalAlpha=1;cx.globalCompositeOperation='source-over'}
     im(SP.feu[x.v][Math.min(EXN-1,(q*EXN)|0)],x.x,x.y,x.r/16)}
   for(const w of S.ondes){const q=w.t/.45;cx.globalAlpha=(1-q)*.8;cx.strokeStyle='#ffe9b0';cx.lineWidth=3;cx.beginPath();cx.arc(w.x*K,w.y*K,w.r*(.2+q)*K,0,7);cx.stroke()}cx.globalAlpha=1;
