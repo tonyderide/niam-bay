@@ -75,6 +75,9 @@ async function fabNiveau(N,etape){const G=N.G,Wp=G.c*TU,Hp=G.r*TU,Th=THEMES[N.th
         if(dn)T.ton(px,py+TU-5,TU,5,()=>.7)}
       else if(ch==='='||ch==='~'){T.box(px,py,TU,6,13,1,1,ch==='~'?'#6a5a48':Th.plate);T.rel(px,py+1,TU,4,(a,b,i)=>i%4<2?-.8:0);if(ch==='='&&x%3===1){let y2=y-1;while(y2>y-12&&y2>=0&&!plein(G.get(x,y2)))y2--;if(y-y2<12&&y2>=0)T.box(px+11,(y2+1)*TU,2,(y-y2-1)*TU,5,1,1,'#3e444c')}}
       else if(ch==='c'){PROPS.caisse(T,px+1,py+TU,()=>.4);}}
+    // sous-sol : canalisations enterrées, blocs de fondation, gravats
+    for(const[py,ray,c]of[[37.3*TU,5,'#4c525e'],[38.9*TU,7,'#3e4450']]){T.cap(0,py,Wp,py,ray,ray,12,5,c);for(let x=40;x<Wp;x+=130){T.box(x,py-ray-1.5,6,ray*2+3,13,4,2,'#5a606c');T.ton(x+6,py-ray,40,ray*2,(a)=>.8+.2*Math.min(1,(a-x-6)/40))}}
+    for(let x=0;x<G.c;x++)for(let y=34;y<G.r;y++){const u=(((x*73856093)^(y*19349663))>>>0)%100;if(G.g[y][x]!=='#'||!plein(G.get(x,y-1))||G.get(x,y-1)!=='#')continue;if(u<14)T.ell(x*TU+12,y*TU+12,5+u%7,3+u%4,12,2,'#474b55');else if(u<20)T.box(x*TU+2,y*TU+3,TU-4,TU-6,12,1.6,2,'#3c4049')}
     for(const[lx,ly,c]of N.lampes||[]){const px=lx*TU+12,py=ly*TU;T.box(px-.8,py,1.6,14,4,.8,.6,'#20242a');T.poly([[px-8,py+20],[px-3,py+13],[px+3,py+13],[px+8,py+20]],5,2,2,'#3a4a44');T.teinte(px-5,py+19.4,10,1.6,c||'#ffe9b0',1);T.lueur(px,py+24,74,c||'#ffcf80',.55)}
     if(N.peint)N.peint(T,r);
   },{mur:1,pas:16,gain:.95,grain:.1,omb:12,ombre:.55},etape,'Relevé des lieux…');

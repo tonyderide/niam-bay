@@ -88,7 +88,8 @@ function nouveau1(t0,garde){
   S={t:t0,px:GW/2,py:GH-90,vies:3,inv:2,niv:garde?garde.niv:1,purges:2,purgeT:0,score:garde?garde.score:0,tues:garde?garde.tues:0,chaine:0,chaineT:0,maxChaine:garde?garde.maxChaine:0,
      pb:[],eb:[],en:[],it:[],ex:[],et:[],ondes:[],ep:[],q:scenario1().filter(e=>e[0]>=t0),boss:null,tirT:0,secousse:0,flash:0,flashC:'255,255,255',glitch:0,
      pause:false,fini:false,reinit:garde?garde.reinit:false,defil:t0*36,amb:'mil',
-     nuages:[0,1,2,3].map(i=>({x:rnd()*GW,y:i*GH/4,v:40+rnd()*40}))};
+     nuages:[0,1,2,3].map(i=>({x:rnd()*GW,y:i*GH/4,v:40+rnd()*40})),autos:[]};
+  for(let i=0;i<70;i++){const g=i%2,av=(i>>1)%2;S.autos.push({x:(av?162:74)+(g?4.6:10.2)+1.7,y:rnd()*11*FH,v:(g?1:-1)*(18+rnd()*26),c:AUTOS[i%AUTOS.length]})}
   C1.stop=10*FH+(FH-350)-GH*.58;S.defil=Math.min(S.defil,C1.stop);
   hudCfg('UNITÉS NEUTRALISÉES','PURGE ×2');aria('…');ecran(null);hud1()}
 const plus=(d,f)=>S.q.push([S.t+d,f]);
@@ -202,6 +203,7 @@ function maj1(dt){
   for(const w of S.ondes)w.t+=dt;S.ondes=S.ondes.filter(w=>w.t<.45);
   for(const p of S.et){p.x+=p.vx*dt;p.y+=p.vy*dt;if(p.k)p.vy+=160*dt;p.l-=dt}S.et=S.et.filter(p=>p.l>0);
   for(const p of S.ep){p.t+=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.a+=p.va*dt;if(rnd()<dt*22)S.et.push({x:p.x,y:p.y,vx:(rnd()-.5)*14,vy:-8,l:.5,c:rnd()<.4?'#ff9a3d':'#4a4e58'});if(p.t>=1.1&&!p.fin){p.fin=1;fx(p.x,p.y,6)}}S.ep=S.ep.filter(p=>!p.fin);
+  for(const a of S.autos){a.y+=a.v*dt}
   for(const n of S.nuages){n.y+=n.v*dt;if(n.y>GH+40){n.y=-70;n.x=rnd()*GW}}
   if(S.boss){$('pv').firstElementChild.style.width=Math.max(0,S.boss.pv/DEF.boss.pv*100)+'%'}}
 function hud1(){$('score').textContent=String(S.tues).padStart(3,'0');$('chaine').textContent=S.chaine>1?'SÉRIE ×'+S.chaine:'';
@@ -212,6 +214,7 @@ function dessine1(){
   cx.save();if(S.secousse>0)cx.translate(R((rnd()-.5)*9*Math.min(1,S.secousse*3)),R((rnd()-.5)*9*Math.min(1,S.secousse*3)));
   fondParis();
   cx.fillStyle=S.boss?'rgba(40,6,14,.28)':'rgba(4,6,12,.14)';cx.fillRect(0,0,W,H);
+  for(const a of S.autos){const sy=GH-(a.y-S.defil);if(sy<-10||sy>GH+10)continue;const ti=SEQ1[Math.min(SEQ1.length-1,Math.floor(a.y/FH))];if(ti!=='h1'&&ti!=='h2')continue;rc(a.c,a.x-1.7,sy-3.2,3.4,6.4);rc('#1a2030',a.x-1.1,sy-1.4,2.2,2.6);const av=a.v>0?-3.4:3.4;rc('#fff6c0',a.x-1.6,sy+av,1,.8);rc('#fff6c0',a.x+.7,sy+av,1,.8);rc('#ff3030',a.x-1.6,sy-av,1,.8);rc('#ff3030',a.x+.7,sy-av,1,.8);cx.globalCompositeOperation='lighter';cx.globalAlpha=.35;im(SP.h[2],a.x,sy+av*2.6,.5);cx.globalAlpha=1;cx.globalCompositeOperation='source-over'}
   // faisceaux de la tour, une fois au-dessus du Champ-de-Mars
   const ty=GH-((10*FH+FH-350)-S.defil);if(ty>-200){cx.globalCompositeOperation='lighter';for(let q=0;q<2;q++){const a=S.t*.5+q*Math.PI,g=cx.createLinearGradient(120*K,ty*K,(120+Math.cos(a)*230)*K,(ty+Math.sin(a)*230)*K);g.addColorStop(0,'rgba(255,240,190,.34)');g.addColorStop(1,'rgba(255,240,190,0)');cx.fillStyle=g;cx.beginPath();cx.moveTo(120*K,ty*K);cx.lineTo((120+Math.cos(a-.09)*240)*K,(ty+Math.sin(a-.09)*240)*K);cx.lineTo((120+Math.cos(a+.09)*240)*K,(ty+Math.sin(a+.09)*240)*K);cx.fill()}cx.globalCompositeOperation='source-over'}
   const vis=S.vies>0&&(S.inv<=0||Math.floor(S.inv*14)%2);
