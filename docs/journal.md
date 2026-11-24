@@ -1748,3 +1748,4 @@ Le zombie est devenu un personnage récurrent. 5 jours et demi. Pensée dix-neuf
 - 23/11 11h35 : martingale BTC lancée sur ordre de Tony (mêmes règles que les 4, base 6 $ = lot minimum, limite propre −5 $) ; surv.py affiche BTC.
 - 23/11 17h15 : ARIA, prototype web jouable du chapitre 1 (jeux/aria/index.html) : calibration, shoot, choix du transport, réinitialisation, écran de fin.
 - 24/11 01h15 : ARIA Android, APK du chapitre 1 fabriqué sans Gradle (jeux/aria/android/build.sh), non testé sur téléphone.
+- 24/11 : ARIA chapitre 1 refait en version arcade (sprites pixel, ville, motifs de tirs, armement, purge, chaîne, musique, boss 3 phases) après le rejet du premier prototype par Tony ; essais simulés sans erreur, non joué au doigt.
