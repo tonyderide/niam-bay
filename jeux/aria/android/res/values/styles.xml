@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources><style name="T" parent="android:Theme.Material.NoActionBar">
+<item name="android:windowBackground">@android:color/black</item><item name="android:statusBarColor">#07080A</item><item name="android:navigationBarColor">#07080A</item>
+</style></resources>
