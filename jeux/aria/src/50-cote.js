@@ -51,7 +51,7 @@ const THEMES={
     sol:'#6a727e',int:'#2c323a',lip:'#aab2bc',plate:'#56606c'},
   ruine:{amb:'#3a4466',mur(T,Wp,Hp){T.box(0,0,Wp,Hp,0,0,1,'#7a6a5c');
      T.ton(0,0,Wp,Hp,(a,b,i,j)=>{const m=((i%16<2)?.86:1)*(((i>>4)+(j>>4))%2?1:.95),fl=(Math.pow(Math.sin(i*.39)*Math.sin(j*.39),2)>.55)?.86:1;return m*fl*(.72+.3*Math.sin(a*.011+Math.sin(b*.019)*2.4)*Math.sin(b*.014))});
-     T.rel(0,0,Wp,Hp,(a,b,i,j)=>Math.sin(a*.05)*Math.sin(b*.06)>.55?-1.2:0)},
+     T.ton(0,0,Wp,Hp,(a,b,i,j)=>Math.sin(a*.05)*Math.sin(b*.06)>.55?((j%7===0||(i+(((j/7)|0)&1?7:0))%14===0)?.5:.72):1)},
     sol:'#6a625c',int:'#2e2a28',lip:'#8a8078',plate:'#6a5440'},
   archives:{amb:'#30405e',mur(T,Wp,Hp){T.box(0,0,Wp,Hp,0,0,1,'#2a323e');T.rel(0,0,Wp,Hp,(a,b,i,j)=>(i%48===0||j%96===0)?-1:(j%96>84&&i%6<3)?-.7:0);T.ton(0,0,Wp,Hp,(a,b)=>.86+.14*Math.sin(a*.017)*Math.sin(b*.023))},
     sol:'#4a5562',int:'#1c2028',lip:'#7a8794',plate:'#3e4854'}};

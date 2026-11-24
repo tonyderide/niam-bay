@@ -48,6 +48,7 @@ button:disabled{opacity:.35}
 #pv{height:5px;background:rgba(42,50,58,.8);display:none}#pv i{display:block;height:5px;background:var(--rouge);width:100%}
 #dial{background:rgba(7,8,10,.72);border:1px solid var(--trait);padding:6px 9px;font-size:12px;display:flex;flex-direction:column;gap:3px}
 #m1:empty,#m2:empty{display:none}
+#dial:has(#m1:empty):has(#m2:empty){display:none}
 #m2.h{font-family:'IBM Plex Sans',sans-serif;font-size:14px}
 #m2.g{color:var(--rouge);animation:gl .18s steps(2) 6}
 @keyframes gl{50%{transform:translateX(3px);opacity:.5}}

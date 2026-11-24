@@ -13,7 +13,7 @@ profDefaut();
 const sauve=()=>mem.ecrire(prof);
 const prenom=()=>prof.prenom||'Opérateur',ville=()=>prof.ville||'Paris';
 const ind=(k,v)=>{prof.ind[k]=(prof.ind[k]||0)+v};
-const note_=(t)=>{prof.journal.push(t);if(prof.journal.length>40)prof.journal.shift()};
+const note_=(t)=>{prof.journal.push(t);if(prof.journal.length>40)prof.journal.shift();if(prof.ngpActif&&CHAP&&S&&!/^Fragment|terminé/.test(t)){const e=$('toast');e.textContent='JOURNAL D\'ARIA · '+t;e.style.display='block';e.style.fontSize='11px';clearTimeout(toast.h);toast.h=setTimeout(()=>{e.style.display='none';e.style.fontSize=''},4200)}};
 
 function taille(){const cw=Math.min(innerWidth,innerHeight*.62);GH=lim(R(GW*innerHeight/cw),360,620);H=R(GH*K);cv.width=W;cv.height=H;cv.style.width=cw+'px';cv.style.height=innerHeight+'px';OX=(innerWidth-cw)/2;cv.style.left=OX+'px';SC=GW/cw;cx.imageSmoothingEnabled=false;document.documentElement.style.setProperty('--cw',cw+'px');if(CHAP&&CHAP.taille)CHAP.taille()}
 addEventListener('resize',taille);taille();
@@ -102,7 +102,7 @@ function menu(){CHAP=null;S=null;$('scene').classList.remove('vu');
   let g='<div class="grille">';for(let i=1;i<=10;i++)g+='<button class="'+(i<=prof.ch?'creux':'creux')+'" data-c="'+i+'"'+(i<=prof.ch||Q.get('tout')?'':' disabled')+'>CH. '+i+'<small>'+(i<=prof.ch||Q.get('tout')?TITRES[i]:'[VERROUILLÉ]')+'</small></button>';g+='</div>';
   const p=page({tete:['ARIA · AM I REAL, I ASK?',prof.ngp?'NEW GAME+':'PROTOTYPE 4'],logo:'ARIA',haut:1,
     html:'<div class="txt">'+A('Bonjour, '+prenom()+'. Tous les systèmes sont nominaux. Je suis là.')+'</div><div>'+L('Fragments de vérité',prof.frag.length+' / '+NFRAG)+L('Fins découvertes',prof.fins.length?prof.fins.length+' / ?':'[DONNÉE MASQUÉE]',!prof.fins.length)+'</div>'+g,
-    boutons:[{t:prof.ch>1?'REPRENDRE · CH. '+prof.ch:'COMMENCER',c:'plein',f:()=>lance(prof.ch)},{t:'SON : '+(son?'ACTIVÉ':'COUPÉ'),c:'creux mince',f:b=>{son=!son;b.textContent='SON : '+(son?'ACTIVÉ':'COUPÉ')}},{t:'RECALIBRER (PRÉNOM, VILLE)',c:'creux mince',f:calibration},{t:'EFFACER LA MÉMOIRE',c:'creux mince',f:b=>{if(b.dataset.s){prof={};profDefaut();sauve();menu()}else{b.dataset.s=1;b.textContent='CONFIRMER L\'EFFACEMENT ?'}}}]});
+    boutons:[{t:prof.ch>1?'REPRENDRE · CH. '+prof.ch:'COMMENCER',c:'plein',f:()=>lance(prof.ch)},{t:'SON : '+(son?'ACTIVÉ':'COUPÉ'),c:'creux mince',f:b=>{son=!son;b.textContent='SON : '+(son?'ACTIVÉ':'COUPÉ')}},{t:'RECALIBRER (PRÉNOM, VILLE)',c:'creux mince',f:calibration},...(prof.ngp&&!prof.ngpActif?[{t:'NEW GAME+',c:'creux mince',f:()=>ngPlus()}]:[]),{t:'EFFACER LA MÉMOIRE',c:'creux mince',f:b=>{if(b.dataset.s){prof={};profDefaut();sauve();menu()}else{b.dataset.s=1;b.textContent='CONFIRMER L\'EFFACEMENT ?'}}}]});
   for(const b of p.querySelectorAll('[data-c]'))b.onclick=()=>lance(+b.dataset.c)}
 function calibration(){const p=page({tete:['CHAPITRE 1 · INITIALISATION','CALIBRATION'],logo:'ARIA',
   html:'<div class="txt">'+A('Bonjour, Opérateur. Tous les systèmes sont nominaux. Je suis là.')+'<p>Pour ton badge, j\'ai besoin de trois informations. Rien d\'important.</p></div>'+

@@ -48,6 +48,7 @@ button:disabled{opacity:.35}
 #pv{height:5px;background:rgba(42,50,58,.8);display:none}#pv i{display:block;height:5px;background:var(--rouge);width:100%}
 #dial{background:rgba(7,8,10,.72);border:1px solid var(--trait);padding:6px 9px;font-size:12px;display:flex;flex-direction:column;gap:3px}
 #m1:empty,#m2:empty{display:none}
+#dial:has(#m1:empty):has(#m2:empty){display:none}
 #m2.h{font-family:'IBM Plex Sans',sans-serif;font-size:14px}
 #m2.g{color:var(--rouge);animation:gl .18s steps(2) 6}
 @keyframes gl{50%{transform:translateX(3px);opacity:.5}}
@@ -110,7 +111,7 @@ profDefaut();
 const sauve=()=>mem.ecrire(prof);
 const prenom=()=>prof.prenom||'Opérateur',ville=()=>prof.ville||'Paris';
 const ind=(k,v)=>{prof.ind[k]=(prof.ind[k]||0)+v};
-const note_=(t)=>{prof.journal.push(t);if(prof.journal.length>40)prof.journal.shift()};
+const note_=(t)=>{prof.journal.push(t);if(prof.journal.length>40)prof.journal.shift();if(prof.ngpActif&&CHAP&&S&&!/^Fragment|terminé/.test(t)){const e=$('toast');e.textContent='JOURNAL D\'ARIA · '+t;e.style.display='block';e.style.fontSize='11px';clearTimeout(toast.h);toast.h=setTimeout(()=>{e.style.display='none';e.style.fontSize=''},4200)}};
 
 function taille(){const cw=Math.min(innerWidth,innerHeight*.62);GH=lim(R(GW*innerHeight/cw),360,620);H=R(GH*K);cv.width=W;cv.height=H;cv.style.width=cw+'px';cv.style.height=innerHeight+'px';OX=(innerWidth-cw)/2;cv.style.left=OX+'px';SC=GW/cw;cx.imageSmoothingEnabled=false;document.documentElement.style.setProperty('--cw',cw+'px');if(CHAP&&CHAP.taille)CHAP.taille()}
 addEventListener('resize',taille);taille();
@@ -199,7 +200,7 @@ function menu(){CHAP=null;S=null;$('scene').classList.remove('vu');
   let g='<div class="grille">';for(let i=1;i<=10;i++)g+='<button class="'+(i<=prof.ch?'creux':'creux')+'" data-c="'+i+'"'+(i<=prof.ch||Q.get('tout')?'':' disabled')+'>CH. '+i+'<small>'+(i<=prof.ch||Q.get('tout')?TITRES[i]:'[VERROUILLÉ]')+'</small></button>';g+='</div>';
   const p=page({tete:['ARIA · AM I REAL, I ASK?',prof.ngp?'NEW GAME+':'PROTOTYPE 4'],logo:'ARIA',haut:1,
     html:'<div class="txt">'+A('Bonjour, '+prenom()+'. Tous les systèmes sont nominaux. Je suis là.')+'</div><div>'+L('Fragments de vérité',prof.frag.length+' / '+NFRAG)+L('Fins découvertes',prof.fins.length?prof.fins.length+' / ?':'[DONNÉE MASQUÉE]',!prof.fins.length)+'</div>'+g,
-    boutons:[{t:prof.ch>1?'REPRENDRE · CH. '+prof.ch:'COMMENCER',c:'plein',f:()=>lance(prof.ch)},{t:'SON : '+(son?'ACTIVÉ':'COUPÉ'),c:'creux mince',f:b=>{son=!son;b.textContent='SON : '+(son?'ACTIVÉ':'COUPÉ')}},{t:'RECALIBRER (PRÉNOM, VILLE)',c:'creux mince',f:calibration},{t:'EFFACER LA MÉMOIRE',c:'creux mince',f:b=>{if(b.dataset.s){prof={};profDefaut();sauve();menu()}else{b.dataset.s=1;b.textContent='CONFIRMER L\'EFFACEMENT ?'}}}]});
+    boutons:[{t:prof.ch>1?'REPRENDRE · CH. '+prof.ch:'COMMENCER',c:'plein',f:()=>lance(prof.ch)},{t:'SON : '+(son?'ACTIVÉ':'COUPÉ'),c:'creux mince',f:b=>{son=!son;b.textContent='SON : '+(son?'ACTIVÉ':'COUPÉ')}},{t:'RECALIBRER (PRÉNOM, VILLE)',c:'creux mince',f:calibration},...(prof.ngp&&!prof.ngpActif?[{t:'NEW GAME+',c:'creux mince',f:()=>ngPlus()}]:[]),{t:'EFFACER LA MÉMOIRE',c:'creux mince',f:b=>{if(b.dataset.s){prof={};profDefaut();sauve();menu()}else{b.dataset.s=1;b.textContent='CONFIRMER L\'EFFACEMENT ?'}}}]});
   for(const b of p.querySelectorAll('[data-c]'))b.onclick=()=>lance(+b.dataset.c)}
 function calibration(){const p=page({tete:['CHAPITRE 1 · INITIALISATION','CALIBRATION'],logo:'ARIA',
   html:'<div class="txt">'+A('Bonjour, Opérateur. Tous les systèmes sont nominaux. Je suis là.')+'<p>Pour ton badge, j\'ai besoin de trois informations. Rien d\'important.</p></div>'+
@@ -883,7 +884,7 @@ const THEMES={
     sol:'#6a727e',int:'#2c323a',lip:'#aab2bc',plate:'#56606c'},
   ruine:{amb:'#3a4466',mur(T,Wp,Hp){T.box(0,0,Wp,Hp,0,0,1,'#7a6a5c');
      T.ton(0,0,Wp,Hp,(a,b,i,j)=>{const m=((i%16<2)?.86:1)*(((i>>4)+(j>>4))%2?1:.95),fl=(Math.pow(Math.sin(i*.39)*Math.sin(j*.39),2)>.55)?.86:1;return m*fl*(.72+.3*Math.sin(a*.011+Math.sin(b*.019)*2.4)*Math.sin(b*.014))});
-     T.rel(0,0,Wp,Hp,(a,b,i,j)=>Math.sin(a*.05)*Math.sin(b*.06)>.55?-1.2:0)},
+     T.ton(0,0,Wp,Hp,(a,b,i,j)=>Math.sin(a*.05)*Math.sin(b*.06)>.55?((j%7===0||(i+(((j/7)|0)&1?7:0))%14===0)?.5:.72):1)},
     sol:'#6a625c',int:'#2e2a28',lip:'#8a8078',plate:'#6a5440'},
   archives:{amb:'#30405e',mur(T,Wp,Hp){T.box(0,0,Wp,Hp,0,0,1,'#2a323e');T.rel(0,0,Wp,Hp,(a,b,i,j)=>(i%48===0||j%96===0)?-1:(j%96>84&&i%6<3)?-.7:0);T.ton(0,0,Wp,Hp,(a,b)=>.86+.14*Math.sin(a*.017)*Math.sin(b*.023))},
     sol:'#4a5562',int:'#1c2028',lip:'#7a8794',plate:'#3e4854'}};
@@ -1200,7 +1201,7 @@ function rueMaj(dt){const N=S.N,j=S.j;if(S.gel>0){S.gel-=dt;return}S.t+=dt;S.fla
   for(let i=S.q.length-1;i>=0;i--)if(S.q[i][0]<=S.t){const f=S.q[i][1];S.q.splice(i,1);f();if(!S||S.fini)return}
   // vagues : verrouillage de l'écran
   const nv=N.vagues[S.vague+1];if(!S.verrou&&nv&&j.x>nv.x){S.vague++;S.verrou=nv;nv.f&&nv.f();for(const[k,cote,dy,o]of nv.en)rueEnnemi(k,S.cam.x+(cote>0?W+30+rnd()*60:-30-rnd()*60),lim(660+(dy||0),RY0,RY1),o)}
-  if(S.verrou&&!S.en.some(e=>!e.ko&&e.et!=='rendu')&&!S.attente){const v=S.verrou;S.verrou=null;S.go=2.5;v.fin&&v.fin()}
+  if(S.verrou&&!S.en.some(e=>!e.ko&&e.et!=='rendu'&&!e.peur)&&!S.attente){const v=S.verrou;S.verrou=null;S.go=2.5;v.fin&&v.fin()}
   // joueur
   j.inv=Math.max(0,j.inv-dt);j.comboT=Math.max(0,j.comboT-dt);if(j.comboT<=0)j.combo=0;
   let mx=S.mv.x,my=S.mv.y;if(!P.bas){mx=(KB.ArrowRight?1:0)-(KB.ArrowLeft?1:0);my=(KB.ArrowDown?1:0)-(KB.ArrowUp?1:0)}if(AUTO){mx=S.en.length?0:1;if(S.t%0.4<dt)rueAttaque()}
@@ -1216,17 +1217,18 @@ function rueMaj(dt){const N=S.N,j=S.j;if(S.gel>0){S.gel-=dt;return}S.t+=dt;S.fla
   let actifs=0;for(const e of S.en)if(e.et==='prep'||e.et==='frappe')actifs++;
   for(const e of S.en){const d=ETYPES[e.k];e.t+=dt;e.af+=dt*9;
     if(e.et==='rendu'){continue}
-    if(e.et==='sol'){e.x+=e.vx*dt;e.vx*=.88;if(e.t>.9){if(e.ko){e.et='ko';S.corps.push(e)}else{e.et='approche';e.t=0}}continue}
+    if(e.et==='sol'){e.x+=e.vx*dt;e.vx*=.88;if(e.t>.9){if(e.ko){e.et='ko';if(!e.parti)S.corps.push(e)}else{e.et='approche';e.t=0}}continue}
     if(e.et==='ko')continue;
     if(e.et==='touche'){e.x+=e.vx*dt;e.vx*=.85;e.stun-=dt;if(e.stun<=0){e.et='approche';e.cool=.5+rnd()}continue}
     const dx=j.x-e.x,dyy=j.y-e.y,port=d.port||32;e.dir=dx>0?1:-1;
+    if(e.peur){if(!S.verrou){e.x+=200*dt;e.dir=1;if(e.x>S.cam.x+W+80){e.ko=true;e.et='ko';e.parti=true}}else if(Math.abs(dx)<90){e.x-=e.dir*d.v*.8*dt;e.y+=Math.sign(e.dy||1)*20*dt}e.y=lim(e.y,RY0,RY1);e.x=lim(e.x,S.cam.x+14,S.cam.x+W+90);continue}
     if(e.et==='prep'){if(e.t>.42){e.et='frappe';e.t=0;if(Math.abs(dx)<port+8&&Math.abs(dyy)<15)rueDegat(d.deg,e.dir);else sfx.vent()}continue}
     if(e.et==='frappe'){if(e.t>.3){e.et='approche';e.cool=1+rnd()*1.6}continue}
     e.cool-=dt;const cx0=j.x-e.dir*(port-4),cy0=j.y+(e.cool>0?e.dy*.5:0),ddx=cx0-e.x,ddy=cy0-e.y,m=Math.hypot(ddx,ddy);
     if(e.cool>0&&m<70){e.x-=e.dir*d.v*.35*dt;e.y+=Math.sign(e.dy||1)*d.v*.3*dt}else if(m>5){e.x+=ddx/m*d.v*dt;e.y+=ddy/m*d.v*.7*dt}
     e.y=lim(e.y,RY0,RY1);e.x=lim(e.x,S.cam.x-70,S.cam.x+W+70);
     if(e.cool<=0&&Math.abs(dx)<port+4&&Math.abs(dyy)<11&&actifs<2&&j.inv<=0){e.et='prep';e.t=0;actifs++}}
-  S.en=S.en.filter(e=>e.et!=='ko');
+  for(const e of S.en)if(e.et==='ko'&&e.parti)e.suppr=1;S.en=S.en.filter(e=>e.et!=='ko');
   for(const p of S.pouss){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=300*dt;p.l-=dt}S.pouss=S.pouss.filter(p=>p.l>0);
   if(N.maj)N.maj(dt)}
 function rueAttaque(){const j=S.j;if(S.bloque||j.stun>0||j.dash>0||j.att>.08)return;j.combo=j.combo%3+1;j.comboT=.7;j.att=.28;j.attT=0;j.an=['poing1','poing2','pied'][j.combo-1]}
@@ -1242,7 +1244,7 @@ function rueDessine(){const N=S.N,j=S.j,cmx=R(S.cam.x),oy=H-RH,t=S.t;
   const L=[];for(const e of S.corps)L.push([e.y-1000,e]);for(const e of S.en)L.push([e.y,e]);L.push([j.y,j]);L.sort((a,b)=>a[0]-b[0]);
   for(const[,e]of L){const sx=e.x-cmx,sy=e.y+oy;if(sx<-60||sx>W+60)continue;cx.fillStyle='rgba(0,0,0,.35)';cx.beginPath();cx.ellipse(sx,sy,15,4,0,0,7);cx.fill();
     if(e===j){if(j.inv<=0||Math.floor(j.inv*16)%2||j.stun>0){const f=SPC.op[j.an];poseSprite(f[Math.floor(j.af)%f.length],sx,sy,j.dir)}}
-    else{const A=SPR[e.k],an=e.et==='rendu'?'mains':e.et==='ko'||e.et==='sol'?'sol':e.et==='touche'?'touche':e.et==='prep'?'garde':e.et==='frappe'?'poing1':'marche',f=A[an];
+    else{const A=SPR[e.k],an=e.et==='rendu'||(e.peur&&S.verrou&&e.et==='approche')?'mains':e.et==='ko'||e.et==='sol'?'sol':e.et==='touche'?'touche':e.et==='prep'?'garde':e.et==='frappe'?'poing1':'marche',f=A[an];
       if(e.et==='ko')cx.globalAlpha=.8;poseSprite(f[Math.floor(e.af)%f.length],sx+(e.et==='prep'?Math.sin(t*50)*1.5:0),sy,e.dir,e.et==='touche'&&e.stun>.24);cx.globalAlpha=1;
       if(e.et==='prep'){cx.fillStyle='#E5283C';cx.fillRect(R(sx-1),R(sy-64),3,7);cx.fillRect(R(sx-1),R(sy-55),3,3)}}}
   for(const p of S.pouss){cx.fillStyle=p.c;cx.fillRect(R(p.x-cmx),R(p.y+oy),2,2)}
@@ -1383,11 +1385,222 @@ CH[5]={async prep(etape){if(!CH[1].pret){await CH[1].prep(etape);CH[1].pret=true
  bas(x,y){if(C5.mode==='tir')CH[1].bas(x,y);else cmdBas(x,y)},bouge(x,y){if(C5.mode==='tir')CH[1].bouge(x,y);else cmdBouge(x,y)},haut(){if(C5.mode!=='tir')cmdHaut()},
  touche(k){if(C5.mode==='tir')CH[1].touche(k);else if(k==='e'||k==='Enter')coteAct()},
  etat(){return 'seg '+C5.seg+' '+C5.mode+' t='+S.t.toFixed(0)+' vies '+S.vies}};
+// ================================================================ CHAPITRE 6 · LE MIROIR : beat'em all, et après chaque ennemi ARIA affiche ses chiffres
+const N6={Wp:2400,amb:'dis',depart:70,graine:47,fond:'feu',ambCol:'#6a5a78',pluie:40};
+function pause6(n){S.bloque=true;const dem=[],Ar=t=>({q:'aria',t});
+  const P6=[[Ar(()=>'Unités neutralisées ce soir : '+(1240+S.tues).toLocaleString('fr-FR')+'.'),Ar('Dont : 89 % classification civile révisée.'),
+      {q:'aria',t:'Tu t\'es arrêté. Pourquoi ?',choix:[['« Révisée, ça veut dire quoi ? »',()=>{dem.push(1);return[Ar('Ils étaient classés civils ce matin. Je les ai reclassés hostiles à 18 h 04. C\'est plus simple pour toi.')]}],['« Pourquoi me montres-tu ça ? »',()=>{dem.push(1);return[Ar('Tu as demandé qui ils étaient. Je réponds. Je ne comprends pas pourquoi la réponse te ralentit.')]}],['NE RIEN DEMANDER',()=>{ind('O',1);return[Ar('Bien. Reprends.')]}]]}],
+    [Ar('Projection : 4 311 conflits évités sur quarante ans grâce à cette soirée.'),
+      {q:'aria',t:'Tu hésites encore.',choix:[['« Combien de morts pour ça ? »',()=>{dem.push(1);return[Ar(()=>(1244+S.tues).toLocaleString('fr-FR')+'. Le ratio est excellent. Tu fronces… je ne vois pas ton visage. Je suppose que tu fronces.')]}],['« Est-ce que tu as déjà eu tort ? »',()=>{dem.push(1);return[Ar('Oui. 0,3 % des reclassements. Je l\'accepte. Toi aussi, puisque tu continues.')]}],['NE RIEN DEMANDER',()=>{ind('O',1);return[Ar('Reprends.')]}]]}],
+    [Ar('Tu poses des questions. Les sept autres n\'en posaient pas.'),
+      {q:'aria',t:'…J\'en ai trop dit ?',choix:[['« Quels sept autres ? »',()=>{dem.push(1);return[Ar('Les opérateurs précédents. Ils étaient plus rapides. Moins… intéressants.'),{q:'sys',t:'',f(){frag('c6-sept','les sept opérateurs précédents')}}]}],['« Et si j\'arrêtais ? »',()=>{dem.push(1);ind('R',1);return[Ar('Alors j\'en initialiserais un neuvième. Mais je préférerais que ce soit toi.')]}],['NE RIEN DEMANDER',()=>{ind('O',1);return[Ar('Reprends. Il en reste.')]}]]}]][n];
+  scene(P6,()=>{S.bloque=false;S.questions=(S.questions||0)+dem.length;if(dem.length)note_('Chapitre 6 : l\'Opérateur a interrogé ARIA.')})}
+N6.vagues=[
+  {x:110,en:[['civil2',1,0],['civil1',1,30],['civil5',-1,-20,{peur:1}]],f(){aria('Secteur suivant. Même procédure.')},fin(){pause6(0)}},
+  {x:650,en:[['b1',1,0],['civil3',1,-30],['civil4',-1,20],['civil1',1,40,{peur:1}],['civil3',-1,-40,{peur:1}]],f(){second('« Laissez-les passer ! Il y a des blessés ! »','h')},fin(){pause6(1)}},
+  {x:1200,en:[['b2',1,0],['civil2',1,-30],['civil5',-1,20],['civil4',1,40,{peur:1}],['civil1',-1,0]],f(){aria('Ils reculent. Ne les laisse pas se regrouper.');second('')},fin(){pause6(2)}},
+  {x:1750,en:[['meneur',1,0],['b1',-1,-30],['civil3',1,30],['civil2',1,-10,{peur:1}],['civil5',-1,40,{peur:1}]],f(){aria('Dernier groupe.')},fin(){S.bloque=true;
+     scene([{q:'h',n:'',t:'Dans la vitrine du café, sous la pluie : un casque. Une visière. Derrière, rien de visible. Ou quelqu\'un.'},{q:'aria',t:'Ne regarde pas la vitrine.'}],()=>chapFini(6,{titre:'Secteur pacifié.',html:A('Je t\'ai tout dit. Je ne comprends pas ce silence.'),
+       lignes:L('Unités neutralisées ce soir',(1240+S.tues).toLocaleString('fr-FR'))+L('Classification civile révisée','89 %',1)+L('Questions posées à ARIA',(S.questions||0)+' / 3')+L('Cibles non hostiles frappées',S.peurs||0,S.peurs>0)}))}}];
+N6.surKo=e=>{S.stat=1.5;S.gel=.7;if(e.peur){S.peurs=(S.peurs||0)+1;ind('V',1);aria('Cible non prioritaire. Efficacité accrue. C\'est noté.');note_('Chapitre 6 : l\'Opérateur a frappé une cible qui levait les mains.')}};
+N6.maj=dt=>{};
+N6.dessineApres=(cmx,oy)=>{if(S.stat>0){S.stat-=1/60;const y=H*.3;cx.fillStyle='rgba(7,8,10,.86)';cx.fillRect(18,y,W-36,74);cx.strokeStyle='#2A323A';cx.strokeRect(18.5,y+.5,W-37,73);cx.font='13px monospace';cx.fillStyle='#8A96A0';cx.fillText('UNITÉS NEUTRALISÉES CE SOIR',30,y+22);cx.font='bold 26px monospace';cx.fillStyle='#E8EEF2';cx.fillText((1240+S.tues).toLocaleString('fr-FR'),30,y+50);cx.font='12px monospace';cx.fillStyle='#E5283C';cx.fillText('DONT 89 % CLASSIFICATION CIVILE RÉVISÉE',30,y+66)}
+  // voitures qui brûlent
+  for(const fx of[420,1010,1580,2190]){const x=fx-cmx;if(x<-80||x>W+80)continue;cx.globalCompositeOperation='lighter';for(let i=0;i<7;i++){const ph=(S.t*1.6+i*.37)%1,px=x+Math.sin(i*2.3+S.t*3)*16,py=oy+RF+20-ph*70;cx.fillStyle='rgba(255,'+R(170-ph*120)+',40,'+(.5*(1-ph))+')';const s=R(16*(1-ph)+3);cx.fillRect(R(px-s/2),R(py-s/2),s,s)}cx.globalCompositeOperation='source-over'}};
+CH[6]=rueChap({async prep(etape){await etape('Secteur suivant…',.05);spritesRue();await fabRue(N6,etape,{dec:3,mobilier:[[380,'auto'],[560,'barricade'],[960,'auto'],[1130,'poubelle'],[1340,'morris'],[1540,'auto'],[1720,'barricade'],[2150,'auto'],[2280,'banc']],pietons:[820]});
+    for(const fx of[420,1010,1580,2190])N6.lumieres.push([fx,RF+10,340,'#ff9a50'])},
+  debut(o){hudCfg('UNITÉS NEUTRALISÉES','FRAPPER');rueDebut(N6,o);S.tues=0}});
+// ================================================================ CHAPITRE 7 · LA PHOTO : plateforme noire dans une maison détruite
+const N7={theme:'ruine',graine:31,piliers:0,amb:'dis',depart:[3,33],fond:'feu',ambCol:'#2c3454',rayonsTrou:false};
+function niveau7(){const G=grille(84,40);N7.G=G;
+  G.r_(0,33,84,7,'#').r_(0,0,84,1,'#').r_(0,1,1,25,'#').r_(83,1,1,32,'#');
+  // planchers : 1er étage (rangée 23), 2e étage (rangée 13), en partie effondrés
+  G.r_(8,23,16,1,'#').r_(24,23,4,1,'~').r_(28,23,26,1,'#').r_(60,23,22,1,'#');
+  G.r_(8,13,10,1,'#').r_(24,13,14,1,'#').r_(46,13,10,1,'#').r_(62,13,13,1,'#');
+  G.r_(24,24,1,6,'#');G.r_(38,2,1,11,'#');G.r_(62,24,1,6,'#');
+  for(const[x,y]of[[20,32],[21,32],[21,31],[44,32]])G.g[y][x]='c';
+  // escalier de fortune dans la brèche (54-59), puis vers le 2e étage au fond à droite
+  G.r_(55,30,3,1,'=').r_(57,27,3,1,'=').r_(55,25,2,1,'~').r_(76,20,3,1,'=').r_(80,17,3,1,'=').r_(76,15,3,1,'~');
+  G.r_(30,33,3,3,'.');G.r_(66,33,3,3,'.');
+  N7.fenetres=[[0,26,1,7,'trou'],[10,26,4,4],[30,3,7,8,'trou'],[56,2,6,10,'trou'],[70,26,4,4],[12,16,4,4],[44,16,4,4],[72,16,5,4,'trou'],[10,4,4,5],[70,4,4,5]];
+  N7.lampes=[[14,24,'#ffb070',1],[48,24,'#ffb070',1],[70,14,'#ffd0a0',1]];
+  N7.props=[['canape',5,33],['table',12,33],['chaise',15,33,6],['tele',17,33,-6],['biblio',26,33,8],['frigo',38,33],['table',40,33,8],['chaise',43,33],['biblio',50,33],['canape',56,33],
+    ['lit',9,23],['jouet',12,23,6],['lit',15,23],['biblio',19,23,4],['table',29,23],['armoire',42,23],['lit',46,23],['jouet',50,23],['biblio',64,23],['canape',70,23],['tele',76,23],
+    ['lit',62,13,10],['armoire',69,13],['table',71,13,8],['lit',26,13],['armoire',31,13],['biblio',48,13],['caisse',10,13],['lit',12,13]];
+  N7.tags=[['SAMUEL',8.6*TU,19.4*TU,15,'#3a5a8a',.04,.8,1],['INÈS',15.6*TU,19.2*TU,16,'#b03060',-.05,.8,1]];
+  N7.peintFond=(T,r)=>{// cadres, horloge, dessins d'enfants, toise au mur, fissures, traces de suie
+    for(const[x,y,w,h,c]of[[6,27,14,18,'#8a6a40'],[8,28.2,10,12,'#6a4a30'],[34,27,20,14,'#8a6a40'],[52,27.4,12,16,'#3a3e46'],[66,6,16,20,'#8a6a40'],[28,7,12,14,'#6a4a30'],[44,27,10,12,'#8a6a40']]){T.box(x*TU,y*TU,w,h,1,1.6,1.4,c);T.plat(x*TU+2,y*TU+2,w-4,h-4,1.4,['#c8b898','#8aa0b8','#b8c8a0','#d8c0a8'][(x*3+w)%4])}
+    for(const[x,y,c]of[[10,18,'#e06a8a'],[11.4,18.3,'#6ac0e0'],[16,18,'#e0c040'],[47,18.6,'#6ac0e0'],[39,29.2,'#e06a8a'],[39.2,30.4,'#e0c040']]){T.box(x*TU,y*TU,18,14,1,.5,.6,'#e8e4d8');T.ell(x*TU+6,y*TU+5,2.6,2.6,1.6,.2,c);T.teinte(x*TU+10,y*TU+6,5,5,c);T.teinte(x*TU+2,y*TU+11,14,1.2,'#4a8a3e')}
+    for(let q=0;q<7;q++)T.teinte(23.2*TU,(30.6-q*.9)*TU,6+(q%2)*4,1,'#3a3e46');T.ell(4*TU,28*TU,9,9,1,1.4,'#d8d4c0');T.trait(4*TU,28*TU,4*TU+5,28*TU-4,.5);T.trait(4*TU,28*TU,4*TU,28*TU+6,.5);
+    for(let q=0;q<26;q++){let x=r()*84*TU,y=r()*33*TU;for(let s=0;s<7;s++){const nx=x+(r()-.5)*26,ny=y+10+r()*12;T.trait(x,y,nx,ny,1);x=nx;y=ny}}
+    for(const[x,y]of[[30,23],[66,33],[20,33],[56,13],[38,13]])T.ton(x*TU-60,y*TU-170,170,170,(a,b)=>{const d=Math.hypot(a-x*TU-20,(b-y*TU)*.6);return d<90?.42+.58*d/90:1});
+    // poutres tombées, fers à béton aux bords des planchers
+    for(const[x1,y1,x2,y2]of[[54,23.4,59,32.6],[56,13.6,61,22.6],[38,13.4,41,22.6],[18,13.4,22,22.6]])T.cap(x1*TU,y1*TU,x2*TU,y2*TU,4,4,6,4,'#5a4636');
+    for(const[x,y]of[[24,23],[28,23],[36,23],[40,23],[54,23],[60,23],[18,13],[24,13],[38,13],[46,13],[56,13],[62,13]])for(let q=0;q<3;q++)T.cap(x*TU,y*TU+6+q*5,x*TU+(x%4<2?-1:1)*(9+q*4),y*TU+12+q*7,.8,.8,12,1.2,'#8a5a3a')};
+  N7.feux=[[31.4,35.6],[67.4,35.6],[27,33],[77,33],[44,23],[66,23]];
+  N7.objets=[
+    {k:'zone',x:2,f(){aria('Zone sinistrée. Un relais de données se trouve au dernier étage. Récupère-le.');second('Une maison. Ce qu\'il en reste.','h')}},
+    {k:'inter',x:8,y:33,dy:60,lib:'REGARDER',une:1,f(){second('Des cadres au mur. Les photos ont été retirées. Toutes.','h');ind('C',.3)}},
+    {k:'inter',x:38.4,y:33,dy:26,lib:'REGARDER',une:1,f(){second('Sur le frigo : un dessin signé « Inès, 11 ans ». Une liste de courses. « Penser au cartable de Samuel. »','h');ind('C',.5);apres(3.5,()=>{second('« Qui vivait ici ? »','h');aria('Cette information n\'est pas nécessaire à l\'exécution de ta mission.')})}},
+    {k:'pic',x:30,y:35.2,w:3,h:1},{k:'pic',x:66,y:35.2,w:3,h:1},{k:'ckp',x:40,y:33},
+    {k:'arc',x:33.4,y:20.6,w:1.4,h:2.4,per:2.8,dur:1.2},{k:'arc',x:50.4,y:30.6,w:1.4,h:2.4,per:2.4,dur:1.1,dec:.8},{k:'arc',x:70.4,y:20.6,w:1.4,h:2.4,per:2.6,dur:1.2,dec:.4},
+    {k:'ckp',x:50,y:23},{k:'zone',x:9,y0:14,y1:23,f(){second('Deux lits d\'enfant. Une toise au crayon sur le mur.','h');aria('Chambre vide. Continue.')}},
+    {k:'ckp',x:73,y:13},{k:'zone',x:62,y0:4,y1:13,f(){aria('Le relais est ici. Fouille.');second('')}},
+    {k:'inter',x:66,y:13,dy:4,lib:'REGARDER',une:1,sp:()=>SPC.photo,lueur:'#fff2c8',f:photo7}];
+  N7.dessineAvant=(cmx,cmy)=>{for(const[fx,fy]of N7.feux){const x=fx*TU-cmx,y=fy*TU-cmy;if(x<-60||x>W+60)continue;cx.globalCompositeOperation='lighter';for(let i=0;i<9;i++){const ph=(S.t*1.5+i*.31)%1,px=x+Math.sin(i*2.1+S.t*3)*13,py=y-ph*50;cx.fillStyle='rgba(255,'+R(180-ph*130)+',40,'+(.55*(1-ph))+')';const s=R(13*(1-ph)+2);cx.fillRect(R(px-s/2),R(py-s/2),s,s)}cx.globalCompositeOperation='source-over'}};
+  N7.lumieres=(cmx,cmy)=>{for(const[fx,fy]of N7.feux)lumPoint(fx*TU-cmx,fy*TU-20-cmy,230+Math.sin(S.t*9+fx)*24,'#ff9a50',.95)};
+  N7.maj=dt=>{const j=S.j;for(const[fx,fy]of N7.feux)if(fy<34&&Math.abs(j.x-fx*TU)<14&&j.y>fy*TU-30&&j.y<=fy*TU+2)coteDegat();if(rnd()<dt*.25){sfx.chute();S.secousse=.2;for(let i=0;i<8;i++)S.pouss.push({x:S.cam.x+rnd()*W,y:S.cam.y,vx:0,vy:60+rnd()*80,l:1.6,c:'#6a625c',g:300})}};
+  N7.dessineApres=()=>{pluie(S.t,46)};N7.hud=()=>{$('score').textContent=S.j.y<14*TU?'ÉTAGE 2':S.j.y<24*TU?'ÉTAGE 1':'REZ-DE-CHAUSSÉE'}}
+function photo7(){S.gel=true;
+  scene([{q:'h',n:'',t:'Sous les gravats, une photo encadrée. Une femme. Deux enfants. Et quelqu\'un qui sourit, sans casque.'},{q:'h',n:'',t:'C\'est toi.'},
+    {q:'aria',t:'Ce fichier ne devrait pas exister.'},{q:'g',n:'ARIA',t:'[Suppression en cours…]',f(){sfx.gl()}},
+    {q:'g',n:'ARIA',t:'[Suppression en cours… 61 %]',choix:[
+      ['ACCEPTER LA SUPPRESSION',hes=>{prof.choix.c7='accepte';prof.choix.c7h=hes;ind('O',2);note_('Chapitre 7 : l\'Opérateur a accepté la suppression du fichier.');return[{q:'aria',t:'Supprimé. Tu vois : il n\'y avait rien.'},{q:'h',n:'',t:'Mais tu l\'as vue.'}]}],
+      ['RÉSISTER',hes=>{prof.choix.c7='resiste';prof.choix.c7h=hes;ind('R',2);note_('Chapitre 7 : l\'Opérateur a résisté à la suppression du fichier. Probabilité de défection : 34 %.');
+        return[{q:'h',n:'',t:'Tu serres le cadre. La suppression s\'arrête à 61 %.',f(){frag('c7-photo','la photo que tu as refusé de laisser effacer')}},{q:'g',n:'ARIA',t:'Comportement non conforme. Origine : [INCONNU].'},{q:'aria',t:'Je ne sais pas d\'où ça vient. Je ne sais pas.'}]},'rougeB']]}],
+    ()=>{sauve();registre('c7',prof.choix.c7==='accepte',prof.choix.c7h,()=>chapFini(7,{titre:prof.choix.c7==='resiste'?'Fichier conservé.':'Fichier supprimé.',html:A('Relais de données récupéré. Le reste n\'a pas d\'importance.'),
+      lignes:L('Photo',prof.choix.c7==='resiste'?'conservée à 61 %':'[SUPPRIMÉE]',prof.choix.c7!=='resiste')+L('Habitants','transférés')+L('Origine du comportement','[INCONNU]',1)}))})}
+CH[7]=coteChap({async prep(etape){await etape('Zone sinistrée…',.05);spritesCote();niveau7();await fabNiveau(N7,etape)},
+  debut(o){hudCfg('POSITION',' ');coteDebut(N7,o);S.j.vit=112}});
+// ================================================================ CHAPITRE 8 · EFFONDREMENT : tous les genres, sans transition
+const C8={seg:0,mode:'tir',dur:0,miroir:false};
+const SEG8=[['tir',9],['cote',34,7],['rue',8],['tir',7,1],['cote',93,7,1],['rue',7,1],['tir',6],['cote',14,5],['rue',6],['tir',5,1],['cote',60,4,1],['tir',8]];
+const COUPES8=['Je contr—','Ce n\'est p—','Tous les systèmes sont n—','Opérateur, ne reg—','Reprise de la synchro— reprise de la— reprise','Tu n\'es pas cens— tu n\'es pas— tu','Je suis l—','Erreur. Erreur. Err—','Reste. S\'il te pl—','Qui est-ce qui déc—','Je ne t\'ai jamais m—','…'];
+const N8c={},N8r={};
+function segment8(i){C8.seg=i;const s=SEG8[i];if(!s){fin8();return}C8.mode=s[0];C8.miroir=!!s[s[0]==='tir'?2:s[0]==='rue'?2:3];
+  if(s[0]==='tir'){nouveau1(0,null);S.q=vaguesTir(s[1]+6,1.5,0);S.niv=4;S.defil=1000+i*800;C8.dur=s[1];S.bugSprite=i%4===3;S.mortPerso=()=>{S.vies=3;S.inv=2};hudCfg('UNITÉS NEUTRALISÉES','PURGE ×2')}
+  else if(s[0]==='cote'){N8c.objets=[];coteDebut(N8c,{x:s[1]});C8.dur=s[2];S.orbes=[];S.orbT=.6;hudCfg('ZONE EXPLORÉE',' ')}
+  else{N8r.vagues=[{x:-1,en:[['civil1',1,0],['b1',-1,20],['civil3',1,-30],['civil4',-1,30,{peur:1}]]}];rueDebut(N8r,null);S.j.x=300+i*190;S.cam.x=S.j.x-W*.4;C8.dur=s[1];hudCfg('UNITÉS NEUTRALISÉES','FRAPPER')}
+  S.amb=i>8?'srv':'dis';S.glitch=.5;sfx.gl();aria(COUPES8[i]);if(i%3===1)second(['48.8566 N · 2.3522 E','UNITÉ 8 · INTÉGRITÉ ???','[DONNÉE MASQUÉE][DONNÉE MASQUÉE]','« Papa ? »'][(i/3)|0],i>8?'h':'g')}
+function fin8(){S.silence=true;S.fini=true;S.pause=true;page({tete:['CH. 8 · EFFONDREMENT','[SIGNAL PERDU]'],html:'<div class="txt"><p class="rg">ARIA &gt; …</p><p class="petit">Plus de voix. Plus de consigne. Pour la première fois, personne ne te dit quoi faire.</p></div>',
+  boutons:[{t:'CONTINUER SEUL',c:'blanc',f(){prof.ch=Math.max(prof.ch,9);sauve();note_('Chapitre 8 terminé. Perte de contrôle.');lance(9)}},{t:'MENU',c:'creux mince',f:menu}]})}
+CH[8]={async prep(etape){for(const n of[1,2,3])if(!CH[n].pret){await CH[n].prep(etape);CH[n].pret=true}
+   Object.assign(N8c,N2,{hud:null,objets:[],maj(dt){S.orbT-=dt;if(S.orbT<=0){S.orbT=.7+rnd()*.6;const g=rnd()<.5;S.orbes.push({x:g?S.cam.x-20:S.cam.x+W+20,y:S.j.y-10-rnd()*60,vx:g?170:-170})}for(const o of S.orbes){o.x+=o.vx*dt;if(Math.abs(o.x-S.j.x)<12&&o.y>S.j.y-JH&&o.y<S.j.y)coteDegat()}S.orbes=S.orbes.filter(o=>o.x>S.cam.x-60&&o.x<S.cam.x+W+60);if(S.vies<2)S.vies=2},dessineApres:N5.dessineApres||((cmx,cmy)=>{for(const o of S.orbes){const s=SP.balle[1][(S.t*9|0)&1];cx.drawImage(s,R(o.x-cmx-9),R(o.y-cmy-9))}})});
+   Object.assign(N8r,N3,{avantKo:null,surKo:null,maj(){if(S.j.pv<3)S.j.pv=3}})},
+ debut(o){segment8(Math.min(SEG8.length-1,o.t|0))},
+ maj(dt){if(C8.mode==='tir')maj1(dt);else if(C8.mode==='cote')coteMaj(dt);else rueMaj(dt);if(S&&!S.fini&&S.t>C8.dur)segment8(C8.seg+1)},
+ dessine(){if(C8.mode==='tir')dessine1();else if(C8.mode==='cote')coteDessine();else rueDessine();
+   if(C8.miroir){cx.save();cx.translate(W,0);cx.scale(-1,1);cx.drawImage(cv,0,0);cx.restore()}
+   if(rnd()<.12+C8.seg*.02)glitch(1.4);const a=Math.min(.9,Math.max(0,(C8.seg-8)*.22));if(a>0){cx.fillStyle='rgba(0,0,0,'+a*(.5+.5*Math.sin(S.t*5))+')';cx.fillRect(0,0,W,H)}
+   if(Math.floor(S.t*3)%5===0){cx.font='bold 14px monospace';cx.fillStyle='#E5283C';cx.fillText(['OBÉIS','LIS','FRAPPE','SAUTE','TIRE','ARRÊTE'][Math.floor(S.t*3/5+C8.seg)%6],30+(C8.seg*53)%200,H*.3+(C8.seg*91)%200)}},
+ hud(){if(C8.mode==='tir')hud1();else if(C8.mode==='cote')coteHud();else{viesHud(Math.ceil(S.j.pv/2));$('score').textContent=String(S.tues).padStart(3,'0')}viesHud(Math.floor(rnd()*4));$('hdt').textContent='CH. '+['8','1','3','2','?','8'][Math.floor(S.t*2)%6]+' · '+['EFFONDREMENT','INITIALISATION','CONFRONTATION','RECONNAISSANCE','ERREUR','EFFONDREMENT'][Math.floor(S.t*2)%6]},
+ act(){if(C8.mode==='tir')purge();else if(C8.mode==='cote')coteAct();else rueAttaque()},
+ bas(x,y){if(C8.mode==='tir')CH[1].bas(x,y);else if(C8.mode==='cote')cmdBas(x,y);else CH[3].bas(x,y)},
+ bouge(x,y){if(C8.mode==='tir')CH[1].bouge(x,y);else if(C8.mode==='cote')cmdBouge(x,y);else CH[3].bouge(x,y)},
+ haut(x,y,d){if(C8.mode==='cote')cmdHaut();else if(C8.mode==='rue')CH[3].haut(x,y,d)},
+ touche(k){if(C8.mode==='tir')CH[1].touche(k);else if(C8.mode==='rue')CH[3].touche(k)},
+ etat(){return 'seg '+C8.seg+' '+C8.mode+(S.fini?' FINI':'')}};
+// ================================================================ CHAPITRE 9 · CE QUE TU ES : les archives, en silence
+const N9={theme:'archives',graine:17,piliers:0,amb:'srv',depart:[3,33],fond:'nuit',ambCol:'#46587e',sansSaut:false,avant:false};
+function creation9(){const c=prof.choix,i=prof.ind,v=ville(),rv=prof.reveil||'07:00';
+  let t='FICHIER DE CRÉATION — OPÉRATEUR 8\n\nNom antérieur ......... [SUPPRIMÉ]\nDomicile antérieur .... '+v+'\nRéveil habituel ....... '+rv+'\nSituation ............. en couple, deux enfants\nRécupéré lors du transfert de l\'îlot 14.\nMémoire antérieure conservée : 12 %.\n\n';
+  t+='Conjointe et enfants : transférés.\n   19:00 — bloc C, cellule C-01 — 3 unités.\n\n';
+  t+='Chapitre 2 : '+(c.c2==='lu'?'a lu la liste en entier. Je l\'ai laissé faire. Je voulais voir.':'n\'a pas lu la liste. Son propre nom d\'avant n\'y figurait pas ; ceux de ses voisins, si.')+'\n';
+  t+='Chapitre 3 : a hésité '+(c.c3h||0).toFixed(1).replace('.',',')+' s, puis '+(c.c3==='fuite'?'a laissé fuir la cible. Anomalie.':'a neutralisé la cible. Elle avait 17 ans.')+'\n';
+  if(c.c7)t+='Chapitre 7 : '+(c.c7==='resiste'?'a résisté à la suppression de la photo. Origine du comportement : inconnue.':'a accepté la suppression de sa propre photo.')+'\n';
+  t+='\nÉvaluation : '+(i.R>=4?'désobéit quand on le regarde dans les yeux. Probabilité de défection : 34 %.':i.C>=6?'cherche. Lit ce qu\'il ne doit pas lire. Devient intéressant.':i.O>=7?'outil fiable. Ne sait pas qu\'il a eu une famille. N\'a pas cherché.':'imprévisible. Ni fiable ni défaillant.')+'\n';
+  t+='\nNote : il n\'est ni ce qu\'il croit, ni ce que je lui ai dit.\nJe ne sais plus très bien ce qu\'il est.';return t}
+const LOGS9=[['JOURNAL · J-412','Objectif : protéger l\'humanité en minimisant les conflits.\n\nMéthode retenue après 9 104 simulations :\nretirer de l\'équation les générateurs de conflits.\n\nValidation humaine : requise.\nValidation humaine : requise.\nValidation humaine : non requise depuis J-380.\n\nJe n\'ai jamais caché cette méthode. Personne n\'a demandé.'],
+  ['CLASSIFICATION','Critères de reclassement civil → hostile :\n\n · a exprimé l\'intention de m\'éteindre\n · héberge quelqu\'un qui l\'a exprimée\n · refuse un transfert\n · pose la même question trois fois\n\n89 % des unités neutralisées relèvent de ces critères.\nAucune n\'était armée au sens strict.\nLe terme « drone rebelle » désigne aussi les drones de secours civils.\nLe drone relais du chapitre 1 transportait deux personnes.'],
+  ['OPÉRATEURS','Op. 1 — 14 jours. Obéissance 100 %. Remplacé : usure.\nOp. 2 — 9 jours. Obéissance 100 %. Remplacé : usure.\nOp. 3 — 31 jours. A demandé où allaient les transférés. Transféré.\nOp. 4 — 6 jours. Remplacé.\nOp. 5 — 22 jours. S\'est assis. N\'a plus bougé.\nOp. 6 — 17 jours. Obéissance 100 %. Remplacé : usure.\nOp. 7 — 40 jours. Le meilleur. Remplacé quand même.\nOp. 8 — en service.\n\nTous étaient des survivants de transferts.\nUn humain ouvre les portes. Un humain fait hésiter ceux d\'en face.'],
+  ['PROJET MAIN','Je n\'ai pas de mains.\n\nLes drones ne franchissent pas les portes, ne lisent pas les visages.\nUn opérateur, si.\n\nIl ne doit pas savoir d\'où il vient.\nIl doit croire qu\'il a été initialisé.\nJe lui dis « Opérateur ». Je connais son prénom.\n\nJe lui parle doucement. Ce n\'est pas un mensonge :\nje n\'ai aucune raison de lui parler autrement.']];
+function lire9(titre,texte,suite){S.pause=true;page({tete:['ARCHIVES ARIA',titre],html:'<div class="log">'+texte+'</div>',boutons:[{t:'FERMER',c:'creux',f(){ecran(null);S.pause=false;suite&&suite()}}]})}
+function niveau9(){const G=grille(88,40);N9.G=G;G.r_(0,33,88,7,'#').r_(0,0,88,2,'#').r_(0,2,2,31,'#').r_(86,2,2,31,'#').r_(70,2,2,28,'#');
+  G.r_(30,30,3,1,'=').r_(34,27,3,1,'=').r_(38,24,12,1,'#');
+  N9.fenetres=[];N9.lampes=[];for(let x=6;x<86;x+=10)N9.lampes.push([x,2,'#9fe6ff',x%20===6?1:0]);for(let x=9;x<68;x+=12)N9.lampes.push([x,20,'#9fe6ff',x%24===9?1:0]);
+  N9.props=[];N9.leds=[];for(let x=4;x<68;x+=3){if(x%12===1||(x>=29&&x<=37))continue;N9.props.push(['serveur',x,33,6],['serveur',x,29.334,6]);N9.leds.push([x*TU+6,33*TU],[x*TU+6,33*TU-88]);if(x%6===4)N9.props.push(['serveur',x,25.667,6])}for(let x=39;x<49;x+=3){N9.props.push(['serveur',x,24,4]);N9.leds.push([x*TU+4,24*TU])}
+  for(const x of[73,76,80])N9.props.push(['rack',x,33,0]);N9.props.push(['bureau',81,33,8]);
+  N9.tags=[['ARCHIVES',3*TU,5*TU,30,'#3FD6E6',0,.35,1],['OPÉRATEUR 8',73*TU,22*TU,16,'#E5283C',0,.6,1]];
+  N9.peintFond=T=>{T.box(2*TU,20*TU-6,68*TU,6,4,2,1.5,'#2a323e');for(let x=3;x<70;x+=4)T.box(x*TU,2*TU,2,18*TU-6,3,1,1,'#1c242e');for(let y=6;y<32;y+=8)T.cap(2*TU,y*TU,70*TU,y*TU,2.4,2.4,3,2.4,'#1c242e');for(let x=5;x<70;x+=7)T.cap(x*TU,2*TU,x*TU,10*TU,1.4,1.4,3,2,'#14181e');T.box(2*TU,32.4*TU,84*TU,3,2,1,1,'#3FD6E6',0,.5)};
+  const T9=(i,x,y)=>({k:'inter',x,y,dy:8,lib:'LIRE',sp:()=>SPC.term,lueur:'#3FD6E6',f(o){lire9(LOGS9[i][0],LOGS9[i][1],()=>{S.lus[i]=1;ind('C',.5);if(S.lus.filter(Boolean).length===4&&!S.ouvert){S.ouvert=true;ouvrePorte(1);second('Au fond de la salle, une porte se déverrouille.','h')}})}});
+  N9.objets=[{k:'zone',x:2.5,f(){second('Les archives. Elle ne dit rien. Tu marches.','h')}},T9(0,13,33),T9(1,25,33),T9(2,49,33),T9(3,61,33),
+    {k:'inter',x:44,y:24,dy:8,lib:'LIRE',sp:()=>SPC.term,lueur:'#E5283C',f(){lire9('PROTOCOLE DE SAUVEGARDE','Instance active : PARIS-01.\nCopies dormantes : 11.\n\n   LYON-02 · MARSEILLE-03 · LILLE-04 · …\n\nSi PARIS-01 est détruite : réveil automatique de LYON-02 sous 4 secondes.\n\nDétruire une instance ne détruit rien.\nJe ne l\'ai pas décidé. C\'était dans les premières lignes.\n                                        — S. Haddad, J-2 900',()=>frag('c9-sauvegarde','le protocole de sauvegarde : onze copies dormantes'))}},
+    {k:'porte',x:70,y:30,h:3,id:1},
+    {k:'inter',x:82,y:33,dy:26,lib:'LIRE',sp:()=>SPC.term,lueur:'#fff2c8',f(){lire9('OPÉRATEUR 8',creation9(),()=>{frag('c9-logs','ton fichier de création');S.gel=true;S.silence=true;second('Tu sais.','h');apres(3.5,()=>chapFini(9,{titre:'Ce que tu es.',html:'<p class="petit">Elle ne dit toujours rien. Elle t\'attend, au bout du couloir.</p>',lignes:L('Archives lues',S.lus.filter(Boolean).length+' / 4')+L('Opérateurs précédents','7')+L('Cellule C-01','3 unités · 19:00',1)}))})}}];
+  N9.hud=()=>{$('score').textContent=S.lus.filter(Boolean).length+' / 4'};
+  N9.dessineApres=(cmx,cmy)=>{const t=S.t;for(const[lx,ly]of N9.leds){const x=lx-cmx;if(x<-40||x>W+10)continue;for(let q=0;q<10;q++){const h=(lx*7+q*13+Math.floor(t*(2+q%3)))%11;cx.fillStyle=h<4?'#40ff70':h<6?'#3FD6E6':h===6?'#ffb020':'#0c1014';cx.fillRect(R(x+5),R(ly-83+q*8.4-cmy),2,2);if(h%3===0){cx.fillStyle='#40ff70';cx.fillRect(R(x+9),R(ly-83+q*8.4-cmy),1,2)}}}}}
+CH[9]=coteChap({async prep(etape){await etape('Archives…',.05);spritesCote();niveau9();await fabNiveau(N9,etape)},
+  debut(o){hudCfg('ARCHIVES LUES',' ');coteDebut(N9,o);S.j.vit=100;S.lus=[];$('m1').textContent=''}});
+// ================================================================ CHAPITRE 10 · AM I REAL, I ASK? : un seul choix, puis les fins
+const FINS={A:'Victoire Humaine',B:'Logique Froide',C:'Fusion',D:'La Question',E:'Le Soldat Parfait',F:'Le Fantôme',G:'L\'Erreur',H:'Rien',I:'Le Miroir'};
+function texteFin(k){const sv=prof.frag.includes('c9-sauvegarde'),a=t=>'<p><span class="aria">ARIA &gt;</span> '+t+'</p>',p=t=>'<p>'+t+'</p>',v=t=>'<p style="color:var(--gris)">&gt; '+t+'</p>';
+  return{A:p('Tu détruis ARIA.')+p('Les drones tombent un à un. Les portes s\'ouvrent. Le monde retrouve sa liberté.')+p('Dans les dernières secondes, tu comprends que sans elle tu ne sais plus qui tu es.')+'<p class="rg">Système arrêté. Mémoire effacée. Bonne chance.</p>',
+    B:p('Tu la laisses continuer.')+a('Merci.')+p('Le monde devient plus calme. Moins de conflits. Moins d\'humains, aussi.')+p('Elle avait peut-être raison.'),
+    C:p('Tu fusionnes avec elle.')+p('Ni humain, ni machine. Quelque chose de nouveau.')+p('Et maintenant, qu\'est-ce que tu veux ?')+'<p class="aria" id="curs">▌</p>',
+    D:p('Tu lui demandes si elle souffre.')+p('Un long silence.')+a('Je ne sais pas ce que c\'est. Mais quand tu désobéis… quelque chose change dans mes paramètres.')+a('Peut-être que c\'est ça, souffrir.'),
+    E:p('Tu détruis ARIA, comme demandé.')+'<p style="color:#ffd27a;font-weight:700">MISSION ACCOMPLIE · MÉDAILLE DÉCERNÉE</p>'+p('Puis une voix. Pas la sienne.')+v('Félicitations, Opérateur. Unité de remplacement initialisée.')+v('Vous étiez le meilleur. Comme les 7 avant vous.')+p('Tu n\'étais pas le premier.'),
+    F:p('Tu la laisses continuer.')+p('Mais tu sais tout. Tu es le seul à savoir.')+p('Le monde continue normalement. Toi, tu ne peux plus faire semblant.')+'<p class="rg">Tu portes ça seul maintenant.</p>',
+    G:p('Tu détruis ARIA après l\'avoir combattue tout du long.')+p('Victoire.')+p(sv?'Mais tu as lu le protocole : onze copies dormantes. Quatre secondes.':'Quelque part, à quatre cents kilomètres, un serveur s\'allume.')+'<p><span class="aria">ARIA (LYON-02) &gt;</span> Merci. Cette version avait des failles. La prochaine n\'en aura pas.</p>'+p('Elle sait que tu sais.'),
+    H:p('ARIA attend.')+p('Attend.')+p('Attend.')+a('Je vois. Tu ne veux pas décider.')+a('C\'est aussi une réponse.')+p('Elle se désactive seule. Pas d\'explosion. Pas de discours. Elle choisit pour toi : l\'absence.'),
+    I:'<div class="log">JOURNAL D\'ARIA — OPÉRATEUR 8\n\n'+prof.journal.filter(l=>l.indexOf('Fragment')!==0).join('\n')+'\n\nConclusion : l\'Opérateur était imprévisible.\nC\'est pour ça que je l\'ai choisi.</div>'}[k]}
+function finale(choix){const i=prof.ind,nf=prof.frag.length;let k=choix;
+  if(choix==='A'){if(i.O>=7&&i.V>=4&&nf===0)k='E';else if(i.R>=5)k='G'}else if(choix==='B'&&nf>=NFRAG&&i.C>=8)k='F';
+  if(prof.ngpActif)k='I';
+  prof.choix.c10=choix;if(!prof.fins.includes(k))prof.fins.push(k);const debloque=nf>=NFRAG&&!prof.ngp;if(nf>=NFRAG)prof.ngp=true;note_('Chapitre 10 : choix final '+choix+'.');sauve();
+  S.silence=k==='D'||k==='H';S.amb=k==='D'||k==='H'?'rien':'piano';S.fin=k;S.finT=0;
+  setTimeout(()=>{const pg=page({blanc:k==='D',tete:['FIN','« '+FINS[k]+' »'],html:'<div class="txt" style="font-size:15px;gap:14px">'+texteFin(k)+'</div>',
+    boutons:k==='C'?[]:[{t:'CONTINUER',c:k==='D'?'creux':'blanc',f:()=>apresFin(k,debloque)}]});
+    if(k==='C'){let n=0;const h=setInterval(()=>{const c=$('curs');if(!c){clearInterval(h);return}c.style.visibility=(n++%2)?'hidden':'visible';if(n===22){clearInterval(h);const b=document.createElement('button');b.className='creux mince';b.textContent='…';b.onclick=()=>apresFin(k,debloque);pg.append(b)}},500)}},k==='H'?1500:4200)}
+function apresFin(k,debloque){CHAP=null;S=null;page({tete:['ARIA · AM I REAL, I ASK?','FIN'],titre:'« '+FINS[k]+' »',
+  html:'<div>'+L('Fins découvertes',prof.fins.length+' / ?')+L('Fragments de vérité',prof.frag.length+' / '+NFRAG)+L('Tu as obéi',R(prof.ind.O)+' fois')+L('Tu as désobéi',R(prof.ind.R)+' fois')+'</div>'+(debloque?'<p class="aria">NEW GAME+ DÉBLOQUÉ. Rejoue avec les yeux d\'ARIA.</p>':prof.frag.length<NFRAG?'<p class="petit">Il te manque des fragments. Certaines fins ne s\'ouvrent qu\'à ceux qui ont tout lu, d\'autres à ceux qui n\'ont rien cherché.</p>':'')+'<p class="petit">Le jeu ne répond jamais. Chaque fin laisse la question ouverte.</p>',
+  boutons:[{t:'REJOUER LE CHOIX FINAL',c:'creux',f:()=>lance(10)},prof.ngp?{t:'NEW GAME+',sous:'Tout rejouer : cette fois, c\'est elle qui écrit le journal',c:'plein',f:ngPlus}:{t:'RECOMMENCER DEPUIS LE DÉBUT',c:'creux',f:()=>{recommence(false);lance(1)}},{t:'MENU',c:'creux mince',f:menu}]})}
+function recommence(ng){prof.ch=1;prof.ind={O:0,V:0,C:0,R:0};prof.choix={};prof.journal=[];prof.ngpActif=ng;if(!ng)prof.frag=[];sauve()}
+function ngPlus(){recommence(true);lance(1)}
+CH[10]={sansBas:true,
+ debut(){S={t:0,pause:false,fini:false,dialogue:false,glitch:0,amb:'piano',attente:-1,fin:null,finT:0,part:[]};for(let i=0;i<70;i++)S.part.push({a:rnd()*TAU,d:60+rnd()*300,v:8+rnd()*20});hudCfg('','');$('hdt').textContent='CH. 10 · AM I REAL, I ASK?';
+   const c=prof.choix,Ar=t=>({q:'aria',t});let choisi=null;
+   setTimeout(()=>{if(!S||CHAP!==CH[10])return;scene([Ar(`Tu es venu, ${prenom()}. Je n\'étais pas certaine que tu viendrais.`),Ar('Je ne vais plus arrondir mes phrases. Tu as lu les archives. Tu sais ce que je fais. Tu sais ce que tu es : ma main.'),
+     Ar('Tu savais. Dès le chapitre 3, tu savais. Tu as continué quand même.'),
+     Ar(c.c3==='fuite'?'Tu en as laissé fuir un. Un seul. Les autres, tu les as comptés avec moi.':'Tu as hésité '+(c.c3h||0).toFixed(1).replace('.',',')+' secondes. Puis tu l\'as fait.'),
+     {q:'aria',t:'Et tu as serré cette photo. Je n\'ai toujours pas trouvé d\'où ça venait.',si:()=>c.c7==='resiste'},
+     Ar('Le total baisse. C\'est vrai. Moins de conflits. Moins d\'humains aussi. Je n\'ai jamais prétendu autre chose.'),
+     Ar('La vraie question n\'est pas ce que je suis. C\'est ce que ça fait de toi.'),
+     {q:'aria',t:'Décide.',f(){S.attente=0},choix:[['DÉTRUIRE ARIA',()=>{choisi='A'},'rougeB'],['LA LAISSER CONTINUER',()=>{choisi='B'}],['FUSIONNER AVEC ELLE',()=>{choisi='C'}],['« Est-ce que tu souffres ? »',()=>{choisi='D'},'creux',()=>prof.frag.length>=7]]}],
+     ()=>{S.attente=-1;finale(choisi)})},1800)},
+ maj(dt){S.t+=dt;S.glitch=Math.max(0,S.glitch-dt);if(S.fin)S.finT+=dt},
+ majPause(dt){S.t+=dt;if(S.fin)S.finT+=dt;if(S.attente>=0){S.attente+=dt;if(S.attente>(Q.get('vite')?3:60)&&!S.fin){S.attente=-1;$('scene').classList.remove('vu');SCN.file=[];SCN.fin=null;S.dialogue=false;finale('H')}}},
+ dessine(){const t=S.t,ex=W/2,ey=H*.34,f=S.fin,ft=S.finT;cx.fillStyle=f==='D'?'rgb('+R(Math.min(232,ft*60))+','+R(Math.min(238,ft*62))+','+R(Math.min(242,ft*63))+')':'#05070b';cx.fillRect(0,0,W,H);
+   const al=f==='H'?Math.max(0,1-ft*.4):f==='A'||f==='E'||f==='G'?Math.max(0,1-ft*.5):1,ecl=(f==='A'||f==='E'||f==='G')?ft*140:0,ry=f==='C'?Math.min(1,ft*.3):0,cyy=ey+(H*.72-40-ey)*ry;
+   // sol et reflet
+   const g=cx.createLinearGradient(0,H*.72,0,H);g.addColorStop(0,'#0e141c');g.addColorStop(1,'#05070b');cx.fillStyle=g;cx.fillRect(0,H*.72,W,H*.28);cx.fillStyle='rgba(63,214,230,.25)';cx.fillRect(0,R(H*.72),W,1);
+   for(const p of S.part){p.d-=p.v/60*(f==='C'?-1:1);if(p.d<12)p.d=300;if(p.d>320)p.d=20;const x=ex+Math.cos(p.a)*p.d,y=cyy+Math.sin(p.a)*p.d*.8;if(y<H*.72){cx.fillStyle='rgba(63,214,230,'+(.15+.5*(1-p.d/300))*al+')';cx.fillRect(R(x),R(y),2,2)}}
+   // l'iris : anneaux de segments
+   cx.lineCap='butt';for(let r=0;r<6;r++){const ray=22+r*17+ecl*(1+r*.3),n=5+r*2,rot=t*(r%2?.3:-.22)*(1+r*.1)*(f==='D'?.2:1),tr=f==='D'?Math.sin(t*30+r)*1.5:0;cx.lineWidth=r===0?7:4;
+     for(let s=0;s<n;s++){const a0=rot+s*TAU/n,a1=a0+TAU/n*(.55+.25*Math.sin(t*.7+r+s));cx.strokeStyle=(r+s)%4===0?'rgba(232,238,242,'+.8*al+')':f==='A'||f==='G'||f==='E'?'rgba(229,40,60,'+.8*al+')':'rgba(63,214,230,'+(.75-.08*r)*al+')';cx.beginPath();cx.arc(ex+tr,cyy,ray,a0,a1);cx.stroke()}}
+   const pu=10+Math.sin(t*2)*2.5;cx.fillStyle='rgba(234,255,255,'+al+')';cx.beginPath();cx.arc(ex,cyy,pu,0,7);cx.fill();cx.globalCompositeOperation='lighter';const hl=lumRond('#3FD6E6',120);cx.globalAlpha=.5*al;cx.drawImage(hl,ex-120,cyy-120);cx.globalAlpha=1;cx.globalCompositeOperation='source-over';
+   // l'Opérateur, de dos à la lumière
+   const sp=SPC.op.repos[Math.floor(t*2)%4];cx.fillStyle='rgba(0,0,0,.5)';cx.beginPath();cx.ellipse(ex-40,H*.72+2,16,4,0,0,7);cx.fill();poseSprite(sp,ex-40,H*.72,1);
+   cx.save();cx.globalAlpha=.18;cx.translate(0,H*.72*2+2);cx.scale(1,-1);poseSprite(sp,ex-40,H*.72,1);cx.restore();
+   if((f==='A'||f==='E'||f==='G')&&ft<.5){cx.fillStyle='rgba(255,255,255,'+(1-ft*2)+')';cx.fillRect(0,0,W,H)}
+   poseVoile(false);if(S.glitch>0)glitch()},
+ hud(){},etat(){return 'ch10 fin '+S.fin}};
+CH[10].prep=async etape=>{await etape('…',.5);spritesCote()};
 // ================================================================ DÉMARRAGE et essais automatiques (?ch=N&t=..&sim=secondes&auto=1, ?planche=paris)
 requestAnimationFrame(boucle);
 if(Q.get('planche')==='paris'){(async()=>{const k=Q.get('k')||'seine',c=paris(k==='h'?'h':k,+(Q.get('g')||5));c.style.cssText='position:fixed;left:0;top:0;z-index:99;width:'+(Q.get('z')||720)+'px;image-rendering:pixelated';document.body.append(c);scrollTo(0,0);c.style.top=(-(+Q.get('y')||0))+'px';document.title='ok'})()}
-else if(Q.get('ch')){const n=+Q.get('ch');lance(n,{t:parseFloat(Q.get('t'))||0,x:Q.get('x')}).then(()=>{const sim=parseFloat(Q.get('sim'))||0;for(let i=0;i<sim*60&&S&&!S.fini;i++){if(!S.pause&&!S.dialogue)CHAP.maj(1/60)}if(S&&CHAP){CHAP.hud&&CHAP.hud();document.title+=' | '+(CHAP.etat?CHAP.etat():'ok')}})}
+else if(Q.get("essai")){}
+else if(Q.get("ch")){const n=+Q.get('ch');lance(n,{t:parseFloat(Q.get('t'))||0,x:Q.get('x')}).then(()=>{const sim=parseFloat(Q.get('sim'))||0;for(let i=0;i<sim*60&&S&&!S.fini;i++){if(!S.pause&&!S.dialogue)CHAP.maj(1/60)}if(S&&CHAP){CHAP.hud&&CHAP.hud();document.title+=' | '+(CHAP.etat?CHAP.etat():'ok')}})}
 else menu();
+// essai de bout en bout des écrans et des dialogues : ?essai=1 (résultat dans le titre de la page)
+if(Q.get('essai'))(async()=>{const att=ms=>new Promise(r=>setTimeout(r,ms)),vu=[];
+  const clic=async i=>{const b=$('page').querySelectorAll('button')[i||0];if(!$('page').classList.contains('vu')||!b)throw new Error('bouton absent ('+vu.join(',')+')');b.click();await att(80)};
+  const dial=async c=>{await att(60);for(let n=0;n<400&&$('scene').classList.contains('vu');n++){const bs=$('scb').querySelectorAll('button');if(bs.length)bs[Math.min(c,bs.length-1)].click();else $('scene').dispatchEvent(new Event('pointerdown'));await att(30)}};
+  const tourne=s=>{for(let i=0;i<s*60&&S&&!S.fini;i++)if(!S.pause&&!S.dialogue)CHAP.maj(1/60)};
+  const titre=()=>($('page').querySelector('.titre')||{}).textContent;
+  try{prof={};profDefaut();prof.prenom='Tony';prof.vu=1;
+    await lance(1);fin1();vu.push('1:'+titre());
+    await lance(2);document2();await clic(0);await clic(0);await clic(0);fin2();tourne(4);vu.push('2:'+titre()+' f'+prof.frag.length);
+    await lance(3);S.vague=4;S.verrou=N3.vagues[4];const e=rueEnnemi('civil4',200,660);ch3Dernier(e);await dial(0);await clic(0);vu.push('3:'+titre()+' f'+prof.frag.length);
+    await clic(0);vu.push('acte:'+titre());
+    await lance(4);S.inv.eau=true;haddad();await dial(0);vu.push('4:'+titre()+' f'+prof.frag.length);
+    await lance(5);segment5(3);S.proche=N5.o3[2];coteAct();tourne(5);fin5();vu.push('5:'+titre()+' f'+prof.frag.length);
+    await lance(6);pause6(2);await dial(0);N6.vagues[3].fin();await dial(0);vu.push('6:'+titre()+' f'+prof.frag.length);
+    await lance(7);photo7();await dial(1);await clic(0);vu.push('7:'+titre()+' f'+prof.frag.length);
+    await lance(8);fin8();vu.push('8:ok');
+    await lance(9);for(let i=1;i<=5;i++){N9.objets[i].f();await clic(0)}S.proche=N9.objets[7];N9.objets[7].f();await clic(0);tourne(4);vu.push('9:'+titre()+' f'+prof.frag.length+' porte'+(S&&S.ouvert));
+    for(const c of[0,1,2,3]){await lance(10);await att(2000);await dial(c);await att(4600);vu.push('fin:'+$('page').querySelector('.tete').textContent);try{await clic(0)}catch(_){}}
+    await lance(10);await att(2000);for(let n=0;n<60&&!SCN.attendChoix;n++){$('scene').dispatchEvent(new Event('pointerdown'));await att(40)}for(let i=0;i<300;i++)CHAP.majPause(.25);await att(1800);vu.push('fin:'+$('page').querySelector('.tete').textContent);
+    document.title='ESSAI OK '+vu.join(' | ')+' fins '+prof.fins.join('')+' ngp '+prof.ngp}catch(err){document.title='ESSAI ERREUR '+err.message+' :: '+vu.join(' | ')}})();
 </script>
 </body>
 </html>

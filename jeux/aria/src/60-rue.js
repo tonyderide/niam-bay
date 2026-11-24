@@ -77,7 +77,7 @@ function rueMaj(dt){const N=S.N,j=S.j;if(S.gel>0){S.gel-=dt;return}S.t+=dt;S.fla
   for(let i=S.q.length-1;i>=0;i--)if(S.q[i][0]<=S.t){const f=S.q[i][1];S.q.splice(i,1);f();if(!S||S.fini)return}
   // vagues : verrouillage de l'écran
   const nv=N.vagues[S.vague+1];if(!S.verrou&&nv&&j.x>nv.x){S.vague++;S.verrou=nv;nv.f&&nv.f();for(const[k,cote,dy,o]of nv.en)rueEnnemi(k,S.cam.x+(cote>0?W+30+rnd()*60:-30-rnd()*60),lim(660+(dy||0),RY0,RY1),o)}
-  if(S.verrou&&!S.en.some(e=>!e.ko&&e.et!=='rendu')&&!S.attente){const v=S.verrou;S.verrou=null;S.go=2.5;v.fin&&v.fin()}
+  if(S.verrou&&!S.en.some(e=>!e.ko&&e.et!=='rendu'&&!e.peur)&&!S.attente){const v=S.verrou;S.verrou=null;S.go=2.5;v.fin&&v.fin()}
   // joueur
   j.inv=Math.max(0,j.inv-dt);j.comboT=Math.max(0,j.comboT-dt);if(j.comboT<=0)j.combo=0;
   let mx=S.mv.x,my=S.mv.y;if(!P.bas){mx=(KB.ArrowRight?1:0)-(KB.ArrowLeft?1:0);my=(KB.ArrowDown?1:0)-(KB.ArrowUp?1:0)}if(AUTO){mx=S.en.length?0:1;if(S.t%0.4<dt)rueAttaque()}
@@ -93,17 +93,18 @@ function rueMaj(dt){const N=S.N,j=S.j;if(S.gel>0){S.gel-=dt;return}S.t+=dt;S.fla
   let actifs=0;for(const e of S.en)if(e.et==='prep'||e.et==='frappe')actifs++;
   for(const e of S.en){const d=ETYPES[e.k];e.t+=dt;e.af+=dt*9;
     if(e.et==='rendu'){continue}
-    if(e.et==='sol'){e.x+=e.vx*dt;e.vx*=.88;if(e.t>.9){if(e.ko){e.et='ko';S.corps.push(e)}else{e.et='approche';e.t=0}}continue}
+    if(e.et==='sol'){e.x+=e.vx*dt;e.vx*=.88;if(e.t>.9){if(e.ko){e.et='ko';if(!e.parti)S.corps.push(e)}else{e.et='approche';e.t=0}}continue}
     if(e.et==='ko')continue;
     if(e.et==='touche'){e.x+=e.vx*dt;e.vx*=.85;e.stun-=dt;if(e.stun<=0){e.et='approche';e.cool=.5+rnd()}continue}
     const dx=j.x-e.x,dyy=j.y-e.y,port=d.port||32;e.dir=dx>0?1:-1;
+    if(e.peur){if(!S.verrou){e.x+=200*dt;e.dir=1;if(e.x>S.cam.x+W+80){e.ko=true;e.et='ko';e.parti=true}}else if(Math.abs(dx)<90){e.x-=e.dir*d.v*.8*dt;e.y+=Math.sign(e.dy||1)*20*dt}e.y=lim(e.y,RY0,RY1);e.x=lim(e.x,S.cam.x+14,S.cam.x+W+90);continue}
     if(e.et==='prep'){if(e.t>.42){e.et='frappe';e.t=0;if(Math.abs(dx)<port+8&&Math.abs(dyy)<15)rueDegat(d.deg,e.dir);else sfx.vent()}continue}
     if(e.et==='frappe'){if(e.t>.3){e.et='approche';e.cool=1+rnd()*1.6}continue}
     e.cool-=dt;const cx0=j.x-e.dir*(port-4),cy0=j.y+(e.cool>0?e.dy*.5:0),ddx=cx0-e.x,ddy=cy0-e.y,m=Math.hypot(ddx,ddy);
     if(e.cool>0&&m<70){e.x-=e.dir*d.v*.35*dt;e.y+=Math.sign(e.dy||1)*d.v*.3*dt}else if(m>5){e.x+=ddx/m*d.v*dt;e.y+=ddy/m*d.v*.7*dt}
     e.y=lim(e.y,RY0,RY1);e.x=lim(e.x,S.cam.x-70,S.cam.x+W+70);
     if(e.cool<=0&&Math.abs(dx)<port+4&&Math.abs(dyy)<11&&actifs<2&&j.inv<=0){e.et='prep';e.t=0;actifs++}}
-  S.en=S.en.filter(e=>e.et!=='ko');
+  for(const e of S.en)if(e.et==='ko'&&e.parti)e.suppr=1;S.en=S.en.filter(e=>e.et!=='ko');
   for(const p of S.pouss){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=300*dt;p.l-=dt}S.pouss=S.pouss.filter(p=>p.l>0);
   if(N.maj)N.maj(dt)}
 function rueAttaque(){const j=S.j;if(S.bloque||j.stun>0||j.dash>0||j.att>.08)return;j.combo=j.combo%3+1;j.comboT=.7;j.att=.28;j.attT=0;j.an=['poing1','poing2','pied'][j.combo-1]}
@@ -119,7 +120,7 @@ function rueDessine(){const N=S.N,j=S.j,cmx=R(S.cam.x),oy=H-RH,t=S.t;
   const L=[];for(const e of S.corps)L.push([e.y-1000,e]);for(const e of S.en)L.push([e.y,e]);L.push([j.y,j]);L.sort((a,b)=>a[0]-b[0]);
   for(const[,e]of L){const sx=e.x-cmx,sy=e.y+oy;if(sx<-60||sx>W+60)continue;cx.fillStyle='rgba(0,0,0,.35)';cx.beginPath();cx.ellipse(sx,sy,15,4,0,0,7);cx.fill();
     if(e===j){if(j.inv<=0||Math.floor(j.inv*16)%2||j.stun>0){const f=SPC.op[j.an];poseSprite(f[Math.floor(j.af)%f.length],sx,sy,j.dir)}}
-    else{const A=SPR[e.k],an=e.et==='rendu'?'mains':e.et==='ko'||e.et==='sol'?'sol':e.et==='touche'?'touche':e.et==='prep'?'garde':e.et==='frappe'?'poing1':'marche',f=A[an];
+    else{const A=SPR[e.k],an=e.et==='rendu'||(e.peur&&S.verrou&&e.et==='approche')?'mains':e.et==='ko'||e.et==='sol'?'sol':e.et==='touche'?'touche':e.et==='prep'?'garde':e.et==='frappe'?'poing1':'marche',f=A[an];
       if(e.et==='ko')cx.globalAlpha=.8;poseSprite(f[Math.floor(e.af)%f.length],sx+(e.et==='prep'?Math.sin(t*50)*1.5:0),sy,e.dir,e.et==='touche'&&e.stun>.24);cx.globalAlpha=1;
       if(e.et==='prep'){cx.fillStyle='#E5283C';cx.fillRect(R(sx-1),R(sy-64),3,7);cx.fillRect(R(sx-1),R(sy-55),3,3)}}}
   for(const p of S.pouss){cx.fillStyle=p.c;cx.fillRect(R(p.x-cmx),R(p.y+oy),2,2)}
