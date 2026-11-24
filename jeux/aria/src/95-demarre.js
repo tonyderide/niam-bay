@@ -1,6 +1,8 @@
 // ================================================================ DÉMARRAGE et essais automatiques (?ch=N&t=..&sim=secondes&auto=1, ?planche=paris)
 requestAnimationFrame(boucle);
 if(Q.get('planche')==='paris'){(async()=>{const k=Q.get('k')||'seine',c=paris(k==='h'?'h':k,+(Q.get('g')||5));c.style.cssText='position:fixed;left:0;top:0;z-index:99;width:'+(Q.get('z')||720)+'px;image-rendering:pixelated';document.body.append(c);scrollTo(0,0);c.style.top=(-(+Q.get('y')||0))+'px';document.title='ok'})()}
+else if(Q.get("essai")==="acces"){(async()=>{const r=[];for(const[n,N]of[[2,N2],[4,N4],[7,N7],[9,N9]]){await lance(n);for(const o of N.objets)if(o.k==="porte")for(let q=0;q<o.h;q++)N.G.g[o.y+q][o.x]=".";r.push(n+":"+(accessible(N).join(" ")||"tout accessible"))}document.title="ACCES "+r.join(" | ")})()}
+else if(Q.get("essai")==="bot"){(async()=>{const n=+Q.get("n")||2;await lance(n,{x:Q.get("x")});const N=S.N;let mx=0;for(let i=0;i<60*70&&S&&!S.fini;i++){const j=S.j;KB.ArrowRight=1;const dev=solide(N,j.x+JL+10,j.y-4)||(!solide(N,j.x+30,j.y+6)&&N.G.get(Math.floor((j.x+30)/TU),Math.floor((j.y+6)/TU))!=="=");KB[" "]=j.sol&&dev&&i%3===0?1:0;if(!S.pause&&!S.dialogue)CHAP.maj(1/60);else S.pause=false;mx=Math.max(mx,j.x/TU)}document.title="BOT ch"+n+" xmax "+mx.toFixed(1)+" vies "+(S?S.vies:"-")})()}
 else if(Q.get("essai")){}
 else if(Q.get("ch")){const n=+Q.get('ch');lance(n,{t:parseFloat(Q.get('t'))||0,x:Q.get('x')}).then(()=>{const sim=parseFloat(Q.get('sim'))||0;for(let i=0;i<sim*60&&S&&!S.fini;i++){if(!S.pause&&!S.dialogue)CHAP.maj(1/60)}if(S&&CHAP){CHAP.hud&&CHAP.hud();document.title+=' | '+(CHAP.etat?CHAP.etat():'ok')}})}
 else menu();

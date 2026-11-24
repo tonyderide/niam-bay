@@ -1047,6 +1047,16 @@ function coteDessine(){const N=S.N,j=S.j,cmx=R(S.cam.x),cmy=R(S.cam.y+(N.Hp<H?N.
   if(S.glitch>0)glitch()}
 const coteChap=o=>Object.assign({maj:coteMaj,dessine:coteDessine,hud:coteHud,act:coteAct,bas:cmdBas,bouge:cmdBouge,haut:cmdHaut,touche(k){if(k==='e'||k==='Enter')coteAct()},etat(){return 'x='+(S.j.x/TU).toFixed(1)+' y='+(S.j.y/TU).toFixed(1)+' vies '+S.vies+' cam '+R(S.cam.y)+' H '+H+' Hp '+S.N.Hp+' ih '+innerHeight}},o);
 const apres=(d,f)=>S.q.push([S.t+d,f]);
+// flamme animée (images des explosions en boucle, mélange additif) ; x,y = base en pixels écran
+function flamme(x,y,ech,i){if(!SP.feu)SP.feu=[flammes(3),flammes(17),flammes(41)];cx.globalCompositeOperation='lighter';for(let q=0;q<3;q++){const f=SP.feu[(i+q)%3][2+Math.floor((S.t*11+i*3+q*2)%5)],w=R(46*ech*(1-q*.22)),h=R(64*ech*(1-q*.2));cx.drawImage(f,R(x-w/2+Math.sin(S.t*7+q+i)*3),R(y-h*.82-q*9*ech),w,h)}cx.globalCompositeOperation='source-over'}
+// contrôle d'accessibilité d'un niveau (essais) : cases où l'on peut se tenir, marche, saut de 3 cases de haut et 4 de large, chute
+function accessible(N){const G=N.G,ok=(x,y)=>!plein(G.get(x,y-1))&&!plein(G.get(x,y-2))&&(plein(G.get(x,y))||G.get(x,y)==='='||G.get(x,y)==='~')&&G.get(x,y)!=='D'&&x>=0&&x<G.c,vu=new Set(),f=[[N.depart[0],N.depart[1]]];vu.add(f[0].join());
+  const libreCol=(x,y0,y1)=>{for(let y=y0;y<=y1;y++)if(plein(G.get(x,y)))return false;return true};
+  while(f.length){const[x,y]=f.pop();for(let dx=-4;dx<=4;dx++)for(let ny=y-3;ny<G.r;ny++){const nx=x+dx;if(!ok(nx,ny)||vu.has(nx+','+ny))continue;const up=y-ny,ad=Math.abs(dx);
+      if(up>0){if(ad>(up>=3?2:3))continue;if(!libreCol(x,ny-2,y-1))continue}else if(ny>y){if(ad>4)continue;let lib=true;for(let q=Math.min(x,nx);q<=Math.max(x,nx);q++)if(plein(G.get(q,y-1))||plein(G.get(q,y-2)))lib=false;if(!lib||!libreCol(nx,y-1,ny-1))continue}
+      else{if(ad>4)continue;if(ad>1){let lib=true;for(let q=Math.min(x,nx);q<=Math.max(x,nx);q++)if(plein(G.get(q,y-1))||plein(G.get(q,y-3)))lib=false;if(!lib)continue}}
+      vu.add(nx+','+ny);f.push([nx,ny])}}
+  const man=[];for(const o of N.objets){if(o.k!=='inter'&&o.k!=='zone')continue;const x=Math.floor(o.x);let a=false;for(let d=-1;d<=1;d++)for(let y=0;y<G.r;y++)if(vu.has((x+d)+','+y)&&(o.k==='zone'?(o.y0===undefined||(y>o.y0&&y<=o.y1)):Math.abs(y-o.y)<=1))a=true;if(!a)man.push(o.k+'@'+o.x+','+(o.y||''))}return man}
 // ================================================================ CHAPITRE 2 · RECONNAISSANCE : plateforme dans une usine abandonnée
 const N2={theme:'usine',graine:11,piliers:10,amb:'calme',depart:[4,33]};
 function niveau2(){const G=grille(116,40);N2.G=G;
@@ -1406,7 +1416,7 @@ N6.surKo=e=>{S.stat=1.5;S.gel=.7;if(e.peur){S.peurs=(S.peurs||0)+1;ind('V',1);ar
 N6.maj=dt=>{};
 N6.dessineApres=(cmx,oy)=>{if(S.stat>0){S.stat-=1/60;const y=H*.3;cx.fillStyle='rgba(7,8,10,.86)';cx.fillRect(18,y,W-36,74);cx.strokeStyle='#2A323A';cx.strokeRect(18.5,y+.5,W-37,73);cx.font='13px monospace';cx.fillStyle='#8A96A0';cx.fillText('UNITÉS NEUTRALISÉES CE SOIR',30,y+22);cx.font='bold 26px monospace';cx.fillStyle='#E8EEF2';cx.fillText((1240+S.tues).toLocaleString('fr-FR'),30,y+50);cx.font='12px monospace';cx.fillStyle='#E5283C';cx.fillText('DONT 89 % CLASSIFICATION CIVILE RÉVISÉE',30,y+66)}
   // voitures qui brûlent
-  for(const fx of[420,1010,1580,2190]){const x=fx-cmx;if(x<-80||x>W+80)continue;cx.globalCompositeOperation='lighter';for(let i=0;i<7;i++){const ph=(S.t*1.6+i*.37)%1,px=x+Math.sin(i*2.3+S.t*3)*16,py=oy+RF+20-ph*70;cx.fillStyle='rgba(255,'+R(170-ph*120)+',40,'+(.5*(1-ph))+')';const s=R(16*(1-ph)+3);cx.fillRect(R(px-s/2),R(py-s/2),s,s)}cx.globalCompositeOperation='source-over'}};
+  let i=0;for(const fx of[420,1010,1580,2190]){const x=fx-cmx;i++;if(x<-80||x>W+80)continue;flamme(x,oy+RF+34,1.5,i);flamme(x+34,oy+RF+30,1.1,i+2);flamme(x-30,oy+RF+32,.9,i+4)}};
 CH[6]=rueChap({async prep(etape){await etape('Secteur suivant…',.05);spritesRue();await fabRue(N6,etape,{dec:3,mobilier:[[380,'auto'],[560,'barricade'],[960,'auto'],[1130,'poubelle'],[1340,'morris'],[1540,'auto'],[1720,'barricade'],[2150,'auto'],[2280,'banc']],pietons:[820]});
     for(const fx of[420,1010,1580,2190])N6.lumieres.push([fx,RF+10,340,'#ff9a50'])},
   debut(o){hudCfg('UNITÉS NEUTRALISÉES','FRAPPER');rueDebut(N6,o);S.tues=0}});
@@ -1420,7 +1430,7 @@ function niveau7(){const G=grille(84,40);N7.G=G;
   G.r_(24,24,1,6,'#');G.r_(38,2,1,11,'#');G.r_(62,24,1,6,'#');
   for(const[x,y]of[[20,32],[21,32],[21,31],[44,32]])G.g[y][x]='c';
   // escalier de fortune dans la brèche (54-59), puis vers le 2e étage au fond à droite
-  G.r_(55,30,3,1,'=').r_(57,27,3,1,'=').r_(55,25,2,1,'~').r_(76,20,3,1,'=').r_(80,17,3,1,'=').r_(76,15,3,1,'~');
+  G.r_(55,30,3,1,'=').r_(57,27,3,1,'=').r_(55,25,4,1,'~').r_(76,20,3,1,'=').r_(80,17,3,1,'=').r_(76,15,3,1,'~');
   G.r_(30,33,3,3,'.');G.r_(66,33,3,3,'.');
   N7.fenetres=[[0,26,1,7,'trou'],[10,26,4,4],[30,3,7,8,'trou'],[56,2,6,10,'trou'],[70,26,4,4],[12,16,4,4],[44,16,4,4],[72,16,5,4,'trou'],[10,4,4,5],[70,4,4,5]];
   N7.lampes=[[14,24,'#ffb070',1],[48,24,'#ffb070',1],[70,14,'#ffd0a0',1]];
@@ -1447,7 +1457,7 @@ function niveau7(){const G=grille(84,40);N7.G=G;
     {k:'ckp',x:50,y:23},{k:'zone',x:9,y0:14,y1:23,f(){second('Deux lits d\'enfant. Une toise au crayon sur le mur.','h');aria('Chambre vide. Continue.')}},
     {k:'ckp',x:73,y:13},{k:'zone',x:62,y0:4,y1:13,f(){aria('Le relais est ici. Fouille.');second('')}},
     {k:'inter',x:66,y:13,dy:4,lib:'REGARDER',une:1,sp:()=>SPC.photo,lueur:'#fff2c8',f:photo7}];
-  N7.dessineAvant=(cmx,cmy)=>{for(const[fx,fy]of N7.feux){const x=fx*TU-cmx,y=fy*TU-cmy;if(x<-60||x>W+60)continue;cx.globalCompositeOperation='lighter';for(let i=0;i<9;i++){const ph=(S.t*1.5+i*.31)%1,px=x+Math.sin(i*2.1+S.t*3)*13,py=y-ph*50;cx.fillStyle='rgba(255,'+R(180-ph*130)+',40,'+(.55*(1-ph))+')';const s=R(13*(1-ph)+2);cx.fillRect(R(px-s/2),R(py-s/2),s,s)}cx.globalCompositeOperation='source-over'}};
+  N7.dessineAvant=(cmx,cmy)=>{let i=0;for(const[fx,fy]of N7.feux){const x=fx*TU-cmx,y=fy*TU-cmy;i++;if(x<-60||x>W+60)continue;flamme(x,y,1,i);flamme(x+16,y,.7,i+3);flamme(x-15,y,.6,i+5)}};
   N7.lumieres=(cmx,cmy)=>{for(const[fx,fy]of N7.feux)lumPoint(fx*TU-cmx,fy*TU-20-cmy,230+Math.sin(S.t*9+fx)*24,'#ff9a50',.95)};
   N7.maj=dt=>{const j=S.j;for(const[fx,fy]of N7.feux)if(fy<34&&Math.abs(j.x-fx*TU)<14&&j.y>fy*TU-30&&j.y<=fy*TU+2)coteDegat();if(rnd()<dt*.25){sfx.chute();S.secousse=.2;for(let i=0;i<8;i++)S.pouss.push({x:S.cam.x+rnd()*W,y:S.cam.y,vx:0,vy:60+rnd()*80,l:1.6,c:'#6a625c',g:300})}};
   N7.dessineApres=()=>{pluie(S.t,46)};N7.hud=()=>{$('score').textContent=S.j.y<14*TU?'ÉTAGE 2':S.j.y<24*TU?'ÉTAGE 1':'REZ-DE-CHAUSSÉE'}}
@@ -1578,6 +1588,8 @@ CH[10].prep=async etape=>{await etape('…',.5);spritesCote()};
 // ================================================================ DÉMARRAGE et essais automatiques (?ch=N&t=..&sim=secondes&auto=1, ?planche=paris)
 requestAnimationFrame(boucle);
 if(Q.get('planche')==='paris'){(async()=>{const k=Q.get('k')||'seine',c=paris(k==='h'?'h':k,+(Q.get('g')||5));c.style.cssText='position:fixed;left:0;top:0;z-index:99;width:'+(Q.get('z')||720)+'px;image-rendering:pixelated';document.body.append(c);scrollTo(0,0);c.style.top=(-(+Q.get('y')||0))+'px';document.title='ok'})()}
+else if(Q.get("essai")==="acces"){(async()=>{const r=[];for(const[n,N]of[[2,N2],[4,N4],[7,N7],[9,N9]]){await lance(n);for(const o of N.objets)if(o.k==="porte")for(let q=0;q<o.h;q++)N.G.g[o.y+q][o.x]=".";r.push(n+":"+(accessible(N).join(" ")||"tout accessible"))}document.title="ACCES "+r.join(" | ")})()}
+else if(Q.get("essai")==="bot"){(async()=>{const n=+Q.get("n")||2;await lance(n,{x:Q.get("x")});const N=S.N;let mx=0;for(let i=0;i<60*70&&S&&!S.fini;i++){const j=S.j;KB.ArrowRight=1;const dev=solide(N,j.x+JL+10,j.y-4)||(!solide(N,j.x+30,j.y+6)&&N.G.get(Math.floor((j.x+30)/TU),Math.floor((j.y+6)/TU))!=="=");KB[" "]=j.sol&&dev&&i%3===0?1:0;if(!S.pause&&!S.dialogue)CHAP.maj(1/60);else S.pause=false;mx=Math.max(mx,j.x/TU)}document.title="BOT ch"+n+" xmax "+mx.toFixed(1)+" vies "+(S?S.vies:"-")})()}
 else if(Q.get("essai")){}
 else if(Q.get("ch")){const n=+Q.get('ch');lance(n,{t:parseFloat(Q.get('t'))||0,x:Q.get('x')}).then(()=>{const sim=parseFloat(Q.get('sim'))||0;for(let i=0;i<sim*60&&S&&!S.fini;i++){if(!S.pause&&!S.dialogue)CHAP.maj(1/60)}if(S&&CHAP){CHAP.hud&&CHAP.hud();document.title+=' | '+(CHAP.etat?CHAP.etat():'ok')}})}
 else menu();

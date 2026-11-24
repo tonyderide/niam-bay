@@ -8,7 +8,7 @@ function niveau7(){const G=grille(84,40);N7.G=G;
   G.r_(24,24,1,6,'#');G.r_(38,2,1,11,'#');G.r_(62,24,1,6,'#');
   for(const[x,y]of[[20,32],[21,32],[21,31],[44,32]])G.g[y][x]='c';
   // escalier de fortune dans la brèche (54-59), puis vers le 2e étage au fond à droite
-  G.r_(55,30,3,1,'=').r_(57,27,3,1,'=').r_(55,25,2,1,'~').r_(76,20,3,1,'=').r_(80,17,3,1,'=').r_(76,15,3,1,'~');
+  G.r_(55,30,3,1,'=').r_(57,27,3,1,'=').r_(55,25,4,1,'~').r_(76,20,3,1,'=').r_(80,17,3,1,'=').r_(76,15,3,1,'~');
   G.r_(30,33,3,3,'.');G.r_(66,33,3,3,'.');
   N7.fenetres=[[0,26,1,7,'trou'],[10,26,4,4],[30,3,7,8,'trou'],[56,2,6,10,'trou'],[70,26,4,4],[12,16,4,4],[44,16,4,4],[72,16,5,4,'trou'],[10,4,4,5],[70,4,4,5]];
   N7.lampes=[[14,24,'#ffb070',1],[48,24,'#ffb070',1],[70,14,'#ffd0a0',1]];
@@ -35,7 +35,7 @@ function niveau7(){const G=grille(84,40);N7.G=G;
     {k:'ckp',x:50,y:23},{k:'zone',x:9,y0:14,y1:23,f(){second('Deux lits d\'enfant. Une toise au crayon sur le mur.','h');aria('Chambre vide. Continue.')}},
     {k:'ckp',x:73,y:13},{k:'zone',x:62,y0:4,y1:13,f(){aria('Le relais est ici. Fouille.');second('')}},
     {k:'inter',x:66,y:13,dy:4,lib:'REGARDER',une:1,sp:()=>SPC.photo,lueur:'#fff2c8',f:photo7}];
-  N7.dessineAvant=(cmx,cmy)=>{for(const[fx,fy]of N7.feux){const x=fx*TU-cmx,y=fy*TU-cmy;if(x<-60||x>W+60)continue;cx.globalCompositeOperation='lighter';for(let i=0;i<9;i++){const ph=(S.t*1.5+i*.31)%1,px=x+Math.sin(i*2.1+S.t*3)*13,py=y-ph*50;cx.fillStyle='rgba(255,'+R(180-ph*130)+',40,'+(.55*(1-ph))+')';const s=R(13*(1-ph)+2);cx.fillRect(R(px-s/2),R(py-s/2),s,s)}cx.globalCompositeOperation='source-over'}};
+  N7.dessineAvant=(cmx,cmy)=>{let i=0;for(const[fx,fy]of N7.feux){const x=fx*TU-cmx,y=fy*TU-cmy;i++;if(x<-60||x>W+60)continue;flamme(x,y,1,i);flamme(x+16,y,.7,i+3);flamme(x-15,y,.6,i+5)}};
   N7.lumieres=(cmx,cmy)=>{for(const[fx,fy]of N7.feux)lumPoint(fx*TU-cmx,fy*TU-20-cmy,230+Math.sin(S.t*9+fx)*24,'#ff9a50',.95)};
   N7.maj=dt=>{const j=S.j;for(const[fx,fy]of N7.feux)if(fy<34&&Math.abs(j.x-fx*TU)<14&&j.y>fy*TU-30&&j.y<=fy*TU+2)coteDegat();if(rnd()<dt*.25){sfx.chute();S.secousse=.2;for(let i=0;i<8;i++)S.pouss.push({x:S.cam.x+rnd()*W,y:S.cam.y,vx:0,vy:60+rnd()*80,l:1.6,c:'#6a625c',g:300})}};
   N7.dessineApres=()=>{pluie(S.t,46)};N7.hud=()=>{$('score').textContent=S.j.y<14*TU?'ÉTAGE 2':S.j.y<24*TU?'ÉTAGE 1':'REZ-DE-CHAUSSÉE'}}

@@ -19,7 +19,7 @@ N6.surKo=e=>{S.stat=1.5;S.gel=.7;if(e.peur){S.peurs=(S.peurs||0)+1;ind('V',1);ar
 N6.maj=dt=>{};
 N6.dessineApres=(cmx,oy)=>{if(S.stat>0){S.stat-=1/60;const y=H*.3;cx.fillStyle='rgba(7,8,10,.86)';cx.fillRect(18,y,W-36,74);cx.strokeStyle='#2A323A';cx.strokeRect(18.5,y+.5,W-37,73);cx.font='13px monospace';cx.fillStyle='#8A96A0';cx.fillText('UNITÉS NEUTRALISÉES CE SOIR',30,y+22);cx.font='bold 26px monospace';cx.fillStyle='#E8EEF2';cx.fillText((1240+S.tues).toLocaleString('fr-FR'),30,y+50);cx.font='12px monospace';cx.fillStyle='#E5283C';cx.fillText('DONT 89 % CLASSIFICATION CIVILE RÉVISÉE',30,y+66)}
   // voitures qui brûlent
-  for(const fx of[420,1010,1580,2190]){const x=fx-cmx;if(x<-80||x>W+80)continue;cx.globalCompositeOperation='lighter';for(let i=0;i<7;i++){const ph=(S.t*1.6+i*.37)%1,px=x+Math.sin(i*2.3+S.t*3)*16,py=oy+RF+20-ph*70;cx.fillStyle='rgba(255,'+R(170-ph*120)+',40,'+(.5*(1-ph))+')';const s=R(16*(1-ph)+3);cx.fillRect(R(px-s/2),R(py-s/2),s,s)}cx.globalCompositeOperation='source-over'}};
+  let i=0;for(const fx of[420,1010,1580,2190]){const x=fx-cmx;i++;if(x<-80||x>W+80)continue;flamme(x,oy+RF+34,1.5,i);flamme(x+34,oy+RF+30,1.1,i+2);flamme(x-30,oy+RF+32,.9,i+4)}};
 CH[6]=rueChap({async prep(etape){await etape('Secteur suivant…',.05);spritesRue();await fabRue(N6,etape,{dec:3,mobilier:[[380,'auto'],[560,'barricade'],[960,'auto'],[1130,'poubelle'],[1340,'morris'],[1540,'auto'],[1720,'barricade'],[2150,'auto'],[2280,'banc']],pietons:[820]});
     for(const fx of[420,1010,1580,2190])N6.lumieres.push([fx,RF+10,340,'#ff9a50'])},
   debut(o){hudCfg('UNITÉS NEUTRALISÉES','FRAPPER');rueDebut(N6,o);S.tues=0}});

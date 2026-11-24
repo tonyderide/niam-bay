@@ -76,3 +76,13 @@ function coteDessine(){const N=S.N,j=S.j,cmx=R(S.cam.x),cmy=R(S.cam.y+(N.Hp<H?N.
   if(S.glitch>0)glitch()}
 const coteChap=o=>Object.assign({maj:coteMaj,dessine:coteDessine,hud:coteHud,act:coteAct,bas:cmdBas,bouge:cmdBouge,haut:cmdHaut,touche(k){if(k==='e'||k==='Enter')coteAct()},etat(){return 'x='+(S.j.x/TU).toFixed(1)+' y='+(S.j.y/TU).toFixed(1)+' vies '+S.vies+' cam '+R(S.cam.y)+' H '+H+' Hp '+S.N.Hp+' ih '+innerHeight}},o);
 const apres=(d,f)=>S.q.push([S.t+d,f]);
+// flamme animée (images des explosions en boucle, mélange additif) ; x,y = base en pixels écran
+function flamme(x,y,ech,i){if(!SP.feu)SP.feu=[flammes(3),flammes(17),flammes(41)];cx.globalCompositeOperation='lighter';for(let q=0;q<3;q++){const f=SP.feu[(i+q)%3][2+Math.floor((S.t*11+i*3+q*2)%5)],w=R(46*ech*(1-q*.22)),h=R(64*ech*(1-q*.2));cx.drawImage(f,R(x-w/2+Math.sin(S.t*7+q+i)*3),R(y-h*.82-q*9*ech),w,h)}cx.globalCompositeOperation='source-over'}
+// contrôle d'accessibilité d'un niveau (essais) : cases où l'on peut se tenir, marche, saut de 3 cases de haut et 4 de large, chute
+function accessible(N){const G=N.G,ok=(x,y)=>!plein(G.get(x,y-1))&&!plein(G.get(x,y-2))&&(plein(G.get(x,y))||G.get(x,y)==='='||G.get(x,y)==='~')&&G.get(x,y)!=='D'&&x>=0&&x<G.c,vu=new Set(),f=[[N.depart[0],N.depart[1]]];vu.add(f[0].join());
+  const libreCol=(x,y0,y1)=>{for(let y=y0;y<=y1;y++)if(plein(G.get(x,y)))return false;return true};
+  while(f.length){const[x,y]=f.pop();for(let dx=-4;dx<=4;dx++)for(let ny=y-3;ny<G.r;ny++){const nx=x+dx;if(!ok(nx,ny)||vu.has(nx+','+ny))continue;const up=y-ny,ad=Math.abs(dx);
+      if(up>0){if(ad>(up>=3?2:3))continue;if(!libreCol(x,ny-2,y-1))continue}else if(ny>y){if(ad>4)continue;let lib=true;for(let q=Math.min(x,nx);q<=Math.max(x,nx);q++)if(plein(G.get(q,y-1))||plein(G.get(q,y-2)))lib=false;if(!lib||!libreCol(nx,y-1,ny-1))continue}
+      else{if(ad>4)continue;if(ad>1){let lib=true;for(let q=Math.min(x,nx);q<=Math.max(x,nx);q++)if(plein(G.get(q,y-1))||plein(G.get(q,y-3)))lib=false;if(!lib)continue}}
+      vu.add(nx+','+ny);f.push([nx,ny])}}
+  const man=[];for(const o of N.objets){if(o.k!=='inter'&&o.k!=='zone')continue;const x=Math.floor(o.x);let a=false;for(let d=-1;d<=1;d++)for(let y=0;y<G.r;y++)if(vu.has((x+d)+','+y)&&(o.k==='zone'?(o.y0===undefined||(y>o.y0&&y<=o.y1)):Math.abs(y-o.y)<=1))a=true;if(!a)man.push(o.k+'@'+o.x+','+(o.y||''))}return man}
